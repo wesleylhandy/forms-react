@@ -1,0 +1,76 @@
+* {
+    box-sizing: border-box;
+    font-family: 'proximanova-regular', Arial, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #333;
+}
+
+.caps {
+    text-transform: uppercase;
+}
+
+.hidden {
+    display: none;
+}
+
+.center {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.img-responsive {
+    max-width: 100%;
+    display: block;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+.hoverable {
+    transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out, color 200ms ease-in-out;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    margin: 0;
+    padding: 0;
+}
+
+i,
+em,
+.italic {
+    font-family: 'proximanova-regular-italic', Arial, sans-serif;
+}
+
+i.bold,
+em.bold,
+strong.italic,
+i>b,
+b>i {
+    font-family: 'proximanova-bold-italic', Arial, sans-serif;
+}
+
+b,
+strong,
+.bold {
+    font-family: 'proximanova-bold', Arial, sans-serif;
+}
+
+.semi-bold {
+    font-family: 'proximanova-semibold', Arial, sans-serif;
+}
+
+i.semi-bold,
+em.semi-bold,
+.semi-bold-italic {
+    font-family: 'proximanova-semibold-italic', Arial, sans-serif;
+}

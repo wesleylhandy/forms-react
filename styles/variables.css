@@ -1,0 +1,9 @@
+:root {
+    --background-color: #f5f5f5;
+    --input-border-color: cornflowerblue;
+    --label-color: darkblue;
+    --error-color: crimson;
+    --base-font-size: 20px;
+    --primary: indigo;
+    --hover: purple;
+}
