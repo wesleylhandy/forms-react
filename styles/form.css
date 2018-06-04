@@ -1,0 +1,200 @@
+.form-wrapper {
+    background: var(--background-color);
+    border-radius: 20px;
+    color: var(--form-text-color);
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+form h3 {
+    color: var(--heading-color);
+    text-align: center;
+    font-size: 19px;
+    line-height: 23px;
+    margin-bottom: 5px;
+}
+
+#AskArray {
+    height: auto;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.askbutton {
+    height: 70px;
+    width: calc(100% / 3);
+}
+
+.askbutton__amt {
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    border: 2px solid transparent;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'proximanova-semibold', sans-serif;
+    font-size: 28px;
+    height: 50px;
+    -webkit-flex-basis: 91px;
+    -ms-flex-preferred-size: 91px;
+    flex-basis: 91px;
+    text-align: center;
+    -webkit-transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
+    transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
+}
+
+.askbutton:hover .askbutton__amt,
+.askbutton__amt:hover,
+.askbutton.selected .askbutton__amt {
+    background-color: #fff;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.monthly-giving-day {
+    align-items: center;
+    font-size: 16px;
+    height: 40px;
+}
+
+#CCDayOfMonth {
+    opacity: 1;
+    text-align: center;
+}
+
+#NameAddressInfo {
+    margin: 20px auto;
+}
+
+.form-group,
+input,
+select {
+    position: relative;
+}
+
+.form-group {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.form-row div+div {
+    margin-left: 10px;
+}
+
+[id*='form-field'] {
+    position: relative;
+}
+
+[id*='form-field']>label {
+    color: var(--label-color);
+    font-family: 'proximanova-semibold', Arial, sans-serif;
+    font-size: 14px;
+    position: absolute;
+    opacity: 0;
+    bottom: calc(100% - 5px);
+    left: 7px;
+    -webkit-transition: opacity 150ms ease-in-out;
+    transition: opacity 150ms ease-in-out;
+}
+
+[id*='form-field']:hover>label,
+[id*='form-field']:focus>label,
+[id*='form-field']:active>label {
+    opacity: 1;
+}
+
+.form-group div.error {
+    top: unset;
+    width: auto;
+    bottom: calc(0% - 11px);
+    font-family: proximanova-bold, sans-serif;
+    font-size: 10px;
+    opacity: 1;
+    overflow: hidden;
+    max-width: 100%;
+    white-space: nowrap;
+}
+
+#form-field-state,
+#form-field-country,
+#form-field-phone,
+#form-field-email {
+    max-width: calc(50% - 10px);
+}
+
+.form-control {
+    border-color: var(--input-border-color);
+    color: var(--input-text-color);
+    font-size: 18px;
+    font-family: 'proximanova-semibold', Arial, sans-serif;
+    height: 38px;
+    display: block;
+    width: 100%;
+    height: 40px;
+    margin-top: 5px;
+    padding: 6px;
+    line-height: 1.42857143;
+    color: #000;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+input::-webkit-input-placeholder,
+input::-moz-placeholder,
+input:-ms-input-placeholder,
+input::placeholder {
+    color: var(--placeholder-color);
+    font-size: 18px;
+    font-family: 'proximanova-semibold', Arial, sans-serif;
+}
+
+input,
+select {
+    border-radius: 4px;
+}
+
+input:focus,
+input:active,
+input:hover,
+select:focus,
+select:active,
+select:hover {
+    border: 1px solid var(--hover-border-color);
+    background-color: var(--hover-bg-color);
+    outline: none;
+}
+
+input[type=submit],
+button#submit {
+    background: var(--primary-color);
+    color: #fff;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    display: block;
+    font-family: 'proximanova-semibold', Arial, sans-serif;
+    font-size: 22px;
+    padding: 0 20px;
+    margin: 20px auto;
+    height: 46px;
+    -webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out, border-color 200ms ease-in-out;
+    transition: background-color 200ms ease-in-out, color 200ms ease-in-out, border-color 200ms ease-in-out;
+}
+
+input[type=submit]:hover,
+button#submit:hover {
+    background-color: #fff;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.invalid {
+    border-color: crimson !important;
+}

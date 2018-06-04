@@ -1,3 +1,6 @@
 @import "./styles/main.css";
 @import "./styles/variables.css";
 @import "./styles/flex.css";
+@import "./styles/radio-button.css";
+@import "./styles/checkbox.css";
+@import "./styles/form.css";

@@ -1,0 +1,14 @@
+{
+    "givingFormat": "buttons",
+    "monthlyOption": true,
+    "shipping": false,
+    "international": false,
+    "numProducts": 0,
+    "products": [{
+        "description": "",
+        "solicitation": "",
+        "productCode": ""
+    }],
+    "monthlyAmounts": [7, 15, 30],
+    "singleAmounts": [25, 50, 100, 250]
+}

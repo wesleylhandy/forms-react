@@ -31,7 +31,7 @@
 }
 
 .flex.flex-axes-center {
-    align-content: center;
+    align-items: center;
 }
 
 .flex.flex-column {
