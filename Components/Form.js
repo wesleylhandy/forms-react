@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 
 import GivingArray from './GivingArray'
+import ProductDisplay from './ProductDisplay'
 
 export default class Form extends Component {
     constructor(props){
@@ -9,17 +10,23 @@ export default class Form extends Component {
             arrayOptions: {
                 givingFormat: props.givingFormat,
                 monthlyOption: props.monthlyOption,
-                products: [...props.products],
-                numProducts: props.numProducts,
                 monthlyAmounts: [...props.monthlyAmounts],
                 singleAmounts: [...props.singleAmounts]
+            },
+            productOptions: {
+                products: [...props.products],
+                numProducts: props.numProducts,
+                additionalGift: props.additionalGift
             },
             monthlyOption: props.monthlyOption,
             shipping: props.shipping,
             international: props.international,
             showShipping: false,
             monthlyChecked: props.monthlyOption,
-            giftAmount: 0
+            totalGift: 0,
+            cart: {
+                items: []
+            }
         }
         this.renderMonthlyRadio = this.renderMonthlyRadio.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -28,7 +35,8 @@ export default class Form extends Component {
         this.renderCountry = this.renderCountry.bind(this)
         this.renderShippingAddress = this.renderShippingAddress.bind(this)
         this.handleSaveInfo = this.handleSaveInfo.bind(this)
-        this.registerAmount = this.registerAmount.bind(this)
+        this.calculateTotal = this.calculateTotal.bind(this)
+        this.addToCart = this.addToCart.bind(this)
     }
 
     componentDidMount(){
@@ -37,12 +45,24 @@ export default class Form extends Component {
 
     renderMonthlyRadio(monthlyChecked) {
 
-        const options = []
-        for(let i = 2; i <= 28; i++){
-            options.push(<option key={"option" + i} value={i}>{i}</option>)
-        }
         let monthly = monthlyChecked;
         let single = !monthlyChecked;
+
+        function renderCCInfo() {
+            const options = []
+            for(let i = 2; i <= 28; i++){
+                options.push(<option key={"option" + i} value={i}>{i}</option>)
+            }
+            return (
+                <div className="monthly-giving-day">
+                    <h5 id="CCDayOfMonth">Charge automatically on day&nbsp;
+                        <select id="PM_CC_RECURRING_DAY" name="PM_CC_RECURRING_DAY">
+                            {options}
+                        </select>
+                    &nbsp;each month.</h5>
+                </div>   
+            )
+        }
         return (
             <div id="MonthlyGivingInfo">
                 <h3 className="caps">How Often Do You Want to Give This Amount?</h3>
@@ -58,19 +78,13 @@ export default class Form extends Component {
                         </div>
                     </div>
 
-                <div className="monthly-giving-day">
-                    <h5 id="CCDayOfMonth">Charge automatically on day&nbsp;
-                        <select id="PM_CC_RECURRING_DAY" name="PM_CC_RECURRING_DAY">
-                            {options}
-                        </select>
-                    &nbsp;each month.</h5>
-                </div>   
+                    {monthlyChecked ? renderCCInfo() : null}
             </div>
         )
     }
 
     renderCountry(type) {
-        const id = type == "shipping" ? "shipTocountry" : "country"
+        const id = type == "shipping" ? "shipToCountry" : "country"
         return (
             <div id={`form-field-${id}`} className="form-group flex-grow">
                 <label htmlFor={id}>Country<span>*</span></label>
@@ -102,28 +116,28 @@ export default class Form extends Component {
 
                     </div>
                     <div className="form-row flex flex-row flex-between">
-                        <div id="form-field-shipToname" className="form-group flex-grow">
-                            <label htmlFor="shipname">Name<span>*</span></label>
-                            <input className="form-control " type='text' id="shipname" name="shipname" placeholder="First and Last Name" required={true}/>
+                        <div id="form-field-shipToName" className="form-group flex-grow">
+                            <label htmlFor="shipToName">Name<span>*</span></label>
+                            <input className="form-control " type='text' id="shipToName" name="shipToName" placeholder="First and Last Name" required={true}/>
                             <div className="error"></div>
                         </div>
                     </div>
                     <div className="form-row flex flex-row flex-between">
-                        <div id="form-field-shipToaddress1" className="form-group flex-grow">
-                            <label htmlFor="shipToaddress1">Address<span>*</span></label>
-                            <input className="form-control " id="shipToaddress1" type='text' name="shipToaddress1" placeholder="Address*" required={true}/>
+                        <div id="form-field-shipToAddress1" className="form-group flex-grow">
+                            <label htmlFor="shipToAddress1">Address<span>*</span></label>
+                            <input className="form-control " id="shipToAddress1" type='text' name="shipToAddress1" placeholder="Address*" required={true}/>
                             <div className="error"></div>
                         </div>
                     </div>
                     <div className="form-row flex flex-row flex-between">
-                        <div id="form-field-shipTocity" className="form-group flex-grow">
-                            <label htmlFor="shipTocity">City<span>*</span></label>
-                            <input className="form-control " id="shipTocity" type='text' name="shipTocity" placeholder="City*" required={true}/>
+                        <div id="form-field-shipToCity" className="form-group flex-grow">
+                            <label htmlFor="shipToCity">City<span>*</span></label>
+                            <input className="form-control " id="shipToCity" type='text' name="shipToCity" placeholder="City*" required={true}/>
                             <div className="error"></div>
                         </div>
-                        <div id="form-field-shipTostate" className="form-group flex-grow">
-                            <label htmlFor="shipTostate">State<span>*</span></label>
-                            <select className="form-control " id="shipTostate" name="shipTostate" required={true}>
+                        <div id="form-field-shipToState" className="form-group flex-grow">
+                            <label htmlFor="shipToState">State<span>*</span></label>
+                            <select className="form-control " id="shipToState" name="shipToState" required={true}>
                                 <option value="">Select</option>
                                 <option value="VA">VA</option>
                             </select>
@@ -131,9 +145,9 @@ export default class Form extends Component {
                         </div>
                     </div>
                     <div className="form-row flex flex-row flex-between">
-                        <div id="form-field-shipTozip" className="form-group flex-grow">
-                            <label htmlFor="shipTozip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
-                            <input className="form-control " id="shipTozip" type='text' name="shipTozip" placeholder="Zip*" required={true}/>
+                        <div id="form-field-shipToZip" className="form-group flex-grow">
+                            <label htmlFor="shipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
+                            <input className="form-control " id="shipToZip" type='text' name="shipToZip" placeholder="Zip*" required={true}/>
                             <div className="error"></div>
                         </div>
                         { this.state.international ? this.renderCountry("shipping") : null }
@@ -143,11 +157,21 @@ export default class Form extends Component {
         )
     }
 
+    /**
+     * Updates cart to remove any selected donations and toggles between monthly and single giving
+     * @param {Event} e 
+     */
     handleRadioClick(e) {
+        const items = this.state.cart.items;
+        const found = items.findIndex(el=>el && el.type == "donation")
+        if (found > -1) {
+            items.splice(found, 1)
+        }
+        console.log({items})
         if(e.target.id == "singlegift") {
-            this.setState({monthlyChecked: false})
+             this.setState({monthlyChecked: false, cart: {items}})
         } else {
-            this.setState({monthlyChecked: true})
+            this.setState({monthlyChecked: true, cart: {items}})
         }
     }
 
@@ -163,15 +187,29 @@ export default class Form extends Component {
 
     }
 
-    registerAmount(amt) {
-        this.setState({giftAmount: amt})
+    calculateTotal() {
+
+    }
+
+    addToCart(item) {
+        const items = this.state.cart.items;
+        const found = items.findIndex(el=>el && el.type == "donation")
+        if(found > -1) {
+            items[found] = item
+        } else {
+            items.push(item)
+        }
+        console.log({items})
+        this.setState({cart: {items}})
+        
     }
 
     render() {
         return (
             <form autoComplete="off" onSubmit={this.handleSubmit}>
-                <GivingArray arrayOptions={this.state.arrayOptions} monthlyChecked={this.state.monthlyChecked} registerAmount={this.registerAmount}/>
+                <GivingArray arrayOptions={this.state.arrayOptions} monthlyChecked={this.state.monthlyChecked} addToCart={this.addToCart}/>
                 { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked) : null }
+                <ProductDisplay productOptions={this.state.productOptions} addToCart={this.addToCart}/>
                 <div id="NameAddressInfo">
                     <h3 className="caps">Please Enter Your Billing Information</h3>
                     <div className="form-row flex flex-row flex-between">

@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import Form from "./Form"
 
 import config from '../config/form-config.json'
+import cssVars from '../config/css-config.json'
+
+
 
 export default class App extends Component {
     constructor(props) {
@@ -17,6 +20,10 @@ export default class App extends Component {
             monthlyAmounts: [...config.monthlyAmounts],
             singleAmounts: [...config.singleAmounts]
         }
+    }
+
+    componentDidMount() {
+        cssVars.forEach(variable=>document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0]))
     }
 
     render() {

@@ -1,0 +1,25 @@
+[{
+    "--background-color": "#f5f5f5"
+}, {
+    "--form-text-color": "#091d44"
+}, {
+    "--input-border-color": "cornflowerblue"
+}, {
+    "--label-color": "darkblue"
+}, {
+    "--error-color": "crimson"
+}, {
+    "--base-font-size": "20px"
+}, {
+    "--primary-color": "red"
+}, {
+    "--heading-color": "#313131"
+}, {
+    "--input-text-color": "#12092a"
+}, {
+    "--placeholder-color": "#7F8C9A",
+}, {
+    "--hover-border-color": "purple"
+}, {
+    "--hover-bg-color": "#F4F6F9"
+}]

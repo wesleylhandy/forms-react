@@ -7,8 +7,14 @@
     "products": [{
         "description": "",
         "solicitation": "",
-        "productCode": ""
+        "productCode": "",
+        "productImage": ""
     }],
+    "funds": [{
+        "description": "",
+        "solicitation": ""
+    }],
+    "additionaGift": false,
     "monthlyAmounts": [7, 15, 30],
-    "singleAmounts": [25, 50, 100, 250]
+    "singleAmounts": [25, 50, 100, 250, 300]
 }

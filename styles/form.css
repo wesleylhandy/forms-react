@@ -52,6 +52,39 @@ form h3 {
     border-color: var(--primary-color);
 }
 
+.ask-form-group {
+    height: 70px;
+    margin-bottom: 0;
+    position: relative;
+    white-space: nowrap;
+    width: calc(100% / 3);
+}
+
+input[name="other-amt-input"] {
+    height: 50px;
+    width: 100%;
+    -webkit-transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
+    transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
+    border: 2px solid var(--primary-color);
+    border-radius: 4px;
+    color: var(--primary-color);
+    font-size: 28px;
+    text-align: center;
+    font-family: proximanova-semibold, sans-serif;
+    width: 91px;
+}
+
+label[for="other-amt-input"] {
+    font-family: 'proximanova-semibold', sans-serif;
+    font-size: 14px;
+    color: var(--primary-color);
+    bottom: -8px;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
 .monthly-giving-day {
     align-items: center;
     font-size: 16px;
@@ -170,6 +203,12 @@ select:hover {
     border: 1px solid var(--hover-border-color);
     background-color: var(--hover-bg-color);
     outline: none;
+}
+
+input[name="other-amt-input"]:hover,
+input[name="other-amt-input"]:active,
+input[name="other-amt-input"]:focus {
+    border: 2px solid var(--primary-color);
 }
 
 input[type=submit],
