@@ -2,6 +2,7 @@
     --background-color: #f5f5f5;
     --form-text-color: #091d44;
     --input-border-color: cornflowerblue;
+    --input-border-radius: 4px;
     --label-color: darkblue;
     --error-color: crimson;
     --base-font-size: 20px;

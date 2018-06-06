@@ -4,12 +4,14 @@
     "--form-text-color": "#091d44"
 }, {
     "--input-border-color": "cornflowerblue"
-}, {
+},{
+    "--input-border-radius": "0"
+} ,{
     "--label-color": "darkblue"
 }, {
     "--error-color": "crimson"
 }, {
-    "--base-font-size": "20px"
+    "--base-font-size": "19px"
 }, {
     "--primary-color": "red"
 }, {

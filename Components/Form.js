@@ -89,7 +89,7 @@ export default class Form extends Component {
             <div id={`form-field-${id}`} className="form-group flex-grow">
                 <label htmlFor={id}>Country<span>*</span></label>
                 <select className="form-control " id={id} name={id} required={true}>
-                    <option value="">Select</option>
+                    <option value="">Select &#9663;</option>
                     <option value="US">USA</option>
                 </select>
                 <div className="error"></div>
@@ -138,7 +138,7 @@ export default class Form extends Component {
                         <div id="form-field-shipToState" className="form-group flex-grow">
                             <label htmlFor="shipToState">State<span>*</span></label>
                             <select className="form-control " id="shipToState" name="shipToState" required={true}>
-                                <option value="">Select</option>
+                                <option value="">Select &#9663;</option>
                                 <option value="VA">VA</option>
                             </select>
                             <div className="error"></div>
@@ -216,7 +216,7 @@ export default class Form extends Component {
                         <div id="form-field-title" className="form-group flex-grow">
                             <label htmlFor="honorific">Title<span>*</span></label>
                             <select className="form-control " id="honorific" name='honorific' required={true} placeholder="Title*">
-                                <option value="">Select</option>
+                                <option value="">Select &#9663;</option>
                                 <option value="Mr">Mr</option>
                                 <option value="Ms">Ms</option>
                                 <option value="Mrs">Mrs</option>
@@ -252,7 +252,7 @@ export default class Form extends Component {
                         <div id="form-field-state" className="form-group flex-grow">
                             <label htmlFor="state">State<span>*</span></label>
                             <select className="form-control " id="state" name="state" required={true}>
-                                <option value="">Select</option>
+                                <option value="">Select &#9663;</option>
                                 <option value="VA">VA</option>
                             </select>
                             <div className="error"></div>

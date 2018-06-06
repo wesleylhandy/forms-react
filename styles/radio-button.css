@@ -2,7 +2,7 @@
 
 .monthly-radio {
     margin: 20px auto;
-    max-width: 300px;
+    max-width: calc(var(--base-font-size) * 15);
 }
 
 .radio-group {
@@ -24,10 +24,10 @@ input[type="radio"]+label:before {
     border-radius: 100%;
     border: 1px solid #D8DDE6;
     display: inline-block;
-    width: 1.4em;
-    height: 1.4em;
+    width: calc(var(--base-font-size) * 1.1);
+    height: calc(var(--base-font-size) * 1.1);
     position: relative;
-    margin-right: 1em;
+    margin-right: calc(var(--base-font-size) * .8);
     vertical-align: middle;
     cursor: pointer;
     text-align: center;
