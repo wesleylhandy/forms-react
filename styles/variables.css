@@ -1,15 +1,18 @@
 :root {
     --background-color: #f5f5f5;
-    --form-text-color: #091d44;
-    --input-border-color: cornflowerblue;
-    --input-border-radius: 4px;
-    --label-color: darkblue;
+    --base-font-size: 19px;
+    --btn-text-color: #fff;
     --error-color: crimson;
-    --base-font-size: 20px;
-    --primary-color: indigo;
+    --focus-box-shadow: rgba(102, 175, 233, .6);
+    --form-text-color: #091d44;
     --heading-color: #313131;
-    --input-text-color: #12092a;
+    --hover-bg-color: #fff;
+    --hover-border-color: #1775BC;
+    --input-bg-color: #fff;
+    --input-border-color: #ccc;
+    --input-border-radius: 4px;
+    --input-text-color: #091d44;
+    --label-color: #105fa5;
     --placeholder-color: #7F8C9A;
-    --hover-border-color: purple;
-    --hover-bg-color: #F4F6F9;
+    --primary-color: #1775BC;
 }

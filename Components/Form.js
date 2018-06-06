@@ -26,7 +26,8 @@ export default class Form extends Component {
             totalGift: 0,
             cart: {
                 items: []
-            }
+            },
+            CCSelectedDate: new Date().getDate()
         }
         this.renderMonthlyRadio = this.renderMonthlyRadio.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -35,6 +36,7 @@ export default class Form extends Component {
         this.renderCountry = this.renderCountry.bind(this)
         this.renderShippingAddress = this.renderShippingAddress.bind(this)
         this.handleSaveInfo = this.handleSaveInfo.bind(this)
+        this.handleCCDateSelect = this.handleCCDateSelect.bind(this)
         this.calculateTotal = this.calculateTotal.bind(this)
         this.addToCart = this.addToCart.bind(this)
     }
@@ -43,20 +45,21 @@ export default class Form extends Component {
 
     }
 
-    renderMonthlyRadio(monthlyChecked) {
+    renderMonthlyRadio(monthlyChecked, date) {
 
         let monthly = monthlyChecked;
         let single = !monthlyChecked;
+        const self = this;
 
         function renderCCInfo() {
             const options = []
             for(let i = 2; i <= 28; i++){
-                options.push(<option key={"option" + i} value={i}>{i}</option>)
+                options.push(<option key={"option" + i} value={i} selected={date == i ? "selected" : false}>{i}</option>)
             }
             return (
                 <div className="monthly-giving-day">
                     <h5 id="CCDayOfMonth">Charge automatically on day&nbsp;
-                        <select id="PM_CC_RECURRING_DAY" name="PM_CC_RECURRING_DAY">
+                        <select id="PM_CC_RECURRING_DAY" name="PM_CC_RECURRING_DAY" onChange={self.handleCCDateSelect}>
                             {options}
                         </select>
                     &nbsp;each month.</h5>
@@ -175,6 +178,11 @@ export default class Form extends Component {
         }
     }
 
+    handleCCDateSelect(e) {
+        console.log({val: +e.target.value})
+        this.setState({CCSelectedDate: +e.target.value})
+    }
+
     handleShippingClick(e) {
         this.setState({showShipping: true})
     }
@@ -208,7 +216,7 @@ export default class Form extends Component {
         return (
             <form autoComplete="off" onSubmit={this.handleSubmit}>
                 <GivingArray arrayOptions={this.state.arrayOptions} monthlyChecked={this.state.monthlyChecked} addToCart={this.addToCart}/>
-                { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked) : null }
+                { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.CCSelectedDate) : null }
                 <ProductDisplay productOptions={this.state.productOptions} addToCart={this.addToCart}/>
                 <div id="NameAddressInfo">
                     <h3 className="caps">Please Enter Your Billing Information</h3>
