@@ -1,20 +1,23 @@
 {
     "givingFormat": "buttons",
     "monthlyOption": true,
-    "shipping": false,
-    "international": false,
-    "numProducts": 0,
+    "shipping": true,
+    "international": true,
+    "numProducts": 1,
     "products": [{
         "description": "",
         "solicitation": "",
         "productCode": "",
-        "productImage": ""
+        "productMessage": "With stunning cinematography and moving interviews, <em>To Life</em> follows Israeli volunteers in Uganda, Nepal, Greece, Kurdistan, and the Palestinian Territories to discover how Israel is fulfilling ancient prophecy by being a light to the nations today.",
+        "productTitle": "To Life DVD"
     }],
     "funds": [{
         "description": "",
+        "fundTitle": "",
         "solicitation": ""
     }],
-    "additionaGift": false,
+    "additionalGift": true,
+    "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
     "monthlyAmounts": [7, 15, 30],
     "singleAmounts": [25, 50, 100, 250, 300]
 }

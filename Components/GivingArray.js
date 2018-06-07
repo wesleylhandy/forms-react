@@ -45,10 +45,11 @@ export default class GivingArray extends Component {
      */
     addToCart(amt, index) {
         this.setState({otherAmount: index == 99 ? amt : '', selectedIndex: index})
+        const monthlyChecked = this.state.monthlyChecked;
         this.props.addToCart({
             type: 'donation',
             amount: amt,
-            monthly: this.state.monthlyChecked,
+            monthly: monthlyChecked,
             fund: null
         })
     }
@@ -68,7 +69,7 @@ export default class GivingArray extends Component {
     
     render() {
         return (
-            <div id="AskArray" className="flex flex-row flex-center flex-wrap">
+            <div id="AskArray" className="askarray flex flex-row flex-center flex-wrap">
                 { this.state.monthlyOption && this.state.monthlyChecked ? this.renderArray(this.state.monthlyAmounts, this.state.selectedIndex) : this.renderArray(this.state.singleAmounts, this.state.selectedIndex) }
                 <div id="OtherAmout" className={`ask-form-group flex flex-center flex-axes-center${this.state.selectedIndex == 99 ? " selected": ""}`}>
                     <label htmlFor="other-amt-input">Other Amount</label>

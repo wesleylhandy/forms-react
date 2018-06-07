@@ -7,7 +7,8 @@
     padding: 10px;
 }
 
-form h3 {
+h3.form-header,
+.divider-title {
     color: var(--heading-color);
     text-align: center;
     font-size: var(--base-font-size);
@@ -15,7 +16,28 @@ form h3 {
     margin-bottom: 5px;
 }
 
-#AskArray {
+.divider-title {
+    white-space: nowrap;
+    padding: 0 calc(var(--base-font-size) * .3);
+    -ms-flex-item-align: center;
+    align-self: center;
+    line-height: var(--base-font-size);
+    margin-bottom: 0;
+}
+
+.line {
+    border-color: var(--heading-color);
+    width: 100%;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    -ms-flex-item-align: center;
+    align-self: center;
+    height: 0;
+    overflow: visible;
+}
+
+.askarray {
     height: auto;
     width: 100%;
     max-width: calc(var(--base-font-size) * 20);
@@ -91,12 +113,12 @@ label[for="other-amt-input"] {
     height: calc(var(--base-font-size) * 2);
 }
 
-#CCDayOfMonth {
+.ccDayOfMonth {
     opacity: 1;
     text-align: center;
 }
 
-#PM_CC_RECURRING_DAY {
+#ccdate {
     text-align: center;
     padding: 4px 6px;
 }
@@ -114,17 +136,14 @@ select {
 .form-group {
     margin-bottom: 10px;
     margin-top: 10px;
-}
-
-.form-row div+div {
-    margin-left: 10px;
-}
-
-[id*='form-field'] {
     position: relative;
 }
 
-[id*='form-field']>label {
+.form-row>div+div {
+    margin-left: 10px;
+}
+
+.form-group>label {
     color: var(--label-color);
     font-family: 'proximanova-semibold', sans-serif;
     font-size: calc(var(--base-font-size) * .7);
@@ -136,13 +155,13 @@ select {
     transition: opacity 150ms ease-in-out;
 }
 
-[id*='form-field']:hover>label,
-[id*='form-field']:focus>label,
-[id*='form-field']:active>label {
+.form-group:hover>label,
+.form-group:active>label,
+.form-group:focus>label {
     opacity: 1;
 }
 
-.form-group div.error {
+.form-group>div.error {
     top: unset;
     width: auto;
     bottom: calc(0% - 11px);
@@ -161,7 +180,10 @@ select {
     max-width: calc(50% - 10px);
 }
 
-.form-control {
+.form-control,
+.select-product,
+.additional-gift-input,
+.total-product-gift {
     color: var(--input-text-color);
     font-size: var(--base-font-size);
     font-family: 'proximanova-semibold', sans-serif;
@@ -187,7 +209,7 @@ input:-ms-input-placeholder,
 input::placeholder {
     color: var(--placeholder-color);
     font-size: var(--base-font-size);
-    font-family: 'proximanova-semibold', Arial, sans-serif;
+    font-family: 'proximanova-semibold', sans-serif;
 }
 
 input,
@@ -210,14 +232,25 @@ select:hover {
 .form-control:focus,
 .form-control:active,
 .form-control:hover {
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px var(--focus-box-shadow);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px var(--focus-box-shadow);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px var(--focus-box-shadow);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px var(--focus-box-shadow);
 }
 
 input[name="other-amt-input"]:hover,
 input[name="other-amt-input"]:active,
 input[name="other-amt-input"]:focus {
     border: 2px solid var(--primary-color);
+}
+
+input:disabled {
+    background: var(--background-color);
+}
+
+.select-product,
+.additional-gift-input,
+.total-product-gift {
+    flex-basis: 50px;
+    margin-right: 20px;
 }
 
 input[type=submit],
@@ -245,4 +278,29 @@ button#submit:hover {
 
 .invalid {
     border-color: var(--error-color) !important;
+}
+
+.shipping-address__info {
+    margin-top: 20px;
+}
+
+.products-display {
+    margin: 20px 0;
+}
+
+.product-card,
+.additional-amount,
+.product-total {
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #fff;
+    background: rgba(255, 255, 255, .5);
+}
+
+.product-card__title {
+    font-size: var(--base-font-size);
+}
+
+.product-card__description {
+    font-size: calc(var(--base-font-size) * .8);
 }

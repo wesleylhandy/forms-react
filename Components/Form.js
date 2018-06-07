@@ -11,41 +11,75 @@ export default class Form extends Component {
                 givingFormat: props.givingFormat,
                 monthlyOption: props.monthlyOption,
                 monthlyAmounts: [...props.monthlyAmounts],
-                singleAmounts: [...props.singleAmounts]
+                singleAmounts: [...props.singleAmounts],
+                funds: [...props.funds]
             },
             productOptions: {
                 products: [...props.products],
                 numProducts: props.numProducts,
-                additionalGift: props.additionalGift
+                additionalGift: props.additionalGift,
+                additionalGiftMessage: props.additionalGiftMessage
             },
             monthlyOption: props.monthlyOption,
             shipping: props.shipping,
             international: props.international,
-            showShipping: false,
             monthlyChecked: props.monthlyOption,
             totalGift: 0,
             cart: {
                 items: []
             },
-            CCSelectedDate: new Date().getDate()
+            fields: {
+                ccdate: new Date().getDate(),
+                honorific: "",
+                firstname: "",
+                lastname: "",
+                address1: "",
+                city: "",
+                state: "",
+                zip: "",
+                country: "",
+                email: "",
+                phone: "",
+                savePersonalInfo: true,
+                shipToYes: false,
+                shipToName: "",
+                shipToAddress1: "",
+                shipToCity: "",
+                shipToZip: "",
+                shipToCountry: ""
+            },
+            errors: {
+                honorific: "",
+                firstname: "",
+                lastname: "",
+                address1: "",
+                city: "",
+                state: "",
+                zip: "",
+                country: "",
+                email: "",
+                phone: "",
+                shipToName: "",
+                shipToAddress1: "",
+                shipToCity: "",
+                shipToZip: "",
+                shipToCountry: ""
+            }          
         }
-        this.renderMonthlyRadio = this.renderMonthlyRadio.bind(this)
+        this.handleInputChange = this.handleInputChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleRadioClick = this.handleRadioClick.bind(this)
-        this.handleShippingClick = this.handleShippingClick.bind(this)
-        this.renderCountry = this.renderCountry.bind(this)
+        this.renderMonthlyRadio = this.renderMonthlyRadio.bind(this)
         this.renderShippingAddress = this.renderShippingAddress.bind(this)
-        this.handleSaveInfo = this.handleSaveInfo.bind(this)
-        this.handleCCDateSelect = this.handleCCDateSelect.bind(this)
         this.calculateTotal = this.calculateTotal.bind(this)
         this.addToCart = this.addToCart.bind(this)
     }
 
     componentDidMount(){
-
+    
     }
 
-    renderMonthlyRadio(monthlyChecked, date) {
+    renderMonthlyRadio(monthlyChecked, ccdate) {
 
         let monthly = monthlyChecked;
         let single = !monthlyChecked;
@@ -54,12 +88,12 @@ export default class Form extends Component {
         function renderCCInfo() {
             const options = []
             for(let i = 2; i <= 28; i++){
-                options.push(<option key={"option" + i} value={i} selected={date == i ? "selected" : false}>{i}</option>)
+                options.push(<option key={"date-option-" + i} value={i}>{i}</option>)
             }
             return (
                 <div className="monthly-giving-day">
-                    <h5 id="CCDayOfMonth">Charge automatically on day&nbsp;
-                        <select id="PM_CC_RECURRING_DAY" name="PM_CC_RECURRING_DAY" onChange={self.handleCCDateSelect}>
+                    <h5 className="ccDayOfMonth">Charge automatically on day&nbsp;
+                        <select id="ccdate" name="ccdate" onChange={self.handleInputChange} value={ccdate}>
                             {options}
                         </select>
                     &nbsp;each month.</h5>
@@ -68,7 +102,7 @@ export default class Form extends Component {
         }
         return (
             <div id="MonthlyGivingInfo">
-                <h3 className="caps">How Often Do You Want to Give This Amount?</h3>
+                <h3 className="caps form-header">How Often Do You Want to Give This Amount?</h3>
 
                     <div className='monthly-radio flex flex-row flex-between'>
                         <div id="monthly-group" className='radio-group flex flex-row flex-axes-center'>
@@ -86,31 +120,21 @@ export default class Form extends Component {
         )
     }
 
-    renderCountry(type) {
-        const id = type == "shipping" ? "shipToCountry" : "country"
+    renderShippingAddress(showShipping) {
         return (
-            <div id={`form-field-${id}`} className="form-group flex-grow">
-                <label htmlFor={id}>Country<span>*</span></label>
-                <select className="form-control " id={id} name={id} required={true}>
-                    <option value="">Select &#9663;</option>
-                    <option value="US">USA</option>
-                </select>
-                <div className="error"></div>
-            </div>
-        )
-    }
-
-    renderShippingAddress() {
-        return (
-            <div id="ShippingAddressContainer">
+            <div className="shipping-address__container">
                 <div className='form-row flex flex-row  flex-axes-center'>
-
                     
-                    <input type='checkbox' id="shipToYes" checked={false} onChange={this.handleShippingClick}/>
+                    <input type='checkbox' 
+                        id="shipToYes" 
+                        name="shipToYes" 
+                        checked={this.state.fields.shipToYes} 
+                        onChange={this.handleInputChange}
+                    />
                     <label htmlFor="shipToYes">&nbsp;My shipping address is different than my billing address.</label>     
 
                 </div>
-                <div id="ShippingAddressInfo" className = {this.state.showShipping ? '' : 'hidden'}>
+                <div id="ShippingAddressInfo" className = {showShipping ? 'shipping-address__info' : 'hidden'}>
                     <div id="form-row">
     
                         <div className='flex flex-row flex-center'>
@@ -119,41 +143,117 @@ export default class Form extends Component {
 
                     </div>
                     <div className="form-row flex flex-row flex-between">
+
                         <div id="form-field-shipToName" className="form-group flex-grow">
+
                             <label htmlFor="shipToName">Name<span>*</span></label>
-                            <input className="form-control " type='text' id="shipToName" name="shipToName" placeholder="First and Last Name" required={true}/>
-                            <div className="error"></div>
+                            <input className="form-control" 
+                                type='text' 
+                                id="shipToName" 
+                                name="shipToName" 
+                                placeholder="First and Last Name" 
+                                required={true}
+                                value={this.state.fields.shipToName}
+                                onChange={this.handleInputChange}
+                            />
+                            <div className="error">{this.state.errors.shipToName}</div>
+
                         </div>
+
                     </div>
+
                     <div className="form-row flex flex-row flex-between">
+
                         <div id="form-field-shipToAddress1" className="form-group flex-grow">
+
                             <label htmlFor="shipToAddress1">Address<span>*</span></label>
-                            <input className="form-control " id="shipToAddress1" type='text' name="shipToAddress1" placeholder="Address*" required={true}/>
-                            <div className="error"></div>
+                            <input className="form-control" 
+                                id="shipToAddress1" 
+                                type='text' 
+                                name="shipToAddress1" 
+                                placeholder="Address*" 
+                                required={true}
+                                value={this.state.fields.shipToAddress1}
+                                onChange={this.handleInputChange}
+                            />
+                            <div className="error">{this.state.errors.shipToAddress1}</div>
+
                         </div>
+
                     </div>
+
                     <div className="form-row flex flex-row flex-between">
+
                         <div id="form-field-shipToCity" className="form-group flex-grow">
+
                             <label htmlFor="shipToCity">City<span>*</span></label>
-                            <input className="form-control " id="shipToCity" type='text' name="shipToCity" placeholder="City*" required={true}/>
-                            <div className="error"></div>
+                            <input className="form-control"
+                                id="shipToCity" 
+                                type='text' 
+                                name="shipToCity" 
+                                placeholder="City*" 
+                                required={true}
+                                value={this.state.fields.shipToCity}
+                                onChange={this.handleInputChange}
+                            />
+                            <div className="error">{this.state.errors.shipToCity}</div>
+
                         </div>
                         <div id="form-field-shipToState" className="form-group flex-grow">
+
                             <label htmlFor="shipToState">State<span>*</span></label>
-                            <select className="form-control " id="shipToState" name="shipToState" required={true}>
-                                <option value="">Select &#9663;</option>
+                            <select className="form-control" 
+                                id="shipToState" 
+                                name="shipToState" 
+                                required={true} 
+                                value={this.state.fields.shipToState} 
+                                onChange={this.handleInputChange}
+                            >
+                                <option value="">State* &#9663;</option>
                                 <option value="VA">VA</option>
                             </select>
-                            <div className="error"></div>
+                            <div className="error">{this.state.errors.shipToState}</div>
+
                         </div>
                     </div>
+
                     <div className="form-row flex flex-row flex-between">
+
                         <div id="form-field-shipToZip" className="form-group flex-grow">
+
                             <label htmlFor="shipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
-                            <input className="form-control " id="shipToZip" type='text' name="shipToZip" placeholder="Zip*" required={true}/>
-                            <div className="error"></div>
+                            <input className="form-control" 
+                                id="shipToZip" 
+                                type='text' 
+                                name="shipToZip" 
+                                placeholder="Zip*" 
+                                required={true}
+                                value={this.state.fields.shipToZip}
+                                onChange={this.handleInputChange}
+                            />
+                            <div className="error">{this.state.errors.shipToZip}</div>
+
                         </div>
-                        { this.state.international ? this.renderCountry("shipping") : null }
+
+                        { this.state.international ? (
+                            <div id="form-field-shipToCountry" className="form-group flex-grow">
+                            
+                                <label htmlFor="shipToCountry">Country<span>*</span></label>
+                                <select className="form-control" 
+                                    id="shipToCountry" 
+                                    name="shipToCountry" 
+                                    required={true}
+                                    value={this.state.fields.shipToCountry}
+                                    onChange={this.handleInputChange}
+                                >
+                                    <option value="">Country* &#9663;</option>
+                                    <option value="US">USA</option>
+                                </select>
+                                <div className="error">{this.state.errors.shipToCountry}</div>
+
+                            </div> 
+                        ): null }
+
                     </div>
                 </div>
             </div>
@@ -170,7 +270,7 @@ export default class Form extends Component {
         if (found > -1) {
             items.splice(found, 1)
         }
-        console.log({items})
+        // console.log({items})
         if(e.target.id == "singlegift") {
              this.setState({monthlyChecked: false, cart: {items}})
         } else {
@@ -178,17 +278,19 @@ export default class Form extends Component {
         }
     }
 
-    handleCCDateSelect(e) {
-        console.log({val: +e.target.value})
-        this.setState({CCSelectedDate: +e.target.value})
+    handleInputChange(e) {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        
+        const fields = this.state.fields;
+        fields[name] = value;
+
+        this.setState({ fields });
     }
 
     handleShippingClick(e) {
         this.setState({showShipping: true})
-    }
-
-    handleSaveInfo(e) {
-
     }
 
     handleSubmit(e) {
@@ -214,84 +316,211 @@ export default class Form extends Component {
 
     render() {
         return (
-            <form autoComplete="off" onSubmit={this.handleSubmit}>
-                <GivingArray arrayOptions={this.state.arrayOptions} monthlyChecked={this.state.monthlyChecked} addToCart={this.addToCart}/>
-                { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.CCSelectedDate) : null }
-                <ProductDisplay productOptions={this.state.productOptions} addToCart={this.addToCart}/>
+            <form id="react-form" autoComplete="off" onSubmit={this.handleSubmit}>
+                <GivingArray 
+                    arrayOptions={this.state.arrayOptions} 
+                    monthlyChecked={this.state.monthlyChecked} 
+                    addToCart={this.addToCart}
+                />
+
+                { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.ccdate) : null }
+
+                <ProductDisplay 
+                    productOptions={this.state.productOptions} 
+                    addToCart={this.addToCart}
+                />
+
                 <div id="NameAddressInfo">
-                    <h3 className="caps">Please Enter Your Billing Information</h3>
+
+                    <h3 className="caps form-header">Please Enter Your Billing Information</h3>
+
                     <div className="form-row flex flex-row flex-between">
                         <div id="form-field-title" className="form-group flex-grow">
+
                             <label htmlFor="honorific">Title<span>*</span></label>
-                            <select className="form-control " id="honorific" name='honorific' required={true} placeholder="Title*">
-                                <option value="">Select &#9663;</option>
+                            <select className="form-control" 
+                                id="honorific" 
+                                name='honorific' 
+                                required={true} 
+                                placeholder="Title*"
+                                value={this.state.fields.honorific}
+                                onChange={this.handleInputChange}
+                            >
+                                <option value="">Title* &#9663;</option>
                                 <option value="Mr">Mr</option>
                                 <option value="Ms">Ms</option>
                                 <option value="Mrs">Mrs</option>
                                 <option value="Miss">Miss</option>
                             </select>
-                            <div className="error"></div>
+                            <div className="error">{this.state.errors.honorific}</div>
+
                         </div>
                         <div id="form-field-firstname" className="form-group flex-grow">
+
                             <label htmlFor="firstname">First Name<span>*</span></label>
-                            <input className="form-control " type='text' id="firstname" name="firstname" placeholder="First Name*" required={true}/>
-                            <div className="error"></div>
+                            <input className="form-control" 
+                                type='text' 
+                                id="firstname" 
+                                name="firstname" 
+                                placeholder="First Name*" 
+                                required={true}
+                                value={this.state.fields.firstname}
+                                onChange={this.handleInputChange}
+                            />
+                            <div className="error">{this.state.errors.firstname}</div>
+
                         </div>
                         <div id="form-field-lastname" className="form-group flex-grow">
-                        <label htmlFor="lastname">Last Name<span>*</span></label>
-                            <input className="form-control " id="lastname" type='text' name="lastname" placeholder="Last Name*" required={true}/>
-                            <div className="error"></div>
+
+                            <label htmlFor="lastname">Last Name<span>*</span></label>
+                            <input className="form-control" 
+                                id="lastname" 
+                                type='text' 
+                                name="lastname" 
+                                placeholder="Last Name*" 
+                                required={true}
+                                value={this.state.fields.lastname}
+                                onChange={this.handleInputChange}
+                            />
+                            <div className="error">{this.state.errors.lastname}</div>
+
                         </div>
-                        
                     </div>
+
                     <div className="form-row flex flex-row flex-between">
+
                         <div id="form-field-address1" className="form-group flex-grow">
+
                             <label htmlFor="address1">Address<span>*</span></label>
-                            <input className="form-control " id="address1" type='text' name="address1" placeholder="Address*" required={true}/>
-                            <div className="error"></div>
+                            <input className="form-control" 
+                                id="address1" 
+                                type='text' 
+                                name="address1" 
+                                placeholder="Address*" 
+                                required={true}
+                                value={this.state.fields.address1}
+                                onChange={this.handleInputChange}
+                            />
+                            <div className="error">{this.state.errors.address1}</div>
+
                         </div>
                     </div>
+
                     <div className="form-row flex flex-row flex-between">
+
                         <div id="form-field-city" className="form-group flex-grow">
+
                             <label htmlFor="city">City<span>*</span></label>
-                            <input className="form-control " id="city" type='text' name="city" placeholder="City*" required={true}/>
-                            <div className="error"></div>
+                            <input className="form-control" 
+                                id="city" 
+                                type='text' 
+                                name="city" 
+                                placeholder="City*" 
+                                required={true}
+                                value={this.state.fields.city}
+                                onChange={this.handleInputChange}
+                            />
+                            <div className="error">{this.state.errors.city}</div>
+
                         </div>
                         <div id="form-field-state" className="form-group flex-grow">
+
                             <label htmlFor="state">State<span>*</span></label>
-                            <select className="form-control " id="state" name="state" required={true}>
-                                <option value="">Select &#9663;</option>
+                            <select className="form-control" 
+                                id="state" 
+                                name="state" 
+                                required={true}
+                                value={this.state.fields.state}
+                                onChange={this.handleInputChange}
+                            >
+                                <option value="">State* &#9663;</option>
                                 <option value="VA">VA</option>
                             </select>
-                            <div className="error"></div>
+                            <div className="error">{this.state.errors.state}</div>
+
                         </div>
                     </div>
+
                     <div className="form-row flex flex-row flex-between">
+
                         <div id="form-field-zip" className="form-group flex-grow">
+
                             <label htmlFor="zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
-                            <input className="form-control " id="zip" type='text' name="zip" placeholder="Zip*" required={true}/>
-                            <div className="error"></div>
+                            <input className="form-control" 
+                                id="zip" 
+                                type='text' 
+                                name="zip" 
+                                placeholder="Zip*" 
+                                required={true}
+                                value={this.state.fields.zip}
+                                onChange={this.handleInputChange}
+                            />
+                            <div className="error">{this.state.errors.zip}</div>
+
                         </div>
-                        { this.state.international ? this.renderCountry("") : null }
+
+                        { this.state.international ? (
+                            <div id="form-field-country" className="form-group flex-grow">
+                            
+                                <label htmlFor="country">Country<span>*</span></label>
+                                <select className="form-control" 
+                                    id="country" 
+                                    name="country" 
+                                    required={true}
+                                    value={this.state.fields.country}
+                                    onChange={this.handleInputChange}
+                                >
+                                    <option value="">Country* &#9663;</option>
+                                    <option value="US">USA</option>
+                                </select>
+                                <div className="error">{this.state.errors.country}</div>
+
+                            </div> 
+                        ): null }
+
                     </div>
+
                     <div className="form-row flex flex-row flex-between">
+
                         <div id="form-field-email" className="form-group flex-grow">
+
                             <label htmlFor="email">Email Address<span>*</span></label>
-                            <input id="email" type='email' name="email" placeholder="Email Address*" required={true} className="form-control "/>
-                            <div className="error"></div>
+                            <input className="form-control" 
+                                id="email" 
+                                type='email' 
+                                name="email" 
+                                placeholder="Email Address*" 
+                                required={true}
+                                value={this.state.fields.email}
+                                onChange={this.handleInputChange} 
+                            />
+                            <div className="error">{this.state.errors.email}</div>
+
                         </div>
                         <div id="form-field-phone" className="form-group flex-grow">
                             <label htmlFor="phonenumber">Phone Number</label>
-                            <input id="phonenumber" className="form-control " type='phonenumber' name="phonenumber" placeholder="###-###-####"/>
-                            <div className="error"></div>
+                            <input className="form-control"
+                                id="phonenumber"  
+                                type='phonenumber' 
+                                name="phonenumber" 
+                                placeholder="###-###-####"
+                                value={this.state.fields.phone}
+                                onChange={this.handleInputChange} 
+                            />
+                            <div className="error">{this.state.errors.phone}</div>
                         </div>
                     </div>
-                    { this.state.shipping ? this.renderShippingAddress() : null }                    
+                    { this.state.shipping ? this.renderShippingAddress(this.state.fields.shipToYes) : null }                    
                 </div>
                 <div className='form-row flex flex-row  flex-axes-center'>
 
                     
-                    <input type='checkbox' id="savePersonalInfo" checked={true} onChange={this.handleSaveInfo}/>
+                    <input type='checkbox' 
+                        id="savePersonalInfo" 
+                        name="savePersonalInfo"
+                        checked={this.state.fields.saveInfo} 
+                        onChange={this.handleInputChange}
+                    />
                     <label id="RememberMe" htmlFor="savePersonalInfo">&nbsp;Remember my name and address next time</label>     
 
                 </div>
