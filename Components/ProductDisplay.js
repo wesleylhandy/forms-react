@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import path from 'path'
 
 export default class ProductDisplay extends Component {
     constructor(props) {
@@ -77,7 +76,7 @@ export default class ProductDisplay extends Component {
                                     { renderOptions(i) }
                                 </select>
                                 <div className="product-card__body flex-grow">
-                                    <div className="product-card__title">{product.productTitle}</div>
+                                    <div className="product-card__title">{product.productTitle} - ${product.productAmt}</div>
                                     <div className="product-card__description" dangerouslySetInnerHTML={this.createMarkup(product.productMessage)}></div>
                                 </div>
                             </div>

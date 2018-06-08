@@ -5,6 +5,7 @@
     "international": true,
     "numProducts": 1,
     "products": [{
+        "productAmt": 15,
         "description": "",
         "solicitation": "",
         "productCode": "",
