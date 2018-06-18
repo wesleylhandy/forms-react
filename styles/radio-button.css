@@ -1,20 +1,27 @@
 /******** CUSTOM RADIO BUTTIONS ********/
 
 .monthly-radio {
-    margin: 20px auto;
+    margin: var(--base-font-size) auto;
     max-width: calc(var(--base-font-size) * 15);
 }
 
 .radio-group {
     padding: 0 5px;
-    height: 40px;
-    line-height: 40px;
+    height: calc(var(--base-font-size) * 2);
+    line-height: calc(var(--base-font-size) * 2);
 }
 
 input[type="radio"] {
     position: absolute;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+
+input[type="radio"]+label {
+    font-family: var(--label-font-family);
+    font-size: calc(var(--base-font-size) * .7);
+    font-style: var(--label-font-style);
+    font-weight: var(--label-font-weight);
 }
 
 input[type="radio"]+label:before {

@@ -1,13 +1,35 @@
 [{
     "--background-color": "#f5f5f5"
 }, {
-    "--base-font-size": "19px"
+    "--base-font-color": "#333"
+}, {
+    "--base-font-family": "proximanova-regular, sans-serif"
+}, {
+    "--base-font-size": "30px"
+}, {
+    "--base-font-style": "normal"
+}, {
+    "--base-font-weight": "400"
+}, {
+    "--btn-font-family": "proximanova-semibold, sans-serif"
+}, {
+    "--btn-font-style": "normal"
+}, {
+    "--btn-font-weight": "400"
 }, {
     "--btn-text-color": "#fff"
 }, {
     "--error-color": "crimson"
 }, {
+    "--error-font-family": "proximanova-bold, sans-serif"
+}, {
+    "--error-font-style": "normal"
+}, {
+    "--error-font-weight": "400"
+}, {
     "--focus-box-shadow": "rgba(102, 175, 233, .6)"
+}, {
+    "--form-border-radius": "20px"
 }, {
     "--form-text-color": "#091d44"
 }, {
@@ -23,9 +45,21 @@
 }, {
     "--input-border-radius": "4px"
 }, {
+    "--input-font-family": "proximanova-semibold, sans-serif"
+}, {
+    "--input-font-style": "normal"
+}, {
+    "--input-font-weight": "400"
+}, {
     "--input-text-color": "#091d44"
 }, {
     "--label-color": "#105fa5"
+}, {
+    "--label-font-family": "proximanova-semibold, sans-serif"
+}, {
+    "--label-font-style": "normal"
+}, {
+    "--label-font-weight": "400"
 }, {
     "--placeholder-color": "#7F8C9A"
 }, {

@@ -1,10 +1,10 @@
 .form-wrapper {
     background: var(--background-color);
-    border-radius: 20px;
+    border-radius: var(--form-border-radius);
     color: var(--form-text-color);
-    max-width: 680px;
+    max-width: calc(var(--base-font-size) * 34);
     margin: 0 auto;
-    padding: 10px;
+    padding: calc(var(--base-font-size) * .5);
 }
 
 h3.form-header,
@@ -41,7 +41,7 @@ h3.form-header,
     height: auto;
     width: 100%;
     max-width: calc(var(--base-font-size) * 20);
-    margin: 20px auto;
+    margin: var(--base-font-size) auto;
 }
 
 .askbutton {
@@ -58,7 +58,9 @@ h3.form-header,
     -webkit-flex-basis: calc(var(--base-font-size) * 4.55);
     -ms-flex-preferred-size: calc(var(--base-font-size) * 4.55);
     flex-basis: calc(var(--base-font-size) * 4.55);
-    font-family: 'proximanova-semibold', sans-serif;
+    font-family: var(--btn-font-family);
+    font-style: var(--btn-font-style);
+    font-weight: var(--btn-font-weight);
     font-size: calc(var(--base-font-size) * 1.4);
     height: calc(var(--base-font-size) * 2.5);
     text-align: center;
@@ -92,13 +94,17 @@ input[name="other-amt-input"] {
     color: var(--primary-color);
     font-size: calc(var(--base-font-size) * 1.4);
     text-align: center;
-    font-family: proximanova-semibold, sans-serif;
+    font-family: var(--input-font-family);
+    font-style: var(--input-font-style);
+    font-weight: var(--input-font-weight);
     width: calc(var(--base-font-size) * 4.55);
 }
 
 label[for="other-amt-input"] {
-    font-family: 'proximanova-semibold', sans-serif;
+    font-family: var(--label-font-family);
     font-size: calc(var(--base-font-size) * .7);
+    font-style: var(--label-font-style);
+    font-weight: var(--label-font-weight);
     color: var(--primary-color);
     bottom: calc(var(--base-font-size) * -.4);
     position: absolute;
@@ -119,12 +125,16 @@ label[for="other-amt-input"] {
 }
 
 #ccdate {
+    font-size: calc(var(--base-font-size) * .7);
+    font-family: var(--input-font-family);
+    font-style: var(--input-font-style);
+    font-weight: var(--input-font-weight);
     text-align: center;
-    padding: 4px 6px;
+    padding: calc(var(--base-font-size) * .2) calc(var(--base-font-size) * .3);
 }
 
 #NameAddressInfo {
-    margin: 20px auto;
+    margin: var(--base-font-size) auto;
 }
 
 .form-group,
@@ -134,19 +144,21 @@ select {
 }
 
 .form-group {
-    margin-bottom: 10px;
-    margin-top: 10px;
+    margin-bottom: calc(var(--base-font-size) * .5);
+    margin-top: calc(var(--base-font-size) * .5);
     position: relative;
 }
 
 .form-row>div+div {
-    margin-left: 10px;
+    margin-left: calc(var(--base-font-size) * .5);
 }
 
 .form-group>label {
     color: var(--label-color);
-    font-family: 'proximanova-semibold', sans-serif;
+    font-family: var(--label-font-family);
     font-size: calc(var(--base-font-size) * .7);
+    font-style: var(--label-font-style);
+    font-weight: var(--label-font-weight);
     position: absolute;
     opacity: 0;
     bottom: calc(100% - 5px);
@@ -165,7 +177,9 @@ select {
     top: unset;
     width: auto;
     bottom: calc(0% - 11px);
-    font-family: proximanova-bold, sans-serif;
+    font-family: var(--error-font-family);
+    font-style: var(--error-font-style);
+    font-weight: var(--error-font-weight);
     font-size: calc(var(--base-font-size) * .5);
     opacity: 1;
     overflow: hidden;
@@ -186,7 +200,9 @@ select {
 .total-product-gift {
     color: var(--input-text-color);
     font-size: var(--base-font-size);
-    font-family: 'proximanova-semibold', sans-serif;
+    font-family: var(--input-font-family);
+    font-style: var(--input-font-style);
+    font-weight: var(--input-font-weight);
     height: calc(var(--base-font-size) * 2);
     display: block;
     width: 100%;
@@ -209,7 +225,9 @@ input:-ms-input-placeholder,
 input::placeholder {
     color: var(--placeholder-color);
     font-size: var(--base-font-size);
-    font-family: 'proximanova-semibold', sans-serif;
+    font-family: var(--input-font-family);
+    font-style: var(--input-font-style);
+    font-weight: var(--input-font-weight);
 }
 
 input,
@@ -249,8 +267,8 @@ input:disabled {
 .select-product,
 .additional-gift-input,
 .total-product-gift {
-    flex-basis: 50px;
-    margin-right: 20px;
+    flex-basis: calc(var(--base-font-size) * 2.5);
+    margin-right: var(--base-font-size);
 }
 
 input[type=submit],
@@ -260,10 +278,12 @@ button#submit {
     border: 2px solid transparent;
     border-radius: var(--input-border-radius);
     display: block;
-    font-family: 'proximanova-semibold', Arial, sans-serif;
+    font-family: var(--input-font-family);
+    font-style: var(--input-font-style);
+    font-weight: var(--input-font-weight);
     font-size: calc(var(--base-font-size) * 1.1);
     padding: 0 20px;
-    margin: 20px auto;
+    margin: var(--base-font-size) auto;
     height: calc(var(--base-font-size) * 2.3);
     -webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out, border-color 200ms ease-in-out;
     transition: background-color 200ms ease-in-out, color 200ms ease-in-out, border-color 200ms ease-in-out;
@@ -281,18 +301,18 @@ button#submit:hover {
 }
 
 .shipping-address__info {
-    margin-top: 20px;
+    margin-top: var(--base-font-size);
 }
 
 .products-display {
-    margin: 20px 0;
+    margin: var(--base-font-size) 0;
 }
 
 .product-card,
 .additional-amount,
 .product-total {
     margin: 0 auto;
-    padding: 10px;
+    padding: calc(var(--base-font-size) * .5);
     border: 1px solid #fff;
     background: rgba(255, 255, 255, .5);
 }

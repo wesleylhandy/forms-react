@@ -1,9 +1,9 @@
 {
     "givingFormat": "buttons",
     "monthlyOption": true,
-    "shipping": true,
-    "international": true,
-    "numProducts": 1,
+    "shipping": false,
+    "international": false,
+    "numProducts": 0,
     "products": [{
         "productAmt": 15,
         "description": "",
@@ -17,8 +17,13 @@
         "fundTitle": "",
         "solicitation": ""
     }],
+    "subscriptions": [{
+        "code": 0,
+        "type": "" //subscribe or unsubscribe
+    }],
+    "defaultActivitySolicitation": "",
     "additionalGift": true,
     "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
-    "monthlyAmounts": [7, 15, 30],
+    "monthlyAmounts": [3, 7, 15, 30],
     "singleAmounts": [25, 50, 100, 250, 300]
 }
