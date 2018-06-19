@@ -8,6 +8,4 @@ import './index.css';
 
 import App from './Components/App'
 
-ReactDOM.render( <App /> ,
-    document.getElementById('form-root')
-);
+ReactDOM.render( <App/> , document.getElementById('form-root'));

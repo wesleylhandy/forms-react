@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 
+import flex from './styles/flex.css'
+import form from './styles/form.css'
+
 export default class GivingArray extends Component {
     constructor(props) {
         super(props)
@@ -32,8 +35,8 @@ export default class GivingArray extends Component {
     renderArray(amounts, selectedIndex) {
 
         return amounts.map((amount, i)=>(
-            <div key={`array${i}`} className={`askbutton flex flex-center flex-axes-center ${selectedIndex == i ? " selected" : ""}`} onClick={()=>this.addToCart(amount, i)}>
-                <div className="askbutton__amt flex flex-center flex-axes-center flex-no-grow">{amount}</div>
+            <div key={`array${i}`} styleName={`form.askbutton flex.flex flex.flex-center flex.flex-axes-center ${selectedIndex == i ? "form.selected" : ""}`} onClick={()=>this.addToCart(amount, i)}>
+                <div styleName="form.askbutton__amt flex.flex flex.flex-center flex.flex-axes-center flex.flex-no-grow">{amount}</div>
             </div>
         ))
 
@@ -69,12 +72,12 @@ export default class GivingArray extends Component {
     
     render() {
         return (
-            <div id="AskArray" className="askarray flex flex-row flex-center flex-wrap">
+            <div id="AskArray" styleName="form.askarray flex.flex flex.flex-row flex.flex-center flex.flex-wrap">
                 { this.state.monthlyOption && this.state.monthlyChecked ? this.renderArray(this.state.monthlyAmounts, this.state.selectedIndex) : this.renderArray(this.state.singleAmounts, this.state.selectedIndex) }
-                <div id="OtherAmout" className={`ask-form-group flex flex-center flex-axes-center${this.state.selectedIndex == 99 ? " selected": ""}`}>
-                    <label htmlFor="other-amt-input">Other Amount</label>
-                    <input name="other-amt-input" onChange={this.handleOtherAmt} value={this.state.otherAmount == 0 ? '' : this.state.otherAmount}/>
-                    <div className="error">{this.state.otherAmountError}</div>
+                <div id="OtherAmout" styleName={`form.ask-formGroup flex.flex flex.flex-center flex.flex-axes-center${this.state.selectedIndex == 99 ? " form.selected": ""}`}>
+                    <label styleName="form.otherInputLabel" htmlFor="other-amt-input">Other Amount</label>
+                    <input styleName="form.otherInput" name="other-amt-input" onChange={this.handleOtherAmt} value={this.state.otherAmount == 0 ? '' : this.state.otherAmount}/>
+                    <div styleName="form.error">{this.state.otherAmountError}</div>
                 </div> 
             </div>
         )

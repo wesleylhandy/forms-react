@@ -1,9 +1,14 @@
 import React, {Component} from 'react'
 
+
+import main from './styles/main.css'
+import flex from './styles/flex.css'
+import form from './styles/form.css'
+
 import GivingArray from './GivingArray'
 import ProductDisplay from './ProductDisplay'
 
-export default class Form extends Component {
+export default class NameAddressForm extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -91,9 +96,9 @@ export default class Form extends Component {
                 options.push(<option key={"date-option-" + i} value={i}>{i}</option>)
             }
             return (
-                <div className="monthly-giving-day">
-                    <h5 className="ccDayOfMonth">Charge automatically on day&nbsp;
-                        <select id="ccdate" name="ccdate" onChange={self.handleInputChange} value={ccdate}>
+                <div styleName="form.monthlyGivingDay">
+                    <h5 styleName="form.ccDayOfMonth">Charge automatically on day&nbsp;
+                        <select styleName="form.ccdate" name="ccdate" onChange={self.handleInputChange} value={ccdate}>
                             {options}
                         </select>
                     &nbsp;each month.</h5>
@@ -102,15 +107,15 @@ export default class Form extends Component {
         }
         return (
             <div id="MonthlyGivingInfo">
-                <h3 className="caps form-header">How Often Do You Want to Give This Amount?</h3>
+                <h3 styleName="main.caps form.form-header">How Often Do You Want to Give This Amount?</h3>
 
-                    <div className='monthly-radio flex flex-row flex-between'>
-                        <div id="monthly-group" className='radio-group flex flex-row flex-axes-center'>
-                            <input name="monthly" id="monthlygift" type="radio" checked={monthly} onChange={this.handleRadioClick}/>
+                    <div styleName="flex.flex flex.flex-row flex.flex-between form.monthlyRadio">
+                        <div id="monthly-group" styleName="flex.flex flex.flex-row flex.flex-axes-center form.radioGroup">
+                            <input styleName="form.radioInput" name="monthly" id="monthlygift" type="radio" checked={monthly} onChange={this.handleRadioClick}/>
                             <label htmlFor="monthlygift">Monthly Gift</label>
                         </div>
-                        <div id="single-group" className='radio-group flex flex-row flex-axes-center'>
-                            <input name="monthly" id="singlegift" type="radio" onChange={this.handleRadioClick} checked={single}/>
+                        <div id="single-group"styleName="flex.flex flex.flex-row flex.flex-axes-center form.radioGroup">
+                            <input styleName="form.radioInput" name="monthly" id="singlegift" type="radio" onChange={this.handleRadioClick} checked={single}/>
                             <label htmlFor="singlegift">Single Gift</label>
                         </div>
                     </div>
@@ -122,10 +127,10 @@ export default class Form extends Component {
 
     renderShippingAddress(showShipping) {
         return (
-            <div className="shipping-address__container">
-                <div className='form-row flex flex-row  flex-axes-center'>
+            <div styleName="form.shipping-address__container">
+                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
                     
-                    <input type='checkbox' 
+                    <input type='checkbox' styleName="form.checkboxInput"
                         id="shipToYes" 
                         name="shipToYes" 
                         checked={this.state.fields.shipToYes} 
@@ -134,20 +139,20 @@ export default class Form extends Component {
                     <label htmlFor="shipToYes">&nbsp;My shipping address is different than my billing address.</label>     
 
                 </div>
-                <div id="ShippingAddressInfo" className = {showShipping ? 'shipping-address__info' : 'hidden'}>
-                    <div id="form-row">
+                <div id="ShippingAddressInfo" styleName = {showShipping ? 'form.shipping-address__info' : 'main.hidden'}>
+                    <div styleName="form.formRow">
     
-                        <div className='flex flex-row flex-center'>
-                            <hr className='line'/><div className='divider-title caps'>Shipping Address</div><hr className='line'/>
+                        <div styleName='flex.flex flex.flex-row flex.flex-center'>
+                            <hr styleName='form.line'/><div styleName='form.divider-title main.caps'>Shipping Address</div><hr styleName='form.line'/>
                         </div>
 
                     </div>
-                    <div className="form-row flex flex-row flex-between">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-shipToName" className="form-group flex-grow">
+                        <div id="form-field-shipToName" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="shipToName">Name<span>*</span></label>
-                            <input className="form-control" 
+                            <input styleName="form.formControl" 
                                 type='text' 
                                 id="shipToName" 
                                 name="shipToName" 
@@ -156,18 +161,18 @@ export default class Form extends Component {
                                 value={this.state.fields.shipToName}
                                 onChange={this.handleInputChange}
                             />
-                            <div className="error">{this.state.errors.shipToName}</div>
+                            <div styleName="form.error">{this.state.errors.shipToName}</div>
 
                         </div>
 
                     </div>
 
-                    <div className="form-row flex flex-row flex-between">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-shipToAddress1" className="form-group flex-grow">
+                        <div id="form-field-shipToAddress1" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="shipToAddress1">Address<span>*</span></label>
-                            <input className="form-control" 
+                            <input styleName="form.formControl" 
                                 id="shipToAddress1" 
                                 type='text' 
                                 name="shipToAddress1" 
@@ -175,19 +180,19 @@ export default class Form extends Component {
                                 required={true}
                                 value={this.state.fields.shipToAddress1}
                                 onChange={this.handleInputChange}
-                            />
-                            <div className="error">{this.state.errors.shipToAddress1}</div>
+                               />
+                            <div styleName="form.error">{this.state.errors.shipToAddress1}</div>
 
                         </div>
 
                     </div>
 
-                    <div className="form-row flex flex-row flex-between">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-shipToCity" className="form-group flex-grow">
+                        <div id="form-field-shipToCity" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="shipToCity">City<span>*</span></label>
-                            <input className="form-control"
+                            <input styleName="form.formControl"
                                 id="shipToCity" 
                                 type='text' 
                                 name="shipToCity" 
@@ -196,13 +201,13 @@ export default class Form extends Component {
                                 value={this.state.fields.shipToCity}
                                 onChange={this.handleInputChange}
                             />
-                            <div className="error">{this.state.errors.shipToCity}</div>
+                            <div styleName="form.error">{this.state.errors.shipToCity}</div>
 
                         </div>
-                        <div id="form-field-shipToState" className="form-group flex-grow">
+                        <div id="form-field-shipToState" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="shipToState">State<span>*</span></label>
-                            <select className="form-control" 
+                            <select styleName="form.formControl" 
                                 id="shipToState" 
                                 name="shipToState" 
                                 required={true} 
@@ -212,17 +217,17 @@ export default class Form extends Component {
                                 <option value="">State* &#9663;</option>
                                 <option value="VA">VA</option>
                             </select>
-                            <div className="error">{this.state.errors.shipToState}</div>
+                            <div styleName="form.error">{this.state.errors.shipToState}</div>
 
                         </div>
                     </div>
 
-                    <div className="form-row flex flex-row flex-between">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-shipToZip" className="form-group flex-grow">
+                        <div id="form-field-shipToZip" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="shipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
-                            <input className="form-control" 
+                            <input styleName="form.formControl" 
                                 id="shipToZip" 
                                 type='text' 
                                 name="shipToZip" 
@@ -231,15 +236,15 @@ export default class Form extends Component {
                                 value={this.state.fields.shipToZip}
                                 onChange={this.handleInputChange}
                             />
-                            <div className="error">{this.state.errors.shipToZip}</div>
+                            <div styleName="form.error">{this.state.errors.shipToZip}</div>
 
                         </div>
 
                         { this.state.international ? (
-                            <div id="form-field-shipToCountry" className="form-group flex-grow">
+                            <div id="form-field-shipToCountry" styleName="form.formGroup flex.flex-grow">
                             
                                 <label htmlFor="shipToCountry">Country<span>*</span></label>
-                                <select className="form-control" 
+                                <select styleName="form.formControl" 
                                     id="shipToCountry" 
                                     name="shipToCountry" 
                                     required={true}
@@ -249,7 +254,7 @@ export default class Form extends Component {
                                     <option value="">Country* &#9663;</option>
                                     <option value="US">USA</option>
                                 </select>
-                                <div className="error">{this.state.errors.shipToCountry}</div>
+                                <div styleName="form.error">{this.state.errors.shipToCountry}</div>
 
                             </div> 
                         ): null }
@@ -330,15 +335,15 @@ export default class Form extends Component {
                     addToCart={this.addToCart}
                 />
 
-                <div id="NameAddressInfo">
+                <div styleName="form.nameAddressInfo">
 
-                    <h3 className="caps form-header">Please Enter Your Billing Information</h3>
+                    <h3 styleName="main.caps form.form-header">Please Enter Your Billing Information</h3>
 
-                    <div className="form-row flex flex-row flex-between">
-                        <div id="form-field-title" className="form-group flex-grow">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                        <div id="form-field-title" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="honorific">Title<span>*</span></label>
-                            <select className="form-control" 
+                            <select styleName="form.formControl" 
                                 id="honorific" 
                                 name='honorific' 
                                 required={true} 
@@ -352,13 +357,13 @@ export default class Form extends Component {
                                 <option value="Mrs">Mrs</option>
                                 <option value="Miss">Miss</option>
                             </select>
-                            <div className="error">{this.state.errors.honorific}</div>
+                            <div styleName="form.error">{this.state.errors.honorific}</div>
 
                         </div>
-                        <div id="form-field-firstname" className="form-group flex-grow">
+                        <div id="form-field-firstname" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="firstname">First Name<span>*</span></label>
-                            <input className="form-control" 
+                            <input styleName="form.formControl" 
                                 type='text' 
                                 id="firstname" 
                                 name="firstname" 
@@ -367,13 +372,13 @@ export default class Form extends Component {
                                 value={this.state.fields.firstname}
                                 onChange={this.handleInputChange}
                             />
-                            <div className="error">{this.state.errors.firstname}</div>
+                            <div styleName="form.error">{this.state.errors.firstname}</div>
 
                         </div>
-                        <div id="form-field-lastname" className="form-group flex-grow">
+                        <div id="form-field-lastname" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="lastname">Last Name<span>*</span></label>
-                            <input className="form-control" 
+                            <input styleName="form.formControl" 
                                 id="lastname" 
                                 type='text' 
                                 name="lastname" 
@@ -382,17 +387,17 @@ export default class Form extends Component {
                                 value={this.state.fields.lastname}
                                 onChange={this.handleInputChange}
                             />
-                            <div className="error">{this.state.errors.lastname}</div>
+                            <div styleName="form.error">{this.state.errors.lastname}</div>
 
                         </div>
                     </div>
 
-                    <div className="form-row flex flex-row flex-between">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-address1" className="form-group flex-grow">
+                        <div id="form-field-address1" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="address1">Address<span>*</span></label>
-                            <input className="form-control" 
+                            <input styleName="form.formControl" 
                                 id="address1" 
                                 type='text' 
                                 name="address1" 
@@ -401,17 +406,17 @@ export default class Form extends Component {
                                 value={this.state.fields.address1}
                                 onChange={this.handleInputChange}
                             />
-                            <div className="error">{this.state.errors.address1}</div>
+                            <div styleName="form.error">{this.state.errors.address1}</div>
 
                         </div>
                     </div>
 
-                    <div className="form-row flex flex-row flex-between">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-city" className="form-group flex-grow">
+                        <div id="form-field-city" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="city">City<span>*</span></label>
-                            <input className="form-control" 
+                            <input styleName="form.formControl" 
                                 id="city" 
                                 type='text' 
                                 name="city" 
@@ -420,13 +425,13 @@ export default class Form extends Component {
                                 value={this.state.fields.city}
                                 onChange={this.handleInputChange}
                             />
-                            <div className="error">{this.state.errors.city}</div>
+                            <div styleName="form.error">{this.state.errors.city}</div>
 
                         </div>
-                        <div id="form-field-state" className="form-group flex-grow">
+                        <div id="form-field-state" styleName="form.formGroupState flex.flex-grow">
 
                             <label htmlFor="state">State<span>*</span></label>
-                            <select className="form-control" 
+                            <select styleName="form.formControl" 
                                 id="state" 
                                 name="state" 
                                 required={true}
@@ -436,17 +441,17 @@ export default class Form extends Component {
                                 <option value="">State* &#9663;</option>
                                 <option value="VA">VA</option>
                             </select>
-                            <div className="error">{this.state.errors.state}</div>
+                            <div styleName="form.error">{this.state.errors.state}</div>
 
                         </div>
                     </div>
 
-                    <div className="form-row flex flex-row flex-between">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-zip" className="form-group flex-grow">
+                        <div id="form-field-zip" styleName="form.formGroup flex.flex-grow">
 
                             <label htmlFor="zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
-                            <input className="form-control" 
+                            <input styleName="form.formControl" 
                                 id="zip" 
                                 type='text' 
                                 name="zip" 
@@ -455,15 +460,15 @@ export default class Form extends Component {
                                 value={this.state.fields.zip}
                                 onChange={this.handleInputChange}
                             />
-                            <div className="error">{this.state.errors.zip}</div>
+                            <div styleName="form.error">{this.state.errors.zip}</div>
 
                         </div>
 
                         { this.state.international ? (
-                            <div id="form-field-country" className="form-group flex-grow">
+                            <div id="form-field-country" styleName="form.formGroupCountry flex.flex-grow">
                             
                                 <label htmlFor="country">Country<span>*</span></label>
-                                <select className="form-control" 
+                                <select styleName="form.formControl" 
                                     id="country" 
                                     name="country" 
                                     required={true}
@@ -473,19 +478,19 @@ export default class Form extends Component {
                                     <option value="">Country* &#9663;</option>
                                     <option value="US">USA</option>
                                 </select>
-                                <div className="error">{this.state.errors.country}</div>
+                                <div styleName="form.error">{this.state.errors.country}</div>
 
                             </div> 
                         ): null }
 
                     </div>
 
-                    <div className="form-row flex flex-row flex-between">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-email" className="form-group flex-grow">
+                        <div id="form-field-email" styleName="form.formGroupEmail flex.flex-grow">
 
                             <label htmlFor="email">Email Address<span>*</span></label>
-                            <input className="form-control" 
+                            <input styleName="form.formControl" 
                                 id="email" 
                                 type='email' 
                                 name="email" 
@@ -494,12 +499,12 @@ export default class Form extends Component {
                                 value={this.state.fields.email}
                                 onChange={this.handleInputChange} 
                             />
-                            <div className="error">{this.state.errors.email}</div>
+                            <div styleName="form.error">{this.state.errors.email}</div>
 
                         </div>
-                        <div id="form-field-phone" className="form-group flex-grow">
+                        <div id="form-field-phone" styleName="form.formGroupPhone flex.flex-grow">
                             <label htmlFor="phonenumber">Phone Number</label>
-                            <input className="form-control"
+                            <input styleName="form.formControl"
                                 id="phonenumber"  
                                 type='phonenumber' 
                                 name="phonenumber" 
@@ -507,15 +512,15 @@ export default class Form extends Component {
                                 value={this.state.fields.phone}
                                 onChange={this.handleInputChange} 
                             />
-                            <div className="error">{this.state.errors.phone}</div>
+                            <div styleName="form.error">{this.state.errors.phone}</div>
                         </div>
                     </div>
                     { this.state.shipping ? this.renderShippingAddress(this.state.fields.shipToYes) : null }                    
                 </div>
-                <div className='form-row flex flex-row  flex-axes-center'>
+                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
 
                     
-                    <input type='checkbox' 
+                    <input type='checkbox' styleName="form.checkboxInput"
                         id="savePersonalInfo" 
                         name="savePersonalInfo"
                         checked={this.state.fields.saveInfo} 
@@ -524,8 +529,8 @@ export default class Form extends Component {
                     <label id="RememberMe" htmlFor="savePersonalInfo">&nbsp;Remember my name and address next time</label>     
 
                 </div>
-                <div className="SubmitButton flex flex-center flex-wrap flex-axes-center">
-                    <button id="submit" onClick={this.handleSubmit}>Continue to Payment &#10142;</button>
+                <div styleName="form.SubmitButton flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
+                    <button styleName="form.submitButton" id="submit" onClick={this.handleSubmit}>Continue to Payment &#10142;</button>
                 </div>
                 <div id="seals"></div>
             </form>
@@ -533,3 +538,4 @@ export default class Form extends Component {
         )
     }
 }
+

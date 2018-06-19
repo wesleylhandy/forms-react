@@ -24,6 +24,6 @@
     "defaultActivitySolicitation": "",
     "additionalGift": true,
     "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
-    "monthlyAmounts": [3, 7, 15, 30],
+    "monthlyAmounts": [3, 7, 15, 30, 50],
     "singleAmounts": [25, 50, 100, 250, 300]
 }

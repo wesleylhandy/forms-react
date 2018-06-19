@@ -1,7 +1,2 @@
 @import "http://www.cbn.com/noindex/fonts/proximanova.css";
-@import "./styles/main.css";
-@import "./styles/variables.css";
-@import "./styles/flex.css";
-@import "./styles/radio-button.css";
-@import "./styles/checkbox.css";
-@import "./styles/form.css";
+@import "./Components/styles/index.css"

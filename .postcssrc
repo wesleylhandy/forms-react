@@ -1,5 +1,5 @@
 {
-  "modules": false,
+  "modules": true,
   "plugins": {
     "autoprefixer": {
       "browsers": [
@@ -11,8 +11,9 @@
       ],
       "flexbox": "no-2009"
     },
-    "cssnano": {
-        "autoprefixer": false
+    "postcss-modules": {
+      "generateScopedName": "[path]__[name]__[local]__[hash:base64:5]",
+      scopeBehaviour: 'local'
     }
   }
 }

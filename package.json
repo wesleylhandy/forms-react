@@ -4,23 +4,24 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "parcel index.html"
     },
     "keywords": [],
-    "author": "",
+    "author": "Wesley L. Handy, Internet Developer I, The Christian Broadcasting Network, Inc.",
     "license": "ISC",
     "dependencies": {
-        "babel-polyfill": "^6.26.0",
-        "babel-preset-env": "^1.7.0",
-        "babel-preset-react": "^6.24.1",
-        "css-vars-ponyfill": "^1.7.2",
         "react": "^16.4.0",
         "react-dom": "^16.4.0"
     },
     "devDependencies": {
         "autoprefixer": "^8.5.2",
         "babel-core": "^6.26.3",
-        "cssnano": "^3.10.0",
+        "babel-plugin-react-css-modules": "^3.4.2",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-react": "^6.24.1",
+        "css-vars-ponyfill": "^1.7.2",
         "postcss-modules": "^1.1.0"
     }
 }
