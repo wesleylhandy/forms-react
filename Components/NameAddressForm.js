@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-
+import 'whatwg-fetch';
 
 import main from './styles/main.css'
 import flex from './styles/flex.css'
@@ -12,12 +12,19 @@ export default class NameAddressForm extends Component {
     constructor(props){
         super(props)
         this.state = {
+            APIAccessID: process.env.APIAccessID,
+            UrlReferer: process.env.APIRequestURI,
+            ClientBrowser: "",
+            ClientIP: "10.100.43.50", //obtain this from server somehow
+            MotivationText: props.MotivationText,
             arrayOptions: {
                 givingFormat: props.givingFormat,
                 monthlyOption: props.monthlyOption,
                 monthlyAmounts: [...props.monthlyAmounts],
                 singleAmounts: [...props.singleAmounts],
-                funds: [...props.funds]
+                funds: [...props.funds],
+                monthlyPledgeData: props.monthlyPledgeData,
+                singlePledgeData: props.singlePledgeData
             },
             productOptions: {
                 products: [...props.products],
@@ -30,45 +37,58 @@ export default class NameAddressForm extends Component {
             international: props.international,
             monthlyChecked: props.monthlyOption,
             totalGift: 0,
+            Clublevel: '',
             cart: {
-                items: []
+                items: [{
+                    type: 'donation',
+                    PledgeAmount: 0,
+                    DetailCprojMail: props.monthlyOption ? props.monthlyPledgeData.DetailCprojMail : props.singlePledgeData.DetailCprojMail,
+                    DetailCprojCredit: props.monthlyOption ? props.monthlyPledgeData.DetailCprojCredit : props.singlePledgeData.DetailCprojCredit,
+                    DetailDescription: props.monthlyOption ? "Monthly Pledge" : "Single Pledge",
+                    DetailName: props.monthlyOption ? "MP" : "SPGF",
+                    monthly: props.monthlyOption,
+                    fund: null
+                }]
             },
             fields: {
-                ccdate: new Date().getDate(),
-                honorific: "",
-                firstname: "",
-                lastname: "",
-                address1: "",
-                city: "",
-                state: "",
-                zip: "",
-                country: "",
-                email: "",
+                Monthlypledgeday: new Date().getDate(),
+                Title: "",
+                Firstname: "",
+                Lastname: "",
+                Address1: "",
+                Address2: "",
+                City: "",
+                State: "",
+                Zip: "",
+                Country: props.international ? "" : "United States",
+                Emailaddress: "",
                 phone: "",
                 savePersonalInfo: true,
-                shipToYes: false,
-                shipToName: "",
-                shipToAddress1: "",
-                shipToCity: "",
-                shipToZip: "",
-                shipToCountry: ""
+                ShipToYes: false,
+                ShipToName: "",
+                ShipToAddress1: "",
+                ShipToAddress2: "",
+                ShipToCity: "",
+                ShipToZip: "",
+                ShipToCountry: ""
             },
             errors: {
-                honorific: "",
-                firstname: "",
-                lastname: "",
-                address1: "",
-                city: "",
-                state: "",
-                zip: "",
-                country: "",
-                email: "",
+                Title: "",
+                Firstname: "",
+                Lastname: "",
+                Address1: "",
+                Address2: "",
+                City: "",
+                State: "",
+                Zip: "",
+                Country: "",
+                Emailaddress: "",
                 phone: "",
-                shipToName: "",
-                shipToAddress1: "",
-                shipToCity: "",
-                shipToZip: "",
-                shipToCountry: ""
+                ShipToName: "",
+                ShipToAddress1: "",
+                ShipToCity: "",
+                ShipToZip: "",
+                ShipToCountry: ""
             }          
         }
         this.handleInputChange = this.handleInputChange.bind(this)
@@ -81,10 +101,11 @@ export default class NameAddressForm extends Component {
     }
 
     componentDidMount(){
-    
+        this.setState({ClientBrowser: window.navigator.userAgent})
+        // add this later to state when in production UrlReferer: window.location.href
     }
 
-    renderMonthlyRadio(monthlyChecked, ccdate) {
+    renderMonthlyRadio(monthlyChecked, Monthlypledgeday) {
 
         let monthly = monthlyChecked;
         let single = !monthlyChecked;
@@ -98,7 +119,7 @@ export default class NameAddressForm extends Component {
             return (
                 <div styleName="form.monthlyGivingDay">
                     <h5 styleName="form.ccDayOfMonth">Charge automatically on day&nbsp;
-                        <select styleName="form.ccdate" name="ccdate" onChange={self.handleInputChange} value={ccdate}>
+                        <select styleName="form.ccdate" name="Monthlypledgeday" onChange={self.handleInputChange} value={Monthlypledgeday}>
                             {options}
                         </select>
                     &nbsp;each month.</h5>
@@ -131,12 +152,12 @@ export default class NameAddressForm extends Component {
                 <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
                     
                     <input type='checkbox' styleName="form.checkboxInput"
-                        id="shipToYes" 
-                        name="shipToYes" 
-                        checked={this.state.fields.shipToYes} 
+                        id="ShipToYes" 
+                        name="ShipToYes" 
+                        checked={this.state.fields.ShipToYes} 
                         onChange={this.handleInputChange}
                     />
-                    <label htmlFor="shipToYes">&nbsp;My shipping address is different than my billing address.</label>     
+                    <label htmlFor="ShipToYes">&nbsp;My shipping address is different than my billing address.</label>     
 
                 </div>
                 <div id="ShippingAddressInfo" styleName = {showShipping ? 'form.shipping-address__info' : 'main.hidden'}>
@@ -149,19 +170,19 @@ export default class NameAddressForm extends Component {
                     </div>
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-shipToName" styleName="form.formGroup flex.flex-grow">
+                        <div id="form-field-ShipToName" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="shipToName">Name<span>*</span></label>
+                            <label htmlFor="ShipToName">Name<span>*</span></label>
                             <input styleName="form.formControl" 
                                 type='text' 
-                                id="shipToName" 
-                                name="shipToName" 
+                                id="ShipToName" 
+                                name="ShipToName" 
                                 placeholder="First and Last Name" 
                                 required={true}
-                                value={this.state.fields.shipToName}
+                                value={this.state.fields.ShipToName}
                                 onChange={this.handleInputChange}
                             />
-                            <div styleName="form.error">{this.state.errors.shipToName}</div>
+                            <div styleName="form.error">{this.state.errors.ShipToName}</div>
 
                         </div>
 
@@ -169,19 +190,38 @@ export default class NameAddressForm extends Component {
 
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-shipToAddress1" styleName="form.formGroup flex.flex-grow">
+                        <div id="form-field-ShipToAddress1" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="shipToAddress1">Address<span>*</span></label>
+                            <label htmlFor="ShipToAddress1">Address<span>*</span></label>
                             <input styleName="form.formControl" 
-                                id="shipToAddress1" 
+                                id="ShipToAddress1" 
                                 type='text' 
-                                name="shipToAddress1" 
+                                name="ShipToAddress1" 
                                 placeholder="Address*" 
                                 required={true}
-                                value={this.state.fields.shipToAddress1}
+                                value={this.state.fields.ShipToAddress1}
                                 onChange={this.handleInputChange}
                                />
-                            <div styleName="form.error">{this.state.errors.shipToAddress1}</div>
+                            <div styleName="form.error">{this.state.errors.ShipToAddress1}</div>
+
+                        </div>
+
+                    </div>
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+
+                        <div id="form-field-ShipToAddress2" styleName="form.formGroup flex.flex-grow">
+
+                            <label htmlFor="ShipToAddress2">Address<span>*</span></label>
+                            <input styleName="form.formControl" 
+                                id="ShipToAddress2" 
+                                type='text' 
+                                name="ShipToAddress2" 
+                                placeholder="Address*" 
+                                required={true}
+                                value={this.state.fields.ShipToAddress2}
+                                onChange={this.handleInputChange}
+                               />
+                            <div styleName="form.error">{this.state.errors.ShipToAddress2}</div>
 
                         </div>
 
@@ -189,72 +229,72 @@ export default class NameAddressForm extends Component {
 
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-shipToCity" styleName="form.formGroup flex.flex-grow">
+                        <div id="form-field-ShipToCity" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="shipToCity">City<span>*</span></label>
+                            <label htmlFor="ShipToCity">City<span>*</span></label>
                             <input styleName="form.formControl"
-                                id="shipToCity" 
+                                id="ShipToCity" 
                                 type='text' 
-                                name="shipToCity" 
+                                name="ShipToCity" 
                                 placeholder="City*" 
                                 required={true}
-                                value={this.state.fields.shipToCity}
+                                value={this.state.fields.ShipToCity}
                                 onChange={this.handleInputChange}
                             />
-                            <div styleName="form.error">{this.state.errors.shipToCity}</div>
+                            <div styleName="form.error">{this.state.errors.ShipToCity}</div>
 
                         </div>
-                        <div id="form-field-shipToState" styleName="form.formGroup flex.flex-grow">
+                        <div id="form-field-ShipToState" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="shipToState">State<span>*</span></label>
+                            <label htmlFor="ShipToState">State<span>*</span></label>
                             <select styleName="form.formControl" 
-                                id="shipToState" 
-                                name="shipToState" 
+                                id="ShipToState" 
+                                name="ShipToState" 
                                 required={true} 
-                                value={this.state.fields.shipToState} 
+                                value={this.state.fields.ShipToState} 
                                 onChange={this.handleInputChange}
                             >
                                 <option value="">State* &#9663;</option>
                                 <option value="VA">VA</option>
                             </select>
-                            <div styleName="form.error">{this.state.errors.shipToState}</div>
+                            <div styleName="form.error">{this.state.errors.ShipToState}</div>
 
                         </div>
                     </div>
 
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-shipToZip" styleName="form.formGroup flex.flex-grow">
+                        <div id="form-field-ShipToZip" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="shipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
+                            <label htmlFor="ShipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
                             <input styleName="form.formControl" 
-                                id="shipToZip" 
+                                id="ShipToZip" 
                                 type='text' 
-                                name="shipToZip" 
+                                name="ShipToZip" 
                                 placeholder="Zip*" 
                                 required={true}
-                                value={this.state.fields.shipToZip}
+                                value={this.state.fields.ShipToZip}
                                 onChange={this.handleInputChange}
                             />
-                            <div styleName="form.error">{this.state.errors.shipToZip}</div>
+                            <div styleName="form.error">{this.state.errors.ShipToZip}</div>
 
                         </div>
 
                         { this.state.international ? (
-                            <div id="form-field-shipToCountry" styleName="form.formGroup flex.flex-grow">
+                            <div id="form-field-ShipToCountry" styleName="form.formGroup flex.flex-grow">
                             
-                                <label htmlFor="shipToCountry">Country<span>*</span></label>
+                                <label htmlFor="ShipToCountry">Country<span>*</span></label>
                                 <select styleName="form.formControl" 
-                                    id="shipToCountry" 
-                                    name="shipToCountry" 
+                                    id="ShipToCountry" 
+                                    name="ShipToCountry" 
                                     required={true}
-                                    value={this.state.fields.shipToCountry}
+                                    value={this.state.fields.ShipToCountry}
                                     onChange={this.handleInputChange}
                                 >
                                     <option value="">Country* &#9663;</option>
                                     <option value="US">USA</option>
                                 </select>
-                                <div styleName="form.error">{this.state.errors.shipToCountry}</div>
+                                <div styleName="form.error">{this.state.errors.ShipToCountry}</div>
 
                             </div> 
                         ): null }
@@ -285,7 +325,10 @@ export default class NameAddressForm extends Component {
 
     handleInputChange(e) {
         const target = e.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        let value = target.type === 'checkbox' ? target.checked : target.value;
+        if (typeof value == "string") {
+            value = value.trim();
+        }
         const name = target.name;
         
         const fields = this.state.fields;
@@ -299,7 +342,73 @@ export default class NameAddressForm extends Component {
     }
 
     handleSubmit(e) {
+        //eventually to validate data, but for testing:
+        e.preventDefault();
+        if (this.state.cart.items.length == 0 || this.state.cart.items[0].PledgeAmount == 0) {
+            return;
+        }
 
+        const {Address1, Address2, City, Country, Emailaddress, Firstname, Lastname, State, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName} = this.state.fields
+        const {APIAccessID, Clublevel, MotivationText, UrlReferer, ClientBrowser, ClientIP} = this.state
+        const isMonthly = this.state.cart.items[0].monthly
+        const DonationType =  isMonthly ? "CR" : "CC";
+        const TransactionType = isMonthly ? "Monthly" : "Single"
+        const IsRecurringCreditCardDonation = isMonthly
+        const Monthlypledgeday = isMonthly ? this.state.Monthlypledgeday : null
+        const Monthlypledgeamount = isMonthly ? this.state.cart.items[0].PledgeAmount : null
+        const Singledonationamount = !isMonthly ? this.state.cart.items[0].PledgeAmount : null
+        const ShipTo = this.state.shipping
+        const multipleDonations = () => this.state.cart.items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount})=>{DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount})
+        console.log({UrlReferer})
+        fetch("http://SecureGiving.cbn.local/api/contribution", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: {
+                Address1,
+                Address2,
+                APIAccessID,
+                City,
+                Clublevel,
+                Country,
+                DonationType,
+                Emailaddress,
+                Firstname,
+                IsRecurringCreditCardDonation,
+                Lastname,
+                Monthlypledgeamount,
+                Monthlypledgeday,
+                MotivationText,
+                MultipleDonations: multipleDonations(),
+                Phoneareacode: "", //update later
+                Phoneexchnge: "", //update later
+                Phonenumber: "", //update later
+                SectionName: '700Club', // what is this???
+                ShipTo,
+                Singledonationamount,
+                State,
+                Title,
+                TransactionType,
+                UrlReferer,
+                Zip,
+                ClientBrowser,
+                ClientIP,
+                ShipToAddress1,
+                ShipToAddress2,
+                ShipToCity,
+                ShipToState,
+                ShipToZip,
+                ShipToCountry,
+                ShipToName
+            }
+        }).then(checkStatus)
+        .then(parseResponse)
+        .then(function(data) {
+            console.log('request succeeded with JSON response', data)
+        }).catch(function(error) {
+            console.log('request failed', error)
+        })
     }
 
     calculateTotal() {
@@ -328,7 +437,7 @@ export default class NameAddressForm extends Component {
                     addToCart={this.addToCart}
                 />
 
-                { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.ccdate) : null }
+                { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.Monthlypledgeday) : null }
 
                 <ProductDisplay 
                     productOptions={this.state.productOptions} 
@@ -342,13 +451,13 @@ export default class NameAddressForm extends Component {
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
                         <div id="form-field-title" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="honorific">Title<span>*</span></label>
+                            <label htmlFor="Title">Title<span>*</span></label>
                             <select styleName="form.formControl" 
-                                id="honorific" 
-                                name='honorific' 
+                                id="Title" 
+                                name='Title' 
                                 required={true} 
                                 placeholder="Title*"
-                                value={this.state.fields.honorific}
+                                value={this.state.fields.Title}
                                 onChange={this.handleInputChange}
                             >
                                 <option value="">Title* &#9663;</option>
@@ -357,128 +466,146 @@ export default class NameAddressForm extends Component {
                                 <option value="Mrs">Mrs</option>
                                 <option value="Miss">Miss</option>
                             </select>
-                            <div styleName="form.error">{this.state.errors.honorific}</div>
+                            <div styleName="form.error">{this.state.errors.Title}</div>
 
                         </div>
-                        <div id="form-field-firstname" styleName="form.formGroup flex.flex-grow">
+                        <div id="form-field-Firstname" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="firstname">First Name<span>*</span></label>
+                            <label htmlFor="Firstname">First Name<span>*</span></label>
                             <input styleName="form.formControl" 
                                 type='text' 
-                                id="firstname" 
-                                name="firstname" 
+                                id="Firstname" 
+                                name="Firstname" 
                                 placeholder="First Name*" 
                                 required={true}
-                                value={this.state.fields.firstname}
+                                value={this.state.fields.Firstname}
                                 onChange={this.handleInputChange}
                             />
-                            <div styleName="form.error">{this.state.errors.firstname}</div>
+                            <div styleName="form.error">{this.state.errors.Firstname}</div>
 
                         </div>
-                        <div id="form-field-lastname" styleName="form.formGroup flex.flex-grow">
+                        <div id="form-field-Lastname" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="lastname">Last Name<span>*</span></label>
+                            <label htmlFor="Lastname">Last Name<span>*</span></label>
                             <input styleName="form.formControl" 
-                                id="lastname" 
+                                id="Lastname" 
                                 type='text' 
-                                name="lastname" 
+                                name="Lastname" 
                                 placeholder="Last Name*" 
                                 required={true}
-                                value={this.state.fields.lastname}
+                                value={this.state.fields.Lastname}
                                 onChange={this.handleInputChange}
                             />
-                            <div styleName="form.error">{this.state.errors.lastname}</div>
+                            <div styleName="form.error">{this.state.errors.Lastname}</div>
 
                         </div>
                     </div>
 
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-address1" styleName="form.formGroup flex.flex-grow">
+                        <div id="form-field-Address1" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="address1">Address<span>*</span></label>
+                            <label htmlFor="Address1">Address<span>*</span></label>
                             <input styleName="form.formControl" 
-                                id="address1" 
+                                id="Address1" 
                                 type='text' 
-                                name="address1" 
+                                name="Address1" 
                                 placeholder="Address*" 
                                 required={true}
-                                value={this.state.fields.address1}
+                                value={this.state.fields.Address1}
                                 onChange={this.handleInputChange}
                             />
-                            <div styleName="form.error">{this.state.errors.address1}</div>
+                            <div styleName="form.error">{this.state.errors.Address1}</div>
+
+                        </div>
+                    </div>
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+
+                        <div id="form-field-Address2" styleName="form.formGroup flex.flex-grow">
+
+                            <label htmlFor="Address2">Address<span>*</span></label>
+                            <input styleName="form.formControl" 
+                                id="Address2" 
+                                type='text' 
+                                name="Address2" 
+                                placeholder="Address Line 2" 
+                                required={true}
+                                value={this.state.fields.Address2}
+                                onChange={this.handleInputChange}
+                            />
+                            <div styleName="form.error">{this.state.errors.Address2}</div>
 
                         </div>
                     </div>
 
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-city" styleName="form.formGroup flex.flex-grow">
+                        <div id="form-field-City" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="city">City<span>*</span></label>
+                            <label htmlFor="City">City<span>*</span></label>
                             <input styleName="form.formControl" 
-                                id="city" 
+                                id="City" 
                                 type='text' 
-                                name="city" 
+                                name="City" 
                                 placeholder="City*" 
                                 required={true}
-                                value={this.state.fields.city}
+                                value={this.state.fields.City}
                                 onChange={this.handleInputChange}
                             />
-                            <div styleName="form.error">{this.state.errors.city}</div>
+                            <div styleName="form.error">{this.state.errors.City}</div>
 
                         </div>
-                        <div id="form-field-state" styleName="form.formGroupState flex.flex-grow">
+                        <div id="form-field-State" styleName="form.formGroupState flex.flex-grow">
 
-                            <label htmlFor="state">State<span>*</span></label>
+                            <label htmlFor="State">State<span>*</span></label>
                             <select styleName="form.formControl" 
-                                id="state" 
-                                name="state" 
+                                id="State" 
+                                name="State" 
                                 required={true}
-                                value={this.state.fields.state}
+                                value={this.state.fields.State}
                                 onChange={this.handleInputChange}
                             >
                                 <option value="">State* &#9663;</option>
                                 <option value="VA">VA</option>
                             </select>
-                            <div styleName="form.error">{this.state.errors.state}</div>
+                            <div styleName="form.error">{this.state.errors.State}</div>
 
                         </div>
                     </div>
 
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-zip" styleName="form.formGroup flex.flex-grow">
+                        <div id="form-field-Zip" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
+                            <label htmlFor="Zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
                             <input styleName="form.formControl" 
-                                id="zip" 
+                                id="Zip" 
                                 type='text' 
-                                name="zip" 
+                                name="Zip" 
                                 placeholder="Zip*" 
                                 required={true}
-                                value={this.state.fields.zip}
+                                value={this.state.fields.Zip}
                                 onChange={this.handleInputChange}
                             />
-                            <div styleName="form.error">{this.state.errors.zip}</div>
+                            <div styleName="form.error">{this.state.errors.Zip}</div>
 
                         </div>
 
                         { this.state.international ? (
-                            <div id="form-field-country" styleName="form.formGroupCountry flex.flex-grow">
+                            <div id="form-field-Country" styleName="form.formGroupCountry flex.flex-grow">
                             
-                                <label htmlFor="country">Country<span>*</span></label>
+                                <label htmlFor="Country">Country<span>*</span></label>
                                 <select styleName="form.formControl" 
-                                    id="country" 
-                                    name="country" 
+                                    id="Country" 
+                                    name="Country" 
                                     required={true}
-                                    value={this.state.fields.country}
+                                    value={this.state.fields.Country}
                                     onChange={this.handleInputChange}
                                 >
                                     <option value="">Country* &#9663;</option>
                                     <option value="US">USA</option>
                                 </select>
-                                <div styleName="form.error">{this.state.errors.country}</div>
+                                <div styleName="form.error">{this.state.errors.Country}</div>
 
                             </div> 
                         ): null }
@@ -487,19 +614,19 @@ export default class NameAddressForm extends Component {
 
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
 
-                        <div id="form-field-email" styleName="form.formGroupEmail flex.flex-grow">
+                        <div id="form-field-Emailaddress" styleName="form.formGroupEmail flex.flex-grow">
 
-                            <label htmlFor="email">Email Address<span>*</span></label>
+                            <label htmlFor="Emailaddress">Email Address<span>*</span></label>
                             <input styleName="form.formControl" 
-                                id="email" 
+                                id="Emailaddress" 
                                 type='email' 
-                                name="email" 
+                                name="Emailaddress" 
                                 placeholder="Email Address*" 
                                 required={true}
-                                value={this.state.fields.email}
+                                value={this.state.fields.Emailaddress}
                                 onChange={this.handleInputChange} 
                             />
-                            <div styleName="form.error">{this.state.errors.email}</div>
+                            <div styleName="form.error">{this.state.errors.Emailaddress}</div>
 
                         </div>
                         <div id="form-field-phone" styleName="form.formGroupPhone flex.flex-grow">
@@ -515,7 +642,7 @@ export default class NameAddressForm extends Component {
                             <div styleName="form.error">{this.state.errors.phone}</div>
                         </div>
                     </div>
-                    { this.state.shipping ? this.renderShippingAddress(this.state.fields.shipToYes) : null }                    
+                    { this.state.shipping ? this.renderShippingAddress(this.state.fields.ShipToYes) : null }                    
                 </div>
                 <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
 
@@ -539,3 +666,17 @@ export default class NameAddressForm extends Component {
     }
 }
 
+function checkStatus(response) {
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  } else {
+    var error = new Error(response.statusText)
+    error.response = response
+    throw error
+  }
+}
+
+function parseResponse(response) {
+    if (response.headers.get('Content-Type') == 'application/json') return response.json()
+    else return response.text()
+}

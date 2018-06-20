@@ -16,14 +16,30 @@ export default class App extends Component {
             givingFormat: config.hasOwnProperty('givingFormat') ? config.givingFormat : "buttons",
             monthlyOption: config.hasOwnProperty('monthlyOption') && typeof config.monthlyOption == "boolean" ? config.monthlyOption : true,
             shipping: config.hasOwnProperty('shipping') && typeof config.shipping == "boolean" ? config.shipping : false,
-            international: config.hasOwnProperty('international') && typeof config.international == "boolean"? config.international : false,
+            international: config.hasOwnProperty('international') && typeof config.international == "boolean" ? config.international : false,
             products: config.hasOwnProperty('products') ? [...config.products] : [],
             numProducts: config.hasOwnProperty('numProducts') ? config.numProducts : 0,
-            additionalGift: config.hasOwnProperty('additionalGift') && typeof config.additionalGift == "boolean"? config.additionalGift : false,
+            additionalGift: config.hasOwnProperty('additionalGift') && typeof config.additionalGift == "boolean" ? config.additionalGift : false,
             additionalGiftMessage: config.hasOwnProperty('additionalGiftMessage') ? config.additionalGiftMessage : "Please consider giving an additional gift to support the ministries of CBN",
             funds: config.hasOwnProperty('funds') ? [...config.funds] : [],
+            subscriptions: config.hasOwnProperty('subscriptions') ? [...config.subscriptions] : [],
             monthlyAmounts: config.hasOwnProperty('monthlyAmounts') ? [...config.monthlyAmounts] : [7, 15, 30],
             singleAmounts: config.hasOwnProperty('singleAmounts') ? [...config.singleAmounts] : [25, 50, 100, 250, 300],
+            MotivationText: config.hasOwnProperty('MotivationText') ? config.MotivationText : "041181",
+            monthlyPledgeData: config.hasOwnProperty('monthlyPledgeData') && config.monthlyPledgeData.hasOwnProperty('DetailCprojCredit') && config.monthlyPledgeData.hasOwnProperty('DetailCprojMail') ? {
+                DetailCprojCredit: config.monthlyPledgeData.DetailCprojCredit,
+                DetailCprojMail: config.monthlyPledgeData.DetailCprojMail
+            } : {
+                "DetailCprojCredit": "043250",
+                "DetailCprojMail": "043251"
+            },
+            singlePledgeData: config.hasOwnProperty('singlePledgeData') && config.singlePledgeData.hasOwnProperty('DetailCprojCredit') && config.singlePledgeData.hasOwnProperty('DetailCprojMail') ? {
+                DetailCprojCredit: config.singlePledgeData.DetailCprojCredit,
+                DetailCprojMail: config.singlePledgeData.DetailCprojMail
+            } : {
+                "DetailCprojCredit": "043250",
+                "DetailCprojMail": "043251"
+            },
             submitted: false,
             confirmed: false,
             iframeSrc: null,
@@ -35,28 +51,29 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        cssVars.forEach(variable=>document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0]))
+        cssVars.forEach(variable => document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0]))
     }
 
     submitForm(formData) {
-        this.setState((prevState, props)=> {submitted: !prevState.submitted});
+        this.setState((prevState, props) => { submitted: !prevState.submitted });
     }
 
     updateSrc(src) {
-        this.setState((prevState, props)=> {iframeSrc: src});
+        this.setState((prevState, props) => { iframeSrc: src });
     }
 
     renderForm(submitted) {
-        if (submitted) return <ConfirmationIframe {...this.state}/>
-        else return <NameAddressForm {...this.state} submitForm={this.submitForm} updateSrc={this.updateSrc}/>
-    }                     
+        if (submitted) return <ConfirmationIframe {...this.state }/>
+        else return <NameAddressForm {...this.state }
+            submitForm={ this.submitForm }
+            updateSrc={ this.updateSrc }
+        />
+    }
 
     render() {
         const isSubmitted = this.state.submitted;
-        return (
-            <div styleName='form.form-wrapper'>
-                { this.renderForm(isSubmitted)}             
-            </div>
+        return ( 
+            <div styleName='form.form-wrapper'> { this.renderForm(isSubmitted) } </div>
         )
     }
 }

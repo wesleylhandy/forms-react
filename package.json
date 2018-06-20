@@ -2,17 +2,23 @@
     "name": "react-form",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "parcel index.html"
+        "start": "parcel index.html",
+        "start:test": "concurrently \"node server.js\" \"parcel index.html\""
     },
     "keywords": [],
     "author": "Wesley L. Handy, Internet Developer I, The Christian Broadcasting Network, Inc.",
     "license": "ISC",
     "dependencies": {
+        "body-parser": "^1.18.3",
+        "compression": "^1.7.2",
+        "dotenv": "^6.0.0",
+        "express": "^4.16.3",
         "react": "^16.4.0",
-        "react-dom": "^16.4.0"
+        "react-dom": "^16.4.0",
+        "whatwg-fetch": "^2.0.4"
     },
     "devDependencies": {
         "autoprefixer": "^8.5.2",
@@ -21,6 +27,7 @@
         "babel-polyfill": "^6.26.0",
         "babel-preset-env": "^1.7.0",
         "babel-preset-react": "^6.24.1",
+        "concurrently": "^3.6.0",
         "css-vars-ponyfill": "^1.7.2",
         "postcss-modules": "^1.1.0"
     }

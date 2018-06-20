@@ -12,6 +12,14 @@ export default class GivingArray extends Component {
             monthlyAmounts: [...props.arrayOptions.monthlyAmounts],
             singleAmounts: [...props.arrayOptions.singleAmounts],
             monthlyChecked: props.monthlyChecked,
+            monthlyPledgeData: {
+                DetailCprojCredit: props.arrayOptions.monthlyPledgeData.DetailCprojCredit,
+                DetailCprojCMail: props.arrayOptions.monthlyPledgeData.DetailCprojMail
+            },
+            singlePledgeData: {
+                DetailCprojCredit: props.arrayOptions.singlePledgeData.DetailCprojCredit,
+                DetailCprojCMail: props.arrayOptions.singlePledgeData.DetailCprojMail
+            },
             selectedIndex: null,
             otherAmount: 0,
             otherAmountError: ''
@@ -51,7 +59,11 @@ export default class GivingArray extends Component {
         const monthlyChecked = this.state.monthlyChecked;
         this.props.addToCart({
             type: 'donation',
-            amount: amt,
+            PledgeAmount: amt,
+            DetailCprojMail: monthlyChecked ? this.state.monthlyPledgeData.DetailCprojMail : this.state.singlePledgeData.DetailCprojMail,
+            DetailCprojCredit: monthlyChecked ? this.state.monthlyPledgeData.DetailCprojCredit : this.state.singlePledgeData.DetailCprojCredit,
+            DetailDescription: monthlyChecked ? "Monthly Pledge" : "Single Pledge",
+            DetailName: monthlyChecked ? "MP" : "SPGF",
             monthly: monthlyChecked,
             fund: null
         })
