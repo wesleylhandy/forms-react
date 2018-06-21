@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import util from 'util'
 
 import main from './styles/main.css'
 import flex from './styles/flex.css'
@@ -13,8 +12,7 @@ export default class NameAddressForm extends Component {
     constructor(props){
         super(props)
         this.state = {
-            APIAccessID: process.env.APIAccessID,
-            UrlReferer: process.env.APIRequestURI,
+            env: [process.env.alpha, process.env.bravo],
             ClientBrowser: "",
             ClientIP: "10.100.43.50", //obtain this from server somehow
             MotivationText: props.MotivationText,
@@ -36,9 +34,11 @@ export default class NameAddressForm extends Component {
             monthlyOption: props.monthlyOption,
             shipping: props.shipping,
             international: props.international,
+            getPhone: props.getPhone,
             monthlyChecked: props.monthlyOption,
             totalGift: 0,
             Clublevel: '',
+            submitted: false,
             submitting: false,
             cart: {
                 items: [{
@@ -72,6 +72,7 @@ export default class NameAddressForm extends Component {
                 ShipToAddress2: "",
                 ShipToCity: "",
                 ShipToZip: "",
+                ShipToState: "",
                 ShipToCountry: ""
             },
             errors: {
@@ -90,6 +91,7 @@ export default class NameAddressForm extends Component {
                 ShipToAddress1: "",
                 ShipToCity: "",
                 ShipToZip: "",
+                ShipToState: "",
                 ShipToCountry: "",
                 amount: ""
             }          
@@ -342,11 +344,12 @@ export default class NameAddressForm extends Component {
     }
 
     handleSubmit(e) {
-        if (this.state.submitting) return
+        e.preventDefault();
+        if (this.state.submitting) return // ie. disallow multiple submissions
 
         this.setState({submitting: true})
         //eventually to validate data, but for testing:
-        e.preventDefault();
+        
         if (this.state.cart.items.length == 0 || this.state.cart.items[0].PledgeAmount == 0) {
             const errors = this.state.errors
             errors.amount = "Please make a select a valid donation"
@@ -354,21 +357,21 @@ export default class NameAddressForm extends Component {
         }
 
         const {Address1, Address2, City, Country, Emailaddress, Firstname, Lastname, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName} = this.state.fields
-        const {APIAccessID, Clublevel, MotivationText, UrlReferer, ClientBrowser, ClientIP} = this.state
+        const {Clublevel, MotivationText, ClientBrowser, ClientIP} = this.state
         const isMonthly = this.state.cart.items[0].monthly
         const DonationType =  isMonthly ? "CR" : "CC";
         const TransactionType = isMonthly ? "Monthly" : "Single"
         const IsRecurringCreditCardDonation = isMonthly
         const Monthlypledgeday = isMonthly ? this.state.fields.Monthlypledgeday : null
-        const Monthlypledgeamount = isMonthly ? this.state.cart.items[0].PledgeAmount : null
-        const Singledonationamount = !isMonthly ? this.state.cart.items[0].PledgeAmount : null
+        const Monthlypledgeamount = isMonthly ? this.state.cart.items[0].PledgeAmount : 0
+        const Singledonationamount = !isMonthly ? this.state.cart.items[0].PledgeAmount : 0
         const ShipTo = this.state.shipping ? "Yes" : "No"
         const multipleDonations = () => this.state.cart.items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount})=> {return {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}})
        
         let data = {
                 Address1,
                 Address2,
-                APIAccessID,
+                APIAccessID: this.state.env[0],
                 City,
                 Clublevel,
                 Country,
@@ -381,16 +384,16 @@ export default class NameAddressForm extends Component {
                 Monthlypledgeday,
                 MotivationText,
                 MultipleDonations: multipleDonations(),
-                Phoneareacode: "", //update later
-                Phoneexchnge: "", //update later
-                Phonenumber: "", //update later
+                Phoneareacode: "555", //update later
+                Phoneexchange: "555", //update later
+                Phonenumber: "1212", //update later
                 SectionName: '700Club', // what is this???
                 ShipTo,
                 Singledonationamount,
                 State,
                 Title,
                 TransactionType,
-                UrlReferer,
+                UrlReferer: this.state.env[1],
                 Zip,
                 ClientBrowser,
                 ClientIP,
@@ -402,9 +405,7 @@ export default class NameAddressForm extends Component {
                 ShipToCountry,
                 ShipToName
             }
-        // DUMMY DATA 
-        // data = {"Address1":"Test API Address Line 1","Address2":"CSB 111","APIAccessID":"6A458276-4BFF-4EC8-82B1-9B24D9E1A26A","City":"Virginia Beach","Clublevel":"700Club","Country":"United States","Donationtype":"CC","Emailaddress":"Shanthi.Catlin@cbn.org","Firstname":"Just","IsRecurringCreditCardDonation":false,"Lastname":"Testing","Monthlypledgeamount":0,"Monthlypledgeday":"","MotivationText":"002345","MulipleDonations":[{"DetailName":"SPGF","DetailDescription":"Single Pledge","DetailCprojCredit":"043250","DetailCprojMail":"043251","PledgeAmount":10}],"Phoneareacode":"757","Phoneexchange":"555","Phonenumber":"5512","SectionName":"700Club","ShipTo":"No","Singledonationamount":10,"State":"VA","Title":"Mr","Transactiontype":"Single","UrlReferer":"http://localhost:30617/TestGivingForm.aspx","Zip":"23463","ClientBrowser":"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36","ClientIP":"10.100.43.171"}
-        console.log({data})
+        const self = this;
         axios({
             method: 'POST',
             url: "http://SecureGiving.cbn.local/api/contribution",
@@ -413,8 +414,9 @@ export default class NameAddressForm extends Component {
             },
             data
         }).then(response=>{
-            response = util.inspect(response)
-            console.log({res: response.data})
+            const msg = response.data;
+            console.log({msg})
+            self.props.submitForm({msg, data})
         }).catch(error=>{
             if (error.response) {
                 // The request was made and the server responded with a status code
@@ -431,6 +433,7 @@ export default class NameAddressForm extends Component {
                 // Something happened in setting up the request that triggered an Error
                 console.error('Error', error.message);
             }
+            console.error({error})
             console.error(error.config);
 
             //parse errors and set errors
@@ -662,18 +665,22 @@ export default class NameAddressForm extends Component {
                             <div styleName="form.error">{this.state.errors.Emailaddress}</div>
 
                         </div>
-                        <div id="form-field-phone" styleName="form.formGroupPhone flex.flex-grow">
-                            <label htmlFor="phonenumber">Phone Number</label>
-                            <input styleName="form.formControl"
-                                id="phonenumber"  
-                                type='phonenumber' 
-                                name="phonenumber" 
-                                placeholder="###-###-####"
-                                value={this.state.fields.phone}
-                                onChange={this.handleInputChange} 
-                            />
-                            <div styleName="form.error">{this.state.errors.phone}</div>
-                        </div>
+                        {
+                            this.state.getPhone ? (
+                                <div id="form-field-phone" styleName="form.formGroupPhone flex.flex-grow">
+                                    <label htmlFor="phone">Phone Number</label>
+                                    <input styleName="form.formControl"
+                                        id="phone"  
+                                        type='phonenumber' 
+                                        name="phone" 
+                                        placeholder="###-###-####"
+                                        value={this.state.fields.phone}
+                                        onChange={this.handleInputChange} 
+                                    />
+                                    <div styleName="form.error">{this.state.errors.phone}</div>
+                                </div>
+                            ) : null 
+                        }
                     </div>
                     { this.state.shipping ? this.renderShippingAddress(this.state.fields.ShipToYes) : null }                    
                 </div>

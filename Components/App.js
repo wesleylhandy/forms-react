@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios'
 
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationIframe from "./ConfirmationIframe"
@@ -17,6 +18,7 @@ export default class App extends Component {
             monthlyOption: config.hasOwnProperty('monthlyOption') && typeof config.monthlyOption == "boolean" ? config.monthlyOption : true,
             shipping: config.hasOwnProperty('shipping') && typeof config.shipping == "boolean" ? config.shipping : false,
             international: config.hasOwnProperty('international') && typeof config.international == "boolean" ? config.international : false,
+            getPhone: config.hasOwnProperty('getPhone') ? config.getPhone : true,
             products: config.hasOwnProperty('products') ? [...config.products] : [],
             numProducts: config.hasOwnProperty('numProducts') ? config.numProducts : 0,
             additionalGift: config.hasOwnProperty('additionalGift') && typeof config.additionalGift == "boolean" ? config.additionalGift : false,
@@ -43,37 +45,36 @@ export default class App extends Component {
             submitted: false,
             confirmed: false,
             iframeSrc: null,
-            formdata: {}
+            formData: {},
+            donorID: null,
         }
         this.submitForm = this.submitForm.bind(this)
         this.updateSrc = this.updateSrc.bind(this)
-        this.renderForm = this.renderForm.bind(this)
+
     }
 
     componentDidMount() {
         cssVars.forEach(variable => document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0]))
     }
 
-    submitForm(formData) {
-        this.setState((prevState, props) => { submitted: !prevState.submitted });
+    submitForm({msg, data}) {
+        const donorID = msg.split(";")[0].split(" - ")[1]
+        const confirmURI = msg.split(" is ")[1]
+        // make api call to confirmuri to get iframesrc code
+        this.setState({submitted: true, formData: data, donorID, iframeSrc});
     }
 
     updateSrc(src) {
         this.setState((prevState, props) => { iframeSrc: src });
     }
 
-    renderForm(submitted) {
-        if (submitted) return <ConfirmationIframe {...this.state }/>
-        else return <NameAddressForm {...this.state }
-            submitForm={ this.submitForm }
-            updateSrc={ this.updateSrc }
-        />
-    }
-
     render() {
-        const isSubmitted = this.state.submitted;
         return ( 
-            <div styleName='form.form-wrapper'> { this.renderForm(isSubmitted) } </div>
+            <div styleName='form.form-wrapper'> 
+                { 
+                    this.state.submitted ? ( <ConfirmationIframe {...this.state }/> ) : ( <NameAddressForm {...this.state } submitForm={ this.submitForm }/> )
+                } 
+             </div>
         )
     }
 }

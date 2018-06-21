@@ -3,6 +3,7 @@
     "monthlyOption": true,
     "shipping": false,
     "international": false,
+    "getPhone": true,
     "numProducts": 0,
     "products": [{
         "productAmt": 15,
