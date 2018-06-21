@@ -37,6 +37,11 @@
     overflow: visible;
 }
 
+.gift-choice {
+    margin-bottom: 20px;
+    position: relative;
+}
+
 .askarray {
     height: auto;
     width: 100%;
@@ -193,7 +198,7 @@
 }
 
 .error {
-    top: unset;
+    color: var(--error-color);
     width: auto;
     bottom: calc(0% - 11px);
     font-family: var(--error-font-family);
@@ -204,6 +209,10 @@
     overflow: hidden;
     max-width: 100%;
     white-space: nowrap;
+}
+
+.error.amount-error {
+    text-align: center;
 }
 
 .formGroupState,

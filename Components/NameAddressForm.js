@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import 'whatwg-fetch';
+import axios from 'axios'
+import util from 'util'
 
 import main from './styles/main.css'
 import flex from './styles/flex.css'
@@ -38,6 +39,7 @@ export default class NameAddressForm extends Component {
             monthlyChecked: props.monthlyOption,
             totalGift: 0,
             Clublevel: '',
+            submitting: false,
             cart: {
                 items: [{
                     type: 'donation',
@@ -88,7 +90,8 @@ export default class NameAddressForm extends Component {
                 ShipToAddress1: "",
                 ShipToCity: "",
                 ShipToZip: "",
-                ShipToCountry: ""
+                ShipToCountry: "",
+                amount: ""
             }          
         }
         this.handleInputChange = this.handleInputChange.bind(this)
@@ -326,9 +329,6 @@ export default class NameAddressForm extends Component {
     handleInputChange(e) {
         const target = e.target;
         let value = target.type === 'checkbox' ? target.checked : target.value;
-        if (typeof value == "string") {
-            value = value.trim();
-        }
         const name = target.name;
         
         const fields = this.state.fields;
@@ -342,30 +342,30 @@ export default class NameAddressForm extends Component {
     }
 
     handleSubmit(e) {
+        if (this.state.submitting) return
+
+        this.setState({submitting: true})
         //eventually to validate data, but for testing:
         e.preventDefault();
         if (this.state.cart.items.length == 0 || this.state.cart.items[0].PledgeAmount == 0) {
-            return;
+            const errors = this.state.errors
+            errors.amount = "Please make a select a valid donation"
+            return this.setState({submitting: false, errors})
         }
 
-        const {Address1, Address2, City, Country, Emailaddress, Firstname, Lastname, State, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName} = this.state.fields
+        const {Address1, Address2, City, Country, Emailaddress, Firstname, Lastname, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName} = this.state.fields
         const {APIAccessID, Clublevel, MotivationText, UrlReferer, ClientBrowser, ClientIP} = this.state
         const isMonthly = this.state.cart.items[0].monthly
         const DonationType =  isMonthly ? "CR" : "CC";
         const TransactionType = isMonthly ? "Monthly" : "Single"
         const IsRecurringCreditCardDonation = isMonthly
-        const Monthlypledgeday = isMonthly ? this.state.Monthlypledgeday : null
+        const Monthlypledgeday = isMonthly ? this.state.fields.Monthlypledgeday : null
         const Monthlypledgeamount = isMonthly ? this.state.cart.items[0].PledgeAmount : null
         const Singledonationamount = !isMonthly ? this.state.cart.items[0].PledgeAmount : null
-        const ShipTo = this.state.shipping
-        const multipleDonations = () => this.state.cart.items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount})=>{DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount})
-        console.log({UrlReferer})
-        fetch("http://SecureGiving.cbn.local/api/contribution", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: {
+        const ShipTo = this.state.shipping ? "Yes" : "No"
+        const multipleDonations = () => this.state.cart.items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount})=> {return {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}})
+       
+        let data = {
                 Address1,
                 Address2,
                 APIAccessID,
@@ -402,13 +402,40 @@ export default class NameAddressForm extends Component {
                 ShipToCountry,
                 ShipToName
             }
-        }).then(checkStatus)
-        .then(parseResponse)
-        .then(function(data) {
-            console.log('request succeeded with JSON response', data)
-        }).catch(function(error) {
-            console.log('request failed', error)
-        })
+        // DUMMY DATA 
+        // data = {"Address1":"Test API Address Line 1","Address2":"CSB 111","APIAccessID":"6A458276-4BFF-4EC8-82B1-9B24D9E1A26A","City":"Virginia Beach","Clublevel":"700Club","Country":"United States","Donationtype":"CC","Emailaddress":"Shanthi.Catlin@cbn.org","Firstname":"Just","IsRecurringCreditCardDonation":false,"Lastname":"Testing","Monthlypledgeamount":0,"Monthlypledgeday":"","MotivationText":"002345","MulipleDonations":[{"DetailName":"SPGF","DetailDescription":"Single Pledge","DetailCprojCredit":"043250","DetailCprojMail":"043251","PledgeAmount":10}],"Phoneareacode":"757","Phoneexchange":"555","Phonenumber":"5512","SectionName":"700Club","ShipTo":"No","Singledonationamount":10,"State":"VA","Title":"Mr","Transactiontype":"Single","UrlReferer":"http://localhost:30617/TestGivingForm.aspx","Zip":"23463","ClientBrowser":"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36","ClientIP":"10.100.43.171"}
+        console.log({data})
+        axios({
+            method: 'POST',
+            url: "http://SecureGiving.cbn.local/api/contribution",
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            data
+        }).then(response=>{
+            response = util.inspect(response)
+            console.log({res: response.data})
+        }).catch(error=>{
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.error(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.error('Error', error.message);
+            }
+            console.error(error.config);
+
+            //parse errors and set errors
+            this.setState({submitting: false})
+        });
     }
 
     calculateTotal() {
@@ -420,6 +447,9 @@ export default class NameAddressForm extends Component {
         const found = items.findIndex(el=>el && el.type == "donation")
         if(found > -1) {
             items[found] = item
+            const errors = this.state.errors
+            errors.amount = ""
+            this.setState({errors})
         } else {
             items.push(item)
         }
@@ -431,11 +461,14 @@ export default class NameAddressForm extends Component {
     render() {
         return (
             <form id="react-form" autoComplete="off" onSubmit={this.handleSubmit}>
-                <GivingArray 
-                    arrayOptions={this.state.arrayOptions} 
-                    monthlyChecked={this.state.monthlyChecked} 
-                    addToCart={this.addToCart}
-                />
+                <div styleName="form.gift-choice">
+                    <GivingArray 
+                        arrayOptions={this.state.arrayOptions} 
+                        monthlyChecked={this.state.monthlyChecked} 
+                        addToCart={this.addToCart}
+                    />
+                    <div styleName="form.error form.amount-error">{this.state.errors.amount}</div>
+                </div>
 
                 { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.Monthlypledgeday) : null }
 
@@ -657,26 +690,11 @@ export default class NameAddressForm extends Component {
 
                 </div>
                 <div styleName="form.SubmitButton flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
-                    <button styleName="form.submitButton" id="submit" onClick={this.handleSubmit}>Continue to Payment &#10142;</button>
+                    <button styleName="form.submitButton" id="submit" onClick={this.handleSubmit} disabled={this.state.submitting}>Continue to Payment &#10142;</button>
                 </div>
                 <div id="seals"></div>
             </form>
 
         )
     }
-}
-
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response
-  } else {
-    var error = new Error(response.statusText)
-    error.response = response
-    throw error
-  }
-}
-
-function parseResponse(response) {
-    if (response.headers.get('Content-Type') == 'application/json') return response.json()
-    else return response.text()
 }

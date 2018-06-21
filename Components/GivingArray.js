@@ -14,11 +14,11 @@ export default class GivingArray extends Component {
             monthlyChecked: props.monthlyChecked,
             monthlyPledgeData: {
                 DetailCprojCredit: props.arrayOptions.monthlyPledgeData.DetailCprojCredit,
-                DetailCprojCMail: props.arrayOptions.monthlyPledgeData.DetailCprojMail
+                DetailCprojMail: props.arrayOptions.monthlyPledgeData.DetailCprojMail
             },
             singlePledgeData: {
                 DetailCprojCredit: props.arrayOptions.singlePledgeData.DetailCprojCredit,
-                DetailCprojCMail: props.arrayOptions.singlePledgeData.DetailCprojMail
+                DetailCprojMail: props.arrayOptions.singlePledgeData.DetailCprojMail
             },
             selectedIndex: null,
             otherAmount: 0,
