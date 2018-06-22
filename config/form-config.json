@@ -8,8 +8,8 @@
     "products": [{
         "productAmt": 15,
         "description": "",
-        "solicitation": "",
-        "productCode": "",
+        "DetailCprojCredit": "043250",
+        "DetailCprojMail": "043251",
         "productMessage": "With stunning cinematography and moving interviews, <em>To Life</em> follows Israeli volunteers in Uganda, Nepal, Greece, Kurdistan, and the Palestinian Territories to discover how Israel is fulfilling ancient prophecy by being a light to the nations today.",
         "productTitle": "To Life DVD"
     }],

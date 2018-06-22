@@ -415,7 +415,7 @@ export default class NameAddressForm extends Component {
             data
         }).then(response=>{
             const msg = response.data;
-            console.log({msg})
+            // console.log({msg})
             self.props.submitForm({msg, data})
         }).catch(error=>{
             if (error.response) {
@@ -456,7 +456,7 @@ export default class NameAddressForm extends Component {
         } else {
             items.push(item)
         }
-        console.log({items})
+        // console.log({items})
         this.setState({cart: {items}})
         
     }

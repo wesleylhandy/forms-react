@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios'
 
 import NameAddressForm from "./NameAddressForm"
-import ConfirmationIframe from "./ConfirmationIframe"
+import ConfirmationPage from "./ConfirmationPage"
 
 import config from '../config/form-config.json'
 import cssVars from '../config/css-config.json'
@@ -44,8 +44,9 @@ export default class App extends Component {
             },
             submitted: false,
             confirmed: false,
-            iframeSrc: null,
-            formData: {},
+            confirmationData: null,
+            formAction: null,
+            formData: null,
             donorID: null,
         }
         this.submitForm = this.submitForm.bind(this)
@@ -60,8 +61,52 @@ export default class App extends Component {
     submitForm({msg, data}) {
         const donorID = msg.split(";")[0].split(" - ")[1]
         const confirmURI = msg.split(" is ")[1]
-        // make api call to confirmuri to get iframesrc code
-        this.setState({submitted: true, formData: data, donorID, iframeSrc});
+        const bodyFormData = new FormData();
+        bodyFormData.set('DonorID', donorID);
+        bodyFormData.set('ApiKey', data.APIaccessID);
+        bodyFormData.set('BackColor', '#ED7014');
+        bodyFormData.set('HeaderFile', 'http://pre.vb.cbn.local/giving/api/TestFormHeader.htm');
+        bodyFormData.set('FooterFile', 'http://pre.vb.cbn.local/giving/api/TestFormFooter.htm')
+        axios({
+            method: 'POST',
+            url: confirmURI,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data:  bodyFormData
+        }).then(response=> {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(response.data, "text/html");
+            const formAction = doc.querySelector('form').action
+            const inputs = doc.querySelectorAll('input[type="hidden"]')
+            const confirmationData = []
+            inputs.forEach(input=> confirmationData.push({name: input.name, value: input.value}))
+            // console.log(confirmationData)
+            // console.log({formAction})
+            this.setState({submitted: true, formData: data, donorID, confirmationData, formAction});
+        }).catch(error=>{
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.error(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.error('Error', error.message);
+            }
+            console.error({error})
+            console.error(error.config);
+
+            //parse errors and set errors
+            this.setState({submitting: false})
+        })
+
     }
 
     updateSrc(src) {
@@ -72,7 +117,15 @@ export default class App extends Component {
         return ( 
             <div styleName='form.form-wrapper'> 
                 { 
-                    this.state.submitted ? ( <ConfirmationIframe {...this.state }/> ) : ( <NameAddressForm {...this.state } submitForm={ this.submitForm }/> )
+                    this.state.submitted ? ( 
+                        <ConfirmationPage 
+                            confirmationData={this.state.confirmationData} 
+                            formData={this.state.formData} 
+                            formAction={this.state.formAction}
+                        /> 
+                    ) : ( 
+                        <NameAddressForm {...this.state } submitForm={ this.submitForm }/> 
+                    )
                 } 
              </div>
         )
