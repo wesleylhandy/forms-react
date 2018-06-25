@@ -41,7 +41,7 @@ function validateCCInfo(curccnum, curccType, curccExpYear, curccExpMonth) {
         passes = false;
         errors.push({ type: "ExpiresMonth", error: "The expiration date entered appears to be expired." })
     }
-    if ((curccnum == "") || curccType == "" || !checkdigit(curccnum)) {
+    if ((curccnum == "") || curccType == "" || !checkDigits(curccnum)) {
         passes = false;
         errors.push({ type: "ccNumber", error: "Please enter a valid credit card number." })
         return { passes, errors };
@@ -121,7 +121,13 @@ function IsValidCreditCardType(cardNum, cardType) {
     return true;
 }
 
-function checkExpDate(expYear, expMonth) {
+/**
+ * Validates that the Credit Card expiration date has not passed
+ * @param {String} expYear - 4 digit expiration year
+ * @param {String} expMonth - 2 digit expiration month
+ * @returns {Boolean} - true if unexpired, false if past expiration
+ */
+export function checkExpDate(expYear, expMonth) {
     var curdate = new Date();
     var curyear = curdate.getFullYear();
     var curmonth = curdate.getMonth() + 1;
@@ -143,7 +149,12 @@ function checkExpDate(expYear, expMonth) {
     return true;
 }
 
-function checkdigit(cardNumber) {
+/**
+ * Validates that the credit card number fits the Luhn Algorithm
+ * @param {string} cardNumber - credit card number
+ * @returns {Boolean} - true if valid, false if invalid
+ */
+export function checkDigits(cardNumber) {
     // validate number
     var j = cardNumber.length / 2;
     if (j < 6.5 || j > 8 || j == 7)

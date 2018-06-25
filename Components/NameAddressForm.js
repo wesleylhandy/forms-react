@@ -405,6 +405,7 @@ export default class NameAddressForm extends Component {
                 ShipToCountry,
                 ShipToName
             }
+        // console.log({data})
         const self = this;
         axios({
             method: 'POST',
@@ -697,7 +698,7 @@ export default class NameAddressForm extends Component {
 
                 </div>
                 <div styleName="form.SubmitButton flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
-                    <button styleName="form.submitButton" id="submit" onClick={this.handleSubmit} disabled={this.state.submitting}>Continue to Payment &#10142;</button>
+                    <input type="submit" styleName="form.submitButton" id="submit" onClick={this.handleSubmit} disabled={this.state.submitting} value="Continue to Payment &#10142;"/>
                 </div>
                 <div id="seals"></div>
             </form>

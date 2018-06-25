@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import checkValues from './helpers/cc-validation'
+import checkValues, {checkDigits, checkExpDate} from './helpers/cc-validation'
 import main from './styles/main.css'
 import flex from './styles/flex.css'
 import form from './styles/form.css'
@@ -43,16 +43,23 @@ export default class ConfirmationPage extends Component {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.getCardType = this.getCardType.bind(this)
         this.getMainURL = this.getMainURL.bind(this)
+        this.validateInput = this.validateInput.bind(this)
     }
 
     assignValues(e) {
         if (this.state.submitting) return e.preventDefault();// ie. disallow multiple submissions
         this.setState({submitting: true})
-        var redirURL = this.getMainURL();
+        
+        let redirURL = this.getMainURL();
 
         if (redirURL == "" || redirURL == "undefined") {
             redirURL = 'http://www.cbn.com';
         }
+        //set timeout if url does not respond in timely manner
+        const timeout = setTimeout(function() {
+                window.location.href = redirURL; return false;
+            }, 15000);
+
         const {ccNumber, ExpiresYear, ExpiresMonth} = this.state.fields
         const cardType = this.state.ccChecked
         const isValid = checkValues(cardType, ccNumber, ExpiresMonth, ExpiresYear)
@@ -64,27 +71,25 @@ export default class ConfirmationPage extends Component {
                 document.querySelector('input[name="transaction_type"]').value = isValid.transactionType
                 document.querySelector('input[name="signature"]').value = document.querySelector('input[name="signatureDis"]').value
             }
+            /** for development testing **/
             const bodyFormData = new FormData();
             const data = document.querySelectorAll('form>input[type="hidden"]');
             data.forEach(datum=> bodyFormData.set(datum.name, datum.value))
-            axios({
-                method: "POST",
-                url: this.state.formAction,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                data:  bodyFormData
-                })
-            setTimeout(function() {
-                document.location.href = redirURL; return false;
-            }, 15000);
-
+            console.log({bodyFormData})
+            //cancel redirect
+            clearTimeout(timeout)
+            // bubble formaction
+            return true
         } else {
-            e.preventDefault();
+            // handle validation errors
             const validationErrors = isValid.errors
             const errors = this.state.errors
             validationErrors.forEach(vErr=>errors[vErr.type] = vErr.error)
             this.setState({errors, submitting: false})
+            // cancel redirect
+            clearTimeout(timeout)
+            //cancel bubble
+            return e.preventDefault();
         }
     }
 
@@ -170,17 +175,42 @@ export default class ConfirmationPage extends Component {
         const target = e.target;
         let value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
+        const errors = this.state.errors;
 
-        if (name=="ccNumber" && value.length > 16) {
-            const errors = this.state.errors;
-            errors[name] = "Maximum Digits Allowed"
-            return this.setState({errors})
-        }
+        const error = this.validateInput(name, value);
+        errors[name] = error
         
         const fields = this.state.fields;
         fields[name] = value;
 
-        this.setState({ fields });
+        this.setState({ fields, errors });
+    }
+
+    validateInput(name, value) {
+        let error = '';
+        switch(name) {
+            case "ccNumber":
+                if (value.length > 16) {
+                    error = "Maximum digits allowed is reached"
+                } else if(!checkDigits(value)) {
+                    error = "Please enter a valid Credit Card number"
+                }
+                if (value.length && value[0] >= 3 && value[0] <= 6){
+                    this.setState({ccChecked: "00" + value})
+                }
+                break;
+            case "ExpiresMonth":
+                if(!checkExpDate(this.state.fields.ExpiresYear, value)) {
+                    error = "Please select a valid expiration date."
+                }
+                break;
+            case "ExpiresYear":
+                if(!checkExpDate(value, this.state.field.ExpiresMonth)) {
+                    error = "Please select a valid expiration date."
+                }
+                break;
+        }
+        return error
     }
 
     renderProductSummary(data) {
@@ -203,7 +233,7 @@ export default class ConfirmationPage extends Component {
         }
         return ( 
             <div>
-                <form onSubmit={this.assignValues}>
+                <form action={this.state.formAction} method="POST" onSubmit={this.assignValues}>
                     <div className="mboxDefault">
                         <h2 styleName="main.caps form.form-header">Almost Done!</h2>
                         <h3>Enter Payment Information and click <br />
@@ -270,7 +300,7 @@ export default class ConfirmationPage extends Component {
                     {this.renderProductSummary(this.state.formData)}
                     {formInputs}
                     <div styleName="form.SubmitButton flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
-                        <button styleName="form.submitButton" id="submit" onClick={this.assignValues} disabled={this.state.submitting}>Finish Donation &#10142;</button>
+                        <input type="submit" styleName="form.submitButton" id="submit" disabled={this.state.submitting} value="Finish Donation &#10142;"/>
                     </div>
                     <div id="seals"></div>
                 </form>

@@ -29,8 +29,13 @@ router.get("/", function(req, res) {
 
 router.post('/', function(req, res) {
     console.log({ req: req.body, params: req.query })
-    res.statusCode = 200;
-    res.sendFile(path.resolve(__dirname, 'thankyou.html'))
+    if (req.query && req.query.status.toLowerCase() == 'error') {
+        res.statusCode = 400
+        res.sendFile(path.resolve(__dirname, 'error.html'))
+    } else {
+        res.statusCode = 200;
+        res.sendFile(path.resolve(__dirname, 'thankyou.html'))
+    }
 })
 
 app.use("/", router);
