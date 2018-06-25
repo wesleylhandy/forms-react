@@ -1,7 +1,7 @@
 import "babel-polyfill";
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import cssVars from 'css-vars-ponyfill';
 
 cssVars();
@@ -12,4 +12,4 @@ import App from './Components/App'
 
 const rootEntry = document.getElementById('form-root')
 
-ReactDOM.render( <App/> , rootEntry);
+ReactDOM.render( <App/>, rootEntry);

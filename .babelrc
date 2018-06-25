@@ -6,5 +6,8 @@
             "handleMissingStyleName": "warn"
         }]
     ],
-    "presets": ["env", "react"]
+    "presets": [
+        ["env", { "useBuiltIns": true }], "react"
+    ]
+
 }

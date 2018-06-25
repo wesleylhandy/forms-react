@@ -47,7 +47,8 @@ export default class ConfirmationPage extends Component {
     }
 
     assignValues(e) {
-        if (this.state.submitting) return e.preventDefault();// ie. disallow multiple submissions
+        e.preventDefault();
+        if (this.state.submitting) return // ie. disallow multiple submissions
         this.setState({submitting: true})
         
         let redirURL = this.getMainURL();
@@ -61,25 +62,24 @@ export default class ConfirmationPage extends Component {
             }, 15000);
 
         const {ccNumber, ExpiresYear, ExpiresMonth} = this.state.fields
-        const cardType = this.state.ccChecked
-        const isValid = checkValues(cardType, ccNumber, ExpiresMonth, ExpiresYear)
+        const ccChecked = this.state.ccChecked
+        const isValid = checkValues(ccChecked, ccNumber, ExpiresMonth, ExpiresYear)
         if (isValid.passes) {
-            document.querySelector('input[name="card_type"]').value = isValid.ccCardTyp
-            document.querySelector('input[name="card_number"]').value = isValid.ccNum
-            document.querySelector('input[name="card_expiry_date"]').value = isValid.ccExpDate
+            const {ccCardType, ccNum, ccExpDate, transactionType} = isValid
+            document.querySelector('input[name="card_type"]').value = ccCardType
+            document.querySelector('input[name="card_number"]').value = ccNum
+            document.querySelector('input[name="card_expiry_date"]').value = ccExpDate
             if (isValid.transactionType) {
-                document.querySelector('input[name="transaction_type"]').value = isValid.transactionType
+                document.querySelector('input[name="transaction_type"]').value = transactionType
                 document.querySelector('input[name="signature"]').value = document.querySelector('input[name="signatureDis"]').value
             }
-            /** for development testing **/
-            const bodyFormData = new FormData();
-            const data = document.querySelectorAll('form>input[type="hidden"]');
-            data.forEach(datum=> bodyFormData.set(datum.name, datum.value))
-            console.log({bodyFormData})
+
             //cancel redirect
             clearTimeout(timeout)
+
             // bubble formaction
-            return true
+            document.forms.hiddenform.submit.type = 'submit';
+            return document.forms.hiddenform.submit.click();
         } else {
             // handle validation errors
             const validationErrors = isValid.errors
@@ -87,9 +87,8 @@ export default class ConfirmationPage extends Component {
             validationErrors.forEach(vErr=>errors[vErr.type] = vErr.error)
             this.setState({errors, submitting: false})
             // cancel redirect
-            clearTimeout(timeout)
-            //cancel bubble
-            return e.preventDefault();
+            return clearTimeout(timeout)
+
         }
     }
 
@@ -192,11 +191,28 @@ export default class ConfirmationPage extends Component {
             case "ccNumber":
                 if (value.length > 16) {
                     error = "Maximum digits allowed is reached"
-                } else if(!checkDigits(value)) {
+                } else if(!/^[0-9]*$/.test(value)) {
+                    error = "Card Number must contain only numerical digits"
+                } else if(value.length > 15 && !checkDigits(value)) {
                     error = "Please enter a valid Credit Card number"
                 }
-                if (value.length && value[0] >= 3 && value[0] <= 6){
-                    this.setState({ccChecked: "00" + value})
+                if (!error && value.length){
+                    let num = ""
+                    switch(parseInt(value.slice(0,1))) {
+                        case 4:
+                            num = "001"
+                            break;
+                        case 5: 
+                            num = "002"
+                            break;
+                        case 3:
+                            num = "003"
+                            break;
+                        case 6:
+                            num = "004"
+                            break;
+                    }
+                    this.setState({ccChecked: num})
                 }
                 break;
             case "ExpiresMonth":
@@ -205,7 +221,7 @@ export default class ConfirmationPage extends Component {
                 }
                 break;
             case "ExpiresYear":
-                if(!checkExpDate(value, this.state.field.ExpiresMonth)) {
+                if(!checkExpDate(value, this.state.fields.ExpiresMonth)) {
                     error = "Please select a valid expiration date."
                 }
                 break;
@@ -223,9 +239,9 @@ export default class ConfirmationPage extends Component {
         this.state.confirmationData.forEach((datum,i)=>{
             if (datum.name.includes("ucConfirmBody")) {
                 name=datum.name.split("$")[1];
-                dataInputs.push(<input key={`datum${i}`} name={name} defaultValue={datum.value ? datum.value : ""} hidden={true}/>)
+                dataInputs.push(<input key={`datum${i}`} id={name} name={name} defaultValue={datum.value ? datum.value : ""} type="hidden"/>)
             } else {
-                formInputs.push(<input key={`datum${i}`} name={datum.name} defaultValue={datum.value ? datum.value: ""} hidden={true}/>)
+                formInputs.push(<input key={`datum${i}`} id={datum.name} name={datum.name} value={datum.value ? datum.value: ""} type="hidden"/>)
             }
         })
         for (let i = this.state.curYear; i < this.state.curYear + 25; i++) {
@@ -233,7 +249,7 @@ export default class ConfirmationPage extends Component {
         }
         return ( 
             <div>
-                <form action={this.state.formAction} method="POST" onSubmit={this.assignValues}>
+                <form styleName="form.ccForm" onSubmit={this.assignValues} method="POST">
                     <div className="mboxDefault">
                         <h2 styleName="main.caps form.form-header">Almost Done!</h2>
                         <h3>Enter Payment Information and click <br />
@@ -249,6 +265,8 @@ export default class ConfirmationPage extends Component {
                             <input styleName="form.formControl" 
                                 type='text' 
                                 id="ccNumber" 
+                                maxLength={16}
+                                minLength={15}
                                 name="ccNumber" 
                                 placeholder="####################" 
                                 required={true}
@@ -298,11 +316,14 @@ export default class ConfirmationPage extends Component {
                             </div>
                         </div>
                     {this.renderProductSummary(this.state.formData)}
-                    {formInputs}
+
                     <div styleName="form.SubmitButton flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
                         <input type="submit" styleName="form.submitButton" id="submit" disabled={this.state.submitting} value="Finish Donation &#10142;"/>
                     </div>
                     <div id="seals"></div>
+                </form>
+                <form id="hiddenform" styleName="main.hidden" action={this.state.formAction} method="POST">
+                    {formInputs}
                 </form>
                 {dataInputs}
             </div>

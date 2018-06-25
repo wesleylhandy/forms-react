@@ -367,7 +367,7 @@ export default class NameAddressForm extends Component {
         const Singledonationamount = !isMonthly ? this.state.cart.items[0].PledgeAmount : 0
         const ShipTo = this.state.shipping ? "Yes" : "No"
         const multipleDonations = () => this.state.cart.items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount})=> {return {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}})
-       
+        const MultipleDonations = multipleDonations();
         let data = {
                 Address1,
                 Address2,
@@ -383,7 +383,7 @@ export default class NameAddressForm extends Component {
                 Monthlypledgeamount,
                 Monthlypledgeday,
                 MotivationText,
-                MultipleDonations: multipleDonations(),
+                MultipleDonations,
                 Phoneareacode: "555", //update later
                 Phoneexchange: "555", //update later
                 Phonenumber: "1212", //update later
@@ -405,7 +405,7 @@ export default class NameAddressForm extends Component {
                 ShipToCountry,
                 ShipToName
             }
-        // console.log({data})
+        // console.log({MultipleDonations: data.MultipleDonations})
         const self = this;
         axios({
             method: 'POST',

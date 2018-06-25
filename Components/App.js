@@ -7,8 +7,7 @@ import ConfirmationPage from "./ConfirmationPage"
 import config from '../config/form-config.json'
 import cssVars from '../config/css-config.json'
 
-import './styles/main.css'
-import form from './styles/form.css'
+import './styles/form.css'
 
 export default class App extends Component {
     constructor(props) {
@@ -50,8 +49,6 @@ export default class App extends Component {
             donorID: null,
         }
         this.submitForm = this.submitForm.bind(this)
-        this.updateSrc = this.updateSrc.bind(this)
-
     }
 
     componentDidMount() {
@@ -109,13 +106,9 @@ export default class App extends Component {
 
     }
 
-    updateSrc(src) {
-        this.setState((prevState, props) => { iframeSrc: src });
-    }
-
     render() {
         return ( 
-            <div styleName='form.form-wrapper'> 
+            <div styleName='form-wrapper'> 
                 { 
                     this.state.submitted ? ( 
                         <ConfirmationPage 
