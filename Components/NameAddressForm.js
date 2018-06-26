@@ -500,6 +500,12 @@ export default class NameAddressForm extends Component {
         
     }
 
+    /**
+     * Function to validate the input fields of the form
+     * @param {String} name - name of the input being validated
+     * @param {*} value - String, Number or Boolean of value from the input
+     * @returns {String} - an empty String if no errors, else a string with a single error message
+     */
     validateInput(name, value) {
         let error = '';
         switch(name) {
@@ -519,8 +525,8 @@ export default class NameAddressForm extends Component {
                 if (value && this.state.fields[country] == "US" && !(zip_regex.test(value))) {
                     error = "Please enter a valid US Zip Code"
                 } 
-                if (value && this.state.fields[country] == "US" && zip_regex.test(value)) {
-                    axios.get(`http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=${value}`)
+                if (value && zip_regex.test(value)) {
+                    axios.get(`http://pre.vb.cbn.local/giving/API/testing/TestCSZRequest.aspx?Zip=${value}`)
                         .then(response=>console.log(response.data))
                         .catch(error=>{
                             if (error.response) {
