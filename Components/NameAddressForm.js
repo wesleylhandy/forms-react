@@ -8,6 +8,12 @@ import form from './styles/form.css'
 import GivingArray from './GivingArray'
 import ProductDisplay from './ProductDisplay'
 
+const usStates = [["Alaska", "AK"],["Alabama", "AL"],["Arkansas", "AR"],["Arizona", "AZ"],["California", "CA"],["Colorado", "CO"],["Connecticut", "CT"],["District Of Columbia", "DC"],["Delaware", "DE"],["Florida", "FL"],["Georgia", "GA"],["Hawaii", "HI"],["Iowa", "IA"],["Idaho", "ID"],["Illinois", "IL"],["Indiana", "IN"],["Kansas", "KS"],["Kentucky", "KY"],["Louisiana", "LA"],["Massachusetts", "MA"],["Maryland", "MD"],["Maine", "ME"],["Michigan", "MI"],["Minnesota", "MN"],["Missouri", "MO"],["Mississippi", "MS"],["Montana", "MT"],["North Carolina", "NC"],["North Dakota", "ND"],["Nebraska", "NE"],["New Hampshire", "NH"],["New Jersey", "NJ"],["New Mexico", "NM"],["Nevada", "NV"],["New York", "NY"],["Ohio", "OH"],["Oklahoma", "OK"],["Oregon", "OR"],["Pennsylvania", "PA"],["Rhode Island", "RI"],["South Carolina", "SC"],["South Dakota", "SD"],["Tennessee", "TN"],["Texas", "TX"],["Utah", "UT"],["Virginia", "VA"],["Vermont", "VT"],["Washington", "WA"],["Wisconsin", "WI"],["West Virginia", "WV"],["Wyoming", "WY"]],          
+usMilitary = [["APO/FPO ZIP 340", "AA"],["APO/FPO ZIP\'S 090-098", "AE"],["APO/FPO ZIP\'S 962-966", "AP"]],
+canadianProvinces = [["Alberta", "AB"],["British Columbia", "BC"],["Manitoba", "MB"],["New Brunswick", "NB"],["Newfoundland and Labrador", "NL"],["Nova Scotia", "NS"],["Northwest Territories", "NT"],["Nunavut", "NU"],["Ontario", "ON"],["Prince Edward Island", "PE"],["Quebec", "QC"],["Saskatchewan", "SK"],["Yukon Territory", "YT"]],
+usTerritories = [["American Samoa", "AS"],["Federated States Of Micronesia", "FM"],["Guam", "GU"],["Marshall Islands", "MH"],["Palau", "PW"],["Northern Mariana Islands", "MP"],["Puerto Rico", "PR"],["Virgin Islands", "VI"],["Other", "00"]],
+countries = [["Afghanistan", "AF"],["Aland Islands", ""],["Albania", "AL"],["Algeria", "DZ"],["American Samoa", "AS"],["Andorra", "AD"],["Angola", "AO"],["Anguilla", "AI"],["Antigua and Barbuda", "AG"],["Argentina", "AR"],["Armenia", "AM"],["Aruba", "AW"],["Australia", "AU"],["Austria", "AT"],["Azerbaijan", "AZ"],["Bahamas", "BS"],["Bahrain", "BH"],["Bangladesh", "BD"],["Barbados", "BB"],["Belarus", "BY"],["Belgium", "BE"],["Belize", "BZ"],["Benin", "BJ"],["Bermuda", "BM"],["Bhutan", "BT"],["Bolivia", "BO"],["Bosnia and Herzegovina", "BA"],["Botswana", "BW"],["Brazil", "BR"],["British Virgin Islands", "VG"],["Brunei Darussalam", "BN"],["Bulgaria", "BG"],["Burkina Faso", "BF"],["Burundi", "BI"],["Cambodia", "KH"],["Cameroon", "CM"],["Canada", "CA"],["Cape Verde", "CV"],["Cayman Islands", "KY"],["Central African Republic", "CF"],["Chad", "TD"],["Channel Islands", ""],["Chile", "CL"],["China", "CN"],["Hong Kong Spcl. Admin. Region of China", "CN"],["Macao Spcl. Admin. Region of China", "MO"],["Colombia", "CO"],["Comoros", "KM"],["Congo", "CG"],["Cook Islands", "CK"],["Costa Rica", "CR"],["C�te d\'Ivoire", ""],["Croatia", "HR"],["Cuba", "CU"],["Cyprus", "CY"],["Czech Republic", "CZ"],["Democratic People\'s Rep. of Korea", "KR"],["Democratic Republic of the Congo", "CG"],["Denmark", "DK"],["Djibouti", "DJ"],["Dominica", "DM"],["Dominican Republic", "DO"],["Ecuador", "EC"],["Egypt", "EG"],["El Salvador", "SV"],["Equatorial Guinea", "GQ"],["Eritrea", "ER"],["Estonia", "EE"],["Ethiopia", "ET"],["Faeroe Islands", "FO"],["Falkland Islands (Malvinas)", "FK"],["Fiji", "FJ"],["Finland", "FI"],["France", "FR"],["French Guiana", "GF"],["French Polynesia", "PF"],["Gabon", "GA"],["Gambia", "GM"],["Georgia", "GE"],["Germany", "DE"],["Ghana", "GH"],["Gibraltar", "GI"],["Greece", "GR"],["Greenland", "GL"],["Grenada", "GD"],["Guadeloupe", "GP"],["Guam", "GU"],["Guatemala", "GT"],["Guinea", "GN"],["Guinea-Bissau", "GW"],["Guyana", "GY"],["Haiti", "HT"],["Holy See", ""],["Honduras", "HN"],["Hungary", "HU"],["Iceland", "IS"],["India", "IN"],["Indonesia", "ID"],["Iran (Islamic Republic of)", "IR"],["Iraq", "IQ"],["Ireland", "IE"],["Isle of Man", ""],["Israel", "IL"],["Italy", "IT"],["Jamaica", "JM"],["Japan", "JP"],["Jordan", "JO"],["Kazakhstan", "KZ"],["Kenya", "KE"],["Kiribati", "KI"],["Kuwait", "KW"],["Kyrgyzstan", "KG"],["Lao People\'s Democratic Republic", "LA"],["Latvia", "LV"],["Lebanon", "LB"],["Lesotho", "LS"],["Liberia", "LR"],["Libyan Arab Jamahiriya", "LY"],["Liechtenstein", "LI"],["Lithuania", "LT"],["Luxembourg", "LU"],["Madagascar", "MG"],["Malawi", "MW"],["Malaysia", "MY"],["Maldives", "MV"],["Mali", "ML"],["Malta", "MT"],["Marshall Islands", "MH"],["Martinique", "MQ"],["Mauritania", "MR"],["Mauritius", "MU"],["Mayotte", ""],["Mexico", "MX"],["Micronesia (Federated States of)", "FM"],["Monaco", "MC"],["Mongolia", "MN"],["Montserrat", "MS"],["Morocco", "MA"],["Mozambique", "MZ"],["Myanmar", "MM"],["Namibia", "NA"],["Nauru", "NR"],["Nepal", "NP"],["Netherlands", "NL"],["Netherlands Antilles", "AN"],["New Caledonia", "NC"],["New Zealand", "NZ"],["Nicaragua", "NI"],["Niger", "NE"],["Nigeria", "NG"],["Niue", "NU"],["Norfolk Island", "NF"],["Northern Mariana Islands", "MP"],["Norway", "NO"],["Occupied Palestinian Territory", ""],["Oman", "OM"],["Pakistan", "PK"],["Palau", "PW"],["Panama", "PA"],["Papua New Guinea", "PG"],["Paraguay", "PY"],["Peru", "PE"],["Philippines", "PH"],["Pitcairn", "PN"],["Poland", "PL"],["Portugal", "PT"],["Puerto Rico", "PR"],["Qatar", "QA"],["Republic of Korea", "KR"],["Republic of Moldova", "MD"],["R�union", "RE"],["Romania", "RO"],["Russian Federation", "RU"],["Rwanda", "RW"],["Saint Helena", "SH"],["Saint Kitts and Nevis", "KN"],["Saint Lucia", "LC"],["Saint Pierre and Miquelon", "PM"],["Saint Vincent and the Grenadines", "VC"],["Samoa", "WS"],["San Marino", "SM"],["Sao Tome and Principe", "ST"],["Saudi Arabia", "SA"],["Senegal", "SN"],["Serbia and Montenegro", "RS"],["Seychelles", "SC"],["Sierra Leone", "SL"],["Singapore", "SG"],["Slovakia", "SK"],["Slovenia", "SI"],["Solomon Islands", "SB"],["Somalia", "SO"],["South Africa", "ZA"],["Spain", "ES"],["Sri Lanka", "LK"],["Sudan", "SD"],["Suriname", "SR"],["Svalbard and Jan Mayen Islands", "SJ"],["Swaziland", "SZ"],["Sweden", "SE"],["Switzerland", "CH"],["Syrian Arab Republic", "SY"],["Taiwan", "TW"],["Tajikistan", "TJ"],["Thailand", "TH"],["The former Yugoslav Rep. of Macedonia", "MK"],["Timor-Leste", "TL"],["Togo", "TG"],["Tokelau", "TK"],["Tonga", "TO"],["Trinidad and Tobago", "TT"],["Tunisia", "TN"],["Turkey", "TR"],["Turkmenistan", "TM"],["Turks and Caicos Islands", "TC"],["Tuvalu", "TV"],["Uganda", "UG"],["Ukraine", "UA"],["United Arab Emirates", "AE"],["United Kingdom", "GB"],["United Republic of Tanzania", "TZ"],["United States", "US"],["United States Virgin Islands", "VI"],["Uruguay", "UY"],["Uzbekistan", "UZ"],["Vanuatu", "VU"],["Venezuela", "VE"],["Viet Nam", "VN"],["Wallis and Futuna Islands", "WF"],["Western Sahara", "EH"],["Yemen", "YE"],["Zambia", "ZM"],["Zimbabwe", "ZW"]]
+
 export default class NameAddressForm extends Component {
     constructor(props){
         super(props)
@@ -94,7 +100,7 @@ export default class NameAddressForm extends Component {
                 ShipToState: "",
                 ShipToCountry: "",
                 amount: ""
-            }          
+            }
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -260,7 +266,8 @@ export default class NameAddressForm extends Component {
                                 onChange={this.handleInputChange}
                             >
                                 <option value="">State* &#9663;</option>
-                                <option value="VA">VA</option>
+                                {this.renderStateOptions(this.state.international)}
+
                             </select>
                             <div styleName="form.error">{this.state.errors.ShipToState}</div>
 
@@ -297,7 +304,7 @@ export default class NameAddressForm extends Component {
                                     onChange={this.handleInputChange}
                                 >
                                     <option value="">Country* &#9663;</option>
-                                    <option value="US">USA</option>
+                                    {countries.map((country, i)=><option key={`country-${i}`} value={country[1]}>{country[0]}</option>)}
                                 </select>
                                 <div styleName="form.error">{this.state.errors.ShipToCountry}</div>
 
@@ -308,6 +315,27 @@ export default class NameAddressForm extends Component {
                 </div>
             </div>
         )
+    }
+
+    renderStateOptions(international) {
+
+        function renderOptGroup(type, options) {
+            return <optgroup key={type.replace(" ","")} label={type}>{options.map((opt, i)=><option key={`${type.replace(' ', '')}State-${i}`} value={opt[1]}>{opt[0]}</option>)}</optgroup>
+        }
+
+        let optGroups = []
+        const states = renderOptGroup("U.S. States", usStates)
+        const military = renderOptGroup("U.S. Military", usMilitary)
+        const territories = renderOptGroup("U.S. Territories", usTerritories)
+        let provinces = null;
+        if (international) {
+            provinces = renderOptGroup("Canadian Provinces", canadianProvinces)
+        }
+
+        optGroups.push(states, military, provinces, territories)
+
+        return optGroups
+
     }
 
     /**
@@ -462,6 +490,14 @@ export default class NameAddressForm extends Component {
         
     }
 
+    validateInput(name, value) {
+        let error = '';
+        switch(name) {
+
+        }
+        return error
+    }
+
     render() {
         return (
             <form id="react-form" autoComplete="off" onSubmit={this.handleSubmit}>
@@ -603,7 +639,7 @@ export default class NameAddressForm extends Component {
                                 onChange={this.handleInputChange}
                             >
                                 <option value="">State* &#9663;</option>
-                                <option value="VA">VA</option>
+                                {this.renderStateOptions(this.state.international)}
                             </select>
                             <div styleName="form.error">{this.state.errors.State}</div>
 
@@ -640,7 +676,7 @@ export default class NameAddressForm extends Component {
                                     onChange={this.handleInputChange}
                                 >
                                     <option value="">Country* &#9663;</option>
-                                    <option value="US">USA</option>
+                                    {countries.map((country, i)=><option key={`country-${i}`} value={country[1]}>{country[0]}</option>)}
                                 </select>
                                 <div styleName="form.error">{this.state.errors.Country}</div>
 

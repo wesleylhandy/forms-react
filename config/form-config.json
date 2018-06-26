@@ -2,7 +2,7 @@
     "givingFormat": "buttons",
     "monthlyOption": true,
     "shipping": false,
-    "international": false,
+    "international": true,
     "getPhone": true,
     "numProducts": 0,
     "products": [{

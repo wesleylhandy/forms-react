@@ -20,9 +20,9 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 
 The `config` folder currently includes 2 `json` files:
     
-    1. `css-config.json` - a list of css variables
+1. `css-config.json` - a list of css variables
 
-    2. `form-congif.json` - a set of options and objects for prefilling giving amounts and products offers
+2. `form-congif.json` - a set of options and objects for prefilling giving amounts and products offers
 
 The form will import these files and overwrite defaults configured in the form. As this project develops, we envision a controlled editor that allows configuration files to be created and stored through a visual editor. The actual form will be on the left side, the configuration on the right. Once `css` is configured and the various form options, such as the giving array, solicitation and products, are complete, then the editor will generate a `js` bundle which can be plugged-in to any web project where the form is needed.
 
