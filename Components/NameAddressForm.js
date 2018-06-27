@@ -526,7 +526,8 @@ export default class NameAddressForm extends Component {
                     error = "Please enter a valid US Zip Code"
                 } 
                 if (value && zip_regex.test(value)) {
-                    axios.get(`http://pre.vb.cbn.local/giving/API/testing/TestCSZRequest.aspx?Zip=${value}`)
+                    const url = `http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=${value}`
+                    axios.get(url)
                         .then(response=>console.log(response.data))
                         .catch(error=>{
                             if (error.response) {
