@@ -1,5 +1,8 @@
 {
     "givingFormat": "buttons",
+    "getMiddleName": true,
+    "getSuffix": true,
+    "getSpouseInfo": true,
     "monthlyOption": true,
     "shipping": false,
     "international": true,

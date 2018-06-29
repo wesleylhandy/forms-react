@@ -9,34 +9,44 @@ import cssVars from '../config/css-config.json'
 
 import './styles/form.css'
 
+const { givingFormat, getMiddleName, getSuffix, 
+    getSpouseInfo, monthlyOption, shipping,
+    international, getPhone, products,
+    numProducts, additionalGift, additionalGiftMessage,
+    funds, subscriptions, monthlyAmounts,
+    singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData } = config;
+
 export default class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            givingFormat: config.hasOwnProperty('givingFormat') ? config.givingFormat : "buttons",
-            monthlyOption: config.hasOwnProperty('monthlyOption') && typeof config.monthlyOption == "boolean" ? config.monthlyOption : true,
-            shipping: config.hasOwnProperty('shipping') && typeof config.shipping == "boolean" ? config.shipping : false,
-            international: config.hasOwnProperty('international') && typeof config.international == "boolean" ? config.international : false,
-            getPhone: config.hasOwnProperty('getPhone') ? config.getPhone : true,
-            products: config.hasOwnProperty('products') ? [...config.products] : [],
-            numProducts: config.hasOwnProperty('numProducts') ? config.numProducts : 0,
-            additionalGift: config.hasOwnProperty('additionalGift') && typeof config.additionalGift == "boolean" ? config.additionalGift : false,
-            additionalGiftMessage: config.hasOwnProperty('additionalGiftMessage') ? config.additionalGiftMessage : "Please consider giving an additional gift to support the ministries of CBN",
-            funds: config.hasOwnProperty('funds') ? [...config.funds] : [],
-            subscriptions: config.hasOwnProperty('subscriptions') ? [...config.subscriptions] : [],
-            monthlyAmounts: config.hasOwnProperty('monthlyAmounts') ? [...config.monthlyAmounts] : [7, 15, 30],
-            singleAmounts: config.hasOwnProperty('singleAmounts') ? [...config.singleAmounts] : [25, 50, 100, 250, 300],
-            MotivationText: config.hasOwnProperty('MotivationText') ? config.MotivationText : "041181",
-            monthlyPledgeData: config.hasOwnProperty('monthlyPledgeData') && config.monthlyPledgeData.hasOwnProperty('DetailCprojCredit') && config.monthlyPledgeData.hasOwnProperty('DetailCprojMail') ? {
-                DetailCprojCredit: config.monthlyPledgeData.DetailCprojCredit,
-                DetailCprojMail: config.monthlyPledgeData.DetailCprojMail
+            givingFormat: givingFormat || "buttons",
+            getMiddleName: getMiddleName || false,
+            getSuffix: getSuffix || false,
+            getSpouseInfo: getSpouseInfo || false,
+            monthlyOption: monthlyOption || true,
+            shipping: shipping || false,
+            international: international || false,
+            getPhone: getPhone || true,
+            products: products ? [...products] : [],
+            numProducts: numProducts || 0,
+            additionalGift: additionalGift || false,
+            additionalGiftMessage: additionalGiftMessage || "Please consider giving an additional gift to support the ministries of CBN",
+            funds: funds ? [...funds] : [],
+            subscriptions: subscriptions ? [...subscriptions] : [],
+            monthlyAmounts: monthlyAmounts ? [...monthlyAmounts] : [7, 15, 30],
+            singleAmounts: singleAmounts ? [...singleAmounts] : [25, 50, 100, 250, 300],
+            MotivationText: MotivationText || "041181",
+            monthlyPledgeData: monthlyPledgeData.hasOwnProperty('DetailCprojCredit') && monthlyPledgeData.hasOwnProperty('DetailCprojMail') ? {
+                DetailCprojCredit: monthlyPledgeData.DetailCprojCredit,
+                DetailCprojMail: monthlyPledgeData.DetailCprojMail
             } : {
                 "DetailCprojCredit": "043250",
                 "DetailCprojMail": "043251"
             },
-            singlePledgeData: config.hasOwnProperty('singlePledgeData') && config.singlePledgeData.hasOwnProperty('DetailCprojCredit') && config.singlePledgeData.hasOwnProperty('DetailCprojMail') ? {
-                DetailCprojCredit: config.singlePledgeData.DetailCprojCredit,
-                DetailCprojMail: config.singlePledgeData.DetailCprojMail
+            singlePledgeData: singlePledgeData.hasOwnProperty('DetailCprojCredit') && singlePledgeData.hasOwnProperty('DetailCprojMail') ? {
+                DetailCprojCredit: singlePledgeData.DetailCprojCredit,
+                DetailCprojMail: singlePledgeData.DetailCprojMail
             } : {
                 "DetailCprojCredit": "043250",
                 "DetailCprojMail": "043251"

@@ -47,6 +47,9 @@ export default class NameAddressForm extends Component {
             international: props.international,
             getPhone: props.getPhone,
             monthlyChecked: props.monthlyOption,
+            getSuffix: props.getSuffix,
+            getMiddleName: props.getMiddleName,
+            getSpouseInfo: props.getSpouseInfo,
             totalGift: 0,
             Clublevel: '',
             submitted: false,
@@ -67,7 +70,10 @@ export default class NameAddressForm extends Component {
                 Monthlypledgeday: new Date().getDate(),
                 Title: "",
                 Firstname: "",
+                Middlename: "",
                 Lastname: "",
+                Suffix: "",
+                Spousename: "",
                 Address1: "",
                 Address2: "",
                 City: "",
@@ -88,7 +94,10 @@ export default class NameAddressForm extends Component {
             errors: {
                 Title: "",
                 Firstname: "",
+                Middlename: "",
                 Lastname: "",
+                Suffix: "",
+                Spousename: "",
                 Address1: "",
                 Address2: "",
                 City: "",
@@ -514,12 +523,14 @@ export default class NameAddressForm extends Component {
                     const url = `http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=${value}`
                     axios.get(url)
                         .then(response=>{
-                            const {returnCode, returnMessage, city, state} = response.data;
+                            // console.log(response.data)
+                            const {returnCode, returnMessage, city, state, zip} = response.data;
                             if (returnCode == 1) {
                                 const {fields} = this.state;
                                 const newCity = city.split(";")[0]
                                 fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
                                 fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
+                                fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
                                 if (name == "Zip") fields["Country"] = "US";
                                 this.setState({fields})
                             } else {
@@ -713,7 +724,7 @@ export default class NameAddressForm extends Component {
                             <input styleName="form.formControl" 
                                 id="Zip" 
                                 type='text' 
-                                maxLength="5"
+                                maxLength={this.state.fields.Country != "US" ? 25 : 5}
                                 name="Zip" 
                                 placeholder="Zip*" 
                                 required={true}
