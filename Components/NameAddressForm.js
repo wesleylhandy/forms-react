@@ -83,8 +83,7 @@ export default class NameAddressForm extends Component {
                 ShipToAddress2: "",
                 ShipToCity: "",
                 ShipToZip: "",
-                ShipToState: "",
-                ShipToCountry: ""
+                ShipToState: ""
             },
             errors: {
                 Title: "",
@@ -103,7 +102,6 @@ export default class NameAddressForm extends Component {
                 ShipToCity: "",
                 ShipToZip: "",
                 ShipToState: "",
-                ShipToCountry: "",
                 amount: ""
             }
         }
@@ -193,6 +191,7 @@ export default class NameAddressForm extends Component {
                             <input styleName="form.formControl" 
                                 type='text' 
                                 id="ShipToName" 
+                                maxLength='100' 
                                 name="ShipToName" 
                                 placeholder="First and Last Name" 
                                 required={true}
@@ -213,6 +212,7 @@ export default class NameAddressForm extends Component {
                             <input styleName="form.formControl" 
                                 id="ShipToAddress1" 
                                 type='text' 
+                                maxLength='64' 
                                 name="ShipToAddress1" 
                                 placeholder="Address*" 
                                 required={true}
@@ -228,10 +228,11 @@ export default class NameAddressForm extends Component {
 
                         <div id="form-field-ShipToAddress2" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="ShipToAddress2">Address<span>*</span></label>
+                            <label htmlFor="ShipToAddress2">Address2</label>
                             <input styleName="form.formControl" 
                                 id="ShipToAddress2" 
                                 type='text' 
+                                maxLength='64' 
                                 name="ShipToAddress2" 
                                 placeholder="Address*" 
                                 required={true}
@@ -252,6 +253,7 @@ export default class NameAddressForm extends Component {
                             <input styleName="form.formControl"
                                 id="ShipToCity" 
                                 type='text' 
+                                maxLength='64' 
                                 name="ShipToCity" 
                                 placeholder="City*" 
                                 required={true}
@@ -284,10 +286,11 @@ export default class NameAddressForm extends Component {
 
                         <div id="form-field-ShipToZip" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="ShipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
+                            <label htmlFor="ShipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
                             <input styleName="form.formControl" 
                                 id="ShipToZip" 
                                 type='text' 
+                                maxLength="5"
                                 name="ShipToZip" 
                                 placeholder="Zip*" 
                                 required={true}
@@ -297,25 +300,6 @@ export default class NameAddressForm extends Component {
                             <div styleName="form.error">{this.state.errors.ShipToZip}</div>
 
                         </div>
-
-                        { this.state.international ? (
-                            <div id="form-field-ShipToCountry" styleName="form.formGroup flex.flex-grow">
-                            
-                                <label htmlFor="ShipToCountry">Country<span>*</span></label>
-                                <select styleName="form.formControl" 
-                                    id="ShipToCountry" 
-                                    name="ShipToCountry" 
-                                    required={true}
-                                    value={this.state.fields.ShipToCountry}
-                                    onChange={this.handleInputChange}
-                                >
-                                    <option value="">Country* &#9663;</option>
-                                    {countries.map((country, i)=><option key={`country-${i}`} value={country[1]}>{country[0]}</option>)}
-                                </select>
-                                <div styleName="form.error">{this.state.errors.ShipToCountry}</div>
-
-                            </div> 
-                        ): null }
 
                     </div>
                 </div>
@@ -536,7 +520,7 @@ export default class NameAddressForm extends Component {
                                 const newCity = city.split(";")[0]
                                 fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
                                 fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
-                                fields[name == "ShipToZip" ? "ShipToCountry" : "Country"] = "US";
+                                if (name == "Zip") fields["Country"] = "US";
                                 this.setState({fields})
                             } else {
                                 error = returnMessage
@@ -617,7 +601,8 @@ export default class NameAddressForm extends Component {
                             <label htmlFor="Firstname">First Name<span>*</span></label>
                             <input styleName="form.formControl" 
                                 type='text' 
-                                id="Firstname" 
+                                id="Firstname"
+                                maxLength='20' 
                                 name="Firstname" 
                                 placeholder="First Name*" 
                                 required={true}
@@ -633,6 +618,7 @@ export default class NameAddressForm extends Component {
                             <input styleName="form.formControl" 
                                 id="Lastname" 
                                 type='text' 
+                                maxLength='25' 
                                 name="Lastname" 
                                 placeholder="Last Name*" 
                                 required={true}
@@ -652,6 +638,7 @@ export default class NameAddressForm extends Component {
                             <input styleName="form.formControl" 
                                 id="Address1" 
                                 type='text' 
+                                maxLength='31' 
                                 name="Address1" 
                                 placeholder="Address*" 
                                 required={true}
@@ -666,10 +653,11 @@ export default class NameAddressForm extends Component {
 
                         <div id="form-field-Address2" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="Address2">Address<span>*</span></label>
+                            <label htmlFor="Address2">Address2</label>
                             <input styleName="form.formControl" 
                                 id="Address2" 
                                 type='text' 
+                                maxLength='31' 
                                 name="Address2" 
                                 placeholder="Address Line 2" 
                                 required={true}
@@ -689,6 +677,7 @@ export default class NameAddressForm extends Component {
                             <input styleName="form.formControl" 
                                 id="City" 
                                 type='text' 
+                                maxLength='28' 
                                 name="City" 
                                 placeholder="City*" 
                                 required={true}
@@ -720,10 +709,11 @@ export default class NameAddressForm extends Component {
 
                         <div id="form-field-Zip" styleName="form.formGroup flex.flex-grow">
 
-                            <label htmlFor="Zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use NA}</small> : null }</label>
+                            <label htmlFor="Zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
                             <input styleName="form.formControl" 
                                 id="Zip" 
                                 type='text' 
+                                maxLength="5"
                                 name="Zip" 
                                 placeholder="Zip*" 
                                 required={true}
@@ -763,6 +753,7 @@ export default class NameAddressForm extends Component {
                             <input styleName="form.formControl" 
                                 id="Emailaddress" 
                                 type='email' 
+                                maxLength='128' 
                                 name="Emailaddress" 
                                 placeholder="Email Address*" 
                                 required={true}

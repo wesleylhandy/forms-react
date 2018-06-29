@@ -197,6 +197,14 @@
     opacity: 1;
 }
 
+.formGroup>label>span,
+.formGroupState>label>span,
+.formGroupCountry>label>span,
+.formGroupEmail>label>span,
+.formGroupPhone>label>span {
+    color: var(--error-color);
+}
+
 .error {
     color: var(--error-color);
     width: auto;

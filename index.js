@@ -4,6 +4,8 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import cssVars from 'css-vars-ponyfill';
 
+if (module.hot) module.hot.accept();
+
 cssVars();
 
 import './index.css';
