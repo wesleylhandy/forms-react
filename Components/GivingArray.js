@@ -3,6 +3,10 @@ import React, { Component } from 'react'
 import flex from './styles/flex.css'
 import form from './styles/form.css'
 
+function getHydratedIndex(arr,amount) {
+    return arr.findIndex(amt=> +amt == +amount)
+}
+
 export default class GivingArray extends Component {
     constructor(props) {
         super(props)
@@ -22,12 +26,21 @@ export default class GivingArray extends Component {
             },
             selectedIndex: null,
             otherAmount: 0,
-            otherAmountError: ''
+            otherAmountError: '',
+            hydrated: false
         }
 
         this.renderArray = this.renderArray.bind(this)
         this.addToCart = this.addToCart.bind(this)
         this.handleOtherAmt = this.handleOtherAmt.bind(this)
+    }
+
+    componentDidMount() {
+        // console.log({hydratedAmount: this.props.hydratedAmount})
+        if (this.props.hydratedAmount) {
+            const index = this.props.hydratedMonthly ? getHydratedIndex(this.state.monthlyAmounts) : getHydratedIndex(this.state.singleAmounts)
+            this.setState({selectedIndex: index >=0 ? index : null, hydrated: true})
+        }
     }
 
     registerAmount(amt) {
@@ -37,6 +50,10 @@ export default class GivingArray extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.monthlyChecked != this.state.monthlyChecked) {
             this.setState({monthlyChecked: nextProps.monthlyChecked, selectedIndex: null, otherAmount: 0})
+        }
+        if (nextProps.hydratedAmount && !this.state.hydrated) {
+            const index = nextProps.hydratedMonthly ? getHydratedIndex(this.state.monthlyAmounts, nextProps.hydratedAmount) : getHydratedIndex(this.state.singleAmounts, nextProps.hydratedAmount)
+            this.setState({selectedIndex: index >=0 ? index : null, hydrated: true})
         }
     }
 

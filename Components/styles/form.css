@@ -1,10 +1,22 @@
 .form-wrapper {
-    background: var(--background-color);
+    background: var(--form-bg-color);
+    border: var(--form-border-width) solid var(--form-border-color);
     border-radius: var(--form-border-radius);
     color: var(--form-text-color);
     max-width: calc(var(--base-font-size) * 34);
     margin: 0 auto;
-    padding: calc(var(--base-font-size) * .5);
+    padding: var(--form-padding);
+}
+
+.form-panel {
+    background: var(--panel-bg-color);
+    border: var(--panel-border-width) solid var(--panel-border-color);
+    border-radius: var(--panel-border-radius);
+    padding: var(--panel-padding);
+}
+
+.form-panel+.form-panel {
+    margin-top: var(--panel-space-between);
 }
 
 .form-header,
@@ -14,6 +26,23 @@
     font-size: var(--base-font-size);
     line-height: calc(var(--base-font-size) * 1.15);
     margin-bottom: 5px;
+}
+
+.form-headerSmall {
+    font-size: calc(var(--base-font-size) * .9);
+    margin: 20px 0;
+}
+
+.form-headerSmall>strong {
+    color: var(--primary-color);
+}
+
+.form-subheader {
+    margin: 10px 0;
+}
+
+.cc-img {
+    margin-left: 20px;
 }
 
 .divider-title {
@@ -26,15 +55,16 @@
 }
 
 .line {
-    border-color: var(--heading-color);
+    background-color: var(--primary-color);
     width: 100%;
     -webkit-box-flex: 1;
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     -ms-flex-item-align: center;
     align-self: center;
-    height: 0;
+    height: 2px;
     overflow: visible;
+    margin: 20px 0;
 }
 
 .gift-choice {
@@ -208,6 +238,7 @@
 .error {
     color: var(--error-color);
     width: auto;
+    left: 10px;
     bottom: calc(0% - 11px);
     font-family: var(--error-font-family);
     font-style: var(--error-font-style);
@@ -345,6 +376,23 @@
 
 .invalid {
     border-color: var(--error-color) !important;
+}
+
+.goBack-btn {
+    margin: 20px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 310px;
+}
+
+.goBack-btn>a {
+    color: var(--link-color);
+    cursor: pointer;
+    transition: color 200ms ease-in-out;
+}
+
+.goBack-btn>a:hover {
+    color: var(--link-hover-color);
 }
 
 .shipping-address__container {}

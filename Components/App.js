@@ -14,7 +14,7 @@ const { givingFormat, getMiddleName, getSuffix,
     international, getPhone, products,
     numProducts, additionalGift, additionalGiftMessage,
     funds, subscriptions, monthlyAmounts,
-    singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData } = config;
+    singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData, AddContactYN, PageName } = config;
 
 export default class App extends Component {
     constructor(props) {
@@ -51,14 +51,19 @@ export default class App extends Component {
                 "DetailCprojCredit": "043250",
                 "DetailCprojMail": "043251"
             },
+            AddContactYN: AddContactYN && AddContactYN == "Y" ? true : false,
+            Contact_Source: PageName + " Donor",
+            ActivityName: PageName + +"_Donation_Activity", 
             submitted: false,
             confirmed: false,
             confirmationData: null,
             formAction: null,
             formData: null,
             donorID: null,
+            hydratedData: null
         }
         this.submitForm = this.submitForm.bind(this)
+        this.hydrateForm = this.hydrateForm.bind(this)
     }
 
     componentDidMount() {
@@ -116,6 +121,11 @@ export default class App extends Component {
 
     }
 
+    hydrateForm(data){
+        // console.log({data})
+        this.setState({submitted: false, hydratedData: data})
+    }
+
     render() {
         return ( 
             <div styleName='form-wrapper'> 
@@ -125,6 +135,7 @@ export default class App extends Component {
                             confirmationData={this.state.confirmationData} 
                             formData={this.state.formData} 
                             formAction={this.state.formAction}
+                            hydrateForm={this.hydrateForm}
                         /> 
                     ) : ( 
                         <NameAddressForm {...this.state } submitForm={ this.submitForm }/> 

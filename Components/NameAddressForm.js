@@ -12,12 +12,14 @@ const usStates = [["Alaska", "AK"],["Alabama", "AL"],["Arkansas", "AR"],["Arizon
 usMilitary = [["APO/FPO ZIP 340", "AA"],["APO/FPO ZIP\'S 090-098", "AE"],["APO/FPO ZIP\'S 962-966", "AP"]],
 canadianProvinces = [["Alberta", "AB"],["British Columbia", "BC"],["Manitoba", "MB"],["New Brunswick", "NB"],["Newfoundland and Labrador", "NL"],["Nova Scotia", "NS"],["Northwest Territories", "NT"],["Nunavut", "NU"],["Ontario", "ON"],["Prince Edward Island", "PE"],["Quebec", "QC"],["Saskatchewan", "SK"],["Yukon Territory", "YT"]],
 usTerritories = [["American Samoa", "AS"],["Federated States Of Micronesia", "FM"],["Guam", "GU"],["Marshall Islands", "MH"],["Palau", "PW"],["Northern Mariana Islands", "MP"],["Puerto Rico", "PR"],["Virgin Islands", "VI"]],
-countries = [["Afghanistan", "AF"],["Aland Islands", ""],["Albania", "AL"],["Algeria", "DZ"],["American Samoa", "AS"],["Andorra", "AD"],["Angola", "AO"],["Anguilla", "AI"],["Antigua and Barbuda", "AG"],["Argentina", "AR"],["Armenia", "AM"],["Aruba", "AW"],["Australia", "AU"],["Austria", "AT"],["Azerbaijan", "AZ"],["Bahamas", "BS"],["Bahrain", "BH"],["Bangladesh", "BD"],["Barbados", "BB"],["Belarus", "BY"],["Belgium", "BE"],["Belize", "BZ"],["Benin", "BJ"],["Bermuda", "BM"],["Bhutan", "BT"],["Bolivia", "BO"],["Bosnia and Herzegovina", "BA"],["Botswana", "BW"],["Brazil", "BR"],["British Virgin Islands", "VG"],["Brunei Darussalam", "BN"],["Bulgaria", "BG"],["Burkina Faso", "BF"],["Burundi", "BI"],["Cambodia", "KH"],["Cameroon", "CM"],["Canada", "CA"],["Cape Verde", "CV"],["Cayman Islands", "KY"],["Central African Republic", "CF"],["Chad", "TD"],["Channel Islands", ""],["Chile", "CL"],["China", "CN"],["Hong Kong Spcl. Admin. Region of China", "CN"],["Macao Spcl. Admin. Region of China", "MO"],["Colombia", "CO"],["Comoros", "KM"],["Congo", "CG"],["Cook Islands", "CK"],["Costa Rica", "CR"],["Côte d\'Ivoire", ""],["Croatia", "HR"],["Cuba", "CU"],["Cyprus", "CY"],["Czech Republic", "CZ"],["Democratic People\'s Rep. of Korea", "KR"],["Democratic Republic of the Congo", "CG"],["Denmark", "DK"],["Djibouti", "DJ"],["Dominica", "DM"],["Dominican Republic", "DO"],["Ecuador", "EC"],["Egypt", "EG"],["El Salvador", "SV"],["Equatorial Guinea", "GQ"],["Eritrea", "ER"],["Estonia", "EE"],["Ethiopia", "ET"],["Faeroe Islands", "FO"],["Falkland Islands (Malvinas)", "FK"],["Fiji", "FJ"],["Finland", "FI"],["France", "FR"],["French Guiana", "GF"],["French Polynesia", "PF"],["Gabon", "GA"],["Gambia", "GM"],["Georgia", "GE"],["Germany", "DE"],["Ghana", "GH"],["Gibraltar", "GI"],["Greece", "GR"],["Greenland", "GL"],["Grenada", "GD"],["Guadeloupe", "GP"],["Guam", "GU"],["Guatemala", "GT"],["Guinea", "GN"],["Guinea-Bissau", "GW"],["Guyana", "GY"],["Haiti", "HT"],["Holy See", ""],["Honduras", "HN"],["Hungary", "HU"],["Iceland", "IS"],["India", "IN"],["Indonesia", "ID"],["Iran (Islamic Republic of)", "IR"],["Iraq", "IQ"],["Ireland", "IE"],["Isle of Man", ""],["Israel", "IL"],["Italy", "IT"],["Jamaica", "JM"],["Japan", "JP"],["Jordan", "JO"],["Kazakhstan", "KZ"],["Kenya", "KE"],["Kiribati", "KI"],["Kuwait", "KW"],["Kyrgyzstan", "KG"],["Lao People\'s Democratic Republic", "LA"],["Latvia", "LV"],["Lebanon", "LB"],["Lesotho", "LS"],["Liberia", "LR"],["Libyan Arab Jamahiriya", "LY"],["Liechtenstein", "LI"],["Lithuania", "LT"],["Luxembourg", "LU"],["Madagascar", "MG"],["Malawi", "MW"],["Malaysia", "MY"],["Maldives", "MV"],["Mali", "ML"],["Malta", "MT"],["Marshall Islands", "MH"],["Martinique", "MQ"],["Mauritania", "MR"],["Mauritius", "MU"],["Mayotte", ""],["Mexico", "MX"],["Micronesia (Federated States of)", "FM"],["Monaco", "MC"],["Mongolia", "MN"],["Montserrat", "MS"],["Morocco", "MA"],["Mozambique", "MZ"],["Myanmar", "MM"],["Namibia", "NA"],["Nauru", "NR"],["Nepal", "NP"],["Netherlands", "NL"],["Netherlands Antilles", "AN"],["New Caledonia", "NC"],["New Zealand", "NZ"],["Nicaragua", "NI"],["Niger", "NE"],["Nigeria", "NG"],["Niue", "NU"],["Norfolk Island", "NF"],["Northern Mariana Islands", "MP"],["Norway", "NO"],["Occupied Palestinian Territory", ""],["Oman", "OM"],["Pakistan", "PK"],["Palau", "PW"],["Panama", "PA"],["Papua New Guinea", "PG"],["Paraguay", "PY"],["Peru", "PE"],["Philippines", "PH"],["Pitcairn", "PN"],["Poland", "PL"],["Portugal", "PT"],["Puerto Rico", "PR"],["Qatar", "QA"],["Republic of Korea", "KR"],["Republic of Moldova", "MD"],["Réunion", "RE"],["Romania", "RO"],["Russian Federation", "RU"],["Rwanda", "RW"],["Saint Helena", "SH"],["Saint Kitts and Nevis", "KN"],["Saint Lucia", "LC"],["Saint Pierre and Miquelon", "PM"],["Saint Vincent and the Grenadines", "VC"],["Samoa", "WS"],["San Marino", "SM"],["Sao Tome and Principe", "ST"],["Saudi Arabia", "SA"],["Senegal", "SN"],["Serbia and Montenegro", "RS"],["Seychelles", "SC"],["Sierra Leone", "SL"],["Singapore", "SG"],["Slovakia", "SK"],["Slovenia", "SI"],["Solomon Islands", "SB"],["Somalia", "SO"],["South Africa", "ZA"],["Spain", "ES"],["Sri Lanka", "LK"],["Sudan", "SD"],["Suriname", "SR"],["Svalbard and Jan Mayen Islands", "SJ"],["Swaziland", "SZ"],["Sweden", "SE"],["Switzerland", "CH"],["Syrian Arab Republic", "SY"],["Taiwan", "TW"],["Tajikistan", "TJ"],["Thailand", "TH"],["The former Yugoslav Rep. of Macedonia", "MK"],["Timor-Leste", "TL"],["Togo", "TG"],["Tokelau", "TK"],["Tonga", "TO"],["Trinidad and Tobago", "TT"],["Tunisia", "TN"],["Turkey", "TR"],["Turkmenistan", "TM"],["Turks and Caicos Islands", "TC"],["Tuvalu", "TV"],["Uganda", "UG"],["Ukraine", "UA"],["United Arab Emirates", "AE"],["United Kingdom", "GB"],["United Republic of Tanzania", "TZ"],["United States", "US"],["United States Virgin Islands", "VI"],["Uruguay", "UY"],["Uzbekistan", "UZ"],["Vanuatu", "VU"],["Venezuela", "VE"],["Viet Nam", "VN"],["Wallis and Futuna Islands", "WF"],["Western Sahara", "EH"],["Yemen", "YE"],["Zambia", "ZM"],["Zimbabwe", "ZW"]],
+countries = ["Afghanistan","Aland Islands","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Channel Islands","Chile","China","Hong Kong Spcl. Admin. Region of China","Macao Spcl. Admin. Region of China","Colombia","Comoros","Congo","Cook Islands","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Democratic People's Rep. of Korea","Democratic Republic of the Congo","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Faeroe Islands","Falkland Islands (Malvinas)","Fiji","Finland","France","French Guiana","French Polynesia","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guadeloupe","Guam","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Holy See","Honduras","Hungary","Iceland","India","Indonesia","Iran (Islamic Republic of)","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Lao People's Democratic Republic","Latvia","Lebanon","Lesotho","Liberia","Libyan Arab Jamahiriya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Martinique","Mauritania","Mauritius","Mayotte","Mexico","Micronesia (Federated States of)","Monaco","Mongolia","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Niue","Norfolk Island","Northern Mariana Islands","Norway","Occupied Palestinian Territory","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Pitcairn","Poland","Portugal","Puerto Rico","Qatar","Republic of Korea","Republic of Moldova","Réunion","Romania","Russian Federation","Rwanda","Saint Helena","Saint Kitts and Nevis","Saint Lucia","Saint Pierre and Miquelon","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia and Montenegro","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","Spain","Sri Lanka","Sudan","Suriname","Svalbard and Jan Mayen Islands","Swaziland","Sweden","Switzerland","Syrian Arab Republic","Taiwan","Tajikistan","Thailand","The former Yugoslav Rep. of Macedonia","Timor-Leste","Togo","Tokelau","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United Republic of Tanzania","United States","United States Virgin Islands","Uruguay","Uzbekistan","Vanuatu","Venezuela","Viet Nam","Wallis and Futuna Islands","Western Sahara","Yemen","Zambia","Zimbabwe"],
 other = [["Other", "00"]];
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
 phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/,
-zip_regex = /^\d{5}$/;
+zip_regex = /^\d{5}$/,
+firstname_regex= /^([a-zA-Z0-9\-\.' ]+)$/i,
+lastname_regex=/^([a-zA-Z0-9\-\.' ]+)(?:(,|\s|,\s)(jr|sr|ii|iii|iv|esq)\.*)?$/i;
 
 export default class NameAddressForm extends Component {
     constructor(props){
@@ -26,7 +28,7 @@ export default class NameAddressForm extends Component {
             env: [process.env.alpha, process.env.bravo],
             ClientBrowser: "",
             ClientIP: "10.100.43.50", //obtain this from server somehow
-            MotivationText: props.MotivationText,
+            MotivationText: props.hydratedData ? props.hydratedData.MotivationText : props.MotivationText,
             arrayOptions: {
                 givingFormat: props.givingFormat,
                 monthlyOption: props.monthlyOption,
@@ -46,12 +48,12 @@ export default class NameAddressForm extends Component {
             shipping: props.shipping,
             international: props.international,
             getPhone: props.getPhone,
-            monthlyChecked: props.monthlyOption,
+            monthlyChecked: props.hydratedData && props.hydratedData.TransactionType == "Monthly" ? true : props.monthlyOption,
             getSuffix: props.getSuffix,
             getMiddleName: props.getMiddleName,
             getSpouseInfo: props.getSpouseInfo,
             totalGift: 0,
-            Clublevel: '',
+            Clublevel: props.hydratedData ? props.hydratedData.Clublevel : '',
             submitted: false,
             submitting: false,
             cart: {
@@ -67,29 +69,29 @@ export default class NameAddressForm extends Component {
                 }]
             },
             fields: {
-                Monthlypledgeday: new Date().getDate(),
-                Title: "",
-                Firstname: "",
-                Middlename: "",
-                Lastname: "",
-                Suffix: "",
-                Spousename: "",
-                Address1: "",
-                Address2: "",
-                City: "",
-                State: "",
-                Zip: "",
-                Country: props.international ? "" : "United States",
-                Emailaddress: "",
-                phone: "",
+                Monthlypledgeday: props.hydratedData ? props.hydratedData.Monthlypledgeday : new Date().getDate(),
+                Title: props.hydratedData ? props.hydratedData.Title : "",
+                Firstname: props.hydratedData ? props.hydratedData.Firstname : "",
+                Middlename: props.hydratedData ? props.hydratedData.Middlename : "",
+                Lastname: props.hydratedData ? props.hydratedData.Lastname : "",
+                Suffix: props.hydratedData ? props.hydratedData.Suffix : "",
+                Spousename: props.hydratedData ? props.hydratedData.Spousename : "",
+                Address1: props.hydratedData ? props.hydratedData.Address1 : "",
+                Address2: props.hydratedData ? props.hydratedData.Address2 : "",
+                City: props.hydratedData ? props.hydratedData.City  : "",
+                State: props.hydratedData ? props.hydratedData.State : "",
+                Zip: props.hydratedData ? props.hydratedData.State : "",
+                Country: props.hydratedData ? props.hydratedData.Country : props.international ? "" : "United States",
+                Emailaddress: props.hydratedData ? props.hydratedData.Emailaddress : "",
+                phone: props.hydratedData ? props.hydratedData.Phoneareacode + props.hydratedData.Phoneexchange + props.hydratedData.Phonenumber : "",
                 savePersonalInfo: true,
-                ShipToYes: false,
-                ShipToName: "",
-                ShipToAddress1: "",
-                ShipToAddress2: "",
-                ShipToCity: "",
-                ShipToZip: "",
-                ShipToState: ""
+                ShipToYes: props.hydratedData && props.hydratedData.ShipTo === "Yes" ? true : false,
+                ShipToName: props.hydratedData ? props.hydratedData.ShipToName : "",
+                ShipToAddress1: props.hydratedData ? props.hydratedData.ShipToAddress1 : "",
+                ShipToAddress2: props.hydratedData ? props.hydratedData.ShipToAddress2 : "",
+                ShipToCity: props.hydratedData ? props.hydratedData.ShipToCity : "",
+                ShipToZip: props.hydratedData ? props.hydratedData.ShipToZip : "",
+                ShipToState: props.hydratedData ? props.hydratedData.ShipToState : ""
             },
             errors: {
                 Title: "",
@@ -112,7 +114,9 @@ export default class NameAddressForm extends Component {
                 ShipToZip: "",
                 ShipToState: "",
                 amount: ""
-            }
+            },
+            hydratedAmount: 0,
+            hydratedMonthly: false
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.validateInput = this.validateInput.bind(this)
@@ -127,13 +131,44 @@ export default class NameAddressForm extends Component {
     componentDidMount(){
         this.setState({ClientBrowser: window.navigator.userAgent})
         // add this later to state when in production UrlReferer: window.location.href
+
+        if (this.props.hydratedData) {
+            let amount = 0, isMonthly = false;
+            const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount} = this.props.hydratedData.MultipleDonations[0];
+            const {items} = this.state.cart;
+
+            items[0].DetailName = DetailName;
+            items[0].DetailDescription = DetailDescription;
+            items[0].DetailCprojCredit = DetailCprojCredit;
+            items[0].DetailCprojMail = DetailCprojMail;
+            items[0].PledgeAmount = PledgeAmount;
+            amount = PledgeAmount
+            items[0].monthly = DetailName === "MP" ? true : false;
+            isMonthly = DetailName === "MP" ? true : false;
+            for (let i = 1; i < this.props.hydratedData.MultipleDonations.length; i++) {
+                const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount} = this.props.hydratedData.MultipleDonations[i];
+                items.push({
+                    type: 'other',
+                    PledgeAmount,
+                    DetailCprojMail,
+                    DetailCprojCredit,
+                    DetailDescription,
+                    DetailName,
+                    monthly: false,
+                    fund: null
+                })
+            }
+            // console.log({amount, isMonthly})
+            this.setState({cart: {items}, hydratedAmount: amount, hydratedMonthly: isMonthly})
+
+        }
     }
 
     renderMonthlyRadio(monthlyChecked, Monthlypledgeday) {
 
         let monthly = monthlyChecked;
         let single = !monthlyChecked;
-        const self = this;
+        let self = this;
 
         function renderCCInfo() {
             const options = []
@@ -363,7 +398,7 @@ export default class NameAddressForm extends Component {
 
         const errors = this.state.errors;
 
-        const error = this.validateInput(name, value);
+        const error = this.validateInput(false, name, value);
         errors[name] = error;
         
         const fields = this.state.fields;
@@ -389,8 +424,31 @@ export default class NameAddressForm extends Component {
             return this.setState({submitting: false, errors})
         }
 
-        const {Address1, Address2, City, Country, Emailaddress, Firstname, Lastname, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName} = this.state.fields
+        const {fields, errors} = this.state;
+        let isValidForm = true;
+
+        const fieldNames = Object.keys(fields);
+
+        // console.log({fieldNames})
+
+        let self = this;
+
+        fieldNames.forEach(name=>{
+            let error = self.validateInput(true, name, fields[name])
+            // console.log({error, name, value: fields[name]})
+            if (error) {
+                isValidForm = false;
+                errors[name] = error;
+            }
+        });
+
+        if (!isValidForm) {
+            return this.setState({submitting: false, errors})
+        }
+
+        const {Address1, Address2, City, Country, Emailaddress, Firstname, Lastname, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName} = fields
         const {Clublevel, MotivationText, ClientBrowser, ClientIP} = this.state
+
         const isMonthly = this.state.cart.items[0].monthly
         const DonationType =  isMonthly ? "CR" : "CC";
         const TransactionType = isMonthly ? "Monthly" : "Single"
@@ -439,7 +497,6 @@ export default class NameAddressForm extends Component {
                 ShipToName
             }
         // console.log({MultipleDonations: data.MultipleDonations})
-        const self = this;
         axios({
             method: 'POST',
             url: "http://SecureGiving.cbn.local/api/contribution",
@@ -480,7 +537,7 @@ export default class NameAddressForm extends Component {
     }
 
     addToCart(item) {
-        const items = this.state.cart.items;
+        const {items} = this.state.cart;
         const found = items.findIndex(el=>el && el.type == "donation")
         if(found > -1) {
             items[found] = item
@@ -497,19 +554,76 @@ export default class NameAddressForm extends Component {
 
     /**
      * Function to validate the input fields of the form
+     * @param {Boolean} submitting - current state of the form, true if being submitted
      * @param {String} name - name of the input being validated
      * @param {*} value - String, Number or Boolean of value from the input
      * @returns {String} - an empty String if no errors, else a string with a single error message
      */
-    validateInput(name, value) {
+    validateInput(submitting, name, value) {
         let error = '';
+        const { international, shipping } = this.state;
         switch(name) {
-            case "EmailAddress":
+            case "Title":
+            case "State":
+            case "Address1":
+            case "City":
+                if (!value && submitting) {
+                    error = "Required"
+                }
+                break;
+            case "ShipToState":
+                if(!value && submitting && shipping) {
+                    error = "Required"
+                }
+                break;
+            case "Firstname":
+                if(value && !firstname_regex.test(value)) {
+                    error = "No special characters allowed. Please call if you need assistance."
+                }
+                if (!value && submitting) {
+                    error = "Required"
+                }
+                break;
+            case "Middlename":
+                if(value && !firstname_regex.test(value)) {
+                    error = "No special characters allowed. Please call if you need assistance."
+                }
+                break;
+            case "Lastname":
+                if(value && !lastname_regex.test(value)) {
+                    error = "No special characters allowed. Please call if you need assistance."
+                }
+                if (!value && submitting) {
+                    error = "Required"
+                }
+                break;
+            case "ShipToName":
+                if(value && !lastname_regex.test(value)) {
+                    error = "No special characters allowed. Please call if you need assistance."
+                }
+                if (!value && shipping && submitting) {
+                    error = "Required"
+                }
+                break;
+            case "Spousename" :
+                if(value && !lastname_regex.test(value)) {
+                    error = "No special characters allowed. Please call if you need assistance."
+                }
+                break;
+            case "Country":
+                if (!value && submitting && international) {
+                    error = "Required"
+                }
+                break;
+            case "Emailaddress":
                 if (value && !(email_regex.test(value))){
                     error = "Please enter a valid email: ie. you@example.com"
-                } 
+                }
+                if (!value && submitting){
+                    error = "Required"
+                }
                 break;
-            case "phone" :
+            case "phone":
                 if (value && !(phone_regex.test(value))){
                     error = "Please enter a valid phone number, numbers only: ie. 7575551212"
                 }
@@ -531,7 +645,7 @@ export default class NameAddressForm extends Component {
                                 fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
                                 fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
                                 fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
-                                if (name == "Zip") fields["Country"] = "US";
+                                if (name == "Zip") fields["Country"] = "United States";
                                 this.setState({fields})
                             } else {
                                 error = returnMessage
@@ -556,9 +670,12 @@ export default class NameAddressForm extends Component {
                             console.error({error})
                             console.error(error.config);
                         });
+                } else if (!value && submitting && shipping && name == "ShipToZip") {
+                    error = "Required"
+                } else if (!value && submitting && name == "Zip") {
+                    error = "Required"
                 }
                 break;
-
         }
         return error
     }
@@ -566,249 +683,255 @@ export default class NameAddressForm extends Component {
     render() {
         return (
             <form id="react-form" autoComplete="off" onSubmit={this.handleSubmit}>
-                <div styleName="form.gift-choice">
-                    <GivingArray 
-                        arrayOptions={this.state.arrayOptions} 
-                        monthlyChecked={this.state.monthlyChecked} 
+                <div styleName="form.form-panel">
+                    <div styleName="form.gift-choice">
+                        <GivingArray 
+                            arrayOptions={this.state.arrayOptions} 
+                            monthlyChecked={this.state.monthlyChecked} 
+                            addToCart={this.addToCart}
+                            hydratedAmount={this.state.hydratedAmount}
+                            hydratedMonthly={this.state.hydratedMonthly}
+                        />
+                        <div styleName="form.error form.amount-error">{this.state.errors.amount}</div>
+                    </div>
+
+                    { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.Monthlypledgeday) : null }
+                </div>
+                <div styleName={this.state.productOptions.numProducts ? "form.form-panel" : "form.form-panel main.hidden"}>
+                    <ProductDisplay 
+                        productOptions={this.state.productOptions} 
                         addToCart={this.addToCart}
                     />
-                    <div styleName="form.error form.amount-error">{this.state.errors.amount}</div>
                 </div>
+                <div styleName="form.form-panel">
+                    <div styleName="form.nameAddressInfo">
 
-                { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.Monthlypledgeday) : null }
+                        <h3 styleName="main.caps form.form-header">Please Enter Your Billing Information</h3>
 
-                <ProductDisplay 
-                    productOptions={this.state.productOptions} 
-                    addToCart={this.addToCart}
-                />
+                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                            <div id="form-field-title" styleName="form.formGroup flex.flex-grow">
 
-                <div styleName="form.nameAddressInfo">
-
-                    <h3 styleName="main.caps form.form-header">Please Enter Your Billing Information</h3>
-
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                        <div id="form-field-title" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="Title">Title<span>*</span></label>
-                            <select styleName="form.formControl" 
-                                id="Title" 
-                                name='Title' 
-                                required={true} 
-                                placeholder="Title*"
-                                value={this.state.fields.Title}
-                                onChange={this.handleInputChange}
-                            >
-                                <option value="">Title* &#9663;</option>
-                                <option value="Mr">Mr</option>
-                                <option value="Ms">Ms</option>
-                                <option value="Mrs">Mrs</option>
-                                <option value="Miss">Miss</option>
-                            </select>
-                            <div styleName="form.error">{this.state.errors.Title}</div>
-
-                        </div>
-                        <div id="form-field-Firstname" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="Firstname">First Name<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                type='text' 
-                                id="Firstname"
-                                maxLength='20' 
-                                name="Firstname" 
-                                placeholder="First Name*" 
-                                required={true}
-                                value={this.state.fields.Firstname}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.Firstname}</div>
-
-                        </div>
-                        <div id="form-field-Lastname" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="Lastname">Last Name<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                id="Lastname" 
-                                type='text' 
-                                maxLength='25' 
-                                name="Lastname" 
-                                placeholder="Last Name*" 
-                                required={true}
-                                value={this.state.fields.Lastname}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.Lastname}</div>
-
-                        </div>
-                    </div>
-
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
-                        <div id="form-field-Address1" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="Address1">Address<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                id="Address1" 
-                                type='text' 
-                                maxLength='31' 
-                                name="Address1" 
-                                placeholder="Address*" 
-                                required={true}
-                                value={this.state.fields.Address1}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.Address1}</div>
-
-                        </div>
-                    </div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
-                        <div id="form-field-Address2" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="Address2">Address2</label>
-                            <input styleName="form.formControl" 
-                                id="Address2" 
-                                type='text' 
-                                maxLength='31' 
-                                name="Address2" 
-                                placeholder="Address Line 2" 
-                                required={true}
-                                value={this.state.fields.Address2}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.Address2}</div>
-
-                        </div>
-                    </div>
-
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
-                        <div id="form-field-City" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="City">City<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                id="City" 
-                                type='text' 
-                                maxLength='28' 
-                                name="City" 
-                                placeholder="City*" 
-                                required={true}
-                                value={this.state.fields.City}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.City}</div>
-
-                        </div>
-                        <div id="form-field-State" styleName="form.formGroupState flex.flex-grow">
-
-                            <label htmlFor="State">State<span>*</span></label>
-                            <select styleName="form.formControl" 
-                                id="State" 
-                                name="State" 
-                                required={true}
-                                value={this.state.fields.State}
-                                onChange={this.handleInputChange}
-                            >
-                                <option value="">State* &#9663;</option>
-                                {this.renderStateOptions(this.state.international)}
-                            </select>
-                            <div styleName="form.error">{this.state.errors.State}</div>
-
-                        </div>
-                    </div>
-
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
-                        <div id="form-field-Zip" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="Zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
-                            <input styleName="form.formControl" 
-                                id="Zip" 
-                                type='text' 
-                                maxLength={this.state.fields.Country != "US" ? 25 : 5}
-                                name="Zip" 
-                                placeholder="Zip*" 
-                                required={true}
-                                value={this.state.fields.Zip}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.Zip}</div>
-
-                        </div>
-
-                        { this.state.international ? (
-                            <div id="form-field-Country" styleName="form.formGroupCountry flex.flex-grow">
-                            
-                                <label htmlFor="Country">Country<span>*</span></label>
+                                <label htmlFor="Title">Title<span>*</span></label>
                                 <select styleName="form.formControl" 
-                                    id="Country" 
-                                    name="Country" 
-                                    required={true}
-                                    value={this.state.fields.Country}
+                                    id="Title" 
+                                    name='Title' 
+                                    required={true} 
+                                    placeholder="Title*"
+                                    value={this.state.fields.Title}
                                     onChange={this.handleInputChange}
                                 >
-                                    <option value="">Country* &#9663;</option>
-                                    {countries.map((country, i)=><option key={`country-${i}`} value={country[1]}>{country[0]}</option>)}
+                                    <option value="">Title* &#9663;</option>
+                                    <option value="Mr">Mr</option>
+                                    <option value="Ms">Ms</option>
+                                    <option value="Mrs">Mrs</option>
+                                    <option value="Miss">Miss</option>
                                 </select>
-                                <div styleName="form.error">{this.state.errors.Country}</div>
+                                <div styleName="form.error">{this.state.errors.Title}</div>
 
-                            </div> 
-                        ): null }
+                            </div>
+                            <div id="form-field-Firstname" styleName="form.formGroup flex.flex-grow">
 
-                    </div>
+                                <label htmlFor="Firstname">First Name<span>*</span></label>
+                                <input styleName="form.formControl" 
+                                    type='text' 
+                                    id="Firstname"
+                                    maxLength='20' 
+                                    name="Firstname" 
+                                    placeholder="First Name*" 
+                                    required={true}
+                                    value={this.state.fields.Firstname}
+                                    onChange={this.handleInputChange}
+                                />
+                                <div styleName="form.error">{this.state.errors.Firstname}</div>
 
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                            </div>
+                            <div id="form-field-Lastname" styleName="form.formGroup flex.flex-grow">
 
-                        <div id="form-field-Emailaddress" styleName="form.formGroupEmail flex.flex-grow">
+                                <label htmlFor="Lastname">Last Name<span>*</span></label>
+                                <input styleName="form.formControl" 
+                                    id="Lastname" 
+                                    type='text' 
+                                    maxLength='25' 
+                                    name="Lastname" 
+                                    placeholder="Last Name*" 
+                                    required={true}
+                                    value={this.state.fields.Lastname}
+                                    onChange={this.handleInputChange}
+                                />
+                                <div styleName="form.error">{this.state.errors.Lastname}</div>
 
-                            <label htmlFor="Emailaddress">Email Address<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                id="Emailaddress" 
-                                type='email' 
-                                maxLength='128' 
-                                name="Emailaddress" 
-                                placeholder="Email Address*" 
-                                required={true}
-                                value={this.state.fields.Emailaddress}
-                                onChange={this.handleInputChange} 
-                            />
-                            <div styleName="form.error">{this.state.errors.Emailaddress}</div>
+                            </div>
+                        </div>
+
+                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+
+                            <div id="form-field-Address1" styleName="form.formGroup flex.flex-grow">
+
+                                <label htmlFor="Address1">Address<span>*</span></label>
+                                <input styleName="form.formControl" 
+                                    id="Address1" 
+                                    type='text' 
+                                    maxLength='31' 
+                                    name="Address1" 
+                                    placeholder="Address*" 
+                                    required={true}
+                                    value={this.state.fields.Address1}
+                                    onChange={this.handleInputChange}
+                                />
+                                <div styleName="form.error">{this.state.errors.Address1}</div>
+
+                            </div>
+                        </div>
+                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+
+                            <div id="form-field-Address2" styleName="form.formGroup flex.flex-grow">
+
+                                <label htmlFor="Address2">Address2</label>
+                                <input styleName="form.formControl" 
+                                    id="Address2" 
+                                    type='text' 
+                                    maxLength='31' 
+                                    name="Address2" 
+                                    placeholder="Address Line 2" 
+                                    required={true}
+                                    value={this.state.fields.Address2}
+                                    onChange={this.handleInputChange}
+                                />
+                                <div styleName="form.error">{this.state.errors.Address2}</div>
+
+                            </div>
+                        </div>
+
+                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+
+                            <div id="form-field-City" styleName="form.formGroup flex.flex-grow">
+
+                                <label htmlFor="City">City<span>*</span></label>
+                                <input styleName="form.formControl" 
+                                    id="City" 
+                                    type='text' 
+                                    maxLength='28' 
+                                    name="City" 
+                                    placeholder="City*" 
+                                    required={true}
+                                    value={this.state.fields.City}
+                                    onChange={this.handleInputChange}
+                                />
+                                <div styleName="form.error">{this.state.errors.City}</div>
+
+                            </div>
+                            <div id="form-field-State" styleName="form.formGroupState flex.flex-grow">
+
+                                <label htmlFor="State">State<span>*</span></label>
+                                <select styleName="form.formControl" 
+                                    id="State" 
+                                    name="State" 
+                                    required={true}
+                                    value={this.state.fields.State}
+                                    onChange={this.handleInputChange}
+                                >
+                                    <option value="">State* &#9663;</option>
+                                    {this.renderStateOptions(this.state.international)}
+                                </select>
+                                <div styleName="form.error">{this.state.errors.State}</div>
+
+                            </div>
+                        </div>
+
+                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+
+                            <div id="form-field-Zip" styleName="form.formGroup flex.flex-grow">
+
+                                <label htmlFor="Zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
+                                <input styleName="form.formControl" 
+                                    id="Zip" 
+                                    type='text' 
+                                    maxLength={this.state.fields.Country != "US" ? 25 : 5}
+                                    name="Zip" 
+                                    placeholder="Zip*" 
+                                    required={true}
+                                    value={this.state.fields.Zip}
+                                    onChange={this.handleInputChange}
+                                />
+                                <div styleName="form.error">{this.state.errors.Zip}</div>
+
+                            </div>
+
+                            { this.state.international ? (
+                                <div id="form-field-Country" styleName="form.formGroupCountry flex.flex-grow">
+                                
+                                    <label htmlFor="Country">Country<span>*</span></label>
+                                    <select styleName="form.formControl" 
+                                        id="Country" 
+                                        name="Country" 
+                                        required={true}
+                                        value={this.state.fields.Country}
+                                        onChange={this.handleInputChange}
+                                    >
+                                        <option value="">Country* &#9663;</option>
+                                        {countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)}
+                                    </select>
+                                    <div styleName="form.error">{this.state.errors.Country}</div>
+
+                                </div> 
+                            ): null }
 
                         </div>
-                        {
-                            this.state.getPhone ? (
-                                <div id="form-field-phone" styleName="form.formGroupPhone flex.flex-grow">
-                                    <label htmlFor="phone">Phone Number</label>
-                                    <input styleName="form.formControl"
-                                        id="phone"  
-                                        type='phonenumber' 
-                                        name="phone" 
-                                        placeholder="###-###-####"
-                                        value={this.state.fields.phone}
-                                        onChange={this.handleInputChange} 
-                                    />
-                                    <div styleName="form.error">{this.state.errors.phone}</div>
-                                </div>
-                            ) : null 
-                        }
+
+                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+
+                            <div id="form-field-Emailaddress" styleName="form.formGroupEmail flex.flex-grow">
+
+                                <label htmlFor="Emailaddress">Email Address<span>*</span></label>
+                                <input styleName="form.formControl" 
+                                    id="Emailaddress" 
+                                    type='email' 
+                                    maxLength='128' 
+                                    name="Emailaddress" 
+                                    placeholder="Email Address*" 
+                                    required={true}
+                                    value={this.state.fields.Emailaddress}
+                                    onChange={this.handleInputChange} 
+                                />
+                                <div styleName="form.error">{this.state.errors.Emailaddress}</div>
+
+                            </div>
+                            {
+                                this.state.getPhone ? (
+                                    <div id="form-field-phone" styleName="form.formGroupPhone flex.flex-grow">
+                                        <label htmlFor="phone">Phone Number</label>
+                                        <input styleName="form.formControl"
+                                            id="phone"  
+                                            type='phonenumber' 
+                                            name="phone" 
+                                            placeholder="###-###-####"
+                                            value={this.state.fields.phone}
+                                            onChange={this.handleInputChange} 
+                                        />
+                                        <div styleName="form.error">{this.state.errors.phone}</div>
+                                    </div>
+                                ) : null 
+                            }
+                        </div>
+                        { this.state.shipping ? this.renderShippingAddress(this.state.fields.ShipToYes) : null }                    
                     </div>
-                    { this.state.shipping ? this.renderShippingAddress(this.state.fields.ShipToYes) : null }                    
-                </div>
-                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
 
-                    
-                    <input type='checkbox' styleName="form.checkboxInput"
-                        id="savePersonalInfo" 
-                        name="savePersonalInfo"
-                        checked={this.state.fields.saveInfo} 
-                        onChange={this.handleInputChange}
-                    />
-                    <label id="RememberMe" htmlFor="savePersonalInfo">&nbsp;Remember my name and address next time</label>     
+                        
+                        <input type='checkbox' styleName="form.checkboxInput"
+                            id="savePersonalInfo" 
+                            name="savePersonalInfo"
+                            checked={this.state.fields.saveInfo} 
+                            onChange={this.handleInputChange}
+                        />
+                        <label id="RememberMe" htmlFor="savePersonalInfo">&nbsp;Remember my name and address next time</label>     
 
+                    </div>
+                    <div styleName="flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
+                        <input type="submit" styleName="form.submitButton" id="submit" onClick={this.handleSubmit} disabled={this.state.submitting} value="Continue to Payment &#10142;"/>
+                    </div>
+                    <div id="seals"></div>
                 </div>
-                <div styleName="form.SubmitButton flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
-                    <input type="submit" styleName="form.submitButton" id="submit" onClick={this.handleSubmit} disabled={this.state.submitting} value="Continue to Payment &#10142;"/>
-                </div>
-                <div id="seals"></div>
             </form>
 
         )

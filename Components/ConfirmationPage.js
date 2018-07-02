@@ -41,6 +41,7 @@ export default class ConfirmationPage extends Component {
         this.renderCCInput = this.renderCCInput.bind(this)
         this.handleRadioClick = this.handleRadioClick.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleGoBackClick = this.handleGoBackClick.bind(this)
         this.getCardType = this.getCardType.bind(this)
         this.getMainURL = this.getMainURL.bind(this)
         this.validateInput = this.validateInput.bind(this)
@@ -185,6 +186,10 @@ export default class ConfirmationPage extends Component {
         this.setState({ fields, errors });
     }
 
+    handleGoBackClick() {
+        this.props.hydrateForm(this.state.formData);
+    }
+
     validateInput(name, value) {
         let error = '';
         switch(name) {
@@ -248,16 +253,26 @@ export default class ConfirmationPage extends Component {
             years.push(<option key={"year-option" + i} value={i}>{i}</option>)
         }
         return ( 
-            <div>
-                <form styleName="form.ccForm" onSubmit={this.assignValues} method="POST">
+            <div styleName="form.form-panel">
+                <form id="react-cc-form" onSubmit={this.assignValues} method="POST">
                     <div className="mboxDefault">
                         <h2 styleName="main.caps form.form-header">Almost Done!</h2>
-                        <h3>Enter Payment Information and click <br />
+                        <div styleName="flex.flex flex.flex-row">
+                            <div styleName="form.line"></div>
+                        </div>
+                        <h3 styleName="form.form-headerSmall">Enter Payment Information and click <br />
                         "<strong>Finish Donation</strong>" below.
                         </h3>
                     </div>
+                    <div styleName="flex.flex flex.flex-row">
+                        <div styleName="form.line"></div>
+                    </div>
                     <div styleName="form.form-subheader">Card Type*</div>
+
                     {this.renderCardInputs(this.state.ccChecked)}
+                    <div styleName="flex.flex flex.flex-row">
+                        <div styleName="form.line"></div>
+                    </div>
                     <div styleName="form.form-subheader">Card Info*</div>
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
                         <div id="form-field-ccNumber" styleName="form.formGroup flex.flex-grow">
@@ -317,10 +332,14 @@ export default class ConfirmationPage extends Component {
                         </div>
                     {this.renderProductSummary(this.state.formData)}
 
-                    <div styleName="form.SubmitButton flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
+                    <div styleName="flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
                         <input type="submit" styleName="form.submitButton" id="submit" disabled={this.state.submitting} value="Finish Donation &#10142;"/>
                     </div>
                     <div id="seals"></div>
+                    <div styleName="form.goBack-btn">
+                        Click the &ldquo;Finish Donation&rdquo; button above or <br/>
+                        <a onClick={this.handleGoBackClick}>go back</a> to the previous page to make changes.
+                    </div>
                 </form>
                 <form id="hiddenform" styleName="main.hidden" action={this.state.formAction} method="POST">
                     {formInputs}
