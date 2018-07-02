@@ -380,11 +380,21 @@ export default class NameAddressForm extends Component {
     handleRadioClick(e) {
         const items = this.state.cart.items;
         const found = items.findIndex(el=>el && el.type == "donation")
+        const id = e.target.id;
         if (found > -1) {
-            items.splice(found, 1)
+            items[found] = {
+                    type: 'donation',
+                    PledgeAmount: 0,
+                    DetailCprojMail: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojMail : this.props.monthlyPledgeData.DetailCprojMail,
+                    DetailCprojCredit: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojCredit : this.props.monthlyPledgeData.DetailCprojCredit,
+                    DetailDescription: id == "singlegift" ? "Single Pledge" : "Monthly Pledge",
+                    DetailName: id == "singlegift" ? "SPGF" : "MP",
+                    monthly: id == "singlegift" ? false : true,
+                    fund: null
+                }
         }
         // console.log({items})
-        if(e.target.id == "singlegift") {
+        if(id == "singlegift") {
              this.setState({monthlyChecked: false, cart: {items}})
         } else {
             this.setState({monthlyChecked: true, cart: {items}})
