@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import axios from 'axios'
 
 import NameAddressForm from "./NameAddressForm"
@@ -13,7 +13,7 @@ const { givingFormat, getMiddleName, getSuffix,
     getSpouseInfo, monthlyOption, shipping,
     international, getPhone, products,
     numProducts, additionalGift, additionalGiftMessage,
-    funds, subscriptions, monthlyAmounts,
+    funds, numFunds, subscriptions, monthlyAmounts,
     singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData, AddContactYN, PageName, SectionName } = config;
 
 export default class App extends Component {
@@ -32,6 +32,7 @@ export default class App extends Component {
             numProducts: numProducts || 0,
             additionalGift: additionalGift || false,
             additionalGiftMessage: additionalGiftMessage || "Please consider giving an additional gift to support the ministries of CBN",
+            numFunds: numFunds || 0,
             funds: funds ? [...funds] : [],
             subscriptions: subscriptions ? [...subscriptions] : [],
             monthlyAmounts: monthlyAmounts ? [...monthlyAmounts] : [7, 15, 30],

@@ -7,6 +7,7 @@ import form from './styles/form.css'
 
 import GivingArray from './GivingArray'
 import ProductDisplay from './ProductDisplay'
+import FundDisplay from './FundDisplay'
 
 import { canadianProvinces, countries, other, usMilitary, usStates, usTerritories } from '../config/dropdowns.json';
 
@@ -43,6 +44,10 @@ export default class NameAddressForm extends Component {
                 additionalGift: props.additionalGift,
                 additionalGiftMessage: props.additionalGiftMessage
             },
+            fundOptions: {
+                funds: [...props.funds],
+                numFunds: props.numFunds
+            },
             monthlyOption: props.monthlyOption,
             shipping: props.shipping,
             international: props.international,
@@ -60,6 +65,13 @@ export default class NameAddressForm extends Component {
             Contact_Source: props.Contact_Source,
             ActivityName: props.ActivityName,
             SectionName: props.SectionName,
+            fundSelected: false,
+            fundInfo: {
+                DetailCprojCredit: '',
+                DetailCprojMail: '',
+                DetailDescription: '',
+                DetailName: ''
+            },
             cart: {
                 items: [{
                     type: 'donation',
@@ -130,6 +142,7 @@ export default class NameAddressForm extends Component {
         this.renderShippingAddress = this.renderShippingAddress.bind(this)
         this.calculateTotal = this.calculateTotal.bind(this)
         this.addToCart = this.addToCart.bind(this)
+        this.updateDonation = this.updateDonation.bind(this)
     }
 
     componentDidMount(){
@@ -454,23 +467,35 @@ export default class NameAddressForm extends Component {
         if (!isValidForm) {
             return this.setState({submitting: false, errors})
         }
-
+        //deconstruct necessary fields from state
         const {Address1, Address2, City, Country, Emailaddress, Firstname, Lastname, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
         const {Clublevel, MotivationText, ClientBrowser, ClientIP, AddContactYN, ActivityName, Contact_Source, SectionName} = this.state
+        //construct phone fields from regex
         const Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
         Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "",
         Phonenumber =  phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
-
-        const isMonthly = this.state.cart.items[0].monthly
+        //process cart
+        const {items} = this.state.cart;
+        const found = items.findIndex(el=>el && el.type == "donation")
+        const isMonthly = found > -1 ? items[found].monthly : false
         const DonationType =  isMonthly ? "CR" : "CC";
         const TransactionType = isMonthly ? "Monthly" : "Single"
         const IsRecurringCreditCardDonation = isMonthly
         const Monthlypledgeday = isMonthly ? this.state.fields.Monthlypledgeday : null
-        const Monthlypledgeamount = isMonthly ? this.state.cart.items[0].PledgeAmount : 0
-        const Singledonationamount = !isMonthly ? this.state.cart.items[0].PledgeAmount : 0
+        const Monthlypledgeamount = isMonthly ? items[found].PledgeAmount : 0
+        const Singledonationamount = !isMonthly ? items[found].PledgeAmount : 0
         const ShipTo = this.state.shipping ? "Yes" : "No"
-        const multipleDonations = () => this.state.cart.items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount})=> {return {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}})
+        const multipleDonations = () => items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}, index)=> {
+            if (index === found && this.state.fundSelected) {
+                DetailName = this.state.fundInfo.DetailName
+                DetailDescription = this.state.fundInfo.DetailDescription
+                DetailCprojCredit = this.state.fundInfo.DetailCprojCredit
+                DetailCprojMail = this.state.fundInfo.DetailCprojMail
+            }
+            return {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}
+        })
         const MultipleDonations = multipleDonations();
+        //create formdata
         let data = {
                 ActivityName,
                 AddContactYN,
@@ -511,7 +536,6 @@ export default class NameAddressForm extends Component {
                 ShipToCountry,
                 ShipToName
             }
-        // console.log({MultipleDonations: data.MultipleDonations})
         axios({
             method: 'POST',
             url: "http://SecureGiving.cbn.local/api/contribution",
@@ -565,6 +589,18 @@ export default class NameAddressForm extends Component {
         // console.log({items})
         this.setState({cart: {items}})
         
+    }
+
+    /**
+     * Sets the state with new fund information from the fund select dropdown
+     * @param {Object} fundInfo - Selected Fund 
+     * @param {String} fundInfo.DetailName
+     * @param {String} fundInfo.DetailDescription
+     * @param {String} fundInfo.DetailCprojCredit
+     * @param {String} fundInfo.DetailCprojMail
+     */
+    updateDonation(fundInfo){
+        this.setState({fundSelected: true, fundInfo})
     }
 
     /**
@@ -711,6 +747,12 @@ export default class NameAddressForm extends Component {
                     </div>
 
                     { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.Monthlypledgeday) : null }
+                </div>
+                <div styleName={this.state.fundOptions.numFunds ? "form.form-panel" : "form.form-panel main.hidden"}>
+                    <FundDisplay 
+                        fundOptions={this.state.fundOptions} 
+                        updateDonation={this.updateDonation}
+                    />
                 </div>
                 <div styleName={this.state.productOptions.numProducts ? "form.form-panel" : "form.form-panel main.hidden"}>
                     <ProductDisplay 

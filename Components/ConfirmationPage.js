@@ -283,7 +283,7 @@ export default class ConfirmationPage extends Component {
                                 maxLength={16}
                                 minLength={15}
                                 name="ccNumber" 
-                                placeholder="####################" 
+                                placeholder="#### #### #### #### ####" 
                                 required={true}
                                 value={this.state.fields.ccNumber}
                                 onChange={this.handleInputChange}

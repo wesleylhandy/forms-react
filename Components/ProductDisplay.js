@@ -80,7 +80,7 @@ export default class ProductDisplay extends Component {
                                     { renderOptions(i) }
                                 </select>
                                 <div styleName="form.product-card__body flex.flex-grow">
-                                    <div styleName="form.product-card__title">{product.productTitle} - ${product.productAmt}</div>
+                                    <div styleName="form.product-card__title">{product.productTitle} - ${product.PledgeAmount}</div>
                                     <div styleName="form.product-card__description" dangerouslySetInnerHTML={this.createMarkup(product.productMessage)}></div>
                                 </div>
                             </div>
