@@ -346,9 +346,15 @@
 }
 
 .select-product,
-.additional-gift-input,
-.total-product-gift {
+.additional-gift-input {
+    width: calc(var(--base-font-size) * 2.5);
     flex-basis: calc(var(--base-font-size) * 2.5);
+    margin-right: var(--base-font-size);
+}
+
+.total-product-gift {
+    width: calc(var(--base-font-size) * 3);
+    flex-basis: calc(var(--base-font-size) * 3);
     margin-right: var(--base-font-size);
 }
 

@@ -66,23 +66,14 @@ export default class NameAddressForm extends Component {
             ActivityName: props.ActivityName,
             SectionName: props.SectionName,
             fundSelected: false,
-            fundInfo: {
-                DetailCprojCredit: '',
-                DetailCprojMail: '',
-                DetailDescription: '',
-                DetailName: ''
-            },
+            fundInfo: {},
+            productsOrdered: false,
+            productInfo: [{
+                idx: 0,
+                quantity: 0
+            }],
             cart: {
-                items: [{
-                    type: 'donation',
-                    PledgeAmount: 0,
-                    DetailCprojMail: props.monthlyOption ? props.monthlyPledgeData.DetailCprojMail : props.singlePledgeData.DetailCprojMail,
-                    DetailCprojCredit: props.monthlyOption ? props.monthlyPledgeData.DetailCprojCredit : props.singlePledgeData.DetailCprojCredit,
-                    DetailDescription: props.monthlyOption ? "Monthly Pledge" : "Single Pledge",
-                    DetailName: props.monthlyOption ? "MP" : "SPGF",
-                    monthly: props.monthlyOption,
-                    fund: null
-                }]
+                items: [{}]
             },
             fields: {
                 Monthlypledgeday: props.hydratedData ? props.hydratedData.Monthlypledgeday : date,
@@ -140,9 +131,9 @@ export default class NameAddressForm extends Component {
         this.handleRadioClick = this.handleRadioClick.bind(this)
         this.renderMonthlyRadio = this.renderMonthlyRadio.bind(this)
         this.renderShippingAddress = this.renderShippingAddress.bind(this)
-        this.calculateTotal = this.calculateTotal.bind(this)
         this.addToCart = this.addToCart.bind(this)
         this.updateDonation = this.updateDonation.bind(this)
+        this.updateProducts = this.updateProducts.bind(this)
     }
 
     componentDidMount(){
@@ -438,9 +429,13 @@ export default class NameAddressForm extends Component {
         if (this.state.submitting) return // ie. disallow multiple submissions
 
         this.setState({submitting: true})
-        //eventually to validate data, but for testing:
         
-        if (this.state.cart.items.length == 0 || this.state.cart.items[0].PledgeAmount == 0) {
+        // TO DO - HANDLE FLATTENING OF PRODUCT ORDER DATA INTO CART
+        
+        //THINK THROUGH THIS LOGIC A LITTLE MORE
+        const {items} = this.state.cart;
+        const found = items.findIndex(el=>el && el.type == "donation")
+        if (items.length == 0 || (found > -1 && items[found].PledgeAmount == 0)) {
             const errors = this.state.errors
             errors.amount = "Please make a select a valid donation"
             return this.setState({submitting: false, errors})
@@ -475,15 +470,14 @@ export default class NameAddressForm extends Component {
         Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "",
         Phonenumber =  phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
         //process cart
-        const {items} = this.state.cart;
-        const found = items.findIndex(el=>el && el.type == "donation")
+
         const isMonthly = found > -1 ? items[found].monthly : false
         const DonationType =  isMonthly ? "CR" : "CC";
         const TransactionType = isMonthly ? "Monthly" : "Single"
         const IsRecurringCreditCardDonation = isMonthly
         const Monthlypledgeday = isMonthly ? this.state.fields.Monthlypledgeday : null
-        const Monthlypledgeamount = isMonthly ? items[found].PledgeAmount : 0
-        const Singledonationamount = !isMonthly ? items[found].PledgeAmount : 0
+        const Monthlypledgeamount = isMonthly && found > -1 ? items[found].PledgeAmount : 0
+        const Singledonationamount = !isMonthly && found > -1 ? items[found].PledgeAmount : 0
         const ShipTo = this.state.shipping ? "Yes" : "No"
         const multipleDonations = () => items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}, index)=> {
             if (index === found && this.state.fundSelected) {
@@ -570,9 +564,24 @@ export default class NameAddressForm extends Component {
             this.setState({submitting: false})
         });
     }
-
-    calculateTotal() {
-
+    /**
+     * Sets the state with new product order information from the product display
+     * @param {Object} productInfo - Selected Fund 
+     * @param {Number} productInfo.index - index of product being added or removed from cart
+     * @param {Number} productInfo.value - number of total items
+     */
+    updateProducts({idx, value}) {
+        let {productInfo, productsOrdered} = this.state;
+        const found = productInfo.findIndex(prod=> prod.idx === idx)
+        if (found > -1) {
+            productInfo[found].quantity = value
+        } else {
+            productInfo.push({idx, quantity: value})
+        }
+        const totalProducts = productInfo.reduce((a, b)=> a + b.quantity, 0)
+        productsOrdered = totalProducts ? true : false
+        // console.log({productInfo, productsOrdered, totalProducts})
+        this.setState({productInfo, productsOrdered})
     }
 
     addToCart(item) {
@@ -588,7 +597,6 @@ export default class NameAddressForm extends Component {
         }
         // console.log({items})
         this.setState({cart: {items}})
-        
     }
 
     /**
@@ -756,8 +764,9 @@ export default class NameAddressForm extends Component {
                 </div>
                 <div styleName={this.state.productOptions.numProducts ? "form.form-panel" : "form.form-panel main.hidden"}>
                     <ProductDisplay 
+                        productInfo={this.state.productInfo}
                         productOptions={this.state.productOptions} 
-                        addToCart={this.addToCart}
+                        updateProducts={this.updateProducts}
                     />
                 </div>
                 <div styleName="form.form-panel">

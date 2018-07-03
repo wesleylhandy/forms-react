@@ -13,7 +13,7 @@ export default class ProductDisplay extends Component {
             additionalGift: props.productOptions.additionalGift,
             additionalGiftMessage: props.productOptions.additionalGiftMessage,
             fields: {
-                additionalGift: null,
+                additionalGift: 0,
                 values: {}
             },
             additionalGiftError: "",
@@ -25,11 +25,17 @@ export default class ProductDisplay extends Component {
     }
     handleInputChange(e) {
         const target = e.target;
-        const value = target.value;
+        const value = parseInt(target.value);
         const name = target.name;
         
         const fields = this.state.fields;
         fields[name] = value;
+
+        const idx = parseInt(name.split("product-select-")[1])
+
+        // console.log({name, idx, value})
+
+        this.props.updateProducts({idx, value})
 
         this.setState({ fields });
     }
@@ -45,7 +51,7 @@ export default class ProductDisplay extends Component {
                     name="additionalGift"
                     placeholder="0" 
                     onChange={this.handleInputChange} 
-                    value={this.state.fields.additionalGift == 0 ? null : this.state.fields.additionalGift }
+                    value={this.state.fields.additionalGift }
                 />
                 <div styleName="form.additional-gift-label">{this.state.additionalGiftMessage}</div>
                 <div styleName="form.error">{this.state.additionalGiftError}</div>
@@ -57,6 +63,8 @@ export default class ProductDisplay extends Component {
         if (nextProps.additionalGift != this.state.additionalGift) {
             this.setState({additionalGift: nextProps.additionalGift})
         }
+        const totalGift = nextProps.productInfo.reduce((a, b)=> a + (parseInt(this.state.products[b.idx].PledgeAmount) * b.quantity), 0)
+        this.setState({totalGift});
     }
 
     render() {
@@ -65,7 +73,7 @@ export default class ProductDisplay extends Component {
         else {
             function renderOptions(ind) {
                 const options = []
-                for(let i = 1; i <= 99; i++){
+                for(let i = 0; i <= 99; i++){
                     options.push(<option key={`prod-option-${ind}-${i}`} value={i}>{i}</option>)
                 }
                 return options
@@ -89,7 +97,7 @@ export default class ProductDisplay extends Component {
                     }
                     { this.renderAdditionalGift(this.state.additionalGift) }
                     <div styleName="form.product-total flex.flex flex.flex-left flex.flex-axes-center">
-                        <input styleName='form.total-product-gift flex.flex-no-grow'  name="total-product-gift" value={this.state.totalGift} disabled={true}/>
+                        <input styleName='form.total-product-gift flex.flex-no-grow' name="total-product-gift" value={this.state.totalGift} disabled={true}/>
                         <div styleName="main.caps form.total-product-gift-label">Total Donation</div>
                     </div>
                 </div>

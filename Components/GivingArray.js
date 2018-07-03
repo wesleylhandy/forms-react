@@ -43,10 +43,6 @@ export default class GivingArray extends Component {
         }
     }
 
-    registerAmount(amt) {
-        this.props.registerAmount(amt)
-    }
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.monthlyChecked != this.state.monthlyChecked) {
             this.setState({monthlyChecked: nextProps.monthlyChecked, selectedIndex: null, otherAmount: 0})
