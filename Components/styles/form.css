@@ -378,20 +378,25 @@
     border-color: var(--error-color) !important;
 }
 
-.goBack-btn {
+.goBackBtn {
     margin: 20px auto;
     text-align: center;
     width: 100%;
     max-width: 310px;
 }
 
-.goBack-btn>a {
+.goBackBtn>span {
+    display: block;
+    margin: 0 auto;
+}
+
+.goBackBtn>span>a {
     color: var(--link-color);
     cursor: pointer;
     transition: color 200ms ease-in-out;
 }
 
-.goBack-btn>a:hover {
+.goBackBtn>span>a:hover {
     color: var(--link-hover-color);
 }
 

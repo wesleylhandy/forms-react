@@ -81,8 +81,7 @@ export default class GivingArray extends Component {
             DetailCprojCredit: monthlyChecked ? this.state.monthlyPledgeData.DetailCprojCredit : this.state.singlePledgeData.DetailCprojCredit,
             DetailDescription: monthlyChecked ? "Monthly Pledge" : "Single Pledge",
             DetailName: monthlyChecked ? "MP" : "SPGF",
-            monthly: monthlyChecked,
-            fund: null
+            monthly: monthlyChecked
         })
     }
 

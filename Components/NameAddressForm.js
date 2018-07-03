@@ -8,12 +8,7 @@ import form from './styles/form.css'
 import GivingArray from './GivingArray'
 import ProductDisplay from './ProductDisplay'
 
-const usStates = [["Alaska", "AK"],["Alabama", "AL"],["Arkansas", "AR"],["Arizona", "AZ"],["California", "CA"],["Colorado", "CO"],["Connecticut", "CT"],["District Of Columbia", "DC"],["Delaware", "DE"],["Florida", "FL"],["Georgia", "GA"],["Hawaii", "HI"],["Iowa", "IA"],["Idaho", "ID"],["Illinois", "IL"],["Indiana", "IN"],["Kansas", "KS"],["Kentucky", "KY"],["Louisiana", "LA"],["Massachusetts", "MA"],["Maryland", "MD"],["Maine", "ME"],["Michigan", "MI"],["Minnesota", "MN"],["Missouri", "MO"],["Mississippi", "MS"],["Montana", "MT"],["North Carolina", "NC"],["North Dakota", "ND"],["Nebraska", "NE"],["New Hampshire", "NH"],["New Jersey", "NJ"],["New Mexico", "NM"],["Nevada", "NV"],["New York", "NY"],["Ohio", "OH"],["Oklahoma", "OK"],["Oregon", "OR"],["Pennsylvania", "PA"],["Rhode Island", "RI"],["South Carolina", "SC"],["South Dakota", "SD"],["Tennessee", "TN"],["Texas", "TX"],["Utah", "UT"],["Virginia", "VA"],["Vermont", "VT"],["Washington", "WA"],["Wisconsin", "WI"],["West Virginia", "WV"],["Wyoming", "WY"]],          
-usMilitary = [["APO/FPO ZIP 340", "AA"],["APO/FPO ZIP\'S 090-098", "AE"],["APO/FPO ZIP\'S 962-966", "AP"]],
-canadianProvinces = [["Alberta", "AB"],["British Columbia", "BC"],["Manitoba", "MB"],["New Brunswick", "NB"],["Newfoundland and Labrador", "NL"],["Nova Scotia", "NS"],["Northwest Territories", "NT"],["Nunavut", "NU"],["Ontario", "ON"],["Prince Edward Island", "PE"],["Quebec", "QC"],["Saskatchewan", "SK"],["Yukon Territory", "YT"]],
-usTerritories = [["American Samoa", "AS"],["Federated States Of Micronesia", "FM"],["Guam", "GU"],["Marshall Islands", "MH"],["Palau", "PW"],["Northern Mariana Islands", "MP"],["Puerto Rico", "PR"],["Virgin Islands", "VI"]],
-countries = ["Afghanistan","Aland Islands","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Channel Islands","Chile","China","Hong Kong Spcl. Admin. Region of China","Macao Spcl. Admin. Region of China","Colombia","Comoros","Congo","Cook Islands","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Democratic People's Rep. of Korea","Democratic Republic of the Congo","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Faeroe Islands","Falkland Islands (Malvinas)","Fiji","Finland","France","French Guiana","French Polynesia","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guadeloupe","Guam","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Holy See","Honduras","Hungary","Iceland","India","Indonesia","Iran (Islamic Republic of)","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Lao People's Democratic Republic","Latvia","Lebanon","Lesotho","Liberia","Libyan Arab Jamahiriya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Martinique","Mauritania","Mauritius","Mayotte","Mexico","Micronesia (Federated States of)","Monaco","Mongolia","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Niue","Norfolk Island","Northern Mariana Islands","Norway","Occupied Palestinian Territory","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Pitcairn","Poland","Portugal","Puerto Rico","Qatar","Republic of Korea","Republic of Moldova","Réunion","Romania","Russian Federation","Rwanda","Saint Helena","Saint Kitts and Nevis","Saint Lucia","Saint Pierre and Miquelon","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia and Montenegro","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","Spain","Sri Lanka","Sudan","Suriname","Svalbard and Jan Mayen Islands","Swaziland","Sweden","Switzerland","Syrian Arab Republic","Taiwan","Tajikistan","Thailand","The former Yugoslav Rep. of Macedonia","Timor-Leste","Togo","Tokelau","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Turks and Caicos Islands","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United Republic of Tanzania","United States","United States Virgin Islands","Uruguay","Uzbekistan","Vanuatu","Venezuela","Viet Nam","Wallis and Futuna Islands","Western Sahara","Yemen","Zambia","Zimbabwe"],
-other = [["Other", "00"]];
+import { canadianProvinces, countries, other, usMilitary, usStates, usTerritories } from '../config/dropdowns.json';
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
 phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/,
@@ -24,11 +19,15 @@ lastname_regex=/^([a-zA-Z0-9\-\.' ]+)(?:(,|\s|,\s)(jr|sr|ii|iii|iv|esq)\.*)?$/i;
 export default class NameAddressForm extends Component {
     constructor(props){
         super(props)
+        let date = new Date().getDate();
+        if (date < 2 || date > 28) {
+            date = 2;
+        }
         this.state = {
             env: [process.env.alpha, process.env.bravo],
             ClientBrowser: "",
             ClientIP: "10.100.43.50", //obtain this from server somehow
-            MotivationText: props.hydratedData ? props.hydratedData.MotivationText : props.MotivationText,
+            MotivationText: props.MotivationText,
             arrayOptions: {
                 givingFormat: props.givingFormat,
                 monthlyOption: props.monthlyOption,
@@ -56,6 +55,11 @@ export default class NameAddressForm extends Component {
             Clublevel: props.hydratedData ? props.hydratedData.Clublevel : '',
             submitted: false,
             submitting: false,
+            subscriptions: [...props.subscriptions],
+            AddContactYN: props.AddContactYN,
+            Contact_Source: props.Contact_Source,
+            ActivityName: props.ActivityName,
+            SectionName: props.SectionName,
             cart: {
                 items: [{
                     type: 'donation',
@@ -69,7 +73,7 @@ export default class NameAddressForm extends Component {
                 }]
             },
             fields: {
-                Monthlypledgeday: props.hydratedData ? props.hydratedData.Monthlypledgeday : new Date().getDate(),
+                Monthlypledgeday: props.hydratedData ? props.hydratedData.Monthlypledgeday : date,
                 Title: props.hydratedData ? props.hydratedData.Title : "",
                 Firstname: props.hydratedData ? props.hydratedData.Firstname : "",
                 Middlename: props.hydratedData ? props.hydratedData.Middlename : "",
@@ -80,7 +84,7 @@ export default class NameAddressForm extends Component {
                 Address2: props.hydratedData ? props.hydratedData.Address2 : "",
                 City: props.hydratedData ? props.hydratedData.City  : "",
                 State: props.hydratedData ? props.hydratedData.State : "",
-                Zip: props.hydratedData ? props.hydratedData.State : "",
+                Zip: props.hydratedData ? props.hydratedData.Zip : "",
                 Country: props.hydratedData ? props.hydratedData.Country : props.international ? "" : "United States",
                 Emailaddress: props.hydratedData ? props.hydratedData.Emailaddress : "",
                 phone: props.hydratedData ? props.hydratedData.Phoneareacode + props.hydratedData.Phoneexchange + props.hydratedData.Phonenumber : "",
@@ -134,28 +138,24 @@ export default class NameAddressForm extends Component {
 
         if (this.props.hydratedData) {
             let amount = 0, isMonthly = false;
-            const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount} = this.props.hydratedData.MultipleDonations[0];
+            
             const {items} = this.state.cart;
 
-            items[0].DetailName = DetailName;
-            items[0].DetailDescription = DetailDescription;
-            items[0].DetailCprojCredit = DetailCprojCredit;
-            items[0].DetailCprojMail = DetailCprojMail;
-            items[0].PledgeAmount = PledgeAmount;
-            amount = PledgeAmount
-            items[0].monthly = DetailName === "MP" ? true : false;
-            isMonthly = DetailName === "MP" ? true : false;
-            for (let i = 1; i < this.props.hydratedData.MultipleDonations.length; i++) {
+            for (let i = 0; i < this.props.hydratedData.MultipleDonations.length; i++) {
                 const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount} = this.props.hydratedData.MultipleDonations[i];
+                const type = DetailName === "MP" || DetailName === "SPGF" ? "donation" : "other";
+                if (type === "donation") {
+                    amount = PledgeAmount
+                    isMonthly = DetailName === "MP" ? true : false;
+                }
                 items.push({
-                    type: 'other',
+                    type,
                     PledgeAmount,
                     DetailCprojMail,
                     DetailCprojCredit,
                     DetailDescription,
                     DetailName,
-                    monthly: false,
-                    fund: null
+                    monthly: isMonthly
                 })
             }
             // console.log({amount, isMonthly})
@@ -389,8 +389,7 @@ export default class NameAddressForm extends Component {
                     DetailCprojCredit: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojCredit : this.props.monthlyPledgeData.DetailCprojCredit,
                     DetailDescription: id == "singlegift" ? "Single Pledge" : "Monthly Pledge",
                     DetailName: id == "singlegift" ? "SPGF" : "MP",
-                    monthly: id == "singlegift" ? false : true,
-                    fund: null
+                    monthly: id == "singlegift" ? false : true
                 }
         }
         // console.log({items})
@@ -456,8 +455,11 @@ export default class NameAddressForm extends Component {
             return this.setState({submitting: false, errors})
         }
 
-        const {Address1, Address2, City, Country, Emailaddress, Firstname, Lastname, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName} = fields
-        const {Clublevel, MotivationText, ClientBrowser, ClientIP} = this.state
+        const {Address1, Address2, City, Country, Emailaddress, Firstname, Lastname, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
+        const {Clublevel, MotivationText, ClientBrowser, ClientIP, AddContactYN, ActivityName, Contact_Source, SectionName} = this.state
+        const Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
+        Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "",
+        Phonenumber =  phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
 
         const isMonthly = this.state.cart.items[0].monthly
         const DonationType =  isMonthly ? "CR" : "CC";
@@ -470,11 +472,14 @@ export default class NameAddressForm extends Component {
         const multipleDonations = () => this.state.cart.items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount})=> {return {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}})
         const MultipleDonations = multipleDonations();
         let data = {
+                ActivityName,
+                AddContactYN,
                 Address1,
                 Address2,
                 APIAccessID: this.state.env[0],
                 City,
                 Clublevel,
+                Contact_Source,
                 Country,
                 DonationType,
                 Emailaddress,
@@ -485,10 +490,10 @@ export default class NameAddressForm extends Component {
                 Monthlypledgeday,
                 MotivationText,
                 MultipleDonations,
-                Phoneareacode: "555", //update later
-                Phoneexchange: "555", //update later
-                Phonenumber: "1212", //update later
-                SectionName: '700Club', // what is this???
+                Phoneareacode,
+                Phoneexchange,
+                Phonenumber,
+                SectionName,
                 ShipTo,
                 Singledonationamount,
                 State,

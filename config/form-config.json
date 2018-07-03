@@ -9,17 +9,22 @@
     "getPhone": true,
     "numProducts": 0,
     "products": [{
-        "productAmt": 15,
-        "description": "",
+        "PledgeAmount": 15,
+        "DetailDescription": "To Life - DVD",
         "DetailCprojCredit": "043250",
         "DetailCprojMail": "043251",
+        "DetailName": "CBNIsrael",
         "productMessage": "With stunning cinematography and moving interviews, <em>To Life</em> follows Israeli volunteers in Uganda, Nepal, Greece, Kurdistan, and the Palestinian Territories to discover how Israel is fulfilling ancient prophecy by being a light to the nations today.",
         "productTitle": "To Life DVD"
     }],
+    "numFunds": 0,
     "funds": [{
-        "description": "",
+        "fundDescription": "",
         "fundTitle": "",
-        "solicitation": ""
+        "DetailDescription": "Superbook Translation",
+        "DetailCprojCredit": "043250",
+        "DetailCprojMail": "043251",
+        "DetailName": "Superbook"
     }],
     "subscriptions": [{
         "code": "israel",
@@ -47,5 +52,6 @@
     "AddContactYN": "Y",
     "PageName": "700Club",
     "Contact_Source": "",
-    "ActivityName": ""
+    "ActivityName": "",
+    "SectionName": "700Club"
 }

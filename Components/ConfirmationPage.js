@@ -336,9 +336,9 @@ export default class ConfirmationPage extends Component {
                         <input type="submit" styleName="form.submitButton" id="submit" disabled={this.state.submitting} value="Finish Donation &#10142;"/>
                     </div>
                     <div id="seals"></div>
-                    <div styleName="form.goBack-btn">
-                        Click the &ldquo;Finish Donation&rdquo; button above or <br/>
-                        <a onClick={this.handleGoBackClick}>go back</a> to the previous page to make changes.
+                    <div styleName="form.goBackBtn">
+                        <span>Click the &ldquo;Finish Donation&rdquo; button above or</span>
+                        <span><a onClick={this.handleGoBackClick}>go back</a> to the previous page to make changes.</span>
                     </div>
                 </form>
                 <form id="hiddenform" styleName="main.hidden" action={this.state.formAction} method="POST">

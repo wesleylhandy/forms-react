@@ -2,8 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const compression = require('compression');
 const path = require('path')
+const hbs = require('hbs')
 
 const app = express();
+app.set('view engine', 'hbs');
 
 // Specify the port.
 var port = process.env.PORT || 8080;
@@ -24,17 +26,18 @@ const router = require('express').Router();
 
 router.get("/", function(req, res) {
     res.statusCode = 200;
-    res.sendFile(path.resolve(__dirname, 'thankyou.html'))
+    res.render(path.resolve(__dirname, 'thankyou.hbs'), {})
 })
 
 router.post('/', function(req, res) {
-    console.log({ req: req.body, params: req.query })
-    if (req.query && req.query.status.toLowerCase() == 'error') {
+    const {body, query} = req;
+    console.log({ body, query })
+    if (query && query.status.toLowerCase() == 'error') {
         res.statusCode = 400
         res.sendFile(path.resolve(__dirname, 'error.html'))
     } else {
         res.statusCode = 200;
-        res.sendFile(path.resolve(__dirname, 'thankyou.html'))
+        res.render(path.resolve(__dirname, 'thankyou.hbs'), body)
     }
 })
 

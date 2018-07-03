@@ -14,7 +14,7 @@ const { givingFormat, getMiddleName, getSuffix,
     international, getPhone, products,
     numProducts, additionalGift, additionalGiftMessage,
     funds, subscriptions, monthlyAmounts,
-    singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData, AddContactYN, PageName } = config;
+    singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData, AddContactYN, PageName, SectionName } = config;
 
 export default class App extends Component {
     constructor(props) {
@@ -51,9 +51,10 @@ export default class App extends Component {
                 "DetailCprojCredit": "043250",
                 "DetailCprojMail": "043251"
             },
-            AddContactYN: AddContactYN && AddContactYN == "Y" ? true : false,
+            AddContactYN: AddContactYN || "Y",
             Contact_Source: PageName + " Donor",
-            ActivityName: PageName + +"_Donation_Activity", 
+            ActivityName: PageName + "_Donation_Activity", 
+            SectionName: SectionName || "700Club",
             submitted: false,
             confirmed: false,
             confirmationData: null,

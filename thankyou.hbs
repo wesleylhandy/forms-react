@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Thank You For Your Donation</title>
+    <style>
+        .flex {
+            display: flex;
+        }
+
+        .flex.flex-row {
+            flex-direction: row;
+        }
+
+        .flex.flex-between {
+            justify-content: space-between;
+        }
+
+        .container {
+            margin: 20px;
+            max-width: 640px;
+        }
+
+        .thankyou-data {
+            border-top: 1px solid black;
+            border-right: 5px solid black;
+            border-left: 5px solid black;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .thankyou-data:first-of-type{
+            border-top: 5px solid black;
+        }
+
+        .thankyou-data:last-child {
+            border-bottom: 5px solid black;
+        }
+
+        .thankyou-data:nth-child(odd) {
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .redirect>a {
+            color: #1775BC;
+            transition: color 200ms ease-in-out;
+        }
+
+        .redirect>a:hover{
+            color: #091d44;
+        }
+
+    </style>
+</head>
+
+<body>
+    
+
+    {{#if TransactionID}}
+        <h1>Thank you!!!</h1>
+        <div class="container">
+            <div class="flex flex-row flex-between thankyou-data"><span>TransactionID </span><span>{{TransactionID}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>TransactionDescription </span><span>{{TransactionDescription}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>DonationType </span><span>{{DonationType}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>MonthlyPledge </span><span>{{MonthlyPledge}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>RecurringDay </span><span>{{RecurringDay}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>SinglePledge </span><span>{{SinglePledge}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>MotivationText </span><span>{{MotivationText}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>ttDonationID </span><span>{{ttDonationID}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>ttDonationTotal </span><span>{{ttDonationTotal}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>DonationDetail </span><span>{{DonationDetail}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>DonorID </span><span>{{DonorID}}</span></div>
+        </div>
+    {{else}}
+        <div class='redirect'>Please first make a donation at <a href="http://localhost:1234">localhost:1234</a></div>
+    {{/if}}
+</body>
+
+</html>
