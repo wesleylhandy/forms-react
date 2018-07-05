@@ -10,6 +10,7 @@ import ProductDisplay from './ProductDisplay'
 import FundDisplay from './FundDisplay'
 
 import { canadianProvinces, countries, other, usMilitary, usStates, usTerritories } from '../config/dropdowns.json';
+import logError from './helpers/xhr-errors';
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
 phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/,
@@ -73,7 +74,7 @@ export default class NameAddressForm extends Component {
                 quantity: 0
             }],
             cart: {
-                items: [{}]
+                items: []
             },
             fields: {
                 Monthlypledgeday: props.hydratedData ? props.hydratedData.Monthlypledgeday : date,
@@ -123,7 +124,8 @@ export default class NameAddressForm extends Component {
                 amount: ""
             },
             hydratedAmount: 0,
-            hydratedMonthly: false
+            hydratedMonthly: false,
+            hydratedProducts: false
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.validateInput = this.validateInput.bind(this)
@@ -144,6 +146,8 @@ export default class NameAddressForm extends Component {
             let amount = 0, isMonthly = false;
             
             const {items} = this.state.cart;
+            const { products } = this.state.productOptions
+            let {productInfo, productsOrdered} = this.state
 
             for (let i = 0; i < this.props.hydratedData.MultipleDonations.length; i++) {
                 const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount} = this.props.hydratedData.MultipleDonations[i];
@@ -151,6 +155,16 @@ export default class NameAddressForm extends Component {
                 if (type === "donation") {
                     amount = PledgeAmount
                     isMonthly = DetailName === "MP" ? true : false;
+                }
+                if (type === "product") {
+                    const idx = products.findIndex(el=> el.DetailName === DetailName)
+                    const found = productInfo.findIndex(prod=> prod.idx === idx)
+                    if (found > -1) {
+                        productInfo[found].quantity++
+                    } else {
+                        productInfo.push({idx, quantity: 1})
+                    }
+                    productsOrdered = true;
                 }
                 items.push({
                     type,
@@ -163,218 +177,8 @@ export default class NameAddressForm extends Component {
                 })
             }
             // console.log({amount, isMonthly})
-            this.setState({cart: {items}, hydratedAmount: amount, hydratedMonthly: isMonthly})
-
+            this.setState({cart: {items}, hydratedAmount: amount, hydratedMonthly: isMonthly, productInfo, productsOrdered, hydratedProducts: true})
         }
-    }
-
-    renderMonthlyRadio(monthlyChecked, Monthlypledgeday) {
-
-        let monthly = monthlyChecked;
-        let single = !monthlyChecked;
-        let self = this;
-
-        function renderCCInfo() {
-            const options = []
-            for(let i = 2; i <= 28; i++){
-                options.push(<option key={"date-option-" + i} value={i}>{i}</option>)
-            }
-            return (
-                <div styleName="form.monthlyGivingDay">
-                    <h5 styleName="form.ccDayOfMonth">Charge automatically on day&nbsp;
-                        <select styleName="form.ccdate" name="Monthlypledgeday" onChange={self.handleInputChange} value={Monthlypledgeday}>
-                            {options}
-                        </select>
-                    &nbsp;each month.</h5>
-                </div>   
-            )
-        }
-        return (
-            <div id="MonthlyGivingInfo">
-                <h3 styleName="main.caps form.form-header">How Often Do You Want to Give This Amount?</h3>
-
-                    <div styleName="flex.flex flex.flex-row flex.flex-between form.monthlyRadio">
-                        <div id="monthly-group" styleName="flex.flex flex.flex-row flex.flex-axes-center form.radioGroup">
-                            <input styleName="form.radioInput" name="monthly" id="monthlygift" type="radio" checked={monthly} onChange={this.handleRadioClick}/>
-                            <label htmlFor="monthlygift">Monthly Gift</label>
-                        </div>
-                        <div id="single-group"styleName="flex.flex flex.flex-row flex.flex-axes-center form.radioGroup">
-                            <input styleName="form.radioInput" name="monthly" id="singlegift" type="radio" onChange={this.handleRadioClick} checked={single}/>
-                            <label htmlFor="singlegift">Single Gift</label>
-                        </div>
-                    </div>
-
-                    {monthlyChecked ? renderCCInfo() : null}
-            </div>
-        )
-    }
-
-    renderShippingAddress(showShipping) {
-        return (
-            <div styleName="form.shipping-address__container">
-                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
-                    
-                    <input type='checkbox' styleName="form.checkboxInput"
-                        id="ShipToYes" 
-                        name="ShipToYes" 
-                        checked={this.state.fields.ShipToYes} 
-                        onChange={this.handleInputChange}
-                    />
-                    <label htmlFor="ShipToYes">&nbsp;My shipping address is different than my billing address.</label>     
-
-                </div>
-                <div id="ShippingAddressInfo" styleName = {showShipping ? 'form.shipping-address__info' : 'main.hidden'}>
-                    <div styleName="form.formRow">
-    
-                        <div styleName='flex.flex flex.flex-row flex.flex-center'>
-                            <hr styleName='form.line'/><div styleName='form.divider-title main.caps'>Shipping Address</div><hr styleName='form.line'/>
-                        </div>
-
-                    </div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
-                        <div id="form-field-ShipToName" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="ShipToName">Name<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                type='text' 
-                                id="ShipToName" 
-                                maxLength='100' 
-                                name="ShipToName" 
-                                placeholder="First and Last Name" 
-                                required={true}
-                                value={this.state.fields.ShipToName}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.ShipToName}</div>
-
-                        </div>
-
-                    </div>
-
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
-                        <div id="form-field-ShipToAddress1" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="ShipToAddress1">Address<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                id="ShipToAddress1" 
-                                type='text' 
-                                maxLength='64' 
-                                name="ShipToAddress1" 
-                                placeholder="Address*" 
-                                required={true}
-                                value={this.state.fields.ShipToAddress1}
-                                onChange={this.handleInputChange}
-                               />
-                            <div styleName="form.error">{this.state.errors.ShipToAddress1}</div>
-
-                        </div>
-
-                    </div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
-                        <div id="form-field-ShipToAddress2" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="ShipToAddress2">Address2</label>
-                            <input styleName="form.formControl" 
-                                id="ShipToAddress2" 
-                                type='text' 
-                                maxLength='64' 
-                                name="ShipToAddress2" 
-                                placeholder="Address*" 
-                                required={true}
-                                value={this.state.fields.ShipToAddress2}
-                                onChange={this.handleInputChange}
-                               />
-                            <div styleName="form.error">{this.state.errors.ShipToAddress2}</div>
-
-                        </div>
-
-                    </div>
-
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
-                        <div id="form-field-ShipToCity" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="ShipToCity">City<span>*</span></label>
-                            <input styleName="form.formControl"
-                                id="ShipToCity" 
-                                type='text' 
-                                maxLength='64' 
-                                name="ShipToCity" 
-                                placeholder="City*" 
-                                required={true}
-                                value={this.state.fields.ShipToCity}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.ShipToCity}</div>
-
-                        </div>
-                        <div id="form-field-ShipToState" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="ShipToState">State<span>*</span></label>
-                            <select styleName="form.formControl" 
-                                id="ShipToState" 
-                                name="ShipToState" 
-                                required={true} 
-                                value={this.state.fields.ShipToState} 
-                                onChange={this.handleInputChange}
-                            >
-                                <option value="">State* &#9663;</option>
-                                {this.renderStateOptions(this.state.international)}
-
-                            </select>
-                            <div styleName="form.error">{this.state.errors.ShipToState}</div>
-
-                        </div>
-                    </div>
-
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
-                        <div id="form-field-ShipToZip" styleName="form.formGroup flex.flex-grow">
-
-                            <label htmlFor="ShipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
-                            <input styleName="form.formControl" 
-                                id="ShipToZip" 
-                                type='text' 
-                                maxLength="5"
-                                name="ShipToZip" 
-                                placeholder="Zip*" 
-                                required={true}
-                                value={this.state.fields.ShipToZip}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.ShipToZip}</div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
-    renderStateOptions(international) {
-
-        function renderOptGroup(type, options) {
-            return <optgroup key={type.replace(" ","")} label={type}>{options.map((opt, i)=><option key={`${type.replace(' ', '')}State-${i}`} value={opt[1]}>{opt[0]}</option>)}</optgroup>
-        }
-
-        let optGroups = []
-        const states = renderOptGroup("U.S. States", usStates)
-        const military = renderOptGroup("U.S. Military", usMilitary)
-        const territories = renderOptGroup("U.S. Territories", usTerritories)
-        const otherOpt = renderOptGroup("Other", other)
-        let provinces = null;
-        if (international) {
-            provinces = renderOptGroup("Canadian Provinces", canadianProvinces)
-        }
-
-        optGroups.push(states, military, provinces, territories, otherOpt)
-
-        return optGroups
-
     }
 
     /**
@@ -420,18 +224,12 @@ export default class NameAddressForm extends Component {
         this.setState({ fields, errors });
     }
 
-    handleShippingClick(e) {
-        this.setState({showShipping: true})
-    }
-
     handleSubmit(e) {
         e.preventDefault();
         if (this.state.submitting) return // ie. disallow multiple submissions
 
         this.setState({submitting: true})
-        
-        // TO DO - HANDLE FLATTENING OF PRODUCT ORDER DATA INTO CART
-        
+              
         //THINK THROUGH THIS LOGIC A LITTLE MORE
         const {items} = this.state.cart;
         const found = items.findIndex(el=>el && el.type == "donation")
@@ -463,14 +261,15 @@ export default class NameAddressForm extends Component {
             return this.setState({submitting: false, errors})
         }
         //deconstruct necessary fields from state
-        const {Address1, Address2, City, Country, Emailaddress, Firstname, Lastname, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
-        const {Clublevel, MotivationText, ClientBrowser, ClientIP, AddContactYN, ActivityName, Contact_Source, SectionName} = this.state
+        const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Suffix, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
+        const {Clublevel, MotivationText, ClientBrowser, ClientIP, Subscriptions, AddContactYN, ActivityName, Contact_Source, SectionName} = this.state
+        
         //construct phone fields from regex
         const Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
         Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "",
         Phonenumber =  phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
+        
         //process cart
-
         const isMonthly = found > -1 ? items[found].monthly : false
         const DonationType =  isMonthly ? "CR" : "CC";
         const TransactionType = isMonthly ? "Monthly" : "Single"
@@ -528,8 +327,12 @@ export default class NameAddressForm extends Component {
                 ShipToState,
                 ShipToZip,
                 ShipToCountry,
-                ShipToName
+                ShipToName,
+                Middlename,
+                Spousename,
+                Suffix
             }
+        // console.log({data})
         axios({
             method: 'POST',
             url: "http://SecureGiving.cbn.local/api/contribution",
@@ -542,25 +345,7 @@ export default class NameAddressForm extends Component {
             // console.log({msg})
             self.props.submitForm({msg, data})
         }).catch(error=>{
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.error(error.response.data);
-                console.error(error.response.status);
-                console.error(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.error(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.error('Error', error.message);
-            }
-            console.error({error})
-            console.error(error.config);
-
-            //parse errors and set errors
+            logError(error);
             this.setState({submitting: false})
         });
     }
@@ -568,20 +353,39 @@ export default class NameAddressForm extends Component {
      * Sets the state with new product order information from the product display
      * @param {Object} productInfo - Selected Fund 
      * @param {Number} productInfo.index - index of product being added or removed from cart
-     * @param {Number} productInfo.value - number of total items
+     * @param {Number} productInfo.quantity - number of total items
      */
-    updateProducts({idx, value}) {
+    updateProducts({idx, quantity}) {
+        // productInfo and productsOrdered to be used by Product Display to calculate a total donation
         let {productInfo, productsOrdered} = this.state;
         const found = productInfo.findIndex(prod=> prod.idx === idx)
         if (found > -1) {
-            productInfo[found].quantity = value
+            productInfo[found].quantity = quantity
         } else {
-            productInfo.push({idx, quantity: value})
+            productInfo.push({idx, quantity})
         }
         const totalProducts = productInfo.reduce((a, b)=> a + b.quantity, 0)
         productsOrdered = totalProducts ? true : false
-        // console.log({productInfo, productsOrdered, totalProducts})
-        this.setState({productInfo, productsOrdered})
+
+        //update cart by removing all instances of this particular product and adding back new quantity if any
+        const { items } = this.state.cart
+        const { products } = this.state.productOptions
+        const { DetailName, DetailCprojCredit, DetailCprojMail, DetailDescription, PledgeAmount} = products[idx];
+        const newItems = items.filter(el=> el.DetailName !== DetailName)
+        if (quantity) {
+            for (let i = 0; i < quantity; i++) {
+                newItems.push({
+                        type: 'product',
+                        PledgeAmount: PledgeAmount,
+                        DetailCprojMail: DetailCprojMail,
+                        DetailCprojCredit: DetailCprojCredit,
+                        DetailDescription: DetailDescription,
+                        DetailName: DetailName
+                })
+            }
+        }
+        // console.log({productInfo, productsOrdered, totalProducts, newItems})
+        this.setState({productInfo, productsOrdered, cart: {items: newItems}})
     }
 
     addToCart(item) {
@@ -598,6 +402,7 @@ export default class NameAddressForm extends Component {
         // console.log({items})
         this.setState({cart: {items}})
     }
+
 
     /**
      * Sets the state with new fund information from the fund select dropdown
@@ -620,7 +425,8 @@ export default class NameAddressForm extends Component {
      */
     validateInput(submitting, name, value) {
         let error = '';
-        const { international, shipping } = this.state;
+        const { international } = this.state;
+        const {ShipToYes} = this.state.fields;
         switch(name) {
             case "Title":
             case "State":
@@ -631,7 +437,9 @@ export default class NameAddressForm extends Component {
                 }
                 break;
             case "ShipToState":
-                if(!value && submitting && shipping) {
+            case "ShipToAddress1":
+            case "ShipToCity":
+                if(!value && submitting && ShipToYes) {
                     error = "Required"
                 }
                 break;
@@ -660,7 +468,7 @@ export default class NameAddressForm extends Component {
                 if(value && !lastname_regex.test(value)) {
                     error = "No special characters allowed. Please call if you need assistance."
                 }
-                if (!value && shipping && submitting) {
+                if (!value && ShipToYes && submitting) {
                     error = "Required"
                 }
                 break;
@@ -711,25 +519,9 @@ export default class NameAddressForm extends Component {
                             }
                         })
                         .catch(error=>{
-                            if (error.response) {
-                                // The request was made and the server responded with a status code
-                                // that falls out of the range of 2xx
-                                console.error(error.response.data);
-                                console.error(error.response.status);
-                                console.error(error.response.headers);
-                            } else if (error.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                console.error(error.request);
-                            } else {
-                                // Something happened in setting up the request that triggered an Error
-                                console.error('Error', error.message);
-                            }
-                            console.error({error})
-                            console.error(error.config);
+                            logError(error);
                         });
-                } else if (!value && submitting && shipping && name == "ShipToZip") {
+                } else if (!value && submitting && ShipToYes && name == "ShipToZip") {
                     error = "Required"
                 } else if (!value && submitting && name == "Zip") {
                     error = "Required"
@@ -737,6 +529,333 @@ export default class NameAddressForm extends Component {
                 break;
         }
         return error
+    }
+
+
+    renderMonthlyRadio(monthlyChecked, Monthlypledgeday) {
+
+        let monthly = monthlyChecked;
+        let single = !monthlyChecked;
+        let self = this;
+
+        function renderCCInfo() {
+            const options = []
+            for(let i = 2; i <= 28; i++){
+                options.push(<option key={"date-option-" + i} value={i}>{i}</option>)
+            }
+            return (
+                <div styleName="form.monthlyGivingDay">
+                    <h5 styleName="form.ccDayOfMonth">Charge automatically on day&nbsp;
+                        <select styleName="form.ccdate" name="Monthlypledgeday" onChange={self.handleInputChange} value={Monthlypledgeday}>
+                            {options}
+                        </select>
+                    &nbsp;each month.</h5>
+                </div>   
+            )
+        }
+        return (
+            <div id="MonthlyGivingInfo">
+                <h3 styleName="main.caps form.form-header">How Often Do You Want to Give This Amount?</h3>
+                    <div styleName="flex.flex flex.flex-row flex.flex-between form.monthlyRadio">
+                        <div id="monthly-group" styleName="flex.flex flex.flex-row flex.flex-axes-center form.radioGroup">
+                            <input styleName="form.radioInput" name="monthly" id="monthlygift" type="radio" checked={monthly} onChange={this.handleRadioClick}/>
+                            <label htmlFor="monthlygift">Monthly Gift</label>
+                        </div>
+                        <div id="single-group"styleName="flex.flex flex.flex-row flex.flex-axes-center form.radioGroup">
+                            <input styleName="form.radioInput" name="monthly" id="singlegift" type="radio" onChange={this.handleRadioClick} checked={single}/>
+                            <label htmlFor="singlegift">Single Gift</label>
+                        </div>
+                    </div>
+                    {monthlyChecked ? renderCCInfo() : null}
+            </div>
+        )
+    }
+
+    renderShippingAddress(showShipping) {
+        return (
+            <div styleName="form.shipping-address__container">
+                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
+                    
+                    <input type='checkbox' styleName="form.checkboxInput"
+                        id="ShipToYes" 
+                        name="ShipToYes" 
+                        checked={this.state.fields.ShipToYes} 
+                        onChange={this.handleInputChange}
+                    />
+                    <label htmlFor="ShipToYes">&nbsp;My shipping address is different than my billing address.</label>     
+
+                </div>
+                <div id="ShippingAddressInfo" styleName = {showShipping ? 'form.shipping-address__info' : 'main.hidden'}>
+                    <div styleName="form.formRow">  
+                        <div styleName='flex.flex flex.flex-row flex.flex-center'>
+                            <hr styleName='form.line'/><div styleName='form.divider-title main.caps'>Shipping Address</div><hr styleName='form.line'/>
+                        </div>
+                    </div>
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                        <div id="form-field-ShipToName" styleName="form.formGroup flex.flex-grow">
+                            <label htmlFor="ShipToName">Name<span>*</span></label>
+                            <input styleName="form.formControl" 
+                                type='text' 
+                                id="ShipToName" 
+                                maxLength='100' 
+                                name="ShipToName" 
+                                placeholder="First and Last Name" 
+                                required={this.state.fields.ShipToYes}
+                                value={this.state.fields.ShipToName}
+                                onChange={this.handleInputChange}
+                            />
+                            <div styleName="form.error">{this.state.errors.ShipToName}</div>
+                        </div>
+                    </div>
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                        <div id="form-field-ShipToAddress1" styleName="form.formGroup flex.flex-grow">
+                            <label htmlFor="ShipToAddress1">Address<span>*</span></label>
+                            <input styleName="form.formControl" 
+                                id="ShipToAddress1" 
+                                type='text' 
+                                maxLength='64' 
+                                name="ShipToAddress1" 
+                                placeholder="Shipping Address*" 
+                                required={this.state.fields.ShipToYes}
+                                value={this.state.fields.ShipToAddress1}
+                                onChange={this.handleInputChange}
+                               />
+                            <div styleName="form.error">{this.state.errors.ShipToAddress1}</div>
+                        </div>
+                    </div>
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                        <div id="form-field-ShipToAddress2" styleName="form.formGroup flex.flex-grow">
+                            <label htmlFor="ShipToAddress2">Address2</label>
+                            <input styleName="form.formControl" 
+                                id="ShipToAddress2" 
+                                type='text' 
+                                maxLength='64' 
+                                name="ShipToAddress2" 
+                                placeholder="Shipping Address Line 2" 
+                                required={false}
+                                value={this.state.fields.ShipToAddress2}
+                                onChange={this.handleInputChange}
+                               />
+                            <div styleName="form.error">{this.state.errors.ShipToAddress2}</div>
+                        </div>
+                    </div>
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                        <div id="form-field-ShipToCity" styleName="form.formGroup flex.flex-grow">
+                            <label htmlFor="ShipToCity">City<span>*</span></label>
+                            <input styleName="form.formControl"
+                                id="ShipToCity" 
+                                type='text' 
+                                maxLength='64' 
+                                name="ShipToCity" 
+                                placeholder="City*" 
+                                required={this.state.fields.ShipToYes}
+                                value={this.state.fields.ShipToCity}
+                                onChange={this.handleInputChange}
+                            />
+                            <div styleName="form.error">{this.state.errors.ShipToCity}</div>
+                        </div>
+                        <div id="form-field-ShipToState" styleName="form.formGroup flex.flex-grow">
+                            <label htmlFor="ShipToState">State<span>*</span></label>
+                            <select styleName="form.formControl" 
+                                id="ShipToState" 
+                                name="ShipToState" 
+                                required={this.state.fields.ShipToYes} 
+                                value={this.state.fields.ShipToState} 
+                                onChange={this.handleInputChange}
+                            >
+                                <option value="">State* &#9663;</option>
+                                {this.renderStateOptions(this.state.international)}
+                            </select>
+                            <div styleName="form.error">{this.state.errors.ShipToState}</div>
+                        </div>
+                    </div>
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                        <div id="form-field-ShipToZip" styleName="form.formGroup flex.flex-grow">
+                            <label htmlFor="ShipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
+                            <input styleName="form.formControl" 
+                                id="ShipToZip" 
+                                type='text' 
+                                maxLength="5"
+                                name="ShipToZip" 
+                                placeholder="Zip*" 
+                                required={this.state.fields.ShipToYes}
+                                value={this.state.fields.ShipToZip}
+                                onChange={this.handleInputChange}
+                            />
+                            <div styleName="form.error">{this.state.errors.ShipToZip}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    renderStateOptions(international) {
+        function renderOptGroup(type, options) {
+            return <optgroup key={type.replace(" ","")} label={type}>{options.map((opt, i)=><option key={`${type.replace(' ', '')}State-${i}`} value={opt[1]}>{opt[0]}</option>)}</optgroup>
+        }
+        let optGroups = []
+        const states = renderOptGroup("U.S. States", usStates)
+        const military = renderOptGroup("U.S. Military", usMilitary)
+        const territories = renderOptGroup("U.S. Territories", usTerritories)
+        const otherOpt = renderOptGroup("Other", other)
+        let provinces = null;
+        if (international) {
+            provinces = renderOptGroup("Canadian Provinces", canadianProvinces)
+        }
+        optGroups.push(states, military, provinces, territories, otherOpt)
+        return optGroups
+    }
+
+    renderNameAddressBlock(getMiddleName, getSuffix) {
+        if (!getMiddleName && !getSuffix) {
+            return (
+                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                    <div id="form-field-title" styleName="form.formGroup flex.flex-grow">
+                        <label htmlFor="Title">Title<span>*</span></label>
+                        <select styleName="form.formControl" 
+                            id="Title" 
+                            name='Title' 
+                            required={true} 
+                            placeholder="Title*"
+                            value={this.state.fields.Title}
+                            onChange={this.handleInputChange}
+                        >
+                            <option value="">Title* &#9663;</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Ms">Ms</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Miss">Miss</option>
+                        </select>
+                        <div styleName="form.error">{this.state.errors.Title}</div>
+                    </div>
+                    <div id="form-field-Firstname" styleName="form.formGroup flex.flex-grow">
+                        <label htmlFor="Firstname">First Name<span>*</span></label>
+                        <input styleName="form.formControl" 
+                            type='text' 
+                            id="Firstname"
+                            maxLength='20' 
+                            name="Firstname" 
+                            placeholder="First Name*" 
+                            required={true}
+                            value={this.state.fields.Firstname}
+                            onChange={this.handleInputChange}
+                        />
+                        <div styleName="form.error">{this.state.errors.Firstname}</div>
+                    </div>                           
+                    <div id="form-field-Lastname" styleName="form.formGroup flex.flex-grow">
+                        <label htmlFor="Lastname">Last Name<span>*</span></label>
+                        <input styleName="form.formControl" 
+                            id="Lastname" 
+                            type='text' 
+                            maxLength='25' 
+                            name="Lastname" 
+                            placeholder="Last Name*" 
+                            required={true}
+                            value={this.state.fields.Lastname}
+                            onChange={this.handleInputChange}
+                        />
+                        <div styleName="form.error">{this.state.errors.Lastname}</div>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                        <div id="form-field-title" styleName="form.formGroup flex.flex-grow">
+                            <label htmlFor="Title">Title<span>*</span></label>
+                            <select styleName="form.formControl" 
+                                id="Title" 
+                                name='Title' 
+                                required={true} 
+                                placeholder="Title*"
+                                value={this.state.fields.Title}
+                                onChange={this.handleInputChange}
+                            >
+                                <option value="">Title* &#9663;</option>
+                                <option value="Mr">Mr</option>
+                                <option value="Ms">Ms</option>
+                                <option value="Mrs">Mrs</option>
+                                <option value="Miss">Miss</option>
+                            </select>
+                            <div styleName="form.error">{this.state.errors.Title}</div>
+                        </div>
+                        <div id="form-field-Firstname" styleName="form.formGroup flex.flex-grow">
+                            <label htmlFor="Firstname">First Name<span>*</span></label>
+                            <input styleName="form.formControl" 
+                                type='text' 
+                                id="Firstname"
+                                maxLength='20' 
+                                name="Firstname" 
+                                placeholder="First Name*" 
+                                required={true}
+                                value={this.state.fields.Firstname}
+                                onChange={this.handleInputChange}
+                            />
+                            <div styleName="form.error">{this.state.errors.Firstname}</div>
+                        </div>
+                        {
+                            getMiddleName ? (
+                                <div id="form-field-Middlename" styleName="form.formGroup flex.flex-grow">
+                                    <label htmlFor="Middlename">Middle Name</label>
+                                    <input styleName="form.formControl" 
+                                        type='text' 
+                                        id="Middlename"
+                                        maxLength='20' 
+                                        name="Middlename" 
+                                        placeholder="Middle Name or Initial" 
+                                        required={false}
+                                        value={this.state.fields.Middlename}
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <div styleName="form.error">{this.state.errors.Middlename}</div>
+                                </div>
+                            ) : null
+                        }
+                    </div>
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">                           
+                        <div id="form-field-Lastname" styleName="form.formGroup flex.flex-grow">
+                            <label htmlFor="Lastname">Last Name<span>*</span></label>
+                            <input styleName="form.formControl" 
+                                id="Lastname" 
+                                type='text' 
+                                maxLength='25' 
+                                name="Lastname" 
+                                placeholder="Last Name*" 
+                                required={true}
+                                value={this.state.fields.Lastname}
+                                onChange={this.handleInputChange}
+                            />
+                            <div styleName="form.error">{this.state.errors.Lastname}</div>
+                        </div>
+                        {
+                            getSuffix ? (
+                                <div id="form-field-Suffix" styleName="form.formGroup flex.flex-grow">
+                                    <label htmlFor="Suffix">Suffix</label>
+                                    <select styleName="form.formControl" 
+                                        id="Suffix" 
+                                        name='Suffix' 
+                                        required={false} 
+                                        placeholder="Suffix"
+                                        value={this.state.fields.Suffix}
+                                        onChange={this.handleInputChange}
+                                    >
+                                        <option value="">Suffix* &#9663;</option>
+                                        <option value="Mr">Jr</option>
+                                        <option value="Ms">Sr</option>
+                                        <option value="Mrs">III</option>
+                                        <option value="Miss">IV</option>
+                                        <option value="Miss">Esq</option>
+                                    </select>
+                                    <div styleName="form.error">{this.state.errors.Suffix}</div>
+                                </div>
+                            ) : null
+                        }
+                    </div>
+                </div>
+            )
+        }
     }
 
     render() {
@@ -753,7 +872,6 @@ export default class NameAddressForm extends Component {
                         />
                         <div styleName="form.error form.amount-error">{this.state.errors.amount}</div>
                     </div>
-
                     { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.Monthlypledgeday) : null }
                 </div>
                 <div styleName={this.state.fundOptions.numFunds ? "form.form-panel" : "form.form-panel main.hidden"}>
@@ -767,72 +885,36 @@ export default class NameAddressForm extends Component {
                         productInfo={this.state.productInfo}
                         productOptions={this.state.productOptions} 
                         updateProducts={this.updateProducts}
+                        hydratedProducts={this.state.hydratedProducts}
                     />
                 </div>
                 <div styleName="form.form-panel">
                     <div styleName="form.nameAddressInfo">
-
                         <h3 styleName="main.caps form.form-header">Please Enter Your Billing Information</h3>
+                        { this.renderNameAddressBlock(this.state.getMiddleName, this.state.getSuffix) }
+                        {
+                            this.state.getSpouseInfo ? (
+                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                    <div id="form-field-Spousename" styleName="form.formGroup flex.flex-grow">
+                                        <label htmlFor="Spousename">Spouse&rsquo;s Name</label>
+                                        <input styleName="form.formControl" 
+                                            type='text' 
+                                            id="Spousename" 
+                                            maxLength='100' 
+                                            name="Spousename" 
+                                            placeholder="Spouse&rsquo;s First and Last Name" 
+                                            required={false}
+                                            value={this.state.fields.Spousename}
+                                            onChange={this.handleInputChange}
+                                        />
+                                        <div styleName="form.error">{this.state.errors.Spousename}</div>
+                                    </div>
+                                </div>
+                            ) : null
+                        }
 
                         <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                            <div id="form-field-title" styleName="form.formGroup flex.flex-grow">
-
-                                <label htmlFor="Title">Title<span>*</span></label>
-                                <select styleName="form.formControl" 
-                                    id="Title" 
-                                    name='Title' 
-                                    required={true} 
-                                    placeholder="Title*"
-                                    value={this.state.fields.Title}
-                                    onChange={this.handleInputChange}
-                                >
-                                    <option value="">Title* &#9663;</option>
-                                    <option value="Mr">Mr</option>
-                                    <option value="Ms">Ms</option>
-                                    <option value="Mrs">Mrs</option>
-                                    <option value="Miss">Miss</option>
-                                </select>
-                                <div styleName="form.error">{this.state.errors.Title}</div>
-
-                            </div>
-                            <div id="form-field-Firstname" styleName="form.formGroup flex.flex-grow">
-
-                                <label htmlFor="Firstname">First Name<span>*</span></label>
-                                <input styleName="form.formControl" 
-                                    type='text' 
-                                    id="Firstname"
-                                    maxLength='20' 
-                                    name="Firstname" 
-                                    placeholder="First Name*" 
-                                    required={true}
-                                    value={this.state.fields.Firstname}
-                                    onChange={this.handleInputChange}
-                                />
-                                <div styleName="form.error">{this.state.errors.Firstname}</div>
-
-                            </div>
-                            <div id="form-field-Lastname" styleName="form.formGroup flex.flex-grow">
-
-                                <label htmlFor="Lastname">Last Name<span>*</span></label>
-                                <input styleName="form.formControl" 
-                                    id="Lastname" 
-                                    type='text' 
-                                    maxLength='25' 
-                                    name="Lastname" 
-                                    placeholder="Last Name*" 
-                                    required={true}
-                                    value={this.state.fields.Lastname}
-                                    onChange={this.handleInputChange}
-                                />
-                                <div styleName="form.error">{this.state.errors.Lastname}</div>
-
-                            </div>
-                        </div>
-
-                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
                             <div id="form-field-Address1" styleName="form.formGroup flex.flex-grow">
-
                                 <label htmlFor="Address1">Address<span>*</span></label>
                                 <input styleName="form.formControl" 
                                     id="Address1" 
@@ -845,13 +927,10 @@ export default class NameAddressForm extends Component {
                                     onChange={this.handleInputChange}
                                 />
                                 <div styleName="form.error">{this.state.errors.Address1}</div>
-
                             </div>
                         </div>
                         <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
                             <div id="form-field-Address2" styleName="form.formGroup flex.flex-grow">
-
                                 <label htmlFor="Address2">Address2</label>
                                 <input styleName="form.formControl" 
                                     id="Address2" 
@@ -864,14 +943,10 @@ export default class NameAddressForm extends Component {
                                     onChange={this.handleInputChange}
                                 />
                                 <div styleName="form.error">{this.state.errors.Address2}</div>
-
                             </div>
                         </div>
-
                         <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
                             <div id="form-field-City" styleName="form.formGroup flex.flex-grow">
-
                                 <label htmlFor="City">City<span>*</span></label>
                                 <input styleName="form.formControl" 
                                     id="City" 
@@ -884,10 +959,8 @@ export default class NameAddressForm extends Component {
                                     onChange={this.handleInputChange}
                                 />
                                 <div styleName="form.error">{this.state.errors.City}</div>
-
                             </div>
                             <div id="form-field-State" styleName="form.formGroupState flex.flex-grow">
-
                                 <label htmlFor="State">State<span>*</span></label>
                                 <select styleName="form.formControl" 
                                     id="State" 
@@ -900,14 +973,11 @@ export default class NameAddressForm extends Component {
                                     {this.renderStateOptions(this.state.international)}
                                 </select>
                                 <div styleName="form.error">{this.state.errors.State}</div>
-
                             </div>
                         </div>
 
                         <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
                             <div id="form-field-Zip" styleName="form.formGroup flex.flex-grow">
-
                                 <label htmlFor="Zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
                                 <input styleName="form.formControl" 
                                     id="Zip" 
@@ -920,9 +990,7 @@ export default class NameAddressForm extends Component {
                                     onChange={this.handleInputChange}
                                 />
                                 <div styleName="form.error">{this.state.errors.Zip}</div>
-
                             </div>
-
                             { this.state.international ? (
                                 <div id="form-field-Country" styleName="form.formGroupCountry flex.flex-grow">
                                 
@@ -938,16 +1006,11 @@ export default class NameAddressForm extends Component {
                                         {countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)}
                                     </select>
                                     <div styleName="form.error">{this.state.errors.Country}</div>
-
                                 </div> 
                             ): null }
-
                         </div>
-
                         <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-
                             <div id="form-field-Emailaddress" styleName="form.formGroupEmail flex.flex-grow">
-
                                 <label htmlFor="Emailaddress">Email Address<span>*</span></label>
                                 <input styleName="form.formControl" 
                                     id="Emailaddress" 
@@ -960,7 +1023,6 @@ export default class NameAddressForm extends Component {
                                     onChange={this.handleInputChange} 
                                 />
                                 <div styleName="form.error">{this.state.errors.Emailaddress}</div>
-
                             </div>
                             {
                                 this.state.getPhone ? (
@@ -982,8 +1044,6 @@ export default class NameAddressForm extends Component {
                         { this.state.shipping ? this.renderShippingAddress(this.state.fields.ShipToYes) : null }                    
                     </div>
                     <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
-
-                        
                         <input type='checkbox' styleName="form.checkboxInput"
                             id="savePersonalInfo" 
                             name="savePersonalInfo"
@@ -991,7 +1051,6 @@ export default class NameAddressForm extends Component {
                             onChange={this.handleInputChange}
                         />
                         <label id="RememberMe" htmlFor="savePersonalInfo">&nbsp;Remember my name and address next time</label>     
-
                     </div>
                     <div styleName="flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
                         <input type="submit" styleName="form.submitButton" id="submit" onClick={this.handleSubmit} disabled={this.state.submitting} value="Continue to Payment &#10142;"/>

@@ -434,7 +434,9 @@
     color: var(--link-hover-color);
 }
 
-.shipping-address__container {}
+.shipping-address__container {
+    margin-top: 20px;
+}
 
 .shipping-address__info {
     margin-top: var(--base-font-size);

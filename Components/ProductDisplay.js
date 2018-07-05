@@ -17,25 +17,39 @@ export default class ProductDisplay extends Component {
                 values: {}
             },
             additionalGiftError: "",
-            totalGift: 0
+            totalGift: 0,
+            hydrated: false
         }
         this.handleInputChange=this.handleInputChange.bind(this)
         this.createMarkup=this.createMarkup.bind(this)
         this.renderAdditionalGift = this.renderAdditionalGift.bind(this)
+    }
+
+    componentDidMount() {
+        if (this.props.hydratedProducts) {
+            const {productInfo} = this.props;
+            const {products, fields} = this.state;
+            const totalGift = productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0)
+            productInfo.forEach(product=>{
+                const {idx, quantity} = product;
+                fields[`product-select-${idx}`] =  quantity;
+            });
+            this.setState({fields, totalGift});
+        }
     }
     handleInputChange(e) {
         const target = e.target;
         const value = parseInt(target.value);
         const name = target.name;
         
-        const fields = this.state.fields;
+        const {fields} = this.state;
         fields[name] = value;
 
         const idx = parseInt(name.split("product-select-")[1])
 
         // console.log({name, idx, value})
 
-        this.props.updateProducts({idx, value})
+        this.props.updateProducts({idx, quantity: value})
 
         this.setState({ fields });
     }
