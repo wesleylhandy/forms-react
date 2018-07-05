@@ -13,30 +13,46 @@ export default class ProductDisplay extends Component {
             additionalGift: props.productOptions.additionalGift,
             additionalGiftMessage: props.productOptions.additionalGiftMessage,
             fields: {
-                additionalGift: 0,
-                values: {}
+                additionalGift: 0
             },
             additionalGiftError: "",
             totalGift: 0,
-            hydrated: false
+            hydrated: props.hydratedProducts,
+            productInfo: props.productInfo
         }
         this.handleInputChange=this.handleInputChange.bind(this)
         this.createMarkup=this.createMarkup.bind(this)
         this.renderAdditionalGift = this.renderAdditionalGift.bind(this)
+        this.hydrateProducts = this.hydrateProducts.bind(this)
     }
 
     componentDidMount() {
-        if (this.props.hydratedProducts) {
-            const {productInfo} = this.props;
-            const {products, fields} = this.state;
-            const totalGift = productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0)
-            productInfo.forEach(product=>{
-                const {idx, quantity} = product;
-                fields[`product-select-${idx}`] =  quantity;
-            });
-            this.setState({fields, totalGift});
-        }
+        const {productInfo} = this.props;
+        this.hydrateProducts(productInfo)
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.additionalGift != this.state.additionalGift) {
+            this.setState({additionalGift: nextProps.additionalGift})
+        }
+        const {productInfo} = nextProps;
+        this.hydrateProducts(productInfo);
+    }
+
+    /**
+     * Sets State from a new productInfo object
+     * @param {Array} productInfo - Array holding state of cart as it relates to product
+     */
+    hydrateProducts(productInfo) {
+        const {products, fields} = this.state;
+        const totalGift = productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0)
+        productInfo.forEach(product=>{
+            const {idx, quantity} = product;
+            fields[`product-select-${idx}`] =  quantity;
+        });
+        this.setState({fields, totalGift});
+    }
+
     handleInputChange(e) {
         const target = e.target;
         const value = parseInt(target.value);
@@ -73,14 +89,6 @@ export default class ProductDisplay extends Component {
         ) : null;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.additionalGift != this.state.additionalGift) {
-            this.setState({additionalGift: nextProps.additionalGift})
-        }
-        const totalGift = nextProps.productInfo.reduce((a, b)=> a + (parseInt(this.state.products[b.idx].PledgeAmount) * b.quantity), 0)
-        this.setState({totalGift});
-    }
-
     render() {
         if (this.state.numProducts == 0) return null
 
@@ -98,7 +106,7 @@ export default class ProductDisplay extends Component {
 
                         return (
                             <div key={`product${i}`} styleName="form.product-card flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
-                                <select styleName="form.select-product flex.flex-no-grow" name={`product-select-${i}`} value={this.state.fields.values[`product-select-${i}`]} onChange={this.handleInputChange}>
+                                <select styleName="form.select-product flex.flex-no-grow" name={`product-select-${i}`} value={this.state.fields[`product-select-${i}`]} onChange={this.handleInputChange}>
                                     { renderOptions(i) }
                                 </select>
                                 <div styleName="form.product-card__body flex.flex-grow">

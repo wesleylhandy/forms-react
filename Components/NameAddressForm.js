@@ -151,7 +151,7 @@ export default class NameAddressForm extends Component {
 
             for (let i = 0; i < this.props.hydratedData.MultipleDonations.length; i++) {
                 const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount} = this.props.hydratedData.MultipleDonations[i];
-                const type = DetailName === "MP" || DetailName === "SPGF" ? "donation" : "other";
+                const type = DetailName === "MP" || DetailName === "SPGF" ? "donation" : "product";
                 if (type === "donation") {
                     amount = PledgeAmount
                     isMonthly = DetailName === "MP" ? true : false;
@@ -165,6 +165,7 @@ export default class NameAddressForm extends Component {
                         productInfo.push({idx, quantity: 1})
                     }
                     productsOrdered = true;
+                    // console.log({idx, found, productInfo, productsOrdered})
                 }
                 items.push({
                     type,

@@ -234,8 +234,14 @@ export default class ConfirmationPage extends Component {
         return error
     }
 
-    renderProductSummary(data) {
+    /**
+     * Sets State and displays
+     * @param {Array} MultipleDonations - donation data submitted by the user to the API 
+     * @param {String} Monthlypledgeday - day of monthly charge, if any
+     */
+    renderProductSummary({MultipleDonations, Monthlypledgeday}) {
         /** TO DO **/
+        // compile array into distinct giving types. That is reduce sum of gifts per DonationDetail
         return null
     }
 
