@@ -2,7 +2,7 @@
  * Logs Errors from XHR via Axios
  * @param {Object} error - Error Object Returned by Axios
  */
-export default function logError(error) {
+export default function logError({error}) {
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx

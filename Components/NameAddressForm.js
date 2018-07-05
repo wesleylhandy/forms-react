@@ -28,7 +28,7 @@ export default class NameAddressForm extends Component {
         this.state = {
             env: [process.env.alpha, process.env.bravo],
             ClientBrowser: "",
-            ClientIP: "10.100.43.50", //obtain this from server somehow
+            ClientIP: process.env.delta, //obtain this from server somehow
             MotivationText: props.MotivationText,
             arrayOptions: {
                 givingFormat: props.givingFormat,
@@ -213,12 +213,9 @@ export default class NameAddressForm extends Component {
         let value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        const errors = this.state.errors;
-
+        const {fields, errors } = this.state;
         const error = this.validateInput(false, name, value);
-        errors[name] = error;
-        
-        const fields = this.state.fields;
+        errors[name] = error;     
         fields[name] = value;
 
         this.setState({ fields, errors });
@@ -241,13 +238,10 @@ export default class NameAddressForm extends Component {
 
         const {fields, errors} = this.state;
         let isValidForm = true;
-
         const fieldNames = Object.keys(fields);
-
         // console.log({fieldNames})
 
         let self = this;
-
         fieldNames.forEach(name=>{
             let error = self.validateInput(true, name, fields[name])
             // console.log({error, name, value: fields[name]})
@@ -261,7 +255,7 @@ export default class NameAddressForm extends Component {
             return this.setState({submitting: false, errors})
         }
         //deconstruct necessary fields from state
-        const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Suffix, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
+        const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
         const {Clublevel, MotivationText, ClientBrowser, ClientIP, Subscriptions, AddContactYN, ActivityName, Contact_Source, SectionName} = this.state
         
         //construct phone fields from regex
@@ -304,6 +298,7 @@ export default class NameAddressForm extends Component {
                 Firstname,
                 IsRecurringCreditCardDonation,
                 Lastname,
+                Middlename,
                 Monthlypledgeamount,
                 Monthlypledgeday,
                 MotivationText,
@@ -314,7 +309,9 @@ export default class NameAddressForm extends Component {
                 SectionName,
                 ShipTo,
                 Singledonationamount,
+                Spousename,
                 State,
+                Suffix,
                 Title,
                 TransactionType,
                 UrlReferer: this.state.env[1],
@@ -327,10 +324,7 @@ export default class NameAddressForm extends Component {
                 ShipToState,
                 ShipToZip,
                 ShipToCountry,
-                ShipToName,
-                Middlename,
-                Spousename,
-                Suffix
+                ShipToName
             }
         // console.log({data})
         axios({
@@ -345,7 +339,7 @@ export default class NameAddressForm extends Component {
             // console.log({msg})
             self.props.submitForm({msg, data})
         }).catch(error=>{
-            logError(error);
+            logError({error});
             this.setState({submitting: false})
         });
     }
@@ -707,6 +701,12 @@ export default class NameAddressForm extends Component {
         return optGroups
     }
 
+    /**
+     * Alternately renders just Title, First and Last name or some combination including Middlename and Suffix
+     * @param {Boolean} getMiddleName - from this.state.getMiddlename, set to true/false in configuration
+     * @param {Boolean} getSuffix - from this.state.getSuffix, set to true/false in configuration
+     * @returns {jsx} - JSX to be inserted in Name Address Block
+     */
     renderNameAddressBlock(getMiddleName, getSuffix) {
         if (!getMiddleName && !getSuffix) {
             return (
@@ -912,7 +912,6 @@ export default class NameAddressForm extends Component {
                                 </div>
                             ) : null
                         }
-
                         <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
                             <div id="form-field-Address1" styleName="form.formGroup flex.flex-grow">
                                 <label htmlFor="Address1">Address<span>*</span></label>
