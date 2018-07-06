@@ -15,7 +15,7 @@ const { givingFormat, getMiddleName, getSuffix,
     international, getPhone, products,
     numProducts, additionalGift, additionalGiftMessage,
     funds, numFunds, subscriptions, monthlyAmounts,
-    singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData, AddContactYN, PageName, SectionName } = config;
+    singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData, showGivingArray, AddContactYN, PageName, SectionName } = config;
 
 export default class App extends Component {
     constructor(props) {
@@ -25,10 +25,10 @@ export default class App extends Component {
             getMiddleName: getMiddleName || false,
             getSuffix: getSuffix || false,
             getSpouseInfo: getSpouseInfo || false,
-            monthlyOption: monthlyOption || true,
+            monthlyOption: monthlyOption,
             shipping: shipping || false,
             international: international || false,
-            getPhone: getPhone || true,
+            getPhone: getPhone,
             products: products ? [...products] : [],
             numProducts: numProducts || 0,
             additionalGift: additionalGift || false,
@@ -38,6 +38,7 @@ export default class App extends Component {
             subscriptions: subscriptions ? [...subscriptions] : [],
             monthlyAmounts: monthlyAmounts ? [...monthlyAmounts] : [7, 15, 30],
             singleAmounts: singleAmounts ? [...singleAmounts] : [25, 50, 100, 250, 300],
+            showGivingArray: showGivingArray,
             MotivationText: MotivationText || "041181",
             monthlyPledgeData: monthlyPledgeData.hasOwnProperty('DetailCprojCredit') && monthlyPledgeData.hasOwnProperty('DetailCprojMail') ? {
                 DetailCprojCredit: monthlyPledgeData.DetailCprojCredit,

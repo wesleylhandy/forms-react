@@ -60,8 +60,8 @@ export default class GivingArray extends Component {
                 <div styleName="form.askbutton__amt flex.flex flex.flex-center flex.flex-axes-center flex.flex-no-grow">{amount}</div>
             </div>
         ))
-
     }
+    
     /**
      * Changes state on the arry to visibly display selected amount and adds donation amount to the cart
      * @param {Number} amt - amount to be added to cart

@@ -30,6 +30,7 @@ export default class NameAddressForm extends Component {
             ClientBrowser: "",
             ClientIP: process.env.delta, //obtain this from server somehow
             MotivationText: props.MotivationText,
+            showGivingArray: props.showGivingArray,
             arrayOptions: {
                 givingFormat: props.givingFormat,
                 monthlyOption: props.monthlyOption,
@@ -43,7 +44,8 @@ export default class NameAddressForm extends Component {
                 products: [...props.products],
                 numProducts: props.numProducts,
                 additionalGift: props.additionalGift,
-                additionalGiftMessage: props.additionalGiftMessage
+                additionalGiftMessage: props.additionalGiftMessage,
+                singlePledgeData: props.singlePledgeData
             },
             fundOptions: {
                 funds: [...props.funds],
@@ -862,7 +864,7 @@ export default class NameAddressForm extends Component {
     render() {
         return (
             <form id="react-form" autoComplete="off" onSubmit={this.handleSubmit}>
-                <div styleName="form.form-panel">
+                <div styleName={this.state.showGivingArray ? "form.form-panel" : "form.form-panel main.hidden"}>
                     <div styleName="form.gift-choice">
                         <GivingArray 
                             arrayOptions={this.state.arrayOptions} 
@@ -886,6 +888,7 @@ export default class NameAddressForm extends Component {
                         productInfo={this.state.productInfo}
                         productOptions={this.state.productOptions} 
                         updateProducts={this.updateProducts}
+                        addToCart={this.addToCart}
                         hydratedProducts={this.state.hydratedProducts}
                     />
                 </div>

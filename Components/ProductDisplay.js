@@ -12,8 +12,12 @@ export default class ProductDisplay extends Component {
             products: [...props.productOptions.products],
             additionalGift: props.productOptions.additionalGift,
             additionalGiftMessage: props.productOptions.additionalGiftMessage,
+            singlePledgeData: props.productOptions.singlePledgeData,
             fields: {
                 additionalGift: 0
+            },
+            errors: {
+                additionalGift: ""
             },
             additionalGiftError: "",
             totalGift: 0,
@@ -32,9 +36,6 @@ export default class ProductDisplay extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.additionalGift != this.state.additionalGift) {
-            this.setState({additionalGift: nextProps.additionalGift})
-        }
         const {productInfo} = nextProps;
         this.hydrateProducts(productInfo);
     }
@@ -45,7 +46,7 @@ export default class ProductDisplay extends Component {
      */
     hydrateProducts(productInfo) {
         const {products, fields} = this.state;
-        const totalGift = productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0)
+        const totalGift = productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + fields.additionalGift
         productInfo.forEach(product=>{
             const {idx, quantity} = product;
             fields[`product-select-${idx}`] =  quantity;
@@ -55,36 +56,54 @@ export default class ProductDisplay extends Component {
 
     handleInputChange(e) {
         const target = e.target;
-        const value = parseInt(target.value);
+        let value = parseInt(target.value);
         const name = target.name;
         
-        const {fields} = this.state;
-        fields[name] = value;
+        let {fields, errors, totalGift} = this.state;
 
-        const idx = parseInt(name.split("product-select-")[1])
+        if (name === "additionalGift") {
+            if (isNaN(value)) {
+                value = 0
+            }
+            const isValid = /[0-9]+/.test(value) && value >= 0
+            errors[name] = !isValid ? "Must be a valid whole dollar amount above 0" : ""
+            if (isValid) {
+                this.props.addToCart({
+                    type: 'donation',
+                    PledgeAmount: value,
+                    DetailCprojMail: this.state.singlePledgeData.DetailCprojMail,
+                    DetailCprojCredit: this.state.singlePledgeData.DetailCprojCredit,
+                    DetailDescription: "Single Pledge",
+                    DetailName: "SPGF",
+                    monthly: false
+                })
+                totalGift+= value;
+                fields[name] = value;
+            }
+        } else {
+            fields[name] = value;
+            const idx = parseInt(name.split("product-select-")[1])
+            // console.log({name, idx, value})
+            this.props.updateProducts({idx, quantity: value})
+        }
 
-        // console.log({name, idx, value})
-
-        this.props.updateProducts({idx, quantity: value})
-
-        this.setState({ fields });
+        this.setState({ fields, errors, totalGift });
     }
     createMarkup(text) {
         return { __html: text }
     }
 
     renderAdditionalGift(additionalGift) {
-
         return additionalGift ? (
             <div styleName="form.additional-amount flex.flex flex.flex-left flex.flex-axes-center">
-                <input styleName='form.additional-gift-input flex.flex-no-grow' 
+                <input styleName='form.additional-gift-input' 
                     name="additionalGift"
-                    placeholder="0" 
+                    placeholder="0"
                     onChange={this.handleInputChange} 
                     value={this.state.fields.additionalGift }
                 />
                 <div styleName="form.additional-gift-label">{this.state.additionalGiftMessage}</div>
-                <div styleName="form.error">{this.state.additionalGiftError}</div>
+                <div styleName="form.error">{this.state.errors.additionalGift}</div>
             </div> 
         ) : null;
     }
