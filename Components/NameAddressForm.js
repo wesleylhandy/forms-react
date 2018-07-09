@@ -71,15 +71,12 @@ export default class NameAddressForm extends Component {
             fundSelected: false,
             fundInfo: {},
             productsOrdered: false,
-            productInfo: [{
-                idx: 0,
-                quantity: 0
-            }],
+            productInfo: [],
             cart: {
                 items: []
             },
             fields: {
-                Monthlypledgeday: props.hydratedData ? props.hydratedData.Monthlypledgeday : date,
+                Monthlypledgeday: props.hydratedData && props.hydratedData.Monthlypledgeday ? props.hydratedData.Monthlypledgeday : date,
                 Title: props.hydratedData ? props.hydratedData.Title : "",
                 Firstname: props.hydratedData ? props.hydratedData.Firstname : "",
                 Middlename: props.hydratedData ? props.hydratedData.Middlename : "",
@@ -147,19 +144,20 @@ export default class NameAddressForm extends Component {
         if (this.props.hydratedData) {
             let amount = 0, isMonthly = false;
             
-            const {items} = this.state.cart;
+            const { items } = this.state.cart;
             const { products } = this.state.productOptions
-            let {productInfo, productsOrdered} = this.state
+            let { productInfo, productsOrdered } = this.state
+            const { MultipleDonations } = this.props.hydratedData;
 
-            for (let i = 0; i < this.props.hydratedData.MultipleDonations.length; i++) {
-                const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount} = this.props.hydratedData.MultipleDonations[i];
+            for (let i = 0; i < MultipleDonations.length; i++) {
+                const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount} = MultipleDonations[i];
                 const type = DetailName === "MP" || DetailName === "SPGF" ? "donation" : "product";
-                if (type === "donation") {
+                if (type == "donation") {
                     amount = PledgeAmount
                     isMonthly = DetailName === "MP" ? true : false;
-                }
-                if (type === "product") {
-                    const idx = products.findIndex(el=> el.DetailName === DetailName)
+                                    }
+                if (type == "product") {
+                    const idx = products.findIndex(el=> el.DetailDescription === DetailDescription)
                     const found = productInfo.findIndex(prod=> prod.idx === idx)
                     if (found > -1) {
                         productInfo[found].quantity++
@@ -167,7 +165,6 @@ export default class NameAddressForm extends Component {
                         productInfo.push({idx, quantity: 1})
                     }
                     productsOrdered = true;
-                    // console.log({idx, found, productInfo, productsOrdered})
                 }
                 items.push({
                     type,
@@ -179,7 +176,6 @@ export default class NameAddressForm extends Component {
                     monthly: isMonthly
                 })
             }
-            // console.log({amount, isMonthly})
             this.setState({cart: {items}, hydratedAmount: amount, hydratedMonthly: isMonthly, productInfo, productsOrdered, hydratedProducts: true})
         }
     }
@@ -258,7 +254,7 @@ export default class NameAddressForm extends Component {
             return this.setState({submitting: false, errors})
         }
         //deconstruct necessary fields from state
-        const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
+        const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
         const {Clublevel, MotivationText, ClientBrowser, ClientIP, Subscriptions, AddContactYN, ActivityName, Contact_Source, SectionName} = this.state
         
         //construct phone fields from regex
@@ -274,7 +270,7 @@ export default class NameAddressForm extends Component {
         const Monthlypledgeday = isMonthly ? this.state.fields.Monthlypledgeday : null
         const Monthlypledgeamount = isMonthly && found > -1 ? items[found].PledgeAmount : 0
         const Singledonationamount = !isMonthly && found > -1 ? items[found].PledgeAmount : 0
-        const ShipTo = this.state.shipping ? "Yes" : "No"
+        const ShipTo = ShipToYes === true ? "Yes" : "No"
         const multipleDonations = () => items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}, index)=> {
             if (index === found && this.state.fundSelected) {
                 DetailName = this.state.fundInfo.DetailName
@@ -354,7 +350,7 @@ export default class NameAddressForm extends Component {
      */
     updateProducts({idx, quantity}) {
         // productInfo and productsOrdered to be used by Product Display to calculate a total donation
-        let {productInfo, productsOrdered} = this.state;
+        let { productInfo, productsOrdered } = this.state;
         const found = productInfo.findIndex(prod=> prod.idx === idx)
         if (found > -1) {
             productInfo[found].quantity = quantity
@@ -368,7 +364,7 @@ export default class NameAddressForm extends Component {
         const { items } = this.state.cart
         const { products } = this.state.productOptions
         const { DetailName, DetailCprojCredit, DetailCprojMail, DetailDescription, PledgeAmount} = products[idx];
-        const newItems = items.filter(el=> el.DetailName !== DetailName)
+        const newItems = items.filter(el=> el.DetailDescription !== DetailDescription)
         if (quantity) {
             for (let i = 0; i < quantity; i++) {
                 newItems.push({
@@ -890,6 +886,8 @@ export default class NameAddressForm extends Component {
                         updateProducts={this.updateProducts}
                         addToCart={this.addToCart}
                         hydratedProducts={this.state.hydratedProducts}
+                        hydratedAmount={this.state.hydratedAmount}
+                        hydratedMonthly={this.state.hydratedMonthly}
                     />
                 </div>
                 <div styleName="form.form-panel">
