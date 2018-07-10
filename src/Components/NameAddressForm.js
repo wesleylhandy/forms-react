@@ -11,6 +11,7 @@ import FundDisplay from './FundDisplay'
 
 import { canadianProvinces, countries, other, usMilitary, usStates, usTerritories } from '../config/dropdowns.json';
 import logError from './helpers/xhr-errors';
+import {cryptCookie} from './helpers/crypt';
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
 phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/,
@@ -25,6 +26,7 @@ export default class NameAddressForm extends Component {
         if (date < 2 || date > 28) {
             date = 2;
         }
+        // console.log({hydratedData: props.hydratedData})
         this.state = {
             env: [process.env.alpha, process.env.bravo],
             ClientBrowser: "",
@@ -141,7 +143,7 @@ export default class NameAddressForm extends Component {
         this.setState({ClientBrowser: window.navigator.userAgent})
         // add this later to state when in production UrlReferer: window.location.href
 
-        if (this.props.hydratedData) {
+        if (this.props.hydratedData && this.props.hydratedData.MultipleDonations) {
             let amount = 0, isMonthly = false;
             
             const { items } = this.state.cart;
@@ -177,6 +179,22 @@ export default class NameAddressForm extends Component {
                 })
             }
             this.setState({cart: {items}, hydratedAmount: amount, hydratedMonthly: isMonthly, productInfo, productsOrdered, hydratedProducts: true})
+            
+        }
+    }
+
+    componentWillUnmount() {
+        const {savePersonalInfo} = this.state.fields
+        if (savePersonalInfo) {
+            const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, phone} = this.state.fields
+            const Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
+            Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "",
+            Phonenumber =  phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
+
+            const formData = {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Phoneareacode, Phoneexchange, Phonenumber, Spousename, Suffix, State, Title, Zip}
+            const lifetime = 60 * 24 * 60 * 60 * 1000 // 60 days = 60 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+            const cookie = cryptCookie({formData, lifetime});
+            localStorage.setItem("info", cookie);
         }
     }
 
@@ -335,7 +353,7 @@ export default class NameAddressForm extends Component {
             data
         }).then(response=>{
             const msg = response.data;
-            // console.log({msg})
+            // console.log({data})
             self.props.submitForm({msg, data})
         }).catch(error=>{
             logError({error});
@@ -493,7 +511,7 @@ export default class NameAddressForm extends Component {
                 const country = name == "ShipToZip" ? "ShipToCountry" : "Country";
                 if (value && this.state.fields[country] == "US" && !(zip_regex.test(value))) {
                     error = "Please enter a valid US Zip Code"
-                } else if (value && zip_regex.test(value)) {
+                } else if (value && zip_regex.test(value) && !this.state.submitting) {
                     const url = `http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=${value}`
                     axios.get(url)
                         .then(response=>{
@@ -1048,7 +1066,7 @@ export default class NameAddressForm extends Component {
                         <input type='checkbox' styleName="form.checkboxInput"
                             id="savePersonalInfo" 
                             name="savePersonalInfo"
-                            checked={this.state.fields.saveInfo} 
+                            checked={this.state.fields.savePersonalInfo} 
                             onChange={this.handleInputChange}
                         />
                         <label id="RememberMe" htmlFor="savePersonalInfo">&nbsp;Remember my name and address next time</label>     

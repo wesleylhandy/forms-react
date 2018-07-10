@@ -34,19 +34,23 @@ export default class ProductDisplay extends Component {
 
     componentDidMount() {
         const {productInfo, hydratedAmount} = this.props;
-        if (productInfo.length && !this.state.hydrated) {
+        if ((productInfo.length || hydratedAmount > 0) && !this.state.hydrated) {
+            // console.log({mountedHydratedAmount: hydratedAmount})
             this.hydrateProducts(productInfo, hydratedAmount);
         }
-
     }
 
     componentWillReceiveProps(nextProps) {
         const {productInfo, hydratedAmount} = nextProps;
-        if (productInfo.length && !this.state.hydrated) {
+        if ((productInfo.length || hydratedAmount > 0) && !nextProps.hydrated && !this.state.hydrated) {
+            // console.log({propsHydratedAmount: hydratedAmount})
             this.hydrateProducts(productInfo, hydratedAmount);
-        }
-
-        
+        } else {
+            const {products} = this.state;
+            const {additionalGift} = this.state.fields;
+            const totalGift = this.calculateTotalGift(products, productInfo, additionalGift)
+            this.setState({totalGift})
+        }       
     }
 
     /**
@@ -63,8 +67,9 @@ export default class ProductDisplay extends Component {
     /**
      * Sets State from a new productInfo object
      * @param {Array} productInfo - Array holding state of cart as it relates to product
+     * @param {Number} hydratedAmount - Value of amount pledge as additional gift
      */
-    hydrateProducts(productInfo) {
+    hydrateProducts(productInfo, hydratedAmount) {
         const {products, fields} = this.state;
     
         productInfo.forEach(product=>{
@@ -72,7 +77,7 @@ export default class ProductDisplay extends Component {
             fields[`product-select-${idx}`] =  quantity ? quantity : 0;
         });
 
-        fields["additionalGift"] = this.state.hydratedAmount > 0 ? this.state.hydratedAmount : fields["additionalGift"]
+        fields["additionalGift"] = hydratedAmount > 0 ? hydratedAmount : fields["additionalGift"]
         const totalGift = this.calculateTotalGift(products, productInfo, fields["additionalGift"])
   
         this.setState({fields, totalGift, hydrated: true});
@@ -124,6 +129,8 @@ export default class ProductDisplay extends Component {
                 <input styleName='form.additional-gift-input' 
                     name="additionalGift"
                     placeholder="0"
+                    onBlur={e=> e.target.value === "" ? e.target.value = 0 : true}
+                    onFocus={e=> e.target.value === 0 ? e.target.value = "" : true}
                     onChange={this.handleInputChange} 
                     value={this.state.fields.additionalGift }
                 />

@@ -6,6 +6,8 @@ import main from './styles/main.css'
 import flex from './styles/flex.css'
 import form from './styles/form.css'
 
+import { cryptCookie } from './helpers/crypt'
+
 const ccVisa = require('./images/cc-Visa.gif')
 const ccMasterCard = require('./images/cc-MasterCard.gif')
 const ccDiscover = require('./images/cc-Discover.gif')
@@ -47,6 +49,11 @@ export default class ConfirmationPage extends Component {
         this.validateInput = this.validateInput.bind(this)
     }
 
+    componentDidMount() {
+        const {confirmationData, formData, formAction} = this.props
+        this.setState({formData, confirmationData, formAction})
+    }
+
     assignValues(e) {
         e.preventDefault();
         if (this.state.submitting) return // ie. disallow multiple submissions
@@ -77,6 +84,12 @@ export default class ConfirmationPage extends Component {
 
             //cancel redirect
             clearTimeout(timeout)
+
+            //store submission data in cookie
+            const {formData} = this.state;
+            const lifetime = 60 * 1000;
+            const cookie = cryptCookie({formData, lifetime});
+            localStorage.setItem("cookie", cookie);
 
             // bubble formaction
             document.forms.hiddenform.submit.type = 'submit';

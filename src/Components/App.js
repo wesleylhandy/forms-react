@@ -9,6 +9,8 @@ import cssVars from '../config/css-config.json'
 
 import './styles/form.css'
 import logError from './helpers/xhr-errors';
+import {readCookie} from "./helpers/crypt"
+
 
 const { givingFormat, getMiddleName, getSuffix, 
     getSpouseInfo, monthlyOption, shipping,
@@ -20,6 +22,25 @@ const { givingFormat, getMiddleName, getSuffix,
 export default class App extends Component {
     constructor(props) {
         super(props)
+        let formData = null;
+        const cookie = localStorage.getItem("cookie")
+        const info = localStorage.getItem("info")
+
+        if (cookie) {
+            formData = readCookie(cookie)
+        }
+        
+        if (formData === null) {
+            localStorage.removeItem('cookie')
+            if (info) {
+                formData = readCookie(info)
+            }
+        }
+
+        if (formData === null) {
+            localStorage.clear()
+        }
+
         this.state = {
             givingFormat: givingFormat || "buttons",
             getMiddleName: getMiddleName || false,
@@ -62,9 +83,9 @@ export default class App extends Component {
             confirmed: false,
             confirmationData: null,
             formAction: null,
-            formData: null,
+            formData: formData,
             donorID: null,
-            hydratedData: null
+            hydratedData: formData
         }
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
@@ -79,10 +100,10 @@ export default class App extends Component {
         const confirmURI = msg.split(" is ")[1]
         const bodyFormData = new FormData();
         bodyFormData.set('DonorID', donorID);
-        bodyFormData.set('ApiKey', data.APIaccessID);
+        /*bodyFormData.set('ApiKey', data.APIaccessID);
         bodyFormData.set('BackColor', '#ED7014');
         bodyFormData.set('HeaderFile', 'http://pre.vb.cbn.local/giving/api/TestFormHeader.htm');
-        bodyFormData.set('FooterFile', 'http://pre.vb.cbn.local/giving/api/TestFormFooter.htm')
+        bodyFormData.set('FooterFile', 'http://pre.vb.cbn.local/giving/api/TestFormFooter.htm');*/
         axios({
             method: 'POST',
             url: confirmURI,
@@ -98,7 +119,6 @@ export default class App extends Component {
             const confirmationData = []
             inputs.forEach(input=> confirmationData.push({name: input.name, value: input.value}))
             // console.log(confirmationData)
-            // console.log({formAction})
             this.setState({submitted: true, formData: data, donorID, confirmationData, formAction});
         }).catch(error=>{
             logError(error)
