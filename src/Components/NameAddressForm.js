@@ -273,7 +273,7 @@ export default class NameAddressForm extends Component {
         }
         //deconstruct necessary fields from state
         const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
-        const {Clublevel, MotivationText, ClientBrowser, ClientIP, Subscriptions, AddContactYN, ActivityName, Contact_Source, SectionName} = this.state
+        const {Clublevel, MotivationText, ClientBrowser, ClientIP, subscriptions, AddContactYN, ActivityName, Contact_Source, SectionName} = this.state
         
         //construct phone fields from regex
         const Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
@@ -299,7 +299,7 @@ export default class NameAddressForm extends Component {
             return {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}
         })
         const MultipleDonations = multipleDonations();
-        //create formdata
+
         let data = {
                 ActivityName,
                 AddContactYN,
@@ -343,6 +343,8 @@ export default class NameAddressForm extends Component {
                 ShipToCountry,
                 ShipToName
             }
+        //flatten subscription information
+        subscriptions.forEach(sub=> data[sub.key]=sub.value);
         // console.log({data})
         axios({
             method: 'POST',

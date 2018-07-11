@@ -57,14 +57,14 @@
         "DetailName": "Superbook"
     }],
     "subscriptions": [{
-        "code": "israel",
-        "type": "NewsletterSubs"
+        "value": "israel",
+        "key": "NewsletterSubs"
     }, {
-        "code": "Welcome",
-        "type": "NewsletterUnSubs"
+        "value": "Welcome",
+        "key": "NewsletterUnSubs"
     }, {
-        "code": "CBN",
-        "type": "MarketingUnSubs"
+        "value": "CBN",
+        "key": "MarketingUnSubs"
     }],
     "MotivationText": "002345",
     "additionalGift": true,
