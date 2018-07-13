@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { hot } from 'react-hot-loader'
 import axios from 'axios'
 
 import NameAddressForm from "./NameAddressForm"
@@ -19,7 +20,7 @@ const { givingFormat, getMiddleName, getSuffix,
     funds, numFunds, subscriptions, monthlyAmounts,
     singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData, showGivingArray, AddContactYN, PageName, SectionName } = config;
 
-export default class App extends Component {
+class App extends Component {
     constructor(props) {
         super(props)
         let formData = null;
@@ -151,3 +152,5 @@ export default class App extends Component {
         )
     }
 }
+
+export default hot(module)(App)

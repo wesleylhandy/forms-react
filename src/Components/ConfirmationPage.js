@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import checkValues, {checkDigits, checkExpDate} from './helpers/cc-validation'
+// import checkValues, {checkDigits, checkExpDate} from './helpers/cc-validation'
 import main from './styles/main.css'
 import flex from './styles/flex.css'
 import form from './styles/form.css'
@@ -12,6 +12,11 @@ const ccVisa = require('./images/cc-Visa.gif')
 const ccMasterCard = require('./images/cc-MasterCard.gif')
 const ccDiscover = require('./images/cc-Discover.gif')
 const ccAmericanExpress = require('./images/cc-AE.gif')
+
+function handlePopState(e) {
+    e.preventDefault();
+    console.log({popstate: e.state})
+}
 
 export default class ConfirmationPage extends Component {
     constructor(props) {
@@ -52,6 +57,12 @@ export default class ConfirmationPage extends Component {
     componentDidMount() {
         const {confirmationData, formData, formAction} = this.props
         this.setState({formData, confirmationData, formAction})
+        window.onpopstate = handlePopState
+        
+    }
+
+    componentWillUnmount() {
+        
     }
 
     assignValues(e) {
@@ -87,7 +98,7 @@ export default class ConfirmationPage extends Component {
 
             //store submission data in cookie
             const {formData} = this.state;
-            const lifetime = 60 * 1000;
+            const lifetime = 2 * 60 * 1000; // n minutes * 60 seconds * 1000 milliseconds
             const cookie = cryptCookie({formData, lifetime});
             localStorage.setItem("cookie", cookie);
 
