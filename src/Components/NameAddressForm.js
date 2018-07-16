@@ -246,7 +246,7 @@ export default class NameAddressForm extends Component {
         //THINK THROUGH THIS LOGIC A LITTLE MORE
         const {items} = this.state.cart;
         const found = items.findIndex(el=>el && el.type == "donation")
-        if (items.length == 0 || (found > -1 && items[found].PledgeAmount == 0)) {
+        if (items.length == 0 || (items.length == 1 && found > -1 && items[found].PledgeAmount == 0)) {
             const errors = this.state.errors
             errors.amount = "Please make a select a valid donation"
             return this.setState({submitting: false, errors})
@@ -280,13 +280,19 @@ export default class NameAddressForm extends Component {
         Phonenumber =  phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
         
         //process cart
+        let TransactionType = "Product"
         const isMonthly = found > -1 ? items[found].monthly : false
         const DonationType =  isMonthly ? "CR" : "CC";
-        const TransactionType = isMonthly ? "Monthly" : "Single"
         const IsRecurringCreditCardDonation = isMonthly
         const Monthlypledgeday = isMonthly ? this.state.fields.Monthlypledgeday : null
         const Monthlypledgeamount = isMonthly && found > -1 ? items[found].PledgeAmount : 0
         const Singledonationamount = !isMonthly && found > -1 ? items[found].PledgeAmount : 0
+        if (Monthlypledgeamount > 0) {
+            TransactionType = "Monthly"
+        }
+        if (Singledonationamount > 0) {
+            TransactionType = "Single"
+        }
         const ShipTo = ShipToYes === true ? "Yes" : "No"
         const multipleDonations = () => items.map(({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}, index)=> {
             if (index === found && this.state.fundSelected) {
