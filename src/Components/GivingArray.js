@@ -27,7 +27,8 @@ export default class GivingArray extends Component {
             selectedIndex: null,
             otherAmount: 0,
             otherAmountError: '',
-            hydrated: false
+            hydrated: false,
+            initialUpdate: false
         }
 
         this.renderArray = this.renderArray.bind(this)
@@ -44,6 +45,11 @@ export default class GivingArray extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        const {initialUpdate} = nextProps;
+        if (initialUpdate && !this.state.initialUpdate) {
+            const {givingFormat, monthlyOption, monthlyAmounts, singleAmounts, monthlyPledgeData, singlePledgeData} = nextProps.arrayOptions;
+            return this.setState({givingFormat, monthlyOption, monthlyAmounts: [...monthlyAmounts], singleAmounts: [...singleAmounts], monthlyChecked: nextProps.monthlyChecked ? true : false, monthlyPledgeData, singlePledgeData, initialUpdate})
+        }
         if (nextProps.monthlyChecked != this.state.monthlyChecked) {
             this.setState({monthlyChecked: nextProps.monthlyChecked, selectedIndex: null, otherAmount: 0})
         }

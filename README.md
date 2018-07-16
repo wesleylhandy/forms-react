@@ -21,6 +21,9 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 ```
 .
 +-- cc-validation.js
++-- config
+|   +-- form-config.json
+|   +-- css-config.json
 +-- index.html
 +-- server.js
 +-- src
@@ -48,9 +51,7 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 |   |   |   +-- main.css
 |   |   |   +-- variables.css
 |   +-- config
-|   |   +-- css-config.json
 |   |   +-- dropdowns.json
-|   |   +-- form-config.json
 |   +-- index.css
 |   +-- index.js
 +-- views
@@ -60,7 +61,7 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 
 ## Configuration
 
-The `src/config` folder currently includes 2 `json` files:
+The `config` folder currently includes 2 `json` files:
     
 1. `css-config.json` - a list of css variables
 

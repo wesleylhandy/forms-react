@@ -14,12 +14,19 @@ export default class FundDisplay extends Component {
                 values: {}
             },
             expanded: false,
-            selectedIndex: 0
+            selectedIndex: 0,
+            initialUpdate: false
         }
         this.handleDropDownClick=this.handleDropDownClick.bind(this)
         this.createMarkup=this.createMarkup.bind(this)
         this.expandSelection= this.expandSelection.bind(this)
 
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.initialUpdate && !this.state.initialUpdate) {
+            this.setState({numFunds: nextProps.fundOptions.numFunds, funds: [...nextProps.fundOptions.funds], initialUpdate: true})
+        }
     }
     handleDropDownClick(e) {
         const selectedIndex = parseInt(e.target.dataset.id);

@@ -4,20 +4,10 @@ import axios from 'axios'
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
 
-import config from '../config/form-config.json'
-import cssVars from '../config/css-config.json'
-
 import './styles/form.css'
 import logError from './helpers/xhr-errors';
 import {readCookie} from "./helpers/crypt"
 
-
-const { givingFormat, getMiddleName, getSuffix, 
-    getSpouseInfo, monthlyOption, shipping,
-    international, getPhone, products,
-    numProducts, additionalGift, additionalGiftMessage,
-    funds, numFunds, subscriptions, monthlyAmounts,
-    singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData, showGivingArray, AddContactYN, PageName, SectionName } = config;
 
 export default class App extends Component {
     constructor(props) {
@@ -42,57 +32,77 @@ export default class App extends Component {
         }
 
         this.state = {
-            givingFormat: givingFormat || "buttons",
-            getMiddleName: getMiddleName || false,
-            getSuffix: getSuffix || false,
-            getSpouseInfo: getSpouseInfo || false,
-            monthlyOption: monthlyOption,
-            shipping: shipping || false,
-            international: international || false,
-            getPhone: getPhone,
-            products: products ? [...products] : [],
-            numProducts: numProducts || 0,
-            additionalGift: additionalGift || false,
-            additionalGiftMessage: additionalGiftMessage || "Please consider giving an additional gift to support the ministries of CBN",
-            numFunds: numFunds || 0,
-            funds: funds ? [...funds] : [],
-            subscriptions: subscriptions ? [...subscriptions] : [],
-            monthlyAmounts: monthlyAmounts ? [...monthlyAmounts] : [7, 15, 30],
-            singleAmounts: singleAmounts ? [...singleAmounts] : [25, 50, 100, 250, 300],
-            showGivingArray: showGivingArray,
-            MotivationText: MotivationText || "041181",
-            monthlyPledgeData: monthlyPledgeData.hasOwnProperty('DetailCprojCredit') && monthlyPledgeData.hasOwnProperty('DetailCprojMail') ? {
-                DetailCprojCredit: monthlyPledgeData.DetailCprojCredit,
-                DetailCprojMail: monthlyPledgeData.DetailCprojMail
-            } : {
+            givingFormat: "buttons",
+            getMiddleName:  false,
+            getSuffix:  false,
+            getSpouseInfo:  false,
+            monthlyOption: true,
+            shipping: false,
+            international: false,
+            getPhone: true,
+            products:  [],
+            numProducts: 0,
+            additionalGift: false,
+            additionalGiftMessage:  "Please consider giving an additional gift to support the ministries of CBN",
+            numFunds:  0,
+            funds: [],
+            subscriptions: [],
+            monthlyAmounts:  [7, 15, 30],
+            singleAmounts: [25, 50, 100, 250, 300],
+            showGivingArray: true,
+            MotivationText: "041181",
+            monthlyPledgeData:  {
                 "DetailCprojCredit": "043250",
                 "DetailCprojMail": "043251"
             },
-            singlePledgeData: singlePledgeData.hasOwnProperty('DetailCprojCredit') && singlePledgeData.hasOwnProperty('DetailCprojMail') ? {
-                DetailCprojCredit: singlePledgeData.DetailCprojCredit,
-                DetailCprojMail: singlePledgeData.DetailCprojMail
-            } : {
+            singlePledgeData:  {
                 "DetailCprojCredit": "043250",
                 "DetailCprojMail": "043251"
             },
-            AddContactYN: AddContactYN || "Y",
-            Contact_Source: PageName + " Donor",
-            ActivityName: PageName + "_Donation_Activity", 
-            SectionName: SectionName || "700Club",
+            AddContactYN:  "Y",
+            Contact_Source: "700Club Donor",
+            ActivityName: "700Club_Donation_Activity", 
+            SectionName: "700Club",
             submitted: false,
             confirmed: false,
             confirmationData: null,
             formAction: null,
             formData: formData,
             donorID: null,
-            hydratedData: formData
+            hydratedData: formData,
+            configured: false
         }
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
     }
 
     componentDidMount() {
-        cssVars.forEach(variable => document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0]))
+        if (!this.state.configured) {
+            axios.get('http://localhost:8080/config/css-config.json').then(response=>{
+                // console.log({cssconfig: response.data})
+                const cssVars = response.data;
+                cssVars.forEach(variable => document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0]))
+            }).catch(logError)
+
+            axios.get('http://localhost:8080/config/form-config.json').then(response=>{
+                
+                const config = response.data
+                const { givingFormat, getMiddleName, getSuffix, 
+                    getSpouseInfo, monthlyOption, shipping,
+                    international, getPhone, products,
+                    numProducts, additionalGift, additionalGiftMessage,
+                    funds, numFunds, subscriptions, monthlyAmounts,
+                    singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData, showGivingArray, AddContactYN, PageName, Contact_Source, ActivityName, SectionName } = config;
+
+                this.setState({givingFormat, getMiddleName, getSuffix, 
+                    getSpouseInfo, monthlyOption, shipping,
+                    international, getPhone, products: [...products],
+                    numProducts, additionalGift, additionalGiftMessage,
+                    funds: [...funds], numFunds, subscriptions: [...subscriptions], monthlyAmounts:[...monthlyAmounts],
+                    singleAmounts: [...singleAmounts], MotivationText, monthlyPledgeData, singlePledgeData, showGivingArray, AddContactYN, Contact_Source: Contact_Source ? Contact_Source : PageName + " Donor", ActivityName: ActivityName ? ActivityName : PageName + "_Donation_Activity", SectionName: SectionName, configured: true})
+
+            }).catch(logError);
+        }
     }
 
     submitForm({msg, data}) {
@@ -116,9 +126,7 @@ export default class App extends Component {
                             formData={this.state.formData} 
                             formAction={this.state.formAction}
                         /> 
-                    ) : ( 
-                        <NameAddressForm {...this.state } submitForm={ this.submitForm }/> 
-                    )
+                    ) : this.state.configured ? <NameAddressForm {...this.state } submitForm={ this.submitForm }/> : null                     
                 } 
              </div>
         )
