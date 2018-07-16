@@ -182,7 +182,6 @@ export default class NameAddressForm extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.configured && !this.state.initialUpdate) {
-            console.log({nextProps})
             this.setState({
                 MotivationText: nextProps.MotivationText,
                 showGivingArray: nextProps.showGivingArray,
@@ -435,11 +434,7 @@ export default class NameAddressForm extends Component {
         const { DetailName, DetailCprojCredit, DetailCprojMail, DetailDescription, PledgeAmount} = products[idx];
         const newItems = items.filter(el=> el.DetailDescription !== DetailDescription)
         if (quantity) {
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> master
             newItems.push({
                     type: 'product',
                     PledgeAmount: +PledgeAmount * quantity,

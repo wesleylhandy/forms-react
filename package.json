@@ -22,8 +22,7 @@
         "hbs": "^4.0.1",
         "node-rsa": "^1.0.0",
         "react": "^16.4.0",
-        "react-dom": "^16.4.0",
-        "react-hot-loader": "^4.3.3"
+        "react-dom": "^16.4.0"
     },
     "devDependencies": {
         "autoprefixer": "^8.5.2",
@@ -33,7 +32,9 @@
         "babel-preset-env": "^1.7.0",
         "babel-preset-react": "^6.24.1",
         "concurrently": "^3.6.0",
+        "core-js": "^2.5.7",
         "css-vars-ponyfill": "^1.7.2",
-        "postcss-modules": "^1.1.0"
+        "postcss-modules": "^1.1.0",
+        "react-hot-loader": "^4.3.3"
     }
 }
