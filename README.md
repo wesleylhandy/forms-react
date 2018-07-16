@@ -16,9 +16,50 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
     npm install
 ```
 
+## File Structure
+
+.
++-- cc-validation.js
++-- index.html
++-- server.js
++-- src
+|   +-- Components
+|   |   +-- App.js
+|   |   +-- ConfirmationPage.js
+|   |   +-- FundDisplay.js
+|   |   +-- GivingArray.js
+|   |   +-- helpers
+|   |   |   +-- cc-validation.js
+|   |   |   +-- crypt.js
+|   |   |   +-- get-query-variable.js
+|   |   |   +-- xhr-errors.js
+|   |   +-- images
+|   |   |   +-- cc-AE.gif
+|   |   |   +-- cc-Discover.gif
+|   |   |   +-- cc-MasterCard.gif
+|   |   |   +-- cc-Visa.gif
+|   |   +-- NameAddressForm.js
+|   |   +-- ProductDisplay.js
+|   |   +-- styles
+|   |   |   +-- flex.css
+|   |   |   +-- form.css
+|   |   |   +-- index.css
+|   |   |   +-- main.css
+|   |   |   +-- variables.css
+|   +-- config
+|   |   +-- css-config.json
+|   |   +-- dropdowns.json
+|   |   +-- form-config.json
+|   +-- index.css
+|   +-- index.js
++-- views
+|   +-- error.html
+|   +-- thankyou.hbs
+
+
 ## Configuration
 
-The `config` folder currently includes 2 `json` files:
+The `src/config` folder currently includes 2 `json` files:
     
 1. `css-config.json` - a list of css variables
 
