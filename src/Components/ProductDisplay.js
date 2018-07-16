@@ -23,7 +23,8 @@ export default class ProductDisplay extends Component {
             totalGift: 0,
             hydrated: false,
             hydratedAmount: props.hydratedAmount,
-            productInfo: props.productInfo
+            productInfo: props.productInfo,
+            initialUpdate: false
         }
         this.handleInputChange=this.handleInputChange.bind(this)
         this.createMarkup=this.createMarkup.bind(this)
@@ -41,6 +42,11 @@ export default class ProductDisplay extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        const {initialUpdate} = nextProps;
+        if (initialUpdate && !this.state.initialUpdate) {
+            const {numProducts, products, additionalGift, additionalGiftMessage, singlePledgeData} = nextProps.productOptions;
+            return this.setState({numProducts, products: [...products], additionalGift, additionalGiftMessage, singlePledgeData, initialUpdate})
+        }
         const {productInfo, hydratedAmount} = nextProps;
         if ((productInfo.length || hydratedAmount > 0) && !nextProps.hydrated && !this.state.hydrated) {
             // console.log({propsHydratedAmount: hydratedAmount})

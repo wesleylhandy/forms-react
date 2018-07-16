@@ -3,8 +3,12 @@ const bodyParser = require("body-parser");
 const compression = require('compression');
 const path = require('path')
 const hbs = require('hbs')
+const cors = require('cors')
 
 const app = express();
+
+app.use(cors());
+
 app.set('view engine', 'hbs');
 
 // Specify the port.
@@ -39,6 +43,11 @@ router.post('/', function(req, res) {
         res.statusCode = 200;
         res.render(path.resolve(__dirname, 'views', 'thankyou.hbs'), body)
     }
+})
+
+router.get('/config/:filename', function(req, res){
+    const {filename} = req.params;
+    res.sendFile(path.resolve(__dirname, "config", filename))
 })
 
 app.use("/", router);

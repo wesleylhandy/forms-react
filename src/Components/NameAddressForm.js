@@ -126,7 +126,8 @@ export default class NameAddressForm extends Component {
             },
             hydratedAmount: 0,
             hydratedMonthly: false,
-            hydratedProducts: false
+            hydratedProducts: false,
+            initialUpdate: false
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.validateInput = this.validateInput.bind(this)
@@ -176,6 +177,49 @@ export default class NameAddressForm extends Component {
             }
             this.setState({cart: {items}, hydratedAmount: amount, hydratedMonthly: isMonthly, productInfo, productsOrdered, hydratedProducts: true})
             
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.configured && !this.state.initialUpdate) {
+            console.log({nextProps})
+            this.setState({
+                MotivationText: nextProps.MotivationText,
+                showGivingArray: nextProps.showGivingArray,
+                arrayOptions: {
+                    givingFormat: nextProps.givingFormat,
+                    monthlyOption: nextProps.monthlyOption,
+                    monthlyAmounts: [...nextProps.monthlyAmounts],
+                    singleAmounts: [...nextProps.singleAmounts],
+                    funds: [...nextProps.funds],
+                    monthlyPledgeData: nextProps.monthlyPledgeData,
+                    singlePledgeData: nextProps.singlePledgeData
+                },
+                productOptions: {
+                    products: [...nextProps.products],
+                    numProducts: nextProps.numProducts,
+                    additionalGift: nextProps.additionalGift,
+                    additionalGiftMessage: nextProps.additionalGiftMessage,
+                    singlePledgeData: nextProps.singlePledgeData
+                },
+                fundOptions: {
+                    funds: [...nextProps.funds],
+                    numFunds: nextProps.numFunds
+                },
+                monthlyOption: nextProps.monthlyOption,
+                shipping: nextProps.shipping,
+                international: nextProps.international,
+                getPhone: nextProps.getPhone,
+                getSuffix: nextProps.getSuffix,
+                getMiddleName: nextProps.getMiddleName,
+                getSpouseInfo: nextProps.getSpouseInfo,
+                subscriptions: [...nextProps.subscriptions],
+                AddContactYN: nextProps.AddContactYN,
+                Contact_Source: nextProps.Contact_Source,
+                ActivityName: nextProps.ActivityName,
+                SectionName: nextProps.SectionName,
+                initialUpdate: true
+            })
         }
     }
 
@@ -391,7 +435,11 @@ export default class NameAddressForm extends Component {
         const { DetailName, DetailCprojCredit, DetailCprojMail, DetailDescription, PledgeAmount} = products[idx];
         const newItems = items.filter(el=> el.DetailDescription !== DetailDescription)
         if (quantity) {
+<<<<<<< HEAD
+
+=======
             
+>>>>>>> master
             newItems.push({
                     type: 'product',
                     PledgeAmount: +PledgeAmount * quantity,
@@ -889,6 +937,7 @@ export default class NameAddressForm extends Component {
                     <div styleName="form.gift-choice">
                         <GivingArray 
                             arrayOptions={this.state.arrayOptions} 
+                            initialUpdate={this.state.initialUpdate}
                             monthlyChecked={this.state.monthlyChecked} 
                             addToCart={this.addToCart}
                             hydratedAmount={this.state.hydratedAmount}
@@ -901,6 +950,7 @@ export default class NameAddressForm extends Component {
                 <div styleName={this.state.fundOptions.numFunds ? "form.form-panel" : "form.form-panel main.hidden"}>
                     <FundDisplay 
                         fundOptions={this.state.fundOptions} 
+                        initialUpdate={this.state.initialUpdate}
                         updateDonation={this.updateDonation}
                     />
                 </div>
@@ -910,6 +960,7 @@ export default class NameAddressForm extends Component {
                         productOptions={this.state.productOptions} 
                         updateProducts={this.updateProducts}
                         addToCart={this.addToCart}
+                        initialUpdate={this.state.initialUpdate}
                         hydratedProducts={this.state.hydratedProducts}
                         hydratedAmount={this.state.hydratedAmount}
                         hydratedMonthly={this.state.hydratedMonthly}
