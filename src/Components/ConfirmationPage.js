@@ -5,6 +5,11 @@ import { cryptCookie } from './helpers/crypt'
 import main from './styles/main.css'
 import form from './styles/form.css'
 
+function handleUnload(e){
+    e.returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page."
+    return "Are you sure you want to go back?\n You may lose all your changes to this page."
+}
+
 export default class ConfirmationPage extends Component {
     constructor(props) {
         super(props);
@@ -16,6 +21,9 @@ export default class ConfirmationPage extends Component {
     }
 
     componentDidMount() {
+
+        window.addEventListener('beforeunload', handleUnload)   
+
         const {formData} = this.props;
         const lifetime = 60 * 1000; // 60 seconds * 1000 milliseconds
         const cookie = cryptCookie({formData, lifetime})
@@ -26,6 +34,10 @@ export default class ConfirmationPage extends Component {
 
     shouldComponentUpdate() {
         return false
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('beforeunload', handleUnload)
     }
 
     render() {
