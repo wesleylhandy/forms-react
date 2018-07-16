@@ -18,6 +18,7 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 
 ## File Structure
 
+```
 .
 +-- cc-validation.js
 +-- index.html
@@ -55,7 +56,7 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 +-- views
 |   +-- error.html
 |   +-- thankyou.hbs
-
+```
 
 ## Configuration
 
