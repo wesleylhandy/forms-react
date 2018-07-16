@@ -13,9 +13,9 @@ const ccMasterCard = require('./images/cc-MasterCard.gif')
 const ccDiscover = require('./images/cc-Discover.gif')
 const ccAmericanExpress = require('./images/cc-AE.gif')
 
-function handlePopState(e) {
-    e.preventDefault();
-    console.log({popstate: e.state})
+function handleUnload(e){
+    e.returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page."
+    return "Are you sure you want to go back?\n You may lose all your changes to this page."
 }
 
 export default class ConfirmationPage extends Component {
@@ -57,12 +57,11 @@ export default class ConfirmationPage extends Component {
     componentDidMount() {
         const {confirmationData, formData, formAction} = this.props
         this.setState({formData, confirmationData, formAction})
-        window.onpopstate = handlePopState
-        
+        window.addEventListener('beforeunload', handleUnload)  
     }
 
     componentWillUnmount() {
-        
+        window.removeEventListener('beforeunload', handleUnload)
     }
 
     assignValues(e) {
