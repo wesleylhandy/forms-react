@@ -160,12 +160,8 @@ export default class NameAddressForm extends Component {
                                     }
                 if (type == "product") {
                     const idx = products.findIndex(el=> el.DetailDescription === DetailDescription)
-                    const found = productInfo.findIndex(prod=> prod.idx === idx)
-                    if (found > -1) {
-                        productInfo[found].quantity++
-                    } else {
-                        productInfo.push({idx, quantity: 1})
-                    }
+                    const quantity = parseInt(DetailName.split('|')[1])
+                    productInfo.push({idx, quantity})
                     productsOrdered = true;
                 }
                 items.push({
@@ -386,16 +382,16 @@ export default class NameAddressForm extends Component {
         const { DetailName, DetailCprojCredit, DetailCprojMail, DetailDescription, PledgeAmount} = products[idx];
         const newItems = items.filter(el=> el.DetailDescription !== DetailDescription)
         if (quantity) {
-            for (let i = 0; i < quantity; i++) {
-                newItems.push({
-                        type: 'product',
-                        PledgeAmount: PledgeAmount,
-                        DetailCprojMail: DetailCprojMail,
-                        DetailCprojCredit: DetailCprojCredit,
-                        DetailDescription: DetailDescription,
-                        DetailName: DetailName
-                })
-            }
+
+            newItems.push({
+                    type: 'product',
+                    PledgeAmount: +PledgeAmount * quantity,
+                    DetailCprojMail: DetailCprojMail,
+                    DetailCprojCredit: DetailCprojCredit,
+                    DetailDescription: DetailDescription,
+                    DetailName: DetailName + "|" + quantity
+            })
+
         }
         // console.log({productInfo, productsOrdered, totalProducts, newItems})
         this.setState({productInfo, productsOrdered, cart: {items: newItems}})
