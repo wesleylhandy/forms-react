@@ -26,7 +26,7 @@ const router = require('express').Router();
 
 router.get("/", function(req, res) {
     res.statusCode = 200;
-    res.render(path.resolve(__dirname, 'thankyou.hbs'), {})
+    res.render(path.resolve(__dirname, 'views', 'thankyou.hbs'), {})
 })
 
 router.post('/', function(req, res) {
@@ -34,10 +34,10 @@ router.post('/', function(req, res) {
     console.log({ body, query })
     if (query && query.status.toLowerCase() == 'error') {
         res.statusCode = 400
-        res.sendFile(path.resolve(__dirname, 'error.html'))
+        res.sendFile(path.resolve(__dirname, 'views', 'error.html'))
     } else {
         res.statusCode = 200;
-        res.render(path.resolve(__dirname, 'thankyou.hbs'), body)
+        res.render(path.resolve(__dirname, 'views', 'thankyou.hbs'), body)
     }
 })
 
