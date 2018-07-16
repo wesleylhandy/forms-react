@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { hot } from 'react-hot-loader'
 import axios from 'axios'
 
 import NameAddressForm from "./NameAddressForm"
@@ -9,7 +10,7 @@ import logError from './helpers/xhr-errors';
 import {readCookie} from "./helpers/crypt"
 
 
-export default class App extends Component {
+default class App extends Component {
     constructor(props) {
         super(props)
         let formData = null;
@@ -132,3 +133,5 @@ export default class App extends Component {
         )
     }
 }
+
+export default hot(module)(App)

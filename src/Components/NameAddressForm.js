@@ -232,10 +232,13 @@ export default class NameAddressForm extends Component {
             Phonenumber =  phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
 
             const formData = {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Phoneareacode, Phoneexchange, Phonenumber, Spousename, Suffix, State, Title, Zip}
-            const lifetime = 60 * 24 * 60 * 60 * 1000 // 60 days = 60 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+            const lifetime = 30 * 24 * 60 * 60 * 1000 // n days = 60 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
             const cookie = cryptCookie({formData, lifetime});
             localStorage.setItem("info", cookie);
+        } else {
+            localStorage.removeItem("info");
         }
+
     }
 
     /**
@@ -432,7 +435,11 @@ export default class NameAddressForm extends Component {
         const { DetailName, DetailCprojCredit, DetailCprojMail, DetailDescription, PledgeAmount} = products[idx];
         const newItems = items.filter(el=> el.DetailDescription !== DetailDescription)
         if (quantity) {
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> master
             newItems.push({
                     type: 'product',
                     PledgeAmount: +PledgeAmount * quantity,

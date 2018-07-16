@@ -61,7 +61,7 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 
 ## Configuration
 
-The `config` folder currently includes 2 `json` files:
+The `src/config` folder currently includes 2 `json` files:
     
 1. `css-config.json` - a list of css variables
 

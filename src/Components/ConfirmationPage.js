@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 
-import { cryptCookie } from './helpers/crypt'
-
+// import checkValues, {checkDigits, checkExpDate} from './helpers/cc-validation'
 import main from './styles/main.css'
 import form from './styles/form.css'
+
+function handleUnload(e){
+    e.returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page."
+    return "Are you sure you want to go back?\n You may lose all your changes to this page."
+}
 
 function handleUnload(e){
     e.returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page."

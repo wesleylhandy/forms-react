@@ -4,10 +4,13 @@
             "generateScopedName": "[path]__[name]__[local]__[hash:base64:5]",
             "webpackHotModuleReloading": true,
             "handleMissingStyleName": "warn"
-        }]
+        }],
+        "react-hot-loader/babel"
     ],
     "presets": [
         ["env", { "useBuiltIns": true }], "react"
+    ],
+    "ignore": [
+        "cc-validation.js"
     ]
-
 }
