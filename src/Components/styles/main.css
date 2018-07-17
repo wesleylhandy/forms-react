@@ -45,32 +45,36 @@ h6 {
     padding: 0;
 }
 
-i,
 em,
 .italic {
-    font-family: 'proximanova-regular-italic', sans-serif;
+    font-family: var(--base-font-family);
+    font-weight: var(--base-font-weight);
+    font-style: var(--base-font-style);
 }
 
-i.bold,
-em.bold,
-strong.italic,
-i>b,
-b>i {
-    font-family: 'proximanova-bold-italic', Arial, sans-serif;
+strong>em,
+em>strong,
+.bold.italic {
+    font-family: var(--base-font-family);
+    font-weight: var(--base-font-weight);
+    font-style: var(--base-font-style);
 }
 
-b,
 strong,
 .bold {
-    font-family: 'proximanova-bold', Arial, sans-serif;
+    font-family: var(--base-font-family);
+    font-weight: var(--base-font-weight);
+    font-style: var(--base-font-style);
 }
 
 .semi-bold {
-    font-family: 'proximanova-semibold', Arial, sans-serif;
+    font-family: var(--base-font-family);
+    font-weight: var(--base-font-weight);
+    font-style: var(--base-font-style);
 }
 
-i.semi-bold,
-em.semi-bold,
-.semi-bold-italic {
-    font-family: 'proximanova-semibold-italic', Arial, sans-serif;
+em.semi-bold .semi-bold.italic {
+    font-family: var(--base-font-family);
+    font-weight: var(--base-font-weight);
+    font-style: var(--base-font-style);
 }

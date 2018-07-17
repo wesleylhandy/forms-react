@@ -177,7 +177,7 @@ export default class ProductDisplay extends Component {
                     { this.renderAdditionalGift(this.state.additionalGift) }
                     <div styleName="form.product-total flex.flex flex.flex-left flex.flex-axes-center">
                         <input styleName='form.total-product-gift flex.flex-no-grow' name="total-product-gift" value={this.state.totalGift} disabled={true}/>
-                        <div styleName="main.caps form.total-product-gift-label">Total Donation</div>
+                        <div styleName="main.caps form.total-product-gift-label">Subtotal</div>
                     </div>
                 </div>
             )

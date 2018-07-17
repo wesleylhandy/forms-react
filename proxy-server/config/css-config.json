@@ -1,7 +1,7 @@
 [{
     "--base-font-color": "#333"
 }, {
-    "--base-font-family": "proximanova-regular, sans-serif"
+    "--base-font-family": "proxima-nova, sans-serif"
 }, {
     "--base-font-size": "20px"
 }, {
@@ -9,21 +9,33 @@
 }, {
     "--base-font-weight": "400"
 }, {
-    "--btn-font-family": "proximanova-semibold, sans-serif"
+    "--bold-font-family": "proxima-nova, sans-serif"
+}, {
+    "--bold-font-style": "normal"
+}, {
+    "--bold-font-weight": "700"
+}, {
+    "--bold-italic-font-family": "proxima-nova, sans-serif"
+}, {
+    "--bold-italic-font-style": "italic"
+}, {
+    "--bold-italic-font-weight": "700"
+}, {
+    "--btn-font-family": "proxima-nova, sans-serif"
 }, {
     "--btn-font-style": "normal"
 }, {
-    "--btn-font-weight": "400"
+    "--btn-font-weight": "600"
 }, {
     "--btn-text-color": "#fff"
 }, {
     "--error-color": "crimson"
 }, {
-    "--error-font-family": "proximanova-bold, sans-serif"
+    "--error-font-family": "proxima-nova, sans-serif"
 }, {
     "--error-font-style": "normal"
 }, {
-    "--error-font-weight": "400"
+    "--error-font-weight": "700"
 }, {
     "--focus-box-shadow": "rgba(102, 175, 233, .6)"
 }, {
@@ -51,21 +63,27 @@
 }, {
     "--input-border-radius": "4px"
 }, {
-    "--input-font-family": "proximanova-semibold, sans-serif"
+    "--input-font-family": "proxima-nova, sans-serif"
 }, {
     "--input-font-style": "normal"
 }, {
-    "--input-font-weight": "400"
+    "--input-font-weight": "600"
 }, {
     "--input-text-color": "#091d44"
 }, {
+    "--italic-font-family": "proxima-nova, sans-serif"
+}, {
+    "--italic-font-style": "italic"
+}, {
+    "--italic-font-weight": "400"
+}, {
     "--label-color": "#105fa5"
 }, {
-    "--label-font-family": "proximanova-semibold, sans-serif"
+    "--label-font-family": "proxima-nova, sans-serif"
 }, {
     "--label-font-style": "normal"
 }, {
-    "--label-font-weight": "400"
+    "--label-font-weight": "600"
 }, {
     "--link-color": "#1775BC"
 }, {
@@ -85,5 +103,17 @@
 }, {
     "--placeholder-color": "#7F8C9A"
 }, {
-    "--primary-color": "#1775BC"
+    "--primary-color": "#1775BC",
+}, {
+    "--semibold-font-family": "proxima-nova, sans-serif"
+}, {
+    "--semibold-font-style": "normal"
+}, {
+    "--semibold-font-weight": "600"
+}, {
+    "--semibold-italic_font-family": "proxima-nova, sans-serif"
+}, {
+    "--semibold-italic_font-style": "italic"
+}, {
+    "--semibold-italic_font-weight": "600"
 }]

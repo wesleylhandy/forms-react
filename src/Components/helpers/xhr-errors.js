@@ -6,7 +6,6 @@ export default function logError({error}) {
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        console.error(error.response.data);
         console.error(error.response.status);
         console.error(error.response.headers);
     } else if (error.request) {
@@ -19,5 +18,24 @@ export default function logError({error}) {
         console.error('Error', error.message);
     }
     console.error({error})
-    console.error(error.config);
+
 }
+
+export function checkStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+      return response
+    } else {
+      var error = new Error(response.statusText)
+      error.response = response
+      error.status = response.status
+      throw error
+    }
+  }
+  
+export function parseJSON(response) {
+    return response.json()
+  }
+
+  export function parseTXT(response) {
+    return response.text()
+  }

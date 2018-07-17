@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
-import axios from 'axios'
+import 'whatwg-fetch'
 
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
 
 import './styles/form.css'
-import logError from './helpers/xhr-errors';
+import logError, {checkStatus, parseJSON} from './helpers/xhr-errors';
 import {readCookie} from "./helpers/crypt"
 
 
@@ -71,7 +71,8 @@ class App extends Component {
             formData: formData,
             donorID: null,
             hydratedData: formData,
-            configured: false
+            configured: false,
+            proxy: null
         }
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
@@ -79,36 +80,50 @@ class App extends Component {
 
     componentDidMount() {
         if (!this.state.configured) {
-            axios.get('http://localhost:8080/config/css-config.json').then(response=>{
+            // in production use relative path here. Resources must be in a config folder within the same directory as the page
+            fetch('http://localhost:8080/config/css-config.json')
+            .then(checkStatus)
+            .then(parseJSON)
+            .then(json=>{
                 // console.log({cssconfig: response.data})
-                const cssVars = response.data;
+                const cssVars = json;
                 cssVars.forEach(variable => document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0]))
             }).catch(logError)
 
-            axios.get('http://localhost:8080/config/form-config.json').then(response=>{
+            // in production use relative path here. Resources must be in a config folder within the same directory as the page
+            fetch('http://localhost:8080/config/form-config.json')
+            .then(checkStatus)
+            .then(parseJSON)
+            .then(json=>{
                 
-                const config = response.data
+                const config = json
                 const { givingFormat, getMiddleName, getSuffix, 
                     getSpouseInfo, monthlyOption, shipping,
                     international, getPhone, products,
                     numProducts, additionalGift, additionalGiftMessage,
                     funds, numFunds, subscriptions, monthlyAmounts,
-                    singleAmounts, MotivationText, monthlyPledgeData, singlePledgeData, showGivingArray, AddContactYN, PageName, Contact_Source, ActivityName, SectionName } = config;
+                    singleAmounts, MotivationText, monthlyPledgeData, 
+                    singlePledgeData, showGivingArray, AddContactYN, 
+                    PageName, Contact_Source, ActivityName, SectionName, proxy } = config;
+                    // console.log({proxy})
 
                 this.setState({givingFormat, getMiddleName, getSuffix, 
                     getSpouseInfo, monthlyOption, shipping,
                     international, getPhone, products: [...products],
                     numProducts, additionalGift, additionalGiftMessage,
                     funds: [...funds], numFunds, subscriptions: [...subscriptions], monthlyAmounts:[...monthlyAmounts],
-                    singleAmounts: [...singleAmounts], MotivationText, monthlyPledgeData, singlePledgeData, showGivingArray, AddContactYN, Contact_Source: Contact_Source ? Contact_Source : PageName + " Donor", ActivityName: ActivityName ? ActivityName : PageName + "_Donation_Activity", SectionName: SectionName, configured: true})
+                    singleAmounts: [...singleAmounts], MotivationText, monthlyPledgeData, singlePledgeData, 
+                    showGivingArray, AddContactYN, Contact_Source: Contact_Source ? Contact_Source : PageName + " Donor", 
+                    ActivityName: ActivityName ? ActivityName : PageName + "_Donation_Activity", SectionName, proxy, configured: true})
 
             }).catch(logError);
         }
     }
 
     submitForm({msg, data}) {
-        const DonorID = msg.split(";")[0].split(" - ")[1]
-        const formAction = msg.split(" is ")[1]
+        const str = Object.values(msg).pop()
+        const DonorID = str.split(";")[0].split(" - ")[1]
+        const formAction = str.split(" is ")[1]
         data.DonorID = DonorID;
         this.setState({submitted: true, formData: data, formAction});
     }

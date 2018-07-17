@@ -20,12 +20,15 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 
 ```
 .
-+-- cc-validation.js
-+-- config
-|   +-- form-config.json
-|   +-- css-config.json
 +-- index.html
-+-- server.js
++-- proxy-server
+|   +-- config
+|   |   +-- form-config.json
+|   |   +-- css-config.json
+|   +-- server.js
+|   +-- views
+|   |   +-- error.html
+|   |   +-- thankyou.hbs
 +-- src
 |   +-- Components
 |   |   +-- App.js
@@ -33,15 +36,9 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 |   |   +-- FundDisplay.js
 |   |   +-- GivingArray.js
 |   |   +-- helpers
-|   |   |   +-- cc-validation.js
 |   |   |   +-- crypt.js
 |   |   |   +-- get-query-variable.js
 |   |   |   +-- xhr-errors.js
-|   |   +-- images
-|   |   |   +-- cc-AE.gif
-|   |   |   +-- cc-Discover.gif
-|   |   |   +-- cc-MasterCard.gif
-|   |   |   +-- cc-Visa.gif
 |   |   +-- NameAddressForm.js
 |   |   +-- ProductDisplay.js
 |   |   +-- styles
@@ -54,9 +51,7 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 |   |   +-- dropdowns.json
 |   +-- index.css
 |   +-- index.js
-+-- views
-|   +-- error.html
-|   +-- thankyou.hbs
+
 ```
 
 ## Configuration

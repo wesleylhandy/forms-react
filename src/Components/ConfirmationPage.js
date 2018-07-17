@@ -48,7 +48,7 @@ export default class ConfirmationPage extends Component {
     render() {
         const {formData} = this.state;
         const keys = Object.keys(formData)
-        const inputs = keys.map((k,i)=><input key={i + "-" + k} name={k} value={formData[k]} type="hidden"/>)
+        const inputs = keys.map((k,i)=><input key={i + "-" + k} name={k} value={formData[k] ? formData[k] : ''} type="hidden"/>)
         return ( 
             <div>
                 <form id="hiddenform" styleName="main.hidden" action={this.state.formAction} method="POST" target="paymentprocess">

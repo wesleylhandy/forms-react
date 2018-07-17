@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import axios from 'axios'
+import 'whatwg-fetch'
 
 import main from './styles/main.css'
 import flex from './styles/flex.css'
@@ -10,7 +10,7 @@ import ProductDisplay from './ProductDisplay'
 import FundDisplay from './FundDisplay'
 
 import { canadianProvinces, countries, other, usMilitary, usStates, usTerritories } from '../config/dropdowns.json';
-import logError from './helpers/xhr-errors';
+import logError, {checkStatus, parseJSON} from './helpers/xhr-errors';
 import {cryptCookie} from './helpers/crypt';
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
@@ -28,9 +28,9 @@ export default class NameAddressForm extends Component {
         }
         // console.log({hydratedData: props.hydratedData})
         this.state = {
-            env: [process.env.alpha, process.env.bravo],
-            ClientBrowser: "",
-            ClientIP: process.env.delta, //obtain this from server somehow
+            APIAccessID: "", //obtain this from server somehow
+            ClientBrowser: "", //obtain this from server somehow
+            ClientIP: "", //obtain this from server somehow
             MotivationText: props.MotivationText,
             showGivingArray: props.showGivingArray,
             arrayOptions: {
@@ -127,7 +127,8 @@ export default class NameAddressForm extends Component {
             hydratedAmount: 0,
             hydratedMonthly: false,
             hydratedProducts: false,
-            initialUpdate: false
+            initialUpdate: false,
+            proxy: props.proxy
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.validateInput = this.validateInput.bind(this)
@@ -141,8 +142,7 @@ export default class NameAddressForm extends Component {
     }
 
     componentDidMount(){
-        this.setState({ClientBrowser: window.navigator.userAgent})
-        // add this later to state when in production UrlReferer: window.location.href
+        this.setState({ClientBrowser: window.navigator.userAgent, UrlReferer: window.location.href})
 
         if (this.props.hydratedData && this.props.hydratedData.MultipleDonations) {
             let amount = 0, isMonthly = false;
@@ -177,48 +177,6 @@ export default class NameAddressForm extends Component {
             }
             this.setState({cart: {items}, hydratedAmount: amount, hydratedMonthly: isMonthly, productInfo, productsOrdered, hydratedProducts: true})
             
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.configured && !this.state.initialUpdate) {
-            this.setState({
-                MotivationText: nextProps.MotivationText,
-                showGivingArray: nextProps.showGivingArray,
-                arrayOptions: {
-                    givingFormat: nextProps.givingFormat,
-                    monthlyOption: nextProps.monthlyOption,
-                    monthlyAmounts: [...nextProps.monthlyAmounts],
-                    singleAmounts: [...nextProps.singleAmounts],
-                    funds: [...nextProps.funds],
-                    monthlyPledgeData: nextProps.monthlyPledgeData,
-                    singlePledgeData: nextProps.singlePledgeData
-                },
-                productOptions: {
-                    products: [...nextProps.products],
-                    numProducts: nextProps.numProducts,
-                    additionalGift: nextProps.additionalGift,
-                    additionalGiftMessage: nextProps.additionalGiftMessage,
-                    singlePledgeData: nextProps.singlePledgeData
-                },
-                fundOptions: {
-                    funds: [...nextProps.funds],
-                    numFunds: nextProps.numFunds
-                },
-                monthlyOption: nextProps.monthlyOption,
-                shipping: nextProps.shipping,
-                international: nextProps.international,
-                getPhone: nextProps.getPhone,
-                getSuffix: nextProps.getSuffix,
-                getMiddleName: nextProps.getMiddleName,
-                getSpouseInfo: nextProps.getSpouseInfo,
-                subscriptions: [...nextProps.subscriptions],
-                AddContactYN: nextProps.AddContactYN,
-                Contact_Source: nextProps.Contact_Source,
-                ActivityName: nextProps.ActivityName,
-                SectionName: nextProps.SectionName,
-                initialUpdate: true
-            })
         }
     }
 
@@ -291,7 +249,7 @@ export default class NameAddressForm extends Component {
         const found = items.findIndex(el=>el && el.type == "donation")
         if (items.length == 0 || (items.length == 1 && found > -1 && items[found].PledgeAmount == 0)) {
             const errors = this.state.errors
-            errors.amount = "Please make a select a valid donation"
+            errors.amount = "Please make a valid donation"
             return this.setState({submitting: false, errors})
         }
 
@@ -315,7 +273,7 @@ export default class NameAddressForm extends Component {
         }
         //deconstruct necessary fields from state
         const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
-        const {Clublevel, MotivationText, ClientBrowser, ClientIP, subscriptions, AddContactYN, ActivityName, Contact_Source, SectionName} = this.state
+        const {APIAccessID, Clublevel, MotivationText, ClientBrowser, ClientIP, UrlReferer, subscriptions, AddContactYN, ActivityName, Contact_Source, SectionName, proxy} = this.state
         
         //construct phone fields from regex
         const Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
@@ -353,7 +311,7 @@ export default class NameAddressForm extends Component {
                 AddContactYN,
                 Address1,
                 Address2,
-                APIAccessID: this.state.env[0],
+                APIAccessID,
                 City,
                 Clublevel,
                 Contact_Source,
@@ -379,7 +337,7 @@ export default class NameAddressForm extends Component {
                 Suffix,
                 Title,
                 TransactionType,
-                UrlReferer: this.state.env[1],
+                UrlReferer,
                 Zip,
                 ClientBrowser,
                 ClientIP,
@@ -394,16 +352,17 @@ export default class NameAddressForm extends Component {
         //flatten subscription information
         subscriptions.forEach(sub=> data[sub.key]=sub.value);
         // console.log({data})
-        axios({
+        fetch(proxy, {
             method: 'POST',
-            url: "http://SecureGiving.cbn.local/api/contribution",
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
             },
-            data
-        }).then(response=>{
-            const msg = response.data;
-            // console.log({data})
+            body: JSON.stringify({data})
+        })
+        .then(checkStatus)
+        .then(parseJSON)
+        .then(json=>{
+            const msg = json;
             self.props.submitForm({msg, data})
         }).catch(error=>{
             logError({error});
@@ -561,27 +520,29 @@ export default class NameAddressForm extends Component {
                 const country = name == "ShipToZip" ? "ShipToCountry" : "Country";
                 if (value && this.state.fields[country] == "US" && !(zip_regex.test(value))) {
                     error = "Please enter a valid US Zip Code"
-                } else if (value && zip_regex.test(value) && !this.state.submitting) {
+                } else if (value && zip_regex.test(value) && !submitting) {
                     const url = `http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=${value}`
-                    axios.get(url)
-                        .then(response=>{
-                            // console.log(response.data)
-                            const {returnCode, returnMessage, city, state, zip} = response.data;
-                            if (returnCode == 1) {
-                                const {fields} = this.state;
-                                const newCity = city.split(";")[0]
-                                fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
-                                fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
-                                fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
-                                if (name == "Zip") fields["Country"] = "United States";
-                                this.setState({fields})
-                            } else {
-                                error = returnMessage
-                            }
-                        })
-                        .catch(error=>{
-                            logError(error);
-                        });
+                    fetch(url)
+                    .then(checkStatus)
+                    .then(parseJSON)
+                    .then(json=>{
+                        // console.log({json})
+                        const {returnCode, returnMessage, city, state, zip} = json;
+                        if (returnCode == 1) {
+                            const {fields} = this.state;
+                            const newCity = city.split(";")[0]
+                            fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
+                            fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
+                            fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
+                            if (name == "Zip") fields["Country"] = "United States";
+                            this.setState({fields})
+                        } else {
+                            error = returnMessage
+                        }
+                    })
+                    .catch(error=>{
+                        logError(error);
+                    });
                 } else if (!value && submitting && ShipToYes && name == "ShipToZip") {
                     error = "Required"
                 } else if (!value && submitting && name == "Zip") {
