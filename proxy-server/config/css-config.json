@@ -103,7 +103,7 @@
 }, {
     "--placeholder-color": "#7F8C9A"
 }, {
-    "--primary-color": "#1775BC",
+    "--primary-color": "green"
 }, {
     "--semibold-font-family": "proxima-nova, sans-serif"
 }, {

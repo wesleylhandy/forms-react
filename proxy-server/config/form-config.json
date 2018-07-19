@@ -67,9 +67,9 @@
         "key": "MarketingUnSubs"
     }],
     "MotivationText": "002345",
-    "additionalGift": true,
+    "additionalGift": false,
     "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
-    "showGivingArray": false,
+    "showGivingArray": true,
     "monthlyAmounts": [3, 7, 15, 30, 50],
     "singleAmounts": [25, 50, 100, 250, 300],
     "monthlyPledgeData": {
@@ -85,5 +85,7 @@
     "Contact_Source": "",
     "ActivityName": "",
     "SectionName": "700Club",
-    "proxy": "http://10.100.43.50:8080/api"
+    "proxy": "http://10.100.43.50:8080/api",
+    "showThankYou": false,
+    "thankYouUrl": "http://10.100.43.50:8080/thankyou"
 }
