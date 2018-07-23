@@ -20,14 +20,17 @@ export default class ConfirmationPage extends Component {
         super(props);
 
         this.state = {
+            cssConfig: props.cssConfig,
             formData: props.formData,
-            formAction: props.formAction,
+            formAction: props.formAction
         }
+        this.handleMessage = this.handleMessage.bind(this)
     }
 
     componentDidMount() {
 
-        window.addEventListener('beforeunload', handleUnload)   
+        window.addEventListener('beforeunload', handleUnload)
+        window.addEventListener('message', this.handleMessage, false)   
 
         const {formData} = this.props;
         const lifetime = 60 * 1000; // 60 seconds * 1000 milliseconds
@@ -37,12 +40,22 @@ export default class ConfirmationPage extends Component {
         document.forms.hiddenform.submit.click();
     }
 
+    handleMessage(e) {
+        if (e.data !== "go back clicked") {
+            return;
+        } else {
+            console.log({origin: e.origin})
+            console.log({source: e.source})
+        }
+    }
+
     shouldComponentUpdate() {
         return false
     }
 
     componentWillUnmount() {
         window.removeEventListener('beforeunload', handleUnload)
+        window.removeEventListener('message', this.handleMessage)
     }
 
     render() {
@@ -53,6 +66,7 @@ export default class ConfirmationPage extends Component {
             <div>
                 <form id="hiddenform" styleName="main.hidden" action={this.state.formAction} method="POST" target="paymentprocess">
                     {inputs}
+                    <input type='hidden' name="cssVars" value={JSON.stringify(this.state.cssConfig)}/>
                     <input id="submit" type="submit" hidden/>
                 </form>
                 <iframe styleName="form.form-panel" name="paymentprocess" width="100%" height="1000px"></iframe>

@@ -7,13 +7,17 @@ const NodeRSA = require('node-rsa');
  */
 export function readCookie(cookie) {
     const parsed = JSON.parse(cookie)
-    let {f, d, q} = parsed;
-    const k = '-----BEGIN RSA PRIVATE KEY-----\n' + f.replace(/\^/g, '/').replace(/%/g, '9') + '\n-----END RSA PRIVATE KEY-----';
-    const rsa = new NodeRSA(k);
-    const decrypted = JSON.parse(rsa.decrypt(d.replace(/\^/g, '/'), 'utf8'))
-    const expiration = JSON.parse(rsa.decrypt(q.replace(/\^/g, '/'), 'utf8'))
-    const present = Date.now();
-    return present > +expiration ? null : decrypted
+    if (typeof parsed === "object" && parsed.hasOwnProperty("f") && parsed.hasOwnProperty("d") && parsed.hasOwnProperty("k")) {
+        let {f, d, q} = parsed;
+        const k = '-----BEGIN RSA PRIVATE KEY-----\n' + f.replace(/\^/g, '/').replace(/%/g, '9') + '\n-----END RSA PRIVATE KEY-----';
+        const rsa = new NodeRSA(k);
+        const decrypted = JSON.parse(rsa.decrypt(d.replace(/\^/g, '/'), 'utf8'))
+        const expiration = JSON.parse(rsa.decrypt(q.replace(/\^/g, '/'), 'utf8'))
+        const present = Date.now();
+        return present > +expiration ? null : decrypted
+    } else {
+        return null
+    }
 }
 
 /**

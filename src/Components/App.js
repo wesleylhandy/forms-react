@@ -72,7 +72,8 @@ class App extends Component {
             donorID: null,
             hydratedData: formData,
             configured: false,
-            proxy: null
+            proxy: null,
+            cssConfig: []
         }
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
@@ -87,7 +88,12 @@ class App extends Component {
             .then(json=>{
                 // console.log({cssconfig: response.data})
                 const cssVars = json;
-                cssVars.forEach(variable => document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0]))
+                const {cssConfig} = this.state;
+                cssVars.forEach(variable => {
+                    document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0])
+                    cssConfig.push({[Object.keys(variable)[0]]: Object.values(variable)[0]})
+                })
+                this.setState({cssConfig})
             }).catch(logError)
 
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
@@ -139,6 +145,7 @@ class App extends Component {
                 { 
                     this.state.submitted ? ( 
                         <ConfirmationPage 
+                            cssConfig={this.state.cssConfig}
                             formData={this.state.formData} 
                             formAction={this.state.formAction}
                         /> 
