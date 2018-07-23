@@ -34,12 +34,12 @@ app.set('port', port);
 
 const router = require('express').Router();
 
-router.get("/", function(req, res) {
+router.get("/", (req, res) => {
     res.statusCode = 200;
     res.render(path.resolve(__dirname, 'views', 'thankyou.hbs'), {})
 })
 
-router.post('/', function(req, res) {
+router.post('/', (req, res) => {
     const {body, query} = req;
     console.log({ body, query })
     if (query && query.status.toLowerCase() == 'error') {
@@ -51,12 +51,12 @@ router.post('/', function(req, res) {
     }
 })
 
-router.get('/config/:filename', function(req, res){
+router.get('/config/:filename', (req, res) => {
     const {filename} = req.params;
     res.sendFile(path.resolve(__dirname, "config", filename))
 })
 
-router.post('/api', function(req, res) {
+router.post('/api', (req, res) => {
     const {data} = req.body
     if (!data) {
         res.statusCode = 400
@@ -77,14 +77,15 @@ router.post('/api', function(req, res) {
     data.ClientIP =  ClientIP
     console.log({ClientIP})
     console.log({data})
-    fetch('http://SecureGiving.cbn.local/api/contribution',
+    const api = process.env.epsilon
+    fetch(api,
     {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json; charset=utf-8'
         },
         body: JSON.stringify(data)
-    }).then(function(response){
+    }).then(response => {
         if (response.status >= 200 && response.status < 300) {
             return response
         } else {
@@ -93,11 +94,10 @@ router.post('/api', function(req, res) {
             error.status = response.status
             throw error
         }
-    }).then(function(response){
-        return response.text()
-    }).then(function(msg){
-        res.send({msg})
-    }).catch(function(error){
+    })
+    .then(response => response.text())
+    .then(msg => res.send({msg}))
+    .catch(error => {
         res.statusCode = error.status
         res.send({error})
     })
@@ -107,6 +107,31 @@ router.post('/api', function(req, res) {
 app.use("/", router);
 
 // Listen on port 3000 or assigned port
-const server = app.listen(app.get('port'), function() {
-    console.log(`Did you hear that noise R2-${app.get('port')}?`);
+const server = app.listen(app.get('port'), () =>  console.log(`Did you hear that noise R2-${app.get('port')}?`));
+
+
+const gracefulShutdown = () => {
+    console.log("Received kill signal, shutting down gracefully.");
+    server.close(() => {
+      console.log("Closed out remaining connections.");
+      process.exit(1)
+    });
+    
+     // if after 
+     setTimeout(function() {
+         console.error("Could not close connections in time, forcefully shutting down");
+         process.exit(1)
+    }, 10*1000);
+}
+  
+  // listen for TERM signal .e.g. kill 
+process.on ('SIGTERM', gracefulShutdown);
+
+// listen for INT signal e.g. Ctrl-C
+process.on ('SIGINT', gracefulShutdown);   
+
+
+process.on('unhandledRejection', reason => {
+    console.error({Error:reason})
+    process.exit(1);
 });
