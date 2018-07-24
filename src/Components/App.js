@@ -90,10 +90,20 @@ class App extends Component {
                 const cssVars = json;
                 const {cssConfig} = this.state;
                 cssVars.forEach(variable => {
-                    document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0])
-                    cssConfig.push({[Object.keys(variable)[0]]: Object.values(variable)[0]})
+                    if (Object.keys(variable)[0] !== "externalFonts") {
+                        document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0])
+                        cssConfig.push({[Object.keys(variable)[0]]: Object.values(variable)[0]})
+                    } else {
+                        Object.values(variable).forEach(href => {
+                            const link = document.createElement('link');
+                            link.rel = "stylesheet";
+                            link.type = "text/css";
+                            link.href = href;
+                            document.head.appendChild(link);
+                        })
+                    }
                 })
-                this.setState({cssConfig})
+                this.setState({cssConfig: [...cssVars]})
             }).catch(logError)
 
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
@@ -110,7 +120,7 @@ class App extends Component {
                     funds, numFunds, subscriptions, monthlyAmounts,
                     singleAmounts, MotivationText, monthlyPledgeData, 
                     singlePledgeData, showGivingArray, AddContactYN, 
-                    PageName, Contact_Source, ActivityName, SectionName, proxy } = config;
+                    PageName, Contact_Source, ActivityName, SectionName, proxy, showThankYou, thankYouUrl } = config;
                     // console.log({proxy})
 
                 this.setState({givingFormat, getMiddleName, getSuffix, 

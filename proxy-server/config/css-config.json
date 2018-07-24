@@ -116,4 +116,8 @@
     "--semibold-italic_font-style": "italic"
 }, {
     "--semibold-italic_font-weight": "600"
+}, {
+    "externalFonts": [
+        "https://use.typekit.net/zon7onf.css"
+    ]
 }]
