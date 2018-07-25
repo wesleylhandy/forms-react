@@ -158,6 +158,7 @@ class App extends Component {
                             cssConfig={this.state.cssConfig}
                             formData={this.state.formData} 
                             formAction={this.state.formAction}
+                            hydrateForm={this.hydrateForm}
                         /> 
                     ) : this.state.configured ? <NameAddressForm {...this.state } submitForm={ this.submitForm }/> : null                     
                 } 

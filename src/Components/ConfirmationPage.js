@@ -22,9 +22,10 @@ export default class ConfirmationPage extends Component {
         this.state = {
             cssConfig: props.cssConfig,
             formData: props.formData,
-            formAction: props.formAction
+            formAction: props.formAction,
         }
         this.handleMessage = this.handleMessage.bind(this)
+        this.reRenderForm = this.reRenderForm.bind(this)
     }
 
     componentDidMount() {
@@ -43,10 +44,16 @@ export default class ConfirmationPage extends Component {
     handleMessage(e) {
         if (e.data !== "go back clicked") {
             return;
-        } else {
-            console.log({origin: e.origin})
-            console.log({source: e.source})
-        }
+        } 
+        const {origin} = e;
+        if (origin !== this.state.devServicesUri && origin !== this.state.preProdServicesUri && origin !== this.state.prodServicesUri) {
+            return
+        } 
+        this.reRenderForm(this.state.formData);
+    }
+
+    reRenderForm(data) {
+        this.props.hydrateForm(data);
     }
 
     shouldComponentUpdate() {
@@ -69,7 +76,7 @@ export default class ConfirmationPage extends Component {
                     <input type='hidden' name="cssVars" value={JSON.stringify(this.state.cssConfig)}/>
                     <input id="submit" type="submit" hidden/>
                 </form>
-                <iframe styleName="form.form-panel" name="paymentprocess" width="100%" height="1000px"></iframe>
+                <iframe styleName="form.form-panel" name="paymentprocess" width="100%" height="1000px" data-css-vars={JSON.stringify(this.state.cssConfig)}></iframe>
             </div>
         )
     }

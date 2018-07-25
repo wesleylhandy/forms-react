@@ -56,6 +56,11 @@ router.get('/config/:filename', (req, res) => {
     res.sendFile(path.resolve(__dirname, "config", filename))
 })
 
+router.get('/globals/:filename', (req, res) => {
+    const {filename} = req.params;
+    res.sendFile(path.resolve(__dirname, "globals", filename))
+})
+
 router.post('/api', (req, res) => {
     const {data} = req.body
     if (!data) {
