@@ -19,6 +19,19 @@
     margin-top: var(--panel-space-between);
 }
 
+.fieldset {
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0;
+    -webkit-padding-before: 0;
+    -webkit-padding-start: 0;
+    -webkit-padding-after: 0;
+    min-width: 100%;
+    border-width: 0;
+    border-style: none;
+    border-color: unset;
+    border-image: unset;
+}
+
 .form-header,
 .divider-title {
     color: var(--heading-color);

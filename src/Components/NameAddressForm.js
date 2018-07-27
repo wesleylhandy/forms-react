@@ -595,120 +595,132 @@ export default class NameAddressForm extends Component {
 
     renderShippingAddress(showShipping) {
         return (
-            <div styleName="form.shipping-address__container">
-                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
-                    
-                    <input type='checkbox' styleName="form.checkboxInput"
-                        id="ShipToYes" 
-                        name="ShipToYes" 
-                        checked={this.state.fields.ShipToYes} 
-                        onChange={this.handleInputChange}
-                    />
-                    <label htmlFor="ShipToYes">&nbsp;My shipping address is different than my billing address.</label>     
+            <fieldset styleName="form.fieldset">
+                <div styleName="form.shipping-address__container">
+                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
+                        
+                        <input type='checkbox' styleName="form.checkboxInput"
+                            id="ShipToYes" 
+                            name="ShipToYes" 
+                            checked={this.state.fields.ShipToYes} 
+                            onChange={this.handleInputChange}
+                        />
+                        <label htmlFor="ShipToYes">&nbsp;My shipping address is different than my billing address.</label>     
 
+                    </div>
+                    {
+                        !showShipping ? null : (
+                            <div id="ShippingAddressInfo" styleName='form.shipping-address__info'>
+                                <div styleName="form.formRow">  
+                                    <div styleName='flex.flex flex.flex-row flex.flex-center'>
+                                        <hr styleName='form.line'/><div styleName='form.divider-title main.caps'>Shipping Address</div><hr styleName='form.line'/>
+                                    </div>
+                                </div>
+                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                    <div id="form-field-ShipToName" styleName="form.formGroup flex.flex-grow">
+                                        <label htmlFor="ShipToName">Name<span>*</span></label>
+                                        <input styleName="form.formControl" 
+                                            type='text' 
+                                            id="ShipToName" 
+                                            maxLength='100' 
+                                            name="ShipToName" 
+                                            placeholder="First and Last Name" 
+                                            required={this.state.fields.ShipToYes}
+                                            value={this.state.fields.ShipToName}
+                                            onChange={this.handleInputChange}
+                                            aria-invalid={this.state.errors.ShipToName ? true : false} 
+                                        />
+                                        <div styleName="form.error">{this.state.errors.ShipToName}</div>
+                                    </div>
+                                </div>
+                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                    <div id="form-field-ShipToAddress1" styleName="form.formGroup flex.flex-grow">
+                                        <label htmlFor="ShipToAddress1">Address<span>*</span></label>
+                                        <input styleName="form.formControl" 
+                                            id="ShipToAddress1" 
+                                            type='text' 
+                                            maxLength='64' 
+                                            name="ShipToAddress1" 
+                                            placeholder="Shipping Address*" 
+                                            required={this.state.fields.ShipToYes}
+                                            value={this.state.fields.ShipToAddress1}
+                                            onChange={this.handleInputChange}
+                                            aria-invalid={this.state.errors.ShipToAddress1 ? true : false} 
+                                        />
+                                        <div styleName="form.error">{this.state.errors.ShipToAddress1}</div>
+                                    </div>
+                                </div>
+                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                    <div id="form-field-ShipToAddress2" styleName="form.formGroup flex.flex-grow">
+                                        <label htmlFor="ShipToAddress2">Address2</label>
+                                        <input styleName="form.formControl" 
+                                            id="ShipToAddress2" 
+                                            type='text' 
+                                            maxLength='64' 
+                                            name="ShipToAddress2" 
+                                            placeholder="Shipping Address Line 2" 
+                                            required={false}
+                                            value={this.state.fields.ShipToAddress2}
+                                            onChange={this.handleInputChange}
+                                            aria-invalid={this.state.errors.ShipToAddress2 ? true : false} 
+                                        />
+                                        <div styleName="form.error">{this.state.errors.ShipToAddress2}</div>
+                                    </div>
+                                </div>
+                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                    <div id="form-field-ShipToCity" styleName="form.formGroup flex.flex-grow">
+                                        <label htmlFor="ShipToCity">City<span>*</span></label>
+                                        <input styleName="form.formControl"
+                                            id="ShipToCity" 
+                                            type='text' 
+                                            maxLength='64' 
+                                            name="ShipToCity" 
+                                            placeholder="City*" 
+                                            required={this.state.fields.ShipToYes}
+                                            value={this.state.fields.ShipToCity}
+                                            onChange={this.handleInputChange}
+                                            aria-invalid={this.state.errors.ShipToCity ? true : false} 
+                                        />
+                                        <div styleName="form.error">{this.state.errors.ShipToCity}</div>
+                                    </div>
+                                    <div id="form-field-ShipToState" styleName="form.formGroup flex.flex-grow">
+                                        <label htmlFor="ShipToState">State<span>*</span></label>
+                                        <select styleName="form.formControl" 
+                                            id="ShipToState" 
+                                            name="ShipToState" 
+                                            required={this.state.fields.ShipToYes} 
+                                            value={this.state.fields.ShipToState} 
+                                            onChange={this.handleInputChange}
+                                            aria-invalid={this.state.errors.ShipToState ? true : false}
+                                        >
+                                            <option value="">State* &#9663;</option>
+                                            {this.renderStateOptions(this.state.international)}
+                                        </select>
+                                        <div styleName="form.error">{this.state.errors.ShipToState}</div>
+                                    </div>
+                                </div>
+                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                    <div id="form-field-ShipToZip" styleName="form.formGroup flex.flex-grow">
+                                        <label htmlFor="ShipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
+                                        <input styleName="form.formControl" 
+                                            id="ShipToZip" 
+                                            type='text' 
+                                            maxLength="5"
+                                            name="ShipToZip" 
+                                            placeholder="Zip*" 
+                                            required={this.state.fields.ShipToYes}
+                                            value={this.state.fields.ShipToZip}
+                                            onChange={this.handleInputChange}
+                                            aria-invalid={this.state.errors.ShipToZip ? true : false}
+                                        />
+                                        <div styleName="form.error">{this.state.errors.ShipToZip}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
-                <div id="ShippingAddressInfo" styleName = {showShipping ? 'form.shipping-address__info' : 'main.hidden'}>
-                    <div styleName="form.formRow">  
-                        <div styleName='flex.flex flex.flex-row flex.flex-center'>
-                            <hr styleName='form.line'/><div styleName='form.divider-title main.caps'>Shipping Address</div><hr styleName='form.line'/>
-                        </div>
-                    </div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                        <div id="form-field-ShipToName" styleName="form.formGroup flex.flex-grow">
-                            <label htmlFor="ShipToName">Name<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                type='text' 
-                                id="ShipToName" 
-                                maxLength='100' 
-                                name="ShipToName" 
-                                placeholder="First and Last Name" 
-                                required={this.state.fields.ShipToYes}
-                                value={this.state.fields.ShipToName}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.ShipToName}</div>
-                        </div>
-                    </div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                        <div id="form-field-ShipToAddress1" styleName="form.formGroup flex.flex-grow">
-                            <label htmlFor="ShipToAddress1">Address<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                id="ShipToAddress1" 
-                                type='text' 
-                                maxLength='64' 
-                                name="ShipToAddress1" 
-                                placeholder="Shipping Address*" 
-                                required={this.state.fields.ShipToYes}
-                                value={this.state.fields.ShipToAddress1}
-                                onChange={this.handleInputChange}
-                               />
-                            <div styleName="form.error">{this.state.errors.ShipToAddress1}</div>
-                        </div>
-                    </div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                        <div id="form-field-ShipToAddress2" styleName="form.formGroup flex.flex-grow">
-                            <label htmlFor="ShipToAddress2">Address2</label>
-                            <input styleName="form.formControl" 
-                                id="ShipToAddress2" 
-                                type='text' 
-                                maxLength='64' 
-                                name="ShipToAddress2" 
-                                placeholder="Shipping Address Line 2" 
-                                required={false}
-                                value={this.state.fields.ShipToAddress2}
-                                onChange={this.handleInputChange}
-                               />
-                            <div styleName="form.error">{this.state.errors.ShipToAddress2}</div>
-                        </div>
-                    </div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                        <div id="form-field-ShipToCity" styleName="form.formGroup flex.flex-grow">
-                            <label htmlFor="ShipToCity">City<span>*</span></label>
-                            <input styleName="form.formControl"
-                                id="ShipToCity" 
-                                type='text' 
-                                maxLength='64' 
-                                name="ShipToCity" 
-                                placeholder="City*" 
-                                required={this.state.fields.ShipToYes}
-                                value={this.state.fields.ShipToCity}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.ShipToCity}</div>
-                        </div>
-                        <div id="form-field-ShipToState" styleName="form.formGroup flex.flex-grow">
-                            <label htmlFor="ShipToState">State<span>*</span></label>
-                            <select styleName="form.formControl" 
-                                id="ShipToState" 
-                                name="ShipToState" 
-                                required={this.state.fields.ShipToYes} 
-                                value={this.state.fields.ShipToState} 
-                                onChange={this.handleInputChange}
-                            >
-                                <option value="">State* &#9663;</option>
-                                {this.renderStateOptions(this.state.international)}
-                            </select>
-                            <div styleName="form.error">{this.state.errors.ShipToState}</div>
-                        </div>
-                    </div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                        <div id="form-field-ShipToZip" styleName="form.formGroup flex.flex-grow">
-                            <label htmlFor="ShipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
-                            <input styleName="form.formControl" 
-                                id="ShipToZip" 
-                                type='text' 
-                                maxLength="5"
-                                name="ShipToZip" 
-                                placeholder="Zip*" 
-                                required={this.state.fields.ShipToYes}
-                                value={this.state.fields.ShipToZip}
-                                onChange={this.handleInputChange}
-                            />
-                            <div styleName="form.error">{this.state.errors.ShipToZip}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </fieldset>
         )
     }
 
@@ -748,6 +760,7 @@ export default class NameAddressForm extends Component {
                             placeholder="Title*"
                             value={this.state.fields.Title}
                             onChange={this.handleInputChange}
+                            aria-invalid={this.state.errors.Title ? true : false} 
                         >
                             <option value="">Title* &#9663;</option>
                             <option value="Mr">Mr</option>
@@ -768,6 +781,7 @@ export default class NameAddressForm extends Component {
                             required={true}
                             value={this.state.fields.Firstname}
                             onChange={this.handleInputChange}
+                            aria-invalid={this.state.errors.Firstname ? true : false} 
                         />
                         <div styleName="form.error">{this.state.errors.Firstname}</div>
                     </div>                           
@@ -782,6 +796,7 @@ export default class NameAddressForm extends Component {
                             required={true}
                             value={this.state.fields.Lastname}
                             onChange={this.handleInputChange}
+                            aria-invalid={this.state.errors.Lastname ? true : false} 
                         />
                         <div styleName="form.error">{this.state.errors.Lastname}</div>
                     </div>
@@ -800,6 +815,7 @@ export default class NameAddressForm extends Component {
                                 placeholder="Title*"
                                 value={this.state.fields.Title}
                                 onChange={this.handleInputChange}
+                                aria-invalid={this.state.errors.Title ? true : false} 
                             >
                                 <option value="">Title* &#9663;</option>
                                 <option value="Mr">Mr</option>
@@ -820,6 +836,7 @@ export default class NameAddressForm extends Component {
                                 required={true}
                                 value={this.state.fields.Firstname}
                                 onChange={this.handleInputChange}
+                                aria-invalid={this.state.errors.Firstname ? true : false} 
                             />
                             <div styleName="form.error">{this.state.errors.Firstname}</div>
                         </div>
@@ -836,6 +853,7 @@ export default class NameAddressForm extends Component {
                                         required={false}
                                         value={this.state.fields.Middlename}
                                         onChange={this.handleInputChange}
+                                        aria-invalid={this.state.errors.Middlename ? true : false} 
                                     />
                                     <div styleName="form.error">{this.state.errors.Middlename}</div>
                                 </div>
@@ -854,6 +872,7 @@ export default class NameAddressForm extends Component {
                                 required={true}
                                 value={this.state.fields.Lastname}
                                 onChange={this.handleInputChange}
+                                aria-invalid={this.state.errors.Lastname ? true : false} 
                             />
                             <div styleName="form.error">{this.state.errors.Lastname}</div>
                         </div>
@@ -868,6 +887,7 @@ export default class NameAddressForm extends Component {
                                         placeholder="Suffix"
                                         value={this.state.fields.Suffix}
                                         onChange={this.handleInputChange}
+                                        aria-invalid={this.state.errors.Suffix ? true : false} 
                                     >
                                         <option value="">Suffix* &#9663;</option>
                                         <option value="Mr">Jr</option>
@@ -923,168 +943,181 @@ export default class NameAddressForm extends Component {
                     />
                 </div>
                 <div styleName="form.form-panel">
-                    <div styleName="form.nameAddressInfo">
-                        <h3 styleName="main.caps form.form-header">Please Enter Your Billing Information</h3>
-                        { this.renderNameAddressBlock(this.state.getMiddleName, this.state.getSuffix) }
-                        {
-                            this.state.getSpouseInfo ? (
-                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                    <div id="form-field-Spousename" styleName="form.formGroup flex.flex-grow">
-                                        <label htmlFor="Spousename">Spouse&rsquo;s Name</label>
-                                        <input styleName="form.formControl" 
-                                            type='text' 
-                                            id="Spousename" 
-                                            maxLength='100' 
-                                            name="Spousename" 
-                                            placeholder="Spouse&rsquo;s First and Last Name" 
-                                            required={false}
-                                            value={this.state.fields.Spousename}
-                                            onChange={this.handleInputChange}
-                                        />
-                                        <div styleName="form.error">{this.state.errors.Spousename}</div>
-                                    </div>
-                                </div>
-                            ) : null
-                        }
-                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                            <div id="form-field-Address1" styleName="form.formGroup flex.flex-grow">
-                                <label htmlFor="Address1">Address<span>*</span></label>
-                                <input styleName="form.formControl" 
-                                    id="Address1" 
-                                    type='text' 
-                                    maxLength='31' 
-                                    name="Address1" 
-                                    placeholder="Address*" 
-                                    required={true}
-                                    value={this.state.fields.Address1}
-                                    onChange={this.handleInputChange}
-                                />
-                                <div styleName="form.error">{this.state.errors.Address1}</div>
-                            </div>
-                        </div>
-                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                            <div id="form-field-Address2" styleName="form.formGroup flex.flex-grow">
-                                <label htmlFor="Address2">Address2</label>
-                                <input styleName="form.formControl" 
-                                    id="Address2" 
-                                    type='text' 
-                                    maxLength='31' 
-                                    name="Address2" 
-                                    placeholder="Address Line 2" 
-                                    required={true}
-                                    value={this.state.fields.Address2}
-                                    onChange={this.handleInputChange}
-                                />
-                                <div styleName="form.error">{this.state.errors.Address2}</div>
-                            </div>
-                        </div>
-                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                            <div id="form-field-City" styleName="form.formGroup flex.flex-grow">
-                                <label htmlFor="City">City<span>*</span></label>
-                                <input styleName="form.formControl" 
-                                    id="City" 
-                                    type='text' 
-                                    maxLength='28' 
-                                    name="City" 
-                                    placeholder="City*" 
-                                    required={true}
-                                    value={this.state.fields.City}
-                                    onChange={this.handleInputChange}
-                                />
-                                <div styleName="form.error">{this.state.errors.City}</div>
-                            </div>
-                            <div id="form-field-State" styleName="form.formGroupState flex.flex-grow">
-                                <label htmlFor="State">State<span>*</span></label>
-                                <select styleName="form.formControl" 
-                                    id="State" 
-                                    name="State" 
-                                    required={true}
-                                    value={this.state.fields.State}
-                                    onChange={this.handleInputChange}
-                                >
-                                    <option value="">State* &#9663;</option>
-                                    {this.renderStateOptions(this.state.international)}
-                                </select>
-                                <div styleName="form.error">{this.state.errors.State}</div>
-                            </div>
-                        </div>
-
-                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                            <div id="form-field-Zip" styleName="form.formGroup flex.flex-grow">
-                                <label htmlFor="Zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
-                                <input styleName="form.formControl" 
-                                    id="Zip" 
-                                    type='text' 
-                                    maxLength={this.state.fields.Country != "US" ? 25 : 5}
-                                    name="Zip" 
-                                    placeholder="Zip*" 
-                                    required={true}
-                                    value={this.state.fields.Zip}
-                                    onChange={this.handleInputChange}
-                                />
-                                <div styleName="form.error">{this.state.errors.Zip}</div>
-                            </div>
-                            { this.state.international ? (
-                                <div id="form-field-Country" styleName="form.formGroupCountry flex.flex-grow">
-                                
-                                    <label htmlFor="Country">Country<span>*</span></label>
-                                    <select styleName="form.formControl" 
-                                        id="Country" 
-                                        name="Country" 
-                                        required={true}
-                                        value={this.state.fields.Country}
-                                        onChange={this.handleInputChange}
-                                    >
-                                        <option value="">Country* &#9663;</option>
-                                        {countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)}
-                                    </select>
-                                    <div styleName="form.error">{this.state.errors.Country}</div>
-                                </div> 
-                            ): null }
-                        </div>
-                        <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                            <div id="form-field-Emailaddress" styleName="form.formGroupEmail flex.flex-grow">
-                                <label htmlFor="Emailaddress">Email Address<span>*</span></label>
-                                <input styleName="form.formControl" 
-                                    id="Emailaddress" 
-                                    type='email' 
-                                    maxLength='128' 
-                                    name="Emailaddress" 
-                                    placeholder="Email Address*" 
-                                    required={true}
-                                    value={this.state.fields.Emailaddress}
-                                    onChange={this.handleInputChange} 
-                                />
-                                <div styleName="form.error">{this.state.errors.Emailaddress}</div>
-                            </div>
+                    <fieldset styleName="form.fieldset">
+                        <div styleName="form.nameAddressInfo">
+                            <h3 styleName="main.caps form.form-header">Please Enter Your Billing Information</h3>
+                            { this.renderNameAddressBlock(this.state.getMiddleName, this.state.getSuffix) }
                             {
-                                this.state.getPhone ? (
-                                    <div id="form-field-phone" styleName="form.formGroupPhone flex.flex-grow">
-                                        <label htmlFor="phone">Phone Number</label>
-                                        <input styleName="form.formControl"
-                                            id="phone"  
-                                            type='phonenumber' 
-                                            name="phone" 
-                                            placeholder="###-###-####"
-                                            value={this.state.fields.phone}
-                                            onChange={this.handleInputChange} 
-                                        />
-                                        <div styleName="form.error">{this.state.errors.phone}</div>
+                                this.state.getSpouseInfo ? (
+                                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                        <div id="form-field-Spousename" styleName="form.formGroup flex.flex-grow">
+                                            <label htmlFor="Spousename">Spouse&rsquo;s Name</label>
+                                            <input styleName="form.formControl" 
+                                                type='text' 
+                                                id="Spousename" 
+                                                maxLength='100' 
+                                                name="Spousename" 
+                                                placeholder="Spouse&rsquo;s First and Last Name" 
+                                                required={false}
+                                                value={this.state.fields.Spousename}
+                                                onChange={this.handleInputChange}
+                                                aria-invalid={this.state.errors.Spousename ? true : false} 
+                                            />
+                                            <div styleName="form.error">{this.state.errors.Spousename}</div>
+                                        </div>
                                     </div>
-                                ) : null 
+                                ) : null
                             }
+                            <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                <div id="form-field-Address1" styleName="form.formGroup flex.flex-grow">
+                                    <label htmlFor="Address1">Address<span>*</span></label>
+                                    <input styleName="form.formControl" 
+                                        id="Address1" 
+                                        type='text' 
+                                        maxLength='31' 
+                                        name="Address1" 
+                                        placeholder="Address*" 
+                                        required={true}
+                                        value={this.state.fields.Address1}
+                                        onChange={this.handleInputChange}
+                                        aria-invalid={this.state.errors.Address1 ? true : false} 
+                                    />
+                                    <div styleName="form.error">{this.state.errors.Address1}</div>
+                                </div>
+                            </div>
+                            <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                <div id="form-field-Address2" styleName="form.formGroup flex.flex-grow">
+                                    <label htmlFor="Address2">Address2</label>
+                                    <input styleName="form.formControl" 
+                                        id="Address2" 
+                                        type='text' 
+                                        maxLength='31' 
+                                        name="Address2" 
+                                        placeholder="Address Line 2" 
+                                        required={true}
+                                        value={this.state.fields.Address2}
+                                        onChange={this.handleInputChange}
+                                        aria-invalid={this.state.errors.Address2 ? true : false} 
+                                    />
+                                    <div styleName="form.error">{this.state.errors.Address2}</div>
+                                </div>
+                            </div>
+                            <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                <div id="form-field-City" styleName="form.formGroup flex.flex-grow">
+                                    <label htmlFor="City">City<span>*</span></label>
+                                    <input styleName="form.formControl" 
+                                        id="City" 
+                                        type='text' 
+                                        maxLength='28' 
+                                        name="City" 
+                                        placeholder="City*" 
+                                        required={true}
+                                        value={this.state.fields.City}
+                                        onChange={this.handleInputChange}
+                                        aria-invalid={this.state.errors.City ? true : false} 
+                                    />
+                                    <div styleName="form.error">{this.state.errors.City}</div>
+                                </div>
+                                <div id="form-field-State" styleName="form.formGroupState flex.flex-grow">
+                                    <label htmlFor="State">State<span>*</span></label>
+                                    <select styleName="form.formControl" 
+                                        id="State" 
+                                        name="State" 
+                                        required={true}
+                                        value={this.state.fields.State}
+                                        onChange={this.handleInputChange}
+                                        aria-invalid={this.state.errors.State ? true : false} 
+                                    >
+                                        <option value="">State* &#9663;</option>
+                                        {this.renderStateOptions(this.state.international)}
+                                    </select>
+                                    <div styleName="form.error">{this.state.errors.State}</div>
+                                </div>
+                            </div>
+
+                            <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                <div id="form-field-Zip" styleName="form.formGroup flex.flex-grow">
+                                    <label htmlFor="Zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
+                                    <input styleName="form.formControl" 
+                                        id="Zip" 
+                                        type='text' 
+                                        maxLength={this.state.fields.Country != "US" ? 25 : 5}
+                                        name="Zip" 
+                                        placeholder="Zip*" 
+                                        required={true}
+                                        value={this.state.fields.Zip}
+                                        onChange={this.handleInputChange}
+                                        aria-invalid={this.state.errors.Zip ? true : false} 
+                                    />
+                                    <div styleName="form.error">{this.state.errors.Zip}</div>
+                                </div>
+                                { this.state.international ? (
+                                    <div id="form-field-Country" styleName="form.formGroupCountry flex.flex-grow">
+                                    
+                                        <label htmlFor="Country">Country<span>*</span></label>
+                                        <select styleName="form.formControl" 
+                                            id="Country" 
+                                            name="Country" 
+                                            required={true}
+                                            value={this.state.fields.Country}
+                                            onChange={this.handleInputChange}
+                                            aria-invalid={this.state.errors.Country ? true : false} 
+                                        >
+                                            <option value="">Country* &#9663;</option>
+                                            {countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)}
+                                        </select>
+                                        <div styleName="form.error">{this.state.errors.Country}</div>
+                                    </div> 
+                                ): null }
+                            </div>
+                            <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
+                                <div id="form-field-Emailaddress" styleName="form.formGroupEmail flex.flex-grow">
+                                    <label htmlFor="Emailaddress">Email Address<span>*</span></label>
+                                    <input styleName="form.formControl" 
+                                        id="Emailaddress" 
+                                        type='email' 
+                                        maxLength='128' 
+                                        name="Emailaddress" 
+                                        placeholder="Email Address*" 
+                                        required={true}
+                                        value={this.state.fields.Emailaddress}
+                                        onChange={this.handleInputChange}
+                                        aria-invalid={this.state.errors.Emailaddress ? true : false}  
+                                    />
+                                    <div styleName="form.error">{this.state.errors.Emailaddress}</div>
+                                </div>
+                                {
+                                    this.state.getPhone ? (
+                                        <div id="form-field-phone" styleName="form.formGroupPhone flex.flex-grow">
+                                            <label htmlFor="phone">Phone Number</label>
+                                            <input styleName="form.formControl"
+                                                id="phone"  
+                                                type='phonenumber' 
+                                                name="phone" 
+                                                placeholder="###-###-####"
+                                                value={this.state.fields.phone}
+                                                onChange={this.handleInputChange}
+                                                aria-invalid={this.state.errors.phone ? true : false} 
+                                            />
+                                            <div styleName="form.error">{this.state.errors.phone}</div>
+                                        </div>
+                                    ) : null 
+                                }
+                            </div>
+                        </div>               
+                    </fieldset>
+                    { this.state.shipping ? this.renderShippingAddress(this.state.fields.ShipToYes) : null } 
+                    <fieldset styleName="form.fieldset">
+                        <div styleName=" form.formRow flex.flex flex.flex-row flex.flex-axes-center">
+                            <input type='checkbox' styleName="form.checkboxInput"
+                                id="savePersonalInfo" 
+                                name="savePersonalInfo"
+                                checked={this.state.fields.savePersonalInfo} 
+                                onChange={this.handleInputChange}
+                            />
+                            <label id="RememberMe" htmlFor="savePersonalInfo">&nbsp;Remember my name and address next time</label>
                         </div>
-                        { this.state.shipping ? this.renderShippingAddress(this.state.fields.ShipToYes) : null }                    
-                    </div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
-                        <input type='checkbox' styleName="form.checkboxInput"
-                            id="savePersonalInfo" 
-                            name="savePersonalInfo"
-                            checked={this.state.fields.savePersonalInfo} 
-                            onChange={this.handleInputChange}
-                        />
-                        <label id="RememberMe" htmlFor="savePersonalInfo">&nbsp;Remember my name and address next time</label>     
-                    </div>
+                    </fieldset>
                     <div styleName="flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
                         <input type="submit" styleName="form.submitButton" id="submit" onClick={this.handleSubmit} disabled={this.state.submitting} value="Continue to Payment &#10142;"/>
                     </div>
