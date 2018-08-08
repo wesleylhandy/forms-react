@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import 'whatwg-fetch'
 
-import main from './styles/main.css'
-import form from './styles/form.css'
-import spinner from './styles/spinner.css'
+import PaymentForm from './PaymentForm'
 
-import {cryptCookie} from './helpers/crypt'
+import spinner from './styles/spinner.css'
 import logError, {checkStatus, parseJSON} from './helpers/xhr-errors'
 
 function handleUnload(e){
@@ -30,7 +28,6 @@ export default class ConfirmationPage extends Component {
         }
         this.handleMessage = this.handleMessage.bind(this)
         this.reRenderForm = this.reRenderForm.bind(this)
-        this.submitForm = this.submitForm.bind(this)
     }
 
     componentDidMount() {
@@ -38,22 +35,13 @@ export default class ConfirmationPage extends Component {
         window.addEventListener('beforeunload', handleUnload)
         window.addEventListener('message', this.handleMessage, false)   
 
-        fetch('http://givingservices.cbn.local/ui/globals/form-config.json')
+        fetch('http://10.100.43.50:8080/globals')
         .then(checkStatus)
         .then(parseJSON)
         .then(json=>{
-            const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUrl} = json
-            this.setState({ready: true, devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodServicesUri})
-        });
-    }
-
-    submitForm() {
-        const {formData} = this.props;
-        const lifetime = 60 * 1000; // 60 seconds * 1000 milliseconds
-        const cookie = cryptCookie({formData, lifetime})
-        localStorage.setItem("cookie", cookie);
-
-        document.forms.hiddenform.submit.click();
+            const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUri} = json
+            this.setState({ready: true, devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri})
+        }).catch(logError)
     }
 
     handleMessage(e) {
@@ -71,7 +59,10 @@ export default class ConfirmationPage extends Component {
         this.props.hydrateForm(data);
     }
 
-    shouldComponentUpdate() {
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.state.ready !== nextState.ready) {
+            return true
+        }
         return false
     }
 
@@ -81,22 +72,11 @@ export default class ConfirmationPage extends Component {
     }
 
     render() {
-        const {formData} = this.state;
-        const keys = Object.keys(formData)
-        const inputs = keys.map((k,i)=><input key={i + "-" + k} name={k} value={formData[k] ? formData[k] : ''} type="hidden"/>)
+
         return ( 
             <React.Fragment>
             { this.state.ready ? (
-                    <div>
-                        <form id="hiddenform" styleName="main.hidden" action={this.state.formAction} method="POST" target="paymentprocess">
-                            {inputs}
-                            <input type='hidden' name="cssVars" value={JSON.stringify(this.state.cssConfig)}/>
-                            <input id="submit" type="submit" hidden/>
-                        </form>
-                        {this.submitForm()}
-                        <iframe styleName="form.form-panel" name="paymentprocess" width="100%" height="1000px" data-css-vars={JSON.stringify(this.state.cssConfig)}></iframe>
-                    </div>
-                    
+                    <PaymentForm cssConfig={this.state.cssConfig} formAction={this.state.formAction} formData={this.state.formData}  />                
                 ) : (
                     <div styleName="spinner.loading_spinner">
                         <img styleName="spinner.loading_spinner_flames" src="http://www1.cbn.com/sites/all/themes/cbn_default/images/spinner/cbn-flame-circle.png"/>

@@ -56,9 +56,41 @@ router.get('/config/:filename', (req, res) => {
     res.sendFile(path.resolve(__dirname, "config", filename))
 })
 
-router.get('/globals/:filename', (req, res) => {
-    const {filename} = req.params;
-    res.sendFile(path.resolve(__dirname, "globals", filename))
+router.get('/globals', (req, res) => {
+    const api = process.env.franco;
+    fetch(api).then(response => {
+        if (response.status >= 200 && response.status < 300) {
+            return response
+        } else {
+            var error = new Error(response.statusText)
+            error.response = response
+            error.status = response.status
+            throw error
+        }
+    })
+    .then(response=>response.json())
+    .then(json=>{
+        res.json(json)
+    })
+    .catch(error=>{
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error(error.response.status);
+            console.error(error.response.headers);
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.error(error.request);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error', error.message);
+        }
+        console.error({error})
+        res.statusCode = 500
+        res.json(error)
+    })
 })
 
 router.post('/api', (req, res) => {

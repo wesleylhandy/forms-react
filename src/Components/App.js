@@ -14,7 +14,7 @@ class App extends Component {
     constructor(props) {
         super(props)
         let formData = null;
-        const cookie = localStorage.getItem("cookie")
+        const cookie = localStorage.getItem("store")
         const info = localStorage.getItem("info")
 
         if (cookie) {
@@ -22,7 +22,7 @@ class App extends Component {
         }
         
         if (formData === null) {
-            localStorage.removeItem('cookie')
+            localStorage.removeItem('store')
             if (info) {
                 formData = readCookie(info)
             }
