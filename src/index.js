@@ -8,7 +8,10 @@ import './index.css';
 
 import App from './Components/App'
 
-cssVars();
+cssVars({
+    include: 'style,link[rel="stylesheet"]:not([href*="//"])',
+    onlyVars: true
+});
 
 const rootEntry = document.getElementById('form-root')
 
