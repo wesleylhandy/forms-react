@@ -4,14 +4,9 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import cssVars from 'css-vars-ponyfill';
 
-import './index.css';
-
 import App from './Components/App'
 
-cssVars({
-    include: 'style,link[rel="stylesheet"]:not([href*="//"])',
-    onlyVars: true
-});
+cssVars();
 
 const rootEntry = document.getElementById('form-root')
 

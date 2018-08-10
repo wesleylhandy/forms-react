@@ -114,6 +114,8 @@ router.post('/api', (req, res) => {
     data.ClientIP =  ClientIP
     console.log({ClientIP})
     console.log({data})
+    const mode = data.mode;
+    delete data.mode;
     const api = process.env.epsilon
     fetch(api,
     {

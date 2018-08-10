@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
 import 'whatwg-fetch'
 
+
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
 
@@ -33,6 +34,7 @@ class App extends Component {
         }
 
         this.state = {
+            mode: "development",
             givingFormat: "buttons",
             getMiddleName:  false,
             getSuffix:  false,
@@ -87,11 +89,11 @@ class App extends Component {
             .then(parseJSON)
             .then(json=>{
                 // console.log({cssconfig: response.data})
-                const cssVars = json;
+                const vars = json;
                 const {cssConfig} = this.state;
-                cssVars.forEach(variable => {
+                vars.forEach(variable => {
                     if (Object.keys(variable)[0] !== "externalFonts") {
-                        document.documentElement.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0])
+                        document.body.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0])
                         cssConfig.push({[Object.keys(variable)[0]]: Object.values(variable)[0]})
                     } else {
                         Object.values(variable).forEach(href => {
@@ -103,7 +105,7 @@ class App extends Component {
                         })
                     }
                 })
-                this.setState({cssConfig: [...cssVars]})
+                this.setState({cssConfig: [...vars]})
             }).catch(logError)
 
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
@@ -113,7 +115,7 @@ class App extends Component {
             .then(json=>{
                 
                 const config = json
-                const { givingFormat, getMiddleName, getSuffix, 
+                const { mode, givingFormat, getMiddleName, getSuffix, 
                     getSpouseInfo, monthlyOption, shipping,
                     international, getPhone, products,
                     numProducts, additionalGift, additionalGiftMessage,
@@ -123,7 +125,7 @@ class App extends Component {
                     PageName, Contact_Source, ActivityName, SectionName, proxy, showThankYou, thankYouUrl } = config;
                     // console.log({proxy})
 
-                this.setState({givingFormat, getMiddleName, getSuffix, 
+                this.setState({mode, givingFormat, getMiddleName, getSuffix, 
                     getSpouseInfo, monthlyOption, shipping,
                     international, getPhone, products: [...products],
                     numProducts, additionalGift, additionalGiftMessage,

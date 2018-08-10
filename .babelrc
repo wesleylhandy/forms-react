@@ -9,8 +9,5 @@
     ],
     "presets": [
         ["env", { "useBuiltIns": true }], "react"
-    ],
-    "ignore": [
-        "cc-validation.js"
     ]
 }

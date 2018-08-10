@@ -28,6 +28,7 @@ export default class NameAddressForm extends Component {
         }
         // console.log({hydratedData: props.hydratedData})
         this.state = {
+            mode: props.mode,
             APIAccessID: "", //obtain this from server somehow
             ClientBrowser: "", //obtain this from server somehow
             ClientIP: "", //obtain this from server somehow
@@ -273,7 +274,7 @@ export default class NameAddressForm extends Component {
         }
         //deconstruct necessary fields from state
         const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
-        const {APIAccessID, Clublevel, MotivationText, ClientBrowser, ClientIP, UrlReferer, subscriptions, AddContactYN, ActivityName, Contact_Source, SectionName, proxy} = this.state
+        const {mode, APIAccessID, Clublevel, MotivationText, ClientBrowser, ClientIP, UrlReferer, subscriptions, AddContactYN, ActivityName, Contact_Source, SectionName, proxy} = this.state
         
         //construct phone fields from regex
         const Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
@@ -347,7 +348,8 @@ export default class NameAddressForm extends Component {
                 ShipToState,
                 ShipToZip,
                 ShipToCountry,
-                ShipToName
+                ShipToName,
+                mode
             }
         //flatten subscription information
         subscriptions.forEach(sub=> data[sub.key]=sub.value);
