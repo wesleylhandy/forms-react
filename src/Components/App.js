@@ -92,17 +92,19 @@ class App extends Component {
                 const vars = json;
                 const {cssConfig} = this.state;
                 vars.forEach(variable => {
-                    if (Object.keys(variable)[0] !== "externalFonts") {
-                        document.body.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0])
-                        cssConfig.push({[Object.keys(variable)[0]]: Object.values(variable)[0]})
-                    } else {
-                        Object.values(variable).forEach(href => {
-                            const link = document.createElement('link');
-                            link.rel = "stylesheet";
-                            link.type = "text/css";
-                            link.href = href;
-                            document.head.appendChild(link);
-                        })
+                    for (let key in variable) {
+                        if (key !== "externalFonts") {
+                            document.documentElement.style.setProperty(key, variable[key])
+                            cssConfig.push({[key]: variable[key]})
+                        } else {
+                            variable[key].forEach(href => {
+                                const link = document.createElement('link');
+                                link.rel = "stylesheet";
+                                link.type = "text/css";
+                                link.href = href;
+                                document.head.appendChild(link);
+                            })
+                        }
                     }
                 })
                 this.setState({cssConfig: [...vars]})
