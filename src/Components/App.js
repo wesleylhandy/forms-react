@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
 import 'whatwg-fetch'
 
-
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
+import Spinner from './Spinner'
 
 import './styles/form.css'
 import logError, {checkStatus, parseJSON} from './helpers/xhr-errors';
@@ -164,7 +164,7 @@ class App extends Component {
                             formAction={this.state.formAction}
                             hydrateForm={this.hydrateForm}
                         /> 
-                    ) : this.state.configured ? <NameAddressForm {...this.state } submitForm={ this.submitForm }/> : null                     
+                    ) : this.state.configured ? <NameAddressForm {...this.state } submitForm={ this.submitForm }/> : <Spinner />                   
                 } 
              </div>
         )

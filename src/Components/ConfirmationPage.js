@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import 'whatwg-fetch'
 
 import PaymentForm from './PaymentForm'
+import Spinner from './Spinner'
 
-import spinner from './styles/spinner.css'
 import logError, {checkStatus, parseJSON} from './helpers/xhr-errors'
 
 function handleUnload(e){
@@ -78,10 +78,7 @@ export default class ConfirmationPage extends Component {
             { this.state.ready ? (
                     <PaymentForm cssConfig={this.state.cssConfig} formAction={this.state.formAction} formData={this.state.formData}  />                
                 ) : (
-                    <div styleName="spinner.loading_spinner">
-                        <img styleName="spinner.loading_spinner_flames" src="http://www1.cbn.com/sites/all/themes/cbn_default/images/spinner/cbn-flame-circle.png"/>
-                        <img styleName="spinner.loading_spinner_back" src="http://www1.cbn.com/sites/all/themes/cbn_default/images/spinner/loader-spinner@3x.png"/>
-                    </div>
+                    <Spinner />
                 )
             }
             </React.Fragment>
