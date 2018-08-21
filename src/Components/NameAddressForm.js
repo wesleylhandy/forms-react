@@ -8,10 +8,15 @@ import form from './styles/form.css'
 import GivingArray from './GivingArray'
 import ProductDisplay from './ProductDisplay'
 import FundDisplay from './FundDisplay'
+import RadioButton from './RadioButton'
+import Checkbox from './Checkbox'
+import InputGroup from './InputGroup'
+import SelectGroup from './SelectGroup'
 
 import { canadianProvinces, countries, other, usMilitary, usStates, usTerritories } from '../config/dropdowns.json';
 import logError, {checkStatus, parseJSON} from './helpers/xhr-errors';
 import {cryptCookie} from './helpers/crypt';
+
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
 phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/,
@@ -137,6 +142,8 @@ export default class NameAddressForm extends Component {
         this.handleRadioClick = this.handleRadioClick.bind(this)
         this.renderMonthlyRadio = this.renderMonthlyRadio.bind(this)
         this.renderShippingAddress = this.renderShippingAddress.bind(this)
+        this.renderNameAddressBlock = this.renderNameAddressBlock.bind(this)
+        this.renderNameInput = this.renderNameInput.bind(this)
         this.addToCart = this.addToCart.bind(this)
         this.updateDonation = this.updateDonation.bind(this)
         this.updateProducts = this.updateProducts.bind(this)
@@ -209,14 +216,14 @@ export default class NameAddressForm extends Component {
         const id = e.target.id;
         if (found > -1) {
             items[found] = {
-                    type: 'donation',
-                    PledgeAmount: 0,
-                    DetailCprojMail: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojMail : this.props.monthlyPledgeData.DetailCprojMail,
-                    DetailCprojCredit: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojCredit : this.props.monthlyPledgeData.DetailCprojCredit,
-                    DetailDescription: id == "singlegift" ? "Single Pledge" : "Monthly Pledge",
-                    DetailName: id == "singlegift" ? "SPGF" : "MP",
-                    monthly: id == "singlegift" ? false : true
-                }
+                type: 'donation',
+                PledgeAmount: 0,
+                DetailCprojMail: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojMail : this.props.monthlyPledgeData.DetailCprojMail,
+                DetailCprojCredit: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojCredit : this.props.monthlyPledgeData.DetailCprojCredit,
+                DetailDescription: id == "singlegift" ? "Single Pledge" : "Monthly Pledge",
+                DetailName: id == "singlegift" ? "SPGF" : "MP",
+                monthly: id == "singlegift" ? false : true
+            }
         }
         // console.log({items})
         if(id == "singlegift") {
@@ -580,15 +587,9 @@ export default class NameAddressForm extends Component {
         return (
             <div id="MonthlyGivingInfo">
                 <h3 styleName="main.caps form.form-header">How Often Do You Want to Give This Amount?</h3>
-                    <div styleName="flex.flex flex.flex-row flex.flex-between form.monthlyRadio">
-                        <div id="monthly-group" styleName="flex.flex flex.flex-row flex.flex-axes-center form.radioGroup">
-                            <input styleName="form.radioInput" name="monthly" id="monthlygift" type="radio" checked={monthly} onChange={this.handleRadioClick}/>
-                            <label htmlFor="monthlygift">Monthly Gift</label>
-                        </div>
-                        <div id="single-group"styleName="flex.flex flex.flex-row flex.flex-axes-center form.radioGroup">
-                            <input styleName="form.radioInput" name="monthly" id="singlegift" type="radio" onChange={this.handleRadioClick} checked={single}/>
-                            <label htmlFor="singlegift">Single Gift</label>
-                        </div>
+                    <div styleName="flex.flex flex.flex-row flex.flex-between form.monthly-radio">
+                        <RadioButton name="monthly" label="Monthly Gift" checked={monthly} handleRadioClick={this.handleRadioClick}/>
+                        <RadioButton name="single" label="Single Gift" checked={single} handleRadioClick={this.handleRadioClick}/>
                     </div>
                     {monthlyChecked ? renderCCInfo() : null}
             </div>
@@ -599,124 +600,96 @@ export default class NameAddressForm extends Component {
         return (
             <fieldset styleName="form.fieldset">
                 <div styleName="form.shipping-address__container">
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-axes-center">
-                        
-                        <input type='checkbox' styleName="form.checkboxInput"
-                            id="ShipToYes" 
-                            name="ShipToYes" 
-                            checked={this.state.fields.ShipToYes} 
-                            onChange={this.handleInputChange}
-                        />
-                        <label htmlFor="ShipToYes">&nbsp;My shipping address is different than my billing address.</label>     
-
+                    <div styleName="form.form-row flex.flex flex.flex-row flex.flex-axes-center">
+                        <Checkbox id="ShipToYes" checked={this.state.fields.ShipToYes} handleInputChange={this.handleInputChange} label="&nbsp;My shipping address is different than my billing address." />
                     </div>
                     {
                         !showShipping ? null : (
                             <div id="ShippingAddressInfo" styleName='form.shipping-address__info'>
-                                <div styleName="form.formRow">  
+                                <div styleName="form.form-row">  
                                     <div styleName='flex.flex flex.flex-row flex.flex-center'>
                                         <hr styleName='form.line'/><div styleName='form.divider-title main.caps'>Shipping Address</div><hr styleName='form.line'/>
                                     </div>
                                 </div>
-                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                    <div id="form-field-ShipToName" styleName="form.formGroup flex.flex-grow">
-                                        <label htmlFor="ShipToName">Name<span>*</span></label>
-                                        <input styleName="form.formControl" 
-                                            type='text' 
-                                            id="ShipToName" 
-                                            maxLength='100' 
-                                            name="ShipToName" 
-                                            placeholder="First and Last Name" 
-                                            required={this.state.fields.ShipToYes}
-                                            value={this.state.fields.ShipToName}
-                                            onChange={this.handleInputChange}
-                                            aria-invalid={this.state.errors.ShipToName ? true : false} 
-                                        />
-                                        <div styleName="form.error">{this.state.errors.ShipToName}</div>
-                                    </div>
+                                <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                    <InputGroup
+                                        type="text" 
+                                        id="ShipToName" 
+                                        specialStyle="" 
+                                        label="Name" 
+                                        placeholder="First and Last Name" 
+                                        maxLength='100' 
+                                        required={this.state.fields.ShipToYes} 
+                                        value={this.state.fields.ShipToName} 
+                                        handleInputChange={this.handleInputChange} 
+                                        error={this.state.errors.ShipToName} 
+                                    />
                                 </div>
-                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                    <div id="form-field-ShipToAddress1" styleName="form.formGroup flex.flex-grow">
-                                        <label htmlFor="ShipToAddress1">Address<span>*</span></label>
-                                        <input styleName="form.formControl" 
-                                            id="ShipToAddress1" 
-                                            type='text' 
-                                            maxLength='64' 
-                                            name="ShipToAddress1" 
-                                            placeholder="Shipping Address*" 
-                                            required={this.state.fields.ShipToYes}
-                                            value={this.state.fields.ShipToAddress1}
-                                            onChange={this.handleInputChange}
-                                            aria-invalid={this.state.errors.ShipToAddress1 ? true : false} 
-                                        />
-                                        <div styleName="form.error">{this.state.errors.ShipToAddress1}</div>
-                                    </div>
+                                <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                    <InputGroup
+                                        type="text"
+                                        id="ShipToAddress1" 
+                                        specialStyle="" 
+                                        label="Address" 
+                                        placeholder="Shipping Address*" 
+                                        maxLength='64' 
+                                        required={this.state.fields.ShipToYes} 
+                                        value={this.state.fields.ShipToAddress1} 
+                                        handleInputChange={this.handleInputChange} 
+                                        error={this.state.errors.ShipToAddress1} 
+                                    />
                                 </div>
-                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                    <div id="form-field-ShipToAddress2" styleName="form.formGroup flex.flex-grow">
-                                        <label htmlFor="ShipToAddress2">Address2</label>
-                                        <input styleName="form.formControl" 
-                                            id="ShipToAddress2" 
-                                            type='text' 
-                                            maxLength='64' 
-                                            name="ShipToAddress2" 
-                                            placeholder="Shipping Address Line 2" 
-                                            required={false}
-                                            value={this.state.fields.ShipToAddress2}
-                                            onChange={this.handleInputChange}
-                                            aria-invalid={this.state.errors.ShipToAddress2 ? true : false} 
-                                        />
-                                        <div styleName="form.error">{this.state.errors.ShipToAddress2}</div>
-                                    </div>
+                                <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                    <InputGroup
+                                        type="text"
+                                        id="ShipToAddress2" 
+                                        specialStyle="" 
+                                        label="Address2" 
+                                        placeholder="Shipping Address Line 2" 
+                                        maxLength='64' 
+                                        required={false} 
+                                        value={this.state.fields.ShipToAddress2} 
+                                        handleInputChange={this.handleInputChange} 
+                                        error={this.state.errors.ShipToAddress2} 
+                                    />
                                 </div>
-                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                    <div id="form-field-ShipToCity" styleName="form.formGroup flex.flex-grow">
-                                        <label htmlFor="ShipToCity">City<span>*</span></label>
-                                        <input styleName="form.formControl"
-                                            id="ShipToCity" 
-                                            type='text' 
-                                            maxLength='64' 
-                                            name="ShipToCity" 
-                                            placeholder="City*" 
-                                            required={this.state.fields.ShipToYes}
-                                            value={this.state.fields.ShipToCity}
-                                            onChange={this.handleInputChange}
-                                            aria-invalid={this.state.errors.ShipToCity ? true : false} 
-                                        />
-                                        <div styleName="form.error">{this.state.errors.ShipToCity}</div>
-                                    </div>
-                                    <div id="form-field-ShipToState" styleName="form.formGroup flex.flex-grow">
-                                        <label htmlFor="ShipToState">State<span>*</span></label>
-                                        <select styleName="form.formControl" 
-                                            id="ShipToState" 
-                                            name="ShipToState" 
-                                            required={this.state.fields.ShipToYes} 
-                                            value={this.state.fields.ShipToState} 
-                                            onChange={this.handleInputChange}
-                                            aria-invalid={this.state.errors.ShipToState ? true : false}
-                                        >
-                                            <option value="">State* &#9663;</option>
-                                            {this.renderStateOptions(this.state.international)}
-                                        </select>
-                                        <div styleName="form.error">{this.state.errors.ShipToState}</div>
-                                    </div>
+                                <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                    <InputGroup
+                                        type="text"
+                                        id="ShipToCity" 
+                                        specialStyle="" 
+                                        label="City" 
+                                        placeholder="Shipping Address Line 2" 
+                                        maxLength='64' 
+                                        required={this.state.fields.ShipToYes} 
+                                        value={this.state.fields.ShipToCity} 
+                                        handleInputChange={this.handleInputChange} 
+                                        error={this.state.errors.ShipToCity} 
+                                    />
+                                    <SelectGroup 
+                                        id="ShipToState"
+                                        specialStyle=""
+                                        required={this.state.fields.ShipToYes}
+                                        value={this.state.fields.ShipToState}
+                                        error={this.state.errors.ShipToState}
+                                        handleInputChange={this.handleInputChange}
+                                        options={[<option value="">State* &#9663;</option>, ...this.renderStateOptions(this.state.international)]}
+                                    />
                                 </div>
-                                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                    <div id="form-field-ShipToZip" styleName="form.formGroup flex.flex-grow">
-                                        <label htmlFor="ShipToZip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
-                                        <input styleName="form.formControl" 
-                                            id="ShipToZip" 
-                                            type='text' 
-                                            maxLength="5"
-                                            name="ShipToZip" 
-                                            placeholder="Zip*" 
-                                            required={this.state.fields.ShipToYes}
-                                            value={this.state.fields.ShipToZip}
-                                            onChange={this.handleInputChange}
-                                            aria-invalid={this.state.errors.ShipToZip ? true : false}
-                                        />
-                                        <div styleName="form.error">{this.state.errors.ShipToZip}</div>
-                                    </div>
+                                <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                    <InputGroup
+                                        type="text"
+                                        id="ShipToZip" 
+                                        specialStyle="" 
+                                        label="Zip" 
+                                        placeholder="Zip*" 
+                                        maxLength='5' 
+                                        required={this.state.fields.ShipToYes} 
+                                        value={this.state.fields.ShipToZip} 
+                                        handleInputChange={this.handleInputChange} 
+                                        error={this.state.errors.ShipToZip} 
+                                        international={this.state.international}
+                                    />
                                 </div>
                             </div>
                         )
@@ -744,6 +717,31 @@ export default class NameAddressForm extends Component {
     }
 
     /**
+     * Function to render a name input
+     * @param {String} type - either 'First', 'Last', or 'Middle' 
+     * @param {Boolean} required 
+     * @returns {JSX} - InputGroup with given parameters
+     */
+    renderNameInput(type, required) {
+        const id = `${type}name`
+        const label = `${type} Name`
+        return (
+            <InputGroup
+                type="text"
+                id={id}
+                specialStyle="" 
+                label={label}
+                placeholder={ required ? label + "*" : label} 
+                maxLength={type === "Last" ? 25 : 20} 
+                required={required} 
+                value={this.state.fields[id]} 
+                handleInputChange={this.handleInputChange} 
+                error={this.state.errors[id]} 
+            />
+        )
+    }
+
+    /**
      * Alternately renders just Title, First and Last name or some combination including Middlename and Suffix
      * @param {Boolean} getMiddleName - from this.state.getMiddlename, set to true/false in configuration
      * @param {Boolean} getSuffix - from this.state.getSuffix, set to true/false in configuration
@@ -752,154 +750,72 @@ export default class NameAddressForm extends Component {
     renderNameAddressBlock(getMiddleName, getSuffix) {
         if (!getMiddleName && !getSuffix) {
             return (
-                <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                    <div id="form-field-title" styleName="form.formGroup flex.flex-grow">
-                        <label htmlFor="Title">Title<span>*</span></label>
-                        <select styleName="form.formControl" 
-                            id="Title" 
-                            name='Title' 
-                            required={true} 
-                            placeholder="Title*"
-                            value={this.state.fields.Title}
-                            onChange={this.handleInputChange}
-                            aria-invalid={this.state.errors.Title ? true : false} 
-                        >
-                            <option value="">Title* &#9663;</option>
-                            <option value="Mr">Mr</option>
-                            <option value="Ms">Ms</option>
-                            <option value="Mrs">Mrs</option>
-                            <option value="Miss">Miss</option>
-                        </select>
-                        <div styleName="form.error">{this.state.errors.Title}</div>
-                    </div>
-                    <div id="form-field-Firstname" styleName="form.formGroup flex.flex-grow">
-                        <label htmlFor="Firstname">First Name<span>*</span></label>
-                        <input styleName="form.formControl" 
-                            type='text' 
-                            id="Firstname"
-                            maxLength='20' 
-                            name="Firstname" 
-                            placeholder="First Name*" 
-                            required={true}
-                            value={this.state.fields.Firstname}
-                            onChange={this.handleInputChange}
-                            aria-invalid={this.state.errors.Firstname ? true : false} 
-                        />
-                        <div styleName="form.error">{this.state.errors.Firstname}</div>
-                    </div>                           
-                    <div id="form-field-Lastname" styleName="form.formGroup flex.flex-grow">
-                        <label htmlFor="Lastname">Last Name<span>*</span></label>
-                        <input styleName="form.formControl" 
-                            id="Lastname" 
-                            type='text' 
-                            maxLength='25' 
-                            name="Lastname" 
-                            placeholder="Last Name*" 
-                            required={true}
-                            value={this.state.fields.Lastname}
-                            onChange={this.handleInputChange}
-                            aria-invalid={this.state.errors.Lastname ? true : false} 
-                        />
-                        <div styleName="form.error">{this.state.errors.Lastname}</div>
-                    </div>
+                <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                    <SelectGroup 
+                        id="Title"
+                        specialStyle=""
+                        required={true}
+                        value={this.state.fields.Title}
+                        error={this.state.errors.Title}
+                        handleInputChange={this.handleInputChange}
+                        options={[
+                            <option key="title-0" value="">Title* &#9663;</option>,
+                            <option key="title-1" value="Mr">Mr</option>,
+                            <option key="title-2" value="Ms">Ms</option>,
+                            <option key="title-3" value="Mrs">Mrs</option>,
+                            <option key="title-4" value="Miss">Miss</option>
+                        ]}
+                    />
+                    {this.renderNameInput("First", true)}
+                    {this.renderNameInput("Last", true)}                          
                 </div>
             )
         } else {
             return (
                 <div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                        <div id="form-field-title" styleName="form.formGroup flex.flex-grow">
-                            <label htmlFor="Title">Title<span>*</span></label>
-                            <select styleName="form.formControl" 
-                                id="Title" 
-                                name='Title' 
-                                required={true} 
-                                placeholder="Title*"
-                                value={this.state.fields.Title}
-                                onChange={this.handleInputChange}
-                                aria-invalid={this.state.errors.Title ? true : false} 
-                            >
-                                <option value="">Title* &#9663;</option>
-                                <option value="Mr">Mr</option>
-                                <option value="Ms">Ms</option>
-                                <option value="Mrs">Mrs</option>
-                                <option value="Miss">Miss</option>
-                            </select>
-                            <div styleName="form.error">{this.state.errors.Title}</div>
-                        </div>
-                        <div id="form-field-Firstname" styleName="form.formGroup flex.flex-grow">
-                            <label htmlFor="Firstname">First Name<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                type='text' 
-                                id="Firstname"
-                                maxLength='20' 
-                                name="Firstname" 
-                                placeholder="First Name*" 
-                                required={true}
-                                value={this.state.fields.Firstname}
-                                onChange={this.handleInputChange}
-                                aria-invalid={this.state.errors.Firstname ? true : false} 
-                            />
-                            <div styleName="form.error">{this.state.errors.Firstname}</div>
-                        </div>
+                    <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                        <SelectGroup 
+                            id="Title"
+                            specialStyle=""
+                            required={true}
+                            value={this.state.fields.Title}
+                            error={this.state.errors.Title}
+                            handleInputChange={this.handleInputChange}
+                            options={[
+                                <option key="title-0" value="">Title* &#9663;</option>,
+                                <option key="title-1" value="Mr">Mr</option>,
+                                <option key="title-2" value="Ms">Ms</option>,
+                                <option key="title-3" value="Mrs">Mrs</option>,
+                                <option key="title-4" value="Miss">Miss</option>
+                            ]}
+                        />
+                        {this.renderNameInput("First", true)}
                         {
                             getMiddleName ? (
-                                <div id="form-field-Middlename" styleName="form.formGroup flex.flex-grow">
-                                    <label htmlFor="Middlename">Middle Name</label>
-                                    <input styleName="form.formControl" 
-                                        type='text' 
-                                        id="Middlename"
-                                        maxLength='20' 
-                                        name="Middlename" 
-                                        placeholder="Middle Name or Initial" 
-                                        required={false}
-                                        value={this.state.fields.Middlename}
-                                        onChange={this.handleInputChange}
-                                        aria-invalid={this.state.errors.Middlename ? true : false} 
-                                    />
-                                    <div styleName="form.error">{this.state.errors.Middlename}</div>
-                                </div>
+                                this.renderNameInput("Middle", false)
                             ) : null
                         }
                     </div>
-                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">                           
-                        <div id="form-field-Lastname" styleName="form.formGroup flex.flex-grow">
-                            <label htmlFor="Lastname">Last Name<span>*</span></label>
-                            <input styleName="form.formControl" 
-                                id="Lastname" 
-                                type='text' 
-                                maxLength='25' 
-                                name="Lastname" 
-                                placeholder="Last Name*" 
-                                required={true}
-                                value={this.state.fields.Lastname}
-                                onChange={this.handleInputChange}
-                                aria-invalid={this.state.errors.Lastname ? true : false} 
-                            />
-                            <div styleName="form.error">{this.state.errors.Lastname}</div>
-                        </div>
+                    <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">                           
+                        {this.renderNameInput("Last", true)}
                         {
                             getSuffix ? (
-                                <div id="form-field-Suffix" styleName="form.formGroup flex.flex-grow">
-                                    <label htmlFor="Suffix">Suffix</label>
-                                    <select styleName="form.formControl" 
-                                        id="Suffix" 
-                                        name='Suffix' 
-                                        required={false} 
-                                        placeholder="Suffix"
-                                        value={this.state.fields.Suffix}
-                                        onChange={this.handleInputChange}
-                                        aria-invalid={this.state.errors.Suffix ? true : false} 
-                                    >
-                                        <option value="">Suffix* &#9663;</option>
-                                        <option value="Mr">Jr</option>
-                                        <option value="Ms">Sr</option>
-                                        <option value="Mrs">III</option>
-                                        <option value="Miss">IV</option>
-                                        <option value="Miss">Esq</option>
-                                    </select>
-                                    <div styleName="form.error">{this.state.errors.Suffix}</div>
-                                </div>
+                                <SelectGroup 
+                                    id="Suffix"
+                                    specialStyle=""
+                                    required={false}
+                                    value={this.state.fields.Suffix}
+                                    error={this.state.errors.Suffix}
+                                    handleInputChange={this.handleInputChange}
+                                    options={[
+                                        <option key="suff-0" value="">Suffix* &#9663;</option>,
+                                        <option key="suff-1" value="Jr">Jr</option>,
+                                        <option key="suff-2" value="Sr">Sr</option>,
+                                        <option key="suff-3" value="III">III</option>,
+                                        <option key="suff-4" value="IV">IV</option>,
+                                        <option key="suff-5" value="Esq">Esq</option>
+                                    ]}
+                                />
                             ) : null
                         }
                     </div>
@@ -951,158 +867,128 @@ export default class NameAddressForm extends Component {
                             { this.renderNameAddressBlock(this.state.getMiddleName, this.state.getSuffix) }
                             {
                                 this.state.getSpouseInfo ? (
-                                    <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                        <div id="form-field-Spousename" styleName="form.formGroup flex.flex-grow">
-                                            <label htmlFor="Spousename">Spouse&rsquo;s Name</label>
-                                            <input styleName="form.formControl" 
-                                                type='text' 
-                                                id="Spousename" 
-                                                maxLength='100' 
-                                                name="Spousename" 
-                                                placeholder="Spouse&rsquo;s First and Last Name" 
-                                                required={false}
-                                                value={this.state.fields.Spousename}
-                                                onChange={this.handleInputChange}
-                                                aria-invalid={this.state.errors.Spousename ? true : false} 
-                                            />
-                                            <div styleName="form.error">{this.state.errors.Spousename}</div>
-                                        </div>
+                                    <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                        <InputGroup
+                                            type="text"
+                                            id="Spousename" 
+                                            specialStyle="" 
+                                            label="Spouse&rsquo;s Name" 
+                                            placeholder="Spouse&rsquo;s First and Last Name" 
+                                            maxLength="100" 
+                                            required={false} 
+                                            value={this.state.fields.Spousename} 
+                                            handleInputChange={this.handleInputChange} 
+                                            error={this.state.errors.Spousename} 
+                                        />
                                     </div>
                                 ) : null
                             }
-                            <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                <div id="form-field-Address1" styleName="form.formGroup flex.flex-grow">
-                                    <label htmlFor="Address1">Address<span>*</span></label>
-                                    <input styleName="form.formControl" 
-                                        id="Address1" 
-                                        type='text' 
-                                        maxLength='31' 
-                                        name="Address1" 
-                                        placeholder="Address*" 
-                                        required={true}
-                                        value={this.state.fields.Address1}
-                                        onChange={this.handleInputChange}
-                                        aria-invalid={this.state.errors.Address1 ? true : false} 
-                                    />
-                                    <div styleName="form.error">{this.state.errors.Address1}</div>
-                                </div>
+                            <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                <InputGroup
+                                    type="text"
+                                    id="Address1" 
+                                    specialStyle="" 
+                                    label="Address" 
+                                    placeholder="Address*" 
+                                    maxLength="31" 
+                                    required={true} 
+                                    value={this.state.fields.Address1} 
+                                    handleInputChange={this.handleInputChange} 
+                                    error={this.state.errors.Address1} 
+                                />
                             </div>
-                            <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                <div id="form-field-Address2" styleName="form.formGroup flex.flex-grow">
-                                    <label htmlFor="Address2">Address2</label>
-                                    <input styleName="form.formControl" 
-                                        id="Address2" 
-                                        type='text' 
-                                        maxLength='31' 
-                                        name="Address2" 
-                                        placeholder="Address Line 2" 
-                                        required={true}
-                                        value={this.state.fields.Address2}
-                                        onChange={this.handleInputChange}
-                                        aria-invalid={this.state.errors.Address2 ? true : false} 
-                                    />
-                                    <div styleName="form.error">{this.state.errors.Address2}</div>
-                                </div>
+                            <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                <InputGroup
+                                    type="text"
+                                    id="Address2" 
+                                    specialStyle="" 
+                                    label="Address2" 
+                                    placeholder="Address Line 2" 
+                                    maxLength="31" 
+                                    required={false} 
+                                    value={this.state.fields.Address2} 
+                                    handleInputChange={this.handleInputChange} 
+                                    error={this.state.errors.Address2} 
+                                />
                             </div>
-                            <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                <div id="form-field-City" styleName="form.formGroup flex.flex-grow">
-                                    <label htmlFor="City">City<span>*</span></label>
-                                    <input styleName="form.formControl" 
-                                        id="City" 
-                                        type='text' 
-                                        maxLength='28' 
-                                        name="City" 
-                                        placeholder="City*" 
-                                        required={true}
-                                        value={this.state.fields.City}
-                                        onChange={this.handleInputChange}
-                                        aria-invalid={this.state.errors.City ? true : false} 
-                                    />
-                                    <div styleName="form.error">{this.state.errors.City}</div>
-                                </div>
-                                <div id="form-field-State" styleName="form.formGroupState flex.flex-grow">
-                                    <label htmlFor="State">State<span>*</span></label>
-                                    <select styleName="form.formControl" 
-                                        id="State" 
-                                        name="State" 
-                                        required={true}
-                                        value={this.state.fields.State}
-                                        onChange={this.handleInputChange}
-                                        aria-invalid={this.state.errors.State ? true : false} 
-                                    >
-                                        <option value="">State* &#9663;</option>
-                                        {this.renderStateOptions(this.state.international)}
-                                    </select>
-                                    <div styleName="form.error">{this.state.errors.State}</div>
-                                </div>
+                            <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                <InputGroup
+                                    type="text"
+                                    id="City" 
+                                    specialStyle="" 
+                                    label="City" 
+                                    placeholder="City*" 
+                                    maxLength="28" 
+                                    required={true} 
+                                    value={this.state.fields.City} 
+                                    handleInputChange={this.handleInputChange} 
+                                    error={this.state.errors.City} 
+                                />
+                                <SelectGroup 
+                                    id="State"
+                                    specialStyle="input.form-group--State"
+                                    required={true}
+                                    value={this.state.fields.State}
+                                    error={this.state.errors.State}
+                                    handleInputChange={this.handleInputChange}
+                                    options={[<option value="">State* &#9663;</option>, ...this.renderStateOptions(this.state.international)]}
+                                />
                             </div>
 
-                            <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                <div id="form-field-Zip" styleName="form.formGroup flex.flex-grow">
-                                    <label htmlFor="Zip">Zip<span>*</span>{ this.state.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
-                                    <input styleName="form.formControl" 
-                                        id="Zip" 
-                                        type='text' 
-                                        maxLength={this.state.fields.Country != "US" ? 25 : 5}
-                                        name="Zip" 
-                                        placeholder="Zip*" 
-                                        required={true}
-                                        value={this.state.fields.Zip}
-                                        onChange={this.handleInputChange}
-                                        aria-invalid={this.state.errors.Zip ? true : false} 
-                                    />
-                                    <div styleName="form.error">{this.state.errors.Zip}</div>
-                                </div>
+                            <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                <InputGroup
+                                    type="text"
+                                    id="Zip" 
+                                    specialStyle="" 
+                                    label="Zip" 
+                                    placeholder="Zip*" 
+                                    maxLength={this.state.fields.Country != "US" ? 25 : 5} 
+                                    required={true} 
+                                    value={this.state.fields.Zip} 
+                                    handleInputChange={this.handleInputChange} 
+                                    error={this.state.errors.Zip} 
+                                    international={this.state.international}
+                                />
+
                                 { this.state.international ? (
-                                    <div id="form-field-Country" styleName="form.formGroupCountry flex.flex-grow">
-                                    
-                                        <label htmlFor="Country">Country<span>*</span></label>
-                                        <select styleName="form.formControl" 
-                                            id="Country" 
-                                            name="Country" 
-                                            required={true}
-                                            value={this.state.fields.Country}
-                                            onChange={this.handleInputChange}
-                                            aria-invalid={this.state.errors.Country ? true : false} 
-                                        >
-                                            <option value="">Country* &#9663;</option>
-                                            {countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)}
-                                        </select>
-                                        <div styleName="form.error">{this.state.errors.Country}</div>
-                                    </div> 
+                                    <SelectGroup 
+                                        id="Country"
+                                        specialStyle="input.form-group--Country"
+                                        required={true}
+                                        value={this.state.fields.Country}
+                                        error={this.state.errors.Country}
+                                        handleInputChange={this.handleInputChange}
+                                        options={[<option value="">Country* &#9663;</option>, ...countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)]}
+                                    />
                                 ): null }
                             </div>
-                            <div styleName="form.formRow flex.flex flex.flex-row flex.flex-between">
-                                <div id="form-field-Emailaddress" styleName="form.formGroupEmail flex.flex-grow">
-                                    <label htmlFor="Emailaddress">Email Address<span>*</span></label>
-                                    <input styleName="form.formControl" 
-                                        id="Emailaddress" 
-                                        type='email' 
-                                        maxLength='128' 
-                                        name="Emailaddress" 
-                                        placeholder="Email Address*" 
-                                        required={true}
-                                        value={this.state.fields.Emailaddress}
-                                        onChange={this.handleInputChange}
-                                        aria-invalid={this.state.errors.Emailaddress ? true : false}  
-                                    />
-                                    <div styleName="form.error">{this.state.errors.Emailaddress}</div>
-                                </div>
+                            <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                <InputGroup
+                                    type="email"
+                                    id="Emailaddress" 
+                                    specialStyle="input.form-group--Email" 
+                                    label="Email Address" 
+                                    placeholder="Email Address*" 
+                                    maxLength="128" 
+                                    required={true} 
+                                    value={this.state.fields.Emailaddress} 
+                                    handleInputChange={this.handleInputChange} 
+                                    error={this.state.errors.Emailaddress} 
+                                />
                                 {
                                     this.state.getPhone ? (
-                                        <div id="form-field-phone" styleName="form.formGroupPhone flex.flex-grow">
-                                            <label htmlFor="phone">Phone Number</label>
-                                            <input styleName="form.formControl"
-                                                id="phone"  
-                                                type='phonenumber' 
-                                                name="phone" 
-                                                placeholder="###-###-####"
-                                                value={this.state.fields.phone}
-                                                onChange={this.handleInputChange}
-                                                aria-invalid={this.state.errors.phone ? true : false} 
-                                            />
-                                            <div styleName="form.error">{this.state.errors.phone}</div>
-                                        </div>
+                                        <InputGroup
+                                            type="phonenumber"
+                                            id="phone" 
+                                            specialStyle="input.form-group--Phone" 
+                                            label="Phone Number" 
+                                            placeholder="###-###-####" 
+                                            maxLength="24" 
+                                            required={false} 
+                                            value={this.state.fields.phone} 
+                                            handleInputChange={this.handleInputChange} 
+                                            error={this.state.errors.phone} 
+                                        />
                                     ) : null 
                                 }
                             </div>
@@ -1110,14 +996,8 @@ export default class NameAddressForm extends Component {
                     </fieldset>
                     { this.state.shipping ? this.renderShippingAddress(this.state.fields.ShipToYes) : null } 
                     <fieldset styleName="form.fieldset">
-                        <div styleName=" form.formRow flex.flex flex.flex-row flex.flex-axes-center">
-                            <input type='checkbox' styleName="form.checkboxInput"
-                                id="savePersonalInfo" 
-                                name="savePersonalInfo"
-                                checked={this.state.fields.savePersonalInfo} 
-                                onChange={this.handleInputChange}
-                            />
-                            <label id="RememberMe" htmlFor="savePersonalInfo">&nbsp;Remember my name and address next time</label>
+                        <div styleName=" form.form-row flex.flex flex.flex-row flex.flex-axes-center">
+                            <Checkbox id="savePersonalInfo" checked={this.state.fields.savePersonalInfo} handleInputChange={this.handleInputChange} label="&nbsp;Remember my name and address next time"/>
                         </div>
                     </fieldset>
                     <div styleName="flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">

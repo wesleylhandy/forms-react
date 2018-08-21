@@ -1,0 +1,126 @@
+.form-input{
+    position: relative;
+}
+
+.form-group,
+.form-group--State,
+.form-group--Country,
+.form-group--Email,
+.form-group--Phone {
+    margin-bottom: calc(var(--base-font-size) * .5);
+    margin-top: calc(var(--base-font-size) * .5);
+    position: relative;
+}
+
+.form-group>label,
+.form-group--State>label,
+.form-group--Country>label,
+.form-group--Email>label,
+.form-group--Phone>label {
+    color: var(--label-color);
+    font-family: var(--label-font-family);
+    font-size: calc(var(--base-font-size) * .7);
+    font-style: var(--label-font-style);
+    font-weight: var(--label-font-weight);
+    position: absolute;
+    opacity: 0;
+    bottom: calc(100% - 5px);
+    left: calc(var(--base-font-size) * .35);
+    -webkit-transition: opacity 150ms ease-in-out;
+    transition: opacity 150ms ease-in-out;
+}
+
+.form-group:hover>label,
+.form-group:active>label,
+.form-group:focus>label,
+.form-group--State:hover>label,
+.form-group--State:active>label,
+.form-group--State:focus>label,
+.form-group--Country:hover>label,
+.form-group--Country:active>label,
+.form-group--Country:focus>label,
+.form-group--Email:hover>label,
+.form-group--Email:active>label,
+.form-group--Email:focus>label,
+.form-group--Phone:hover>label,
+.form-group--Phone:active>label,
+.form-group--Phone:focus>label {
+    opacity: 1;
+}
+
+.form-group>label>span,
+.form-group--State>label>span,
+.form-group--Country>label>span,
+.form-group--Email>label>span,
+.form-group--Phone>label>span {
+    color: var(--error-color);
+}
+
+.form-group--State,
+.form-group--Country,
+.form-group--Email,
+.form-group--Phone {
+    max-width: calc(50% - 10px);
+}
+
+.form-control {
+    color: var(--input-text-color);
+    font-size: var(--base-font-size);
+    font-family: var(--input-font-family);
+    font-style: var(--input-font-style);
+    font-weight: var(--input-font-weight);
+    height: calc(var(--base-font-size) * 2);
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding: 6px;
+    line-height: 1.42857143;
+    background-color: var(--input-bg-color);
+    border: 1px solid var(--input-border-color);
+    border-radius: var(--input-border-radius);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    position: relative;
+}
+
+.form-control::-webkit-input-placeholder,
+.form-control::-moz-placeholder,
+.form-control:-ms-input-placeholder,
+.form-control::placeholder {
+    color: var(--placeholder-color);
+    font-size: var(--base-font-size);
+    font-family: var(--input-font-family);
+    font-style: var(--input-font-style);
+    font-weight: var(--input-font-weight);
+}
+
+.form-control,
+.form-input {
+    appearance: none;
+    border-radius: var(--input-border-radius);
+}
+
+.form-control:focus,
+.form-control:active,
+.form-control:hover,
+.form-input:focus,
+.form-input:active,
+.form-input:hover {
+    border: 1px solid var(--hover-border-color);
+    background-color: var(--hover-bg-color);
+    outline: none;
+}
+
+.form-control:focus,
+.form-control:active,
+.form-control:hover {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px var(--focus-box-shadow);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px var(--focus-box-shadow);
+}
+
+.form-control:disabled {
+    background: var(--background-color);
+}

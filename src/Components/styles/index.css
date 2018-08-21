@@ -2,4 +2,9 @@
 @import "./main.css";
 @import "./flex.css";
 @import "./form.css";
+@import "./input.css";
+@import "./funds.css";
+@import "./radio.css";
+@import "./checkbox.css";
+@import "./error.css";
 @import "./spinner.css";
