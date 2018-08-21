@@ -659,7 +659,7 @@ export default class NameAddressForm extends Component {
                                         id="ShipToCity" 
                                         specialStyle="" 
                                         label="City" 
-                                        placeholder="Shipping Address Line 2" 
+                                        placeholder="City" 
                                         maxLength='64' 
                                         required={this.state.fields.ShipToYes} 
                                         value={this.state.fields.ShipToCity} 
@@ -673,7 +673,7 @@ export default class NameAddressForm extends Component {
                                         value={this.state.fields.ShipToState}
                                         error={this.state.errors.ShipToState}
                                         handleInputChange={this.handleInputChange}
-                                        options={[<option value="">State* &#9663;</option>, ...this.renderStateOptions(this.state.international)]}
+                                        options={[<option key="shiptostate-base-0" value="">State* &#9663;</option>, ...this.renderStateOptions(this.state.international)]}
                                     />
                                 </div>
                                 <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
@@ -931,7 +931,7 @@ export default class NameAddressForm extends Component {
                                     value={this.state.fields.State}
                                     error={this.state.errors.State}
                                     handleInputChange={this.handleInputChange}
-                                    options={[<option value="">State* &#9663;</option>, ...this.renderStateOptions(this.state.international)]}
+                                    options={[<option key="state-base-0" value="">State* &#9663;</option>, ...this.renderStateOptions(this.state.international)]}
                                 />
                             </div>
 
@@ -958,7 +958,7 @@ export default class NameAddressForm extends Component {
                                         value={this.state.fields.Country}
                                         error={this.state.errors.Country}
                                         handleInputChange={this.handleInputChange}
-                                        options={[<option value="">Country* &#9663;</option>, ...countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)]}
+                                        options={[<option key="country-base-0" value="">Country* &#9663;</option>, ...countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)]}
                                     />
                                 ): null }
                             </div>
