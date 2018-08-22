@@ -104,9 +104,9 @@ export default class GivingArray extends Component {
         return (
             <div id="AskArray" styleName="form.askarray flex.flex flex.flex-row flex.flex-center flex.flex-wrap">
                 { this.state.monthlyOption && this.state.monthlyChecked ? this.renderArray(this.state.monthlyAmounts, this.state.selectedIndex) : this.renderArray(this.state.singleAmounts, this.state.selectedIndex) }
-                <div id="OtherAmout" styleName={`form.ask-formGroup flex.flex flex.flex-center flex.flex-axes-center${this.state.selectedIndex == 99 ? " form.selected": ""}`}>
-                    <label styleName="form.otherInputLabel" htmlFor="other-amt-input">Other Amount</label>
-                    <input styleName="form.otherInput" name="other-amt-input" onChange={this.handleOtherAmt} value={this.state.otherAmount == 0 ? '' : this.state.otherAmount}/>
+                <div id="OtherAmout" styleName={`form.askarray__form-group flex.flex flex.flex-center flex.flex-axes-center${this.state.selectedIndex == 99 ? " form.selected": ""}`}>
+                    <label styleName="form.form-group__other-input--label" htmlFor="other-amt-input">Other Amount</label>
+                    <input styleName="form.form-group__other-input" name="other-amt-input" onChange={this.handleOtherAmt} value={this.state.otherAmount == 0 ? '' : this.state.otherAmount}/>
                     <div styleName="form.error">{this.state.otherAmountError}</div>
                 </div> 
             </div>

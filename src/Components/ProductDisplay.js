@@ -132,7 +132,7 @@ export default class ProductDisplay extends Component {
     renderAdditionalGift(additionalGift) {
         return additionalGift ? (
             <div styleName="form.additional-amount flex.flex flex.flex-left flex.flex-axes-center">
-                <input styleName='form.additional-gift-input' 
+                <input styleName='form.additional-amount__input' 
                     name="additionalGift"
                     placeholder="0"
                     onBlur={e=> e.target.value === "" ? e.target.value = 0 : true}
@@ -140,7 +140,7 @@ export default class ProductDisplay extends Component {
                     onChange={this.handleInputChange} 
                     value={this.state.fields.additionalGift }
                 />
-                <div styleName="form.additional-gift-label">{this.state.additionalGiftMessage}</div>
+                <div styleName="form.additional-amount__input--label">{this.state.additionalGiftMessage}</div>
                 <div styleName="form.error">{this.state.errors.additionalGift}</div>
             </div> 
         ) : null;
@@ -176,8 +176,8 @@ export default class ProductDisplay extends Component {
                     }
                     { this.renderAdditionalGift(this.state.additionalGift) }
                     <div styleName="form.product-total flex.flex flex.flex-left flex.flex-axes-center">
-                        <input styleName='form.total-product-gift flex.flex-no-grow' name="total-product-gift" value={this.state.totalGift} disabled={true}/>
-                        <div styleName="main.caps form.total-product-gift-label">Subtotal</div>
+                        <input styleName='form.product-total__input flex.flex-no-grow' name="total-product-gift" value={this.state.totalGift} disabled={true}/>
+                        <div styleName="main.caps form.product-total__input--label">Subtotal</div>
                     </div>
                 </div>
             )
