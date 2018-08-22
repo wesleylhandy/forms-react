@@ -6,7 +6,7 @@
     z-index: 100;
 }
 
-.loading_spinner_flames {
+.loading_spinner__flames {
     height: 150px;
     left: 0;
     position: absolute;
@@ -15,7 +15,7 @@
     z-index: 100;
 }
 
-.loading_spinner_back {
+.loading_spinner__back {
     height: 150px;
     left: 0;
     position: absolute;

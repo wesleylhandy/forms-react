@@ -1,0 +1,19 @@
+.error {
+    position: absolute;
+    color: var(--error-color);
+    width: auto;
+    left: 5px;
+    bottom: calc(0% - 11px);
+    font-family: var(--error-font-family);
+    font-style: var(--error-font-style);
+    font-weight: var(--error-font-weight);
+    font-size: calc(var(--base-font-size) * .5);
+    opacity: 1;
+    overflow: hidden;
+    max-width: 100%;
+    white-space: nowrap;
+}
+
+.error.amount-error {
+    text-align: center;
+}

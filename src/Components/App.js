@@ -4,6 +4,7 @@ import 'whatwg-fetch'
 
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
+import Spinner from './Spinner'
 
 import './styles/form.css'
 import logError, {checkStatus, parseJSON} from './helpers/xhr-errors';
@@ -83,7 +84,7 @@ class App extends Component {
     componentDidMount() {
         if (!this.state.configured) {
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            fetch('http://10.100.43.50:8080/config/css-config.json')
+            fetch('http://127.0.0.1:8080/config/css-config.json')
             .then(checkStatus)
             .then(parseJSON)
             .then(json=>{
@@ -91,24 +92,26 @@ class App extends Component {
                 const vars = json;
                 const {cssConfig} = this.state;
                 vars.forEach(variable => {
-                    if (Object.keys(variable)[0] !== "externalFonts") {
-                        document.querySelector(":root").style.setProperty(Object.keys(variable)[0], Object.values(variable)[0])
-                        cssConfig.push({[Object.keys(variable)[0]]: Object.values(variable)[0]})
-                    } else {
-                        Object.values(variable).forEach(href => {
-                            const link = document.createElement('link');
-                            link.rel = "stylesheet";
-                            link.type = "text/css";
-                            link.href = href;
-                            document.head.appendChild(link);
-                        })
+                    for (let key in variable) {
+                        if (key !== "externalFonts") {
+                            document.documentElement.style.setProperty(key, variable[key])
+                            cssConfig.push({[key]: variable[key]})
+                        } else {
+                            variable[key].forEach(href => {
+                                const link = document.createElement('link');
+                                link.rel = "stylesheet";
+                                link.type = "text/css";
+                                link.href = href;
+                                document.head.appendChild(link);
+                            })
+                        }
                     }
                 })
                 this.setState({cssConfig: [...vars]})
             }).catch(logError)
 
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            fetch('http://10.100.43.50:8080/config/form-config.json')
+            fetch('http://127.0.0.1:8080/config/form-config.json')
             .then(checkStatus)
             .then(parseJSON)
             .then(json=>{
@@ -161,7 +164,7 @@ class App extends Component {
                             formAction={this.state.formAction}
                             hydrateForm={this.hydrateForm}
                         /> 
-                    ) : this.state.configured ? <NameAddressForm {...this.state } submitForm={ this.submitForm }/> : null                     
+                    ) : this.state.configured ? <NameAddressForm {...this.state } submitForm={ this.submitForm }/> : <Spinner />                   
                 } 
              </div>
         )
