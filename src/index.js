@@ -6,7 +6,7 @@ import cssVars from 'css-vars-ponyfill';
 
 import App from './Components/App'
 
-cssVars();
+cssVars({onlyVars: true});
 
 const rootEntry = document.getElementById('form-root')
 

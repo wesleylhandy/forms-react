@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
 import 'whatwg-fetch'
 
-
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
 
@@ -93,7 +92,7 @@ class App extends Component {
                 const {cssConfig} = this.state;
                 vars.forEach(variable => {
                     if (Object.keys(variable)[0] !== "externalFonts") {
-                        document.body.style.setProperty(Object.keys(variable)[0], Object.values(variable)[0])
+                        document.querySelector(":root").style.setProperty(Object.keys(variable)[0], Object.values(variable)[0])
                         cssConfig.push({[Object.keys(variable)[0]]: Object.values(variable)[0]})
                     } else {
                         Object.values(variable).forEach(href => {
