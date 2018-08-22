@@ -588,8 +588,8 @@ export default class NameAddressForm extends Component {
             <div id="MonthlyGivingInfo">
                 <h3 styleName="main.caps form.form-header">How Often Do You Want to Give This Amount?</h3>
                     <div styleName="flex.flex flex.flex-row flex.flex-between form.monthly-radio">
-                        <RadioButton name="monthly" label="Monthly Gift" checked={monthly} handleRadioClick={this.handleRadioClick}/>
-                        <RadioButton name="single" label="Single Gift" checked={single} handleRadioClick={this.handleRadioClick}/>
+                        <RadioButton id="monthly" name="monthly-toggle" label="Monthly Gift" checked={monthly} handleRadioClick={this.handleRadioClick}/>
+                        <RadioButton id="single" name="monthly-toggle" label="Single Gift" checked={single} handleRadioClick={this.handleRadioClick}/>
                     </div>
                     {monthlyChecked ? renderCCInfo() : null}
             </div>
@@ -772,7 +772,7 @@ export default class NameAddressForm extends Component {
             )
         } else {
             return (
-                <div>
+                <React.Fragment>
                     <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
                         <SelectGroup 
                             id="Title"
@@ -819,7 +819,7 @@ export default class NameAddressForm extends Component {
                             ) : null
                         }
                     </div>
-                </div>
+                </React.Fragment>
             )
         }
     }
@@ -862,7 +862,7 @@ export default class NameAddressForm extends Component {
                 </div>
                 <div styleName="form.form-panel">
                     <fieldset styleName="form.fieldset">
-                        <div styleName="form.nameAddressInfo">
+                        <div styleName="form.name-address__info">
                             <h3 styleName="main.caps form.form-header">Please Enter Your Billing Information</h3>
                             { this.renderNameAddressBlock(this.state.getMiddleName, this.state.getSuffix) }
                             {
@@ -964,7 +964,7 @@ export default class NameAddressForm extends Component {
                             </div>
                             <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
                                 <InputGroup
-                                    type="email"
+                                    type="text"
                                     id="Emailaddress" 
                                     specialStyle="input.form-group--Email" 
                                     label="Email Address" 
@@ -978,11 +978,11 @@ export default class NameAddressForm extends Component {
                                 {
                                     this.state.getPhone ? (
                                         <InputGroup
-                                            type="phonenumber"
+                                            type="text"
                                             id="phone" 
                                             specialStyle="input.form-group--Phone" 
                                             label="Phone Number" 
-                                            placeholder="###-###-####" 
+                                            placeholder="Phone" 
                                             maxLength="24" 
                                             required={false} 
                                             value={this.state.fields.phone} 
@@ -1000,9 +1000,11 @@ export default class NameAddressForm extends Component {
                             <Checkbox id="savePersonalInfo" checked={this.state.fields.savePersonalInfo} handleInputChange={this.handleInputChange} label="&nbsp;Remember my name and address next time"/>
                         </div>
                     </fieldset>
-                    <div styleName="flex.flex flex.flex-center flex.flex-wrap flex.flex-axes-center">
-                        <input type="submit" styleName="form.submitButton" id="submit" onClick={this.handleSubmit} disabled={this.state.submitting} value="Continue to Payment &#10142;"/>
-                    </div>
+                    <fieldset styleName="form.fieldset">
+                        <div styleName="form.form-row">
+                            <input type="submit" styleName="form.submit-button" id="submit" onClick={this.handleSubmit} disabled={this.state.submitting} value="Continue to Payment &#10142;"/>
+                        </div>
+                    </fieldset>
                     <div id="seals"></div>
                 </div>
             </form>

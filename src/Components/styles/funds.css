@@ -84,7 +84,7 @@
     padding: 10px;
 }
 
-.fund-card__title {
+.fund-card__body--title {
     margin: 5px 0;
     font-size: calc(var(--base-font-size) * .8);
 }
@@ -93,6 +93,11 @@
     height: 80px;
 }
 
-.fund-card__description {
+.fund-card__body {
+    width: 100%;
+}
+
+.fund-card__body--description {
     font-size: calc(var(--base-font-size) * .6);
+    max-width: 100%;
 }

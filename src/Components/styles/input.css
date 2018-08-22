@@ -1,4 +1,4 @@
-.form-input{
+.form-input {
     position: relative;
 }
 
@@ -57,10 +57,13 @@
 }
 
 .form-group--State,
-.form-group--Country,
-.form-group--Email,
-.form-group--Phone {
-    max-width: calc(50% - 10px);
+.form-group--Country {
+    max-width: 50%;
+}
+
+.form-group--Phone,
+.form-group--Email {
+    width: 50%;
 }
 
 .form-control {

@@ -3,7 +3,7 @@
     border: var(--form-border-width) solid var(--form-border-color);
     border-radius: var(--form-border-radius);
     color: var(--form-text-color);
-    max-width: calc(var(--base-font-size) * 34);
+    width: 680px;
     margin: 0 auto;
     padding: var(--form-padding);
 }
@@ -13,6 +13,7 @@
     border: var(--panel-border-width) solid var(--panel-border-color);
     border-radius: var(--panel-border-radius);
     padding: var(--panel-padding);
+    width: 100%;
 }
 
 .form-panel+.form-panel {
@@ -30,6 +31,7 @@
     border-style: none;
     border-color: unset;
     border-image: unset;
+    width: 100%;
 }
 
 .form-header,
@@ -88,7 +90,7 @@
 .askarray {
     height: auto;
     width: 100%;
-    max-width: calc(var(--base-font-size) * 20);
+    max-width: 400px;
     margin: var(--base-font-size) auto;
 }
 
@@ -181,10 +183,14 @@
     padding: calc(var(--base-font-size) * .2) calc(var(--base-font-size) * .3);
 }
 
-.nameAddressInfo {
+.name-address__info {
     margin: var(--base-font-size) auto;
+    max-width: 100%;
 }
 
+.form-row {
+    width: 100%;
+}
 
 .form-row>div+div {
     margin-left: calc(var(--base-font-size) * .5);
@@ -236,7 +242,7 @@
 }
 
 .ccdate,
-.form-group__other-input  {
+.form-group__other-input {
     appearance: none;
     border-radius: var(--input-border-radius);
 }
@@ -271,9 +277,10 @@
     text-align: right;
 }
 
-.submitButton {
+.submit-button {
     background: var(--primary-color);
     color: var(--btn-text-color);
+    display: block;
     border: 2px solid transparent;
     border-radius: var(--input-border-radius);
     display: block;
@@ -283,12 +290,13 @@
     font-size: calc(var(--base-font-size) * 1.1);
     padding: 0 20px;
     margin: var(--base-font-size) auto;
+    width: 300px;
     height: calc(var(--base-font-size) * 2.3);
     -webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out, border-color 200ms ease-in-out;
     transition: background-color 200ms ease-in-out, color 200ms ease-in-out, border-color 200ms ease-in-out;
 }
 
-.submitButton:hover {
+.submit-button:hover {
     background-color: var(--btn-text-color);
     color: var(--primary-color);
     border-color: var(--primary-color);
@@ -326,6 +334,7 @@
 
 .shipping-address__info {
     margin-top: var(--base-font-size);
+    max-width: 100%;
 }
 
 .products-display {

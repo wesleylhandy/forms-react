@@ -51,9 +51,9 @@ export default class FundDisplay extends Component {
                         <div styleName={fund.imgSrc ? "funds.fund-card__image" : "main.hidden"} onClick={this.expandSelection}>
                             <img styleName="main.img-responsive" src={fund.imgSrc}/>
                         </div>
-                        <div styleName="flex.flex flex.flex-column flex.flex-start" onClick={this.expandSelection}>
-                            <div styleName="funds.fund-card__title" onClick={this.expandSelection}>{fund.fundTitle}</div>
-                            <div styleName="funds.fund-card__description" dangerouslySetInnerHTML={this.createMarkup(fund.fundDescription)} onClick={this.expandSelection}></div>
+                        <div styleName="funds.fund-card__body flex.flex flex.flex-column flex.flex-start" onClick={this.expandSelection}>
+                            <div styleName="funds.fund-card__body--title" onClick={this.expandSelection}>{fund.fundTitle}</div>
+                            <div styleName="funds.fund-card__body--description" dangerouslySetInnerHTML={this.createMarkup(fund.fundDescription)} onClick={this.expandSelection}></div>
                         </div>
                         <div styleName="funds.dropDownArrow" onClick={this.expandSelection}>&#9663;</div>
                     </div>
@@ -71,9 +71,9 @@ export default class FundDisplay extends Component {
                         <div styleName={fund.imgSrc ? "funds.fund-card__image" : "main.hidden"} data-id={i}>
                             <img styleName="main.img-responsive" src={fund.imgSrc}/>
                         </div>
-                        <div styleName="flex.flex flex.flex-column flex.flex-start" data-id={i}>
-                            <div styleName="funds.fund-card__title" data-id={i}>{fund.fundTitle}</div>
-                            <div styleName="funds.fund-card__description" dangerouslySetInnerHTML={this.createMarkup(fund.fundDescription)} data-id={i}></div>
+                        <div styleName="funds.fund-card__body flex.flex flex.flex-column flex.flex-start" data-id={i}>
+                            <div styleName="funds.fund-card__body--title" data-id={i}>{fund.fundTitle}</div>
+                            <div styleName="funds.fund-card__body--description" dangerouslySetInnerHTML={this.createMarkup(fund.fundDescription)} data-id={i}></div>
                         </div>
                         <div data-id={i} styleName="funds.dropDownArrow" onClick={this.handleDropDownClick}>+</div>
                     </div>

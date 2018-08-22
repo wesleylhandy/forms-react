@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
 import 'whatwg-fetch'
+import cssVars from 'css-vars-ponyfill';
 
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
@@ -75,7 +76,9 @@ class App extends Component {
             hydratedData: formData,
             configured: false,
             proxy: null,
-            cssConfig: []
+            cssConfig: [],
+            cssLoaded: false,
+            configLoaded: false
         }
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
@@ -84,17 +87,24 @@ class App extends Component {
     componentDidMount() {
         if (!this.state.configured) {
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            fetch('http://127.0.0.1:8080/config/css-config.json')
+            fetch('http://10.100.43.50:8080/config/css-config.json')
             .then(checkStatus)
             .then(parseJSON)
             .then(json=>{
                 // console.log({cssconfig: response.data})
                 const vars = json;
                 const {cssConfig} = this.state;
+
+                // create styleEL for IE
+                const styleEl = document.createElement('style');
+                styleEl.type = 'text/css';
+                let innerStyle = '';
+
                 vars.forEach(variable => {
                     for (let key in variable) {
                         if (key !== "externalFonts") {
-                            document.documentElement.style.setProperty(key, variable[key])
+                            const pair = key + ': ' + variable[key] + ';';
+                            innerStyle += pair;
                             cssConfig.push({[key]: variable[key]})
                         } else {
                             variable[key].forEach(href => {
@@ -107,11 +117,24 @@ class App extends Component {
                         }
                     }
                 })
-                this.setState({cssConfig: [...vars]})
+                // only append to DOM if innerstyle is not an empty string
+
+                styleEl.innerHTML = ":root{" + innerStyle + "}";
+                document.head.appendChild(styleEl)
+                let updated = false
+                cssVars({
+                    onComplete(cssText, styleNode) {
+                        updated = true;
+                        this.setState({cssConfig: [...vars], cssLoaded: true, configured: this.state.configLoaded ? true : false})
+                    }
+                });
+                if (!updated) {
+                    this.setState({cssConfig: [...vars], cssLoaded: true, configured: this.state.configLoaded ? true : false})
+                }
             }).catch(logError)
 
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            fetch('http://127.0.0.1:8080/config/form-config.json')
+            fetch('http://10.100.43.50:8080/config/form-config.json')
             .then(checkStatus)
             .then(parseJSON)
             .then(json=>{
@@ -134,7 +157,7 @@ class App extends Component {
                     funds: [...funds], numFunds, subscriptions: [...subscriptions], monthlyAmounts:[...monthlyAmounts],
                     singleAmounts: [...singleAmounts], MotivationText, monthlyPledgeData, singlePledgeData, 
                     showGivingArray, AddContactYN, Contact_Source: Contact_Source ? Contact_Source : PageName + " Donor", 
-                    ActivityName: ActivityName ? ActivityName : PageName + "_Donation_Activity", SectionName, proxy, configured: true})
+                    ActivityName: ActivityName ? ActivityName : PageName + "_Donation_Activity", SectionName, proxy, configLoaded: true, configured: this.state.cssLoaded ? true : false})
 
             }).catch(logError);
         }
@@ -154,6 +177,7 @@ class App extends Component {
     }
 
     render() {
+        cssVars();
         return ( 
             <div styleName='form-wrapper'> 
                 { 
