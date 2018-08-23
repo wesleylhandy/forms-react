@@ -45,13 +45,15 @@ export default class ConfirmationPage extends Component {
     }
 
     handleMessage(e) {
-        if (e.data !== "go back clicked" && e.data !=="render receipt") {
+        const data = JSON.parse(e.data)
+        if (data.type !== "go back clicked" && data.type !=="render receipt") {
             return;
         } 
         const {origin} = e;
-        if (origin !== this.state.devServicesUri && origin !== this.state.preProdServicesUri && origin !== this.state.prodServicesUri) {
+        if (origin !== this.state.devServicesUri && origin !== this.state.preProdServicesUri && origin !== this.state.prodServicesUri && origin !== 'https://secure.cbn.com') {
             return
-        } 
+        }
+        console.info({data}) 
         this.reRenderForm(this.state.formData);
     }
 
