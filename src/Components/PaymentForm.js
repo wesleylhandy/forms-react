@@ -28,7 +28,7 @@ export default class PaymentForm extends Component {
                     <input type='hidden' name="cssVars" value={JSON.stringify(this.props.cssConfig)}/>
                     <input id="submit" type="submit" hidden/>
                 </form>
-                <iframe styleName="form.form-panel" name="paymentprocess" width="100%" height="1000px" data-css-vars={JSON.stringify(this.props.cssConfig)}></iframe>
+                <iframe styleName="form.form-panel" name="paymentprocess" width="100%" height="1000px"></iframe>
             </React.Fragment>
         )
     }

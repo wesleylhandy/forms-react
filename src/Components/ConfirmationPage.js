@@ -28,6 +28,7 @@ export default class ConfirmationPage extends Component {
         }
         this.handleMessage = this.handleMessage.bind(this)
         this.reRenderForm = this.reRenderForm.bind(this)
+        this.renderReceiptPage = this.renderReceiptPage.bind(this)
     }
 
     componentDidMount() {
@@ -45,7 +46,6 @@ export default class ConfirmationPage extends Component {
     }
 
     handleMessage(e) {
-        console.log({origin: e.origin})
         const data = JSON.parse(e.data)
         if (data.type !== "go back clicked" && data.type !=="render receipt") {
             return;
@@ -54,12 +54,20 @@ export default class ConfirmationPage extends Component {
         if (origin !== this.state.devServicesUri && origin !== this.state.preProdServicesUri && origin !== this.state.prodServicesUri ) {
             return
         }
-        console.log({data}) 
-        this.reRenderForm(this.state.formData);
+        if (data.type === "go back clicked") {
+            this.reRenderForm(this.state.formData);
+        } else if (data.type === "render receipt") {
+            this.renderReceiptPage(data.tracking_vars);
+        }
+        return;
     }
 
     reRenderForm(data) {
         this.props.hydrateForm(data);
+    }
+
+    renderReceiptPage(varsArray) {
+        this.props.renderReceiptPage(varsArray);
     }
 
     shouldComponentUpdate(nextProps, nextState) {

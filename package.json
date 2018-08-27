@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "parcel index.html",
-        "start:test": "concurrently \"nodemon proxy-server/server.js\" \"parcel index.html\""
+        "start:test": "concurrently \"node proxy-server/server.js\" \"parcel index.html\""
     },
     "keywords": [],
     "author": "Wesley L. Handy, Internet Developer I, The Christian Broadcasting Network, Inc.",

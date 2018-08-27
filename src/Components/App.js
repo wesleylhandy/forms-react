@@ -5,11 +5,13 @@ import cssVars from 'css-vars-ponyfill';
 
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
+import RedirectForm from './RedirectForm';
 import Spinner from './Spinner'
 
 import './styles/form.css'
 import logError, {checkStatus, parseJSON} from './helpers/xhr-errors';
 import {readCookie} from "./helpers/crypt"
+
 
 
 class App extends Component {
@@ -69,7 +71,9 @@ class App extends Component {
             SectionName: "700Club",
             submitted: false,
             confirmed: false,
+            finalized: false,
             confirmationData: null,
+            finalizedData: null,
             formAction: null,
             formData: formData,
             donorID: null,
@@ -82,6 +86,7 @@ class App extends Component {
         }
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
+        this.renderReceiptPage = this.renderReceiptPage.bind(this)
     }
 
     componentDidMount() {
@@ -158,19 +163,30 @@ class App extends Component {
         this.setState({submitted: false, hydratedData: data})
     }
 
+    renderReceiptPage(varsArray) {
+        this.setState({finalized: true, finalizedData: [...varsArray]})
+    }
+
     render() {
         cssVars();
         return ( 
             <div styleName='form-wrapper'> 
                 { 
-                    this.state.submitted ? ( 
+                    this.state.finalized ? (
+                        <RedirectForm thankYouUrl={this.state.thankYouUrl} receiptVars={this.state.finalizedData} />
+                    ) : this.state.submitted ? ( 
                         <ConfirmationPage 
                             cssConfig={this.state.cssConfig}
                             formData={this.state.formData} 
                             formAction={this.state.formAction}
                             hydrateForm={this.hydrateForm}
+                            renderReceiptPage={this.renderReceiptPage}
                         /> 
-                    ) : this.state.configured ? <NameAddressForm {...this.state } submitForm={ this.submitForm }/> : <Spinner />                   
+                    ) : this.state.configured ? (
+                        <NameAddressForm {...this.state } submitForm={ this.submitForm }/> 
+                    ) : (
+                        <Spinner />        
+                    )           
                 } 
              </div>
         )
