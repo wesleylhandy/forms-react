@@ -90,9 +90,8 @@ class App extends Component {
             fetch('http://10.100.43.50:8080/config/css-config.json')
             .then(checkStatus)
             .then(parseJSON)
-            .then(json=>{
-                // console.log({cssconfig: response.data})
-                const vars = json;
+            .then(vars=>{
+
                 const {cssConfig} = this.state;
 
                 // create styleEL for IE
@@ -137,27 +136,10 @@ class App extends Component {
             fetch('http://10.100.43.50:8080/config/form-config.json')
             .then(checkStatus)
             .then(parseJSON)
-            .then(json=>{
-                
-                const config = json
-                const { mode, givingFormat, getMiddleName, getSuffix, 
-                    getSpouseInfo, monthlyOption, shipping,
-                    international, getPhone, products,
-                    numProducts, additionalGift, additionalGiftMessage,
-                    funds, numFunds, subscriptions, monthlyAmounts,
-                    singleAmounts, MotivationText, monthlyPledgeData, 
-                    singlePledgeData, showGivingArray, AddContactYN, 
-                    PageName, Contact_Source, ActivityName, SectionName, proxy, showThankYou, thankYouUrl } = config;
-                    // console.log({proxy})
+            .then(initialState=>{
 
-                this.setState({mode, givingFormat, getMiddleName, getSuffix, 
-                    getSpouseInfo, monthlyOption, shipping,
-                    international, getPhone, products: [...products],
-                    numProducts, additionalGift, additionalGiftMessage,
-                    funds: [...funds], numFunds, subscriptions: [...subscriptions], monthlyAmounts:[...monthlyAmounts],
-                    singleAmounts: [...singleAmounts], MotivationText, monthlyPledgeData, singlePledgeData, 
-                    showGivingArray, AddContactYN, Contact_Source: Contact_Source ? Contact_Source : PageName + " Donor", 
-                    ActivityName: ActivityName ? ActivityName : PageName + "_Donation_Activity", SectionName, proxy, configLoaded: true, configured: this.state.cssLoaded ? true : false})
+                this.setState(initialState);
+                this.setState({configLoaded: true, configured: this.state.cssLoaded ? true : false})
 
             }).catch(logError);
         }
