@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import 'whatwg-fetch'
+import 'raf/polyfill'
 
 import PaymentForm from './PaymentForm'
 import Spinner from './Spinner'

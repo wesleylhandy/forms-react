@@ -1,4 +1,5 @@
 .error {
+    box-sizing: border-box;
     position: absolute;
     color: var(--error-color);
     width: auto;

@@ -1,12 +1,5 @@
-* {
-    box-sizing: border-box;
-    font-family: var(--base-font-family);
-    font-weight: var(--base-font-weight);
-    font-style: var(--base-font-style);
-    color: var(--base-font-color);
-}
-
 .caps {
+    box-sizing: border-box;
     text-transform: uppercase;
 }
 
@@ -20,17 +13,20 @@
 }
 
 .center {
+    box-sizing: border-box;
     display: block;
     margin: 0 auto;
     text-align: center;
 }
 
 .img-responsive {
+    box-sizing: border-box;
     max-width: 100%;
     display: block;
 }
 
 .img-circle {
+    box-sizing: border-box;
     border-radius: 50%;
 }
 
@@ -38,48 +34,37 @@
     transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out, color 200ms ease-in-out;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    -webkit-margin-before: 0;
-    -webkit-margin-after: 0;
-    margin: 0;
-    padding: 0;
-}
-
-em,
 .italic {
-    font-family: var(--base-font-family);
-    font-weight: var(--base-font-weight);
-    font-style: var(--base-font-style);
+    box-sizing: border-box;
+    font-family: var(--italic-font-family);
+    font-weight: var(--italic-font-weight);
+    font-style: var(--italic-font-style);
 }
 
-strong>em,
-em>strong,
 .bold.italic {
-    font-family: var(--base-font-family);
-    font-weight: var(--base-font-weight);
-    font-style: var(--base-font-style);
+    box-sizing: border-box;
+    font-family: var(--bold-italic-font-family);
+    font-weight: var(--bold-italic-font-weight);
+    font-style: var(--bold-italic-font-style);
 }
 
-strong,
 .bold {
-    font-family: var(--base-font-family);
-    font-weight: var(--base-font-weight);
-    font-style: var(--base-font-style);
+    box-sizing: border-box;
+    font-family: var(--bold-font-family);
+    font-weight: var(--bold-font-weight);
+    font-style: var(--bold-font-style);
 }
 
 .semi-bold {
-    font-family: var(--base-font-family);
-    font-weight: var(--base-font-weight);
-    font-style: var(--base-font-style);
+    box-sizing: border-box;
+    font-family: var(--semibold-font-family);
+    font-weight: var(--semibold-font-weight);
+    font-style: var(--semibold-font-style);
 }
 
-em.semi-bold .semi-bold.italic {
-    font-family: var(--base-font-family);
-    font-weight: var(--base-font-weight);
-    font-style: var(--base-font-style);
+.semi-bold.italic {
+    box-sizing: border-box;
+    font-family: var(--semibold-italic-font-family);
+    font-weight: var(--semibold-italic-font-weight);
+    font-style: var(--semibold-italic-font-style);
 }

@@ -1,4 +1,5 @@
 .flex {
+    box-sizing: border-box;
     display: flex;
 }
 
@@ -47,13 +48,16 @@
 }
 
 .flex-grow {
+    box-sizing: border-box;
     flex: 1 1 auto;
 }
 
 .flex-no-grow {
+    box-sizing: border-box;
     flex: 0 0 auto;
 }
 
 .flex-shrink {
+    box-sizing: border-box;
     flex: 0 1 auto;
 }

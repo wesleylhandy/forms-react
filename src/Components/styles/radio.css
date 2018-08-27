@@ -1,18 +1,21 @@
 /******** CUSTOM RADIO BUTTIONS ********/
 
 .radio-group {
+    box-sizing: border-box;
     padding: 0 5px;
     height: calc(var(--base-font-size) * 2);
     line-height: calc(var(--base-font-size) * 2);
 }
 
 .radio-group__input {
+    box-sizing: border-box;
     position: absolute;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 }
 
 .radio-group__input+label {
+    box-sizing: border-box;
     font-family: var(--label-font-family);
     font-size: calc(var(--base-font-size) * .7);
     font-style: var(--label-font-style);
@@ -22,6 +25,7 @@
 .radio-group__input+label:before {
     content: '';
     background: #ffffff;
+    box-sizing: border-box;
     -webkit-border-radius: 100%;
     border-radius: 100%;
     border: 1px solid #D8DDE6;
@@ -39,6 +43,7 @@
 
 .radio-group__input:checked+label:before {
     background-color: var(--primary-color);
+    box-sizing: border-box;
     -webkit-box-shadow: inset 0 0 0 4px #ffffff;
     box-shadow: inset 0 0 0 4px #ffffff;
 }
@@ -46,6 +51,7 @@
 .radio-group__input:focus+label:before {
     outline: none;
     border-color: var(--primary-color);
+    box-sizing: border-box;
 }
 
 .radio-group__input:disabled+label:before {
@@ -53,10 +59,12 @@
     box-shadow: inset 0 0 0 4px #ffffff;
     border-color: #bfbfbf;
     background: #bfbfbf;
+    box-sizing: border-box;
 }
 
 .radio-group__input+label:empty:before {
     margin-right: 0;
+    box-sizing: border-box;
 }
 
 

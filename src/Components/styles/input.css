@@ -1,4 +1,5 @@
 .form-input {
+    box-sizing: border-box;
     position: relative;
 }
 
@@ -7,6 +8,7 @@
 .form-group--Country,
 .form-group--Email,
 .form-group--Phone {
+    box-sizing: border-box;
     margin-bottom: calc(var(--base-font-size) * .5);
     margin-top: calc(var(--base-font-size) * .5);
     position: relative;
@@ -17,6 +19,7 @@
 .form-group--Country>label,
 .form-group--Email>label,
 .form-group--Phone>label {
+    box-sizing: border-box;
     color: var(--label-color);
     font-family: var(--label-font-family);
     font-size: calc(var(--base-font-size) * .7);
@@ -53,6 +56,7 @@
 .form-group--Country>label>span,
 .form-group--Email>label>span,
 .form-group--Phone>label>span {
+    box-sizing: border-box;
     color: var(--error-color);
 }
 
@@ -67,6 +71,7 @@
 }
 
 .form-control {
+    box-sizing: border-box;
     color: var(--input-text-color);
     font-size: var(--base-font-size);
     font-family: var(--input-font-family);
@@ -93,6 +98,7 @@
 .form-control::-moz-placeholder,
 .form-control:-ms-input-placeholder,
 .form-control::placeholder {
+    box-sizing: border-box;
     color: var(--placeholder-color);
     font-size: var(--base-font-size);
     font-family: var(--input-font-family);
@@ -104,6 +110,7 @@
 .form-input {
     appearance: none;
     border-radius: var(--input-border-radius);
+    box-sizing: border-box;
 }
 
 .form-control:focus,

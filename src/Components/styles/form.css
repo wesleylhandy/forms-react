@@ -1,5 +1,6 @@
 .form-wrapper {
     background: var(--form-bg-color);
+    box-sizing: border-box;
     border: var(--form-border-width) solid var(--form-border-color);
     border-radius: var(--form-border-radius);
     color: var(--form-text-color);
@@ -12,6 +13,7 @@
     background: var(--panel-bg-color);
     border: var(--panel-border-width) solid var(--panel-border-color);
     border-radius: var(--panel-border-radius);
+    box-sizing: border-box;
     padding: var(--panel-padding);
     width: 100%;
 }
@@ -31,11 +33,13 @@
     border-style: none;
     border-color: unset;
     border-image: unset;
+    box-sizing: border-box;
     width: 100%;
 }
 
 .form-header,
 .divider-title {
+    box-sizing: border-box;
     color: var(--heading-color);
     text-align: center;
     font-size: var(--base-font-size);
@@ -44,19 +48,23 @@
 }
 
 .form-header--small {
+    box-sizing: border-box;
     font-size: calc(var(--base-font-size) * .9);
     margin: 20px 0;
 }
 
 .form-header--small>strong {
+    box-sizing: border-box;
     color: var(--primary-color);
 }
 
 .form-header__subheader {
+    box-sizing: border-box;
     margin: 10px 0;
 }
 
 .cc-img {
+    box-sizing: border-box;
     margin-left: 20px;
 }
 
@@ -67,6 +75,7 @@
     align-self: center;
     line-height: var(--base-font-size);
     margin-bottom: 0;
+    box-sizing: border-box;
 }
 
 .line {
@@ -80,14 +89,17 @@
     height: 2px;
     overflow: visible;
     margin: 20px 0;
+    box-sizing: border-box;
 }
 
 .gift-choice {
     margin-bottom: 20px;
     position: relative;
+    box-sizing: border-box;
 }
 
 .askarray {
+    box-sizing: border-box;
     height: auto;
     width: 100%;
     max-width: 400px;
@@ -95,6 +107,7 @@
 }
 
 .askbutton {
+    box-sizing: border-box;
     height: calc(var(--base-font-size) * 3.5);
     width: calc(100% / 3);
 }
@@ -103,6 +116,7 @@
     background-color: var(--primary-color);
     border-radius: var(--input-border-radius);
     border: 2px solid transparent;
+    box-sizing: border-box;
     color: var(--btn-text-color);
     cursor: pointer;
     -webkit-flex-basis: calc(var(--base-font-size) * 4.55);
@@ -127,6 +141,7 @@
 }
 
 .askarray__form-group {
+    box-sizing: border-box;
     height: calc(var(--base-font-size) * 3.5);
     margin-bottom: 0;
     position: relative;
@@ -141,6 +156,7 @@
     transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
     border: 2px solid var(--primary-color);
     border-radius: var(--input-border-radius);
+    box-sizing: border-box;
     color: var(--primary-color);
     font-size: calc(var(--base-font-size) * 1.4);
     text-align: center;
@@ -156,6 +172,7 @@
     font-style: var(--label-font-style);
     font-weight: var(--label-font-weight);
     color: var(--primary-color);
+    box-sizing: border-box;
     bottom: calc(var(--base-font-size) * -.4);
     position: absolute;
     left: 50%;
@@ -165,16 +182,19 @@
 
 .monthlyGivingDay {
     align-items: center;
+    box-sizing: border-box;
     font-size: calc(var(--base-font-size) * .8);
     height: calc(var(--base-font-size) * 2);
 }
 
 .ccDayOfMonth {
+    box-sizing: border-box;
     opacity: 1;
     text-align: center;
 }
 
 .ccdate {
+    box-sizing: border-box;
     font-size: calc(var(--base-font-size) * .7);
     font-family: var(--input-font-family);
     font-style: var(--input-font-style);
@@ -184,19 +204,23 @@
 }
 
 .name-address__info {
+    box-sizing: border-box;
     margin: var(--base-font-size) auto;
     max-width: 100%;
 }
 
 .form-row {
+    box-sizing: border-box;
     width: 100%;
 }
 
 .form-row>div+div {
+    box-sizing: border-box;
     margin-left: calc(var(--base-font-size) * .5);
 }
 
 .error {
+    box-sizing: border-box;
     position: absolute;
     color: var(--error-color);
     width: auto;
@@ -219,6 +243,7 @@
 .select-product,
 .additional-amount__input,
 .product-total__input {
+    box-sizing: border-box;
     color: var(--input-text-color);
     font-size: var(--base-font-size);
     font-family: var(--input-font-family);
@@ -245,6 +270,7 @@
 .form-group__other-input {
     appearance: none;
     border-radius: var(--input-border-radius);
+    box-sizing: border-box;
 }
 
 .ccdate:focus,
@@ -252,6 +278,7 @@
 .ccdate:hover {
     border: 1px solid var(--hover-border-color);
     background-color: var(--hover-bg-color);
+    box-sizing: border-box;
     outline: none;
 }
 
@@ -260,10 +287,12 @@
 .form-group__other-input:focus {
     border: 2px solid var(--primary-color);
     background-color: var(--hover-bg-color);
+    box-sizing: border-box;
     outline: none;
 }
 
 .select-product {
+    box-sizing: border-box;
     width: calc(var(--base-font-size) * 2.5);
     flex-basis: calc(var(--base-font-size) * 2.5);
     margin-right: var(--base-font-size);
@@ -271,6 +300,7 @@
 
 .additional-amount__input,
 .product-total__input {
+    box-sizing: border-box;
     width: calc(var(--base-font-size) * 5);
     flex-basis: calc(var(--base-font-size) * 5);
     margin-right: var(--base-font-size);
@@ -279,6 +309,7 @@
 
 .submit-button {
     background: var(--primary-color);
+    box-sizing: border-box;
     color: var(--btn-text-color);
     display: block;
     border: 2px solid transparent;
@@ -303,10 +334,12 @@
 }
 
 .invalid {
+    box-sizing: border-box;
     border-color: var(--error-color) !important;
 }
 
 .goBackBtn {
+    box-sizing: border-box;
     margin: 20px auto;
     text-align: center;
     width: 100%;
@@ -314,11 +347,13 @@
 }
 
 .goBackBtn>span {
+    box-sizing: border-box;
     display: block;
     margin: 0 auto;
 }
 
 .goBackBtn>span>a {
+    box-sizing: border-box;
     color: var(--link-color);
     cursor: pointer;
     transition: color 200ms ease-in-out;
@@ -329,21 +364,25 @@
 }
 
 .shipping-address__container {
+    box-sizing: border-box;
     margin-top: 20px;
 }
 
 .shipping-address__info {
+    box-sizing: border-box;
     margin-top: var(--base-font-size);
     max-width: 100%;
 }
 
 .products-display {
+    box-sizing: border-box;
     margin: var(--base-font-size) 0;
 }
 
 .product-card,
 .additional-amount,
 .product-total {
+    box-sizing: border-box;
     margin: 0 auto;
     padding: calc(var(--base-font-size) * .5);
     border: 1px solid #fff;
@@ -354,19 +393,24 @@
     position: relative;
 }
 
-.product-card__body {}
+.product-card__body {
+    box-sizing: border-box;
+}
 
 .product-card__title {
+    box-sizing: border-box;
     font-size: var(--base-font-size);
 }
 
 .product-card__description,
 .additional-amount__input--label,
 .product-total__input--label {
+    box-sizing: border-box;
     font-size: calc(var(--base-font-size) * .8);
 }
 
 .monthly-radio {
+    box-sizing: border-box;
     margin: var(--base-font-size) auto;
     max-width: calc(var(--base-font-size) * 15);
 }

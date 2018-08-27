@@ -6,10 +6,11 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "parcel index.html",
-        "start:test": "concurrently \"node proxy-server/server.js\" \"parcel index.html\""
+        "start:proxy": "concurrently \"nodemon proxy-server/server.js\" \"parcel index.html\"",
+        "stop:proxy": "pkill SIGINT ProxyServer"
     },
     "keywords": [],
-    "author": "Wesley L. Handy, Internet Developer I, The Christian Broadcasting Network, Inc.",
+    "author": "Wesley L. Handy, Internet Developer II, The Christian Broadcasting Network, Inc.",
     "license": "ISC",
     "dependencies": {
         "body-parser": "^1.18.3",
@@ -22,6 +23,7 @@
         "ipaddr.js": "^1.8.0",
         "node-fetch": "^2.1.2",
         "node-rsa": "^1.0.0",
+        "raf": "^3.4.0",
         "react": "^16.4.0",
         "react-dom": "^16.4.0",
         "whatwg-fetch": "^2.0.4"

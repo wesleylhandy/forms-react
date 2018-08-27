@@ -7,6 +7,8 @@ const cors = require('cors')
 const fetch = require('node-fetch')
 const ipaddr = require('ipaddr.js')
 
+process.title = "ProxyServer"
+
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load();
 }
@@ -171,6 +173,13 @@ process.on ('SIGINT', gracefulShutdown);
 
 
 process.on('unhandledRejection', reason => {
-    console.error({Error:reason})
+    if (reason) {
+        console.error({Error:reason})
+    }
+    gracefulShutdown();
     process.exit(1);
 });
+
+process.on('exit', function(){
+    server.close();
+})
