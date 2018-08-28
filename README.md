@@ -32,20 +32,34 @@ This project is being designed for use by the Digital Media Group at CBN, Inc.
 +-- src
 |   +-- Components
 |   |   +-- App.js
+|   |   +-- Checkbox.js
 |   |   +-- ConfirmationPage.js
 |   |   +-- FundDisplay.js
 |   |   +-- GivingArray.js
+|   |   +-- InputGroup.js
 |   |   +-- helpers
 |   |   |   +-- crypt.js
+|   |   |   +-- css-vars-ponyfill.min.js
 |   |   |   +-- get-query-variable.js
 |   |   |   +-- xhr-errors.js
 |   |   +-- NameAddressForm.js
+|   |   +-- PaymentForm.js
 |   |   +-- ProductDisplay.js
+|   |   +-- RadioButton.js
+|   |   +-- RedirectForm.js
+|   |   +-- SelectGroup.js
+|   |   +-- Spinner.js
 |   |   +-- styles
+|   |   |   +-- checkbox.css
+|   |   |   +-- error.css
 |   |   |   +-- flex.css
 |   |   |   +-- form.css
+|   |   |   +-- funds.css
 |   |   |   +-- index.css
+|   |   |   +-- input.css
 |   |   |   +-- main.css
+|   |   |   +-- radio.css
+|   |   |   +-- spinner.css
 |   |   |   +-- variables.css
 |   +-- config
 |   |   +-- dropdowns.json
@@ -72,17 +86,19 @@ While there is much more to be done, you can see how the form will function by `
 npm run start:test
 ```
 
-If everything has been installed correctly, open your browser to [http://localhost:1234](http://localhost:1234) to view the form. Update the values in the `*-config.json` files and see instantaneous updates to the form.
+If everything has been installed correctly, open your browser to [http://localhost:1234](http://localhost:1234) to view the form. Update the values in the `*-config.json` files and see instantaneous updates to the form. The form will not complete without an API key and without your local url being validated by the DMG.
 
 ### TO DO
 
  - ~~Continue to Set Up Handling of User Input in each field and updating `state` accordingly~~
- - Develop giving array to handle more features than just simple buttons, *for instance, supporting tabs*
  - ~~Develop multiple Product List templates~~
  - ~~Develop the architecture for the `cart` and `checkout` as user adds input and submits the form~~
  - ~~Add Validation to each Input based on CBN DB standards~~
  - ~~Once Giving APIs are developed, set up `fetch` for `POST` routes on the api, then begin developing second and third stages (Credit Card Entry and Confirmation Messaging)~~
- - Consider refactoring all of the CSS according to BEM principles
+ - ~~Consider refactoring all of the CSS according to BEM principles~~
+ - Brainstorm all possible form configurations and begin building a larger Component Library
+ - Refactor entire project for Electron App to be able to build css and form config from some sort of WYSIWYG editor
+ - Develop giving array to handle more features than just simple buttons, *for instance, supporting tabs*
  - Determine which set of form configurations are contradictory and prevent form from functioning as such
  - Consider refactoring application state using `redux-form`
  - consider adding proptypes support to each component

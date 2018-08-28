@@ -1,4 +1,6 @@
 [{
+    "--base-bg-color": "#333"
+}, {
     "--base-font-color": "#333"
 }, {
     "--base-font-family": "proxima-nova, sans-serif"

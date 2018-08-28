@@ -18,11 +18,12 @@ class App extends Component {
     constructor(props) {
         super(props)
         let formData = null;
-        const cookie = localStorage.getItem("store")
+        const store = localStorage.getItem("store")
         const info = localStorage.getItem("info")
 
-        if (cookie) {
-            formData = readCookie(cookie)
+        if (store) {
+            // console.log({store})
+            formData = readCookie(store)
         }
         
         if (formData === null) {
@@ -126,10 +127,13 @@ class App extends Component {
                 styleEl.innerHTML = ":root{" + innerStyle + "}";
                 document.head.appendChild(styleEl)
                 let updated = false
+                const self = this
                 cssVars({
+                    updateURLs: false,
+                    watch: true,
                     onComplete(cssText, styleNode) {
                         updated = true;
-                        this.setState({cssConfig: [...vars], cssLoaded: true, configured: this.state.configLoaded ? true : false})
+                        self.setState({cssConfig: [...vars], cssLoaded: true, configured: self.state.configLoaded ? true : false})
                     }
                 });
                 if (!updated) {

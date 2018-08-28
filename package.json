@@ -2,12 +2,11 @@
     "name": "react-form",
     "version": "1.0.0",
     "description": "",
-    "main": "server.js",
+    "main": "index.html",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "parcel index.html",
-        "start:proxy": "concurrently \"nodemon proxy-server/server.js\" \"parcel index.html\"",
-        "stop:proxy": "pkill SIGINT ProxyServer"
+        "start": "concurrently \"nodemon proxy-server/server.js\" \"parcel index.html\"",
+        "stop": "pkill SIGINT ProxyServer"
     },
     "keywords": [],
     "author": "Wesley L. Handy, Internet Developer II, The Christian Broadcasting Network, Inc.",

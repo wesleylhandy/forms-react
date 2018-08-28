@@ -2,12 +2,13 @@ const NodeRSA = require('node-rsa');
 
 /**
  * Takes in a cookie value and returns either decrypted text or null
- * @param {String} cookie - stringified JSON with structure
+ * @param {String} data - stringified JSON with structure
  * @returns {Object|null}
  */
-export function readCookie(cookie) {
-    const parsed = JSON.parse(cookie)
-    if (typeof parsed === "object" && parsed.hasOwnProperty("f") && parsed.hasOwnProperty("d") && parsed.hasOwnProperty("k")) {
+export function readCookie(data) {
+    const parsed = JSON.parse(data)
+    // console.log({parsed})
+    if (typeof parsed === "object" && parsed.hasOwnProperty("f") && parsed.hasOwnProperty("d") && parsed.hasOwnProperty("q")) {
         let {f, d, q} = parsed;
         const k = '-----BEGIN RSA PRIVATE KEY-----\n' + f.replace(/\^/g, '/').replace(/%/g, '9') + '\n-----END RSA PRIVATE KEY-----';
         const rsa = new NodeRSA(k);

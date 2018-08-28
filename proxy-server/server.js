@@ -176,10 +176,5 @@ process.on('unhandledRejection', reason => {
     if (reason) {
         console.error({Error:reason})
     }
-    gracefulShutdown();
     process.exit(1);
 });
-
-process.on('exit', function(){
-    server.close();
-})
