@@ -1,11 +1,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const compression = require('compression');
-const path = require('path')
-const hbs = require('hbs')
-const cors = require('cors')
-const fetch = require('node-fetch')
-const ipaddr = require('ipaddr.js')
+const path = require('path');
+const hbs = require('hbs');
+const cors = require('cors');
+const fetch = require('node-fetch');
+const ipaddr = require('ipaddr.js');
+const multer = require('multer');
+const upload = multer();
+const fs = require('fs');
 
 process.title = "ProxyServer"
 
@@ -26,12 +29,15 @@ app.use(compression());
 
 //body parser for routes our app
 app.use(bodyParser.json());
+// parsing application/json
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
+// for parsing multipart/form-data
+app.use(upload.array()); 
 app.set('port', port);
 
 const router = require('express').Router();
@@ -41,10 +47,10 @@ router.get("/", (req, res) => {
     res.render(path.resolve(__dirname, 'views', 'thankyou.hbs'), {})
 })
 
-router.post('/', (req, res) => {
+router.post('/thankyou', (req, res) => {
     const {body, query} = req;
-    console.log({ body, query })
-    if (query && query.status.toLowerCase() == 'error') {
+    console.log({ thankYou: true, body, query })
+    if (query && query.status && query.status.toLowerCase() == 'error') {
         res.statusCode = 400
         res.sendFile(path.resolve(__dirname, 'views', 'error.html'))
     } else {
@@ -55,7 +61,16 @@ router.post('/', (req, res) => {
 
 router.get('/config/:filename', (req, res) => {
     const {filename} = req.params;
-    res.sendFile(path.resolve(__dirname, "config", filename))
+    const files = fs.readdirSync(path.resolve(__dirname, "config"))
+    if (filename && files.indexOf(filename) > -1) {
+        res.sendFile(path.resolve(__dirname, "config", filename))
+    } else {
+        const error = new Error();
+        error.resposne = `File (${filename}) not found.`;
+        error.status = 404;
+        res.statusCode = error.status;
+        res.send({error})
+    }
 })
 
 router.get('/globals', (req, res) => {

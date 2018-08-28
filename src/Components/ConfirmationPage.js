@@ -51,7 +51,6 @@ export default class ConfirmationPage extends Component {
         if (data.type !== "go back clicked" && data.type !=="render receipt") {
             return;
         } 
-        console.log({data})
         const {origin} = e;
         if (origin !== this.state.devServicesUri && origin !== this.state.preProdServicesUri && origin !== this.state.prodServicesUri ) {
             return
@@ -59,7 +58,8 @@ export default class ConfirmationPage extends Component {
         if (data.type === "go back clicked") {
             this.reRenderForm(this.state.formData);
         } else if (data.type === "render receipt") {
-            console.log('Render Receipt')
+            // console.log('Render Receipt')
+            // console.log({tracking_vars:data.tracking_vars})
             this.renderReceiptPage(data.tracking_vars);
         }
         return;

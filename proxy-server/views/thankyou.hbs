@@ -66,23 +66,22 @@
 <body>
     
 
-    {{#if TransactionID}}
+    {{#if om_sTransactionID}}
         <h1>Thank you!!!</h1>
         <div class="container">
-            <div class="flex flex-row flex-between thankyou-data"><span>TransactionID </span><span>{{TransactionID}}</span></div>
-            <div class="flex flex-row flex-between thankyou-data"><span>TransactionDescription </span><span>{{TransactionDescription}}</span></div>
-            <div class="flex flex-row flex-between thankyou-data"><span>DonationType </span><span>{{DonationType}}</span></div>
-            <div class="flex flex-row flex-between thankyou-data"><span>MonthlyPledge </span><span>{{MonthlyPledge}}</span></div>
-            <div class="flex flex-row flex-between thankyou-data"><span>RecurringDay </span><span>{{RecurringDay}}</span></div>
-            <div class="flex flex-row flex-between thankyou-data"><span>SinglePledge </span><span>{{SinglePledge}}</span></div>
-            <div class="flex flex-row flex-between thankyou-data"><span>MotivationText </span><span>{{MotivationText}}</span></div>
-            <div class="flex flex-row flex-between thankyou-data"><span>ttDonationID </span><span>{{ttDonationID}}</span></div>
-            <div class="flex flex-row flex-between thankyou-data"><span>ttDonationTotal </span><span>{{ttDonationTotal}}</span></div>
-            <div class="flex flex-row flex-between thankyou-data"><span>DonationDetail </span><span>{{DonationDetail}}</span></div>
-            <div class="flex flex-row flex-between thankyou-data"><span>DonorID </span><span>{{DonorID}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>Donation </span><span>{{om_bDonation}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>TransactionID </span><span>{{om_sTransactionID}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>TransactionDescription </span><span>{{om_sTransactionDescription}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>MotivationText </span><span>{{om_sMotivationText}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>MonthlyPledge </span><span>{{om_sMonthlyPledge}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>RecurringDay </span><span>{{om_sRecurringDay}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>SinglePledge </span><span>{{om_sSinglePledge}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>DonationType </span><span>{{om_sDonationType}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>DonationDetail </span><span>{{om_sDonationDetail}}</span></div>
+            <div class="flex flex-row flex-between thankyou-data"><span>DonationEmail </span><span>{{om_sDonationEmail}}</span></div>
         </div>
     {{else}}
-        <div class='redirect'>Please first make a donation at <a href="http://localhost:1234">localhost:1234</a></div>
+        <div class='redirect'>Please first make a donation at <a href="http://10.100.43.50:1234/index.html">localhost:1234</a></div>
     {{/if}}
 </body>
 

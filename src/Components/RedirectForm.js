@@ -1,15 +1,24 @@
-import React from 'react'
+import React, {Component} from 'react'
 
 import main from './styles/main.css'
 
-export default function HiddenForm(props) {
-    const keys = Object.keys(props.receiptVars);
-    const inputs = keys.map(ky=><input key={"hiddenInput-" + ky} name={ky} value={props.receiptVars[ky] ? props.receiptVars[ky] : ''} type="hidden"/>)
-    return (
-        <form id="hiddenform" styleName="main.hidden" action={props.thankYouUrl} method="POST" onLoad={()=>document.forms.hiddenform.submit.click()}>
-            {inputs}
-            <input id="submit" type="submit" hidden/>
-        </form>
-    )
+export default class HiddenForm extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        document.forms.hiddenform.submit.click()
+    }
+    render() {
+        const {receiptVars, thankYouUrl} = this.props;
+        const inputs = receiptVars.map((v,i)=><input key={"hiddenInput-" + i} name={Object.keys(v)[0]} value={Object.values(v)[0]} type="hidden"/>)
+        return (
+            <form id="hiddenform" styleName="main.hidden" action={thankYouUrl} method="POST" >
+                {inputs}
+                <input id="submit" type="submit" hidden/>
+            </form>
+        )
+    }
 
 }
