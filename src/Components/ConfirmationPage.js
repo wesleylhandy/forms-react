@@ -37,7 +37,7 @@ export default class ConfirmationPage extends Component {
         window.addEventListener('beforeunload', handleUnload)
         window.addEventListener('message', this.handleMessage, false)   
 
-        fetch('http://10.100.43.50:8080/globals')
+        fetch('http://securegiving.cbn.local/UI/globals/form-config.json')
         .then(checkStatus)
         .then(parseJSON)
         .then(json=>{

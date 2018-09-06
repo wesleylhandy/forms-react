@@ -81,7 +81,7 @@ class App extends Component {
             hydratedData: formData,
             configured: false,
             proxy: null,
-            cssConfig: [],
+            cssConfig: {},
             cssLoaded: false,
             configLoaded: false
         }
@@ -110,7 +110,6 @@ class App extends Component {
                         if (key !== "externalFonts") {
                             const pair = key + ': ' + variable[key] + ';';
                             innerStyle += pair;
-                            cssConfig.push({[key]: variable[key]})
                         } else {
                             variable[key].forEach(href => {
                                 const link = document.createElement('link');
@@ -118,8 +117,9 @@ class App extends Component {
                                 link.type = "text/css";
                                 link.href = href;
                                 document.head.appendChild(link);
-                            })
+                            }) 
                         }
+                        cssConfig[key] = variable[key];
                     }
                 })
                 // only append to DOM if innerstyle is not an empty string
@@ -133,11 +133,11 @@ class App extends Component {
                     watch: true,
                     onComplete(cssText, styleNode) {
                         updated = true;
-                        self.setState({cssConfig: [...vars], cssLoaded: true, configured: self.state.configLoaded ? true : false})
+                        self.setState({cssConfig, cssLoaded: true, configured: self.state.configLoaded ? true : false})
                     }
                 });
                 if (!updated) {
-                    this.setState({cssConfig: [...vars], cssLoaded: true, configured: this.state.configLoaded ? true : false})
+                    this.setState({cssConfig, cssLoaded: true, configured: this.state.configLoaded ? true : false})
                 }
             }).catch(logError)
 

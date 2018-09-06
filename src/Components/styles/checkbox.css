@@ -26,8 +26,8 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: calc(var(--base-font-size) * .7);
-    height: calc(var(--base-font-size) * .7);
+    width: calc(var(--base-font-size) * .8);
+    height: calc(var(--base-font-size) * .8);
     border: 2px solid #ccc;
     background: #fff;
     -webkit-border-radius: 4px;

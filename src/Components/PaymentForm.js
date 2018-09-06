@@ -21,6 +21,7 @@ export default class PaymentForm extends Component {
         const {formData} = this.props;
         const keys = Object.keys(formData)
         const inputs = keys.map((k,i)=><input key={i + "-" + k} name={k} value={formData[k] ? formData[k] : ''} type="hidden"/>)
+        // console.log(JSON.stringify(this.props.cssConfig))
         return (
             <React.Fragment>
                 <form id="hiddenform" styleName="main.hidden" action={this.props.formAction} method="POST" target="paymentprocess">
@@ -28,7 +29,7 @@ export default class PaymentForm extends Component {
                     <input type='hidden' name="cssVars" value={JSON.stringify(this.props.cssConfig)}/> 
                     <input id="submit" type="submit" hidden/>
                 </form>
-                <iframe styleName="form.form-panel" name="paymentprocess" width="100%" height="1000px" data-css-vars={JSON.stringify(this.props.cssConfig)}></iframe>
+                <iframe styleName="form.form-panel" name="paymentprocess" width="100%" height="1000px"></iframe>
             </React.Fragment>
         )
     }
