@@ -107,17 +107,16 @@ class App extends Component {
 
                 vars.forEach(variable => {
                     for (let key in variable) {
-                        if (key !== "externalFonts") {
+                        if (!/^(externalFont)\S*$/.test(key)) {
+
                             const pair = key + ': ' + variable[key] + ';';
-                            innerStyle += pair;
+                            innerStyle += pair;                     
                         } else {
-                            variable[key].forEach(href => {
-                                const link = document.createElement('link');
-                                link.rel = "stylesheet";
-                                link.type = "text/css";
-                                link.href = href;
-                                document.head.appendChild(link);
-                            }) 
+                            const link = document.createElement('link');
+                            link.rel = "stylesheet";
+                            link.type = "text/css";
+                            link.href = variable[key];
+                            document.head.appendChild(link);
                         }
                         cssConfig[key] = variable[key];
                     }
