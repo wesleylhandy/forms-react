@@ -85,7 +85,8 @@
     "Contact_Source": "700Club Donor",
     "ActivityName": "700Club_Donation_Activity",
     "SectionName": "700Club",
-    "proxy": "http://10.100.43.50:8080/api",
+    "proxy": "/giving/general/ApiTest/proxy.aspx",
     "showThankYou": false,
-    "thankYouUrl": "http://10.100.43.50:8080/thankyou"
+    "thankYouUrl": "/giving/general/ApiTest/ApiTestThankYou.aspx",
+    "receiptEmailUrl": "/giving/general/ApiTest/ApitTestEmail.htm"
 }

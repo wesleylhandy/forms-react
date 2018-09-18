@@ -163,8 +163,14 @@ export default class ProductDisplay extends Component {
 
                         return (
                             <div key={`product${i}`} styleName="form.product-card flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
-                                <select styleName="form.select-product flex.flex-no-grow" name={`product-select-${i}`} value={this.state.fields[`product-select-${i}`] >= 0 ? this.state.fields[`product-select-${i}`] : 0} onChange={this.handleInputChange}>
+                                <select styleName="form.select-product flex.flex-no-grow" 
+                                    name={`product-select-${i}`} 
+                                    value={this.state.fields[`product-select-${i}`] >= 0 ? this.state.fields[`product-select-${i}`] : 0} 
+                                    onChange={this.handleInputChange}
+                                >
+
                                     { renderOptions(i) }
+                                    
                                 </select>
                                 <div styleName="form.product-card__body flex.flex-grow">
                                     <div styleName="form.product-card__title">{product.productTitle} - ${product.PledgeAmount}</div>

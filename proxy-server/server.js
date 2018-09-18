@@ -116,7 +116,9 @@ router.post('/api', (req, res) => {
         res.statusCode = 400
         return res.send({error: "Bad Request - Your request is missing parameters. Please verify and resubmit."})
     }
-    console.log({reqHeaders: req.headers})
+    console.log("________ NEW POST TO API __________");
+    console.log({reqHeaders: req.headers});
+    console.log(JSON.stringify(data, null, 5));
     let ClientIP;
     data.APIAccessID = process.env.alpha
     data.UrlReferer = req.headers['referer']
