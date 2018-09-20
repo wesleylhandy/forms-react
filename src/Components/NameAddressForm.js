@@ -530,7 +530,8 @@ export default class NameAddressForm extends Component {
                 if (value && this.state.fields[country] == "US" && !(zip_regex.test(value))) {
                     error = "Please enter a valid US Zip Code"
                 } else if (value && zip_regex.test(value) && !submitting) {
-                    const url = `http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=${value}`
+                    const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "http://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+                    const url = `${base}${value}`;
                     fetch(url)
                     .then(checkStatus)
                     .then(parseJSON)

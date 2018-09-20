@@ -93,7 +93,7 @@ class App extends Component {
     componentDidMount() {
         if (!this.state.configured) {
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            fetch('css-config.json')
+            fetch('http://10.100.43.50:8080/config/css-config.json')
             .then(checkStatus)
             .then(parseJSON)
             .then(vars=>{
@@ -141,7 +141,7 @@ class App extends Component {
             }).catch(logError)
 
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            fetch('form-config.json')
+            fetch('http://10.100.43.50:8080/config/form-config.json')
             .then(checkStatus)
             .then(parseJSON)
             .then(initialState=>{
@@ -171,14 +171,14 @@ class App extends Component {
     }
 
     render() {
-        cssVars();
-        return ( 
+          return ( 
             <div styleName='form-wrapper'> 
                 { 
                     this.state.finalized ? (
                         <RedirectForm thankYouUrl={this.state.thankYouUrl} receiptVars={this.state.finalizedData} />
                     ) : this.state.submitted ? ( 
                         <ConfirmationPage 
+                            mode={this.state.mode}
                             cssConfig={this.state.cssConfig}
                             formData={this.state.formData} 
                             formAction={this.state.formAction}
