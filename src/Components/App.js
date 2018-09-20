@@ -38,7 +38,7 @@ class App extends Component {
         }
 
         this.state = {
-            mode: "development",
+            mode: "local",
             givingFormat: "buttons",
             getMiddleName:  false,
             getSuffix:  false,
@@ -93,7 +93,8 @@ class App extends Component {
     componentDidMount() {
         if (!this.state.configured) {
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            fetch('css-config.json')
+            const base = this.state.mode == "local" ? "http://10.100.43.50:8080/config/" : "";
+            fetch(`${base}css-config.json`)
             .then(checkStatus)
             .then(parseJSON)
             .then(vars=>{
@@ -103,6 +104,7 @@ class App extends Component {
                 // create styleEL for IE
                 const styleEl = document.createElement('style');
                 styleEl.type = 'text/css';
+                styleEl.id = "imported-vars";
                 let innerStyle = '';
 
                 vars.forEach(variable => {
@@ -136,12 +138,12 @@ class App extends Component {
                     }
                 });
                 if (!updated) {
-                    this.setState({cssConfig, cssLoaded: true, configured: this.state.configLoaded ? true : false})
+                    styleEl.onload = () => this.setState({cssConfig, cssLoaded: true, configured: this.state.configLoaded ? true : false})
                 }
             }).catch(logError)
 
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            fetch('form-config.json')
+            fetch(`${base}form-config.json`)
             .then(checkStatus)
             .then(parseJSON)
             .then(initialState=>{
@@ -171,14 +173,14 @@ class App extends Component {
     }
 
     render() {
-        cssVars();
-        return ( 
+          return ( 
             <div styleName='form-wrapper'> 
                 { 
                     this.state.finalized ? (
                         <RedirectForm thankYouUrl={this.state.thankYouUrl} receiptVars={this.state.finalizedData} />
                     ) : this.state.submitted ? ( 
                         <ConfirmationPage 
+                            mode={this.state.mode}
                             cssConfig={this.state.cssConfig}
                             formData={this.state.formData} 
                             formAction={this.state.formAction}

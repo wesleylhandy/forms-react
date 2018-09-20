@@ -112,3 +112,15 @@
     font-size: calc(var(--base-font-size) * .6);
     max-width: 100%;
 }
+
+@media screen and (max-width: 390px) {
+    .select-fund,
+    .select-fund__dropdown,
+    .fund-card,
+    .fund-card__dropdown {
+        height: 110px;
+    }
+    .select-fund__dropdown {
+        margin-top: -110px;
+    }
+}

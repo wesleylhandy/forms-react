@@ -6,7 +6,7 @@ import error from './styles/error.css'
 
 export default function SelectGroup(props) {
     return (
-        <div id={`form-field-${props.id}`} styleName={`${props.specialStyle ? props.specialStyle : "input.form-group"} flex.flex-grow`}>
+        <div id={`form-field-${props.id}`} styleName={`${props.specialStyle ? props.specialStyle : ""} input.form-group flex.flex-grow`}>
             <label htmlFor={props.id}>{props.id}<span>{props.required ? '*' : ''}</span></label>
             <select styleName="input.form-control" 
                 id={props.id}

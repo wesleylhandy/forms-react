@@ -22,6 +22,7 @@ export default class ConfirmationPage extends Component {
         super(props);
 
         this.state = {
+            mode: props.mode,
             cssConfig: props.cssConfig,
             formData: props.formData,
             formAction: props.formAction,
@@ -36,8 +37,8 @@ export default class ConfirmationPage extends Component {
 
         window.addEventListener('beforeunload', handleUnload)
         window.addEventListener('message', this.handleMessage, false)   
-
-        fetch('http://securegiving.cbn.local/UI/globals/form-config.json')
+        const url = this.state.mode == "development" ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'http://securegiving.cbn.com/UI/globals/form-config.json'
+        fetch(url)
         .then(checkStatus)
         .then(parseJSON)
         .then(json=>{
@@ -52,7 +53,8 @@ export default class ConfirmationPage extends Component {
             return;
         } 
         const {origin} = e;
-        if (origin !== this.state.devServicesUri && origin !== this.state.preProdServicesUri && origin !== this.state.prodServicesUri ) {
+        const isOrigin = this.state.mode == "development" ? origin == this.state.devServicesUri || origin == this.state.preProdServicesUri : origin == this.state.prodServicesUri;
+        if (!isOrigin) {
             return
         }
         if (data.type === "go back clicked") {

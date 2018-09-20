@@ -3,22 +3,14 @@
     position: relative;
 }
 
-.form-group,
-.form-group--State,
-.form-group--Country,
-.form-group--Email,
-.form-group--Phone {
+.form-group {
     box-sizing: border-box;
     margin-bottom: calc(var(--base-font-size) * .5);
     margin-top: calc(var(--base-font-size) * .5);
     position: relative;
 }
 
-.form-group>label,
-.form-group--State>label,
-.form-group--Country>label,
-.form-group--Email>label,
-.form-group--Phone>label {
+.form-group>label {
     box-sizing: border-box;
     color: var(--label-color);
     font-family: var(--label-font-family);
@@ -35,29 +27,23 @@
 
 .form-group:hover>label,
 .form-group:active>label,
-.form-group:focus>label,
-.form-group--State:hover>label,
-.form-group--State:active>label,
-.form-group--State:focus>label,
-.form-group--Country:hover>label,
-.form-group--Country:active>label,
-.form-group--Country:focus>label,
-.form-group--Email:hover>label,
-.form-group--Email:active>label,
-.form-group--Email:focus>label,
-.form-group--Phone:hover>label,
-.form-group--Phone:active>label,
-.form-group--Phone:focus>label {
+.form-group:focus>label {
     opacity: 1;
 }
 
-.form-group>label>span,
-.form-group--State>label>span,
-.form-group--Country>label>span,
-.form-group--Email>label>span,
-.form-group--Phone>label>span {
+.form-group>label>span {
     box-sizing: border-box;
     color: var(--error-color);
+}
+
+.form-group--Title {
+    flex-basis: 83px;
+    width: 83px;
+}
+
+.form-group--Firstname,
+.form-group--Lastname {
+    box-sizing: border-box;
 }
 
 .form-group--State,
@@ -133,4 +119,39 @@
 
 .form-control:disabled {
     background: var(--base-bg-color);
+}
+
+@media screen and (max-width:613px) {
+    .form-group--Lastname {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .form-group--Phone,
+    .form-group--Email {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 414px) {
+    .form-group--State,
+    .form-group--City {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .form-group--Firstname {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 365px) {
+    .form-group--Zip,
+    .form-group--Country {
+        max-width: 100%;
+        width: 100%;
+    }
 }
