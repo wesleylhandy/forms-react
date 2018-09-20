@@ -30,9 +30,7 @@
     -webkit-padding-start: 0;
     -webkit-padding-after: 0;
     min-width: 100%;
-    border-width: 0;
-    border-style: none;
-    border-color: unset;
+    border: unset;
     border-image: unset;
     box-sizing: border-box;
     width: 100%;

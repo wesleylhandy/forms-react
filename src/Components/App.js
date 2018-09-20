@@ -38,7 +38,7 @@ class App extends Component {
         }
 
         this.state = {
-            mode: "local",
+            mode: "development",
             givingFormat: "buttons",
             getMiddleName:  false,
             getSuffix:  false,
