@@ -5,7 +5,7 @@
     "getSuffix": false,
     "getSpouseInfo": false,
     "monthlyOption": true,
-    "shipping": false,
+    "shipping": true,
     "international": true,
     "getPhone": true,
     "numProducts": 3,

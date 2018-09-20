@@ -4,6 +4,7 @@ import 'whatwg-fetch'
 import main from './styles/main.css'
 import flex from './styles/flex.css'
 import form from './styles/form.css'
+import input from './styles/input.css'
 
 import GivingArray from './GivingArray'
 import ProductDisplay from './ProductDisplay'
@@ -601,7 +602,7 @@ export default class NameAddressForm extends Component {
         return (
             <fieldset styleName="form.fieldset">
                 <div styleName="form.shipping-address__container">
-                    <div styleName="form.form-row flex.flex flex.flex-row flex.flex-axes-center">
+                    <div styleName="form.form-row form.ship-to-yes-row flex.flex flex.flex-row flex.flex-axes-center">
                         <Checkbox id="ShipToYes" checked={this.state.fields.ShipToYes} handleInputChange={this.handleInputChange} label="&nbsp;My shipping address is different than my billing address." />
                     </div>
                     {
@@ -654,11 +655,11 @@ export default class NameAddressForm extends Component {
                                         error={this.state.errors.ShipToAddress2} 
                                     />
                                 </div>
-                                <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                                <div styleName="form.form-row form.city-state-row flex.flex flex.flex-row flex.flex-between">
                                     <InputGroup
                                         type="text"
                                         id="ShipToCity" 
-                                        specialStyle="" 
+                                        specialStyle="input.form-group--City" 
                                         label="City" 
                                         placeholder="City" 
                                         maxLength='64' 
@@ -669,7 +670,7 @@ export default class NameAddressForm extends Component {
                                     />
                                     <SelectGroup 
                                         id="ShipToState"
-                                        specialStyle=""
+                                        specialStyle="input.form-group--State"
                                         required={this.state.fields.ShipToYes}
                                         value={this.state.fields.ShipToState}
                                         error={this.state.errors.ShipToState}
@@ -726,11 +727,13 @@ export default class NameAddressForm extends Component {
     renderNameInput(type, required) {
         const id = `${type}name`
         const label = `${type} Name`
+        const specialStyle = "input.form-group--" + id
+        // console.log({id, label, specialStyle})
         return (
             <InputGroup
                 type="text"
                 id={id}
-                specialStyle="" 
+                specialStyle={specialStyle} 
                 label={label}
                 placeholder={ required ? label + "*" : label} 
                 maxLength={type === "Last" ? 25 : 20} 
@@ -751,10 +754,10 @@ export default class NameAddressForm extends Component {
     renderNameAddressBlock(getMiddleName, getSuffix) {
         if (!getMiddleName && !getSuffix) {
             return (
-                <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                <div styleName="form.form-row form.name-row flex.flex flex.flex-row flex.flex-between">
                     <SelectGroup 
                         id="Title"
-                        specialStyle=""
+                        specialStyle="input.form-group--Title flex.flex-no-grow"
                         required={true}
                         value={this.state.fields.Title}
                         error={this.state.errors.Title}
@@ -912,11 +915,11 @@ export default class NameAddressForm extends Component {
                                     error={this.state.errors.Address2} 
                                 />
                             </div>
-                            <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                            <div styleName="form.form-row form.city-state-row flex.flex flex.flex-row flex.flex-between">
                                 <InputGroup
                                     type="text"
                                     id="City" 
-                                    specialStyle="" 
+                                    specialStyle="input.form-group--City" 
                                     label="City" 
                                     placeholder="City*" 
                                     maxLength="28" 
@@ -936,11 +939,11 @@ export default class NameAddressForm extends Component {
                                 />
                             </div>
 
-                            <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                            <div styleName="form.form-row form.zip-country-row flex.flex flex.flex-row flex.flex-between">
                                 <InputGroup
                                     type="text"
                                     id="Zip" 
-                                    specialStyle="" 
+                                    specialStyle="input.form-group--Zip" 
                                     label="Zip" 
                                     placeholder="Zip*" 
                                     maxLength={this.state.fields.Country != "US" ? 25 : 5} 
@@ -963,7 +966,7 @@ export default class NameAddressForm extends Component {
                                     />
                                 ): null }
                             </div>
-                            <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
+                            <div styleName="form.form-row form.email-phone-row flex.flex flex.flex-row flex.flex-between">
                                 <InputGroup
                                     type="text"
                                     id="Emailaddress" 
