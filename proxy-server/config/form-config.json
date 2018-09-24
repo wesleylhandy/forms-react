@@ -85,7 +85,7 @@
     "Contact_Source": "700Club Donor",
     "ActivityName": "700Club_Donation_Activity",
     "SectionName": "700Club",
-    "proxy": "http://10.100.43.50:8080/api",
+    "proxy": "http://10.100.43.50:8888/proxy.php",
     "showThankYou": false,
     "thankYouUrl": "http://10.100.43.50:8080/thankyou"
 }

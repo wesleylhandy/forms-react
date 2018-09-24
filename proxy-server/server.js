@@ -118,7 +118,7 @@ router.post('/api', (req, res) => {
     }
     console.log("________ NEW POST TO API __________");
     console.log({reqHeaders: req.headers});
-    console.log(JSON.stringify(data, null, 5));
+
     let ClientIP;
     data.APIAccessID = process.env.alpha
     data.UrlReferer = req.headers['referer']
@@ -132,7 +132,7 @@ router.post('/api', (req, res) => {
     }
     data.ClientIP =  ClientIP
     console.log({ClientIP})
-    console.log({data})
+    console.log(JSON.stringify(data, null, 5));
     const mode = data.mode;
     delete data.mode;
     const api = process.env.epsilon

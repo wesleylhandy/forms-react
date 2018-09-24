@@ -156,7 +156,8 @@ class App extends Component {
     }
 
     submitForm({msg, data}) {
-        const str = Object.values(msg).pop()
+        console.log({msg})
+        const str = msg.msg;
         const DonorID = str.split(";")[0].split(" - ")[1]
         const formAction = str.split(" is ")[1]
         data.DonorID = DonorID;

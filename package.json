@@ -8,7 +8,8 @@
         "start:proxy": "node proxy-server/server.js",
         "start": "parcel index.html",
         "stop": "pkill SIGINT ProxyServer",
-        "poststop": "rm -rf dist/ .cache/"
+        "poststop": "rm -rf dist/ .cache/",
+        "build": "parcel build src/index.js -d src/dist"
     },
     "keywords": [],
     "author": "Wesley L. Handy, Internet Developer II, The Christian Broadcasting Network, Inc.",

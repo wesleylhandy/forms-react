@@ -364,10 +364,11 @@ export default class NameAddressForm extends Component {
         // console.log({data})
         fetch(proxy, {
             method: 'POST',
+            mode: 'cors',
             headers: {
-                'Content-Type': 'application/json; charset=utf-8'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({data})
+            body: JSON.stringify(data)
         })
         .then(checkStatus)
         .then(parseJSON)
