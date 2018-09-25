@@ -3,25 +3,30 @@
 
 /* Base for label styling */
 
-.checkbox-input:not(:checked),
-.checkbox-input:checked {
+input[type="checkbox"].checkbox-input:not(:checked),
+input[type="checkbox"].checkbox-input:checked {
     position: absolute;
     left: -9999px;
 }
 
-.checkbox-input:not(:checked)+label,
-.checkbox-input:checked+label {
+input[type="checkbox"].checkbox-input:not(:checked)+label,
+input[type="checkbox"].checkbox-input:checked+label {
     position: relative;
     padding-left: calc(var(--base-font-size) * 1.25);
     cursor: pointer;
     box-sizing: border-box;
+    font-family: var(--base-font-family);
+    font-size: calc(var(--base-font-size) * .8);
+    font-weight: var(--base-font-weight);
+    color: var(--form-text-color);
+    margin-bottom: 0;
 }
 
 
 /* checkbox aspect */
 
-.checkbox-input:not(:checked)+label:before,
-.checkbox-input:checked+label:before {
+input[type="checkbox"].checkbox-input:not(:checked)+label:before,
+input[type="checkbox"].checkbox-input:checked+label:before {
     content: '';
     position: absolute;
     left: 0;
@@ -40,12 +45,12 @@
 
 /* checked mark aspect */
 
-.checkbox-input:not(:checked)+label:after,
-.checkbox-input:checked+label:after {
+input[type="checkbox"].checkbox-input:not(:checked)+label:after,
+input[type="checkbox"].checkbox-input:checked+label:after {
     content: '\2714';
     position: absolute;
     top: 0;
-    left: calc(var(--base-font-size) * .25);
+    left: calc(var(--base-font-size) * .15);
     font-size: var(--base-font-size);
     line-height: 0.8;
     color: var(--primary-color);
@@ -58,7 +63,7 @@
 
 /* checked mark aspect changes */
 
-.checkbox-input:not(:checked)+label:after {
+input[type="checkbox"].checkbox-input:not(:checked)+label:after {
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     -webkit-transform: scale(0);
@@ -67,7 +72,7 @@
     box-sizing: border-box;
 }
 
-.checkbox-input:checked+label:after {
+input[type="checkbox"].checkbox-input:checked+label:after {
     opacity: 1;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     -webkit-transform: scale(1);
@@ -79,8 +84,8 @@
 
 /* disabled checkbox */
 
-.checkbox-input:disabled:not(:checked)+label:before,
-.checkbox-input:disabled:checked+label:before {
+input[type="checkbox"].checkbox-input:disabled:not(:checked)+label:before,
+input[type="checkbox"].checkbox-input:disabled:checked+label:before {
     -webkit-box-shadow: none;
     box-shadow: none;
     box-sizing: border-box;
@@ -88,12 +93,12 @@
     background-color: #ddd;
 }
 
-.checkbox-input:disabled:checked+label:after {
+input[type="checkbox"].checkbox-input:disabled:checked+label:after {
     box-sizing: border-box;
     color: #999;
 }
 
-.checkbox-input:disabled+label {
+input[type="checkbox"].checkbox-input:disabled+label {
     box-sizing: border-box;
     color: #aaa;
 }
@@ -101,8 +106,8 @@
 
 /* accessibility */
 
-.checkbox-input:checked:focus+label:before,
-.checkbox-input:not(:checked):focus+label:before {
+input[type="checkbox"].checkbox-input:checked:focus+label:before,
+input[type="checkbox"].checkbox-input:not(:checked):focus+label:before {
     border: 2px dotted var(--primary-color);
     box-sizing: border-box;
 }
@@ -110,7 +115,7 @@
 
 /* hover style just for information */
 
-.checkbox-input+label:hover:before {
+input[type="checkbox"].checkbox-input+label:hover:before {
     border: 2px solid var(--primary-color)!important;
     box-sizing: border-box;
 }

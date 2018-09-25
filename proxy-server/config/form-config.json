@@ -82,7 +82,7 @@
         "DetailCprojMail": "043251"
     },
     "AddContactYN": "Y",
-    "Contact_Source": "700Club Donor",
+    "ContactSource": "700Club Donor",
     "ActivityName": "700Club_Donation_Activity",
     "SectionName": "700Club",
     "proxy": "http://10.100.43.50:8888/proxy.php",

@@ -67,7 +67,7 @@ class App extends Component {
                 "DetailCprojMail": "043251"
             },
             AddContactYN:  "Y",
-            Contact_Source: "700Club Donor",
+            ContactSource: "700Club Donor",
             ActivityName: "700Club_Donation_Activity", 
             SectionName: "700Club",
             submitted: false,
@@ -93,8 +93,11 @@ class App extends Component {
     componentDidMount() {
         if (!this.state.configured) {
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
+            const generator = document.head.querySelector("[name='generator']")
+            const isWordpress = generator && generator.content.toLowerCase().includes('wordpress');
             const base = this.state.mode == "local" ? "http://10.100.43.50:8080/config/" : "";
-            fetch(`${base}css-config.json`)
+            const cssConfigUrl = isWordpress ? "/wp-giving/css-config.json" : `${base}css-config.json`;
+            fetch(cssConfigUrl)
             .then(checkStatus)
             .then(parseJSON)
             .then(vars=>{
@@ -143,7 +146,8 @@ class App extends Component {
             }).catch(logError)
 
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            fetch(`${base}form-config.json`)
+            const formConfigUrl = isWordpress ? "/wp-giving/form-config.json" : `${base}form-config.json`;
+            fetch(formConfigUrl)
             .then(checkStatus)
             .then(parseJSON)
             .then(initialState=>{

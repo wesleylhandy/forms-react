@@ -36,7 +36,7 @@ export default class NameAddressForm extends Component {
         this.state = {
             mode: props.mode,
             APIAccessID: "", //obtain this from server somehow
-            ClientBrowser: "", //obtain this from server somehow
+            ClientBrowser: window && window.navigator ? window.navigator.userAgent : '', 
             ClientIP: "", //obtain this from server somehow
             MotivationText: props.MotivationText,
             showGivingArray: props.showGivingArray,
@@ -74,7 +74,7 @@ export default class NameAddressForm extends Component {
             submitting: false,
             subscriptions: [...props.subscriptions],
             AddContactYN: props.AddContactYN,
-            Contact_Source: props.Contact_Source,
+            ContactSource: props.ContactSource,
             ActivityName: props.ActivityName,
             SectionName: props.SectionName,
             fundSelected: false,
@@ -282,7 +282,7 @@ export default class NameAddressForm extends Component {
         }
         //deconstruct necessary fields from state
         const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
-        const {mode, APIAccessID, Clublevel, MotivationText, ClientBrowser, ClientIP, UrlReferer, subscriptions, AddContactYN, ActivityName, Contact_Source, SectionName, proxy} = this.state
+        const {mode, APIAccessID, Clublevel, MotivationText, ClientBrowser, ClientIP, UrlReferer, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy} = this.state
         
         //construct phone fields from regex
         const Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
@@ -323,7 +323,7 @@ export default class NameAddressForm extends Component {
                 APIAccessID,
                 City,
                 Clublevel,
-                Contact_Source,
+                ContactSource,
                 Country,
                 DonationType,
                 Emailaddress,
