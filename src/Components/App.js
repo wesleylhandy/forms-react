@@ -160,10 +160,10 @@ class App extends Component {
     }
 
     submitForm({msg, data}) {
-        console.log({msg})
-        const str = msg.msg;
-        const DonorID = str.split(";")[0].split(" - ")[1]
-        const formAction = str.split(" is ")[1]
+        // console.log(msg)
+        const DonorID = msg.split(";")[0].split(" - ")[1]
+        const formAction = msg.split(" is ")[1]
+        // console.log({DonorID, formAction})
         data.DonorID = DonorID;
         this.setState({submitted: true, formData: data, formAction});
     }

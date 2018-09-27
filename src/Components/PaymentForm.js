@@ -8,6 +8,10 @@ import {cryptCookie} from './helpers/crypt'
 export default class PaymentForm extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            formAction: props.formAction,
+            cssConfig: props.cssConfig
+        }
     }
     componentDidMount() {
         const {formData} = this.props;
@@ -24,9 +28,9 @@ export default class PaymentForm extends Component {
         // console.log(JSON.stringify(this.props.cssConfig))
         return (
             <React.Fragment>
-                <form id="hiddenform" styleName="main.hidden" action={this.props.formAction} method="POST" target="paymentprocess">
+                <form id="hiddenform" styleName="main.hidden" action={this.state.formAction} method="POST" target="paymentprocess">
                     {inputs}
-                    <input type='hidden' name="cssVars" value={JSON.stringify(this.props.cssConfig)}/> 
+                    <input type='hidden' name="cssVars" value={JSON.stringify(this.state.cssConfig)}/> 
                     <input id="submit" type="submit" hidden/>
                 </form>
                 <iframe styleName="form.form-panel" name="paymentprocess" width="100%" height="1000px"></iframe>

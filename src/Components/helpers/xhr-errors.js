@@ -1,32 +1,21 @@
 /**
  * Logs Errors from XHR via Axios
- * @param {Object} error - Error Object Returned by Axios
+ * @param {Object} error - Error Object Returned by API
  */
 export default function logError({error}) {
-    if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error(error.response.status);
-        console.error(error.response.headers);
-    } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.error(error.request);
-    } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Error', error.message);
+    console.error(JSON.stringify(error, null, 5))
+    if (error.status >= 500 || !error.status) {
+        alert('There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700');
     }
-    console.error({error})
-
 }
 
 export function checkStatus(response) {
+    // console.log({response})
     if (response.status >= 200 && response.status < 300) {
       return response
     } else {
-      var error = new Error(response.statusText)
-      error.response = response
+      var error = new Error()
+      error.message = response.statusText
       error.status = response.status
       throw error
     }
@@ -36,6 +25,6 @@ export function parseJSON(response) {
     return response.json()
   }
 
-  export function parseTXT(response) {
+export function parseTXT(response) {
     return response.text()
-  }
+}

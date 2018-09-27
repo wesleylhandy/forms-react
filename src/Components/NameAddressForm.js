@@ -15,7 +15,7 @@ import InputGroup from './InputGroup'
 import SelectGroup from './SelectGroup'
 
 import { canadianProvinces, countries, other, usMilitary, usStates, usTerritories } from '../config/dropdowns.json';
-import logError, {checkStatus, parseJSON} from './helpers/xhr-errors';
+import logError, {checkStatus, parseJSON, parseTXT} from './helpers/xhr-errors';
 import {cryptCookie} from './helpers/crypt';
 
 
@@ -69,7 +69,6 @@ export default class NameAddressForm extends Component {
             getMiddleName: props.getMiddleName,
             getSpouseInfo: props.getSpouseInfo,
             totalGift: 0,
-            Clublevel: props.hydratedData ? props.hydratedData.Clublevel : '',
             submitted: false,
             submitting: false,
             subscriptions: [...props.subscriptions],
@@ -322,7 +321,6 @@ export default class NameAddressForm extends Component {
                 Address2,
                 APIAccessID,
                 City,
-                Clublevel,
                 ContactSource,
                 Country,
                 DonationType,
@@ -349,7 +347,6 @@ export default class NameAddressForm extends Component {
                 UrlReferer,
                 Zip,
                 ClientBrowser,
-                ClientIP,
                 ShipToAddress1,
                 ShipToAddress2,
                 ShipToCity,
@@ -364,7 +361,6 @@ export default class NameAddressForm extends Component {
         // console.log({data})
         fetch(proxy, {
             method: 'POST',
-            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -374,8 +370,10 @@ export default class NameAddressForm extends Component {
         .then(parseJSON)
         .then(json=>{
             const msg = json;
+            // console.log(msg)
             self.props.submitForm({msg, data})
         }).catch(error=>{
+            console.log({error});
             logError({error});
             this.setState({submitting: false})
         });
