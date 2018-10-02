@@ -88,6 +88,7 @@ class App extends Component {
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
         this.renderReceiptPage = this.renderReceiptPage.bind(this)
+        this.handleWordpress = this.handleWordpress.bind(this)
     }
 
     componentDidMount() {
@@ -95,8 +96,8 @@ class App extends Component {
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
             const generator = document.head.querySelector("[name='generator']")
             const isWordpress = generator && generator.content.toLowerCase().includes('wordpress');
-            const base = this.state.mode == "local" ? "http://10.100.43.50:8080/config/" : "";
-            const cssConfigUrl = isWordpress ? "/wp-giving/css-config.json" : `${base}css-config.json`;
+            const base = this.state.mode == "local" ? "http://10.100.43.50:8080/config/" : this.handleWordpress(isWordpress);
+            const cssConfigUrl = `${base}css-config.json`;
             fetch(cssConfigUrl)
             .then(checkStatus)
             .then(parseJSON)
@@ -146,7 +147,7 @@ class App extends Component {
             }).catch(logError)
 
             // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            const formConfigUrl = isWordpress ? "/wp-giving/form-config.json" : `${base}form-config.json`;
+            const formConfigUrl = `${base}form-config.json`;
             fetch(formConfigUrl)
             .then(checkStatus)
             .then(parseJSON)
@@ -157,6 +158,18 @@ class App extends Component {
 
             }).catch(logError);
         }
+    }
+
+    /**
+     * Function to determine campaign name for accessing config files from CBNGiving-Plugin for WP
+     * @param {Boolean} isWordpress - only return value if True
+     * @returns {String} - URL base for Wordpress based on giving page URL
+     */
+    handleWordpress(isWordpress) {
+        if (isWordpress) {
+            return `/${window.location.pathname.split("/").filter(el => el !== "").pop()}/`
+        }
+        return ''
     }
 
     submitForm({msg, data}) {
