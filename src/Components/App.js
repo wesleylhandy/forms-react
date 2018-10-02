@@ -167,7 +167,7 @@ class App extends Component {
      */
     handleWordpress(isWordpress) {
         if (isWordpress) {
-            return `/${window.location.pathname.split("/").filter(el => el !== "").pop()}/`
+            return `/wp-giving/${window.location.pathname.split("/").filter(el => el !== "").pop()}/`
         }
         return ''
     }

@@ -112,7 +112,7 @@ h3.form-header,
     height: auto;
     width: 100%;
     max-width: 400px;
-    margin: var(--base-font-size) auto;
+    margin: 20px auto;
 }
 
 .askbutton {
