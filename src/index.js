@@ -24,7 +24,7 @@ async function getConfiguration() {
     const isWordpress = generator && generator.content.toLowerCase().includes('wordpress');
     const base = mode == "local" ? "http://10.100.43.50:8080/config/" : handleWordpress(isWordpress);
     const cssConfigUrl = `${base}css-config.json`;
-    let cssConfig;
+    let cssConfig = {};
     try {
         let vars = await loadJson(cssConfigUrl);
         const styleEl = document.createElement('style');
