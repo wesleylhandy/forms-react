@@ -110,6 +110,11 @@ router.get('/globals', (req, res) => {
     })
 })
 
+router.get('/api', (req, res) => {
+    res.statusCode = 403;
+    res.json({Error: "Not for Snooping Eyes"});
+});
+
 router.post('/api', (req, res) => {
     const {data} = req.body
     if (!data) {

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import main from './styles/main.css'
 import form from './styles/form.css'
 
-import {cryptCookie} from './helpers/crypt'
+import {crypt} from './helpers/crypt'
 
 export default class PaymentForm extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ export default class PaymentForm extends Component {
     componentDidMount() {
         const {formData} = this.props;
         const lifetime = 60 * 1000; // 60 seconds * 1000 milliseconds
-        const cookie = cryptCookie({formData, lifetime})
+        const cookie = crypt({formData, lifetime})
         localStorage.setItem("store", cookie);
 
         document.forms.hiddenform.submit.click();

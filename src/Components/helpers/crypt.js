@@ -5,7 +5,7 @@ const NodeRSA = require('node-rsa');
  * @param {String} data - stringified JSON with structure
  * @returns {Object|null}
  */
-export function readCookie(data) {
+export function read(data) {
     const parsed = JSON.parse(data)
     // console.log({parsed})
     if (typeof parsed === "object" && parsed.hasOwnProperty("f") && parsed.hasOwnProperty("d") && parsed.hasOwnProperty("q")) {
@@ -27,7 +27,7 @@ export function readCookie(data) {
  * @param {Number} lifetime - number of milliseconds in the future to set expiration
  * @returns {String} value of the cookie, encrtyped and stringified
  */
-export function cryptCookie({formData, lifetime}) {
+export function crypt({formData, lifetime}) {
     const expires = Date.now() + lifetime;
     const rsa = new NodeRSA({b: 512});
     const stringyFormData = JSON.stringify(formData)

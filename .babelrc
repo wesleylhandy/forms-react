@@ -5,7 +5,14 @@
             "webpackHotModuleReloading": true,
             "handleMissingStyleName": "warn"
         }],
-        "react-hot-loader/babel"
+        "react-hot-loader/babel",
+        "transform-object-rest-spread", [
+            "transform-runtime",
+            {
+                "polyfill": false,
+                "regenerator": true
+            }
+        ]
     ],
     "presets": [
         ["env", { "useBuiltIns": true }], "react"

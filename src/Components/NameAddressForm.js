@@ -16,7 +16,7 @@ import SelectGroup from './SelectGroup'
 
 import { canadianProvinces, countries, other, usMilitary, usStates, usTerritories } from '../config/dropdowns.json';
 import logError, {checkStatus, parseJSON, parseTXT} from './helpers/xhr-errors';
-import {cryptCookie} from './helpers/crypt';
+import {crypt} from './helpers/crypt';
 
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
@@ -198,7 +198,7 @@ export default class NameAddressForm extends Component {
 
             const formData = {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Phoneareacode, Phoneexchange, Phonenumber, Spousename, Suffix, State, Title, Zip}
             const lifetime = 30 * 24 * 60 * 60 * 1000 // n days = 60 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-            const cookie = cryptCookie({formData, lifetime});
+            const cookie = crypt({formData, lifetime});
             localStorage.setItem("info", cookie);
         } else {
             localStorage.removeItem("info");
