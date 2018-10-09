@@ -26,16 +26,15 @@ async function getConfiguration() {
     const cssConfigUrl = `${base}css-config.json`;
     let cssConfig;
     try {
-        cssConfig = await loadJson(cssConfigUrl);
+        let vars = await loadJson(cssConfigUrl);
         const styleEl = document.createElement('style');
         styleEl.type = 'text/css';
         styleEl.id = "imported-vars";
         let innerStyle = '';
 
-        cssConfig.forEach(variable => {
+        vars.forEach(variable => {
             for (let key in variable) {
                 if (!/^(externalFont)\S*$/.test(key)) {
-
                     const pair = key + ': ' + variable[key] + ';';
                     innerStyle += pair;                     
                 } else {
@@ -45,6 +44,7 @@ async function getConfiguration() {
                     link.href = variable[key];
                     document.head.appendChild(link);
                 }
+                cssConfig[key] = variable;
             }
         })
         // only append to DOM if innerstyle is not an empty string
