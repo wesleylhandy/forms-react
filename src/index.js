@@ -11,7 +11,7 @@ if (process) {
     process.title = "ReactForm"
 }
 
-const mode = "local";
+const mode = "development";
 
 async function getConfiguration() {
     
@@ -63,7 +63,7 @@ async function getConfiguration() {
     try {
         initialState = await loadJson(formConfigUrl);
     } catch (err) {
-        console.err(err);
+        console.error(err);
         alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
     }
 
