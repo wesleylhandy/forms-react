@@ -44,7 +44,7 @@ async function getConfiguration() {
                     link.href = variable[key];
                     document.head.appendChild(link);
                 }
-                cssConfig[key] = variable;
+                cssConfig[key] = variable[key];
             }
         })
         // only append to DOM if innerstyle is not an empty string
