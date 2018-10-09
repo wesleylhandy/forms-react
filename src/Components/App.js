@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
 import 'whatwg-fetch'
-import cssVars from 'css-vars-ponyfill';
+
 
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
 import RedirectForm from './RedirectForm';
-import Spinner from './Spinner'
 
 import './styles/form.css'
-import logError, {checkStatus, parseJSON} from './helpers/xhr-errors';
-import {readCookie} from "./helpers/crypt"
 
-
+import {read} from "./helpers/crypt"
 
 class App extends Component {
     constructor(props) {
@@ -23,13 +20,13 @@ class App extends Component {
 
         if (store) {
             // console.log({store})
-            formData = readCookie(store)
+            formData = read(store)
         }
         
         if (formData === null) {
             localStorage.removeItem('store')
             if (info) {
-                formData = readCookie(info)
+                formData = read(info)
             }
         }
 
@@ -38,38 +35,7 @@ class App extends Component {
         }
 
         this.state = {
-            mode: "development",
-            givingFormat: "buttons",
-            getMiddleName:  false,
-            getSuffix:  false,
-            getSpouseInfo:  false,
-            monthlyOption: true,
-            shipping: false,
-            international: false,
-            getPhone: true,
-            products:  [],
-            numProducts: 0,
-            additionalGift: false,
-            additionalGiftMessage:  "Please consider giving an additional gift to support the ministries of CBN",
-            numFunds:  0,
-            funds: [],
-            subscriptions: [],
-            monthlyAmounts:  [7, 15, 30],
-            singleAmounts: [25, 50, 100, 250, 300],
-            showGivingArray: true,
-            MotivationText: "041181",
-            monthlyPledgeData:  {
-                "DetailCprojCredit": "043250",
-                "DetailCprojMail": "043251"
-            },
-            singlePledgeData:  {
-                "DetailCprojCredit": "043250",
-                "DetailCprojMail": "043251"
-            },
-            AddContactYN:  "Y",
-            ContactSource: "700Club Donor",
-            ActivityName: "700Club_Donation_Activity", 
-            SectionName: "700Club",
+            ...props.config.initialState,
             submitted: false,
             confirmed: false,
             finalized: false,
@@ -79,97 +45,12 @@ class App extends Component {
             formData: formData,
             donorID: null,
             hydratedData: formData,
-            configured: false,
-            proxy: null,
-            cssConfig: {},
-            cssLoaded: false,
-            configLoaded: false
+            cssConfig: {...props.config.cssConfig},
+
         }
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
         this.renderReceiptPage = this.renderReceiptPage.bind(this)
-        this.handleWordpress = this.handleWordpress.bind(this)
-    }
-
-    componentDidMount() {
-        if (!this.state.configured) {
-            // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            const generator = document.head.querySelector("[name='generator']")
-            const isWordpress = generator && generator.content.toLowerCase().includes('wordpress');
-            const base = this.state.mode == "local" ? "http://10.100.43.50:8080/config/" : this.handleWordpress(isWordpress);
-            const cssConfigUrl = `${base}css-config.json`;
-            fetch(cssConfigUrl)
-            .then(checkStatus)
-            .then(parseJSON)
-            .then(vars=>{
-
-                const {cssConfig} = this.state;
-
-                // create styleEL for IE
-                const styleEl = document.createElement('style');
-                styleEl.type = 'text/css';
-                styleEl.id = "imported-vars";
-                let innerStyle = '';
-
-                vars.forEach(variable => {
-                    for (let key in variable) {
-                        if (!/^(externalFont)\S*$/.test(key)) {
-
-                            const pair = key + ': ' + variable[key] + ';';
-                            innerStyle += pair;                     
-                        } else {
-                            const link = document.createElement('link');
-                            link.rel = "stylesheet";
-                            link.type = "text/css";
-                            link.href = variable[key];
-                            document.head.appendChild(link);
-                        }
-                        cssConfig[key] = variable[key];
-                    }
-                })
-                // only append to DOM if innerstyle is not an empty string
-
-                styleEl.innerHTML = ":root{" + innerStyle + "}";
-                document.head.appendChild(styleEl)
-                let updated = false
-                const self = this
-                cssVars({
-                    updateURLs: false,
-                    watch: true,
-                    onComplete(cssText, styleNode) {
-                        updated = true;
-                        self.setState({cssConfig, cssLoaded: true, configured: self.state.configLoaded ? true : false})
-                    }
-                });
-                if (!updated) {
-                    styleEl.onload = () => this.setState({cssConfig, cssLoaded: true, configured: this.state.configLoaded ? true : false})
-                }
-            }).catch(logError)
-
-            // in production use relative path here. Resources must be in a config folder within the same directory as the page
-            const formConfigUrl = `${base}form-config.json`;
-            fetch(formConfigUrl)
-            .then(checkStatus)
-            .then(parseJSON)
-            .then(initialState=>{
-
-                this.setState(initialState);
-                this.setState({configLoaded: true, configured: this.state.cssLoaded ? true : false})
-
-            }).catch(logError);
-        }
-    }
-
-    /**
-     * Function to determine campaign name for accessing config files from CBNGiving-Plugin for WP
-     * @param {Boolean} isWordpress - only return value if True
-     * @returns {String} - URL base for Wordpress based on giving page URL
-     */
-    handleWordpress(isWordpress) {
-        if (isWordpress) {
-            return `/wp-giving/${window.location.pathname.split("/").filter(el => el !== "").pop()}/`
-        }
-        return ''
     }
 
     submitForm({msg, data}) {
@@ -205,11 +86,9 @@ class App extends Component {
                             hydrateForm={this.hydrateForm}
                             renderReceiptPage={this.renderReceiptPage}
                         /> 
-                    ) : this.state.configured ? (
-                        <NameAddressForm {...this.state } submitForm={ this.submitForm }/> 
                     ) : (
-                        <Spinner />        
-                    )           
+                        <NameAddressForm { ...this.state } submitForm={ this.submitForm }/> 
+                    )        
                 } 
              </div>
         )
