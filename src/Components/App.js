@@ -45,7 +45,7 @@ class App extends Component {
             formData: formData,
             donorID: null,
             hydratedData: formData,
-            cssConfig: {...props.config.cssConfig},
+            cssConfig: [...props.config.cssConfig],
 
         }
         this.submitForm = this.submitForm.bind(this)

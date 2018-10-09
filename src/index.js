@@ -1,6 +1,7 @@
 import "babel-polyfill";
 import cssVars from 'css-vars-ponyfill';
-import 'whatwg-fetch'
+import 'whatwg-fetch';
+import Promise from 'promise-polyfill';
 
 import React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -9,6 +10,10 @@ import App from './Components/App'
 
 if (process) {
     process.title = "ReactForm"
+}
+
+if (!window.Promise) {
+    window.Promise = Promise;
 }
 
 const mode = "development";
