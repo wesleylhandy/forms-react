@@ -9,7 +9,7 @@
         "start": "parcel index.html",
         "stop": "pkill SIGINT ProxyServer",
         "poststop": "rm -rf dist/ .cache/",
-        "build": "parcel build src/index.js -d src/dist"
+        "build": "parcel build src/index.js -d src/dist/v1"
     },
     "keywords": [],
     "author": "Wesley L. Handy, Internet Developer II, The Christian Broadcasting Network, Inc.",
