@@ -4,6 +4,7 @@ import main from './styles/main.css'
 import form from './styles/form.css'
 
 import {crypt} from './helpers/crypt'
+import {scrollToPoint, offsetTop} from './helpers/scrollToPoint'
 
 export default class PaymentForm extends Component {
     constructor(props) {
@@ -20,6 +21,12 @@ export default class PaymentForm extends Component {
         localStorage.setItem("store", cookie);
 
         document.forms.hiddenform.submit.click();
+        
+        // scroll to top of form
+        const target = document.getElementById('react-form-top');
+        const top = offsetTop(target);
+        // console.log({top})
+        scrollToPoint(top);
     }
     render() {
         const {formData} = this.props;

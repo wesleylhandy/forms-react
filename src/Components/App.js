@@ -73,7 +73,7 @@ class App extends Component {
 
     render() {
           return ( 
-            <div styleName='form-wrapper'> 
+            <div styleName='form-wrapper' id="react-form-top"> 
                 { 
                     this.state.finalized ? (
                         <RedirectForm thankYouUrl={this.state.thankYouUrl} receiptVars={this.state.finalizedData} />

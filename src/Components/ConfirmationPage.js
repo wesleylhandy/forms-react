@@ -45,6 +45,7 @@ export default class ConfirmationPage extends Component {
             const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUri} = json
             this.setState({ready: true, devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri})
         }).catch(logError)
+        
     }
 
     handleMessage(e) {

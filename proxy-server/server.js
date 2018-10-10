@@ -126,8 +126,6 @@ router.post('/api', (req, res) => {
 
     let ClientIP;
     data.APIAccessID = process.env.alpha
-    data.UrlReferer = req.headers['referer']
-    data.ClientBrowser = req.headers['user-agent']
     if (req.headers['x-forwarded-for'] && req.headers['x-forwarded-for'].split(',')[0]) {
         ClientIP = req.headers['x-forwarded-for'].split(',')[0]
     }
@@ -159,7 +157,7 @@ router.post('/api', (req, res) => {
         }
     })
     .then(response => response.text())
-    .then(msg => res.send({msg}))
+    .then(msg => res.send(msg))
     .catch(error => {
         res.statusCode = error.status
         res.send({error})

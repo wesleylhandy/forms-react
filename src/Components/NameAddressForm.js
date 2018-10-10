@@ -358,7 +358,7 @@ export default class NameAddressForm extends Component {
             }
         //flatten subscription information
         subscriptions.forEach(sub=> data[sub.key]=sub.value);
-        // console.log({data})
+        // console.log({proxy})
         fetch(proxy, {
             method: 'POST',
             headers: {
@@ -828,6 +828,8 @@ export default class NameAddressForm extends Component {
     }
 
     render() {
+        const { errors } = this.state;
+        const hasErrors = Object.values(errors).filter(val => val && val.length > 0).length > 0;
         return (
             <form id="react-form" autoComplete="off" onSubmit={this.handleSubmit}>
                 <div styleName={this.state.showGivingArray ? "form.form-panel" : "form.form-panel main.hidden"}>
@@ -1004,8 +1006,9 @@ export default class NameAddressForm extends Component {
                         </div>
                     </fieldset>
                     <fieldset styleName="form.fieldset">
-                        <div styleName="form.form-row">
+                        <div styleName="form.form-row form.submit-row">
                             <input type="submit" styleName="form.submit-button" id="submit" onClick={this.handleSubmit} disabled={this.state.submitting} value="Continue to Payment &#10142;"/>
+                            <div styleName="form.error form.submit-error">{ hasErrors && errors.amount ? errors.amount : hasErrors ? "Please scroll up to correct errors." : "" }</div>
                         </div>
                     </fieldset>
                     <div id="seals"></div>

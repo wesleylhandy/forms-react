@@ -5,8 +5,8 @@
 
 .form-group {
     box-sizing: border-box;
-    margin-bottom: calc(var(--base-font-size) * .5);
-    margin-top: calc(var(--base-font-size) * .5);
+    margin-bottom: calc(var(--base-font-size) * .6);
+    margin-top: calc(var(--base-font-size) * .6);
     position: relative;
 }
 

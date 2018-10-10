@@ -108,6 +108,7 @@ h3.form-header,
 }
 
 .askarray {
+    position: relative;
     box-sizing: border-box;
     height: auto;
     width: 100%;
@@ -265,8 +266,11 @@ h5.ccDayOfMonth {
     white-space: nowrap;
 }
 
-.error.amount-error {
-    text-align: center;
+.error.amount-error,
+.error.submit-error {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: calc(0% - 20px);
 }
 
 .select-product,
@@ -336,6 +340,10 @@ h5.ccDayOfMonth {
     text-align: right;
 }
 
+.form-row.submit-row {
+    position: relative;
+}
+
 input[type="submit"].submit-button {
     background: var(--primary-color);
     box-sizing: border-box;
@@ -360,6 +368,13 @@ input[type="submit"].submit-button:hover {
     background-color: var(--btn-text-color);
     color: var(--primary-color);
     border-color: var(--primary-color);
+}
+
+input[type="submit"].submit-button>.error {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: unset;
+    margin-top: 10px;
 }
 
 .invalid {

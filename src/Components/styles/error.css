@@ -4,7 +4,7 @@
     color: var(--error-color);
     width: auto;
     left: 5px;
-    bottom: calc(0% - 11px);
+    bottom: calc(0% - 13px);
     font-family: var(--error-font-family);
     font-style: var(--error-font-style);
     font-weight: var(--error-font-weight);
