@@ -150,16 +150,18 @@ export default class NameAddressForm extends Component {
     }
 
     componentDidMount(){
-        this.setState({ClientBrowser: window.navigator.userAgent, UrlReferer: window.location.href})
-
+        // Get UserAgent and URL Referer from window - for Referer, omit window.location.search
+        this.setState({ClientBrowser: window.navigator.userAgent, UrlReferer: window.location.origin + window.location.pathname})
+        // check to see if this is a postback from confirmation page
         if (this.props.hydratedData && this.props.hydratedData.MultipleDonations) {
+            // initialize variables in such a way as to not mutate state
             let amount = 0, isMonthly = false;
-            
-            const { items } = this.state.cart;
+            const items = [...this.state.cart.items];
             const { products } = this.state.productOptions
-            let { productInfo, productsOrdered } = this.state
-            const { MultipleDonations } = this.props.hydratedData;
+            let productInfo = [...this.state.productInfo], { productsOrdered } = this.state
+            const MultipleDonations = [...this.props.hydratedData];
 
+            // loop through multiple donations and reconstruct virual cart
             for (let i = 0; i < MultipleDonations.length; i++) {
                 const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount} = MultipleDonations[i];
                 const type = DetailName === "MP" || DetailName === "SPGF" ? "donation" : "product";
@@ -189,18 +191,25 @@ export default class NameAddressForm extends Component {
     }
 
     componentWillUnmount() {
+        // if user has selected to save personal info,  
         const {savePersonalInfo} = this.state.fields
         if (savePersonalInfo) {
+            // get all user information from form
             const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, phone} = this.state.fields
             const Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
             Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "",
             Phonenumber =  phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
 
             const formData = {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Phoneareacode, Phoneexchange, Phonenumber, Spousename, Suffix, State, Title, Zip}
-            const lifetime = 30 * 24 * 60 * 60 * 1000 // n days = 60 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-            const cookie = crypt({formData, lifetime});
-            localStorage.setItem("info", cookie);
+            // lifetime of stored data on this form
+            const days = 30
+            //convert days into milliseconds
+            const lifetime = days * 24 * 60 * 60 * 1000 // n days = x days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+            // encrypt and add to local storage,
+            const info = crypt({formData, lifetime});
+            localStorage.setItem("info", info);
         } else {
+            // otherwise remove any stored data from local storage
             localStorage.removeItem("info");
         }
 
@@ -211,7 +220,7 @@ export default class NameAddressForm extends Component {
      * @param {Event} e 
      */
     handleRadioClick(e) {
-        const items = this.state.cart.items;
+        const items = [...this.state.cart.items];
         const found = items.findIndex(el=>el && el.type == "donation")
         const id = e.target.id;
         if (found > -1) {
@@ -238,7 +247,7 @@ export default class NameAddressForm extends Component {
         let value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        const {fields, errors } = this.state;
+        const fields = {...this.state.fields},  errors = {...this.state.errors};
         const error = this.validateInput(false, name, value);
         errors[name] = error;     
         fields[name] = value;
@@ -253,7 +262,7 @@ export default class NameAddressForm extends Component {
         this.setState({submitting: true})
               
         //THINK THROUGH THIS LOGIC A LITTLE MORE
-        const {items} = this.state.cart;
+        const items = [...this.state.cart.items];
         const found = items.findIndex(el=>el && el.type == "donation")
         if (items.length == 0 || (items.length == 1 && found > -1 && items[found].PledgeAmount == 0)) {
             const errors = this.state.errors
@@ -261,7 +270,7 @@ export default class NameAddressForm extends Component {
             return this.setState({submitting: false, errors})
         }
 
-        const {fields, errors} = this.state;
+        const {fields} = this.state, errors = {...this.state.errors};
         let isValidForm = true;
         const fieldNames = Object.keys(fields);
         // console.log({fieldNames})
@@ -539,7 +548,7 @@ export default class NameAddressForm extends Component {
                         // console.log({json})
                         const {returnCode, returnMessage, city, state, zip} = json;
                         if (returnCode == 1) {
-                            const {fields} = this.state;
+                            const fields = {...this.state.fields};
                             const newCity = city.split(";")[0]
                             fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
                             fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
