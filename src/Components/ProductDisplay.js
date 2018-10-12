@@ -76,7 +76,7 @@ export default class ProductDisplay extends Component {
      * @param {Number} hydratedAmount - Value of amount pledge as additional gift
      */
     hydrateProducts(productInfo, hydratedAmount) {
-        const {products, fields} = this.state;
+        const {products} = this.state, fields = {...this.state.fields};
     
         productInfo.forEach(product=>{
             const {idx, quantity} = product;
@@ -94,7 +94,7 @@ export default class ProductDisplay extends Component {
         let value = parseInt(target.value);
         const name = target.name;
         
-        const {fields, errors} = this.state;
+        const fields = {...this.state.fields}, errors = {...this.state.errors};
         let {totalGift} = this.state;
 
         if (name === "additionalGift") {
