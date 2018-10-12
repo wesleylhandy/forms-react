@@ -1,7 +1,7 @@
 .cache
 node_modules
 .env
-./dist
+dist
 package-lock.json
 proxy-server/proxy.aspx
 proxy-server/proxy.php

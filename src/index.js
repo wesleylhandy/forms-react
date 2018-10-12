@@ -17,7 +17,7 @@ if (!window.Promise) {
     window.Promise = Promise;
 }
 
-const mode = "development";
+const mode = "local";
 
 async function getConfiguration() {
     
@@ -25,30 +25,27 @@ async function getConfiguration() {
     const isWordpress = generator && generator.content.toLowerCase().includes('wordpress');
     const base = mode == "local" ? "http://10.100.43.50:8080/config/" : handleWordpress(isWordpress);
     const cssConfigUrl = `${base}css-config.json`;
-    let cssConfig = {};
+    let cssConfig;
     try {
-        let vars = await loadJson(cssConfigUrl);
+        cssConfig = await loadJson(cssConfigUrl);
         const styleEl = document.createElement('style');
         styleEl.type = 'text/css';
         styleEl.id = "imported-vars";
         let innerStyle = '';
 
-        vars.forEach(variable => {
-            for (let key in variable) {
-                if (!/^(externalFont)\S*$/.test(key)) {
-                    const pair = key + ': ' + variable[key] + ';';
-                    innerStyle += pair;                     
-                } else {
-                    const link = document.createElement('link');
-                    link.rel = "stylesheet";
-                    link.type = "text/css";
-                    link.href = variable[key];
-                    document.head.appendChild(link);
-                }
-                cssConfig[key] = variable[key];
+        for (let key in cssConfig) {
+            if (!/^(externalFont)\S*$/.test(key)) {
+                const pair = key + ': ' + cssConfig[key] + ';';
+                innerStyle += pair;                     
+            } else {
+                const link = document.createElement('link');
+                link.rel = "stylesheet";
+                link.type = "text/css";
+                link.href = cssConfig[key];
+                document.head.appendChild(link);
             }
-        })
-        // only append to DOM if innerstyle is not an empty string
+        }
+         // only append to DOM if innerstyle is not an empty string
 
         styleEl.innerHTML = ":root{" + innerStyle + "}";
         document.head.appendChild(styleEl)

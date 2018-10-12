@@ -4,7 +4,6 @@
     "getMiddleName": false,
     "getSuffix": false,
     "getSpouseInfo": false,
-    "monthlyOption": true,
     "shipping": true,
     "international": true,
     "getPhone": true,
@@ -71,8 +70,12 @@
     "additionalGift": false,
     "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
     "showGivingArray": true,
+    "monthlyOption": true,
     "monthlyAmounts": [3, 7, 15, 30, 50],
     "singleAmounts": [25, 50, 100, 250, 300],
+    "defaultOption": "monthly",
+    "defaultAmount": 15,
+    "addGivingDescription": false,
     "monthlyPledgeData": {
         "DetailCprojCredit": "043250",
         "DetailCprojMail": "043251"
