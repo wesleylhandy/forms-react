@@ -18,7 +18,7 @@ if (!window.Promise) {
     window.Promise = Promise;
 }
 
-const mode = "local";
+const mode = "development";
 
 async function getConfiguration() {
     

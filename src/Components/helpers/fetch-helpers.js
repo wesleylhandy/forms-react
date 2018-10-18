@@ -9,7 +9,6 @@ export async function callApi(uri, options = {}) {
     try {
         data = await loadData(uri, options);
     } catch (err) {
-        console.error({err});
         throw new Error(err);
     }
 

@@ -587,6 +587,7 @@ export default class NameAddressForm extends Component {
             return (
                 <div styleName="form.monthlyGivingDay">
                     <h5 styleName="form.ccDayOfMonth">Charge automatically on day&nbsp;
+                        <label htmlFor="Monthlypledgeday" styleName="main.hidden">Select Date</label>
                         <select styleName="form.ccdate" name="Monthlypledgeday" onChange={self.handleInputChange} value={Monthlypledgeday}>
                             {options}
                         </select>
