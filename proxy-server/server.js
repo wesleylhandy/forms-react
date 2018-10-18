@@ -159,6 +159,7 @@ router.post('/api', (req, res) => {
     .then(response => response.text())
     .then(msg => res.send(msg))
     .catch(error => {
+        console.log({error})
         res.statusCode = error.status
         res.send({error})
     })

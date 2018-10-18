@@ -8,6 +8,7 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import App from './Components/App'
+import { callApi } from './Components/helpers/fetch-helpers'
 
 if (process) {
     process.title = "ReactForm"
@@ -23,11 +24,11 @@ async function getConfiguration() {
     
     const generator = document.head.querySelector("[name='generator']")
     const isWordpress = generator && generator.content.toLowerCase().includes('wordpress');
-    const base = mode == "local" ? "http://10.100.43.50:8080/config/" : handleWordpress(isWordpress);
-    const cssConfigUrl = `${base}css-config.json`;
+    const base = mode == "local" ? "http://10.100.43.50:8080/config/" : "";
+    const cssConfigUrl = isWordpress ? handleWordpress(isWordpress) + "?type=css_setup" : `${base}css-config.json`;
     let cssConfig;
     try {
-        cssConfig = await loadJson(cssConfigUrl);
+        cssConfig = await callApi(cssConfigUrl);
         const styleEl = document.createElement('style');
         styleEl.type = 'text/css';
         styleEl.id = "imported-vars";
@@ -61,10 +62,10 @@ async function getConfiguration() {
         alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
     }
 
-    const formConfigUrl = `${base}form-config.json`;
+    const formConfigUrl = isWordpress ? handleWordpress(isWordpress) + "?type=form_setup" : `${base}form-config.json`;
     let initialState;
     try {
-        initialState = await loadJson(formConfigUrl);
+        initialState = await callApi(formConfigUrl);
     } catch (err) {
         console.error(err);
         alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
@@ -73,24 +74,6 @@ async function getConfiguration() {
     return { cssConfig, initialState } 
 }
 
-class HttpError extends Error {
-    constructor(response) {
-        super(`${response.status} for ${response.url}`);
-        this.name = 'HttpError';
-        this.response = response;
-    }
-}
-  
-async function loadJson(url) {
-    let response = await fetch(url);
-    if (response.status == 200) {
-        return response.json();
-    } else {
-        throw new HttpError(response);
-    }
-}
-
-
 /**
 * Function to determine campaign name for accessing config files from CBNGiving-Plugin for WP
 * @param {Boolean} isWordpress - only return value if True
@@ -98,7 +81,7 @@ async function loadJson(url) {
 */
 function handleWordpress(isWordpress) {
     if (isWordpress) {
-        return `/wp-giving/${window.location.pathname.split("/").filter(el => el !== "").pop()}/`
+        return `/wp-json/cbngiving/v1/${window.location.pathname.split("/").filter(el => el !== "").pop()}`
     }
     return ''
 }

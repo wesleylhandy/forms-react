@@ -1,0 +1,21 @@
+export const formErrors = [{"Address Line 1 is required and must not exceed required length or contain HTML Markup": "Address1"},
+{"Address Line 2 must not exceed required length or contain HTML Markup": "Address2"},
+{"Country is required": "Country"},
+{"City, State, Zip Validatation Failed": "Zip"},
+{"Invalid Title": "Title"},
+{"First name is required and must not exceed required length or contain HTML Markup": "Firstname"},
+{"Last name is required and must not exceed required length or contain HTML Markup": "Lastname"},
+{"Middle name must not exceed required length or contain HTML Markup": "Middlename"},
+{"Suffix must not exceed required length or contain HTML Markup": "Suffix"},
+{"Spouse name must not exceed required length or contain HTML Markup": "Spousename"},
+{"Invalid Phone Number": "phone"},
+{"Invalid Email Address": "Emailaddress"},
+{"Monthly amount required -- minimum is a dollar": "amount"},
+{"Single amount required -- minimum is a dollar": "amount"}]
+
+export const breakingErrors = ["Invalid Transaction Type -- Montlhy, Single, or Product Only",
+"Charge day required for Monthly Credit Card Gifts",
+"Valid Client IP is required",
+"Valid Client Browser name is required",
+"Missing Donation Details",
+"Motivation text is required and must not exceed required length or contain HTML Markup"]

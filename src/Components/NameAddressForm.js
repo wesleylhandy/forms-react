@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import 'whatwg-fetch'
 
 import main from './styles/main.css'
 import flex from './styles/flex.css'
@@ -15,7 +14,8 @@ import InputGroup from './InputGroup'
 import SelectGroup from './SelectGroup'
 
 import { canadianProvinces, countries, other, usMilitary, usStates, usTerritories } from '../config/dropdowns.json';
-import logError, {checkStatus, parseJSON, parseTXT} from './helpers/xhr-errors';
+import {formErrors, breakingErrors} from './helpers/error-types';
+import {callApi} from './helpers/fetch-helpers';
 import {crypt} from './helpers/crypt';
 
 
@@ -255,7 +255,7 @@ export default class NameAddressForm extends Component {
         this.setState({ fields, errors });
     }
 
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
         if (this.state.submitting) return // ie. disallow multiple submissions
 
@@ -368,24 +368,23 @@ export default class NameAddressForm extends Component {
         //flatten subscription information
         subscriptions.forEach(sub=> data[sub.key]=sub.value);
         // console.log({proxy})
-        fetch(proxy, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(checkStatus)
-        .then(parseJSON)
-        .then(json=>{
-            const msg = json;
-            // console.log(msg)
-            self.props.submitForm({msg, data})
-        }).catch(error=>{
-            console.log({error});
-            logError({error});
+        try {
+            const msg = await callApi(proxy, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            this.props.submitForm({msg, data})
+        } catch (err) {
+            console.log({err});
+            if (err) {
+                alert('There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700');
+            }
             this.setState({submitting: false})
-        });
+        }
     }
     /**
      * Sets the state with new product order information from the product display
@@ -539,29 +538,7 @@ export default class NameAddressForm extends Component {
                 if (value && this.state.fields[country] == "US" && !(zip_regex.test(value))) {
                     error = "Please enter a valid US Zip Code"
                 } else if (value && zip_regex.test(value) && !submitting) {
-                    const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "http://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
-                    const url = `${base}${value}`;
-                    fetch(url)
-                    .then(checkStatus)
-                    .then(parseJSON)
-                    .then(json=>{
-                        // console.log({json})
-                        const {returnCode, returnMessage, city, state, zip} = json;
-                        if (returnCode == 1) {
-                            const fields = {...this.state.fields};
-                            const newCity = city.split(";")[0]
-                            fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
-                            fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
-                            fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
-                            if (name == "Zip") fields["Country"] = "United States";
-                            this.setState({fields})
-                        } else {
-                            error = returnMessage
-                        }
-                    })
-                    .catch(error=>{
-                        logError(error);
-                    });
+                    error = this.callZipCityStateService(this.state.mode).then(success=>"").catch(err=>err);
                 } else if (!value && submitting && ShipToYes && name == "ShipToZip") {
                     error = "Required"
                 } else if (!value && submitting && name == "Zip") {
@@ -570,6 +547,29 @@ export default class NameAddressForm extends Component {
                 break;
         }
         return error
+    }
+
+    async callZipCityStateService(mode) {
+        const base = mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "http://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+        const url = `${base}${value}`;
+        try {
+            const {returnCode, returnMessage, city, state, zip} = await callApi(url);
+            if (returnCode == 1) {
+                const fields = {...this.state.fields};
+                const newCity = city.split(";")[0]
+                fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
+                fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
+                fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
+                if (name == "Zip") fields["Country"] = "United States";
+                this.setState({fields});
+                return true;
+            } else {
+                throw new Error(returnMessage);
+            }
+        } catch (err) {
+            console.error(err);
+            return true;
+        }
     }
 
 

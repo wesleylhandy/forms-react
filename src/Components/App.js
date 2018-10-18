@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
-import 'whatwg-fetch'
-
 
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
