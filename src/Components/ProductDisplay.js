@@ -67,7 +67,7 @@ export default class ProductDisplay extends Component {
      * @returns {Number} value of Total Gift
      */
     calculateTotalGift(products, productInfo, additionalGift) {
-        return productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + additionalGift
+        return (products.length && productInfo.length) ? productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + additionalGift : additionalGift;
     }
 
     /**
