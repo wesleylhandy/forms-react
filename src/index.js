@@ -10,15 +10,15 @@ import * as ReactDOM from 'react-dom';
 import App from './Components/App'
 import { callApi } from './Components/helpers/fetch-helpers'
 
+let mode;
 if (process) {
     process.title = "ReactForm"
+    mode = "local";
 }
 
 if (!window.Promise) {
     window.Promise = Promise;
 }
-
-const mode = "development";
 
 async function getConfiguration() {
     

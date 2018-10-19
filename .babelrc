@@ -1,18 +1,12 @@
 {
     "plugins": [
         ["react-css-modules", {
-            "generateScopedName": "[path]__[name]__[local]__[hash:base64:5]",
+            "generateScopedName": "[local]__[hash:base64:5]",
             "webpackHotModuleReloading": true,
             "handleMissingStyleName": "warn"
         }],
         "react-hot-loader/babel",
-        "transform-object-rest-spread", [
-            "transform-runtime",
-            {
-                "polyfill": false,
-                "regenerator": true
-            }
-        ]
+        "transform-object-rest-spread"
     ],
     "presets": [
         ["env", { "useBuiltIns": true }], "react"
