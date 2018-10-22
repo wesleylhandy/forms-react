@@ -51,7 +51,7 @@ export default class ConfirmationPage extends Component {
     }
 
     handleMessage(e) {
-        const data = JSON.parse(e.data)
+        const data = e.data ? JSON.parse(e.data) : {}
         if (data.type !== "go back clicked" && data.type !=="render receipt") {
             return;
         } 

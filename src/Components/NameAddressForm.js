@@ -17,6 +17,7 @@ import { canadianProvinces, countries, other, usMilitary, usStates, usTerritorie
 import { getErrorType } from './helpers/error-types';
 import { callApi } from './helpers/fetch-helpers';
 import { crypt } from './helpers/crypt';
+import { runInThisContext } from 'vm';
 
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
@@ -148,6 +149,7 @@ export default class NameAddressForm extends Component {
         this.updateDonation = this.updateDonation.bind(this)
         this.updateProducts = this.updateProducts.bind(this)
         this.callZipCityStateService = this.callZipCityStateService.bind(this)
+        this.callAddressVerification = this.callAddressVerification.bind(this)
     }
 
     componentDidMount(){
@@ -286,15 +288,29 @@ export default class NameAddressForm extends Component {
 
         const errors = {...this.state.errors};
         let isValidForm = true;
-        const zipError = await this.callZipCityStateService("Zip", this.state.fields["Zip"]);
-        let shipZipError;
-        if (this.state.fields["ShipToZip"]) {
-            shipZipError = await this.callZipCityStateService("ShipToZip", this.state.fields["ShipToZip"]);
-        }
-        if (zipError || shipZipError) {
-            isValidForm = false;
-            errors["Zip"] = zipError;
-            errors["ShipToZip"] = shipZipError;
+        if (this.state.fields.Country == "United States") {
+            try {
+                const zipError = await this.callZipCityStateService("Zip", this.state.fields["Zip"]);
+                let addressError, shipZipError, shipAddressError;
+                if (!zipError) {
+                    addressError = await this.callAddressVerification(this.state.fields["Address1"], this.state.fields["City"], this.state.fields["State"], this.state.fields["Zip"])
+                }
+                if (this.state.fields["ShipToZip"] && this.state.fields.ShipToYes) {
+                    shipZipError = await this.callZipCityStateService("ShipToZip", this.state.fields["ShipToZip"]);
+                }
+                if (!shipZipError && this.state.fields.ShipToYes) {
+                    shipAddressError = await this.callAddressVerification(this.state.fields["ShipToAddress1"], this.state.fields["ShipToCity"], this.state.fields["ShipToState"], this.state.fields["ShipToZip"])
+                }
+                if (addressError || shipAddressError || zipError || shipZipError) {
+                    isValidForm = false;
+                    errors["Address1"] = addressError;
+                    errors["ShipToAddress1"] = addressError;
+                    errors["Zip"] = zipError;
+                    errors["ShipToZip"] = shipZipError;
+                }
+            } catch(err) {
+                console.error({err})
+            }
         }
         const { fields } = this.state;
         const fieldNames = Object.keys(fields);
@@ -577,16 +593,21 @@ export default class NameAddressForm extends Component {
         const fields = {...this.state.fields};
         try {
             const result = await callApi(url);
+            const oldCity = fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
             let { city, state, zip, returnCode, returnMessage } = JSON.parse(result);
-            console.log({ city, state, zip, returnCode, returnMessage })
+            // console.log({ city, state, zip, returnCode, returnMessage })
             if (returnCode == 1) {
-                const newCity = city.split(";")[0]
+                // console.log(city)
+                const error = oldCity && !city.toUpperCase().includes(oldCity);
+                const newCity = error || !oldCity ? city.split(";")[0] : oldCity;
                 fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
                 fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
                 fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
                 if (name == "Zip") {
                     fields["Country"] = "United States";
                 }
+                this.setState({fields});
+                return error ? city : '' ;
             } else {
                 return returnMessage;
             }
@@ -594,8 +615,28 @@ export default class NameAddressForm extends Component {
             console.error(err);
             return '';
         }
-        this.setState({fields}, ()=> console.log("The state was updated"));
-        return '';
+    }
+
+    /**
+     * 
+     * @param {string} addr1 - user entered address
+     * @param {string} city - user entered city
+     * @param {string} state - user entered state
+     * @param {string} zip - user entered zip
+     * @returns {string} either empty or with error
+     */
+    async callAddressVerification(addr1, city, state, zip) {
+        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx?" : "http://Services.cbn.com/AddressValidation/AddressVerification.aspx?";
+        const url = encodeURI(`${base}addr1=${addr1}&city=${city}&state=${state}&zip=${zip}`)
+        try {
+            const result = await callApi(url);
+            // console.log({result})
+            const {returnCode, returnMessage} = JSON.parse(result);
+            return returnCode == 1 ? '' : returnMessage;
+        } catch(err) {
+            console.error({err})
+            return '';
+        }
     }
 
 
