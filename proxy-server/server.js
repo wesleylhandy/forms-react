@@ -42,6 +42,8 @@ app.set('port', port);
 
 const router = require('express').Router();
 
+router.options('*', cors());
+
 router.get("/", (req, res) => {
     res.statusCode = 200;
     res.render(path.resolve(__dirname, 'views', 'thankyou.hbs'), {})
@@ -116,7 +118,7 @@ router.get('/api', (req, res) => {
 });
 
 router.post('/api', (req, res) => {
-    const {data} = req.body
+    const data = {...req.body};
     if (!data) {
         res.statusCode = 400
         return res.send({error: "Bad Request - Your request is missing parameters. Please verify and resubmit."})
@@ -146,24 +148,41 @@ router.post('/api', (req, res) => {
             'Content-Type': 'application/json; charset=utf-8'
         },
         body: JSON.stringify(data)
-    }).then(response => {
-        if (response.status >= 200 && response.status < 300) {
-            return response
-        } else {
-            var error = new Error(response.statusText)
-            error.response = response
-            error.status = response.status
-            throw error
-        }
     })
+    .catch(handleError)
+    .then(checkStatus)
     .then(response => response.text())
     .then(msg => res.send(msg))
     .catch(error => {
         res.statusCode = error.status
-        res.send({error})
+        console.log({error})
+        res.send(error)
     })
-
 })
+
+const checkStatus = response => {
+    if (response.status >= 200 && response.status < 300) {
+      return response;
+    }
+
+    return response.text().then(text => {
+      return Promise.reject({
+        status: response.status,
+        ok: false,
+        statusText: response.statusText,
+        body: text
+      });
+    });
+  };
+
+const handleError = error => {
+    error.response = {
+      status: 0,
+      statusText:
+        "Cannot connect. Please make sure you are connected to internet."
+    };
+    throw error;
+};
 
 app.use("/", router);
 

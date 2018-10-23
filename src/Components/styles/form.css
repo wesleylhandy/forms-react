@@ -306,6 +306,12 @@ h5.ccDayOfMonth {
     box-sizing: border-box;
 }
 
+.select-product:focus,
+.select-product:active,
+.select-product:hover,
+.additional-amount__input:focus,
+.additional-amount__input:active,
+.additional-amount__input:hover,
 .ccdate:focus,
 .ccdate:active,
 .ccdate:hover {

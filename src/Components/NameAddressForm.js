@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import 'whatwg-fetch'
 
 import main from './styles/main.css'
 import flex from './styles/flex.css'
@@ -15,8 +14,10 @@ import InputGroup from './InputGroup'
 import SelectGroup from './SelectGroup'
 
 import { canadianProvinces, countries, other, usMilitary, usStates, usTerritories } from '../config/dropdowns.json';
-import logError, {checkStatus, parseJSON, parseTXT} from './helpers/xhr-errors';
-import {crypt} from './helpers/crypt';
+import { getErrorType } from './helpers/error-types';
+import { callApi } from './helpers/fetch-helpers';
+import { crypt } from './helpers/crypt';
+import { runInThisContext } from 'vm';
 
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
@@ -84,6 +85,7 @@ export default class NameAddressForm extends Component {
                 items: []
             },
             fields: {
+                Zip: props.hydratedData ? props.hydratedData.Zip : "",
                 Monthlypledgeday: props.hydratedData && props.hydratedData.Monthlypledgeday ? props.hydratedData.Monthlypledgeday : date,
                 Title: props.hydratedData ? props.hydratedData.Title : "",
                 Firstname: props.hydratedData ? props.hydratedData.Firstname : "",
@@ -95,7 +97,6 @@ export default class NameAddressForm extends Component {
                 Address2: props.hydratedData ? props.hydratedData.Address2 : "",
                 City: props.hydratedData ? props.hydratedData.City  : "",
                 State: props.hydratedData ? props.hydratedData.State : "",
-                Zip: props.hydratedData ? props.hydratedData.Zip : "",
                 Country: props.hydratedData ? props.hydratedData.Country : props.international ? "" : "United States",
                 Emailaddress: props.hydratedData ? props.hydratedData.Emailaddress : "",
                 phone: props.hydratedData ? props.hydratedData.Phoneareacode + props.hydratedData.Phoneexchange + props.hydratedData.Phonenumber : "",
@@ -109,6 +110,7 @@ export default class NameAddressForm extends Component {
                 ShipToState: props.hydratedData ? props.hydratedData.ShipToState : ""
             },
             errors: {
+                Zip: "",
                 Title: "",
                 Firstname: "",
                 Middlename: "",
@@ -119,7 +121,6 @@ export default class NameAddressForm extends Component {
                 Address2: "",
                 City: "",
                 State: "",
-                Zip: "",
                 Country: "",
                 Emailaddress: "",
                 phone: "",
@@ -147,6 +148,8 @@ export default class NameAddressForm extends Component {
         this.addToCart = this.addToCart.bind(this)
         this.updateDonation = this.updateDonation.bind(this)
         this.updateProducts = this.updateProducts.bind(this)
+        this.callZipCityStateService = this.callZipCityStateService.bind(this)
+        this.callAddressVerification = this.callAddressVerification.bind(this)
     }
 
     componentDidMount(){
@@ -159,7 +162,7 @@ export default class NameAddressForm extends Component {
             const items = [...this.state.cart.items];
             const { products } = this.state.productOptions
             let productInfo = [...this.state.productInfo], { productsOrdered } = this.state
-            const MultipleDonations = [...this.props.hydratedData];
+            const MultipleDonations = [...this.props.hydratedData.MultipleDonations];
 
             // loop through multiple donations and reconstruct virual cart
             for (let i = 0; i < MultipleDonations.length; i++) {
@@ -200,7 +203,7 @@ export default class NameAddressForm extends Component {
             Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "",
             Phonenumber =  phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
 
-            const formData = {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Phoneareacode, Phoneexchange, Phonenumber, Spousename, Suffix, State, Title, Zip}
+            const formData = { Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Phoneareacode, Phoneexchange, Phonenumber, Spousename, Suffix, State, Title, Zip }
             // lifetime of stored data on this form
             const days = 30
             //convert days into milliseconds
@@ -242,20 +245,33 @@ export default class NameAddressForm extends Component {
         }
     }
 
-    handleInputChange(e) {
+    async handleInputChange(e) {
         const target = e.target;
         let value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
         const fields = {...this.state.fields},  errors = {...this.state.errors};
-        const error = this.validateInput(false, name, value);
+        let error;
+        const isZip = name.includes("Zip") && value.length >= 5;
+        if (isZip) {
+            if (!zip_regex.test(value)) {
+                error = "Invalid Postal Code"
+            } else {
+                error = await this.callZipCityStateService(name, value)
+            }
+        } else {
+            error = this.validateInput(false, name, value);
+        }
         errors[name] = error;     
-        fields[name] = value;
-
-        this.setState({ fields, errors });
+        if (isZip) {
+            this.setState({errors})
+        } else {
+            fields[name] = value;
+            this.setState({ fields, errors });
+        }
     }
 
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
         if (this.state.submitting) return // ie. disallow multiple submissions
 
@@ -270,27 +286,52 @@ export default class NameAddressForm extends Component {
             return this.setState({submitting: false, errors})
         }
 
-        const {fields} = this.state, errors = {...this.state.errors};
+        const errors = {...this.state.errors};
         let isValidForm = true;
-        const fieldNames = Object.keys(fields);
-        // console.log({fieldNames})
-
-        let self = this;
-        fieldNames.forEach(name=>{
-            let error = self.validateInput(true, name, fields[name])
-            // console.log({error, name, value: fields[name]})
-            if (error) {
-                isValidForm = false;
-                errors[name] = error;
+        if (this.state.fields.Country == "United States") {
+            try {
+                const zipError = await this.callZipCityStateService("Zip", this.state.fields["Zip"]);
+                let addressError, shipZipError, shipAddressError;
+                if (!zipError) {
+                    addressError = await this.callAddressVerification(this.state.fields["Address1"], this.state.fields["City"], this.state.fields["State"], this.state.fields["Zip"])
+                }
+                if (this.state.fields["ShipToZip"] && this.state.fields.ShipToYes) {
+                    shipZipError = await this.callZipCityStateService("ShipToZip", this.state.fields["ShipToZip"]);
+                }
+                if (!shipZipError && this.state.fields.ShipToYes) {
+                    shipAddressError = await this.callAddressVerification(this.state.fields["ShipToAddress1"], this.state.fields["ShipToCity"], this.state.fields["ShipToState"], this.state.fields["ShipToZip"])
+                }
+                if (addressError || shipAddressError || zipError || shipZipError) {
+                    isValidForm = false;
+                    errors["Address1"] = addressError;
+                    errors["ShipToAddress1"] = addressError;
+                    errors["Zip"] = zipError;
+                    errors["ShipToZip"] = shipZipError;
+                }
+            } catch(err) {
+                console.error({err})
             }
-        });
+        }
+        const { fields } = this.state;
+        const fieldNames = Object.keys(fields);
+        for (let i= 0; i < fieldNames.length; i++) {
+            let error;
+            const name = fieldNames[i]
+            if (!name.includes("Zip")) {
+                error = this.validateInput(true, name, fields[name])
+                if (error) {
+                    isValidForm = false;
+                    errors[name] = error;
+                }
+            }
+        }
 
         if (!isValidForm) {
             return this.setState({submitting: false, errors})
         }
         //deconstruct necessary fields from state
         const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
-        const {mode, APIAccessID, Clublevel, MotivationText, ClientBrowser, ClientIP, UrlReferer, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy} = this.state
+        const {mode, APIAccessID, MotivationText, ClientBrowser, UrlReferer, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy} = this.state
         
         //construct phone fields from regex
         const Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
@@ -368,24 +409,28 @@ export default class NameAddressForm extends Component {
         //flatten subscription information
         subscriptions.forEach(sub=> data[sub.key]=sub.value);
         // console.log({proxy})
-        fetch(proxy, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(checkStatus)
-        .then(parseJSON)
-        .then(json=>{
-            const msg = json;
-            // console.log(msg)
-            self.props.submitForm({msg, data})
-        }).catch(error=>{
-            console.log({error});
-            logError({error});
-            this.setState({submitting: false})
-        });
+        try {
+            const msg = await callApi(proxy, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                body: JSON.stringify(data)
+            })
+
+            this.props.submitForm({msg, data})
+        } catch (err) {
+            console.error(err.message);
+            const {message} = err;
+            const {breaking, name} = getErrorType(message);
+            if (breaking) {
+                alert('There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700');
+            } else {
+                errors[name] = message;
+            }
+            this.setState({submitting: false, errors})
+        }
     }
     /**
      * Sets the state with new product order information from the product display
@@ -533,43 +578,65 @@ export default class NameAddressForm extends Component {
                     error = "Please enter a valid phone number, numbers only: ie. 7575551212"
                 }
                 break;
-            case "Zip":
-            case "ShipToZip":
-                const country = name == "ShipToZip" ? "ShipToCountry" : "Country";
-                if (value && this.state.fields[country] == "US" && !(zip_regex.test(value))) {
-                    error = "Please enter a valid US Zip Code"
-                } else if (value && zip_regex.test(value) && !submitting) {
-                    const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "http://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
-                    const url = `${base}${value}`;
-                    fetch(url)
-                    .then(checkStatus)
-                    .then(parseJSON)
-                    .then(json=>{
-                        // console.log({json})
-                        const {returnCode, returnMessage, city, state, zip} = json;
-                        if (returnCode == 1) {
-                            const fields = {...this.state.fields};
-                            const newCity = city.split(";")[0]
-                            fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
-                            fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
-                            fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
-                            if (name == "Zip") fields["Country"] = "United States";
-                            this.setState({fields})
-                        } else {
-                            error = returnMessage
-                        }
-                    })
-                    .catch(error=>{
-                        logError(error);
-                    });
-                } else if (!value && submitting && ShipToYes && name == "ShipToZip") {
-                    error = "Required"
-                } else if (!value && submitting && name == "Zip") {
-                    error = "Required"
-                }
-                break;
         }
         return error
+    }
+
+    /**
+     * 
+     * @param {string} name - either Zip or ShipToZip
+     * @param {string} value - five digit zip code
+     */
+    async callZipCityStateService(name, value) {
+        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "http://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+        const url = `${base}${value}`;
+        const fields = {...this.state.fields};
+        try {
+            const result = await callApi(url);
+            const oldCity = fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
+            let { city, state, zip, returnCode, returnMessage } = JSON.parse(result);
+            // console.log({ city, state, zip, returnCode, returnMessage })
+            if (returnCode == 1) {
+                // console.log(city)
+                const error = oldCity && !city.toUpperCase().includes(oldCity);
+                const newCity = error || !oldCity ? city.split(";")[0] : oldCity;
+                fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
+                fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
+                fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
+                if (name == "Zip") {
+                    fields["Country"] = "United States";
+                }
+                this.setState({fields});
+                return error ? city : '' ;
+            } else {
+                return returnMessage;
+            }
+        } catch (err) {
+            console.error(err);
+            return '';
+        }
+    }
+
+    /**
+     * 
+     * @param {string} addr1 - user entered address
+     * @param {string} city - user entered city
+     * @param {string} state - user entered state
+     * @param {string} zip - user entered zip
+     * @returns {string} either empty or with error
+     */
+    async callAddressVerification(addr1, city, state, zip) {
+        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx?" : "http://Services.cbn.com/AddressValidation/AddressVerification.aspx?";
+        const url = encodeURI(`${base}addr1=${addr1}&city=${city}&state=${state}&zip=${zip}`)
+        try {
+            const result = await callApi(url);
+            // console.log({result})
+            const {returnCode, returnMessage} = JSON.parse(result);
+            return returnCode == 1 ? '' : returnMessage;
+        } catch(err) {
+            console.error({err})
+            return '';
+        }
     }
 
 
@@ -587,6 +654,7 @@ export default class NameAddressForm extends Component {
             return (
                 <div styleName="form.monthlyGivingDay">
                     <h5 styleName="form.ccDayOfMonth">Charge automatically on day&nbsp;
+                        <label htmlFor="Monthlypledgeday" styleName="main.hidden">Select Date</label>
                         <select styleName="form.ccdate" name="Monthlypledgeday" onChange={self.handleInputChange} value={Monthlypledgeday}>
                             {options}
                         </select>
@@ -851,7 +919,7 @@ export default class NameAddressForm extends Component {
                             hydratedAmount={this.state.hydratedAmount}
                             hydratedMonthly={this.state.hydratedMonthly}
                         />
-                        <div styleName="form.error form.amount-error">{this.state.errors.amount}</div>
+                        <div styleName="form.error form.amount-error">{errors.amount}</div>
                     </div>
                     { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.Monthlypledgeday) : null }
                 </div>
@@ -892,7 +960,7 @@ export default class NameAddressForm extends Component {
                                             required={false} 
                                             value={this.state.fields.Spousename} 
                                             handleInputChange={this.handleInputChange} 
-                                            error={this.state.errors.Spousename} 
+                                            error={errors.Spousename} 
                                         />
                                     </div>
                                 ) : null
@@ -908,7 +976,7 @@ export default class NameAddressForm extends Component {
                                     required={true} 
                                     value={this.state.fields.Address1} 
                                     handleInputChange={this.handleInputChange} 
-                                    error={this.state.errors.Address1} 
+                                    error={errors.Address1} 
                                 />
                             </div>
                             <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
@@ -922,7 +990,7 @@ export default class NameAddressForm extends Component {
                                     required={false} 
                                     value={this.state.fields.Address2} 
                                     handleInputChange={this.handleInputChange} 
-                                    error={this.state.errors.Address2} 
+                                    error={errors.Address2} 
                                 />
                             </div>
                             <div styleName="form.form-row form.city-state-row flex.flex flex.flex-row flex.flex-between">
@@ -936,14 +1004,14 @@ export default class NameAddressForm extends Component {
                                     required={true} 
                                     value={this.state.fields.City} 
                                     handleInputChange={this.handleInputChange} 
-                                    error={this.state.errors.City} 
+                                    error={errors.City} 
                                 />
                                 <SelectGroup 
                                     id="State"
                                     specialStyle="input.form-group--State"
                                     required={true}
                                     value={this.state.fields.State}
-                                    error={this.state.errors.State}
+                                    error={errors.State}
                                     handleInputChange={this.handleInputChange}
                                     options={[<option key="state-base-0" value="">State* &#9663;</option>, ...this.renderStateOptions(this.state.international)]}
                                 />
@@ -960,7 +1028,7 @@ export default class NameAddressForm extends Component {
                                     required={true} 
                                     value={this.state.fields.Zip} 
                                     handleInputChange={this.handleInputChange} 
-                                    error={this.state.errors.Zip} 
+                                    error={errors.Zip} 
                                     international={this.state.international}
                                 />
 
@@ -970,7 +1038,7 @@ export default class NameAddressForm extends Component {
                                         specialStyle="input.form-group--Country"
                                         required={true}
                                         value={this.state.fields.Country}
-                                        error={this.state.errors.Country}
+                                        error={errors.Country}
                                         handleInputChange={this.handleInputChange}
                                         options={[<option key="country-base-0" value="">Country* &#9663;</option>, ...countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)]}
                                     />
@@ -987,7 +1055,7 @@ export default class NameAddressForm extends Component {
                                     required={true} 
                                     value={this.state.fields.Emailaddress} 
                                     handleInputChange={this.handleInputChange} 
-                                    error={this.state.errors.Emailaddress} 
+                                    error={errors.Emailaddress} 
                                 />
                                 {
                                     this.state.getPhone ? (
@@ -1001,7 +1069,7 @@ export default class NameAddressForm extends Component {
                                             required={false} 
                                             value={this.state.fields.phone} 
                                             handleInputChange={this.handleInputChange} 
-                                            error={this.state.errors.phone} 
+                                            error={errors.phone} 
                                         />
                                     ) : null 
                                 }

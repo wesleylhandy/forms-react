@@ -67,7 +67,7 @@ export default class ProductDisplay extends Component {
      * @returns {Number} value of Total Gift
      */
     calculateTotalGift(products, productInfo, additionalGift) {
-        return productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + additionalGift
+        return (products.length && productInfo.length) ? productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + additionalGift : additionalGift;
     }
 
     /**
@@ -163,6 +163,7 @@ export default class ProductDisplay extends Component {
 
                         return (
                             <div key={`product${i}`} styleName="form.product-card flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
+                                <label htmlFor={`product-select-${i}`} styleName="main.hidden">Select Quantity</label>
                                 <select styleName="form.select-product flex.flex-no-grow" 
                                     name={`product-select-${i}`} 
                                     value={this.state.fields[`product-select-${i}`] >= 0 ? this.state.fields[`product-select-${i}`] : 0} 

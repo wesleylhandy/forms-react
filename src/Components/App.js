@@ -1,7 +1,4 @@
 import React, { Component } from 'react'
-import { hot } from 'react-hot-loader'
-import 'whatwg-fetch'
-
 
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
@@ -45,8 +42,7 @@ class App extends Component {
             formData: formData,
             donorID: null,
             hydratedData: formData,
-            cssConfig: {...props.config.cssConfig},
-
+            cssConfig: props.config.cssConfig
         }
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
@@ -95,4 +91,4 @@ class App extends Component {
     }
 }
 
-export default hot(module)(App)
+export default App;

@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import 'whatwg-fetch'
-import 'raf/polyfill'
 
 import PaymentForm from './PaymentForm'
 import Spinner from './Spinner'
 
-import logError, {checkStatus, parseJSON} from './helpers/xhr-errors'
+import {callApi} from './helpers/fetch-helpers'
 
 function handleUnload(e){
     e.returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page."
@@ -28,6 +26,7 @@ export default class ConfirmationPage extends Component {
             formAction: props.formAction,
             ready: false
         }
+        this.getGlobals = this.getGlobals.bind(this)
         this.handleMessage = this.handleMessage.bind(this)
         this.reRenderForm = this.reRenderForm.bind(this)
         this.renderReceiptPage = this.renderReceiptPage.bind(this)
@@ -37,19 +36,22 @@ export default class ConfirmationPage extends Component {
 
         window.addEventListener('beforeunload', handleUnload)
         window.addEventListener('message', this.handleMessage, false)   
-        const url = this.state.mode == "development" ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'http://securegiving.cbn.com/UI/globals/form-config.json'
-        fetch(url)
-        .then(checkStatus)
-        .then(parseJSON)
-        .then(json=>{
-            const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUri} = json
-            this.setState({ready: true, devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri})
-        }).catch(logError)
+        this.getGlobals();
         
     }
 
+    async getGlobals() {
+        const url = this.state.mode == "development" ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'http://securegiving.cbn.com/UI/globals/form-config.json'
+        try {
+            const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUri} = await callApi(url)
+            this.setState({ready: true, devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri})
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     handleMessage(e) {
-        const data = JSON.parse(e.data)
+        const data = e.data ? JSON.parse(e.data) : {}
         if (data.type !== "go back clicked" && data.type !=="render receipt") {
             return;
         } 

@@ -8,7 +8,7 @@ export default function SelectGroup(props) {
     return (
         <div id={`form-field-${props.id}`} styleName={`${props.specialStyle ? props.specialStyle : ""} input.form-group flex.flex-grow`}>
             <label htmlFor={props.id}>{props.id}<span>{props.required ? '*' : ''}</span></label>
-            <select styleName="input.form-control" 
+            <select styleName={`input.form-control${props.error ? " input.error" : ""}`}
                 id={props.id}
                 name={props.id}  
                 required={props.required} 

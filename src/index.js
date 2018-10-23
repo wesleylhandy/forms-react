@@ -8,47 +8,47 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import App from './Components/App'
+import { callApi } from './Components/helpers/fetch-helpers'
 
+let mode;
 if (process) {
     process.title = "ReactForm"
+    mode = "local";
 }
 
 if (!window.Promise) {
     window.Promise = Promise;
 }
 
-const mode = "development";
+const rootEntry = document.getElementById('form-root')
 
 async function getConfiguration() {
     
-    const generator = document.head.querySelector("[name='generator']")
-    const isWordpress = generator && generator.content.toLowerCase().includes('wordpress');
-    const base = mode == "local" ? "http://10.100.43.50:8080/config/" : handleWordpress(isWordpress);
-    const cssConfigUrl = `${base}css-config.json`;
-    let cssConfig = {};
+    const generator = rootEntry.dataset.environment.toLowerCase();
+    const isWordpress = generator && generator.includes('wordpress');
+    const base = mode == "local" ? "http://10.100.43.50:8080/config/" : "";
+    const cssConfigUrl = isWordpress ? handleWordpress(isWordpress) + "?type=css_setup" : `${base}css-config.json`;
+    let cssConfig;
     try {
-        let vars = await loadJson(cssConfigUrl);
+        cssConfig = await callApi(cssConfigUrl);
         const styleEl = document.createElement('style');
         styleEl.type = 'text/css';
         styleEl.id = "imported-vars";
         let innerStyle = '';
 
-        vars.forEach(variable => {
-            for (let key in variable) {
-                if (!/^(externalFont)\S*$/.test(key)) {
-                    const pair = key + ': ' + variable[key] + ';';
-                    innerStyle += pair;                     
-                } else {
-                    const link = document.createElement('link');
-                    link.rel = "stylesheet";
-                    link.type = "text/css";
-                    link.href = variable[key];
-                    document.head.appendChild(link);
-                }
-                cssConfig[key] = variable[key];
+        for (let key in cssConfig) {
+            if (!/^(externalFont)\S*$/.test(key)) {
+                const pair = key + ': ' + cssConfig[key] + ';';
+                innerStyle += pair;                     
+            } else {
+                const link = document.createElement('link');
+                link.rel = "stylesheet";
+                link.type = "text/css";
+                link.href = cssConfig[key];
+                document.head.appendChild(link);
             }
-        })
-        // only append to DOM if innerstyle is not an empty string
+        }
+         // only append to DOM if innerstyle is not an empty string
 
         styleEl.innerHTML = ":root{" + innerStyle + "}";
         document.head.appendChild(styleEl)
@@ -64,10 +64,10 @@ async function getConfiguration() {
         alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
     }
 
-    const formConfigUrl = `${base}form-config.json`;
+    const formConfigUrl = isWordpress ? handleWordpress(isWordpress) + "?type=form_setup" : `${base}form-config.json`;
     let initialState;
     try {
-        initialState = await loadJson(formConfigUrl);
+        initialState = await callApi(formConfigUrl);
     } catch (err) {
         console.error(err);
         alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
@@ -76,24 +76,6 @@ async function getConfiguration() {
     return { cssConfig, initialState } 
 }
 
-class HttpError extends Error {
-    constructor(response) {
-        super(`${response.status} for ${response.url}`);
-        this.name = 'HttpError';
-        this.response = response;
-    }
-}
-  
-async function loadJson(url) {
-    let response = await fetch(url);
-    if (response.status == 200) {
-        return response.json();
-    } else {
-        throw new HttpError(response);
-    }
-}
-
-
 /**
 * Function to determine campaign name for accessing config files from CBNGiving-Plugin for WP
 * @param {Boolean} isWordpress - only return value if True
@@ -101,12 +83,10 @@ async function loadJson(url) {
 */
 function handleWordpress(isWordpress) {
     if (isWordpress) {
-        return `/wp-giving/${window.location.pathname.split("/").filter(el => el !== "").pop()}/`
+        return `/wp-json/cbngiving/v1/${window.location.pathname.split("/").filter(el => el !== "").pop()}`
     }
     return ''
 }
-
-const rootEntry = document.getElementById('form-root')
 
 getConfiguration().then(({cssConfig, initialState}) => {
     ReactDOM.render( <App config={{cssConfig, initialState}}/>, rootEntry);
