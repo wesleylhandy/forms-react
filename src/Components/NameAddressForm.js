@@ -42,8 +42,11 @@ export default class NameAddressForm extends Component {
             MotivationText: props.MotivationText,
             showGivingArray: props.showGivingArray,
             arrayOptions: {
+                defaultAmount: props.defaultAmount,
+                defaultOption: props.defaultOption,
                 givingFormat: props.givingFormat,
                 monthlyOption: props.monthlyOption,
+                singleOption: props.singleOption,
                 monthlyAmounts: [...props.monthlyAmounts],
                 singleAmounts: [...props.singleAmounts],
                 funds: [...props.funds],
@@ -62,10 +65,11 @@ export default class NameAddressForm extends Component {
                 numFunds: props.numFunds
             },
             monthlyOption: props.monthlyOption,
+            singleOption: props.singleOption,
             shipping: props.shipping,
             international: props.international,
             getPhone: props.getPhone,
-            monthlyChecked: props.hydratedData && props.hydratedData.TransactionType == "Monthly" ? true : props.monthlyOption,
+            monthlyChecked: props.hydratedData && props.hydratedData.TransactionType == "Monthly" ? true : props.defaultOption == "monthly",
             getSuffix: props.getSuffix,
             getMiddleName: props.getMiddleName,
             getSpouseInfo: props.getSpouseInfo,
@@ -921,7 +925,7 @@ export default class NameAddressForm extends Component {
                         />
                         <div styleName="form.error form.amount-error">{errors.amount}</div>
                     </div>
-                    { this.state.monthlyOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.Monthlypledgeday) : null }
+                    { this.state.monthlyOption && this.state.singleOption ? this.renderMonthlyRadio(this.state.monthlyChecked, this.state.fields.Monthlypledgeday) : null }
                 </div>
                 <div styleName={this.state.fundOptions.numFunds ? "form.form-panel" : "form.form-panel main.hidden"}>
                     <FundDisplay 
