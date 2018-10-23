@@ -10,12 +10,6 @@ import * as ReactDOM from 'react-dom';
 import App from './Components/App'
 import { callApi } from './Components/helpers/fetch-helpers'
 
-let mode;
-if (process) {
-    process.title = "ReactForm"
-    mode = "local";
-}
-
 if (!window.Promise) {
     window.Promise = Promise;
 }
@@ -26,7 +20,7 @@ async function getConfiguration() {
     
     const generator = rootEntry.dataset.environment.toLowerCase();
     const isWordpress = generator && generator.includes('wordpress');
-    const base = mode == "local" ? "http://10.100.43.50:8080/config/" : "";
+    const base = generator == "local" ? "http://10.100.43.50:8080/config/" : "";
     const cssConfigUrl = isWordpress ? handleWordpress(isWordpress) + "?type=css_setup" : `${base}css-config.json`;
     let cssConfig;
     try {
