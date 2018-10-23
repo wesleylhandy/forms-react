@@ -20,10 +20,12 @@ if (!window.Promise) {
     window.Promise = Promise;
 }
 
+const rootEntry = document.getElementById('form-root')
+
 async function getConfiguration() {
     
-    const generator = document.head.querySelector("[name='generator']")
-    const isWordpress = generator && generator.content.toLowerCase().includes('wordpress');
+    const generator = rootEntry.dataset.environment.toLowerCase();
+    const isWordpress = generator && generator.includes('wordpress');
     const base = mode == "local" ? "http://10.100.43.50:8080/config/" : "";
     const cssConfigUrl = isWordpress ? handleWordpress(isWordpress) + "?type=css_setup" : `${base}css-config.json`;
     let cssConfig;
@@ -85,8 +87,6 @@ function handleWordpress(isWordpress) {
     }
     return ''
 }
-
-const rootEntry = document.getElementById('form-root')
 
 getConfiguration().then(({cssConfig, initialState}) => {
     ReactDOM.render( <App config={{cssConfig, initialState}}/>, rootEntry);
