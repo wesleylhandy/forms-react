@@ -16,17 +16,20 @@ if (!window.Promise) {
 
 const rootEntry = document.getElementById('form-root')
 
-const generator = rootEntry.dataset.environment.toLowerCase();
-const formName = rootEntry.dataset["form-name"];
+
 
 async function getConfiguration() {
 
+    const generator = rootEntry.dataset.environment.toLowerCase();
+    const formName = rootEntry.dataset.formName;
+
     const isWordpress = generator && generator.includes('wordpress');
     const base = generator == "local" ? "http://10.100.43.50:8080/config/" : "";
-    const cssConfigUrl = isWordpress ? handleWordpress(isWordpress) + "?type=css_setup" : `${base}css-config.json`;
+    const cssConfigUrl = isWordpress ? handleWordpress(isWordpress, formName) + "?type=css_setup" : `${base}css-config.json`;
     let cssConfig;
     try {
         cssConfig = await callApi(cssConfigUrl);
+        console.log({cssConfig})
         cssConfig["--base-font-size"] = "19px";
         const styleEl = document.createElement('style');
         styleEl.type = 'text/css';
@@ -61,7 +64,7 @@ async function getConfiguration() {
         alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
     }
 
-    const formConfigUrl = isWordpress ? handleWordpress(isWordpress) + "?type=form_setup" : `${base}form-config.json`;
+    const formConfigUrl = isWordpress ? handleWordpress(isWordpress, formName) + "?type=form_setup" : `${base}form-config.json`;
     let initialState;
     try {
         initialState = await callApi(formConfigUrl);
@@ -76,9 +79,10 @@ async function getConfiguration() {
 /**
 * Function to determine campaign name for accessing config files from CBNGiving-Plugin for WP
 * @param {Boolean} isWordpress - only return value if True
+* @param {String} formName - name of the form
 * @returns {String} - URL base for Wordpress based on giving page URL
 */
-function handleWordpress(isWordpress) {
+function handleWordpress(isWordpress, formName) {
     if (isWordpress) {
         return `/wp-json/cbngiving/v1/${formName}`
     }
