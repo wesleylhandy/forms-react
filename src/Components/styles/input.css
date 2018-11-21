@@ -13,10 +13,10 @@
 .form-group>label {
     box-sizing: border-box;
     color: var(--label-color);
-    font-family: var(--label-font-family);
+    font-family: var(--semibold-font-family);
     font-size: calc(19px * .7);
-    font-style: var(--label-font-style);
-    font-weight: var(--label-font-weight);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
     margin-bottom: 0;
     position: absolute;
     opacity: 0;
@@ -62,9 +62,9 @@ select.form-control {
     box-sizing: border-box;
     color: var(--input-text-color);
     font-size: 19px;
-    font-family: var(--input-font-family);
-    font-style: var(--input-font-style);
-    font-weight: var(--input-font-weight);
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
     height: calc(19px * 2);
     display: block;
     width: 100%;
@@ -89,9 +89,9 @@ select.form-control {
     box-sizing: border-box;
     color: var(--placeholder-color);
     font-size: 19px;
-    font-family: var(--input-font-family);
-    font-style: var(--input-font-style);
-    font-weight: var(--input-font-weight);
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
 }
 
 input[type='text'].form-control,
@@ -133,7 +133,7 @@ select.form-control.error {
 }
 
 input[type='text'].form-control:disabled {
-    background: var(--base-bg-color);
+    background: #ededed;
 }
 
 @media screen and (max-width:613px) {

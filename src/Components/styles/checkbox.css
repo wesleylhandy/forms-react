@@ -15,9 +15,9 @@ input[type="checkbox"].checkbox-input:checked+label {
     padding-left: calc(19px * 1.25);
     cursor: pointer;
     box-sizing: border-box;
-    font-family: var(--base-font-family);
+    font-family: var(--form-font-family);
     font-size: calc(19px * .8);
-    font-weight: var(--base-font-weight);
+    font-weight: var(--form-font-weight);
     color: var(--form-text-color);
     margin-bottom: 0;
 }

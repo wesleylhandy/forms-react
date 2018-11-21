@@ -428,6 +428,7 @@ export default class NameAddressForm extends Component {
             console.error(err.message);
             const {message} = err;
             const {breaking, name} = getErrorType(message);
+            // console.log({breaking, name})
             if (breaking) {
                 alert('There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700');
             } else {

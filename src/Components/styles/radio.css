@@ -16,10 +16,10 @@ input[type="radio"].radio-group__input {
 
 input[type="radio"].radio-group__input+label {
     box-sizing: border-box;
-    font-family: var(--label-font-family);
+    font-family: var(--semibold-font-family);
     font-size: calc(19px * .7);
-    font-style: var(--label-font-style);
-    font-weight: var(--label-font-weight);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
 }
 
 input[type="radio"].radio-group__input+label:before {
