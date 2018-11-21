@@ -16,9 +16,11 @@ if (!window.Promise) {
 
 const rootEntry = document.getElementById('form-root')
 
+const generator = rootEntry.dataset.environment.toLowerCase();
+const formName = rootEntry.dataset["form-name"];
+
 async function getConfiguration() {
-    
-    const generator = rootEntry.dataset.environment.toLowerCase();
+
     const isWordpress = generator && generator.includes('wordpress');
     const base = generator == "local" ? "http://10.100.43.50:8080/config/" : "";
     const cssConfigUrl = isWordpress ? handleWordpress(isWordpress) + "?type=css_setup" : `${base}css-config.json`;
@@ -78,7 +80,7 @@ async function getConfiguration() {
 */
 function handleWordpress(isWordpress) {
     if (isWordpress) {
-        return `/wp-json/cbngiving/v1/${window.location.pathname.split("/").filter(el => el !== "").pop()}`
+        return `/wp-json/cbngiving/v1/${formName}`
     }
     return ''
 }
