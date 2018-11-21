@@ -17,7 +17,6 @@ import { canadianProvinces, countries, other, usMilitary, usStates, usTerritorie
 import { getErrorType } from './helpers/error-types';
 import { callApi } from './helpers/fetch-helpers';
 import { crypt } from './helpers/crypt';
-import { runInThisContext } from 'vm';
 
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
@@ -149,6 +148,7 @@ export default class NameAddressForm extends Component {
         this.renderShippingAddress = this.renderShippingAddress.bind(this)
         this.renderNameAddressBlock = this.renderNameAddressBlock.bind(this)
         this.renderNameInput = this.renderNameInput.bind(this)
+        this.renderTitleDropdown = this.renderTitleDropdown.bind(this)
         this.addToCart = this.addToCart.bind(this)
         this.updateDonation = this.updateDonation.bind(this)
         this.updateProducts = this.updateProducts.bind(this)
@@ -825,6 +825,24 @@ export default class NameAddressForm extends Component {
         )
     }
 
+    renderTitleDropdown(value, error) {
+        const vals = ['', "Mr", "Ms", "Mrs", "Mr and Mrs"]
+        const options = vals.map((el, ind)=>{
+            return <option key={`title-${ind}`} value={el}>{ind === 0 ? <React.Fragment>Title* &#9663;</React.Fragment> : el}</option>
+        })
+        return (
+            <SelectGroup 
+                id="Title"
+                specialStyle="input.form-group--Title flex.flex-no-grow"
+                required={true}
+                value={value}
+                error={error}
+                handleInputChange={this.handleInputChange}
+                options={options}
+            />
+        )
+    }
+
     /**
      * Alternately renders just Title, First and Last name or some combination including Middlename and Suffix
      * @param {Boolean} getMiddleName - from this.state.getMiddlename, set to true/false in configuration
@@ -835,21 +853,7 @@ export default class NameAddressForm extends Component {
         if (!getMiddleName && !getSuffix) {
             return (
                 <div styleName="form.form-row form.name-row flex.flex flex.flex-row flex.flex-between">
-                    <SelectGroup 
-                        id="Title"
-                        specialStyle="input.form-group--Title flex.flex-no-grow"
-                        required={true}
-                        value={this.state.fields.Title}
-                        error={this.state.errors.Title}
-                        handleInputChange={this.handleInputChange}
-                        options={[
-                            <option key="title-0" value="">Title* &#9663;</option>,
-                            <option key="title-1" value="Mr">Mr</option>,
-                            <option key="title-2" value="Ms">Ms</option>,
-                            <option key="title-3" value="Mrs">Mrs</option>,
-                            <option key="title-4" value="Miss">Miss</option>
-                        ]}
-                    />
+                    {this.renderTitleDropdown(this.state.fields.Title,this.state.errors.Title)}
                     {this.renderNameInput("First", true)}
                     {this.renderNameInput("Last", true)}                          
                 </div>
@@ -858,21 +862,7 @@ export default class NameAddressForm extends Component {
             return (
                 <React.Fragment>
                     <div styleName="form.form-row flex.flex flex.flex-row flex.flex-between">
-                        <SelectGroup 
-                            id="Title"
-                            specialStyle=""
-                            required={true}
-                            value={this.state.fields.Title}
-                            error={this.state.errors.Title}
-                            handleInputChange={this.handleInputChange}
-                            options={[
-                                <option key="title-0" value="">Title* &#9663;</option>,
-                                <option key="title-1" value="Mr">Mr</option>,
-                                <option key="title-2" value="Ms">Ms</option>,
-                                <option key="title-3" value="Mrs">Mrs</option>,
-                                <option key="title-4" value="Miss">Miss</option>
-                            ]}
-                        />
+                        {this.renderTitleDropdown(this.state.fields.Title,this.state.errors.Title)}
                         {this.renderNameInput("First", true)}
                         {
                             getMiddleName ? (

@@ -5,8 +5,8 @@
 
 .form-group {
     box-sizing: border-box;
-    margin-bottom: calc(var(--base-font-size) * .6);
-    margin-top: calc(var(--base-font-size) * .6);
+    margin-bottom: calc(19px * .6);
+    margin-top: calc(19px * .6);
     position: relative;
 }
 
@@ -14,14 +14,14 @@
     box-sizing: border-box;
     color: var(--label-color);
     font-family: var(--label-font-family);
-    font-size: calc(var(--base-font-size) * .7);
+    font-size: calc(19px * .7);
     font-style: var(--label-font-style);
     font-weight: var(--label-font-weight);
     margin-bottom: 0;
     position: absolute;
     opacity: 0;
     bottom: calc(100% - 6px);
-    left: calc(var(--base-font-size) * .35);
+    left: calc(19px * .35);
     -webkit-transition: opacity 150ms ease-in-out;
     transition: opacity 150ms ease-in-out;
 }
@@ -38,8 +38,8 @@
 }
 
 .form-group--Title {
-    flex-basis: 83px;
-    width: 83px;
+    flex-basis: 115px;
+    width: 115px;
 }
 
 .form-group--Firstname,
@@ -61,11 +61,11 @@ input[type='text'].form-control,
 select.form-control {
     box-sizing: border-box;
     color: var(--input-text-color);
-    font-size: var(--base-font-size);
+    font-size: 19px;
     font-family: var(--input-font-family);
     font-style: var(--input-font-style);
     font-weight: var(--input-font-weight);
-    height: calc(var(--base-font-size) * 2);
+    height: calc(19px * 2);
     display: block;
     width: 100%;
     margin-top: 5px;
@@ -88,7 +88,7 @@ select.form-control {
 .form-control::placeholder {
     box-sizing: border-box;
     color: var(--placeholder-color);
-    font-size: var(--base-font-size);
+    font-size: 19px;
     font-family: var(--input-font-family);
     font-style: var(--input-font-style);
     font-weight: var(--input-font-weight);

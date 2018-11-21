@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import NameAddressForm from "./NameAddressForm"
 import ConfirmationPage from "./ConfirmationPage"
 import RedirectForm from './RedirectForm';
+import Banner from './Banner'
 
 import './styles/form.css'
 
@@ -70,6 +71,11 @@ class App extends Component {
     render() {
           return ( 
             <div styleName='form-wrapper' id="react-form-top"> 
+                { 
+                    this.state.mode !== 'production' ? (
+                        <Banner />
+                    ) : null
+                }
                 { 
                     this.state.finalized ? (
                         <RedirectForm thankYouUrl={this.state.thankYouUrl} receiptVars={this.state.finalizedData} />

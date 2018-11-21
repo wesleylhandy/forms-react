@@ -1,7 +1,7 @@
 .select-fund {
     box-sizing: border-box;
     color: var(--input-text-color);
-    font-size: var(--base-font-size);
+    font-size: 19px;
     font-family: var(--input-font-family);
     font-style: var(--input-font-style);
     font-weight: var(--input-font-weight);
@@ -81,20 +81,20 @@
 
 .funds-display {
     box-sizing: border-box;
-    margin: var(--base-font-size) 0;
+    margin: 19px 0;
 }
 
 .dropDownArrow {
     box-sizing: border-box;
     cursor: pointer;
-    font-size: var(--base-font-size);
+    font-size: 19px;
     padding: 10px;
 }
 
 .fund-card__body--title {
     box-sizing: border-box;
     margin: 5px 0;
-    font-size: calc(var(--base-font-size) * .8);
+    font-size: calc(19px * .8);
 }
 
 .fund-card__image {
@@ -109,7 +109,7 @@
 
 .fund-card__body--description {
     box-sizing: border-box;
-    font-size: calc(var(--base-font-size) * .6);
+    font-size: calc(19px * .6);
     max-width: 100%;
 }
 

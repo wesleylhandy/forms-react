@@ -5,7 +5,6 @@
     border-radius: var(--form-border-radius);
     color: var(--form-text-color);
     max-width: 680px;
-    margin: 0 auto;
     padding: var(--form-padding);
     width: 100%;
 }
@@ -43,11 +42,11 @@ h3.form-header,
     box-sizing: border-box;
     color: var(--heading-color);
     text-align: center;
-    font-size: var(--base-font-size);
+    font-size: 19px;
     font-family: var(--semibold-font-family);
     font-style: var(--semibold-font-style);
     font-weight: var(--semibold-font-weight);
-    line-height: calc(var(--base-font-size) * 1.15);
+    line-height: calc(19px * 1.15);
     margin-bottom: 5px;
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
@@ -58,7 +57,7 @@ h3.form-header,
 
 .form-header--small {
     box-sizing: border-box;
-    font-size: calc(var(--base-font-size) * .9);
+    font-size: calc(19px * .9);
     margin: 20px 0;
 }
 
@@ -79,10 +78,10 @@ h3.form-header,
 
 .divider-title {
     white-space: nowrap;
-    padding: 0 calc(var(--base-font-size) * .3);
+    padding: 0 calc(19px * .3);
     -ms-flex-item-align: center;
     align-self: center;
-    line-height: var(--base-font-size);
+    line-height: 19px;
     margin-bottom: 0;
     box-sizing: border-box;
 }
@@ -118,7 +117,7 @@ h3.form-header,
 
 .askbutton {
     box-sizing: border-box;
-    height: calc(var(--base-font-size) * 3.5);
+    height: calc(19px * 3.5);
     width: calc(100% / 3);
 }
 
@@ -129,14 +128,14 @@ h3.form-header,
     box-sizing: border-box;
     color: var(--btn-text-color);
     cursor: pointer;
-    -webkit-flex-basis: calc(var(--base-font-size) * 4.55);
-    -ms-flex-preferred-size: calc(var(--base-font-size) * 4.55);
-    flex-basis: calc(var(--base-font-size) * 4.55);
+    -webkit-flex-basis: calc(19px * 4.55);
+    -ms-flex-preferred-size: calc(19px * 4.55);
+    flex-basis: calc(19px * 4.55);
     font-family: var(--btn-font-family);
     font-style: var(--btn-font-style);
     font-weight: var(--btn-font-weight);
-    font-size: calc(var(--base-font-size) * 1.4);
-    height: calc(var(--base-font-size) * 2.5);
+    font-size: calc(19px * 1.4);
+    height: calc(19px * 2.5);
     text-align: center;
     -webkit-transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
     transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
@@ -152,7 +151,7 @@ h3.form-header,
 
 .askarray__form-group {
     box-sizing: border-box;
-    height: calc(var(--base-font-size) * 3.5);
+    height: calc(19px * 3.5);
     margin-bottom: 0;
     position: relative;
     white-space: nowrap;
@@ -160,7 +159,7 @@ h3.form-header,
 }
 
 .form-group__other-input {
-    height: calc(var(--base-font-size) * 2.5);
+    height: calc(19px * 2.5);
     width: 100%;
     -webkit-transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
     transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
@@ -168,24 +167,24 @@ h3.form-header,
     border-radius: var(--input-border-radius);
     box-sizing: border-box;
     color: var(--primary-color);
-    font-size: calc(var(--base-font-size) * 1.4);
+    font-size: calc(19px * 1.4);
     text-align: center;
     font-family: var(--input-font-family);
     font-style: var(--input-font-style);
     font-weight: var(--input-font-weight);
-    width: calc(var(--base-font-size) * 4.55);
+    width: calc(19px * 4.55);
 }
 
 .form-group__other-input--label {
     font-family: var(--label-font-family);
-    font-size: calc(var(--base-font-size) * .7);
+    font-size: calc(19px * .7);
     font-style: var(--label-font-style);
     font-weight: var(--label-font-weight);
     color: var(--primary-color);
     box-sizing: border-box;
     position: absolute;
     left: 50%;
-    margin-top: calc(var(--base-font-size) * 1.8);
+    margin-top: calc(19px * 1.8);
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 }
@@ -193,13 +192,13 @@ h3.form-header,
 .monthlyGivingDay {
     align-items: center;
     box-sizing: border-box;
-    font-size: calc(var(--base-font-size) * .8);
-    height: calc(var(--base-font-size) * 2);
+    font-size: calc(19px * .8);
+    height: calc(19px * 2);
 }
 
 h5.ccDayOfMonth {
     font-family: var(--base-font-family);
-    font-size: calc(var(--base-font-size) * .7);
+    font-size: calc(19px * .7);
     font-style: var(--base-font-style);
     font-weight: var(--base-font-weight);
     box-sizing: border-box;
@@ -220,18 +219,18 @@ h5.ccDayOfMonth {
     border-radius: var(--input-border-radius);
     box-sizing: border-box;
     color: var(--form-text-color);
-    font-size: calc(var(--base-font-size) * .7);
+    font-size: calc(19px * .7);
     font-family: var(--input-font-family);
     font-style: var(--input-font-style);
     font-weight: var(--input-font-weight);
     text-align: center;
     height: unset;
-    padding: calc(var(--base-font-size) * .2) calc(var(--base-font-size) * .3);
+    padding: calc(19px * .2) calc(19px * .3);
 }
 
 .name-address__info {
     box-sizing: border-box;
-    margin: var(--base-font-size) auto;
+    margin: 19px auto;
     max-width: 100%;
 }
 
@@ -242,7 +241,7 @@ h5.ccDayOfMonth {
 
 .form-row>div+div {
     box-sizing: border-box;
-    margin-left: calc(var(--base-font-size) * .5);
+    margin-left: calc(19px * .5);
 }
 
 .ship-to-yes-row {
@@ -259,7 +258,7 @@ h5.ccDayOfMonth {
     font-family: var(--error-font-family);
     font-style: var(--error-font-style);
     font-weight: var(--error-font-weight);
-    font-size: calc(var(--base-font-size) * .5);
+    font-size: calc(19px * .5);
     opacity: 1;
     overflow: hidden;
     max-width: 100%;
@@ -278,11 +277,11 @@ h5.ccDayOfMonth {
 .product-total__input {
     box-sizing: border-box;
     color: var(--input-text-color);
-    font-size: var(--base-font-size);
+    font-size: 19px;
     font-family: var(--input-font-family);
     font-style: var(--input-font-style);
     font-weight: var(--input-font-weight);
-    height: calc(var(--base-font-size) * 2);
+    height: calc(19px * 2);
     display: block;
     width: 100%;
     margin-top: 5px;
@@ -332,17 +331,17 @@ h5.ccDayOfMonth {
 
 .select-product {
     box-sizing: border-box;
-    width: calc(var(--base-font-size) * 2.5);
-    flex-basis: calc(var(--base-font-size) * 2.5);
-    margin-right: var(--base-font-size);
+    width: calc(19px * 2.5);
+    flex-basis: calc(19px * 2.5);
+    margin-right: 19px;
 }
 
 .additional-amount__input,
 .product-total__input {
     box-sizing: border-box;
-    width: calc(var(--base-font-size) * 5);
-    flex-basis: calc(var(--base-font-size) * 5);
-    margin-right: var(--base-font-size);
+    width: calc(19px * 5);
+    flex-basis: calc(19px * 5);
+    margin-right: 19px;
     text-align: right;
 }
 
@@ -361,11 +360,11 @@ input[type="submit"].submit-button {
     font-family: var(--input-font-family);
     font-style: var(--input-font-style);
     font-weight: var(--input-font-weight);
-    font-size: calc(var(--base-font-size) * 1.1);
+    font-size: calc(19px * 1.1);
     padding: 0 20px;
-    margin: var(--base-font-size) auto;
+    margin: 19px auto;
     width: 300px;
-    height: calc(var(--base-font-size) * 2.3);
+    height: calc(19px * 2.3);
     -webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out, border-color 200ms ease-in-out;
     transition: background-color 200ms ease-in-out, color 200ms ease-in-out, border-color 200ms ease-in-out;
 }
@@ -420,13 +419,13 @@ input[type="submit"].submit-button>.error {
 
 .shipping-address__info {
     box-sizing: border-box;
-    margin-top: var(--base-font-size);
+    margin-top: 19px;
     max-width: 100%;
 }
 
 .products-display {
     box-sizing: border-box;
-    margin: var(--base-font-size) 0;
+    margin: 19px 0;
 }
 
 .product-card,
@@ -434,7 +433,7 @@ input[type="submit"].submit-button>.error {
 .product-total {
     box-sizing: border-box;
     margin: 0 auto;
-    padding: calc(var(--base-font-size) * .5);
+    padding: calc(19px * .5);
     border: 1px solid #fff;
     background: rgba(255, 255, 255, .5);
 }
@@ -449,20 +448,20 @@ input[type="submit"].submit-button>.error {
 
 .product-card__title {
     box-sizing: border-box;
-    font-size: var(--base-font-size);
+    font-size: 19px;
 }
 
 .product-card__description,
 .additional-amount__input--label,
 .product-total__input--label {
     box-sizing: border-box;
-    font-size: calc(var(--base-font-size) * .8);
+    font-size: calc(19px * .8);
 }
 
 .monthly-radio {
     box-sizing: border-box;
-    margin: var(--base-font-size) auto;
-    max-width: calc(var(--base-font-size) * 15);
+    margin: 19px auto;
+    max-width: calc(19px * 15);
 }
 
 @media screen and (max-width:613px) {

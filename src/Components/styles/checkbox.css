@@ -12,11 +12,11 @@ input[type="checkbox"].checkbox-input:checked {
 input[type="checkbox"].checkbox-input:not(:checked)+label,
 input[type="checkbox"].checkbox-input:checked+label {
     position: relative;
-    padding-left: calc(var(--base-font-size) * 1.25);
+    padding-left: calc(19px * 1.25);
     cursor: pointer;
     box-sizing: border-box;
     font-family: var(--base-font-family);
-    font-size: calc(var(--base-font-size) * .8);
+    font-size: calc(19px * .8);
     font-weight: var(--base-font-weight);
     color: var(--form-text-color);
     margin-bottom: 0;
@@ -31,8 +31,8 @@ input[type="checkbox"].checkbox-input:checked+label:before {
     position: absolute;
     left: 0;
     top: 0;
-    width: calc(var(--base-font-size) * .8);
-    height: calc(var(--base-font-size) * .8);
+    width: calc(19px * .8);
+    height: calc(19px * .8);
     border: 2px solid #ccc;
     background: #fff;
     -webkit-border-radius: 4px;
@@ -50,8 +50,8 @@ input[type="checkbox"].checkbox-input:checked+label:after {
     content: '\2714';
     position: absolute;
     top: 0;
-    left: calc(var(--base-font-size) * .15);
-    font-size: var(--base-font-size);
+    left: calc(19px * .15);
+    font-size: 19px;
     line-height: 0.8;
     color: var(--primary-color);
     -webkit-transition: all .2s;

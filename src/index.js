@@ -25,6 +25,7 @@ async function getConfiguration() {
     let cssConfig;
     try {
         cssConfig = await callApi(cssConfigUrl);
+        cssConfig["--base-font-size"] = "19px";
         const styleEl = document.createElement('style');
         styleEl.type = 'text/css';
         styleEl.id = "imported-vars";
