@@ -41,7 +41,7 @@ export default class ConfirmationPage extends Component {
     }
 
     async getGlobals() {
-        const url = this.state.mode == "development" ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'http://securegiving.cbn.com/UI/globals/form-config.json'
+        const url = this.state.mode == "development" ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json'
         try {
             const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUri} = await callApi(url)
             this.setState({ready: true, devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri})

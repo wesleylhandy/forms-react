@@ -16,8 +16,6 @@ if (!window.Promise) {
 
 const rootEntry = document.getElementById('form-root')
 
-
-
 async function getConfiguration() {
 
     const generator = rootEntry.dataset.environment.toLowerCase();
