@@ -8,7 +8,6 @@
         "start:proxy": "node proxy-server/server.js",
         "start": "parcel index.html",
         "stop": "pkill SIGINT ProxyServer",
-        "poststop": "rm -rf dist/ .cache/",
         "build": "parcel build src/index.js -d dist/v1"
     },
     "repository": {
