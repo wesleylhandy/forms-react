@@ -10,7 +10,7 @@ import AddressBlock from './AddressBlock';
 import FormOptionsBlock from './FormOptionsBlock';
 import SubmitButton from './SubmitButton';
 
-import flex from './styles/flex.css'
+import flex from './styles/flex.module.css'
 import styles from './styles/name-address-form.module.css'
 
 import { getErrorType } from './helpers/error-types';
