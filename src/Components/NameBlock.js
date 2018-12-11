@@ -34,34 +34,60 @@ function TitleDropdown({value, error, handleInputChange}) {
      * @returns {JSX} - InputGroup with given parameters
      */
 function NameInput({type, required, handleInputChange, value, error}){
-        const id = `${type}name`
-        const label = `${type} Name`
-        const specialStyle = "styles.form-group--" + id
-        // console.log({id, label, specialStyle})
-        return (
+    const id = `${type}name`
+    const label = `${type} Name`
+    const specialStyle = "styles.form-group--" + id
+    // console.log({id, label, specialStyle})
+    return (
+        <InputGroup
+            type="text"
+            id={id}
+            specialStyle={specialStyle} 
+            label={label}
+            placeholder={ required ? label + "*" : label} 
+            maxLength={type === "Last" ? 25 : 20} 
+            required={required} 
+            value={value} 
+            handleInputChange={handleInputChange} 
+            error={error} 
+        />
+    )
+}
+
+function SpouseInput({value, error, handleInputChange}) {
+    return (
+        <div styleName="styles.form-row flex.flex flex.flex-row flex.flex-between">
             <InputGroup
                 type="text"
-                id={id}
-                specialStyle={specialStyle} 
-                label={label}
-                placeholder={ required ? label + "*" : label} 
-                maxLength={type === "Last" ? 25 : 20} 
-                required={required} 
+                id="Spousename" 
+                specialStyle="" 
+                label="Spouse&rsquo;s Name" 
+                placeholder="Spouse&rsquo;s First and Last Name" 
+                maxLength="100" 
+                required={false} 
                 value={value} 
                 handleInputChange={handleInputChange} 
                 error={error} 
             />
-        )
-    }
+        </div>
+    )
+}
 
 function NameBlock({getMiddleName, getSuffix, getSpouseInfo, fields, errors, handleInputChange}){  
     if (!getMiddleName && !getSuffix) {
         return (
-            <div styleName="styles.form-row styles.name-row flex.flex flex.flex-row flex.flex-between">
-                <TitleDropdown value={fields.Title} error={errors.Title} handleInputChange={handleInputChange}/>
-                <NameInput type={"First"} required={true} handleInputChange={handleInputChange} value={fields["Firstname"]} error={errors["Firstname"]}/>
-                <NameInput type={"Last"} required={true} handleInputChange={handleInputChange} value={fields["Lastname"]} error={errors["Lastname"]}/>                         
-            </div>
+            <React.Fragment>
+                <div styleName="styles.form-row styles.name-row flex.flex flex.flex-row flex.flex-between">
+                    <TitleDropdown value={fields.Title} error={errors.Title} handleInputChange={handleInputChange}/>
+                    <NameInput type={"First"} required={true} handleInputChange={handleInputChange} value={fields["Firstname"]} error={errors["Firstname"]}/>
+                    <NameInput type={"Last"} required={true} handleInputChange={handleInputChange} value={fields["Lastname"]} error={errors["Lastname"]}/>                         
+                </div>
+                {
+                    getSpouseInfo && (
+                        <SpouseInput value={fields.Spousename} error={errors.Spousename} handleInputChange={handleInputChange} />
+                    )
+                }
+            </React.Fragment>
         )
     } else {
         return (
@@ -99,20 +125,7 @@ function NameBlock({getMiddleName, getSuffix, getSpouseInfo, fields, errors, han
                 </div>
                 {
                     getSpouseInfo && (
-                        <div styleName="styles.form-row flex.flex flex.flex-row flex.flex-between">
-                            <InputGroup
-                                type="text"
-                                id="Spousename" 
-                                specialStyle="" 
-                                label="Spouse&rsquo;s Name" 
-                                placeholder="Spouse&rsquo;s First and Last Name" 
-                                maxLength="100" 
-                                required={false} 
-                                value={fields.Spousename} 
-                                handleInputChange={handleInputChange} 
-                                error={errors.Spousename} 
-                            />
-                        </div>
+                        <SpouseInput value={fields.Spousename} error={errors.Spousename} handleInputChange={handleInputChange} />
                     )
                 }
             </React.Fragment>
