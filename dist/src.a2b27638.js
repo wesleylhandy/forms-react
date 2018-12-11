@@ -32624,33 +32624,7 @@ function SubmitButton(_ref) {
 
 var _default = SubmitButton;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","./styles/form-row.module.css":"src/Components/styles/form-row.module.css"}],"src/Components/styles/flex.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-module.exports = {
-  "-ms-flex": "flex__2SHge",
-  "flex": "flex__2SHge",
-  "flex-row": "flex-row__M7mg4",
-  "flex-center": "flex-center__yyA4g",
-  "flex-around": "flex-around___Gjak",
-  "flex-between": "flex-between__2MQaD",
-  "flex-left": "flex-left__2XM1d",
-  "flex-start": "flex-start__2Ga6n",
-  "flex-end": "flex-end__Cg2Gv",
-  "flex-row-reverse": "flex-row-reverse__3dS2V",
-  "flex-axes-center": "flex-axes-center__gx3gz",
-  "flex-column": "flex-column__3YwsY",
-  "-ms-flex-wrap": "flex-wrap__3nXfa",
-  "flex-wrap": "flex-wrap__3nXfa",
-  "-ms-flex-positive": "flex-grow__1RrI1",
-  "flex-grow": "flex-grow__1RrI1",
-  "flex-no-grow": "flex-no-grow__2xRX_",
-  "-ms-flex-negative": "flex-shrink__3Yf-r",
-  "flex-shrink": "flex-shrink__3Yf-r"
-};
-},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/name-address-form.module.css":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./styles/form-row.module.css":"src/Components/styles/form-row.module.css"}],"src/Components/styles/name-address-form.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -60542,7 +60516,7 @@ var _FormOptionsBlock = _interopRequireDefault(require("./FormOptionsBlock"));
 
 var _SubmitButton = _interopRequireDefault(require("./SubmitButton"));
 
-var _flex = _interopRequireDefault(require("./styles/flex.css"));
+var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
 
 var _nameAddressFormModule = _interopRequireDefault(require("./styles/name-address-form.module.css"));
 
@@ -60590,21 +60564,21 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 var _styleModuleImportMap = {
   "flex": {
-    "flex": "flex__2SHge",
-    "flex-row": "flex-row__M7mg4",
-    "flex-center": "flex-center__yyA4g",
-    "flex-around": "flex-around___Gjak",
-    "flex-between": "flex-between__2MQaD",
-    "flex-left": "flex-left__2XM1d",
-    "flex-start": "flex-start__2Ga6n",
-    "flex-end": "flex-end__Cg2Gv",
-    "flex-row-reverse": "flex-row-reverse__3dS2V",
-    "flex-axes-center": "flex-axes-center__gx3gz",
-    "flex-column": "flex-column__3YwsY",
-    "flex-wrap": "flex-wrap__3nXfa",
-    "flex-grow": "flex-grow__1RrI1",
-    "flex-no-grow": "flex-no-grow__2xRX_",
-    "flex-shrink": "flex-shrink__3Yf-r"
+    "flex": "flex__ayltN",
+    "flex-row": "flex-row__16BBq",
+    "flex-center": "flex-center__1HhTj",
+    "flex-around": "flex-around__25IHb",
+    "flex-between": "flex-between__3zYkx",
+    "flex-left": "flex-left__3xW5i",
+    "flex-start": "flex-start__1kKvj",
+    "flex-end": "flex-end__I3jk2",
+    "flex-row-reverse": "flex-row-reverse__39Jm4",
+    "flex-axes-center": "flex-axes-center__33a6C",
+    "flex-column": "flex-column__lQLZG",
+    "flex-wrap": "flex-wrap__1FN6A",
+    "flex-grow": "flex-grow__1FqT_",
+    "flex-no-grow": "flex-no-grow__3iHTz",
+    "flex-shrink": "flex-shrink__1LQT2"
   },
   "styles": {
     "form-panel": "form-panel__2bLqQ",
@@ -60628,8 +60602,8 @@ if (module.hot) {
 }
 
 if (module.hot) {
-  module.hot.accept("./styles/flex.css", function () {
-    require("./styles/flex.css");
+  module.hot.accept("./styles/flex.module.css", function () {
+    require("./styles/flex.module.css");
   });
 }
 
@@ -60730,7 +60704,7 @@ function (_Component) {
 
         var items = _toConsumableArray(this.state.cart.items);
 
-        var products = this.state.productOptions.products;
+        var products = this.props.products;
 
         var productInfo = _toConsumableArray(this.state.productInfo),
             productsOrdered = this.state.productsOrdered;
@@ -61779,7 +61753,7 @@ function (_Component) {
 
 var _default = NameAddressForm;
 exports.default = _default;
-},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./GivingArray":"src/Components/GivingArray.js","./ProductDisplay":"src/Components/ProductDisplay.js","./FundDisplay":"src/Components/FundDisplay.js","./MonthlyRadioGroup":"src/Components/MonthlyRadioGroup.js","./NameBlock":"src/Components/NameBlock.js","./ShippingAddressBlock":"src/Components/ShippingAddressBlock.js","./AddressBlock":"src/Components/AddressBlock.js","./FormOptionsBlock":"src/Components/FormOptionsBlock.js","./SubmitButton":"src/Components/SubmitButton.js","./styles/flex.css":"src/Components/styles/flex.css","./styles/name-address-form.module.css":"src/Components/styles/name-address-form.module.css","./helpers/error-types":"src/Components/helpers/error-types.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js","./helpers/crypt":"src/Components/helpers/crypt.js"}],"src/Components/styles/payment-form.module.css":[function(require,module,exports) {
+},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./GivingArray":"src/Components/GivingArray.js","./ProductDisplay":"src/Components/ProductDisplay.js","./FundDisplay":"src/Components/FundDisplay.js","./MonthlyRadioGroup":"src/Components/MonthlyRadioGroup.js","./NameBlock":"src/Components/NameBlock.js","./ShippingAddressBlock":"src/Components/ShippingAddressBlock.js","./AddressBlock":"src/Components/AddressBlock.js","./FormOptionsBlock":"src/Components/FormOptionsBlock.js","./SubmitButton":"src/Components/SubmitButton.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/name-address-form.module.css":"src/Components/styles/name-address-form.module.css","./helpers/error-types":"src/Components/helpers/error-types.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js","./helpers/crypt":"src/Components/helpers/crypt.js"}],"src/Components/styles/payment-form.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -62229,45 +62203,82 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
-function handleFormLoad() {
-  document.forms.hiddenform.submit.click();
-}
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function HiddenForm(_ref) {
-  var receiptVars = _ref.receiptVars,
-      thankYouUrl = _ref.thankYouUrl;
-  var inputs = receiptVars.map(function (v, i) {
-    return _react.default.createElement("input", {
-      key: "hiddenInput-" + i,
-      name: Object.keys(v)[0],
-      value: Object.values(v)[0],
-      type: "hidden"
-    });
-  });
-  var styles = {
-    position: "absolute",
-    left: "-10000px",
-    top: "auto",
-    width: "1px",
-    height: "1px",
-    overflow: "hidden"
-  };
-  return _react.default.createElement("form", {
-    id: "hiddenform",
-    style: styles,
-    action: thankYouUrl,
-    method: "POST",
-    onLoad: handleFormLoad
-  }, inputs, _react.default.createElement("input", {
-    id: "submit",
-    type: "submit",
-    hidden: true
-  }));
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var HiddenForm =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(HiddenForm, _Component);
+
+  function HiddenForm() {
+    _classCallCheck(this, HiddenForm);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(HiddenForm).apply(this, arguments));
+  }
+
+  _createClass(HiddenForm, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      console.log("Loaded and Clicking...");
+      document.forms.hiddenform.submit.click();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          receiptVars = _this$props.receiptVars,
+          thankYouUrl = _this$props.thankYouUrl;
+      var inputs = receiptVars.map(function (v, i) {
+        return _react.default.createElement("input", {
+          key: "hiddenInput-" + i,
+          name: Object.keys(v)[0],
+          value: Object.values(v)[0],
+          type: "hidden"
+        });
+      });
+      var styles = {
+        position: "absolute",
+        left: "-10000px",
+        top: "auto",
+        width: "1px",
+        height: "1px",
+        overflow: "hidden"
+      };
+      return _react.default.createElement("form", {
+        id: "hiddenform",
+        style: styles,
+        action: thankYouUrl,
+        method: "POST"
+      }, inputs, _react.default.createElement("input", {
+        id: "submit",
+        type: "submit",
+        hidden: true
+      }));
+    }
+  }]);
+
+  return HiddenForm;
+}(_react.Component);
 
 var _default = HiddenForm;
 exports.default = _default;
@@ -62551,9 +62562,7 @@ function _getConfiguration() {
 
           case 8:
             cssConfig = _context.sent;
-            console.log({
-              cssConfig: cssConfig
-            });
+            // console.log({cssConfig})
             cssConfig["--base-font-size"] = "19px";
             styleEl = document.createElement('style');
             styleEl.type = 'text/css';
@@ -62581,44 +62590,44 @@ function _getConfiguration() {
               watch: true,
               onComplete: function onComplete(cssText, styleNode) {}
             });
-            _context.next = 25;
+            _context.next = 24;
             break;
 
-          case 21:
-            _context.prev = 21;
+          case 20:
+            _context.prev = 20;
             _context.t0 = _context["catch"](5);
             console.error(_context.t0);
             alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
 
-          case 25:
+          case 24:
             formConfigUrl = isWordpress ? handleWordpress(isWordpress, formName) + "?type=form_setup" : "".concat(base, "form-config.json");
-            _context.prev = 26;
-            _context.next = 29;
+            _context.prev = 25;
+            _context.next = 28;
             return (0, _fetchHelpers.callApi)(formConfigUrl);
 
-          case 29:
+          case 28:
             initialState = _context.sent;
-            _context.next = 36;
+            _context.next = 35;
             break;
 
-          case 32:
-            _context.prev = 32;
-            _context.t1 = _context["catch"](26);
+          case 31:
+            _context.prev = 31;
+            _context.t1 = _context["catch"](25);
             console.error(_context.t1);
             alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
 
-          case 36:
+          case 35:
             return _context.abrupt("return", {
               cssConfig: cssConfig,
               initialState: initialState
             });
 
-          case 37:
+          case 36:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[5, 21], [26, 32]]);
+    }, _callee, this, [[5, 20], [25, 31]]);
   }));
   return _getConfiguration.apply(this, arguments);
 }
@@ -62668,7 +62677,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56431" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49645" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

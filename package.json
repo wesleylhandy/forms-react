@@ -8,7 +8,7 @@
         "start:proxy": "node proxy-server/server.js",
         "start": "parcel index.html",
         "stop": "pkill SIGINT ProxyServer",
-        "build": "parcel build src/index.js -d dist/v1"
+        "build": "parcel build src/index.js --detailed-report -d dist/v1"
     },
     "repository": {
         "type": "git",

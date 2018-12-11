@@ -94,13 +94,12 @@ class NameAddressForm extends Component {
     }
 
     componentDidMount(){
-
         // check to see if this is a postback from confirmation page
         if (this.props.hydratedData && this.props.hydratedData.MultipleDonations) {
             // initialize variables in such a way as to not mutate state
             let amount = 0, isMonthly = false;
             const items = [...this.state.cart.items];
-            const { products } = this.state.productOptions
+            const { products } = this.props
             let productInfo = [...this.state.productInfo], { productsOrdered } = this.state
             const MultipleDonations = [...this.props.hydratedData.MultipleDonations];
 
