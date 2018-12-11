@@ -42,8 +42,7 @@ class App extends Component {
             formAction: null,
             formData: formData,
             donorID: null,
-            hydratedData: formData,
-            cssConfig: props.config.cssConfig
+            hydratedData: formData
         }
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
@@ -69,28 +68,41 @@ class App extends Component {
     }
 
     render() {
-          return ( 
+        const { cssConfig } = this.props.config
+        const {
+            mode, 
+            finalized, 
+            submitted, 
+            thankYouUrl, 
+            finalizedData, 
+            formData, 
+            formAction,
+            ...formState
+        } = this.state
+        return ( 
             <div styleName='styles.form-wrapper' id="react-form-top"> 
                 { 
-                    this.state.mode !== 'production' ? (
+                    mode !== 'production' && (
                         <Banner />
-                    ) : null
+                    ) 
                 }
                 { 
-                    this.state.finalized ? (
-                        <RedirectForm thankYouUrl={this.state.thankYouUrl} receiptVars={this.state.finalizedData} />
-                    ) : this.state.submitted ? ( 
-                        <ConfirmationPage 
-                            mode={this.state.mode}
-                            cssConfig={this.state.cssConfig}
-                            formData={this.state.formData} 
-                            formAction={this.state.formAction}
-                            hydrateForm={this.hydrateForm}
-                            renderReceiptPage={this.renderReceiptPage}
-                        /> 
-                    ) : (
-                        <NameAddressForm { ...this.state } submitForm={ this.submitForm }/> 
-                    )        
+                    (()=> {
+                        if (finalized) {
+                            return <RedirectForm thankYouUrl={thankYouUrl} receiptVars={finalizedData} />
+                        } else if (submitted) {
+                            return <ConfirmationPage 
+                                mode={mode}
+                                cssConfig={cssConfig}
+                                formData={formData} 
+                                formAction={formAction}
+                                hydrateForm={this.hydrateForm}
+                                renderReceiptPage={this.renderReceiptPage}
+                            /> 
+                        } else {
+                            return <NameAddressForm { ...formState } submitForm={ this.submitForm }/> 
+                        }
+                    })()     
                 } 
              </div>
         )

@@ -191,5 +191,4 @@ class ProductDisplay extends Component {
     }
 }
 
-
 export default ProductDisplay

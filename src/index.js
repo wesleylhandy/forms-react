@@ -66,6 +66,14 @@ async function getConfiguration() {
     let initialState;
     try {
         initialState = await callApi(formConfigUrl);
+        if (initialState.mode === "production") {
+            if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+                window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {}
+                if(Object.keys(window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers).length) {
+                    window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers = {};
+                }
+            }
+        }
     } catch (err) {
         console.error(err);
         alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');

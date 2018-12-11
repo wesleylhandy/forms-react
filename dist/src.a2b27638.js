@@ -61477,7 +61477,7 @@ function (_Component) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "http://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+                base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "https://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
                 url = "".concat(base).concat(value);
                 fields = _extends({}, this.state.fields);
                 _context3.prev = 3;
@@ -61556,7 +61556,7 @@ function (_Component) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx?" : "http://Services.cbn.com/AddressValidation/AddressVerification.aspx?";
+                base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx?" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx?";
                 url = encodeURI("".concat(base, "addr1=").concat(addr1, "&city=").concat(city, "&state=").concat(state, "&zip=").concat(zip));
                 _context4.prev = 2;
                 _context4.next = 5;
@@ -62380,6 +62380,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
 if (module.hot) {
   module.hot.accept("./styles/app.module.css", function () {
     require("./styles/app.module.css");
@@ -62427,8 +62429,7 @@ function (_Component) {
       formAction: null,
       formData: formData,
       donorID: null,
-      hydratedData: formData,
-      cssConfig: props.config.cssConfig
+      hydratedData: formData
     });
     _this.submitForm = _this.submitForm.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.hydrateForm = _this.hydrateForm.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -62472,22 +62473,44 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
+      var cssConfig = this.props.config.cssConfig;
+
+      var _state = this.state,
+          mode = _state.mode,
+          finalized = _state.finalized,
+          submitted = _state.submitted,
+          thankYouUrl = _state.thankYouUrl,
+          finalizedData = _state.finalizedData,
+          formData = _state.formData,
+          formAction = _state.formAction,
+          formState = _objectWithoutProperties(_state, ["mode", "finalized", "submitted", "thankYouUrl", "finalizedData", "formData", "formAction"]);
+
       return _react.default.createElement("div", {
         className: "form-wrapper__MMJ_H",
         id: "react-form-top"
-      }, this.state.mode !== 'production' ? _react.default.createElement(_Banner.default, null) : null, this.state.finalized ? _react.default.createElement(_RedirectForm.default, {
-        thankYouUrl: this.state.thankYouUrl,
-        receiptVars: this.state.finalizedData
-      }) : this.state.submitted ? _react.default.createElement(_ConfirmationPage.default, {
-        mode: this.state.mode,
-        cssConfig: this.state.cssConfig,
-        formData: this.state.formData,
-        formAction: this.state.formAction,
-        hydrateForm: this.hydrateForm,
-        renderReceiptPage: this.renderReceiptPage
-      }) : _react.default.createElement(_NameAddressForm.default, _extends({}, this.state, {
-        submitForm: this.submitForm
-      })));
+      }, mode !== 'production' && _react.default.createElement(_Banner.default, null), function () {
+        if (finalized) {
+          return _react.default.createElement(_RedirectForm.default, {
+            thankYouUrl: thankYouUrl,
+            receiptVars: finalizedData
+          });
+        } else if (submitted) {
+          return _react.default.createElement(_ConfirmationPage.default, {
+            mode: mode,
+            cssConfig: cssConfig,
+            formData: formData,
+            formAction: formAction,
+            hydrateForm: _this2.hydrateForm,
+            renderReceiptPage: _this2.renderReceiptPage
+          });
+        } else {
+          return _react.default.createElement(_NameAddressForm.default, _extends({}, formState, {
+            submitForm: _this2.submitForm
+          }));
+        }
+      }());
     }
   }]);
 
@@ -62607,27 +62630,38 @@ function _getConfiguration() {
 
           case 28:
             initialState = _context.sent;
-            _context.next = 35;
+
+            if (initialState.mode === "production") {
+              if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+                window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
+
+                if (Object.keys(window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers).length) {
+                  window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers = {};
+                }
+              }
+            }
+
+            _context.next = 36;
             break;
 
-          case 31:
-            _context.prev = 31;
+          case 32:
+            _context.prev = 32;
             _context.t1 = _context["catch"](25);
             console.error(_context.t1);
             alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
 
-          case 35:
+          case 36:
             return _context.abrupt("return", {
               cssConfig: cssConfig,
               initialState: initialState
             });
 
-          case 36:
+          case 37:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[5, 20], [25, 31]]);
+    }, _callee, this, [[5, 20], [25, 32]]);
   }));
   return _getConfiguration.apply(this, arguments);
 }
@@ -62677,7 +62711,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49645" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54557" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

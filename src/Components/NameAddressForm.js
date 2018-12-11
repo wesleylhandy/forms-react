@@ -530,7 +530,7 @@ class NameAddressForm extends Component {
      * @param {string} value - five digit zip code
      */
     async callZipCityStateService(name, value) {
-        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "http://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "https://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
         const url = `${base}${value}`;
         const fields = {...this.state.fields};
         try {
@@ -568,7 +568,7 @@ class NameAddressForm extends Component {
      * @returns {string} either empty or with error
      */
     async callAddressVerification(addr1, city, state, zip) {
-        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx?" : "http://Services.cbn.com/AddressValidation/AddressVerification.aspx?";
+        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx?" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx?";
         const url = encodeURI(`${base}addr1=${addr1}&city=${city}&state=${state}&zip=${zip}`)
         try {
             const result = await callApi(url);
