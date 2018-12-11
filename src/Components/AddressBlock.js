@@ -7,7 +7,7 @@ import styles from './styles/form-row.module.css'
 import flex from './styles/flex.module.css'
 
 import getStateOptions from './helpers/renderStateOptions'
-import {countries} from '../config/dropdowns.json'
+import { countries } from '../config/dropdowns.json'
 
 function AddressBlock({fields, errors, handleInputChange, getPhone, international}){
     return (
@@ -79,17 +79,19 @@ function AddressBlock({fields, errors, handleInputChange, getPhone, internationa
                     international={international}
                 />
 
-                { international ? (
-                    <SelectGroup 
-                        id="Country"
-                        specialStyle="styles.form-group--Country"
-                        required={true}
-                        value={fields.Country}
-                        error={errors.Country}
-                        handleInputChange={handleInputChange}
-                        options={[<option key="country-base-0" value="">Country* &#9663;</option>, countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)]}
-                    />
-                ): null }
+                { 
+                    international && (
+                        <SelectGroup 
+                            id="Country"
+                            specialStyle="styles.form-group--Country"
+                            required={true}
+                            value={fields.Country}
+                            error={errors.Country}
+                            handleInputChange={handleInputChange}
+                            options={[<option key="country-base-0" value="">Country* &#9663;</option>, countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)]}
+                        />
+                    ) 
+                }
             </div>
             <div styleName="styles.form-row styles.email-phone-row flex.flex flex.flex-row flex.flex-between">
                 <InputGroup
@@ -105,7 +107,7 @@ function AddressBlock({fields, errors, handleInputChange, getPhone, internationa
                     error={errors.Emailaddress} 
                 />
                 {
-                    getPhone ? (
+                    getPhone && (
                         <InputGroup
                             type="text"
                             id="phone" 
@@ -118,7 +120,7 @@ function AddressBlock({fields, errors, handleInputChange, getPhone, internationa
                             handleInputChange={handleInputChange} 
                             error={errors.phone} 
                         />
-                    ) : null 
+                    )
                 }
             </div>
         </React.Fragment>
