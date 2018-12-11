@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 
-import flex from './styles/flex.css'
-import form from './styles/form.css'
-import main from './styles/main.css'
+import flex from './styles/flex.module.css'
+import styles from './styles/giving.module.css'
 
 function getIndex(arr,amount) {
     return arr.findIndex(amt=> +amt == +amount)
 }
 
-export default class GivingArray extends Component {
+class GivingArray extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -75,8 +74,8 @@ export default class GivingArray extends Component {
     renderArray(amounts, selectedIndex) {
 
         return amounts.map((amount, i)=>(
-            <div key={`array${i}`} styleName={`form.askbutton flex.flex flex.flex-center flex.flex-axes-center ${selectedIndex == i ? "form.selected" : ""}`} onClick={()=>this.addToCart(amount, i)}>
-                <div styleName="form.askbutton__amt flex.flex flex.flex-center flex.flex-axes-center flex.flex-no-grow">{amount}</div>
+            <div key={`array${i}`} styleName={`styles.askbutton flex.flex flex.flex-center flex.flex-axes-center ${selectedIndex == i ? "styles.selected" : ""}`} onClick={()=>this.addToCart(amount, i)}>
+                <div styleName="styles.askbutton__amt flex.flex flex.flex-center flex.flex-axes-center flex.flex-no-grow">{amount}</div>
             </div>
         ))
     }
@@ -116,17 +115,19 @@ export default class GivingArray extends Component {
     render() {
         return (
             <React.Fragment>
-                <h3 styleName="main.caps form.form-header">Select A {this.state.monthlyChecked ? "Monthly" : "Single"} Donation Amount</h3>
-                <div id="AskArray" styleName="form.askarray flex.flex flex.flex-row flex.flex-center flex.flex-wrap">
+                <h3 styleName="styles.askarray__header">Select A {this.state.monthlyChecked ? "Monthly" : "Single"} Donation Amount</h3>
+                <div id="AskArray" styleName="styles.askarray flex.flex flex.flex-row flex.flex-center flex.flex-wrap">
                     { this.state.monthlyOption && this.state.monthlyChecked ? this.renderArray(this.state.monthlyAmounts, this.state.selectedIndex) : null }
                     { this.state.singleOption && !this.state.monthlyChecked ?  this.renderArray(this.state.singleAmounts, this.state.selectedIndex) : null }
-                    <div id="OtherAmout" styleName={`form.askarray__form-group flex.flex flex.flex-center flex.flex-axes-center${this.state.selectedIndex == 99 ? " form.selected": ""}`}>
-                        <label styleName="form.form-group__other-input--label" htmlFor="other-amt-input">Other Amount</label>
-                        <input styleName="form.form-group__other-input" name="other-amt-input" onChange={this.handleOtherAmt} value={this.state.otherAmount == 0 ? '' : this.state.otherAmount}/>
-                        <div styleName="form.error">{this.state.otherAmountError}</div>
+                    <div id="OtherAmout" styleName={`styles.askarray__form-group flex.flex flex.flex-center flex.flex-axes-center${this.state.selectedIndex == 99 ? " styles.selected": ""}`}>
+                        <label styleName="styles.form-group__other-input--label" htmlFor="other-amt-input">Other Amount</label>
+                        <input styleName="styles.form-group__other-input" name="other-amt-input" onChange={this.handleOtherAmt} value={this.state.otherAmount == 0 ? '' : this.state.otherAmount}/>
+                        <div styleName="styles.error">{this.state.otherAmountError}</div>
                     </div> 
                 </div>
             </React.Fragment>
         )
     }
 }
+
+export default GivingArray

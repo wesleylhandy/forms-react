@@ -15,7 +15,7 @@ function handleUnload(e){
     return "Are you sure you want to go back?\n You may lose all your changes to this page."
 }
 
-export default class ConfirmationPage extends Component {
+class ConfirmationPage extends Component {
     constructor(props) {
         super(props);
 
@@ -104,3 +104,5 @@ export default class ConfirmationPage extends Component {
         )
     }
 }
+
+export default ConfirmationPage

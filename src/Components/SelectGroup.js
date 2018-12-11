@@ -1,24 +1,24 @@
 import React from 'react'
 
-import flex from './styles/flex.css'
-import input from './styles/input.css'
-import error from './styles/error.css'
+import styles from './styles/input.module.css'
 
-export default function SelectGroup(props) {
+function SelectGroup({id, specialStyle, required, error, value, handleInputChange, options}) {
     return (
-        <div id={`form-field-${props.id}`} styleName={`${props.specialStyle ? props.specialStyle : ""} input.form-group flex.flex-grow`}>
-            <label htmlFor={props.id}>{props.id}<span>{props.required ? '*' : ''}</span></label>
-            <select styleName={`input.form-control${props.error ? " input.error" : ""}`}
-                id={props.id}
-                name={props.id}  
-                required={props.required} 
-                value={props.value} 
-                onChange={props.handleInputChange}
-                aria-invalid={props.error ? true : false} 
+        <div id={`form-field-${id}`} styleName={`${specialStyle ? specialStyle : ""} styles.form-group`}>
+            <label htmlFor={id}>{id}<span>{required ? '*' : ''}</span></label>
+            <select styleName={`styles.form-control${error ? " styles.error" : ""}`}
+                id={id}
+                name={id}  
+                required={required} 
+                value={value} 
+                onChange={handleInputChange}
+                aria-invalid={error ? true : false} 
             >
-                {props.options}
+                {options}
             </select>
-            <div styleName="error.error">{props.error}</div>
+            <div styleName="styles.error">{error}</div>
         </div>
     )
 }
+
+export default SelectGroup;

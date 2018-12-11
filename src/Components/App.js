@@ -5,7 +5,7 @@ import ConfirmationPage from "./ConfirmationPage"
 import RedirectForm from './RedirectForm';
 import Banner from './Banner'
 
-import './styles/form.css'
+import styles from './styles/app.module.css'
 
 import {read} from "./helpers/crypt"
 
@@ -70,7 +70,7 @@ class App extends Component {
 
     render() {
           return ( 
-            <div styleName='form-wrapper' id="react-form-top"> 
+            <div styleName='styles.form-wrapper' id="react-form-top"> 
                 { 
                     this.state.mode !== 'production' ? (
                         <Banner />

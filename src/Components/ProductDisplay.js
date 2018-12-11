@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 
-import main from './styles/main.css'
-import flex from './styles/flex.css'
-import form from './styles/form.css'
+import styles from './styles/products.module.css'
+import flex from './styles/flex.module.css'
 
-export default class ProductDisplay extends Component {
+class ProductDisplay extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -131,8 +130,8 @@ export default class ProductDisplay extends Component {
 
     renderAdditionalGift(additionalGift) {
         return additionalGift ? (
-            <div styleName="form.additional-amount flex.flex flex.flex-left flex.flex-axes-center">
-                <input styleName='form.additional-amount__input' 
+            <div styleName="styles.additional-amount flex.flex flex.flex-left flex.flex-axes-center">
+                <input styleName='styles.additional-amount__input' 
                     name="additionalGift"
                     placeholder="0"
                     onBlur={e=> e.target.value === "" ? e.target.value = 0 : true}
@@ -140,8 +139,8 @@ export default class ProductDisplay extends Component {
                     onChange={this.handleInputChange} 
                     value={this.state.fields.additionalGift }
                 />
-                <div styleName="form.additional-amount__input--label">{this.state.additionalGiftMessage}</div>
-                <div styleName="form.error">{this.state.errors.additionalGift}</div>
+                <div styleName="styles.additional-amount__input--label">{this.state.additionalGiftMessage}</div>
+                <div styleName="styles.error">{this.state.errors.additionalGift}</div>
             </div> 
         ) : null;
     }
@@ -158,13 +157,13 @@ export default class ProductDisplay extends Component {
                 return options
             }
             return (
-                <div styleName="form.products-display">
+                <div styleName="styles.products-display">
                     {   this.state.products.map((product, i)=>{
 
                         return (
-                            <div key={`product${i}`} styleName="form.product-card flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
-                                <label htmlFor={`product-select-${i}`} styleName="main.hidden">Select Quantity</label>
-                                <select styleName="form.select-product flex.flex-no-grow" 
+                            <div key={`product${i}`} styleName="styles.product-card flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
+                                <label htmlFor={`product-select-${i}`} styleName="styles.hidden">Select Quantity</label>
+                                <select styleName="styles.select-product flex.flex-no-grow" 
                                     name={`product-select-${i}`} 
                                     value={this.state.fields[`product-select-${i}`] >= 0 ? this.state.fields[`product-select-${i}`] : 0} 
                                     onChange={this.handleInputChange}
@@ -173,21 +172,24 @@ export default class ProductDisplay extends Component {
                                     { renderOptions(i) }
                                     
                                 </select>
-                                <div styleName="form.product-card__body flex.flex-grow">
-                                    <div styleName="form.product-card__title">{product.productTitle} - ${product.PledgeAmount}</div>
-                                    <div styleName="form.product-card__description" dangerouslySetInnerHTML={this.createMarkup(product.productMessage)}></div>
+                                <div styleName="styles.product-card__body flex.flex-grow">
+                                    <div styleName="styles.product-card__title">{product.productTitle} - ${product.PledgeAmount}</div>
+                                    <div styleName="styles.product-card__description" dangerouslySetInnerHTML={this.createMarkup(product.productMessage)}></div>
                                 </div>
                             </div>
                             )
                         })
                     }
                     { this.renderAdditionalGift(this.state.additionalGift) }
-                    <div styleName="form.product-total flex.flex flex.flex-left flex.flex-axes-center">
-                        <input styleName='form.product-total__input flex.flex-no-grow' name="total-product-gift" value={this.state.totalGift} disabled={true}/>
-                        <div styleName="main.caps form.product-total__input--label">Subtotal</div>
+                    <div styleName="styles.product-total flex.flex flex.flex-left flex.flex-axes-center">
+                        <input styleName='styles.product-total__input flex.flex-no-grow' name="total-product-gift" value={this.state.totalGift} disabled={true}/>
+                        <div styleName="styles.product-total__input--label">Subtotal</div>
                     </div>
                 </div>
             )
         }
     }
 }
+
+
+export default ProductDisplay

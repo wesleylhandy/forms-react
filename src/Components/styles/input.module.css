@@ -8,6 +8,7 @@
     margin-bottom: calc(19px * .6);
     margin-top: calc(19px * .6);
     position: relative;
+    flex: 1 1 auto;
 }
 
 .form-group>label {
@@ -40,6 +41,7 @@
 .form-group--Title {
     flex-basis: 115px;
     width: 115px;
+    flex: 0 0 auto;
 }
 
 .form-group--Firstname,
@@ -169,4 +171,25 @@ input[type='text'].form-control:disabled {
         max-width: 100%;
         width: 100%;
     }
+}
+
+.error {
+    box-sizing: border-box;
+    position: absolute;
+    color: var(--error-color);
+    width: auto;
+    left: 5px;
+    bottom: calc(0% - 13px);
+    font-family: var(--bold-font-family);
+    font-style: var(--bold-font-style);
+    font-weight: var(--bold-font-weight);
+    font-size: calc(19px * .5);
+    opacity: 1;
+    overflow: hidden;
+    max-width: 100%;
+    white-space: nowrap;
+}
+
+.error.amount-error {
+    text-align: center;
 }

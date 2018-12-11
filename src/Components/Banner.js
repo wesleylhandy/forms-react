@@ -1,7 +1,7 @@
 import React from "react"
 
-import main from './styles/main.css'
+import styles from './styles/banner.module.css'
 
-const Banner = () => <div styleName="main.banner">Page In Development</div>
+const Banner = () => <div styleName="styles.banner">Page In Development</div>
 
 export default Banner;
