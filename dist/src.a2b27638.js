@@ -30983,6 +30983,7 @@ module.exports = {
   "select-product": "select-product__2SOvm",
   "additional-amount__input": "additional-amount__input__3xXGq",
   "product-total__input": "product-total__input__172mT",
+  "select-product__label": "select-product__label__3Y0AW",
   "products-display": "products-display__38L-c",
   "product-card": "product-card__t3-b0",
   "additional-amount": "additional-amount__3rbO8",
@@ -31282,15 +31283,17 @@ function (_Component) {
           return _react.default.createElement("div", {
             key: "product".concat(i),
             className: "product-card__t3-b0 flex__ayltN flex-row__16BBq flex-left__3xW5i flex-axes-center__33a6C"
+          }, _react.default.createElement("div", {
+            className: "flex__ayltN flex-column__lQLZG"
           }, _react.default.createElement("label", {
             htmlFor: "product-select-".concat(i),
-            className: "hidden__2tqB3"
-          }, "Select Quantity"), _react.default.createElement("select", {
+            className: "select-product__label__3Y0AW"
+          }, "Quantity"), _react.default.createElement("select", {
             className: "select-product__2SOvm flex-no-grow__3iHTz",
             name: "product-select-".concat(i),
             value: _this2.state.fields["product-select-".concat(i)] >= 0 ? _this2.state.fields["product-select-".concat(i)] : 0,
             onChange: _this2.handleInputChange
-          }, renderOptions(i)), _react.default.createElement("div", {
+          }, renderOptions(i))), _react.default.createElement("div", {
             className: "product-card__body__2xbB- flex-grow__1FqT_"
           }, _react.default.createElement("div", {
             className: "product-card__title__2Kpak"
@@ -31300,14 +31303,17 @@ function (_Component) {
           })));
         }), this.renderAdditionalGift(this.state.additionalGift), _react.default.createElement("div", {
           className: "product-total__3EJ0g flex__ayltN flex-left__3xW5i flex-axes-center__33a6C"
-        }, _react.default.createElement("input", {
+        }, _react.default.createElement("label", {
+          className: "product-total__input--label__1r4ld",
+          htmlFor: "total-product-gift"
+        }, "$"), _react.default.createElement("input", {
           className: "product-total__input__172mT flex-no-grow__3iHTz",
           name: "total-product-gift",
           value: this.state.totalGift,
           disabled: true
         }), _react.default.createElement("div", {
           className: "product-total__input--label__1r4ld"
-        }, "Subtotal")));
+        }, "Product Subtotal")));
       }
     }
   }]);
@@ -32022,14 +32028,14 @@ function TitleDropdown(_ref) {
   });
 }
 /**
-    * Function to render a name input
-    * @param {String} type - either 'First', 'Last', or 'Middle' 
-    * @param {Boolean} required 
-    * @param {Function} handleInputChange
-    * @param {String} value
-    * @param {String} error
-    * @returns {JSX} - InputGroup with given parameters
-    */
+* Function to render a name input
+* @param {String} type - either 'First', 'Last', or 'Middle' 
+* @param {Boolean} required 
+* @param {Function} handleInputChange
+* @param {String} value
+* @param {String} error
+* @returns {JSX} - InputGroup with given parameters
+*/
 
 
 function NameInput(_ref2) {
@@ -32055,17 +32061,45 @@ function NameInput(_ref2) {
     error: error
   });
 }
+/**
+* Function to render spousename input
+* @param {String} value
+* @param {String} error
+* @param {Function} handleInputChange
+* @returns {JSX} - InputGroup with given parameters
+*/
 
-function NameBlock(_ref3) {
-  var getMiddleName = _ref3.getMiddleName,
-      getSuffix = _ref3.getSuffix,
-      getSpouseInfo = _ref3.getSpouseInfo,
-      fields = _ref3.fields,
-      errors = _ref3.errors,
+
+function SpouseInput(_ref3) {
+  var value = _ref3.value,
+      error = _ref3.error,
       handleInputChange = _ref3.handleInputChange;
+  return _react.default.createElement("div", {
+    className: "form-row__3cr4u flex__ayltN flex-row__16BBq flex-between__3zYkx"
+  }, _react.default.createElement(_InputGroup.default, {
+    type: "text",
+    id: "Spousename",
+    specialStyle: "",
+    label: "Spouse\u2019s Name",
+    placeholder: "Spouse\u2019s First and Last Name",
+    maxLength: "100",
+    required: false,
+    value: value,
+    handleInputChange: handleInputChange,
+    error: error
+  }));
+}
+
+function NameBlock(_ref4) {
+  var getMiddleName = _ref4.getMiddleName,
+      getSuffix = _ref4.getSuffix,
+      getSpouseInfo = _ref4.getSpouseInfo,
+      fields = _ref4.fields,
+      errors = _ref4.errors,
+      handleInputChange = _ref4.handleInputChange;
 
   if (!getMiddleName && !getSuffix) {
-    return _react.default.createElement("div", {
+    return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
       className: "form-row__3cr4u name-row__1AcL3 flex__ayltN flex-row__16BBq flex-between__3zYkx"
     }, _react.default.createElement(TitleDropdown, {
       value: fields.Title,
@@ -32083,6 +32117,10 @@ function NameBlock(_ref3) {
       handleInputChange: handleInputChange,
       value: fields["Lastname"],
       error: errors["Lastname"]
+    })), getSpouseInfo && _react.default.createElement(SpouseInput, {
+      value: fields.Spousename,
+      error: errors.Spousename,
+      handleInputChange: handleInputChange
     }));
   } else {
     return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
@@ -32136,20 +32174,11 @@ function NameBlock(_ref3) {
         key: "suff-5",
         value: "Esq"
       }, "Esq")]
-    })), getSpouseInfo && _react.default.createElement("div", {
-      className: "form-row__3cr4u flex__ayltN flex-row__16BBq flex-between__3zYkx"
-    }, _react.default.createElement(_InputGroup.default, {
-      type: "text",
-      id: "Spousename",
-      specialStyle: "",
-      label: "Spouse\u2019s Name",
-      placeholder: "Spouse\u2019s First and Last Name",
-      maxLength: "100",
-      required: false,
+    })), getSpouseInfo && _react.default.createElement(SpouseInput, {
       value: fields.Spousename,
-      handleInputChange: handleInputChange,
-      error: errors.Spousename
-    })));
+      error: errors.Spousename,
+      handleInputChange: handleInputChange
+    }));
   }
 }
 
@@ -32448,7 +32477,7 @@ function AddressBlock(_ref) {
     handleInputChange: handleInputChange,
     error: errors.Zip,
     international: international
-  }), international ? _react.default.createElement(_SelectGroup.default, {
+  }), international && _react.default.createElement(_SelectGroup.default, {
     id: "Country",
     specialStyle: "styles.form-group--Country",
     required: true,
@@ -32464,7 +32493,7 @@ function AddressBlock(_ref) {
         value: country
       }, country);
     })]
-  }) : null), _react.default.createElement("div", {
+  })), _react.default.createElement("div", {
     className: "form-row__3cr4u email-phone-row__3HghI flex__ayltN flex-row__16BBq flex-between__3zYkx"
   }, _react.default.createElement(_InputGroup.default, {
     type: "text",
@@ -32477,7 +32506,7 @@ function AddressBlock(_ref) {
     value: fields.Emailaddress,
     handleInputChange: handleInputChange,
     error: errors.Emailaddress
-  }), getPhone ? _react.default.createElement(_InputGroup.default, {
+  }), getPhone && _react.default.createElement(_InputGroup.default, {
     type: "text",
     id: "phone",
     specialStyle: "styles.form-group--Phone",
@@ -32488,7 +32517,7 @@ function AddressBlock(_ref) {
     value: fields.phone,
     handleInputChange: handleInputChange,
     error: errors.phone
-  }) : null));
+  })));
 }
 
 var _default = AddressBlock;
@@ -62711,7 +62740,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54557" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63186" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

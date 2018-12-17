@@ -17,7 +17,7 @@ h3.funds__header {
     box-sizing: border-box;
     color: var(--heading-color);
     text-align: center;
-    font-size: 19px;
+    font-size: calc(19px * .8);
     font-family: var(--semibold-font-family);
     font-style: var(--semibold-font-style);
     font-weight: var(--semibold-font-weight);
@@ -34,15 +34,11 @@ h3.funds__header {
 .select-fund {
     box-sizing: border-box;
     color: var(--input-text-color);
-    font-size: 19px;
-    font-family: var(--semibold-font-family);
-    font-style: var(--semibold-font-style);
-    font-weight: var(--semibold-font-weight);
+    font-size: calc(19px * .8);
     display: block;
     width: 100%;
     margin-top: 5px;
     padding: 6px;
-    line-height: 1.42857143;
     background-color: var(--input-bg-color);
     border: 1px solid var(--input-border-color);
     border-radius: var(--input-border-radius);
@@ -128,6 +124,9 @@ h3.funds__header {
     box-sizing: border-box;
     margin: 5px 0;
     font-size: calc(19px * .8);
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
 }
 
 .fund-card__image {

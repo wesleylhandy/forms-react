@@ -9,4 +9,5 @@
     font-style: normal;
     border: 1px dotted #000;
     margin: 30px 0;
+    box-sizing: border-box;
 }

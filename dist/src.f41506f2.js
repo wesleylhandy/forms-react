@@ -339,6 +339,7 @@ module.exports = {
   "select-product": "select-product__2SOvm",
   "additional-amount__input": "additional-amount__input__3xXGq",
   "product-total__input": "product-total__input__172mT",
+  "select-product__label": "select-product__label__3Y0AW",
   "products-display": "products-display__38L-c",
   "product-card": "product-card__t3-b0",
   "additional-amount": "additional-amount__3rbO8",
@@ -396,7 +397,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54557" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63186" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

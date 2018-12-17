@@ -66,6 +66,8 @@
     font-style: normal;
     border: 1px dotted #000;
     margin: 30px 0;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }/******* CHECKBOX STYLES ********/
 
 
@@ -1111,10 +1113,16 @@ h3.form-header__3OWCX,
 .select-product__2SOvm {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    width: calc(19px * 2.5);
-    -ms-flex-preferred-size: calc(19px * 2.5);
-        flex-basis: calc(19px * 2.5);
+    width: calc(19px * 3.5);
+    /* flex-basis: calc(19px * 3.5); */
+    text-align: center;
     margin-right: 19px;
+}
+
+label.select-product__label__3Y0AW {
+    margin-right: 19px;
+    -ms-flex-item-align: center;
+        align-self: center;
 }
 
 .additional-amount__input__3xXGq,
@@ -1161,11 +1169,23 @@ h3.form-header__3OWCX,
 }
 
 .product-card__description__2NVyi,
-.additional-amount__input--label__1mgWu,
+.additional-amount__input--label__1mgWu {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    font-size: calc(19px * .8);
+}
+
 .product-total__input--label__1r4ld {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     font-size: calc(19px * .8);
+    height: calc(19px * 2);
+    line-height: calc(19px * 2);
+    margin-right: 5px;
+    margin-top: 5px;
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
 }/******** CUSTOM RADIO BUTTIONS ********/
 
 .radio-group__1Ai8X {

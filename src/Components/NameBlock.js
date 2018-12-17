@@ -25,14 +25,14 @@ function TitleDropdown({value, error, handleInputChange}) {
 }
 
  /**
-     * Function to render a name input
-     * @param {String} type - either 'First', 'Last', or 'Middle' 
-     * @param {Boolean} required 
-     * @param {Function} handleInputChange
-     * @param {String} value
-     * @param {String} error
-     * @returns {JSX} - InputGroup with given parameters
-     */
+ * Function to render a name input
+ * @param {String} type - either 'First', 'Last', or 'Middle' 
+ * @param {Boolean} required 
+ * @param {Function} handleInputChange
+ * @param {String} value
+ * @param {String} error
+ * @returns {JSX} - InputGroup with given parameters
+ */
 function NameInput({type, required, handleInputChange, value, error}){
     const id = `${type}name`
     const label = `${type} Name`
@@ -54,6 +54,13 @@ function NameInput({type, required, handleInputChange, value, error}){
     )
 }
 
+ /**
+ * Function to render spousename input
+ * @param {String} value
+ * @param {String} error
+ * @param {Function} handleInputChange
+ * @returns {JSX} - InputGroup with given parameters
+ */
 function SpouseInput({value, error, handleInputChange}) {
     return (
         <div styleName="styles.form-row flex.flex flex.flex-row flex.flex-between">

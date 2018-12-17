@@ -290,10 +290,16 @@
 .select-product__2SOvm {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    width: calc(19px * 2.5);
-    -ms-flex-preferred-size: calc(19px * 2.5);
-        flex-basis: calc(19px * 2.5);
+    width: calc(19px * 3.5);
+    /* flex-basis: calc(19px * 3.5); */
+    text-align: center;
     margin-right: 19px;
+}
+
+label.select-product__label__3Y0AW {
+    margin-right: 19px;
+    -ms-flex-item-align: center;
+        align-self: center;
 }
 
 .additional-amount__input__3xXGq,
@@ -340,11 +346,23 @@
 }
 
 .product-card__description__2NVyi,
-.additional-amount__input--label__1mgWu,
+.additional-amount__input--label__1mgWu {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    font-size: calc(19px * .8);
+}
+
 .product-total__input--label__1r4ld {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     font-size: calc(19px * .8);
+    height: calc(19px * 2);
+    line-height: calc(19px * 2);
+    margin-right: 5px;
+    margin-top: 5px;
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
 }.hidden__YzG3s {
     position: absolute;
     left: -10000px;
@@ -366,7 +384,7 @@ h3.funds__header__1jN9Q {
             box-sizing: border-box;
     color: var(--heading-color);
     text-align: center;
-    font-size: 19px;
+    font-size: calc(19px * .8);
     font-family: var(--semibold-font-family);
     font-style: var(--semibold-font-style);
     font-weight: var(--semibold-font-weight);
@@ -384,15 +402,11 @@ h3.funds__header__1jN9Q {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     color: var(--input-text-color);
-    font-size: 19px;
-    font-family: var(--semibold-font-family);
-    font-style: var(--semibold-font-style);
-    font-weight: var(--semibold-font-weight);
+    font-size: calc(19px * .8);
     display: block;
     width: 100%;
     margin-top: 5px;
     padding: 6px;
-    line-height: 1.42857143;
     background-color: var(--input-bg-color);
     border: 1px solid var(--input-border-color);
     border-radius: var(--input-border-radius);
@@ -493,6 +507,9 @@ h3.funds__header__1jN9Q {
             box-sizing: border-box;
     margin: 5px 0;
     font-size: calc(19px * .8);
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
 }
 
 .fund-card__image__1CTES {
@@ -1420,6 +1437,8 @@ h3.form-header__3OWCX,
     font-style: normal;
     border: 1px dotted #000;
     margin: 30px 0;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }.form-wrapper__MMJ_H {
     background: var(--form-bg-color);
     -webkit-box-sizing: border-box;

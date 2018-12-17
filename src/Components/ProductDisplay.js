@@ -162,16 +162,18 @@ class ProductDisplay extends Component {
 
                         return (
                             <div key={`product${i}`} styleName="styles.product-card flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
-                                <label htmlFor={`product-select-${i}`} styleName="styles.hidden">Select Quantity</label>
-                                <select styleName="styles.select-product flex.flex-no-grow" 
-                                    name={`product-select-${i}`} 
-                                    value={this.state.fields[`product-select-${i}`] >= 0 ? this.state.fields[`product-select-${i}`] : 0} 
-                                    onChange={this.handleInputChange}
-                                >
+                                <div styleName="flex.flex flex.flex-column">
+                                    <label htmlFor={`product-select-${i}`} styleName="styles.select-product__label">Quantity</label>
+                                    <select styleName="styles.select-product flex.flex-no-grow" 
+                                        name={`product-select-${i}`} 
+                                        value={this.state.fields[`product-select-${i}`] >= 0 ? this.state.fields[`product-select-${i}`] : 0} 
+                                        onChange={this.handleInputChange}
+                                    >
 
-                                    { renderOptions(i) }
-                                    
-                                </select>
+                                        { renderOptions(i) }
+                                        
+                                    </select>
+                                </div>
                                 <div styleName="styles.product-card__body flex.flex-grow">
                                     <div styleName="styles.product-card__title">{product.productTitle} - ${product.PledgeAmount}</div>
                                     <div styleName="styles.product-card__description" dangerouslySetInnerHTML={this.createMarkup(product.productMessage)}></div>
@@ -182,8 +184,8 @@ class ProductDisplay extends Component {
                     }
                     { this.renderAdditionalGift(this.state.additionalGift) }
                     <div styleName="styles.product-total flex.flex flex.flex-left flex.flex-axes-center">
-                        <input styleName='styles.product-total__input flex.flex-no-grow' name="total-product-gift" value={this.state.totalGift} disabled={true}/>
-                        <div styleName="styles.product-total__input--label">Subtotal</div>
+                        <label styleName="styles.product-total__input--label" htmlFor="total-product-gift">$</label><input styleName='styles.product-total__input flex.flex-no-grow' name="total-product-gift" value={this.state.totalGift} disabled={true}/>
+                        <div styleName="styles.product-total__input--label">Product Subtotal</div>
                     </div>
                 </div>
             )
