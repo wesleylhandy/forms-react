@@ -61021,7 +61021,7 @@ function (_Component) {
                 isValidForm = true;
 
                 if (!(this.state.fields.Country == "United States")) {
-                  _context2.next = 35;
+                  _context2.next = 57;
                   break;
                 }
 
@@ -61033,41 +61033,74 @@ function (_Component) {
                 zipError = _context2.sent;
 
                 if (zipError) {
-                  _context2.next = 21;
+                  _context2.next = 28;
                   break;
                 }
 
-                _context2.next = 20;
+                _context2.prev = 18;
+                _context2.next = 21;
                 return this.callAddressVerification(this.state.fields["Address1"], this.state.fields["City"], this.state.fields["State"], this.state.fields["Zip"]);
 
-              case 20:
-                addressError = _context2.sent;
-
               case 21:
-                if (!(this.state.fields["ShipToZip"] && this.state.fields.ShipToYes)) {
-                  _context2.next = 25;
-                  break;
-                }
-
-                _context2.next = 24;
-                return this.callZipCityStateService("ShipToZip", this.state.fields["ShipToZip"]);
+                addressError = _context2.sent;
+                _context2.next = 28;
+                break;
 
               case 24:
-                shipZipError = _context2.sent;
+                _context2.prev = 24;
+                _context2.t0 = _context2["catch"](18);
+                console.log("AddressVerificationError");
+                console.error({
+                  err: _context2.t0
+                });
 
-              case 25:
-                if (!(!shipZipError && this.state.fields.ShipToYes)) {
-                  _context2.next = 29;
+              case 28:
+                if (!(this.state.fields["ShipToZip"] && this.state.fields.ShipToYes)) {
+                  _context2.next = 39;
                   break;
                 }
 
-                _context2.next = 28;
+                _context2.prev = 29;
+                _context2.next = 32;
+                return this.callZipCityStateService("ShipToZip", this.state.fields["ShipToZip"]);
+
+              case 32:
+                shipZipError = _context2.sent;
+                _context2.next = 39;
+                break;
+
+              case 35:
+                _context2.prev = 35;
+                _context2.t1 = _context2["catch"](29);
+                console.log("CSZValidationError__SHIPPING");
+                console.error({
+                  err: _context2.t1
+                });
+
+              case 39:
+                if (!(!shipZipError && this.state.fields.ShipToYes)) {
+                  _context2.next = 50;
+                  break;
+                }
+
+                _context2.prev = 40;
+                _context2.next = 43;
                 return this.callAddressVerification(this.state.fields["ShipToAddress1"], this.state.fields["ShipToCity"], this.state.fields["ShipToState"], this.state.fields["ShipToZip"]);
 
-              case 28:
+              case 43:
                 shipAddressError = _context2.sent;
+                _context2.next = 50;
+                break;
 
-              case 29:
+              case 46:
+                _context2.prev = 46;
+                _context2.t2 = _context2["catch"](40);
+                console.log("AddressVerificationError__SHIPPING");
+                console.error({
+                  err: _context2.t2
+                });
+
+              case 50:
                 if (addressError || shipAddressError || zipError || shipZipError) {
                   isValidForm = false;
                   errors["Address1"] = addressError;
@@ -61076,17 +61109,18 @@ function (_Component) {
                   errors["ShipToZip"] = shipZipError;
                 }
 
-                _context2.next = 35;
+                _context2.next = 57;
                 break;
 
-              case 32:
-                _context2.prev = 32;
-                _context2.t0 = _context2["catch"](13);
+              case 53:
+                _context2.prev = 53;
+                _context2.t3 = _context2["catch"](13);
+                console.log("CSZValidationError");
                 console.error({
-                  err: _context2.t0
+                  err: _context2.t3
                 });
 
-              case 35:
+              case 57:
                 fields = this.state.fields;
                 fieldNames = Object.keys(fields);
 
@@ -61105,7 +61139,7 @@ function (_Component) {
                 }
 
                 if (isValidForm) {
-                  _context2.next = 40;
+                  _context2.next = 62;
                   break;
                 }
 
@@ -61114,7 +61148,7 @@ function (_Component) {
                   errors: errors
                 }));
 
-              case 40:
+              case 62:
                 //deconstruct necessary fields from state
                 Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
                 _this$props = this.props, mode = _this$props.mode, APIAccessID = _this$props.APIAccessID, MotivationText = _this$props.MotivationText, subscriptions = _this$props.subscriptions, AddContactYN = _this$props.AddContactYN, ActivityName = _this$props.ActivityName, ContactSource = _this$props.ContactSource, SectionName = _this$props.SectionName, proxy = _this$props.proxy;
@@ -61213,9 +61247,10 @@ function (_Component) {
                 subscriptions.forEach(function (sub) {
                   return data[sub.key] = sub.value;
                 }); // console.log({proxy})
+                // console.log({data})
 
-                _context2.prev = 59;
-                _context2.next = 62;
+                _context2.prev = 81;
+                _context2.next = 84;
                 return (0, _fetchHelpers.callApi)(proxy, {
                   method: 'POST',
                   mode: 'cors',
@@ -61225,20 +61260,21 @@ function (_Component) {
                   body: JSON.stringify(data)
                 });
 
-              case 62:
+              case 84:
                 msg = _context2.sent;
+                // console.log({msg, data})
                 this.props.submitForm({
                   msg: msg,
                   data: data
                 });
-                _context2.next = 73;
+                _context2.next = 95;
                 break;
 
-              case 66:
-                _context2.prev = 66;
-                _context2.t1 = _context2["catch"](59);
-                console.error(_context2.t1.message);
-                message = _context2.t1.message;
+              case 88:
+                _context2.prev = 88;
+                _context2.t4 = _context2["catch"](81);
+                console.error(_context2.t4.message);
+                message = _context2.t4.message;
                 _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
 
                 if (breaking) {
@@ -61252,12 +61288,12 @@ function (_Component) {
                   errors: errors
                 });
 
-              case 73:
+              case 95:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[13, 32], [59, 66]]);
+        }, _callee2, this, [[13, 53], [18, 24], [29, 35], [40, 46], [81, 88]]);
       }));
 
       return function handleSubmit(_x2) {
@@ -62536,6 +62572,7 @@ function (_Component) {
           });
         } else {
           return _react.default.createElement(_NameAddressForm.default, _extends({}, formState, {
+            mode: mode,
             submitForm: _this2.submitForm
           }));
         }
@@ -62740,7 +62777,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63186" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59421" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

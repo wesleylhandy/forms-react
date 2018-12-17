@@ -73,6 +73,10 @@
 label.select-product__label {
     margin-right: 19px;
     align-self: center;
+    color: inherit;
+    font-weight: normal;
+    margin-bottom: 0;
+    box-sizing: border-box;
 }
 
 .additional-amount__input,

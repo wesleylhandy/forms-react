@@ -100,7 +100,7 @@ class App extends Component {
                                 renderReceiptPage={this.renderReceiptPage}
                             /> 
                         } else {
-                            return <NameAddressForm { ...formState } submitForm={ this.submitForm }/> 
+                            return <NameAddressForm { ...formState } mode={mode} submitForm={ this.submitForm }/> 
                         }
                     })()     
                 } 

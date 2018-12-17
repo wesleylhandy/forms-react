@@ -232,13 +232,28 @@ class NameAddressForm extends Component {
                 const zipError = await this.callZipCityStateService("Zip", this.state.fields["Zip"]);
                 let addressError, shipZipError, shipAddressError;
                 if (!zipError) {
-                    addressError = await this.callAddressVerification(this.state.fields["Address1"], this.state.fields["City"], this.state.fields["State"], this.state.fields["Zip"])
+                    try {
+                        addressError = await this.callAddressVerification(this.state.fields["Address1"], this.state.fields["City"], this.state.fields["State"], this.state.fields["Zip"])
+                    } catch(err) {
+                        console.log("AddressVerificationError")
+                        console.error({err})
+                    }
                 }
                 if (this.state.fields["ShipToZip"] && this.state.fields.ShipToYes) {
-                    shipZipError = await this.callZipCityStateService("ShipToZip", this.state.fields["ShipToZip"]);
+                    try {
+                        shipZipError = await this.callZipCityStateService("ShipToZip", this.state.fields["ShipToZip"]);
+                    } catch(err) {
+                        console.log("CSZValidationError__SHIPPING")
+                        console.error({err})
+                    }
                 }
                 if (!shipZipError && this.state.fields.ShipToYes) {
-                    shipAddressError = await this.callAddressVerification(this.state.fields["ShipToAddress1"], this.state.fields["ShipToCity"], this.state.fields["ShipToState"], this.state.fields["ShipToZip"])
+                    try {
+                        shipAddressError = await this.callAddressVerification(this.state.fields["ShipToAddress1"], this.state.fields["ShipToCity"], this.state.fields["ShipToState"], this.state.fields["ShipToZip"])
+                    } catch(err) {
+                        console.log("AddressVerificationError__SHIPPING")
+                        console.error({err})
+                    }
                 }
                 if (addressError || shipAddressError || zipError || shipZipError) {
                     isValidForm = false;
@@ -248,6 +263,7 @@ class NameAddressForm extends Component {
                     errors["ShipToZip"] = shipZipError;
                 }
             } catch(err) {
+                console.log("CSZValidationError")
                 console.error({err})
             }
         }
@@ -350,6 +366,7 @@ class NameAddressForm extends Component {
         //flatten subscription information
         subscriptions.forEach(sub=> data[sub.key]=sub.value);
         // console.log({proxy})
+        // console.log({data})
         try {
             const msg = await callApi(proxy, {
                 method: 'POST',
@@ -359,7 +376,7 @@ class NameAddressForm extends Component {
                 },
                 body: JSON.stringify(data)
             })
-
+            // console.log({msg, data})
             this.props.submitForm({msg, data})
         } catch (err) {
             console.error(err.message);
