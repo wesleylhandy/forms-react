@@ -145,7 +145,6 @@ class NameAddressForm extends Component {
                 hydratedAdditionalGift: additionalGift,  
                 monthlyChecked
             })
-            
         }
     }
 
