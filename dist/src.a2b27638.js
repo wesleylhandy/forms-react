@@ -30673,7 +30673,8 @@ module.exports = {
   "askarray__form-group": "askarray__form-group__1rkB9",
   "form-group__other-input": "form-group__other-input__3hTcz",
   "form-group__other-input--label": "form-group__other-input--label__1gNEk",
-  "error": "error__2x8Zr"
+  "error": "error__2x8Zr",
+  "other-amt-error": "other-amt-error__2STLF"
 };
 },{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/GivingArray.js":[function(require,module,exports) {
 "use strict";
@@ -30696,14 +30697,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -30748,7 +30741,8 @@ var _styleModuleImportMap = {
     "askarray__form-group": "askarray__form-group__1rkB9",
     "form-group__other-input": "form-group__other-input__3hTcz",
     "form-group__other-input--label": "form-group__other-input--label__1gNEk",
-    "error": "error__2x8Zr"
+    "error": "error__2x8Zr",
+    "other-amt-error": "other-amt-error__2STLF"
   }
 };
 
@@ -30782,27 +30776,11 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(GivingArray).call(this, props));
     _this.state = {
-      defaultAmount: props.arrayOptions.defaultAmount,
-      defaultOption: props.arrayOptions.defaultOption,
-      givingFormat: props.arrayOptions.givingFormat,
-      monthlyOption: props.arrayOptions.monthlyOption,
-      singleOption: props.arrayOptions.singleOption,
-      monthlyAmounts: _toConsumableArray(props.arrayOptions.monthlyAmounts),
-      singleAmounts: _toConsumableArray(props.arrayOptions.singleAmounts),
-      monthlyChecked: props.arrayOptions.defaultOption == 'monthly',
-      monthlyPledgeData: {
-        DetailCprojCredit: props.arrayOptions.monthlyPledgeData.DetailCprojCredit,
-        DetailCprojMail: props.arrayOptions.monthlyPledgeData.DetailCprojMail
-      },
-      singlePledgeData: {
-        DetailCprojCredit: props.arrayOptions.singlePledgeData.DetailCprojCredit,
-        DetailCprojMail: props.arrayOptions.singlePledgeData.DetailCprojMail
-      },
+      hydrated: false,
+      initialUpdate: false,
       selectedIndex: null,
       otherAmount: 0,
-      otherAmountError: '',
-      hydrated: false,
-      initialUpdate: false
+      otherAmountError: ''
     };
     _this.renderArray = _this.renderArray.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.addToCart = _this.addToCart.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -30813,80 +30791,96 @@ function (_Component) {
   _createClass(GivingArray, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      // console.log({hydratedAmount: this.props.hydratedAmount})
-      if (this.props.hydratedAmount) {
-        var arr = this.props.hydratedMonthly ? this.state.monthlyAmounts : this.state.singleAmounts;
-        var amt = this.props.hydratedAmount;
-        var index = getIndex(arr, amt);
-        this.setState({
-          selectedIndex: index >= 0 ? index : null,
-          hydrated: true
-        });
+      var _this$props = this.props,
+          defaultAmount = _this$props.defaultAmount,
+          defaultOption = _this$props.defaultOption,
+          _this$props$arrayOpti = _this$props.arrayOptions,
+          monthlyAmounts = _this$props$arrayOpti.monthlyAmounts,
+          singleAmounts = _this$props$arrayOpti.singleAmounts,
+          monthlyOption = _this$props$arrayOpti.monthlyOption;
+      var arr = [];
+
+      if (defaultOption !== "") {
+        arr = defaultOption == 'monthly' ? monthlyAmounts : singleAmounts;
       } else {
-        var _arr = this.props.arrayOptions.defaultOption == 'monthly' ? this.state.monthlyAmounts : this.state.singleAmounts;
+        arr = monthlyOption ? monthlyAmounts : singleAmounts;
+      }
 
-        var _amt = this.props.arrayOptions.defaultAmount;
+      var amt = defaultAmount;
+      var index = getIndex(arr, amt);
+      var selectedIndex = index >= 0 ? index : 99;
 
-        var _index = getIndex(_arr, _amt);
-
-        if (_index >= 0) {
-          this.addToCart(_amt, _index);
-        }
+      if (selectedIndex >= 0) {
+        this.addToCart(amt, index);
       }
     }
   }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
+      var _this2 = this;
+
       var initialUpdate = nextProps.initialUpdate;
 
       if (initialUpdate && !this.state.initialUpdate) {
-        var _nextProps$arrayOptio = nextProps.arrayOptions,
-            givingFormat = _nextProps$arrayOptio.givingFormat,
-            monthlyOption = _nextProps$arrayOptio.monthlyOption,
-            singleOption = _nextProps$arrayOptio.singleOption,
-            monthlyAmounts = _nextProps$arrayOptio.monthlyAmounts,
-            singleAmounts = _nextProps$arrayOptio.singleAmounts,
-            monthlyPledgeData = _nextProps$arrayOptio.monthlyPledgeData,
-            singlePledgeData = _nextProps$arrayOptio.singlePledgeData;
         return this.setState({
-          givingFormat: givingFormat,
-          monthlyOption: monthlyOption,
-          singleOption: singleOption,
-          monthlyAmounts: _toConsumableArray(monthlyAmounts),
-          singleAmounts: _toConsumableArray(singleAmounts),
-          monthlyChecked: nextProps.monthlyChecked ? true : false,
-          monthlyPledgeData: monthlyPledgeData,
-          singlePledgeData: singlePledgeData,
           initialUpdate: initialUpdate
         });
       }
 
-      if (nextProps.monthlyChecked != this.state.monthlyChecked) {
-        this.setState({
-          monthlyChecked: nextProps.monthlyChecked,
-          selectedIndex: null,
-          otherAmount: 0
-        });
+      var givingInfo = nextProps.givingInfo,
+          monthlyChecked = nextProps.monthlyChecked;
+
+      if (givingInfo.length && !nextProps.hydrated && !this.state.hydrated) {
+        return this.hydrateGiving(givingInfo);
       }
 
-      if (nextProps.hydratedAmount && !this.state.hydrated) {
-        var index = nextProps.hydratedMonthly ? getIndex(this.state.monthlyAmounts, nextProps.hydratedAmount) : getIndex(this.state.singleAmounts, nextProps.hydratedAmount);
-        this.setState({
-          selectedIndex: index >= 0 ? index : null,
-          hydrated: true
+      if (monthlyChecked !== this.props.monthlyChecked) {
+        return this.setState({
+          monthlyChecked: monthlyChecked,
+          selectedIndex: null
+        }, function () {
+          return _this2.props.removeFromCart('donation');
         });
       }
     }
   }, {
+    key: "hydrateGiving",
+    value: function hydrateGiving(givingInfo) {
+      var _this3 = this;
+
+      var _this$props$arrayOpti2 = this.props.arrayOptions,
+          monthlyAmounts = _this$props$arrayOpti2.monthlyAmounts,
+          singleAmounts = _this$props$arrayOpti2.singleAmounts;
+      var _this$state = this.state,
+          otherAmount = _this$state.otherAmount,
+          selectedIndex = _this$state.selectedIndex;
+      var _givingInfo$ = givingInfo[0],
+          isMonthly = _givingInfo$.isMonthly,
+          amount = _givingInfo$.amount;
+      var arr = isMonthly ? monthlyAmounts : singleAmounts;
+      var index = getIndex(arr, amount);
+      selectedIndex = index > -1 ? index : 99;
+      otherAmount = selectedIndex == 99 ? amount : 0;
+      this.setState({
+        selectedIndex: selectedIndex,
+        otherAmount: otherAmount,
+        hydrated: true
+      }, function () {
+        if (selectedIndex >= 0) {
+          _this3.addToCart(amount, index);
+        }
+      });
+    }
+  }, {
     key: "renderArray",
     value: function renderArray(amounts, selectedIndex) {
-      var _this2 = this;
+      var _this4 = this;
 
       return amounts.map(function (amount, i) {
         return _react.default.createElement("div", {
           key: "array".concat(i),
           onClick: function onClick() {
-            return _this2.addToCart(amount, i);
+            return _this4.addToCart(amount, i);
           },
           className: (0, _getClassName2.default)("styles.askbutton flex.flex flex.flex-center flex.flex-axes-center ".concat(selectedIndex == i ? "styles.selected" : ""), _styleModuleImportMap, {
             "handleMissingStyleName": "warn"
@@ -30905,33 +30899,54 @@ function (_Component) {
   }, {
     key: "addToCart",
     value: function addToCart(amt, index) {
+      var _this5 = this;
+
       this.setState({
-        otherAmount: index == 99 ? amt : '',
+        otherAmount: index == 99 ? amt : 0,
         selectedIndex: index
-      });
-      var monthlyChecked = this.state.monthlyChecked;
-      this.props.addToCart({
-        type: 'donation',
-        PledgeAmount: amt,
-        DetailCprojMail: monthlyChecked ? this.state.monthlyPledgeData.DetailCprojMail : this.state.singlePledgeData.DetailCprojMail,
-        DetailCprojCredit: monthlyChecked ? this.state.monthlyPledgeData.DetailCprojCredit : this.state.singlePledgeData.DetailCprojCredit,
-        DetailDescription: monthlyChecked ? "Monthly Pledge" : "Single Pledge",
-        DetailName: monthlyChecked ? "MP" : "SPGF",
-        monthly: monthlyChecked
+      }, function () {
+        if (amt) {
+          var _this5$props = _this5.props,
+              monthlyChecked = _this5$props.monthlyChecked,
+              _this5$props$arrayOpt = _this5$props.arrayOptions,
+              monthlyPledgeData = _this5$props$arrayOpt.monthlyPledgeData,
+              singlePledgeData = _this5$props$arrayOpt.singlePledgeData;
+
+          _this5.props.addToCart({
+            type: 'donation',
+            PledgeAmount: amt,
+            DetailCprojMail: monthlyChecked ? monthlyPledgeData.DetailCprojMail : singlePledgeData.DetailCprojMail,
+            DetailCprojCredit: monthlyChecked ? monthlyPledgeData.DetailCprojCredit : singlePledgeData.DetailCprojCredit,
+            DetailDescription: monthlyChecked ? "Monthly Pledge" : "Single Pledge",
+            DetailName: monthlyChecked ? "MP" : "SPGF",
+            monthly: monthlyChecked
+          });
+        } else {
+          _this5.props.removeFromCart('donation');
+        }
       });
     }
   }, {
     key: "handleOtherAmt",
     value: function handleOtherAmt(e) {
+      var _this6 = this;
+
       var value = e.target.value.trim();
       var isValid = /^[0-9]{1,}$/.test(value);
 
       if (isValid && value > 0) {
-        this.addToCart(+value, 99);
+        this.setState({
+          otherAmountError: ''
+        }, function () {
+          return _this6.addToCart(+value, 99);
+        });
       } else if (isValid) {
         this.setState({
           otherAmount: 0,
-          selectedIndex: null
+          selectedIndex: null,
+          otherAmountError: ''
+        }, function () {
+          return _this6.props.removeFromCart('donation');
         });
       } else {
         this.setState({
@@ -30943,14 +30958,26 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this$props2 = this.props,
+          monthlyChecked = _this$props2.monthlyChecked,
+          _this$props2$arrayOpt = _this$props2.arrayOptions,
+          givingFormat = _this$props2$arrayOpt.givingFormat,
+          singleOption = _this$props2$arrayOpt.singleOption,
+          monthlyOption = _this$props2$arrayOpt.monthlyOption,
+          monthlyAmounts = _this$props2$arrayOpt.monthlyAmounts,
+          singleAmounts = _this$props2$arrayOpt.singleAmounts;
+      var _this$state2 = this.state,
+          otherAmount = _this$state2.otherAmount,
+          otherAmountError = _this$state2.otherAmountError,
+          selectedIndex = _this$state2.selectedIndex;
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("h3", {
         className: "askarray__header__3P2Zh"
-      }, "Select A ", this.state.monthlyChecked ? "Monthly" : "Single", " Donation Amount"), _react.default.createElement("div", {
+      }, "Select A ", monthlyChecked ? "Monthly" : "Single", " Donation Amount"), _react.default.createElement("div", {
         id: "AskArray",
         className: "askarray__UQ1ey flex__ayltN flex-row__16BBq flex-center__1HhTj flex-wrap__1FN6A"
-      }, this.state.monthlyOption && this.state.monthlyChecked ? this.renderArray(this.state.monthlyAmounts, this.state.selectedIndex) : null, this.state.singleOption && !this.state.monthlyChecked ? this.renderArray(this.state.singleAmounts, this.state.selectedIndex) : null, _react.default.createElement("div", {
+      }, monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex) : null, singleOption && !monthlyChecked ? this.renderArray(singleAmounts, selectedIndex) : null, _react.default.createElement("div", {
         id: "OtherAmout",
-        className: (0, _getClassName2.default)("styles.askarray__form-group flex.flex flex.flex-center flex.flex-axes-center".concat(this.state.selectedIndex == 99 ? " styles.selected" : ""), _styleModuleImportMap, {
+        className: (0, _getClassName2.default)("styles.askarray__form-group flex.flex flex.flex-center flex.flex-axes-center".concat(selectedIndex == 99 ? " styles.selected" : ""), _styleModuleImportMap, {
           "handleMissingStyleName": "warn"
         })
       }, _react.default.createElement("label", {
@@ -30960,10 +30987,10 @@ function (_Component) {
         className: "form-group__other-input__3hTcz",
         name: "other-amt-input",
         onChange: this.handleOtherAmt,
-        value: this.state.otherAmount == 0 ? '' : this.state.otherAmount
+        value: otherAmount == 0 ? '' : otherAmount
       }), _react.default.createElement("div", {
-        className: "error__2x8Zr"
-      }, this.state.otherAmountError))));
+        className: "error__2x8Zr other-amt-error__2STLF"
+      }, otherAmountError))));
     }
   }]);
 
@@ -31016,14 +31043,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -31064,13 +31083,8 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ProductDisplay).call(this, props));
     _this.state = {
-      numProducts: props.productOptions.numProducts,
-      products: _toConsumableArray(props.productOptions.products),
-      additionalGift: props.productOptions.additionalGift,
-      additionalGiftMessage: props.productOptions.additionalGiftMessage,
-      singlePledgeData: props.productOptions.singlePledgeData,
       fields: {
-        additionalGift: props.hydratedAmount >= 0 ? props.hydratedAmount : 0
+        additionalGift: props.hydratedAdditionalGift >= 0 ? props.hydratedAdditionalGift : 0
       },
       errors: {
         additionalGift: ""
@@ -31078,7 +31092,7 @@ function (_Component) {
       additionalGiftError: "",
       totalGift: 0,
       hydrated: false,
-      hydratedAmount: props.hydratedAmount,
+      hydratedAdditionalGift: props.hydratedAdditionalGift,
       productInfo: props.productInfo,
       initialUpdate: false
     };
@@ -31095,11 +31109,11 @@ function (_Component) {
     value: function componentDidMount() {
       var _this$props = this.props,
           productInfo = _this$props.productInfo,
-          hydratedAmount = _this$props.hydratedAmount;
+          hydratedAdditionalGift = _this$props.hydratedAdditionalGift;
 
-      if ((productInfo.length || hydratedAmount > 0) && !this.state.hydrated) {
-        // console.log({mountedHydratedAmount: hydratedAmount})
-        this.hydrateProducts(productInfo, hydratedAmount);
+      if ((productInfo.length || hydratedAdditionalGift > 0) && !this.state.hydrated) {
+        // console.log({mountedhydratedAdditionalGift: hydratedAdditionalGift})
+        this.hydrateProducts(productInfo, hydratedAdditionalGift);
       }
     }
   }, {
@@ -31108,40 +31122,29 @@ function (_Component) {
       var initialUpdate = nextProps.initialUpdate;
 
       if (initialUpdate && !this.state.initialUpdate) {
-        var _nextProps$productOpt = nextProps.productOptions,
-            numProducts = _nextProps$productOpt.numProducts,
-            products = _nextProps$productOpt.products,
-            additionalGift = _nextProps$productOpt.additionalGift,
-            additionalGiftMessage = _nextProps$productOpt.additionalGiftMessage,
-            singlePledgeData = _nextProps$productOpt.singlePledgeData;
         return this.setState({
-          numProducts: numProducts,
-          products: _toConsumableArray(products),
-          additionalGift: additionalGift,
-          additionalGiftMessage: additionalGiftMessage,
-          singlePledgeData: singlePledgeData,
           initialUpdate: initialUpdate
         });
       }
 
       var productInfo = nextProps.productInfo,
-          hydratedAmount = nextProps.hydratedAmount;
+          hydratedAdditionalGift = nextProps.hydratedAdditionalGift;
 
-      if ((productInfo.length || hydratedAmount > 0) && !nextProps.hydrated && !this.state.hydrated) {
-        // console.log({propsHydratedAmount: hydratedAmount})
-        this.hydrateProducts(productInfo, hydratedAmount);
-      } else {
-        var _products = this.state.products;
-        var _additionalGift = this.state.fields.additionalGift;
-        var totalGift = this.calculateTotalGift(_products, productInfo, _additionalGift);
-        this.setState({
+      if ((productInfo.length || hydratedAdditionalGift > 0) && !nextProps.hydrated && !this.state.hydrated) {
+        // console.log({propshydratedAdditionalGift: hydratedAdditionalGift})
+        return this.hydrateProducts(productInfo, hydratedAdditionalGift);
+      }
+
+      if (JSON.stringify(productInfo) != JSON.stringify(this.props.productInfo)) {
+        var totalGift = this.calculateTotalGift(productInfo, this.state.fields["additionalGift"]);
+        return this.setState({
+          productInfo: productInfo,
           totalGift: totalGift
         });
       }
     }
     /**
      * Calculates the total gift for displaying to donor
-     * @param {Array} products - List of All Available Product Orders with their data
      * @param {Array} productInfo - list of of all products having been ordered, idx of the product and quantity
      * @param {Number} additionalGift - value of user entered additional Gift
      * @returns {Number} value of Total Gift
@@ -31149,30 +31152,32 @@ function (_Component) {
 
   }, {
     key: "calculateTotalGift",
-    value: function calculateTotalGift(products, productInfo, additionalGift) {
-      return products.length && productInfo.length ? productInfo.reduce(function (a, b) {
+    value: function calculateTotalGift(productInfo, additionalGift) {
+      var products = this.props.productOptions.products;
+      var totalGift = products.length && productInfo.length ? productInfo.reduce(function (a, b) {
         return a + parseInt(products[b.idx].PledgeAmount) * b.quantity;
-      }, 0) + additionalGift : additionalGift;
+      }, 0) + additionalGift : additionalGift; // console.log({totalGift, productInfo})
+
+      return totalGift;
     }
     /**
      * Sets State from a new productInfo object
      * @param {Array} productInfo - Array holding state of cart as it relates to product
-     * @param {Number} hydratedAmount - Value of amount pledge as additional gift
+     * @param {Number} hydratedAdditionalGift - Value of amount pledge as additional gift
      */
 
   }, {
     key: "hydrateProducts",
-    value: function hydrateProducts(productInfo, hydratedAmount) {
-      var products = this.state.products,
-          fields = _extends({}, this.state.fields);
+    value: function hydrateProducts(productInfo, hydratedAdditionalGift) {
+      var fields = _extends({}, this.state.fields);
 
       productInfo.forEach(function (product) {
         var idx = product.idx,
             quantity = product.quantity;
         fields["product-select-".concat(idx)] = quantity ? quantity : 0;
       });
-      fields["additionalGift"] = hydratedAmount > 0 ? hydratedAmount : fields["additionalGift"];
-      var totalGift = this.calculateTotalGift(products, productInfo, fields["additionalGift"]);
+      fields["additionalGift"] = hydratedAdditionalGift > 0 ? hydratedAdditionalGift : fields["additionalGift"];
+      var totalGift = this.calculateTotalGift(productInfo, fields["additionalGift"]);
       this.setState({
         fields: fields,
         totalGift: totalGift,
@@ -31183,35 +31188,40 @@ function (_Component) {
     key: "handleInputChange",
     value: function handleInputChange(e) {
       var target = e.target;
-      var value = parseInt(target.value);
+      var value = target.value;
       var name = target.name;
 
       var fields = _extends({}, this.state.fields),
           errors = _extends({}, this.state.errors);
 
-      var totalGift = this.state.totalGift;
+      var _this$state = this.state,
+          totalGift = _this$state.totalGift,
+          productInfo = _this$state.productInfo;
 
       if (name === "additionalGift") {
-        if (isNaN(value)) {
-          value = 0;
-        }
-
-        var isValid = /[0-9]+/.test(value) && value >= 0;
+        var isValid = /[0-9]+/.test(value);
         errors[name] = !isValid ? "Must be a valid whole dollar amount above 0" : "";
 
-        if (isValid) {
+        if (isValid && +value > 0) {
+          var _this$props$productOp = this.props.productOptions.additionalGift,
+              DetailCprojMail = _this$props$productOp.DetailCprojMail,
+              DetailCprojCredit = _this$props$productOp.DetailCprojCredit,
+              DetailDescription = _this$props$productOp.DetailDescription,
+              DetailName = _this$props$productOp.DetailName;
           this.props.addToCart({
-            type: 'donation',
-            PledgeAmount: value,
-            DetailCprojMail: this.state.singlePledgeData.DetailCprojMail,
-            DetailCprojCredit: this.state.singlePledgeData.DetailCprojCredit,
-            DetailDescription: "Single Pledge",
-            DetailName: "SPGF",
-            monthly: false
+            type: 'additionalGift',
+            PledgeAmount: +value,
+            DetailCprojMail: DetailCprojMail,
+            DetailCprojCredit: DetailCprojCredit,
+            DetailDescription: DetailDescription,
+            DetailName: DetailName
           });
-          fields[name] = value;
-          totalGift += value;
+        } else {
+          this.props.removeFromCart('additionalGift');
         }
+
+        fields[name] = isValid ? +value : 0;
+        totalGift = this.calculateTotalGift(productInfo, +value);
       } else {
         fields[name] = value;
         var idx = parseInt(name.split("product-select-")[1]); // console.log({name, idx, value})
@@ -31238,9 +31248,15 @@ function (_Component) {
   }, {
     key: "renderAdditionalGift",
     value: function renderAdditionalGift(additionalGift) {
-      return additionalGift ? _react.default.createElement("div", {
+      var _this$state2 = this.state,
+          fields = _this$state2.fields,
+          errors = _this$state2.errors;
+      return additionalGift.display ? _react.default.createElement("div", {
         className: "additional-amount__3rbO8 flex__ayltN flex-left__3xW5i flex-axes-center__33a6C"
-      }, _react.default.createElement("input", {
+      }, _react.default.createElement("label", {
+        className: "product-total__input--label__1r4ld",
+        htmlFor: "additionalGift"
+      }, "$"), _react.default.createElement("input", {
         className: "additional-amount__input__3xXGq",
         name: "additionalGift",
         placeholder: "0",
@@ -31251,19 +31267,26 @@ function (_Component) {
           return e.target.value === 0 ? e.target.value = "" : true;
         },
         onChange: this.handleInputChange,
-        value: this.state.fields.additionalGift
+        value: fields.additionalGift
       }), _react.default.createElement("div", {
         className: "additional-amount__input--label__1mgWu"
-      }, this.state.additionalGiftMessage), _react.default.createElement("div", {
+      }, additionalGift.additionalGiftMessage), _react.default.createElement("div", {
         className: "error__1yrLj"
-      }, this.state.errors.additionalGift)) : null;
+      }, errors.additionalGift)) : null;
     }
   }, {
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      if (this.state.numProducts == 0) return null;else {
+      var _this$props$productOp2 = this.props.productOptions,
+          products = _this$props$productOp2.products,
+          numProducts = _this$props$productOp2.numProducts,
+          additionalGift = _this$props$productOp2.additionalGift;
+      var _this$state3 = this.state,
+          fields = _this$state3.fields,
+          totalGift = _this$state3.totalGift;
+      if (numProducts == 0) return null;else {
         var renderOptions = function renderOptions(ind) {
           var options = [];
 
@@ -31279,7 +31302,7 @@ function (_Component) {
 
         return _react.default.createElement("div", {
           className: "products-display__38L-c"
-        }, this.state.products.map(function (product, i) {
+        }, products.map(function (product, i) {
           return _react.default.createElement("div", {
             key: "product".concat(i),
             className: "product-card__t3-b0 flex__ayltN flex-row__16BBq flex-left__3xW5i flex-axes-center__33a6C"
@@ -31291,7 +31314,7 @@ function (_Component) {
           }, "Quantity"), _react.default.createElement("select", {
             className: "select-product__2SOvm flex-no-grow__3iHTz",
             name: "product-select-".concat(i),
-            value: _this2.state.fields["product-select-".concat(i)] >= 0 ? _this2.state.fields["product-select-".concat(i)] : 0,
+            value: fields["product-select-".concat(i)] >= 0 ? fields["product-select-".concat(i)] : 0,
             onChange: _this2.handleInputChange
           }, renderOptions(i))), _react.default.createElement("div", {
             className: "product-card__body__2xbB- flex-grow__1FqT_"
@@ -31301,7 +31324,7 @@ function (_Component) {
             className: "product-card__description__2NVyi",
             dangerouslySetInnerHTML: _this2.createMarkup(product.productMessage)
           })));
-        }), this.renderAdditionalGift(this.state.additionalGift), _react.default.createElement("div", {
+        }), this.renderAdditionalGift(additionalGift), _react.default.createElement("div", {
           className: "product-total__3EJ0g flex__ayltN flex-left__3xW5i flex-axes-center__33a6C"
         }, _react.default.createElement("label", {
           className: "product-total__input--label__1r4ld",
@@ -31309,7 +31332,7 @@ function (_Component) {
         }, "$"), _react.default.createElement("input", {
           className: "product-total__input__172mT flex-no-grow__3iHTz",
           name: "total-product-gift",
-          value: this.state.totalGift,
+          value: totalGift,
           disabled: true
         }), _react.default.createElement("div", {
           className: "product-total__input--label__1r4ld"
@@ -60692,7 +60715,7 @@ function (_Component) {
 
     errors.amount = "";
     _this.state = {
-      monthlyChecked: props.hydratedData && props.hydratedData.TransactionType == "Monthly" ? true : props.defaultOption == "monthly",
+      monthlyChecked: props.defaultOption == "monthly",
       totalGift: 0,
       submitted: false,
       submitting: false,
@@ -60700,14 +60723,15 @@ function (_Component) {
       fundInfo: {},
       productsOrdered: false,
       productInfo: [],
+      givingInfo: [],
       cart: {
         items: []
       },
       fields: fields,
       errors: errors,
-      hydratedAmount: 0,
-      hydratedMonthly: false,
-      hydratedProducts: false,
+      defaultAmount: props.defaultAmount,
+      defaultOption: props.defaultOption,
+      hydratedAdditionalGift: 0,
       initialUpdate: false
     };
     _this.handleInputChange = _this.handleInputChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -60715,6 +60739,7 @@ function (_Component) {
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleRadioClick = _this.handleRadioClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.addToCart = _this.addToCart.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.removeFromCart = _this.removeFromCart.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.updateDonation = _this.updateDonation.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.updateProducts = _this.updateProducts.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.callZipCityStateService = _this.callZipCityStateService.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -60729,14 +60754,16 @@ function (_Component) {
       if (this.props.hydratedData && this.props.hydratedData.MultipleDonations) {
         // initialize variables in such a way as to not mutate state
         var amount = 0,
-            isMonthly = false;
+            isMonthly = false,
+            additionalGift = 0;
 
         var items = _toConsumableArray(this.state.cart.items);
 
         var products = this.props.products;
 
         var productInfo = _toConsumableArray(this.state.productInfo),
-            productsOrdered = this.state.productsOrdered;
+            productsOrdered = this.state.productsOrdered,
+            givingInfo = _toConsumableArray(this.state.givingInfo);
 
         var MultipleDonations = _toConsumableArray(this.props.hydratedData.MultipleDonations); // loop through multiple donations and reconstruct virual cart
 
@@ -60751,20 +60778,30 @@ function (_Component) {
           var type = DetailName === "MP" || DetailName === "SPGF" ? "donation" : "product";
 
           if (type == "donation") {
-            amount = PledgeAmount;
+            amount = +PledgeAmount;
             isMonthly = DetailName === "MP" ? true : false;
+            givingInfo.push({
+              amount: amount,
+              isMonthly: isMonthly
+            });
           }
 
           if (type == "product") {
             var idx = products.findIndex(function (el) {
               return el.DetailDescription === DetailDescription;
             });
-            var quantity = parseInt(DetailName.split('|')[1]);
-            productInfo.push({
-              idx: idx,
-              quantity: quantity
-            });
-            productsOrdered = true;
+
+            if (idx > -1) {
+              var quantity = parseInt(DetailName.split('|')[1]);
+              productInfo.push({
+                idx: idx,
+                quantity: quantity
+              });
+              productsOrdered = true;
+            } else {
+              type = "additionalGift";
+              additionalGift = +PledgeAmount;
+            }
           }
 
           items.push({
@@ -60780,17 +60817,19 @@ function (_Component) {
 
         for (var i = 0; i < MultipleDonations.length; i++) {
           _loop(i);
-        }
+        } // console.log({items, amount, additionalGift})
 
+
+        var monthlyChecked = isMonthly;
         this.setState({
           cart: {
             items: items
           },
-          hydratedAmount: amount,
-          hydratedMonthly: isMonthly,
+          givingInfo: givingInfo,
           productInfo: productInfo,
           productsOrdered: productsOrdered,
-          hydratedProducts: true
+          hydratedAdditionalGift: additionalGift,
+          monthlyChecked: monthlyChecked
         });
       }
     }
@@ -60978,7 +61017,7 @@ function (_Component) {
       regeneratorRuntime.mark(function _callee2(e) {
         var _this2 = this;
 
-        var items, found, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props, mode, APIAccessID, MotivationText, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, data, msg, message, _getErrorType, breaking, _name;
+        var items, pledgeFound, addGiftFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props, mode, APIAccessID, MotivationText, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, data, msg, message, _getErrorType, breaking, _name;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -61000,12 +61039,15 @@ function (_Component) {
                 }); //THINK THROUGH THIS LOGIC A LITTLE MORE
 
                 items = _toConsumableArray(this.state.cart.items);
-                found = items.findIndex(function (el) {
+                pledgeFound = items.findIndex(function (el) {
                   return el && el.type == "donation";
                 });
+                addGiftFound = items.findIndex(function (el) {
+                  return el && el.type == "additionalGift";
+                });
 
-                if (!(items.length == 0 || items.length == 1 && found > -1 && items[found].PledgeAmount == 0)) {
-                  _context2.next = 10;
+                if (!(items.length == 0 || pledgeFound > -1 && items[pledgeFound].PledgeAmount == 0 && addGiftFound < 0 || pledgeFound < 0 && addGiftFound < 0)) {
+                  _context2.next = 11;
                   break;
                 }
 
@@ -61016,91 +61058,91 @@ function (_Component) {
                   errors: _errors
                 }));
 
-              case 10:
+              case 11:
                 errors = _extends({}, this.state.errors);
                 isValidForm = true;
 
                 if (!(this.state.fields.Country == "United States")) {
-                  _context2.next = 57;
+                  _context2.next = 58;
                   break;
                 }
 
-                _context2.prev = 13;
-                _context2.next = 16;
+                _context2.prev = 14;
+                _context2.next = 17;
                 return this.callZipCityStateService("Zip", this.state.fields["Zip"]);
 
-              case 16:
+              case 17:
                 zipError = _context2.sent;
 
                 if (zipError) {
-                  _context2.next = 28;
+                  _context2.next = 29;
                   break;
                 }
 
-                _context2.prev = 18;
-                _context2.next = 21;
+                _context2.prev = 19;
+                _context2.next = 22;
                 return this.callAddressVerification(this.state.fields["Address1"], this.state.fields["City"], this.state.fields["State"], this.state.fields["Zip"]);
 
-              case 21:
+              case 22:
                 addressError = _context2.sent;
-                _context2.next = 28;
+                _context2.next = 29;
                 break;
 
-              case 24:
-                _context2.prev = 24;
-                _context2.t0 = _context2["catch"](18);
+              case 25:
+                _context2.prev = 25;
+                _context2.t0 = _context2["catch"](19);
                 console.log("AddressVerificationError");
                 console.error({
                   err: _context2.t0
                 });
 
-              case 28:
+              case 29:
                 if (!(this.state.fields["ShipToZip"] && this.state.fields.ShipToYes)) {
-                  _context2.next = 39;
+                  _context2.next = 40;
                   break;
                 }
 
-                _context2.prev = 29;
-                _context2.next = 32;
+                _context2.prev = 30;
+                _context2.next = 33;
                 return this.callZipCityStateService("ShipToZip", this.state.fields["ShipToZip"]);
 
-              case 32:
+              case 33:
                 shipZipError = _context2.sent;
-                _context2.next = 39;
+                _context2.next = 40;
                 break;
 
-              case 35:
-                _context2.prev = 35;
-                _context2.t1 = _context2["catch"](29);
+              case 36:
+                _context2.prev = 36;
+                _context2.t1 = _context2["catch"](30);
                 console.log("CSZValidationError__SHIPPING");
                 console.error({
                   err: _context2.t1
                 });
 
-              case 39:
+              case 40:
                 if (!(!shipZipError && this.state.fields.ShipToYes)) {
-                  _context2.next = 50;
+                  _context2.next = 51;
                   break;
                 }
 
-                _context2.prev = 40;
-                _context2.next = 43;
+                _context2.prev = 41;
+                _context2.next = 44;
                 return this.callAddressVerification(this.state.fields["ShipToAddress1"], this.state.fields["ShipToCity"], this.state.fields["ShipToState"], this.state.fields["ShipToZip"]);
 
-              case 43:
+              case 44:
                 shipAddressError = _context2.sent;
-                _context2.next = 50;
+                _context2.next = 51;
                 break;
 
-              case 46:
-                _context2.prev = 46;
-                _context2.t2 = _context2["catch"](40);
+              case 47:
+                _context2.prev = 47;
+                _context2.t2 = _context2["catch"](41);
                 console.log("AddressVerificationError__SHIPPING");
                 console.error({
                   err: _context2.t2
                 });
 
-              case 50:
+              case 51:
                 if (addressError || shipAddressError || zipError || shipZipError) {
                   isValidForm = false;
                   errors["Address1"] = addressError;
@@ -61109,18 +61151,18 @@ function (_Component) {
                   errors["ShipToZip"] = shipZipError;
                 }
 
-                _context2.next = 57;
+                _context2.next = 58;
                 break;
 
-              case 53:
-                _context2.prev = 53;
-                _context2.t3 = _context2["catch"](13);
+              case 54:
+                _context2.prev = 54;
+                _context2.t3 = _context2["catch"](14);
                 console.log("CSZValidationError");
                 console.error({
                   err: _context2.t3
                 });
 
-              case 57:
+              case 58:
                 fields = this.state.fields;
                 fieldNames = Object.keys(fields);
 
@@ -61139,7 +61181,7 @@ function (_Component) {
                 }
 
                 if (isValidForm) {
-                  _context2.next = 62;
+                  _context2.next = 63;
                   break;
                 }
 
@@ -61148,7 +61190,7 @@ function (_Component) {
                   errors: errors
                 }));
 
-              case 62:
+              case 63:
                 //deconstruct necessary fields from state
                 Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
                 _this$props = this.props, mode = _this$props.mode, APIAccessID = _this$props.APIAccessID, MotivationText = _this$props.MotivationText, subscriptions = _this$props.subscriptions, AddContactYN = _this$props.AddContactYN, ActivityName = _this$props.ActivityName, ContactSource = _this$props.ContactSource, SectionName = _this$props.SectionName, proxy = _this$props.proxy;
@@ -61158,12 +61200,12 @@ function (_Component) {
                 Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "", Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "", Phonenumber = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : ""; //process cart
 
                 TransactionType = "Product";
-                isMonthly = found > -1 ? items[found].monthly : false;
+                isMonthly = pledgeFound > -1 ? items[pledgeFound].monthly : false;
                 DonationType = isMonthly ? "CR" : "CC";
                 IsRecurringCreditCardDonation = isMonthly;
                 Monthlypledgeday = isMonthly ? this.state.fields.Monthlypledgeday : null;
-                Monthlypledgeamount = isMonthly && found > -1 ? items[found].PledgeAmount : 0;
-                Singledonationamount = !isMonthly && found > -1 ? items[found].PledgeAmount : 0;
+                Monthlypledgeamount = isMonthly && pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
+                Singledonationamount = !isMonthly && pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
 
                 if (Monthlypledgeamount > 0) {
                   TransactionType = "Monthly";
@@ -61183,7 +61225,7 @@ function (_Component) {
                         DetailCprojMail = _ref.DetailCprojMail,
                         PledgeAmount = _ref.PledgeAmount;
 
-                    if (index === found && _this2.state.fundSelected) {
+                    if (index === pledgeFound && _this2.state.fundSelected) {
                       DetailName = _this2.state.fundInfo.DetailName;
                       DetailDescription = _this2.state.fundInfo.DetailDescription;
                       DetailCprojCredit = _this2.state.fundInfo.DetailCprojCredit;
@@ -61249,8 +61291,8 @@ function (_Component) {
                 }); // console.log({proxy})
                 // console.log({data})
 
-                _context2.prev = 81;
-                _context2.next = 84;
+                _context2.prev = 82;
+                _context2.next = 85;
                 return (0, _fetchHelpers.callApi)(proxy, {
                   method: 'POST',
                   mode: 'cors',
@@ -61260,19 +61302,19 @@ function (_Component) {
                   body: JSON.stringify(data)
                 });
 
-              case 84:
+              case 85:
                 msg = _context2.sent;
                 // console.log({msg, data})
                 this.props.submitForm({
                   msg: msg,
                   data: data
                 });
-                _context2.next = 95;
+                _context2.next = 96;
                 break;
 
-              case 88:
-                _context2.prev = 88;
-                _context2.t4 = _context2["catch"](81);
+              case 89:
+                _context2.prev = 89;
+                _context2.t4 = _context2["catch"](82);
                 console.error(_context2.t4.message);
                 message = _context2.t4.message;
                 _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
@@ -61288,12 +61330,12 @@ function (_Component) {
                   errors: errors
                 });
 
-              case 95:
+              case 96:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[13, 53], [18, 24], [29, 35], [40, 46], [81, 88]]);
+        }, _callee2, this, [[14, 54], [19, 25], [30, 36], [41, 47], [82, 89]]);
       }));
 
       return function handleSubmit(_x2) {
@@ -61374,7 +61416,7 @@ function (_Component) {
       var items = _toConsumableArray(this.state.cart.items);
 
       var found = items.findIndex(function (el) {
-        return el && el.type == "donation";
+        return el && el.type == item.type;
       });
 
       if (found > -1) {
@@ -61396,6 +61438,25 @@ function (_Component) {
           items: items
         }
       });
+    }
+  }, {
+    key: "removeFromCart",
+    value: function removeFromCart(type) {
+      var items = _toConsumableArray(this.state.cart.items);
+
+      var found = items.findIndex(function (el) {
+        return el && el.type == type;
+      }); // console.log({type, found, items})
+
+      if (found > -1) {
+        items.splice(found, 1); // console.log({items})
+
+        this.setState({
+          cart: {
+            items: items
+          }
+        });
+      }
     }
     /**
      * Sets the state with new fund information from the fund select dropdown
@@ -61658,8 +61719,6 @@ function (_Component) {
     value: function render() {
       var _this$props2 = this.props,
           showGivingArray = _this$props2.showGivingArray,
-          defaultAmount = _this$props2.defaultAmount,
-          defaultOption = _this$props2.defaultOption,
           givingFormat = _this$props2.givingFormat,
           monthlyOption = _this$props2.monthlyOption,
           singleOption = _this$props2.singleOption,
@@ -61670,7 +61729,6 @@ function (_Component) {
           singlePledgeData = _this$props2.singlePledgeData,
           products = _this$props2.products,
           additionalGift = _this$props2.additionalGift,
-          additionalGiftMessage = _this$props2.additionalGiftMessage,
           shipping = _this$props2.shipping,
           international = _this$props2.international,
           getPhone = _this$props2.getPhone,
@@ -61678,8 +61736,6 @@ function (_Component) {
           getMiddleName = _this$props2.getMiddleName,
           getSpouseInfo = _this$props2.getSpouseInfo;
       var arrayOptions = {
-        defaultAmount: defaultAmount,
-        defaultOption: defaultOption,
         givingFormat: givingFormat,
         monthlyOption: monthlyOption,
         singleOption: singleOption,
@@ -61692,24 +61748,23 @@ function (_Component) {
           productOptions = {
         products: products,
         numProducts: products.length,
-        additionalGift: additionalGift,
-        additionalGiftMessage: additionalGiftMessage,
-        singlePledgeData: singlePledgeData
+        additionalGift: additionalGift
       },
           fundOptions = {
         funds: funds,
         numFunds: funds.length
       };
       var _this$state = this.state,
+          defaultAmount = _this$state.defaultAmount,
+          defaultOption = _this$state.defaultOption,
           errors = _this$state.errors,
           fields = _this$state.fields,
+          givingInfo = _this$state.givingInfo,
           productInfo = _this$state.productInfo,
           submitting = _this$state.submitting,
           initialUpdate = _this$state.initialUpdate,
           monthlyChecked = _this$state.monthlyChecked,
-          hydratedAmount = _this$state.hydratedAmount,
-          hydratedMonthly = _this$state.hydratedMonthly,
-          hydratedProducts = _this$state.hydratedProducts;
+          hydratedAdditionalGift = _this$state.hydratedAdditionalGift;
       var hasErrors = Object.values(errors).filter(function (val) {
         return val && val.length > 0;
       }).length > 0;
@@ -61724,12 +61779,14 @@ function (_Component) {
       }, _react.default.createElement("div", {
         className: "gift-choice__vKNi_"
       }, _react.default.createElement(_GivingArray.default, {
+        defaultAmount: defaultAmount,
+        defaultOption: defaultOption,
         arrayOptions: arrayOptions,
         initialUpdate: initialUpdate,
         monthlyChecked: monthlyChecked,
         addToCart: this.addToCart,
-        hydratedAmount: hydratedAmount,
-        hydratedMonthly: hydratedMonthly
+        removeFromCart: this.removeFromCart,
+        givingInfo: givingInfo
       }), _react.default.createElement("div", {
         className: "error__3olFm amount-error__2G2h0"
       }, errors.amount)), monthlyOption && singleOption && _react.default.createElement(_MonthlyRadioGroup.default, {
@@ -61754,10 +61811,9 @@ function (_Component) {
         productOptions: productOptions,
         updateProducts: this.updateProducts,
         addToCart: this.addToCart,
+        removeFromCart: this.removeFromCart,
         initialUpdate: initialUpdate,
-        hydratedProducts: hydratedProducts,
-        hydratedAmount: hydratedAmount,
-        hydratedMonthly: hydratedMonthly
+        hydratedAdditionalGift: hydratedAdditionalGift
       })), _react.default.createElement("div", {
         className: "form-panel__2bLqQ"
       }, _react.default.createElement("fieldset", {
@@ -62378,7 +62434,7 @@ if (module.hot) {
 var Banner = function Banner() {
   return _react.default.createElement("div", {
     className: "banner__19s5S"
-  }, "Page In Development");
+  }, "Development Environment");
 };
 
 var _default = Banner;
@@ -62777,7 +62833,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59421" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51435" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

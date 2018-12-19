@@ -7,13 +7,8 @@ class ProductDisplay extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            numProducts: props.productOptions.numProducts,
-            products: [...props.productOptions.products],
-            additionalGift: props.productOptions.additionalGift,
-            additionalGiftMessage: props.productOptions.additionalGiftMessage,
-            singlePledgeData: props.productOptions.singlePledgeData,
             fields: {
-                additionalGift: props.hydratedAmount >= 0 ? props.hydratedAmount : 0
+                additionalGift: props.hydratedAdditionalGift >= 0 ? props.hydratedAdditionalGift : 0
             },
             errors: {
                 additionalGift: ""
@@ -21,7 +16,7 @@ class ProductDisplay extends Component {
             additionalGiftError: "",
             totalGift: 0,
             hydrated: false,
-            hydratedAmount: props.hydratedAmount,
+            hydratedAdditionalGift: props.hydratedAdditionalGift,
             productInfo: props.productInfo,
             initialUpdate: false
         }
@@ -33,120 +28,121 @@ class ProductDisplay extends Component {
     }
 
     componentDidMount() {
-        const {productInfo, hydratedAmount} = this.props;
-        if ((productInfo.length || hydratedAmount > 0) && !this.state.hydrated) {
-            // console.log({mountedHydratedAmount: hydratedAmount})
-            this.hydrateProducts(productInfo, hydratedAmount);
+        const {productInfo, hydratedAdditionalGift} = this.props;
+        if ((productInfo.length || hydratedAdditionalGift > 0) && !this.state.hydrated) {
+            // console.log({mountedhydratedAdditionalGift: hydratedAdditionalGift})
+            this.hydrateProducts(productInfo, hydratedAdditionalGift);
         }
     }
 
     componentWillReceiveProps(nextProps) {
         const {initialUpdate} = nextProps;
         if (initialUpdate && !this.state.initialUpdate) {
-            const {numProducts, products, additionalGift, additionalGiftMessage, singlePledgeData} = nextProps.productOptions;
-            return this.setState({numProducts, products: [...products], additionalGift, additionalGiftMessage, singlePledgeData, initialUpdate})
+            return this.setState({initialUpdate})
         }
-        const {productInfo, hydratedAmount} = nextProps;
-        if ((productInfo.length || hydratedAmount > 0) && !nextProps.hydrated && !this.state.hydrated) {
-            // console.log({propsHydratedAmount: hydratedAmount})
-            this.hydrateProducts(productInfo, hydratedAmount);
-        } else {
-            const {products} = this.state;
-            const {additionalGift} = this.state.fields;
-            const totalGift = this.calculateTotalGift(products, productInfo, additionalGift)
-            this.setState({totalGift})
-        }       
+        const {productInfo, hydratedAdditionalGift} = nextProps;
+        if ((productInfo.length || hydratedAdditionalGift > 0) && !nextProps.hydrated && !this.state.hydrated) {
+            // console.log({propshydratedAdditionalGift: hydratedAdditionalGift})
+            return this.hydrateProducts(productInfo, hydratedAdditionalGift);
+        } 
+        if (JSON.stringify(productInfo) != JSON.stringify(this.props.productInfo)) {
+            const totalGift = this.calculateTotalGift(productInfo, this.state.fields["additionalGift"])
+            return this.setState({productInfo, totalGift})
+        }
     }
 
     /**
      * Calculates the total gift for displaying to donor
-     * @param {Array} products - List of All Available Product Orders with their data
      * @param {Array} productInfo - list of of all products having been ordered, idx of the product and quantity
      * @param {Number} additionalGift - value of user entered additional Gift
      * @returns {Number} value of Total Gift
      */
-    calculateTotalGift(products, productInfo, additionalGift) {
-        return (products.length && productInfo.length) ? productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + additionalGift : additionalGift;
+    calculateTotalGift(productInfo, additionalGift) {
+        const { products } = this.props.productOptions
+        const totalGift = (products.length && productInfo.length) ? productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + additionalGift : additionalGift;
+        // console.log({totalGift, productInfo})
+        return totalGift
     }
 
     /**
      * Sets State from a new productInfo object
      * @param {Array} productInfo - Array holding state of cart as it relates to product
-     * @param {Number} hydratedAmount - Value of amount pledge as additional gift
+     * @param {Number} hydratedAdditionalGift - Value of amount pledge as additional gift
      */
-    hydrateProducts(productInfo, hydratedAmount) {
-        const {products} = this.state, fields = {...this.state.fields};
-    
+    hydrateProducts(productInfo, hydratedAdditionalGift) {
+        const fields = {...this.state.fields};
         productInfo.forEach(product=>{
             const {idx, quantity} = product;
             fields[`product-select-${idx}`] =  quantity ? quantity : 0;
-        });
-
-        fields["additionalGift"] = hydratedAmount > 0 ? hydratedAmount : fields["additionalGift"]
-        const totalGift = this.calculateTotalGift(products, productInfo, fields["additionalGift"])
-  
+          });
+        fields["additionalGift"] = hydratedAdditionalGift > 0 ? hydratedAdditionalGift : fields["additionalGift"]
+        const totalGift = this.calculateTotalGift(productInfo, fields["additionalGift"])
         this.setState({fields, totalGift, hydrated: true});
     }
 
     handleInputChange(e) {
         const target = e.target;
-        let value = parseInt(target.value);
+        let value = target.value;
         const name = target.name;
         
         const fields = {...this.state.fields}, errors = {...this.state.errors};
-        let {totalGift} = this.state;
+        let { totalGift, productInfo } = this.state;
 
         if (name === "additionalGift") {
-            if (isNaN(value)) {
-                value = 0
-            }
-            const isValid = /[0-9]+/.test(value) && value >= 0
+            const isValid = /[0-9]+/.test(value)
             errors[name] = !isValid ? "Must be a valid whole dollar amount above 0" : ""
-            if (isValid) {
+            if (isValid && +value > 0) {
+                const { DetailCprojMail, DetailCprojCredit, DetailDescription, DetailName } = this.props.productOptions.additionalGift
                 this.props.addToCart({
-                    type: 'donation',
-                    PledgeAmount: value,
-                    DetailCprojMail: this.state.singlePledgeData.DetailCprojMail,
-                    DetailCprojCredit: this.state.singlePledgeData.DetailCprojCredit,
-                    DetailDescription: "Single Pledge",
-                    DetailName: "SPGF",
-                    monthly: false
+                    type: 'additionalGift',
+                    PledgeAmount: +value,
+                    DetailCprojMail,
+                    DetailCprojCredit,
+                    DetailDescription,
+                    DetailName
                 })
-                fields[name] = value;
-                totalGift+=value;
+            } else {
+                this.props.removeFromCart('additionalGift')
             }
+            fields[name] = isValid ? +value : 0;
+            totalGift = this.calculateTotalGift(productInfo, +value)
         } else {
             fields[name] = value;   
             const idx = parseInt(name.split("product-select-")[1])
             // console.log({name, idx, value})
             this.props.updateProducts({idx, quantity: value})
+
         }
 
-        this.setState({ fields, errors, totalGift});
+        this.setState({ fields, errors, totalGift });
     }
     createMarkup(text) {
         return { __html: text }
     }
 
     renderAdditionalGift(additionalGift) {
-        return additionalGift ? (
+        const {fields, errors} = this.state;
+        return additionalGift.display ? (
             <div styleName="styles.additional-amount flex.flex flex.flex-left flex.flex-axes-center">
+                <label styleName="styles.product-total__input--label" htmlFor="additionalGift">$</label>
                 <input styleName='styles.additional-amount__input' 
                     name="additionalGift"
                     placeholder="0"
                     onBlur={e=> e.target.value === "" ? e.target.value = 0 : true}
                     onFocus={e=> e.target.value === 0 ? e.target.value = "" : true}
                     onChange={this.handleInputChange} 
-                    value={this.state.fields.additionalGift }
+                    value={fields.additionalGift }
                 />
-                <div styleName="styles.additional-amount__input--label">{this.state.additionalGiftMessage}</div>
-                <div styleName="styles.error">{this.state.errors.additionalGift}</div>
+                <div styleName="styles.additional-amount__input--label">{additionalGift.additionalGiftMessage}</div>
+                <div styleName="styles.error">{errors.additionalGift}</div>
             </div> 
         ) : null;
     }
 
     render() {
-        if (this.state.numProducts == 0) return null
+        const { products, numProducts, additionalGift } = this.props.productOptions
+        const { fields, totalGift } = this.state;
+        if (numProducts == 0) return null
 
         else {
             function renderOptions(ind) {
@@ -158,7 +154,7 @@ class ProductDisplay extends Component {
             }
             return (
                 <div styleName="styles.products-display">
-                    {   this.state.products.map((product, i)=>{
+                    {   products.map((product, i)=>{
 
                         return (
                             <div key={`product${i}`} styleName="styles.product-card flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
@@ -166,7 +162,7 @@ class ProductDisplay extends Component {
                                     <label htmlFor={`product-select-${i}`} styleName="styles.select-product__label">Quantity</label>
                                     <select styleName="styles.select-product flex.flex-no-grow" 
                                         name={`product-select-${i}`} 
-                                        value={this.state.fields[`product-select-${i}`] >= 0 ? this.state.fields[`product-select-${i}`] : 0} 
+                                        value={fields[`product-select-${i}`] >= 0 ? fields[`product-select-${i}`] : 0} 
                                         onChange={this.handleInputChange}
                                     >
 
@@ -182,9 +178,10 @@ class ProductDisplay extends Component {
                             )
                         })
                     }
-                    { this.renderAdditionalGift(this.state.additionalGift) }
+                    { this.renderAdditionalGift(additionalGift) }
                     <div styleName="styles.product-total flex.flex flex.flex-left flex.flex-axes-center">
-                        <label styleName="styles.product-total__input--label" htmlFor="total-product-gift">$</label><input styleName='styles.product-total__input flex.flex-no-grow' name="total-product-gift" value={this.state.totalGift} disabled={true}/>
+                        <label styleName="styles.product-total__input--label" htmlFor="total-product-gift">$</label>
+                        <input styleName='styles.product-total__input flex.flex-no-grow' name="total-product-gift" value={totalGift} disabled={true}/>
                         <div styleName="styles.product-total__input--label">Product Subtotal</div>
                     </div>
                 </div>

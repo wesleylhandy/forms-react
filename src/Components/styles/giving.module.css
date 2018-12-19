@@ -125,3 +125,9 @@ h3.askarray__header {
     max-width: 100%;
     white-space: nowrap;
 }
+
+.error.other-amt-error {
+    bottom: 43px;
+    left: 50%;
+    transform: translateX(-50%);
+}

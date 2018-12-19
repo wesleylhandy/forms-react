@@ -265,7 +265,8 @@ module.exports = {
   "askarray__form-group": "askarray__form-group__1rkB9",
   "form-group__other-input": "form-group__other-input__3hTcz",
   "form-group__other-input--label": "form-group__other-input--label__1gNEk",
-  "error": "error__2x8Zr"
+  "error": "error__2x8Zr",
+  "other-amt-error": "other-amt-error__2STLF"
 };
 },{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/input.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -397,7 +398,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59421" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51435" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

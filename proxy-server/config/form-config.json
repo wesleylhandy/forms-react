@@ -70,10 +70,16 @@
         "key": "MarketingUnSubs"
     }],
     "MotivationText": "002345",
-    "additionalGift": false,
-    "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
+    "additionalGift": {
+        "display": true,
+        "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
+        "DetailDescription": "Orphans Promise Donation",
+        "DetailCprojCredit": "043258",
+        "DetailCprojMail": "043259",
+        "DetailName": "SGOrphansPromise"
+    },
     "showGivingArray": true,
-    "monthlyOption": false,
+    "monthlyOption": true,
     "singleOption": true,
     "monthlyAmounts": [3, 7, 15, 30, 50],
     "singleAmounts": [25, 50, 100, 250, 300],

@@ -218,6 +218,14 @@
     overflow: hidden;
     max-width: 100%;
     white-space: nowrap;
+}
+
+.error__2x8Zr.other-amt-error__2STLF {
+    bottom: 43px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
 }.hidden__2tqB3 {
     position: absolute;
     left: -10000px;
@@ -300,6 +308,11 @@ label.select-product__label__3Y0AW {
     margin-right: 19px;
     -ms-flex-item-align: center;
         align-self: center;
+    color: inherit;
+    font-weight: normal;
+    margin-bottom: 0;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 .additional-amount__input__3xXGq,
