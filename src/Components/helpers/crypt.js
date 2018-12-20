@@ -1,4 +1,4 @@
-const NodeRSA = require('node-rsa');
+import NodeRSA from 'node-rsa';
 
 /**
  * Takes in a cookie value and returns either decrypted text or null

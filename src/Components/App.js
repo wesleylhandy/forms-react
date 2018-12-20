@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, lazy, Suspense} from 'react'
 
 import NameAddressForm from "./NameAddressForm"
-import ConfirmationPage from "./ConfirmationPage"
-import RedirectForm from './RedirectForm';
+const ConfirmationPage = lazy ( ()=> import("./ConfirmationPage") )
+const RedirectForm = lazy( ()=> import('./RedirectForm') );
 import Banner from './Banner'
 
 import styles from './styles/app.module.css'
@@ -89,18 +89,26 @@ class App extends Component {
                 { 
                     (()=> {
                         if (finalized) {
-                            return <RedirectForm thankYouUrl={thankYouUrl} receiptVars={finalizedData} />
+                            return  (
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <RedirectForm thankYouUrl={thankYouUrl} receiptVars={finalizedData} />
+                                </Suspense>
+                            )
                         } else if (submitted) {
-                            return <ConfirmationPage 
-                                mode={mode}
-                                cssConfig={cssConfig}
-                                formData={formData} 
-                                formAction={formAction}
-                                hydrateForm={this.hydrateForm}
-                                renderReceiptPage={this.renderReceiptPage}
-                            /> 
+                            return (
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <ConfirmationPage 
+                                        mode={mode}
+                                        cssConfig={cssConfig}
+                                        formData={formData} 
+                                        formAction={formAction}
+                                        hydrateForm={this.hydrateForm}
+                                        renderReceiptPage={this.renderReceiptPage}
+                                    />
+                                </Suspense>
+                            )
                         } else {
-                            return <NameAddressForm { ...formState } mode={mode} submitForm={ this.submitForm }/> 
+                            return <NameAddressForm { ...formState } mode={mode} submitForm={ this.submitForm }/>
                         }
                     })()     
                 } 

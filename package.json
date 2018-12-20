@@ -8,7 +8,8 @@
         "start:proxy": "node proxy-server/server.js",
         "start": "parcel index.html",
         "stop": "pkill SIGINT ProxyServer",
-        "build": "parcel build src/index.js --detailed-report -d dist/v1"
+        "build": "parcel build src/index.js --detailed-report -d dist/v1",
+        "build:split": "parcel build src/index.js --detailed-report -d dist/split/v1"
     },
     "repository": {
         "type": "git",
@@ -23,8 +24,8 @@
         "node-rsa": "^1.0.0",
         "promise-polyfill": "^8.1.0",
         "raf": "^3.4.0",
-        "react": "^16.4.0",
-        "react-dom": "^16.4.0",
+        "react": "^16.6.0",
+        "react-dom": "^16.6.0",
         "whatwg-fetch": "^2.0.4"
     },
     "devDependencies": {

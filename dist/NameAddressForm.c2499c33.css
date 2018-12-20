@@ -1364,27 +1364,4 @@ h3.form-header__3OWCX,
         -ms-transform: translateX(-50%);
             transform: translateX(-50%);
     bottom: calc(0% - 20px);
-}.form-wrapper__MMJ_H {
-    background: var(--form-bg-color);
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    border: var(--form-border-width) solid var(--form-border-color);
-    border-radius: var(--form-border-radius);
-    color: var(--form-text-color);
-    max-width: 680px;
-    padding: var(--form-padding);
-    width: 100%;
-}.banner__19s5S {
-    width: 100%;
-    padding: 20px;
-    text-align: center;
-    background: lightgoldenrodyellow;
-    color: maroon;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-style: normal;
-    border: 1px dotted #000;
-    margin: 30px 0;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
 }
