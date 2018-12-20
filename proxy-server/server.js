@@ -141,7 +141,8 @@ router.post('/api', (req, res) => {
     const mode = data.mode;
     delete data.mode;
     const api = process.env.epsilon
-    fetch(api,
+    console.log({api})
+    callApi(api,
     {
         method: 'POST',
         headers: {
@@ -149,40 +150,63 @@ router.post('/api', (req, res) => {
         },
         body: JSON.stringify(data)
     })
-    .catch(handleError)
-    .then(checkStatus)
-    .then(response => response.text())
     .then(msg => res.send(msg))
     .catch(error => {
+        console.log({BeforeResSentErr: JSON.stringify(error, null, 2)})
         res.statusCode = error.status
-        console.log({error})
-        res.send(error)
+        res.send(error.body)
     })
 })
 
-const checkStatus = response => {
-    if (response.status >= 200 && response.status < 300) {
-      return response;
+async function callApi(uri, options = {}) {
+    let data;
+    try {
+        data = await loadData(uri, options);
+        return data;
+    } catch ({body, status}) {
+        console.log({body, status})
+        const error = new Error(body);
+        error.status = status
+        error.body = body
+        console.error({callApiFetchErr:error})
+        throw error;
     }
+}
 
-    return response.text().then(text => {
-      return Promise.reject({
-        status: response.status,
-        ok: false,
-        statusText: response.statusText,
-        body: text
-      });
-    });
-  };
+async function loadData(uri, options = {}) {
+    let response = await fetch(uri, options);
+    const contentType = response.headers.get("content-type");
+    const {status} = response;
+    console.log({status, contentType})
+    if (status >= 200 && status < 300) { 
+        if (contentType && contentType.includes('application/json')) {
+            return response.json();
+        } else {
+            return response.text();
+        }
+    } else {
+        
+        return getErrorBody(response, contentType)
+            .then(body=>{
+                return Promise.reject({
+                    body, 
+                    status
+                })
+            })
+    }
+}
 
-const handleError = error => {
-    error.response = {
-      status: 0,
-      statusText:
-        "Cannot connect. Please make sure you are connected to internet."
-    };
-    throw error;
-};
+async function getErrorBody(response, contentType = 'text') {
+    let body;
+    if (contentType.includes('application/json')) {
+        body = await response.json();
+    } else {
+        body = await response.text();
+    }
+    return body;
+}
+
+
 
 app.use("/", router);
 
