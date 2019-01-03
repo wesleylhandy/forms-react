@@ -14,10 +14,8 @@ class ProductDisplay extends Component {
                 additionalGift: ""
             },
             additionalGiftError: "",
-            totalGift: 0,
             hydrated: false,
             hydratedAdditionalGift: props.hydratedAdditionalGift,
-            productInfo: props.productInfo,
             initialUpdate: false
         }
         this.handleInputChange=this.handleInputChange.bind(this)
@@ -35,22 +33,6 @@ class ProductDisplay extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        const {initialUpdate} = nextProps;
-        if (initialUpdate && !this.state.initialUpdate) {
-            return this.setState({initialUpdate})
-        }
-        const {productInfo, hydratedAdditionalGift} = nextProps;
-        if ((productInfo.length || hydratedAdditionalGift > 0) && !nextProps.hydrated && !this.state.hydrated) {
-            // console.log({propshydratedAdditionalGift: hydratedAdditionalGift})
-            return this.hydrateProducts(productInfo, hydratedAdditionalGift);
-        } 
-        if (JSON.stringify(productInfo) != JSON.stringify(this.props.productInfo)) {
-            const totalGift = this.calculateTotalGift(productInfo, this.state.fields["additionalGift"])
-            return this.setState({productInfo, totalGift})
-        }
-    }
-
     /**
      * Calculates the total gift for displaying to donor
      * @param {Array} productInfo - list of of all products having been ordered, idx of the product and quantity
@@ -59,8 +41,8 @@ class ProductDisplay extends Component {
      */
     calculateTotalGift(productInfo, additionalGift) {
         const { products } = this.props.productOptions
+        // console.log({productInfo, products, additionalGift})
         const totalGift = (products.length && productInfo.length) ? productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + additionalGift : additionalGift;
-        // console.log({totalGift, productInfo})
         return totalGift
     }
 
@@ -76,8 +58,7 @@ class ProductDisplay extends Component {
             fields[`product-select-${idx}`] =  quantity ? quantity : 0;
           });
         fields["additionalGift"] = hydratedAdditionalGift > 0 ? hydratedAdditionalGift : fields["additionalGift"]
-        const totalGift = this.calculateTotalGift(productInfo, fields["additionalGift"])
-        this.setState({fields, totalGift, hydrated: true});
+        this.setState({fields, hydrated: true});
     }
 
     handleInputChange(e) {
@@ -86,7 +67,6 @@ class ProductDisplay extends Component {
         const name = target.name;
         
         const fields = {...this.state.fields}, errors = {...this.state.errors};
-        let { totalGift, productInfo } = this.state;
 
         if (name === "additionalGift") {
             const isValid = /[0-9]+/.test(value)
@@ -105,7 +85,6 @@ class ProductDisplay extends Component {
                 this.props.removeFromCart('additionalGift')
             }
             fields[name] = isValid ? +value : 0;
-            totalGift = this.calculateTotalGift(productInfo, +value)
         } else {
             fields[name] = value;   
             const idx = parseInt(name.split("product-select-")[1])
@@ -114,7 +93,7 @@ class ProductDisplay extends Component {
 
         }
 
-        this.setState({ fields, errors, totalGift });
+        this.setState({ fields, errors});
     }
     createMarkup(text) {
         return { __html: text }
@@ -140,8 +119,10 @@ class ProductDisplay extends Component {
     }
 
     render() {
-        const { products, numProducts, additionalGift } = this.props.productOptions
-        const { fields, totalGift } = this.state;
+        const {productOptions: { products, numProducts, additionalGift }, productInfo } = this.props
+        const { fields } = this.state;
+        const totalGift = this.calculateTotalGift(productInfo, fields.additionalGift)
+        // console.log({totalGift})
         if (numProducts == 0) return null
 
         else {

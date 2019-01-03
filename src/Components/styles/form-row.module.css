@@ -106,6 +106,7 @@ input[type="submit"].submit-button:hover {
     background-color: var(--btn-text-color);
     color: var(--primary-color);
     border-color: var(--primary-color);
+    cursor: pointer;
 }
 
 input[type="submit"].submit-button>.error {

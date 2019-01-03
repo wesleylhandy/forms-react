@@ -228,6 +228,7 @@ class NameAddressForm extends Component {
 
     async handleSubmit(e) {
         e.preventDefault();
+        // console.log(this.state.submitting)
         if (this.state.submitting) return // ie. disallow multiple submissions
 
         this.setState({submitting: true})

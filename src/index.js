@@ -22,7 +22,7 @@ async function getConfiguration() {
     const formName = rootEntry.dataset.formName;
 
     const isWordpress = generator && generator.includes('wordpress');
-    const base = generator == "local" ? "http://10.100.43.50:8080/config/" : "";
+    const base = generator == "local" ? "http://10.100.43.57:8080/config/" : "";
     const cssConfigUrl = isWordpress ? handleWordpress(isWordpress, formName) + "?type=css_setup" : `${base}css-config.json`;
     let cssConfig;
     try {

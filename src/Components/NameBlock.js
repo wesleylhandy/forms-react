@@ -9,7 +9,7 @@ import flex from './styles/flex.module.css'
 function TitleDropdown({value, error, handleInputChange}) {
     const vals = ['', "Mr", "Ms", "Mrs", "Mr and Mrs"]
     const options = vals.map((el, ind)=>{
-        return <option key={`title-${ind}`} value={el}>{ind === 0 ? <React.Fragment>Title* &#9663;</React.Fragment> : el}</option>
+        return <option key={`title-${ind}`} value={el} dangerouslySetInnerHTML={{__html: ind === 0 ? 'Title* &#9663;' : el}}></option>
     })
     return (
         <SelectGroup 

@@ -399,6 +399,7 @@ input[type="submit"].submit-button__LRMQT:hover {
     background-color: var(--btn-text-color);
     color: var(--primary-color);
     border-color: var(--primary-color);
+    cursor: pointer;
 }
 
 input[type="submit"].submit-button__LRMQT>.error__2XDgr {
