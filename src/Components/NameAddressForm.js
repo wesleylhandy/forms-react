@@ -708,7 +708,7 @@ class NameAddressForm extends Component {
                         ) 
                     }
                 </div>
-                <div styleName={fundOptions.numFunds ? "styles.form-panel" : "styles.form-panel main.hidden"}>
+                <div styleName={fundOptions.numFunds ? "styles.form-panel" : "styles.form-panel styles.hidden"}>
                     <FundDisplay 
                         fundOptions={fundOptions} 
                         initialUpdate={initialUpdate}

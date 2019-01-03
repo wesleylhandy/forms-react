@@ -1,4 +1,3 @@
-import "./vendor"
 import "babel-polyfill";
 import cssVars from 'css-vars-ponyfill';
 import 'whatwg-fetch';
