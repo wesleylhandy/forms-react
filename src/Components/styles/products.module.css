@@ -82,8 +82,9 @@ label.select-product__label {
 .additional-amount__input,
 .product-total__input {
     box-sizing: border-box;
-    width: calc(19px * 5);
-    flex-basis: calc(19px * 5);
+    width: 95px;
+    max-width: calc(19px * 5);
+    flex: 0 0 calc(19px * 5);
     margin-right: 19px;
     text-align: right;
 }

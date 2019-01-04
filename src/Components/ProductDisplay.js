@@ -147,7 +147,7 @@ class ProductDisplay extends Component {
                     { this.renderAdditionalGift(additionalGift) }
                     <div styleName="styles.product-total flex.flex flex.flex-left flex.flex-axes-center">
                         <label styleName="styles.product-total__input--label" htmlFor="total-product-gift">$</label>
-                        <input styleName='styles.product-total__input flex.flex-no-grow' name="total-product-gift" value={totalGift} disabled={true}/>
+                        <input styleName='styles.product-total__input' name="total-product-gift" value={totalGift} disabled={true}/>
                         <div styleName="styles.product-total__input--label">Product Subtotal</div>
                     </div>
                 </div>
