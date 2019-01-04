@@ -70,6 +70,7 @@ class NameAddressForm extends Component {
             submitting: false,
             fundSelected: false,
             fundInfo: {},
+            hydratedFund: false,
             productsOrdered: false,
             productInfo: [],
             givingInfo: [],
@@ -78,8 +79,8 @@ class NameAddressForm extends Component {
             },
             fields,
             errors,
-            defaultAmount: props.defaultAmount,
-            defaultOption: props.defaultOption,
+            defaultAmount: props.hydratedData && props.hydratedData.MultipleDonations ? -1 : props.defaultAmount,
+            defaultOption: props.hydratedData && props.hydratedData.MultipleDonations ? '' : props.defaultOption,
             hydratedAdditionalGift: 0,
             initialUpdate: false
         }
@@ -99,20 +100,42 @@ class NameAddressForm extends Component {
         // check to see if this is a postback from confirmation page
         if (this.props.hydratedData && this.props.hydratedData.MultipleDonations) {
             // initialize variables in such a way as to not mutate state
-            let amount = 0, isMonthly = false, additionalGift = 0;
-            const items = [...this.state.cart.items];
+            let amount = 0, 
+                isMonthly = false, 
+                additionalGift = 0, 
+                fundSelected = false;
+            const items = [];
             const { products } = this.props
-            let productInfo = [...this.state.productInfo], { productsOrdered } = this.state, givingInfo = [...this.state.givingInfo]
+            let productInfo = [...this.state.productInfo], 
+                { productsOrdered } = this.state, 
+                givingInfo = [...this.state.givingInfo], 
+                fundInfo = {...this.state.fundInfo}
             const MultipleDonations = [...this.props.hydratedData.MultipleDonations];
-
+            const {monthlyPledgeData, singlePledgeData, funds} = this.props
+            const detailNames = [], fundNames = []
+            if (monthlyPledgeData) {
+                detailNames.push(monthlyPledgeData.DetailName)
+            }
+            if (singlePledgeData) {
+                detailNames.push(singlePledgeData.DetailName)
+            }
+            funds.forEach(fund=> {
+                detailNames.push(fund.DetailName)
+                fundNames.push(fund.DetailName)
+            })
             // loop through multiple donations and reconstruct virual cart
             for (let i = 0; i < MultipleDonations.length; i++) {
                 const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount } = MultipleDonations[i];
-                let type = DetailName === "MP" || DetailName === "SPGF" ? "donation" : "product";
+                let type = detailNames.includes(DetailName) ? "donation" : "product";
                 if (type == "donation") {
                     amount = +PledgeAmount
-                    isMonthly = DetailName === "MP" ? true : false;
+                    isMonthly = DetailName.includes("MP") ? true : false;
                     givingInfo.push({amount, isMonthly})
+                    if (fundNames.includes(DetailName)) {
+                        const index = funds.findIndex(fund=>fund.DetailDescription == DetailDescription)
+                        fundInfo = funds[index]
+                        fundSelected = true
+                    }
                 }
                 if (type == "product") {
                     const idx = products.findIndex(el=> el.DetailDescription === DetailDescription)
@@ -139,9 +162,12 @@ class NameAddressForm extends Component {
             const monthlyChecked = isMonthly
             this.setState({
                 cart: {items}, 
+                fundInfo,
                 givingInfo, 
                 productInfo, 
                 productsOrdered, 
+                fundSelected,
+                hydratedFund: fundSelected,
                 hydratedAdditionalGift: additionalGift,  
                 monthlyChecked
             })
@@ -170,7 +196,6 @@ class NameAddressForm extends Component {
             // otherwise remove any stored data from local storage
             localStorage.removeItem("info");
         }
-
     }
 
     /**
@@ -187,8 +212,8 @@ class NameAddressForm extends Component {
                 PledgeAmount: 0,
                 DetailCprojMail: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojMail : this.props.monthlyPledgeData.DetailCprojMail,
                 DetailCprojCredit: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojCredit : this.props.monthlyPledgeData.DetailCprojCredit,
-                DetailDescription: id == "singlegift" ? "Single Pledge" : "Monthly Pledge",
-                DetailName: id == "singlegift" ? "SPGF" : "MP",
+                DetailDescription: id == "singlegift" ? this.props.singlePledgeData.DetailDescription : this.props.monthlyPledgeData.DetailDescription,
+                DetailName: id == "singlegift" ? this.props.singlePledgeData.DetailName : this.props.monthlyPledgeData.DetailName,
                 monthly: id == "singlegift" ? false : true
             }
         }
@@ -237,9 +262,11 @@ class NameAddressForm extends Component {
         const items = [...this.state.cart.items];
         const pledgeFound = items.findIndex(el=>el && el.type == "donation")
         const addGiftFound = items.findIndex(el=>el && el.type == "additionalGift")
+        const productFound = items.findIndex(el=> el && el.type == "product")
         if (items.length == 0 || 
             (pledgeFound > -1 && items[pledgeFound].PledgeAmount == 0 && addGiftFound < 0) || 
-            (pledgeFound < 0 && addGiftFound < 0) ) {
+            (pledgeFound < 0 && addGiftFound < 0 && productFound < 0)
+            ) {
             const errors = this.state.errors
             errors.amount = "Please make a valid donation"
             return this.setState({submitting: false, errors})
@@ -674,12 +701,14 @@ class NameAddressForm extends Component {
             defaultOption,
             errors, 
             fields,
+            fundInfo,
             givingInfo,
             productInfo, 
             submitting, 
             initialUpdate, 
             monthlyChecked,
-            hydratedAdditionalGift
+            hydratedAdditionalGift,
+            hydratedFund
         } = this.state;
         const hasErrors = Object.values(errors).filter(val => val && val.length > 0).length > 0;
         return (
@@ -714,6 +743,8 @@ class NameAddressForm extends Component {
                         fundOptions={fundOptions} 
                         initialUpdate={initialUpdate}
                         updateDonation={this.updateDonation}
+                        fundInfo={fundInfo}
+                        hydratedFund={hydratedFund}
                     />
                 </div>
                 <div styleName={productOptions.numProducts ? "styles.form-panel" : "styles.form-panel styles.hidden"}>

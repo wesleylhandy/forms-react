@@ -8,29 +8,18 @@ class ProductDisplay extends Component {
         super(props)
         this.state = {
             fields: {
-                additionalGift: props.hydratedAdditionalGift >= 0 ? props.hydratedAdditionalGift : 0
+                additionalGift: 0
             },
             errors: {
                 additionalGift: ""
             },
             additionalGiftError: "",
-            hydrated: false,
-            hydratedAdditionalGift: props.hydratedAdditionalGift,
-            initialUpdate: false
+            updated: false
         }
         this.handleInputChange=this.handleInputChange.bind(this)
         this.createMarkup=this.createMarkup.bind(this)
         this.renderAdditionalGift = this.renderAdditionalGift.bind(this)
-        this.hydrateProducts = this.hydrateProducts.bind(this)
         this.calculateTotalGift = this.calculateTotalGift.bind(this)
-    }
-
-    componentDidMount() {
-        const {productInfo, hydratedAdditionalGift} = this.props;
-        if ((productInfo.length || hydratedAdditionalGift > 0) && !this.state.hydrated) {
-            // console.log({mountedhydratedAdditionalGift: hydratedAdditionalGift})
-            this.hydrateProducts(productInfo, hydratedAdditionalGift);
-        }
     }
 
     /**
@@ -44,21 +33,6 @@ class ProductDisplay extends Component {
         // console.log({productInfo, products, additionalGift})
         const totalGift = (products.length && productInfo.length) ? productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + additionalGift : additionalGift;
         return totalGift
-    }
-
-    /**
-     * Sets State from a new productInfo object
-     * @param {Array} productInfo - Array holding state of cart as it relates to product
-     * @param {Number} hydratedAdditionalGift - Value of amount pledge as additional gift
-     */
-    hydrateProducts(productInfo, hydratedAdditionalGift) {
-        const fields = {...this.state.fields};
-        productInfo.forEach(product=>{
-            const {idx, quantity} = product;
-            fields[`product-select-${idx}`] =  quantity ? quantity : 0;
-          });
-        fields["additionalGift"] = hydratedAdditionalGift > 0 ? hydratedAdditionalGift : fields["additionalGift"]
-        this.setState({fields, hydrated: true});
     }
 
     handleInputChange(e) {
@@ -93,14 +67,19 @@ class ProductDisplay extends Component {
 
         }
 
-        this.setState({ fields, errors});
+        this.setState({ fields, errors, updated: true});
     }
     createMarkup(text) {
         return { __html: text }
     }
 
     renderAdditionalGift(additionalGift) {
-        const {fields, errors} = this.state;
+        const {fields, errors, updated} = this.state;
+        const {hydratedAdditionalGift} = this.props;
+        let val = fields.additionalGift > 0 ? fields.additionalGift : 0
+        if (hydratedAdditionalGift > 0 && !updated) {
+            val = hydratedAdditionalGift
+        }
         return additionalGift.display ? (
             <div styleName="styles.additional-amount flex.flex flex.flex-left flex.flex-axes-center">
                 <label styleName="styles.product-total__input--label" htmlFor="additionalGift">$</label>
@@ -110,7 +89,7 @@ class ProductDisplay extends Component {
                     onBlur={e=> e.target.value === "" ? e.target.value = 0 : true}
                     onFocus={e=> e.target.value === 0 ? e.target.value = "" : true}
                     onChange={this.handleInputChange} 
-                    value={fields.additionalGift }
+                    value={ val }
                 />
                 <div styleName="styles.additional-amount__input--label">{additionalGift.additionalGiftMessage}</div>
                 <div styleName="styles.error">{errors.additionalGift}</div>
@@ -136,14 +115,20 @@ class ProductDisplay extends Component {
             return (
                 <div styleName="styles.products-display">
                     {   products.map((product, i)=>{
-
+                        const storedAmt = productInfo.reduce((val, prod)=>{
+                            if (prod.idx == i) {
+                                val = prod.quantity
+                            }
+                            return val
+                        }, 0)
+                        const val = storedAmt ? storedAmt : fields[`product-select-${i}`]
                         return (
                             <div key={`product${i}`} styleName="styles.product-card flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
                                 <div styleName="flex.flex flex.flex-column">
                                     <label htmlFor={`product-select-${i}`} styleName="styles.select-product__label">Quantity</label>
                                     <select styleName="styles.select-product flex.flex-no-grow" 
                                         name={`product-select-${i}`} 
-                                        value={fields[`product-select-${i}`] >= 0 ? fields[`product-select-${i}`] : 0} 
+                                        value={val >= 0 ? val : 0} 
                                         onChange={this.handleInputChange}
                                     >
 

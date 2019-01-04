@@ -88,11 +88,15 @@
     "addGivingDescription": false,
     "monthlyPledgeData": {
         "DetailCprojCredit": "043250",
-        "DetailCprojMail": "043251"
+        "DetailCprojMail": "043251",
+        "DetailName": "MPOrphansPromise",
+        "DetailDescription": "Orphans Promise Pledge"
     },
     "singlePledgeData": {
         "DetailCprojCredit": "043250",
-        "DetailCprojMail": "043251"
+        "DetailCprojMail": "043251",
+        "DetailName": "SPGFOrphansPromise",
+        "DetailDescription": "Orphans Promise Donation"
     },
     "AddContactYN": "Y",
     "ContactSource": "700Club Donor",

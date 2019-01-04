@@ -63,7 +63,7 @@ class GivingArray extends Component {
         this.setState({selectedIndex, otherAmount, hydrated: true}, ()=> {
             if (selectedIndex >= 0) {
                 this.addToCart(amount, index);
-            }
+            } 
         })
     }
 
@@ -89,8 +89,8 @@ class GivingArray extends Component {
                     PledgeAmount: amt,
                     DetailCprojMail: monthlyChecked ? monthlyPledgeData.DetailCprojMail : singlePledgeData.DetailCprojMail,
                     DetailCprojCredit: monthlyChecked ? monthlyPledgeData.DetailCprojCredit : singlePledgeData.DetailCprojCredit,
-                    DetailDescription: monthlyChecked ? "Monthly Pledge" : "Single Pledge",
-                    DetailName: monthlyChecked ? "MP" : "SPGF",
+                    DetailDescription: monthlyChecked ? monthlyPledgeData.DetailDescription : singlePledgeData.DetailDescription,
+                    DetailName: monthlyChecked ? monthlyPledgeData.DetailName : singlePledgeData.DetailName,
                     monthly: monthlyChecked
                 })
             } else {

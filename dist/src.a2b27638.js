@@ -34903,8 +34903,8 @@ function (_Component) {
             PledgeAmount: amt,
             DetailCprojMail: monthlyChecked ? monthlyPledgeData.DetailCprojMail : singlePledgeData.DetailCprojMail,
             DetailCprojCredit: monthlyChecked ? monthlyPledgeData.DetailCprojCredit : singlePledgeData.DetailCprojCredit,
-            DetailDescription: monthlyChecked ? "Monthly Pledge" : "Single Pledge",
-            DetailName: monthlyChecked ? "MP" : "SPGF",
+            DetailDescription: monthlyChecked ? monthlyPledgeData.DetailDescription : singlePledgeData.DetailDescription,
+            DetailName: monthlyChecked ? monthlyPledgeData.DetailName : singlePledgeData.DetailName,
             monthly: monthlyChecked
           });
         } else {
@@ -35070,44 +35070,29 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ProductDisplay).call(this, props));
     _this.state = {
       fields: {
-        additionalGift: props.hydratedAdditionalGift >= 0 ? props.hydratedAdditionalGift : 0
+        additionalGift: 0
       },
       errors: {
         additionalGift: ""
       },
       additionalGiftError: "",
-      hydrated: false,
-      hydratedAdditionalGift: props.hydratedAdditionalGift,
-      initialUpdate: false
+      updated: false
     };
     _this.handleInputChange = _this.handleInputChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.createMarkup = _this.createMarkup.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.renderAdditionalGift = _this.renderAdditionalGift.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.hydrateProducts = _this.hydrateProducts.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.calculateTotalGift = _this.calculateTotalGift.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
+  /**
+   * Calculates the total gift for displaying to donor
+   * @param {Array} productInfo - list of of all products having been ordered, idx of the product and quantity
+   * @param {Number} additionalGift - value of user entered additional Gift
+   * @returns {Number} value of Total Gift
+   */
+
 
   _createClass(ProductDisplay, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this$props = this.props,
-          productInfo = _this$props.productInfo,
-          hydratedAdditionalGift = _this$props.hydratedAdditionalGift;
-
-      if ((productInfo.length || hydratedAdditionalGift > 0) && !this.state.hydrated) {
-        // console.log({mountedhydratedAdditionalGift: hydratedAdditionalGift})
-        this.hydrateProducts(productInfo, hydratedAdditionalGift);
-      }
-    }
-    /**
-     * Calculates the total gift for displaying to donor
-     * @param {Array} productInfo - list of of all products having been ordered, idx of the product and quantity
-     * @param {Number} additionalGift - value of user entered additional Gift
-     * @returns {Number} value of Total Gift
-     */
-
-  }, {
     key: "calculateTotalGift",
     value: function calculateTotalGift(productInfo, additionalGift) {
       var products = this.props.productOptions.products; // console.log({productInfo, products, additionalGift})
@@ -35116,28 +35101,6 @@ function (_Component) {
         return a + parseInt(products[b.idx].PledgeAmount) * b.quantity;
       }, 0) + additionalGift : additionalGift;
       return totalGift;
-    }
-    /**
-     * Sets State from a new productInfo object
-     * @param {Array} productInfo - Array holding state of cart as it relates to product
-     * @param {Number} hydratedAdditionalGift - Value of amount pledge as additional gift
-     */
-
-  }, {
-    key: "hydrateProducts",
-    value: function hydrateProducts(productInfo, hydratedAdditionalGift) {
-      var fields = _extends({}, this.state.fields);
-
-      productInfo.forEach(function (product) {
-        var idx = product.idx,
-            quantity = product.quantity;
-        fields["product-select-".concat(idx)] = quantity ? quantity : 0;
-      });
-      fields["additionalGift"] = hydratedAdditionalGift > 0 ? hydratedAdditionalGift : fields["additionalGift"];
-      this.setState({
-        fields: fields,
-        hydrated: true
-      });
     }
   }, {
     key: "handleInputChange",
@@ -35184,7 +35147,8 @@ function (_Component) {
 
       this.setState({
         fields: fields,
-        errors: errors
+        errors: errors,
+        updated: true
       });
     }
   }, {
@@ -35199,7 +35163,15 @@ function (_Component) {
     value: function renderAdditionalGift(additionalGift) {
       var _this$state = this.state,
           fields = _this$state.fields,
-          errors = _this$state.errors;
+          errors = _this$state.errors,
+          updated = _this$state.updated;
+      var hydratedAdditionalGift = this.props.hydratedAdditionalGift;
+      var val = fields.additionalGift > 0 ? fields.additionalGift : 0;
+
+      if (hydratedAdditionalGift > 0 && !updated) {
+        val = hydratedAdditionalGift;
+      }
+
       return additionalGift.display ? _react.default.createElement("div", {
         className: "additional-amount__3rbO8 flex__ayltN flex-left__3xW5i flex-axes-center__33a6C"
       }, _react.default.createElement("label", {
@@ -35216,7 +35188,7 @@ function (_Component) {
           return e.target.value === 0 ? e.target.value = "" : true;
         },
         onChange: this.handleInputChange,
-        value: fields.additionalGift
+        value: val
       }), _react.default.createElement("div", {
         className: "additional-amount__input--label__1mgWu"
       }, additionalGift.additionalGiftMessage), _react.default.createElement("div", {
@@ -35228,12 +35200,12 @@ function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var _this$props2 = this.props,
-          _this$props2$productO = _this$props2.productOptions,
-          products = _this$props2$productO.products,
-          numProducts = _this$props2$productO.numProducts,
-          additionalGift = _this$props2$productO.additionalGift,
-          productInfo = _this$props2.productInfo;
+      var _this$props = this.props,
+          _this$props$productOp2 = _this$props.productOptions,
+          products = _this$props$productOp2.products,
+          numProducts = _this$props$productOp2.numProducts,
+          additionalGift = _this$props$productOp2.additionalGift,
+          productInfo = _this$props.productInfo;
       var fields = this.state.fields;
       var totalGift = this.calculateTotalGift(productInfo, fields.additionalGift); // console.log({totalGift})
 
@@ -35254,6 +35226,14 @@ function (_Component) {
         return _react.default.createElement("div", {
           className: "products-display__38L-c"
         }, products.map(function (product, i) {
+          var storedAmt = productInfo.reduce(function (val, prod) {
+            if (prod.idx == i) {
+              val = prod.quantity;
+            }
+
+            return val;
+          }, 0);
+          var val = storedAmt ? storedAmt : fields["product-select-".concat(i)];
           return _react.default.createElement("div", {
             key: "product".concat(i),
             className: "product-card__t3-b0 flex__ayltN flex-row__16BBq flex-left__3xW5i flex-axes-center__33a6C"
@@ -35265,7 +35245,7 @@ function (_Component) {
           }, "Quantity"), _react.default.createElement("select", {
             className: "select-product__2SOvm flex-no-grow__3iHTz",
             name: "product-select-".concat(i),
-            value: fields["product-select-".concat(i)] >= 0 ? fields["product-select-".concat(i)] : 0,
+            value: val >= 0 ? val : 0,
             onChange: _this2.handleInputChange
           }, renderOptions(i))), _react.default.createElement("div", {
             className: "product-card__body__2xbB- flex-grow__1FqT_"
@@ -35431,7 +35411,8 @@ function (_Component) {
       },
       expanded: false,
       selectedIndex: 0,
-      initialUpdate: false
+      initialUpdate: false,
+      hydrated: false
     };
     _this.handleDropDownClick = _this.handleDropDownClick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.createMarkup = _this.createMarkup.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -35443,10 +35424,25 @@ function (_Component) {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
       if (nextProps.initialUpdate && !this.state.initialUpdate) {
-        this.setState({
+        return this.setState({
           numFunds: nextProps.fundOptions.numFunds,
           funds: _toConsumableArray(nextProps.fundOptions.funds),
           initialUpdate: true
+        });
+      }
+
+      var fundInfo = nextProps.fundInfo,
+          hydratedFund = nextProps.hydratedFund,
+          hydrated = nextProps.hydrated; // console.log({fundInfo, hydratedFund})
+
+      if (hydratedFund && !hydrated && !this.state.hydrated) {
+        var selectedIndex = this.state.funds.findIndex(function (fund) {
+          return fund.DetailDescription == fundInfo.DetailDescription;
+        }); // console.log(selectedIndex)
+
+        return this.setState({
+          selectedIndex: selectedIndex,
+          hydrated: true
         });
       }
     }
@@ -35572,13 +35568,16 @@ function (_Component) {
     key: "render",
     value: function render() {
       if (this.state.numFunds == 0) return null;else {
+        var _this$state = this.state,
+            selectedIndex = _this$state.selectedIndex,
+            expanded = _this$state.expanded;
         return _react.default.createElement("div", {
           className: "funds-display__2VS1a"
         }, _react.default.createElement("h3", {
           className: "funds__header__1jN9Q"
         }, "I Want to Support"), _react.default.createElement("div", {
           className: "select-fund__1H6ol flex__ayltN flex-row__16BBq flex-axes-center__33a6C"
-        }, this.renderFundCards(this.state.selectedIndex)), this.renderExpandedCards(this.state.expanded));
+        }, this.renderFundCards(selectedIndex)), this.renderExpandedCards(expanded));
       }
     }
   }]);
@@ -64681,6 +64680,7 @@ function (_Component) {
       submitting: false,
       fundSelected: false,
       fundInfo: {},
+      hydratedFund: false,
       productsOrdered: false,
       productInfo: [],
       givingInfo: [],
@@ -64689,8 +64689,8 @@ function (_Component) {
       },
       fields: fields,
       errors: errors,
-      defaultAmount: props.defaultAmount,
-      defaultOption: props.defaultOption,
+      defaultAmount: props.hydratedData && props.hydratedData.MultipleDonations ? -1 : props.defaultAmount,
+      defaultOption: props.hydratedData && props.hydratedData.MultipleDonations ? '' : props.defaultOption,
       hydratedAdditionalGift: 0,
       initialUpdate: false
     };
@@ -64715,18 +64715,37 @@ function (_Component) {
         // initialize variables in such a way as to not mutate state
         var amount = 0,
             isMonthly = false,
-            additionalGift = 0;
-
-        var items = _toConsumableArray(this.state.cart.items);
-
+            additionalGift = 0,
+            fundSelected = false;
+        var items = [];
         var products = this.props.products;
 
         var productInfo = _toConsumableArray(this.state.productInfo),
             productsOrdered = this.state.productsOrdered,
-            givingInfo = _toConsumableArray(this.state.givingInfo);
+            givingInfo = _toConsumableArray(this.state.givingInfo),
+            fundInfo = _extends({}, this.state.fundInfo);
 
-        var MultipleDonations = _toConsumableArray(this.props.hydratedData.MultipleDonations); // loop through multiple donations and reconstruct virual cart
+        var MultipleDonations = _toConsumableArray(this.props.hydratedData.MultipleDonations);
 
+        var _this$props = this.props,
+            monthlyPledgeData = _this$props.monthlyPledgeData,
+            singlePledgeData = _this$props.singlePledgeData,
+            funds = _this$props.funds;
+        var detailNames = [],
+            fundNames = [];
+
+        if (monthlyPledgeData) {
+          detailNames.push(monthlyPledgeData.DetailName);
+        }
+
+        if (singlePledgeData) {
+          detailNames.push(singlePledgeData.DetailName);
+        }
+
+        funds.forEach(function (fund) {
+          detailNames.push(fund.DetailName);
+          fundNames.push(fund.DetailName);
+        }); // loop through multiple donations and reconstruct virual cart
 
         var _loop = function _loop(i) {
           var _MultipleDonations$i = MultipleDonations[i],
@@ -64735,15 +64754,23 @@ function (_Component) {
               DetailCprojCredit = _MultipleDonations$i.DetailCprojCredit,
               DetailCprojMail = _MultipleDonations$i.DetailCprojMail,
               PledgeAmount = _MultipleDonations$i.PledgeAmount;
-          var type = DetailName === "MP" || DetailName === "SPGF" ? "donation" : "product";
+          var type = detailNames.includes(DetailName) ? "donation" : "product";
 
           if (type == "donation") {
             amount = +PledgeAmount;
-            isMonthly = DetailName === "MP" ? true : false;
+            isMonthly = DetailName.includes("MP") ? true : false;
             givingInfo.push({
               amount: amount,
               isMonthly: isMonthly
             });
+
+            if (fundNames.includes(DetailName)) {
+              var index = funds.findIndex(function (fund) {
+                return fund.DetailDescription == DetailDescription;
+              });
+              fundInfo = funds[index];
+              fundSelected = true;
+            }
           }
 
           if (type == "product") {
@@ -64785,9 +64812,12 @@ function (_Component) {
           cart: {
             items: items
           },
+          fundInfo: fundInfo,
           givingInfo: givingInfo,
           productInfo: productInfo,
           productsOrdered: productsOrdered,
+          fundSelected: fundSelected,
+          hydratedFund: fundSelected,
           hydratedAdditionalGift: additionalGift,
           monthlyChecked: monthlyChecked
         });
@@ -64874,8 +64904,8 @@ function (_Component) {
           PledgeAmount: 0,
           DetailCprojMail: id == "singlegift" ? this.props.singlePledgeData.DetailCprojMail : this.props.monthlyPledgeData.DetailCprojMail,
           DetailCprojCredit: id == "singlegift" ? this.props.singlePledgeData.DetailCprojCredit : this.props.monthlyPledgeData.DetailCprojCredit,
-          DetailDescription: id == "singlegift" ? "Single Pledge" : "Monthly Pledge",
-          DetailName: id == "singlegift" ? "SPGF" : "MP",
+          DetailDescription: id == "singlegift" ? this.props.singlePledgeData.DetailDescription : this.props.monthlyPledgeData.DetailDescription,
+          DetailName: id == "singlegift" ? this.props.singlePledgeData.DetailName : this.props.monthlyPledgeData.DetailName,
           monthly: id == "singlegift" ? false : true
         };
       } // console.log({items})
@@ -64977,7 +65007,7 @@ function (_Component) {
       regeneratorRuntime.mark(function _callee2(e) {
         var _this2 = this;
 
-        var items, pledgeFound, addGiftFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props, mode, APIAccessID, MotivationText, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, data, msg, message, _getErrorType, breaking, _name;
+        var items, pledgeFound, addGiftFound, productFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props2, mode, APIAccessID, MotivationText, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, data, msg, message, _getErrorType, breaking, _name;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -65005,9 +65035,12 @@ function (_Component) {
                 addGiftFound = items.findIndex(function (el) {
                   return el && el.type == "additionalGift";
                 });
+                productFound = items.findIndex(function (el) {
+                  return el && el.type == "product";
+                });
 
-                if (!(items.length == 0 || pledgeFound > -1 && items[pledgeFound].PledgeAmount == 0 && addGiftFound < 0 || pledgeFound < 0 && addGiftFound < 0)) {
-                  _context2.next = 11;
+                if (!(items.length == 0 || pledgeFound > -1 && items[pledgeFound].PledgeAmount == 0 && addGiftFound < 0 || pledgeFound < 0 && addGiftFound < 0 && productFound < 0)) {
+                  _context2.next = 12;
                   break;
                 }
 
@@ -65018,91 +65051,91 @@ function (_Component) {
                   errors: _errors
                 }));
 
-              case 11:
+              case 12:
                 errors = _extends({}, this.state.errors);
                 isValidForm = true;
 
                 if (!(this.state.fields.Country == "United States")) {
-                  _context2.next = 58;
+                  _context2.next = 59;
                   break;
                 }
 
-                _context2.prev = 14;
-                _context2.next = 17;
+                _context2.prev = 15;
+                _context2.next = 18;
                 return this.callZipCityStateService("Zip", this.state.fields["Zip"]);
 
-              case 17:
+              case 18:
                 zipError = _context2.sent;
 
                 if (zipError) {
-                  _context2.next = 29;
+                  _context2.next = 30;
                   break;
                 }
 
-                _context2.prev = 19;
-                _context2.next = 22;
+                _context2.prev = 20;
+                _context2.next = 23;
                 return this.callAddressVerification(this.state.fields["Address1"], this.state.fields["City"], this.state.fields["State"], this.state.fields["Zip"]);
 
-              case 22:
+              case 23:
                 addressError = _context2.sent;
-                _context2.next = 29;
+                _context2.next = 30;
                 break;
 
-              case 25:
-                _context2.prev = 25;
-                _context2.t0 = _context2["catch"](19);
+              case 26:
+                _context2.prev = 26;
+                _context2.t0 = _context2["catch"](20);
                 console.log("AddressVerificationError");
                 console.error({
                   err: _context2.t0
                 });
 
-              case 29:
+              case 30:
                 if (!(this.state.fields["ShipToZip"] && this.state.fields.ShipToYes)) {
-                  _context2.next = 40;
+                  _context2.next = 41;
                   break;
                 }
 
-                _context2.prev = 30;
-                _context2.next = 33;
+                _context2.prev = 31;
+                _context2.next = 34;
                 return this.callZipCityStateService("ShipToZip", this.state.fields["ShipToZip"]);
 
-              case 33:
+              case 34:
                 shipZipError = _context2.sent;
-                _context2.next = 40;
+                _context2.next = 41;
                 break;
 
-              case 36:
-                _context2.prev = 36;
-                _context2.t1 = _context2["catch"](30);
+              case 37:
+                _context2.prev = 37;
+                _context2.t1 = _context2["catch"](31);
                 console.log("CSZValidationError__SHIPPING");
                 console.error({
                   err: _context2.t1
                 });
 
-              case 40:
+              case 41:
                 if (!(!shipZipError && this.state.fields.ShipToYes)) {
-                  _context2.next = 51;
+                  _context2.next = 52;
                   break;
                 }
 
-                _context2.prev = 41;
-                _context2.next = 44;
+                _context2.prev = 42;
+                _context2.next = 45;
                 return this.callAddressVerification(this.state.fields["ShipToAddress1"], this.state.fields["ShipToCity"], this.state.fields["ShipToState"], this.state.fields["ShipToZip"]);
 
-              case 44:
+              case 45:
                 shipAddressError = _context2.sent;
-                _context2.next = 51;
+                _context2.next = 52;
                 break;
 
-              case 47:
-                _context2.prev = 47;
-                _context2.t2 = _context2["catch"](41);
+              case 48:
+                _context2.prev = 48;
+                _context2.t2 = _context2["catch"](42);
                 console.log("AddressVerificationError__SHIPPING");
                 console.error({
                   err: _context2.t2
                 });
 
-              case 51:
+              case 52:
                 if (addressError || shipAddressError || zipError || shipZipError) {
                   isValidForm = false;
                   errors["Address1"] = addressError;
@@ -65111,18 +65144,18 @@ function (_Component) {
                   errors["ShipToZip"] = shipZipError;
                 }
 
-                _context2.next = 58;
+                _context2.next = 59;
                 break;
 
-              case 54:
-                _context2.prev = 54;
-                _context2.t3 = _context2["catch"](14);
+              case 55:
+                _context2.prev = 55;
+                _context2.t3 = _context2["catch"](15);
                 console.log("CSZValidationError");
                 console.error({
                   err: _context2.t3
                 });
 
-              case 58:
+              case 59:
                 fields = this.state.fields;
                 fieldNames = Object.keys(fields);
 
@@ -65141,7 +65174,7 @@ function (_Component) {
                 }
 
                 if (isValidForm) {
-                  _context2.next = 63;
+                  _context2.next = 64;
                   break;
                 }
 
@@ -65150,10 +65183,10 @@ function (_Component) {
                   errors: errors
                 }));
 
-              case 63:
+              case 64:
                 //deconstruct necessary fields from state
                 Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
-                _this$props = this.props, mode = _this$props.mode, APIAccessID = _this$props.APIAccessID, MotivationText = _this$props.MotivationText, subscriptions = _this$props.subscriptions, AddContactYN = _this$props.AddContactYN, ActivityName = _this$props.ActivityName, ContactSource = _this$props.ContactSource, SectionName = _this$props.SectionName, proxy = _this$props.proxy;
+                _this$props2 = this.props, mode = _this$props2.mode, APIAccessID = _this$props2.APIAccessID, MotivationText = _this$props2.MotivationText, subscriptions = _this$props2.subscriptions, AddContactYN = _this$props2.AddContactYN, ActivityName = _this$props2.ActivityName, ContactSource = _this$props2.ContactSource, SectionName = _this$props2.SectionName, proxy = _this$props2.proxy;
                 ClientBrowser = window && window.navigator ? window.navigator.userAgent : '';
                 UrlReferer = window.location.origin + window.location.pathname; //construct phone fields from regex
 
@@ -65251,8 +65284,8 @@ function (_Component) {
                 }); // console.log({proxy})
                 // console.log({data})
 
-                _context2.prev = 82;
-                _context2.next = 85;
+                _context2.prev = 83;
+                _context2.next = 86;
                 return (0, _fetchHelpers.callApi)(proxy, {
                   method: 'POST',
                   mode: 'cors',
@@ -65262,19 +65295,19 @@ function (_Component) {
                   body: JSON.stringify(data)
                 });
 
-              case 85:
+              case 86:
                 msg = _context2.sent;
                 // console.log({msg, data})
                 this.props.submitForm({
                   msg: msg,
                   data: data
                 });
-                _context2.next = 96;
+                _context2.next = 97;
                 break;
 
-              case 89:
-                _context2.prev = 89;
-                _context2.t4 = _context2["catch"](82);
+              case 90:
+                _context2.prev = 90;
+                _context2.t4 = _context2["catch"](83);
                 console.error(_context2.t4.message);
                 message = _context2.t4.message;
                 _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
@@ -65290,12 +65323,12 @@ function (_Component) {
                   errors: errors
                 });
 
-              case 96:
+              case 97:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[14, 54], [19, 25], [30, 36], [41, 47], [82, 89]]);
+        }, _callee2, this, [[15, 55], [20, 26], [31, 37], [42, 48], [83, 90]]);
       }));
 
       return function handleSubmit(_x2) {
@@ -65677,24 +65710,24 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this$props2 = this.props,
-          showGivingArray = _this$props2.showGivingArray,
-          givingFormat = _this$props2.givingFormat,
-          monthlyOption = _this$props2.monthlyOption,
-          singleOption = _this$props2.singleOption,
-          monthlyAmounts = _this$props2.monthlyAmounts,
-          singleAmounts = _this$props2.singleAmounts,
-          funds = _this$props2.funds,
-          monthlyPledgeData = _this$props2.monthlyPledgeData,
-          singlePledgeData = _this$props2.singlePledgeData,
-          products = _this$props2.products,
-          additionalGift = _this$props2.additionalGift,
-          shipping = _this$props2.shipping,
-          international = _this$props2.international,
-          getPhone = _this$props2.getPhone,
-          getSuffix = _this$props2.getSuffix,
-          getMiddleName = _this$props2.getMiddleName,
-          getSpouseInfo = _this$props2.getSpouseInfo;
+      var _this$props3 = this.props,
+          showGivingArray = _this$props3.showGivingArray,
+          givingFormat = _this$props3.givingFormat,
+          monthlyOption = _this$props3.monthlyOption,
+          singleOption = _this$props3.singleOption,
+          monthlyAmounts = _this$props3.monthlyAmounts,
+          singleAmounts = _this$props3.singleAmounts,
+          funds = _this$props3.funds,
+          monthlyPledgeData = _this$props3.monthlyPledgeData,
+          singlePledgeData = _this$props3.singlePledgeData,
+          products = _this$props3.products,
+          additionalGift = _this$props3.additionalGift,
+          shipping = _this$props3.shipping,
+          international = _this$props3.international,
+          getPhone = _this$props3.getPhone,
+          getSuffix = _this$props3.getSuffix,
+          getMiddleName = _this$props3.getMiddleName,
+          getSpouseInfo = _this$props3.getSpouseInfo;
       var arrayOptions = {
         givingFormat: givingFormat,
         monthlyOption: monthlyOption,
@@ -65719,12 +65752,14 @@ function (_Component) {
           defaultOption = _this$state.defaultOption,
           errors = _this$state.errors,
           fields = _this$state.fields,
+          fundInfo = _this$state.fundInfo,
           givingInfo = _this$state.givingInfo,
           productInfo = _this$state.productInfo,
           submitting = _this$state.submitting,
           initialUpdate = _this$state.initialUpdate,
           monthlyChecked = _this$state.monthlyChecked,
-          hydratedAdditionalGift = _this$state.hydratedAdditionalGift;
+          hydratedAdditionalGift = _this$state.hydratedAdditionalGift,
+          hydratedFund = _this$state.hydratedFund;
       var hasErrors = Object.values(errors).filter(function (val) {
         return val && val.length > 0;
       }).length > 0;
@@ -65761,7 +65796,9 @@ function (_Component) {
       }, _react.default.createElement(_FundDisplay.default, {
         fundOptions: fundOptions,
         initialUpdate: initialUpdate,
-        updateDonation: this.updateDonation
+        updateDonation: this.updateDonation,
+        fundInfo: fundInfo,
+        hydratedFund: hydratedFund
       })), _react.default.createElement("div", {
         className: (0, _getClassName2.default)(productOptions.numProducts ? "styles.form-panel" : "styles.form-panel styles.hidden", _styleModuleImportMap, {
           "handleMissingStyleName": "warn"
@@ -66793,7 +66830,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52203" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55592" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

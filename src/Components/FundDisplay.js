@@ -14,7 +14,8 @@ class FundDisplay extends Component {
             },
             expanded: false,
             selectedIndex: 0,
-            initialUpdate: false
+            initialUpdate: false,
+            hydrated: false
         }
         this.handleDropDownClick=this.handleDropDownClick.bind(this)
         this.createMarkup=this.createMarkup.bind(this)
@@ -23,8 +24,15 @@ class FundDisplay extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.initialUpdate && !this.state.initialUpdate) {
-            this.setState({numFunds: nextProps.fundOptions.numFunds, funds: [...nextProps.fundOptions.funds], initialUpdate: true})
+            return this.setState({numFunds: nextProps.fundOptions.numFunds, funds: [...nextProps.fundOptions.funds], initialUpdate: true})
         }
+        const { fundInfo, hydratedFund, hydrated } = nextProps;
+        // console.log({fundInfo, hydratedFund})
+        if (hydratedFund && !hydrated && !this.state.hydrated) {
+            const selectedIndex = this.state.funds.findIndex(fund=> fund.DetailDescription == fundInfo.DetailDescription)
+            // console.log(selectedIndex)
+            return this.setState({selectedIndex, hydrated: true})
+        } 
     }
     handleDropDownClick(e) {
         const selectedIndex = parseInt(e.target.dataset.id);
@@ -89,15 +97,15 @@ class FundDisplay extends Component {
         if (this.state.numFunds == 0) return null
         
         else {
-
+            const {selectedIndex, expanded} = this.state
             return (
                 <div styleName="styles.funds-display">
                     <h3 styleName="styles.funds__header">I Want to Support</h3>
                     <div styleName="styles.select-fund flex.flex flex.flex-row flex.flex-axes-center">
-                        { this.renderFundCards(this.state.selectedIndex)}
+                        { this.renderFundCards(selectedIndex)}
                                    
                     </div>
-                    {this.renderExpandedCards(this.state.expanded)} 
+                    {this.renderExpandedCards(expanded)} 
                 </div>
 
             )
