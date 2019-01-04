@@ -333,7 +333,7 @@ class NameAddressForm extends Component {
         }
         //deconstruct necessary fields from state
         const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
-        const {mode, APIAccessID, MotivationText, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy} = this.props
+        let {mode, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy} = this.props
         const ClientBrowser = window && window.navigator ? window.navigator.userAgent : ''
         const UrlReferer = window.location.origin + window.location.pathname
          
@@ -367,6 +367,8 @@ class NameAddressForm extends Component {
             return {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}
         })
         const MultipleDonations = multipleDonations();
+
+        const MotivationText = window.cbn_obj && window.cbn_obj.motivation ? window.cbn_obj.motivation : '';
 
         let data = {
             ActivityName,
