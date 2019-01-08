@@ -259,10 +259,12 @@ module.hot.accept(reloadCSS);
 module.exports = {
   "askarray__header": "askarray__header__3P2Zh",
   "askarray": "askarray__UQ1ey",
+  "askarray--other": "askarray--other__y-GeO",
   "askbutton": "askbutton__1REXt",
   "askbutton__amt": "askbutton__amt__20Y8v",
   "selected": "selected__52P9N",
   "askarray__form-group": "askarray__form-group__1rkB9",
+  "askarray__form-group--other": "askarray__form-group--other__ibtGr",
   "form-group__other-input": "form-group__other-input__3hTcz",
   "form-group__other-input--label": "form-group__other-input--label__1gNEk",
   "error": "error__2x8Zr",
@@ -398,7 +400,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55592" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60087" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

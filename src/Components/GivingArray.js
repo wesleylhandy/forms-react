@@ -134,7 +134,10 @@ class GivingArray extends Component {
                 <div id="AskArray" styleName="styles.askarray flex.flex flex.flex-row flex.flex-center flex.flex-wrap">
                     { monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex) : null }
                     { singleOption && !monthlyChecked ?  this.renderArray(singleAmounts, selectedIndex) : null }
-                    <div id="OtherAmout" styleName={`styles.askarray__form-group flex.flex flex.flex-center flex.flex-axes-center${selectedIndex == 99 ? " styles.selected": ""}`}>
+                    
+                </div>
+                <div id="OtherGiftAmount" styleName="styles.askarray--other flex.flex flex.flex-row flex.flex-center">
+                    <div id="OtherAmout" styleName={`styles.askarray__form-group--other flex.flex flex.flex-center flex.flex-axes-center${selectedIndex == 99 ? " styles.selected": ""}`}>
                         <label styleName="styles.form-group__other-input--label" htmlFor="other-amt-input">Other Amount</label>
                         <input styleName="styles.form-group__other-input" name="other-amt-input" onChange={this.handleOtherAmt} value={otherAmount == 0 ? '' : otherAmount}/>
                         <div styleName="styles.error styles.other-amt-error">{otherAmountError}</div>

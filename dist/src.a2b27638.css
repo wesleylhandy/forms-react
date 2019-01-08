@@ -98,7 +98,8 @@
     text-transform: uppercase;
 }
 
-.askarray__UQ1ey {
+.askarray__UQ1ey,
+.askarray--other__y-GeO {
     position: relative;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
@@ -106,6 +107,13 @@
     width: 100%;
     max-width: 400px;
     margin: 20px auto;
+    margin-bottom: 0;
+}
+
+.askarray--other__y-GeO {
+    margin-top: 0;
+    margin-bottom: 20px;
+    height: calc(19px * 3.5);
 }
 
 .askbutton__1REXt {
@@ -144,7 +152,8 @@
     border-color: var(--primary-color);
 }
 
-.askarray__form-group__1rkB9 {
+.askarray__form-group__1rkB9,
+.askarray__form-group--other__ibtGr {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     height: calc(19px * 3.5);
@@ -152,6 +161,11 @@
     position: relative;
     white-space: nowrap;
     width: calc(100% / 3);
+}
+
+.askarray__form-group--other__ibtGr {
+    width: 100%;
+    max-width: 400px;
 }
 
 .form-group__other-input__3hTcz {
@@ -173,7 +187,8 @@
     font-family: var(--semibold-font-family);
     font-style: var(--semibold-font-style);
     font-weight: var(--semibold-font-weight);
-    width: calc(19px * 4.55);
+    max-width: 220px;
+    white-space: nowrap;
 }
 
 .form-group__other-input__3hTcz:hover,
@@ -196,7 +211,7 @@
             box-sizing: border-box;
     position: absolute;
     left: 50%;
-    margin-top: calc(19px * 1.8);
+    top: calc(100% - (19px * .5));
     -webkit-transform: translateX(-50%);
     -ms-transform: translateX(-50%);
         transform: translateX(-50%);
@@ -319,9 +334,10 @@ label.select-product__label__3Y0AW {
 .product-total__input__172mT {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    width: calc(19px * 5);
-    -ms-flex-preferred-size: calc(19px * 5);
-        flex-basis: calc(19px * 5);
+    width: 95px;
+    max-width: calc(19px * 5);
+    -ms-flex: 0 0 calc(19px * 5);
+        flex: 0 0 calc(19px * 5);
     margin-right: 19px;
     text-align: right;
 }

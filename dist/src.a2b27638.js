@@ -34653,10 +34653,12 @@ module.hot.accept(reloadCSS);
 module.exports = {
   "askarray__header": "askarray__header__3P2Zh",
   "askarray": "askarray__UQ1ey",
+  "askarray--other": "askarray--other__y-GeO",
   "askbutton": "askbutton__1REXt",
   "askbutton__amt": "askbutton__amt__20Y8v",
   "selected": "selected__52P9N",
   "askarray__form-group": "askarray__form-group__1rkB9",
+  "askarray__form-group--other": "askarray__form-group--other__ibtGr",
   "form-group__other-input": "form-group__other-input__3hTcz",
   "form-group__other-input--label": "form-group__other-input--label__1gNEk",
   "error": "error__2x8Zr",
@@ -34721,6 +34723,7 @@ var _styleModuleImportMap = {
   "styles": {
     "askarray__header": "askarray__header__3P2Zh",
     "askarray": "askarray__UQ1ey",
+    "askarray--other": "askarray--other__y-GeO",
     "askbutton": "askbutton__1REXt",
     "askbutton__amt": "askbutton__amt__20Y8v",
     "selected": "selected__52P9N",
@@ -34961,9 +34964,12 @@ function (_Component) {
       }, "Select A ", monthlyChecked ? "Monthly" : "Single", " Donation Amount"), _react.default.createElement("div", {
         id: "AskArray",
         className: "askarray__UQ1ey flex__ayltN flex-row__16BBq flex-center__1HhTj flex-wrap__1FN6A"
-      }, monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex) : null, singleOption && !monthlyChecked ? this.renderArray(singleAmounts, selectedIndex) : null, _react.default.createElement("div", {
+      }, monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex) : null, singleOption && !monthlyChecked ? this.renderArray(singleAmounts, selectedIndex) : null), _react.default.createElement("div", {
+        id: "OtherGiftAmount",
+        className: "askarray--other__y-GeO flex__ayltN flex-row__16BBq flex-center__1HhTj"
+      }, _react.default.createElement("div", {
         id: "OtherAmout",
-        className: (0, _getClassName2.default)("styles.askarray__form-group flex.flex flex.flex-center flex.flex-axes-center".concat(selectedIndex == 99 ? " styles.selected" : ""), _styleModuleImportMap, {
+        className: (0, _getClassName2.default)("styles.askarray__form-group--other flex.flex flex.flex-center flex.flex-axes-center".concat(selectedIndex == 99 ? " styles.selected" : ""), _styleModuleImportMap, {
           "handleMissingStyleName": "warn"
         })
       }, _react.default.createElement("label", {
@@ -35261,7 +35267,7 @@ function (_Component) {
           className: "product-total__input--label__1r4ld",
           htmlFor: "total-product-gift"
         }, "$"), _react.default.createElement("input", {
-          className: "product-total__input__172mT flex-no-grow__3iHTz",
+          className: "product-total__input__172mT",
           name: "total-product-gift",
           value: totalGift,
           disabled: true
@@ -65007,7 +65013,7 @@ function (_Component) {
       regeneratorRuntime.mark(function _callee2(e) {
         var _this2 = this;
 
-        var items, pledgeFound, addGiftFound, productFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props2, mode, APIAccessID, MotivationText, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, data, msg, message, _getErrorType, breaking, _name;
+        var items, pledgeFound, addGiftFound, productFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props2, mode, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, message, _getErrorType, breaking, _name;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -65186,7 +65192,7 @@ function (_Component) {
               case 64:
                 //deconstruct necessary fields from state
                 Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
-                _this$props2 = this.props, mode = _this$props2.mode, APIAccessID = _this$props2.APIAccessID, MotivationText = _this$props2.MotivationText, subscriptions = _this$props2.subscriptions, AddContactYN = _this$props2.AddContactYN, ActivityName = _this$props2.ActivityName, ContactSource = _this$props2.ContactSource, SectionName = _this$props2.SectionName, proxy = _this$props2.proxy;
+                _this$props2 = this.props, mode = _this$props2.mode, APIAccessID = _this$props2.APIAccessID, subscriptions = _this$props2.subscriptions, AddContactYN = _this$props2.AddContactYN, ActivityName = _this$props2.ActivityName, ContactSource = _this$props2.ContactSource, SectionName = _this$props2.SectionName, proxy = _this$props2.proxy;
                 ClientBrowser = window && window.navigator ? window.navigator.userAgent : '';
                 UrlReferer = window.location.origin + window.location.pathname; //construct phone fields from regex
 
@@ -65236,6 +65242,7 @@ function (_Component) {
                 };
 
                 MultipleDonations = multipleDonations();
+                MotivationText = window.cbn_obj && window.cbn_obj.motivation ? window.cbn_obj.motivation : '';
                 data = {
                   ActivityName: ActivityName,
                   AddContactYN: AddContactYN,
@@ -65284,8 +65291,8 @@ function (_Component) {
                 }); // console.log({proxy})
                 // console.log({data})
 
-                _context2.prev = 83;
-                _context2.next = 86;
+                _context2.prev = 84;
+                _context2.next = 87;
                 return (0, _fetchHelpers.callApi)(proxy, {
                   method: 'POST',
                   mode: 'cors',
@@ -65295,19 +65302,19 @@ function (_Component) {
                   body: JSON.stringify(data)
                 });
 
-              case 86:
+              case 87:
                 msg = _context2.sent;
                 // console.log({msg, data})
                 this.props.submitForm({
                   msg: msg,
                   data: data
                 });
-                _context2.next = 97;
+                _context2.next = 98;
                 break;
 
-              case 90:
-                _context2.prev = 90;
-                _context2.t4 = _context2["catch"](83);
+              case 91:
+                _context2.prev = 91;
+                _context2.t4 = _context2["catch"](84);
                 console.error(_context2.t4.message);
                 message = _context2.t4.message;
                 _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
@@ -65323,12 +65330,12 @@ function (_Component) {
                   errors: errors
                 });
 
-              case 97:
+              case 98:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[15, 55], [20, 26], [31, 37], [42, 48], [83, 90]]);
+        }, _callee2, this, [[15, 55], [20, 26], [31, 37], [42, 48], [84, 91]]);
       }));
 
       return function handleSubmit(_x2) {
@@ -66830,7 +66837,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55592" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60087" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

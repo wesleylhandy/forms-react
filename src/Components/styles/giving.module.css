@@ -16,13 +16,21 @@ h3.askarray__header {
     text-transform: uppercase;
 }
 
-.askarray {
+.askarray,
+.askarray--other {
     position: relative;
     box-sizing: border-box;
     height: auto;
     width: 100%;
     max-width: 400px;
     margin: 20px auto;
+    margin-bottom: 0;
+}
+
+.askarray--other {
+    margin-top: 0;
+    margin-bottom: 20px;
+    height: calc(19px * 3.5);
 }
 
 .askbutton {
@@ -59,13 +67,19 @@ h3.askarray__header {
     border-color: var(--primary-color);
 }
 
-.askarray__form-group {
+.askarray__form-group,
+.askarray__form-group--other {
     box-sizing: border-box;
     height: calc(19px * 3.5);
     margin-bottom: 0;
     position: relative;
     white-space: nowrap;
     width: calc(100% / 3);
+}
+
+.askarray__form-group--other {
+    width: 100%;
+    max-width: 400px;
 }
 
 .form-group__other-input {
@@ -83,7 +97,8 @@ h3.askarray__header {
     font-family: var(--semibold-font-family);
     font-style: var(--semibold-font-style);
     font-weight: var(--semibold-font-weight);
-    width: calc(19px * 4.55);
+    max-width: 220px;
+    white-space: nowrap;
 }
 
 .form-group__other-input:hover,
