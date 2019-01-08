@@ -28,10 +28,10 @@ class ProductDisplay extends Component {
      * @param {Number} additionalGift - value of user entered additional Gift
      * @returns {Number} value of Total Gift
      */
-    calculateTotalGift(productInfo, additionalGift) {
+    calculateTotalGift(productInfo = [], additionalGift = 0) {
         const { products } = this.props.productOptions
         // console.log({productInfo, products, additionalGift})
-        const totalGift = (products.length && productInfo.length) ? productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + additionalGift : additionalGift;
+        const totalGift = (products && products.length && productInfo.length) ? productInfo.reduce((a, b)=> a + (parseInt(products[b.idx].PledgeAmount) * b.quantity), 0) + additionalGift : additionalGift;
         return totalGift
     }
 

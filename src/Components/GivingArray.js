@@ -44,7 +44,7 @@ class GivingArray extends Component {
             return this.setState({initialUpdate})
         }
         const {givingInfo, monthlyChecked} = nextProps;
-        if (givingInfo.length && !nextProps.hydrated && !this.state.hydrated) {
+        if (givingInfo && givingInfo.length && !nextProps.hydrated && !this.state.hydrated) {
             return this.hydrateGiving(givingInfo);
         } 
         if (monthlyChecked !== this.props.monthlyChecked) {

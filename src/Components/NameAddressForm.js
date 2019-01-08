@@ -413,7 +413,9 @@ class NameAddressForm extends Component {
             mode
         }
         //flatten subscription information
-        subscriptions.forEach(sub=> data[sub.key]=sub.value);
+        if (subscriptions && subscriptions.length) {
+            subscriptions.forEach(sub=> data[sub.key]=sub.value);
+        }
         // console.log({proxy})
         // console.log({data})
         try {
@@ -683,20 +685,20 @@ class NameAddressForm extends Component {
                 givingFormat,
                 monthlyOption,
                 singleOption,
-                monthlyAmounts,
-                singleAmounts,
-                funds,
+                monthlyAmounts: monthlyAmounts ? monthlyAmounts : [],
+                singleAmounts: singleAmounts ? singleAmounts : [],
+                funds: funds ? funds : [],
                 monthlyPledgeData,
                 singlePledgeData
             },
             productOptions = {
-                products,
-                numProducts: products.length,
+                products: products ? products : [],
+                numProducts: products ? products.length : 0,
                 additionalGift
             },
             fundOptions = {
-                funds,
-                numFunds: funds.length
+                funds: funds ? funds : [],
+                numFunds: funds ? funds.length : 0
             }
         const { 
             defaultAmount,

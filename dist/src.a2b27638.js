@@ -34728,6 +34728,7 @@ var _styleModuleImportMap = {
     "askbutton__amt": "askbutton__amt__20Y8v",
     "selected": "selected__52P9N",
     "askarray__form-group": "askarray__form-group__1rkB9",
+    "askarray__form-group--other": "askarray__form-group--other__ibtGr",
     "form-group__other-input": "form-group__other-input__3hTcz",
     "form-group__other-input--label": "form-group__other-input--label__1gNEk",
     "error": "error__2x8Zr",
@@ -34819,7 +34820,7 @@ function (_Component) {
       var givingInfo = nextProps.givingInfo,
           monthlyChecked = nextProps.monthlyChecked;
 
-      if (givingInfo.length && !nextProps.hydrated && !this.state.hydrated) {
+      if (givingInfo && givingInfo.length && !nextProps.hydrated && !this.state.hydrated) {
         return this.hydrateGiving(givingInfo);
       }
 
@@ -35100,10 +35101,12 @@ function (_Component) {
 
   _createClass(ProductDisplay, [{
     key: "calculateTotalGift",
-    value: function calculateTotalGift(productInfo, additionalGift) {
+    value: function calculateTotalGift() {
+      var productInfo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var additionalGift = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       var products = this.props.productOptions.products; // console.log({productInfo, products, additionalGift})
 
-      var totalGift = products.length && productInfo.length ? productInfo.reduce(function (a, b) {
+      var totalGift = products && products.length && productInfo.length ? productInfo.reduce(function (a, b) {
         return a + parseInt(products[b.idx].PledgeAmount) * b.quantity;
       }, 0) + additionalGift : additionalGift;
       return totalGift;
@@ -65286,10 +65289,14 @@ function (_Component) {
                   mode: mode //flatten subscription information
 
                 };
-                subscriptions.forEach(function (sub) {
-                  return data[sub.key] = sub.value;
-                }); // console.log({proxy})
+
+                if (subscriptions && subscriptions.length) {
+                  subscriptions.forEach(function (sub) {
+                    return data[sub.key] = sub.value;
+                  });
+                } // console.log({proxy})
                 // console.log({data})
+
 
                 _context2.prev = 84;
                 _context2.next = 87;
@@ -65739,20 +65746,20 @@ function (_Component) {
         givingFormat: givingFormat,
         monthlyOption: monthlyOption,
         singleOption: singleOption,
-        monthlyAmounts: monthlyAmounts,
-        singleAmounts: singleAmounts,
-        funds: funds,
+        monthlyAmounts: monthlyAmounts ? monthlyAmounts : [],
+        singleAmounts: singleAmounts ? singleAmounts : [],
+        funds: funds ? funds : [],
         monthlyPledgeData: monthlyPledgeData,
         singlePledgeData: singlePledgeData
       },
           productOptions = {
-        products: products,
-        numProducts: products.length,
+        products: products ? products : [],
+        numProducts: products ? products.length : 0,
         additionalGift: additionalGift
       },
           fundOptions = {
-        funds: funds,
-        numFunds: funds.length
+        funds: funds ? funds : [],
+        numFunds: funds ? funds.length : 0
       };
       var _this$state = this.state,
           defaultAmount = _this$state.defaultAmount,
@@ -66837,7 +66844,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60087" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64294" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
