@@ -145,14 +145,14 @@ h3.funds__header {
     max-width: 100%;
 }
 
-@media screen and (max-width: 390px) {
+@media screen and (max-width: 550px) {
     .select-fund,
     .select-fund__dropdown,
     .fund-card,
     .fund-card__dropdown {
-        height: 110px;
+        height: 130px;
     }
     .select-fund__dropdown {
-        margin-top: -110px;
+        margin-top: -130px;
     }
 }

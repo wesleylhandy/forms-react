@@ -1294,7 +1294,40 @@ input[type="radio"].radio-group__input__jkbDU+label:empty:before {
 }
 
 
-/***** END Radio Button STYLES *****/.loading_spinner__2HC5B {
+/***** END Radio Button STYLES *****/.seals__1vhLv {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    margin-top: 20px;
+    padding: 0;
+    width: 100%;
+}
+
+.seals__seal__28y0f {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    display: block;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+a.seals__seal--link__2o06z,
+img.seals__seal-img__1rK6b {
+    -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+    text-decoration: none !important;
+}
+
+@media screen and (max-width: 550px) {
+    .seals__1vhLv {
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+    }
+    .seals__seal__28y0f {
+        margin-top: 20px;
+    }
+}.loading_spinner__2HC5B {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     height: 150px;

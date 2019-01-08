@@ -362,6 +362,17 @@ module.exports = {
   "radio-group": "radio-group__1Ai8X",
   "radio-group__input": "radio-group__input__jkbDU"
 };
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/seals.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "seals": "seals__1vhLv",
+  "seals__seal": "seals__seal__28y0f",
+  "seals__seal--link": "seals__seal--link__2o06z",
+  "seals__seal-img": "seals__seal-img__1rK6b"
+};
 },{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/spinner.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
@@ -400,7 +411,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64294" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51165" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

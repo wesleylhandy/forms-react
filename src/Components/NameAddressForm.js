@@ -9,6 +9,7 @@ import ShippingAddressBlock from './ShippingAddressBlock';
 import AddressBlock from './AddressBlock';
 import FormOptionsBlock from './FormOptionsBlock';
 import SubmitButton from './SubmitButton';
+import Seals from './Seals';
 
 import flex from './styles/flex.module.css'
 import styles from './styles/name-address-form.module.css'
@@ -823,7 +824,7 @@ class NameAddressForm extends Component {
                             submitting={submitting}
                         />
                     </fieldset>
-                    <div id="seals"></div>
+                    <Seals/>
                 </div>
             </form>
 

@@ -36638,7 +36638,73 @@ function SubmitButton(_ref) {
 
 var _default = SubmitButton;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","./styles/form-row.module.css":"src/Components/styles/form-row.module.css"}],"src/Components/styles/name-address-form.module.css":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./styles/form-row.module.css":"src/Components/styles/form-row.module.css"}],"src/Components/styles/seals.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "seals": "seals__1vhLv",
+  "seals__seal": "seals__seal__28y0f",
+  "seals__seal--link": "seals__seal--link__2o06z",
+  "seals__seal-img": "seals__seal-img__1rK6b"
+};
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/Seals.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _sealsModule = _interopRequireDefault(require("./styles/seals.module.css"));
+
+var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+if (module.hot) {
+  module.hot.accept("./styles/flex.module.css", function () {
+    require("./styles/flex.module.css");
+  });
+}
+
+if (module.hot) {
+  module.hot.accept("./styles/seals.module.css", function () {
+    require("./styles/seals.module.css");
+  });
+}
+
+function Seals() {
+  return _react.default.createElement("div", {
+    id: "seals",
+    className: "seals__1vhLv flex__ayltN flex-row__16BBq flex-center__1HhTj flex-axes-center__33a6C"
+  }, _react.default.createElement("div", {
+    id: "DigiCertClickID_RXDQXROF",
+    "data-language": "en",
+    className: "seals__seal__28y0f"
+  }, _react.default.createElement("a", {
+    className: "seals__seal--link__2o06z",
+    href: "https://www.digicert.com/ev-multi-domain-ssl.htm"
+  })), _react.default.createElement("div", {
+    id: "ECFA_Logo",
+    className: "seals__seal__28y0f"
+  }, _react.default.createElement("a", {
+    className: "seals__seal--link__2o06z",
+    href: "http://www.ecfa.org",
+    target: "_blank"
+  }, _react.default.createElement("img", {
+    className: "seals__seal-img__1rK6b",
+    src: "https://www.cbn.com/source/giving/shared/ecfa-logo-blacktext_sm.png",
+    alt: "ECFA"
+  }))));
+}
+
+var _default = Seals;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","./styles/seals.module.css":"src/Components/styles/seals.module.css","./styles/flex.module.css":"src/Components/styles/flex.module.css"}],"src/Components/styles/name-address-form.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -64536,6 +64602,8 @@ var _FormOptionsBlock = _interopRequireDefault(require("./FormOptionsBlock"));
 
 var _SubmitButton = _interopRequireDefault(require("./SubmitButton"));
 
+var _Seals = _interopRequireDefault(require("./Seals"));
+
 var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
 
 var _nameAddressFormModule = _interopRequireDefault(require("./styles/name-address-form.module.css"));
@@ -65874,9 +65942,7 @@ function (_Component) {
         error: errors.amount,
         handleSubmit: this.handleSubmit,
         submitting: submitting
-      })), _react.default.createElement("div", {
-        id: "seals"
-      })));
+      })), _react.default.createElement(_Seals.default, null)));
     }
   }]);
 
@@ -65885,7 +65951,7 @@ function (_Component) {
 
 var _default = NameAddressForm;
 exports.default = _default;
-},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./GivingArray":"src/Components/GivingArray.js","./ProductDisplay":"src/Components/ProductDisplay.js","./FundDisplay":"src/Components/FundDisplay.js","./MonthlyRadioGroup":"src/Components/MonthlyRadioGroup.js","./NameBlock":"src/Components/NameBlock.js","./ShippingAddressBlock":"src/Components/ShippingAddressBlock.js","./AddressBlock":"src/Components/AddressBlock.js","./FormOptionsBlock":"src/Components/FormOptionsBlock.js","./SubmitButton":"src/Components/SubmitButton.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/name-address-form.module.css":"src/Components/styles/name-address-form.module.css","./helpers/error-types":"src/Components/helpers/error-types.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js","./helpers/crypt":"src/Components/helpers/crypt.js"}],"src/Components/styles/payment-form.module.css":[function(require,module,exports) {
+},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./GivingArray":"src/Components/GivingArray.js","./ProductDisplay":"src/Components/ProductDisplay.js","./FundDisplay":"src/Components/FundDisplay.js","./MonthlyRadioGroup":"src/Components/MonthlyRadioGroup.js","./NameBlock":"src/Components/NameBlock.js","./ShippingAddressBlock":"src/Components/ShippingAddressBlock.js","./AddressBlock":"src/Components/AddressBlock.js","./FormOptionsBlock":"src/Components/FormOptionsBlock.js","./SubmitButton":"src/Components/SubmitButton.js","./Seals":"src/Components/Seals.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/name-address-form.module.css":"src/Components/styles/name-address-form.module.css","./helpers/error-types":"src/Components/helpers/error-types.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js","./helpers/crypt":"src/Components/helpers/crypt.js"}],"src/Components/styles/payment-form.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -66844,7 +66910,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64294" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51165" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

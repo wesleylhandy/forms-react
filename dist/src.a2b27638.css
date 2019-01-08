@@ -1276,7 +1276,40 @@ input[type="checkbox"].checkbox-input__1XcRE+label:hover:before {
 }
 
 
-/***** END CHECKBOX STYLES *****/.form-panel__2bLqQ {
+/***** END CHECKBOX STYLES *****/.seals__1vhLv {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    margin-top: 20px;
+    padding: 0;
+    width: 100%;
+}
+
+.seals__seal__28y0f {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    display: block;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+a.seals__seal--link__2o06z,
+img.seals__seal-img__1rK6b {
+    -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+    text-decoration: none !important;
+}
+
+@media screen and (max-width: 550px) {
+    .seals__1vhLv {
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+    }
+    .seals__seal__28y0f {
+        margin-top: 20px;
+    }
+}.form-panel__2bLqQ {
     background: var(--panel-bg-color);
     border: var(--panel-border-width) solid var(--panel-border-color);
     border-radius: var(--panel-border-radius);
