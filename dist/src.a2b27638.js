@@ -64740,6 +64740,7 @@ function (_Component) {
       ShipToAddress1: props.hydratedData ? props.hydratedData.ShipToAddress1 : "",
       ShipToAddress2: props.hydratedData ? props.hydratedData.ShipToAddress2 : "",
       ShipToCity: props.hydratedData ? props.hydratedData.ShipToCity : "",
+      ShipToCountry: props.hydratedData ? props.hydratedData.ShipToCountry : "",
       ShipToZip: props.hydratedData ? props.hydratedData.ShipToZip : "",
       ShipToState: props.hydratedData ? props.hydratedData.ShipToState : ""
     };
@@ -64819,10 +64820,13 @@ function (_Component) {
           detailNames.push(singlePledgeData.DetailName);
         }
 
-        funds.forEach(function (fund) {
-          detailNames.push(fund.DetailName);
-          fundNames.push(fund.DetailName);
-        }); // loop through multiple donations and reconstruct virual cart
+        if (funds && funds.length) {
+          funds.forEach(function (fund) {
+            detailNames.push(fund.DetailName);
+            fundNames.push(fund.DetailName);
+          });
+        } // loop through multiple donations and reconstruct virual cart
+
 
         var _loop = function _loop(i) {
           var _MultipleDonations$i = MultipleDonations[i],
@@ -65313,7 +65317,7 @@ function (_Component) {
                 };
 
                 MultipleDonations = multipleDonations();
-                MotivationText = window.cbn_obj && window.cbn_obj.motivation ? window.cbn_obj.motivation : '';
+                MotivationText = window.cbn_obj && window.cbn_obj.motivation ? window.cbn_obj.motivation : '041181';
                 data = {
                   ActivityName: ActivityName,
                   AddContactYN: AddContactYN,
@@ -65822,12 +65826,12 @@ function (_Component) {
       },
           productOptions = {
         products: products ? products : [],
-        numProducts: products ? products.length : 0,
+        numProducts: products && products.length ? products.length : 0,
         additionalGift: additionalGift
       },
           fundOptions = {
         funds: funds ? funds : [],
-        numFunds: funds ? funds.length : 0
+        numFunds: funds && funds.length ? funds.length : 0
       };
       var _this$state = this.state,
           defaultAmount = _this$state.defaultAmount,
@@ -66972,7 +66976,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62822" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57760" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

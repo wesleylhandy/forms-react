@@ -56,6 +56,7 @@ class NameAddressForm extends Component {
             ShipToAddress1: props.hydratedData ? props.hydratedData.ShipToAddress1 : "",
             ShipToAddress2: props.hydratedData ? props.hydratedData.ShipToAddress2 : "",
             ShipToCity: props.hydratedData ? props.hydratedData.ShipToCity : "",
+            ShipToCountry: props.hydratedData ? props.hydratedData.ShipToCountry : "",
             ShipToZip: props.hydratedData ? props.hydratedData.ShipToZip : "",
             ShipToState: props.hydratedData ? props.hydratedData.ShipToState : ""
         }
@@ -120,10 +121,12 @@ class NameAddressForm extends Component {
             if (singlePledgeData) {
                 detailNames.push(singlePledgeData.DetailName)
             }
-            funds.forEach(fund=> {
-                detailNames.push(fund.DetailName)
-                fundNames.push(fund.DetailName)
-            })
+            if (funds && funds.length) {
+                funds.forEach(fund=> {
+                    detailNames.push(fund.DetailName)
+                    fundNames.push(fund.DetailName)
+                })
+            }
             // loop through multiple donations and reconstruct virual cart
             for (let i = 0; i < MultipleDonations.length; i++) {
                 const { DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount } = MultipleDonations[i];
@@ -369,7 +372,7 @@ class NameAddressForm extends Component {
         })
         const MultipleDonations = multipleDonations();
 
-        const MotivationText = window.cbn_obj && window.cbn_obj.motivation ? window.cbn_obj.motivation : '';
+        const MotivationText = window.cbn_obj && window.cbn_obj.motivation ? window.cbn_obj.motivation : '041181';
 
         let data = {
             ActivityName,

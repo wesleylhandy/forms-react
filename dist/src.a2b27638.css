@@ -701,7 +701,13 @@ h5.ccDayOfMonth__36uNQ {
     color: var(--form-text-color);
 }
 
-.ccdate__1v9EL {
+select.ccdate__1v9EL {
+    display: inline-block;
+    width: auto;
+    -webkit-appearance: unset;
+       -moz-appearance: unset;
+            appearance: unset;
+    background: unset;
     border: 1px solid var(--input-border-color);
     border-radius: var(--input-border-radius);
     -webkit-box-sizing: border-box;
@@ -888,6 +894,7 @@ div.error__1zQ64 {
     position: absolute;
     color: var(--error-color);
     width: auto;
+    line-height: unset;
     left: 5px;
     bottom: calc(0% - 13px);
     font-family: var(--bold-font-family);
@@ -1166,6 +1173,7 @@ input[type="checkbox"].checkbox-input__1XcRE:checked+label {
     font-weight: var(--form-font-weight);
     color: var(--form-text-color);
     margin-bottom: 0;
+    line-height: unset;
 }
 
 
@@ -1186,6 +1194,7 @@ input[type="checkbox"].checkbox-input__1XcRE:checked+label:before {
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, .1);
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
+    line-height: unset;
 }
 
 

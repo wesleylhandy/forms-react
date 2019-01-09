@@ -133,6 +133,7 @@ div.error {
     position: absolute;
     color: var(--error-color);
     width: auto;
+    line-height: unset;
     left: 5px;
     bottom: calc(0% - 13px);
     font-family: var(--bold-font-family);
