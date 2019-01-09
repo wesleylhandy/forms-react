@@ -694,12 +694,12 @@ class NameAddressForm extends Component {
             },
             productOptions = {
                 products: products ? products : [],
-                numProducts: products ? products.length : 0,
+                numProducts: products && products.length ? products.length : 0,
                 additionalGift
             },
             fundOptions = {
                 funds: funds ? funds : [],
-                numFunds: funds ? funds.length : 0
+                numFunds: funds && funds.length ? funds.length : 0
             }
         const { 
             defaultAmount,

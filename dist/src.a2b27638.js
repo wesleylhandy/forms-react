@@ -66759,6 +66759,7 @@ function getConfiguration() {
 /**
 * Function to determine campaign name for accessing config files from CBNGiving-Plugin for WP
 * @param {Boolean} isWordpress - only return value if True
+* @param {String} proxyUri - uri of proxy endpoint
 * @param {String} formName - name of the form
 * @returns {String} - URL base for Wordpress based on giving page URL
 */
@@ -66768,21 +66769,24 @@ function _getConfiguration() {
   _getConfiguration = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee() {
-    var generator, formName, isWordpress, base, cssConfigUrl, cssConfig, styleEl, innerStyle, key, pair, link, formConfigUrl, initialState;
+    var generator, formName, proxyUri, isWordpress, isDrupal, isDotNet, base, cssConfigUrl, cssConfig, styleEl, innerStyle, key, pair, link, formConfigUrl, initialState;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             generator = rootEntry.dataset.environment.toLowerCase();
             formName = rootEntry.dataset.formName;
+            proxyUri = rootEntry.dataset.rest;
             isWordpress = generator && generator.includes('wordpress');
-            base = generator == "local" ? "http://10.100.43.57:8080/config/" : "";
-            cssConfigUrl = isWordpress ? handleWordpress(isWordpress, formName) + "?type=css_setup" : "".concat(base, "css-config.json");
-            _context.prev = 5;
-            _context.next = 8;
+            isDrupal = generator && generator.includes('drupal');
+            isDotNet = generator && generator.includes('dotnet');
+            base = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet);
+            cssConfigUrl = base + (isWordpress ? "?type=css_setup" : "config/css-config.json");
+            _context.prev = 8;
+            _context.next = 11;
             return (0, _fetchHelpers.callApi)(cssConfigUrl);
 
-          case 8:
+          case 11:
             cssConfig = _context.sent;
             // console.log({cssConfig})
             cssConfig["--base-font-size"] = "19px";
@@ -66812,22 +66816,22 @@ function _getConfiguration() {
               watch: true,
               onComplete: function onComplete(cssText, styleNode) {}
             });
-            _context.next = 24;
+            _context.next = 27;
             break;
 
-          case 20:
-            _context.prev = 20;
-            _context.t0 = _context["catch"](5);
+          case 23:
+            _context.prev = 23;
+            _context.t0 = _context["catch"](8);
             console.error(_context.t0);
             alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
 
-          case 24:
-            formConfigUrl = isWordpress ? handleWordpress(isWordpress, formName) + "?type=form_setup" : "".concat(base, "form-config.json");
-            _context.prev = 25;
-            _context.next = 28;
+          case 27:
+            formConfigUrl = base + (isWordpress ? "?type=form_setup" : "config/form-config.json");
+            _context.prev = 28;
+            _context.next = 31;
             return (0, _fetchHelpers.callApi)(formConfigUrl);
 
-          case 28:
+          case 31:
             initialState = _context.sent;
 
             if (initialState.mode === "production") {
@@ -66840,37 +66844,95 @@ function _getConfiguration() {
               }
             }
 
-            _context.next = 36;
+            if (isWordpress) {
+              initialState.proxy = base;
+            }
+
+            _context.next = 40;
             break;
 
-          case 32:
-            _context.prev = 32;
-            _context.t1 = _context["catch"](25);
+          case 36:
+            _context.prev = 36;
+            _context.t1 = _context["catch"](28);
             console.error(_context.t1);
             alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
 
-          case 36:
+          case 40:
             return _context.abrupt("return", {
               cssConfig: cssConfig,
               initialState: initialState
             });
 
-          case 37:
+          case 41:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[5, 20], [25, 32]]);
+    }, _callee, this, [[8, 23], [28, 36]]);
   }));
   return _getConfiguration.apply(this, arguments);
 }
 
-function handleWordpress(isWordpress, formName) {
+function handleWordpress(isWordpress, proxyUri, formName) {
   if (isWordpress) {
-    return "/wp-json/cbngiving/v1/".concat(formName);
+    return "".concat(proxyUri, "cbngiving/v1/").concat(formName);
   }
 
   return '';
+}
+/**
+* Function to determine campaign name for accessing config files from CBNGiving-Plugin for WP
+* @param {Boolean} isDrupal - only return value if True
+* @param {String} proxyUri - uri of proxy endpoint
+* @param {String} formName - name of the form
+* @returns {String} - URL base for Wordpress based on giving page URL
+*/
+
+
+function handleDrupal(isDrupal, proxyUri, formName) {
+  if (isDrupal) {
+    return "";
+  }
+
+  return '';
+}
+/**
+* Function to determine campaign name for accessing config files from CBNGiving-Plugin for WP
+* @param {Boolean} isDotNet - only return value if True
+* @param {String} proxyUri - uri of proxy endpoint
+* @param {String} formName - name of the form
+* @returns {String} - URL base for Wordpress based on giving page URL
+*/
+
+
+function handleDotNet(isDotNet, proxyUri, formName) {
+  if (isDotNet) {
+    return "";
+  }
+
+  return '';
+}
+/**
+ * Takes in data from rootEntry to determine where to find the form configuration based on environment
+ * @param {String} proxyUri - data-rest
+ * @param {String} formName - data-form-name
+ * @param {Boolean} isWordpress - data-rest == 'wordpress'
+ * @param {Boolean} isDrupal - data-rest == 'drupal'
+ * @param {Boolean} isDotNet - data-rest == 'dotnet'
+ * @returns {String} uri of proxy api
+ */
+
+
+function deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet) {
+  if (isWordpress) {
+    return handleWordpress(isWordpress, proxyUri, formName);
+  } else if (isDrupal) {
+    return handleDrupal(isDrupal, proxyUri, formName);
+  } else if (isDotNet) {
+    return handleDotNet(isDotNet, proxyUri, formName);
+  } else {
+    return proxyUri;
+  }
 }
 
 getConfiguration().then(function (_ref) {
@@ -66910,7 +66972,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51165" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62822" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
