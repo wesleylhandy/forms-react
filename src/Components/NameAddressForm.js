@@ -229,28 +229,25 @@ class NameAddressForm extends Component {
         }
     }
 
-    async handleInputChange(e) {
+    handleInputChange(e) {
         const target = e.target;
         let value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
         const fields = {...this.state.fields},  errors = {...this.state.errors};
-        let error;
-        const isZip = name.includes("Zip") && value.length >= 5;
+        fields[name] = value;
+        const isZip = name.includes("Zip") && value.length >= 5;  
         if (isZip) {
-            if (!zip_regex.test(value)) {
-                error = "Invalid Postal Code"
-            } else {
-                error = await this.callZipCityStateService(name, value)
-            }
+            this.setState({fields}, async () =>{
+                if (!zip_regex.test(value)) {
+                    errors[name] = "Invalid Postal Code"
+                } else {
+                    errors[name] = await this.callZipCityStateService(name, value)
+                }
+                this.setState({errors})
+            })
         } else {
-            error = this.validateInput(false, name, value);
-        }
-        errors[name] = error;     
-        if (isZip) {
-            this.setState({errors})
-        } else {
-            fields[name] = value;
+            errors[name] = this.validateInput(false, name, value);
             this.setState({ fields, errors });
         }
     }
@@ -613,7 +610,7 @@ class NameAddressForm extends Component {
      * @param {string} value - five digit zip code
      */
     async callZipCityStateService(name, value) {
-        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "https://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+        const base = this.state.mode == "local" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "https://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
         const url = `${base}${value}`;
         const fields = {...this.state.fields};
         try {
@@ -627,7 +624,7 @@ class NameAddressForm extends Component {
                 const newCity = error || !oldCity ? city.split(";")[0] : oldCity;
                 fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
                 fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
-                fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
+                // fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
                 if (name == "Zip") {
                     fields["Country"] = "United States";
                 }

@@ -36456,7 +36456,7 @@ function AddressBlock(_ref) {
     specialStyle: "styles.form-group--Zip",
     label: "Zip",
     placeholder: "Zip*",
-    maxLength: fields.Country != "US" ? 25 : 5,
+    maxLength: fields.Country != "United States" ? 25 : 5,
     required: true,
     value: fields.Zip,
     handleInputChange: handleInputChange,
@@ -36745,7 +36745,7 @@ var formErrors = {
   "Monthly amount required -- minimum is a dollar": "amount",
   "Single amount required -- minimum is a dollar": "amount"
 };
-var breakingErrors = ["Invalid Transaction Type -- Montlhy, Single, or Product Only", "Charge day required for Monthly Credit Card Gifts", "Valid Client IP is required", "Valid Client Browser name is required", "Missing Donation Details", "Motivation text is required and must not exceed required length or contain HTML Markup"];
+var breakingErrors = ["Proxy Error", "Invalid API Access Key or Request URL", "Invalid Transaction Type -- Montlhy, Single, or Product Only", "Charge day required for Monthly Credit Card Gifts", "Valid Client IP is required", "Valid Client Browser name is required", "Missing Donation Details", "Motivation text is required and must not exceed required length or contain HTML Markup"];
 /**
  * Takes an Error message and returns type, either breaking for form
  * @param {string} message - text string returned from API
@@ -65010,83 +65010,74 @@ function (_Component) {
     }
   }, {
     key: "handleInputChange",
-    value: function () {
-      var _handleInputChange = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee(e) {
-        var target, value, name, fields, errors, error, isZip;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                target = e.target;
-                value = target.type === 'checkbox' ? target.checked : target.value;
-                name = target.name;
-                fields = _extends({}, this.state.fields), errors = _extends({}, this.state.errors);
-                isZip = name.includes("Zip") && value.length >= 5;
+    value: function handleInputChange(e) {
+      var _this2 = this;
 
-                if (!isZip) {
-                  _context.next = 15;
+      var target = e.target;
+      var value = target.type === 'checkbox' ? target.checked : target.value;
+      var name = target.name;
+
+      var fields = _extends({}, this.state.fields),
+          errors = _extends({}, this.state.errors);
+
+      fields[name] = value;
+      var isZip = name.includes("Zip") && value.length >= 5;
+
+      if (isZip) {
+        this.setState({
+          fields: fields
+        },
+        /*#__PURE__*/
+        _asyncToGenerator(
+        /*#__PURE__*/
+        regeneratorRuntime.mark(function _callee() {
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  if (zip_regex.test(value)) {
+                    _context.next = 4;
+                    break;
+                  }
+
+                  errors[name] = "Invalid Postal Code";
+                  _context.next = 7;
                   break;
-                }
 
-                if (zip_regex.test(value)) {
-                  _context.next = 10;
-                  break;
-                }
+                case 4:
+                  _context.next = 6;
+                  return _this2.callZipCityStateService(name, value);
 
-                error = "Invalid Postal Code";
-                _context.next = 13;
-                break;
+                case 6:
+                  errors[name] = _context.sent;
 
-              case 10:
-                _context.next = 12;
-                return this.callZipCityStateService(name, value);
-
-              case 12:
-                error = _context.sent;
-
-              case 13:
-                _context.next = 16;
-                break;
-
-              case 15:
-                error = this.validateInput(false, name, value);
-
-              case 16:
-                errors[name] = error;
-
-                if (isZip) {
-                  this.setState({
+                case 7:
+                  _this2.setState({
                     errors: errors
                   });
-                } else {
-                  fields[name] = value;
-                  this.setState({
-                    fields: fields,
-                    errors: errors
-                  });
-                }
 
-              case 18:
-              case "end":
-                return _context.stop();
+                case 8:
+                case "end":
+                  return _context.stop();
+              }
             }
-          }
-        }, _callee, this);
-      }));
-
-      return function handleInputChange(_x) {
-        return _handleInputChange.apply(this, arguments);
-      };
-    }()
+          }, _callee, this);
+        })));
+      } else {
+        errors[name] = this.validateInput(false, name, value);
+        this.setState({
+          fields: fields,
+          errors: errors
+        });
+      }
+    }
   }, {
     key: "handleSubmit",
     value: function () {
       var _handleSubmit = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(e) {
-        var _this2 = this;
+        var _this3 = this;
 
         var items, pledgeFound, addGiftFound, productFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props2, mode, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, message, _getErrorType, breaking, _name;
 
@@ -65292,18 +65283,18 @@ function (_Component) {
                 ShipTo = ShipToYes === true ? "Yes" : "No";
 
                 multipleDonations = function multipleDonations() {
-                  return items.map(function (_ref, index) {
-                    var DetailName = _ref.DetailName,
-                        DetailDescription = _ref.DetailDescription,
-                        DetailCprojCredit = _ref.DetailCprojCredit,
-                        DetailCprojMail = _ref.DetailCprojMail,
-                        PledgeAmount = _ref.PledgeAmount;
+                  return items.map(function (_ref2, index) {
+                    var DetailName = _ref2.DetailName,
+                        DetailDescription = _ref2.DetailDescription,
+                        DetailCprojCredit = _ref2.DetailCprojCredit,
+                        DetailCprojMail = _ref2.DetailCprojMail,
+                        PledgeAmount = _ref2.PledgeAmount;
 
-                    if (index === pledgeFound && _this2.state.fundSelected) {
-                      DetailName = _this2.state.fundInfo.DetailName;
-                      DetailDescription = _this2.state.fundInfo.DetailDescription;
-                      DetailCprojCredit = _this2.state.fundInfo.DetailCprojCredit;
-                      DetailCprojMail = _this2.state.fundInfo.DetailCprojMail;
+                    if (index === pledgeFound && _this3.state.fundSelected) {
+                      DetailName = _this3.state.fundInfo.DetailName;
+                      DetailDescription = _this3.state.fundInfo.DetailDescription;
+                      DetailCprojCredit = _this3.state.fundInfo.DetailCprojCredit;
+                      DetailCprojMail = _this3.state.fundInfo.DetailCprojMail;
                     }
 
                     return {
@@ -65417,7 +65408,7 @@ function (_Component) {
         }, _callee2, this, [[15, 55], [20, 26], [31, 37], [42, 48], [84, 91]]);
       }));
 
-      return function handleSubmit(_x2) {
+      return function handleSubmit(_x) {
         return _handleSubmit.apply(this, arguments);
       };
     }()
@@ -65430,9 +65421,9 @@ function (_Component) {
 
   }, {
     key: "updateProducts",
-    value: function updateProducts(_ref2) {
-      var idx = _ref2.idx,
-          quantity = _ref2.quantity;
+    value: function updateProducts(_ref3) {
+      var idx = _ref3.idx,
+          quantity = _ref3.quantity;
 
       // productInfo and productsOrdered to be used by Product Display to calculate a total donation
       var productInfo = _toConsumableArray(this.state.productInfo),
@@ -65682,7 +65673,7 @@ function (_Component) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "https://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+                base = this.state.mode == "local" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "https://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
                 url = "".concat(base).concat(value);
                 fields = _extends({}, this.state.fields);
                 _context3.prev = 3;
@@ -65695,7 +65686,7 @@ function (_Component) {
                 _JSON$parse = JSON.parse(result), city = _JSON$parse.city, state = _JSON$parse.state, zip = _JSON$parse.zip, returnCode = _JSON$parse.returnCode, returnMessage = _JSON$parse.returnMessage; // console.log({ city, state, zip, returnCode, returnMessage })
 
                 if (!(returnCode == 1)) {
-                  _context3.next = 20;
+                  _context3.next = 19;
                   break;
                 }
 
@@ -65703,8 +65694,7 @@ function (_Component) {
                 error = oldCity && !city.toUpperCase().includes(oldCity);
                 newCity = error || !oldCity ? city.split(";")[0] : oldCity;
                 fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
-                fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
-                fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
+                fields[name == "ShipToZip" ? "ShipToState" : "State"] = state; // fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
 
                 if (name == "Zip") {
                   fields["Country"] = "United States";
@@ -65715,28 +65705,28 @@ function (_Component) {
                 });
                 return _context3.abrupt("return", error ? city : '');
 
-              case 20:
+              case 19:
                 return _context3.abrupt("return", returnMessage);
 
-              case 21:
-                _context3.next = 27;
+              case 20:
+                _context3.next = 26;
                 break;
 
-              case 23:
-                _context3.prev = 23;
+              case 22:
+                _context3.prev = 22;
                 _context3.t0 = _context3["catch"](3);
                 console.error(_context3.t0);
                 return _context3.abrupt("return", '');
 
-              case 27:
+              case 26:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[3, 23]]);
+        }, _callee3, this, [[3, 22]]);
       }));
 
-      return function callZipCityStateService(_x3, _x4) {
+      return function callZipCityStateService(_x2, _x3) {
         return _callZipCityStateService.apply(this, arguments);
       };
     }()
@@ -65789,7 +65779,7 @@ function (_Component) {
         }, _callee4, this, [[2, 10]]);
       }));
 
-      return function callAddressVerification(_x5, _x6, _x7, _x8) {
+      return function callAddressVerification(_x4, _x5, _x6, _x7) {
         return _callAddressVerification.apply(this, arguments);
       };
     }()
@@ -66976,7 +66966,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57760" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51455" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

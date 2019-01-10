@@ -71,7 +71,7 @@ function AddressBlock({fields, errors, handleInputChange, getPhone, internationa
                     specialStyle="styles.form-group--Zip" 
                     label="Zip" 
                     placeholder="Zip*" 
-                    maxLength={fields.Country != "US" ? 25 : 5} 
+                    maxLength={fields.Country != "United States" ? 25 : 5} 
                     required={true} 
                     value={fields.Zip} 
                     handleInputChange={handleInputChange} 

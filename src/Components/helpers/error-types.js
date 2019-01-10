@@ -16,6 +16,8 @@ const formErrors = {
 }
 
 const breakingErrors = [
+    "Proxy Error",
+    "Invalid API Access Key or Request URL",
     "Invalid Transaction Type -- Montlhy, Single, or Product Only",
     "Charge day required for Monthly Credit Card Gifts",
     "Valid Client IP is required",
