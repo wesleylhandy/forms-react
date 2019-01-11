@@ -24,7 +24,8 @@ class ConfirmationPage extends Component {
             cssConfig: props.cssConfig,
             formData: props.formData,
             formAction: props.formAction,
-            ready: false
+            ready: false,
+            msgUris: []
         }
         this.getGlobals = this.getGlobals.bind(this)
         this.handleMessage = this.handleMessage.bind(this)
@@ -36,17 +37,22 @@ class ConfirmationPage extends Component {
 
         window.addEventListener('beforeunload', handleUnload)
         window.addEventListener('message', this.handleMessage, false)   
-        this.getGlobals();
+        try {
+            this.getGlobals();
+        } catch (err) {
+            console.error({err})
+        }
         
     }
 
     async getGlobals() {
-        const url = this.state.mode == "development" ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json'
+        const isSecure = window.location.protocol == "https:"
+        const url = this.state.mode !== "production" && !isSecure ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json'
         try {
             const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUri} = await callApi(url)
-            this.setState({ready: true, devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri})
+            this.setState({ready: true, msgUris: [devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri]})
         } catch (err) {
-            console.error(err);
+            console.error({err});
         }
     }
 
@@ -56,7 +62,7 @@ class ConfirmationPage extends Component {
             return;
         } 
         const {origin} = e;
-        const isOrigin = this.state.mode == "development" ? origin == this.state.devServicesUri || origin == this.state.preProdServicesUri : origin == this.state.prodServicesUri;
+        const isOrigin = this.state.msgUris.includes(origin)
         if (!isOrigin) {
             return
         }

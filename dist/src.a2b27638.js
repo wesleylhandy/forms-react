@@ -66250,7 +66250,8 @@ function (_Component) {
       cssConfig: props.cssConfig,
       formData: props.formData,
       formAction: props.formAction,
-      ready: false
+      ready: false,
+      msgUris: []
     };
     _this.getGlobals = _this.getGlobals.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleMessage = _this.handleMessage.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -66264,7 +66265,14 @@ function (_Component) {
     value: function componentDidMount() {
       window.addEventListener('beforeunload', handleUnload);
       window.addEventListener('message', this.handleMessage, false);
-      this.getGlobals();
+
+      try {
+        this.getGlobals();
+      } catch (err) {
+        console.error({
+          err: err
+        });
+      }
     }
   }, {
     key: "getGlobals",
@@ -66272,18 +66280,19 @@ function (_Component) {
       var _getGlobals = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
-        var url, _ref, devServicesUri, preProdServicesUri, prodServicesUri, devReceiptUri, preProdReceiptUri, prodReceiptUri;
+        var isSecure, url, _ref, devServicesUri, preProdServicesUri, prodServicesUri, devReceiptUri, preProdReceiptUri, prodReceiptUri;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                url = this.state.mode == "development" ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json';
-                _context.prev = 1;
-                _context.next = 4;
+                isSecure = window.location.protocol == "https:";
+                url = this.state.mode !== "production" && !isSecure ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json';
+                _context.prev = 2;
+                _context.next = 5;
                 return (0, _fetchHelpers.callApi)(url);
 
-              case 4:
+              case 5:
                 _ref = _context.sent;
                 devServicesUri = _ref.devServicesUri;
                 preProdServicesUri = _ref.preProdServicesUri;
@@ -66293,27 +66302,24 @@ function (_Component) {
                 prodReceiptUri = _ref.prodReceiptUri;
                 this.setState({
                   ready: true,
-                  devServicesUri: devServicesUri,
-                  devReceiptUri: devReceiptUri,
-                  preProdServicesUri: preProdServicesUri,
-                  preProdReceiptUri: preProdReceiptUri,
-                  prodServicesUri: prodServicesUri,
-                  prodReceiptUri: prodReceiptUri
+                  msgUris: [devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri]
                 });
-                _context.next = 17;
+                _context.next = 18;
                 break;
 
-              case 14:
-                _context.prev = 14;
-                _context.t0 = _context["catch"](1);
-                console.error(_context.t0);
+              case 15:
+                _context.prev = 15;
+                _context.t0 = _context["catch"](2);
+                console.error({
+                  err: _context.t0
+                });
 
-              case 17:
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[1, 14]]);
+        }, _callee, this, [[2, 15]]);
       }));
 
       return function getGlobals() {
@@ -66330,7 +66336,7 @@ function (_Component) {
       }
 
       var origin = e.origin;
-      var isOrigin = this.state.mode == "development" ? origin == this.state.devServicesUri || origin == this.state.preProdServicesUri : origin == this.state.prodServicesUri;
+      var isOrigin = this.state.msgUris.includes(origin);
 
       if (!isOrigin) {
         return;
@@ -66505,7 +66511,7 @@ if (module.hot) {
 var Banner = function Banner() {
   return _react.default.createElement("div", {
     className: "banner__19s5S"
-  }, "Development Environment");
+  }, "Form Under Development");
 };
 
 var _default = Banner;
@@ -66966,7 +66972,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51455" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59589" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
