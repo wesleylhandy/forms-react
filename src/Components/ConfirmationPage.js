@@ -10,21 +10,12 @@ function handleUnload(e){
     return "Are you sure you want to go back?\n You may lose all your changes to this page."
 }
 
-function handleUnload(e){
-    e.returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page."
-    return "Are you sure you want to go back?\n You may lose all your changes to this page."
-}
-
 class ConfirmationPage extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            mode: props.mode,
-            cssConfig: props.cssConfig,
-            formData: props.formData,
-            formAction: props.formAction,
             ready: false,
+            confirmationSubmitted: false,
             msgUris: []
         }
         this.getGlobals = this.getGlobals.bind(this)
@@ -57,8 +48,9 @@ class ConfirmationPage extends Component {
     }
 
     handleMessage(e) {
-        const data = e.data ? JSON.parse(e.data) : {}
-        if (data.type !== "go back clicked" && data.type !=="render receipt") {
+        const { type, tracking_vars } = e.data ? JSON.parse(e.data) : {}
+        const types = ["go back clicked", "render receipt", "confirmation submitted"]
+        if (!types.includes(type)) {
             return;
         } 
         const {origin} = e;
@@ -66,12 +58,17 @@ class ConfirmationPage extends Component {
         if (!isOrigin) {
             return
         }
-        if (data.type === "go back clicked") {
-            this.reRenderForm(this.state.formData);
-        } else if (data.type === "render receipt") {
-            // console.log('Render Receipt')
-            // console.log({tracking_vars:data.tracking_vars})
-            this.renderReceiptPage(data.tracking_vars);
+        switch(type) {
+            case "go back clicked" :
+                this.reRenderForm(this.props.formData);
+                break;
+            case "render receipt":
+                this.renderReceiptPage(tracking_vars);
+                break;
+            case "confirmation submitted":
+                console.log(type)
+                this.setState({confirmationSubmitted: true})
+                break;
         }
         return;
     }
@@ -85,7 +82,7 @@ class ConfirmationPage extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.state.ready !== nextState.ready) {
+        if (this.state.ready !== nextState.ready || this.state.confirmationSubmitted !== nextState.confirmationSubmitted) {
             return true
         }
         return false
@@ -97,15 +94,22 @@ class ConfirmationPage extends Component {
     }
 
     render() {
-
+        const { 
+            ready, 
+            confirmationSubmitted, 
+        } = this.state
+        const {
+            cssConfig, 
+            formAction, 
+            formData
+        } = this.props
         return ( 
             <React.Fragment>
-            { this.state.ready ? (
-                    <PaymentForm cssConfig={this.state.cssConfig} formAction={this.state.formAction} formData={this.state.formData}  />                
-                ) : (
-                    <Spinner />
-                )
-            }
+                { 
+                    ready ? (
+                        <PaymentForm cssConfig={cssConfig} formAction={formAction} formData={formData} confirmationSubmitted={confirmationSubmitted}/>  
+                    ) : <Spinner />
+                }            
             </React.Fragment>
         )
     }

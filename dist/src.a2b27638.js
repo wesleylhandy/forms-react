@@ -65945,7 +65945,52 @@ function (_Component) {
 
 var _default = NameAddressForm;
 exports.default = _default;
-},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./GivingArray":"src/Components/GivingArray.js","./ProductDisplay":"src/Components/ProductDisplay.js","./FundDisplay":"src/Components/FundDisplay.js","./MonthlyRadioGroup":"src/Components/MonthlyRadioGroup.js","./NameBlock":"src/Components/NameBlock.js","./ShippingAddressBlock":"src/Components/ShippingAddressBlock.js","./AddressBlock":"src/Components/AddressBlock.js","./FormOptionsBlock":"src/Components/FormOptionsBlock.js","./SubmitButton":"src/Components/SubmitButton.js","./Seals":"src/Components/Seals.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/name-address-form.module.css":"src/Components/styles/name-address-form.module.css","./helpers/error-types":"src/Components/helpers/error-types.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js","./helpers/crypt":"src/Components/helpers/crypt.js"}],"src/Components/styles/payment-form.module.css":[function(require,module,exports) {
+},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./GivingArray":"src/Components/GivingArray.js","./ProductDisplay":"src/Components/ProductDisplay.js","./FundDisplay":"src/Components/FundDisplay.js","./MonthlyRadioGroup":"src/Components/MonthlyRadioGroup.js","./NameBlock":"src/Components/NameBlock.js","./ShippingAddressBlock":"src/Components/ShippingAddressBlock.js","./AddressBlock":"src/Components/AddressBlock.js","./FormOptionsBlock":"src/Components/FormOptionsBlock.js","./SubmitButton":"src/Components/SubmitButton.js","./Seals":"src/Components/Seals.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/name-address-form.module.css":"src/Components/styles/name-address-form.module.css","./helpers/error-types":"src/Components/helpers/error-types.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js","./helpers/crypt":"src/Components/helpers/crypt.js"}],"src/Components/styles/spinner.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "loading_spinner": "loading_spinner__2HC5B",
+  "loading_spinner__flames": "loading_spinner__flames__3druA",
+  "loading_spinner__back": "loading_spinner__back__2cJwJ",
+  "flamerotate": "flamerotate__fGeMI"
+};
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/Spinner.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _spinnerModule = _interopRequireDefault(require("./styles/spinner.module.css"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+if (module.hot) {
+  module.hot.accept("./styles/spinner.module.css", function () {
+    require("./styles/spinner.module.css");
+  });
+}
+
+function Spinner() {
+  return _react.default.createElement("div", {
+    className: "loading_spinner__2HC5B"
+  }, _react.default.createElement("img", {
+    className: "loading_spinner__flames__3druA",
+    src: "//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/cbn-flame-circle.png"
+  }), _react.default.createElement("img", {
+    className: "loading_spinner__back__2cJwJ",
+    src: "//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/loader-spinner@3x.png"
+  }));
+}
+
+var _default = Spinner;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","./styles/spinner.module.css":"src/Components/styles/spinner.module.css"}],"src/Components/styles/payment-form.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -66023,7 +66068,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _getClassName2 = _interopRequireDefault(require("babel-plugin-react-css-modules/dist/browser/getClassName"));
+
 var _react = _interopRequireWildcard(require("react"));
+
+var _Spinner = _interopRequireDefault(require("./Spinner"));
 
 var _paymentFormModule = _interopRequireDefault(require("./styles/payment-form.module.css"));
 
@@ -66031,9 +66080,9 @@ var _crypt = require("./helpers/crypt");
 
 var _scrollToPoint = require("./helpers/scrollToPoint");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -66053,6 +66102,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+var _styleModuleImportMap = {
+  "styles": {
+    "form-panel": "form-panel__MNvL5",
+    "hidden": "hidden__1Q3CY"
+  }
+};
+
 if (module.hot) {
   module.hot.accept("./styles/payment-form.module.css", function () {
     require("./styles/payment-form.module.css");
@@ -66065,16 +66121,9 @@ function (_Component) {
   _inherits(PaymentForm, _Component);
 
   function PaymentForm(props) {
-    var _this;
-
     _classCallCheck(this, PaymentForm);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(PaymentForm).call(this, props));
-    _this.state = {
-      formAction: props.formAction,
-      cssConfig: props.cssConfig
-    };
-    return _this;
+    return _possibleConstructorReturn(this, _getPrototypeOf(PaymentForm).call(this, props));
   }
 
   _createClass(PaymentForm, [{
@@ -66098,7 +66147,11 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var formData = this.props.formData;
+      var _this$props = this.props,
+          formData = _this$props.formData,
+          formAction = _this$props.formAction,
+          cssConfig = _this$props.cssConfig,
+          confirmationSubmitted = _this$props.confirmationSubmitted;
       var keys = Object.keys(formData);
       var inputs = keys.map(function (k, i) {
         return _react.default.createElement("input", {
@@ -66112,23 +66165,27 @@ function (_Component) {
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("form", {
         id: "hiddenform",
         className: "hidden__1Q3CY",
-        action: this.state.formAction,
+        action: formAction,
         method: "POST",
         target: "paymentprocess"
       }, inputs, _react.default.createElement("input", {
         type: "hidden",
         name: "cssVars",
-        value: JSON.stringify(this.state.cssConfig)
+        value: JSON.stringify(cssConfig)
       }), _react.default.createElement("input", {
         id: "submit",
         type: "submit",
         hidden: true
       })), _react.default.createElement("iframe", {
-        className: "form-panel__MNvL5",
         name: "paymentprocess",
         width: "100%",
-        height: "1000px"
-      }));
+        height: "1000px",
+        className: (0, _getClassName2.default)(confirmationSubmitted ? "styles.hidden" : "styles.form-panel", _styleModuleImportMap, {
+          "handleMissingStyleName": "warn"
+        })
+      }), confirmationSubmitted && _react.default.createElement("div", {
+        className: "form-panel__MNvL5"
+      }, _react.default.createElement(_Spinner.default, null)));
     }
   }]);
 
@@ -66137,52 +66194,7 @@ function (_Component) {
 
 var _default = PaymentForm;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","./styles/payment-form.module.css":"src/Components/styles/payment-form.module.css","./helpers/crypt":"src/Components/helpers/crypt.js","./helpers/scrollToPoint":"src/Components/helpers/scrollToPoint.js"}],"src/Components/styles/spinner.module.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-module.exports = {
-  "loading_spinner": "loading_spinner__2HC5B",
-  "loading_spinner__flames": "loading_spinner__flames__3druA",
-  "loading_spinner__back": "loading_spinner__back__2cJwJ",
-  "flamerotate": "flamerotate__fGeMI"
-};
-},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/Spinner.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _spinnerModule = _interopRequireDefault(require("./styles/spinner.module.css"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-if (module.hot) {
-  module.hot.accept("./styles/spinner.module.css", function () {
-    require("./styles/spinner.module.css");
-  });
-}
-
-function Spinner() {
-  return _react.default.createElement("div", {
-    className: "loading_spinner__2HC5B"
-  }, _react.default.createElement("img", {
-    className: "loading_spinner__flames__3druA",
-    src: "//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/cbn-flame-circle.png"
-  }), _react.default.createElement("img", {
-    className: "loading_spinner__back__2cJwJ",
-    src: "//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/loader-spinner@3x.png"
-  }));
-}
-
-var _default = Spinner;
-exports.default = _default;
-},{"react":"node_modules/react/index.js","./styles/spinner.module.css":"src/Components/styles/spinner.module.css"}],"src/Components/ConfirmationPage.js":[function(require,module,exports) {
+},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./Spinner":"src/Components/Spinner.js","./styles/payment-form.module.css":"src/Components/styles/payment-form.module.css","./helpers/crypt":"src/Components/helpers/crypt.js","./helpers/scrollToPoint":"src/Components/helpers/scrollToPoint.js"}],"src/Components/ConfirmationPage.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -66229,11 +66241,6 @@ function handleUnload(e) {
   return "Are you sure you want to go back?\n You may lose all your changes to this page.";
 }
 
-function handleUnload(e) {
-  e.returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page.";
-  return "Are you sure you want to go back?\n You may lose all your changes to this page.";
-}
-
 var ConfirmationPage =
 /*#__PURE__*/
 function (_Component) {
@@ -66246,11 +66253,8 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ConfirmationPage).call(this, props));
     _this.state = {
-      mode: props.mode,
-      cssConfig: props.cssConfig,
-      formData: props.formData,
-      formAction: props.formAction,
       ready: false,
+      confirmationSubmitted: false,
       msgUris: []
     };
     _this.getGlobals = _this.getGlobals.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -66287,7 +66291,7 @@ function (_Component) {
             switch (_context.prev = _context.next) {
               case 0:
                 isSecure = window.location.protocol == "https:";
-                url = this.state.mode !== "production" && !isSecure ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json';
+                url = !isSecure ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json';
                 _context.prev = 2;
                 _context.next = 5;
                 return (0, _fetchHelpers.callApi)(url);
@@ -66329,9 +66333,13 @@ function (_Component) {
   }, {
     key: "handleMessage",
     value: function handleMessage(e) {
-      var data = e.data ? JSON.parse(e.data) : {};
+      var _ref2 = e.data ? JSON.parse(e.data) : {},
+          type = _ref2.type,
+          tracking_vars = _ref2.tracking_vars;
 
-      if (data.type !== "go back clicked" && data.type !== "render receipt") {
+      var types = ["go back clicked", "render receipt", "confirmation submitted"];
+
+      if (!types.includes(type)) {
         return;
       }
 
@@ -66342,12 +66350,21 @@ function (_Component) {
         return;
       }
 
-      if (data.type === "go back clicked") {
-        this.reRenderForm(this.state.formData);
-      } else if (data.type === "render receipt") {
-        // console.log('Render Receipt')
-        // console.log({tracking_vars:data.tracking_vars})
-        this.renderReceiptPage(data.tracking_vars);
+      switch (type) {
+        case "go back clicked":
+          this.reRenderForm(this.props.formData);
+          break;
+
+        case "render receipt":
+          this.renderReceiptPage(tracking_vars);
+          break;
+
+        case "confirmation submitted":
+          console.log(type);
+          this.setState({
+            confirmationSubmitted: true
+          });
+          break;
       }
 
       return;
@@ -66365,7 +66382,7 @@ function (_Component) {
   }, {
     key: "shouldComponentUpdate",
     value: function shouldComponentUpdate(nextProps, nextState) {
-      if (this.state.ready !== nextState.ready) {
+      if (this.state.ready !== nextState.ready || this.state.confirmationSubmitted !== nextState.confirmationSubmitted) {
         return true;
       }
 
@@ -66380,10 +66397,18 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return _react.default.createElement(_react.default.Fragment, null, this.state.ready ? _react.default.createElement(_PaymentForm.default, {
-        cssConfig: this.state.cssConfig,
-        formAction: this.state.formAction,
-        formData: this.state.formData
+      var _this$state = this.state,
+          ready = _this$state.ready,
+          confirmationSubmitted = _this$state.confirmationSubmitted;
+      var _this$props = this.props,
+          cssConfig = _this$props.cssConfig,
+          formAction = _this$props.formAction,
+          formData = _this$props.formData;
+      return _react.default.createElement(_react.default.Fragment, null, ready ? _react.default.createElement(_PaymentForm.default, {
+        cssConfig: cssConfig,
+        formAction: formAction,
+        formData: formData,
+        confirmationSubmitted: confirmationSubmitted
       }) : _react.default.createElement(_Spinner.default, null));
     }
   }]);
@@ -66972,7 +66997,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59589" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64127" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
