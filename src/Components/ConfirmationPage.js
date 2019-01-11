@@ -47,7 +47,7 @@ class ConfirmationPage extends Component {
 
     async getGlobals() {
         const isSecure = window.location.protocol == "https:"
-        const url = this.state.mode !== "production" && !isSecure ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json'
+        const url = !isSecure ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json'
         try {
             const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUri} = await callApi(url)
             this.setState({ready: true, msgUris: [devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri]})
