@@ -83,6 +83,7 @@
 }
 
 input[type="submit"].submit-button {
+    appearance: none;
     background: var(--primary-color);
     box-sizing: border-box;
     color: var(--btn-text-color);
