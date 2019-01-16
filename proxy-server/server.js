@@ -9,6 +9,7 @@ const ipaddr = require('ipaddr.js');
 const multer = require('multer');
 const upload = multer();
 const fs = require('fs');
+const NodeRSA = require('node-rsa');
 
 process.title = "ProxyServer"
 
@@ -64,7 +65,7 @@ router.post('/thankyou', (req, res) => {
 router.get('/config/:filename', (req, res) => {
     const {filename} = req.params;
     const files = fs.readdirSync(path.resolve(__dirname, "config"))
-    if (filename && files.indexOf(filename) > -1) {
+    if (filename && files.indexOf(filename) > -1) {    
         res.sendFile(path.resolve(__dirname, "config", filename))
     } else {
         const error = new Error();
@@ -116,6 +117,45 @@ router.get('/api', (req, res) => {
     res.statusCode = 403;
     res.json({Error: "Not for Snooping Eyes"});
 });
+
+router.post("/api/encrypt", (req, res)=> {
+    const {formData, lifetime} = JSON.parse(req.body)
+    console.log({method: "Encrypt Cookie!", formData, lifetime})
+    const expiration = Date.now() + lifetime;
+    const rsa = new NodeRSA({b: 512});
+    const stringyFormData = JSON.stringify(formData)
+    const encrypted = rsa.encrypt(stringyFormData, 'base64')
+    let key = rsa.exportKey()
+    storeKeys({key, encrypted, expiration})
+    res.json({ encrypted, expiration })
+})
+
+router.post("/api/decrypt", (req, res)=>{
+    const {data} = req.body
+    console.log(JSON.stringify(req.body, null, 5))
+    console.log({method: "Decrypt Cookie!", data})
+    if (data) {
+        const parsed = JSON.parse(data)
+        const now = Date.now()
+        getKeys(parsed, now, (err, {key = '', encrypted = ''}) => {
+            if (err) {
+                res.statusCode = 500
+                res.json({"Error":err})
+                return
+            }
+        // console.log({parsed})
+            if (key && encrypted) {
+                const rsa = new NodeRSA(key);
+                const decrypted = JSON.parse(rsa.decrypt(encrypted, 'utf8'))
+                res.json(decrypted)
+            } else {
+                res.send(null)
+            }
+            return
+        })
+        res.send(null)
+    }
+})
 
 router.post('/api', (req, res) => {
     const data = {...req.body};
@@ -206,6 +246,43 @@ async function getErrorBody(response, contentType = 'text') {
     return body;
 }
 
+function storeKeys({key, encrypted, expiration}) {
+    console.log("Store Keys")
+    const fileName = path.resolve(__dirname, "config", "cookies.json")
+    console.log({fileName})
+    // console.log({key, encrypted, expiration})
+    if (!fs.existsSync(fileName)) {
+        fs.writeFileSync(fileName, JSON.stringify([{key, encrypted, expiration}]))
+    } else {
+        fs.readFile(fileName, 'utf-8', (err, data) => {
+            if (err) console.error({err})
+            console.log({data})
+            let arr = data ? JSON.parse(data) : []
+            console.log({arr})
+            arr.push({key, encrypted, expiration})
+
+            fs.writeFileSync(fileName, JSON.stringify(arr) )
+        })
+    }
+}
+
+
+function getKeys(encrypted = {}, now = 0, cb) {
+    console.log("Get Keys")
+    const fileName = path.resolve(__dirname, "config", "cookies.json")
+    console.log({ fileName} )
+    fs.readFile(fileName, 'utf-8', (err, data) => {
+        if (err) cb(err, null)
+        const arr = JSON.parse(data)
+        if (arr && arr.length) {
+            const found = arr.find(obj=>obj.encrypted === encrypted)
+            console.log({ found })
+            cb(null, found && found.expiration > now ? found : {})
+        } else {
+            cb(null, {})
+        }
+    })
+}
 
 
 app.use("/", router);

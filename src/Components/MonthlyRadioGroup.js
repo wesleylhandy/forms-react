@@ -16,14 +16,14 @@ function MonthlyRadioGroup({handleInputChange, monthlyChecked, Monthlypledgeday,
             options.push(<option key={"date-option-" + i} value={i}>{i}</option>)
         }
         return (
-            <div styleName="styles.monthlyGivingDay">
+            <React.Fragment>
                 <h5 styleName="styles.ccDayOfMonth">Charge automatically on day&nbsp;
                     <label htmlFor="Monthlypledgeday" styleName="styles.hidden">Select Date</label>
                     <select styleName="styles.ccdate" name="Monthlypledgeday" onChange={handleInputChange} value={Monthlypledgeday}>
                         { options }
                     </select>
                 &nbsp;each month.</h5>
-            </div>   
+            </React.Fragment>  
         )
     }
     return (
@@ -33,7 +33,9 @@ function MonthlyRadioGroup({handleInputChange, monthlyChecked, Monthlypledgeday,
                     <RadioButton id="monthly" name="monthly-toggle" label="Monthly Gift" checked={monthly} handleRadioClick={handleRadioClick}/>
                     <RadioButton id="single" name="monthly-toggle" label="Single Gift" checked={single} handleRadioClick={handleRadioClick}/>
                 </div>
+                <div styleName="styles.monthlyGivingDay">
                 { monthlyChecked ? renderCCInfo() : null }
+                </div>
         </div>
     )
 }

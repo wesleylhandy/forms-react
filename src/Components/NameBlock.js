@@ -9,7 +9,13 @@ import flex from './styles/flex.module.css'
 function TitleDropdown({value, error, handleInputChange}) {
     const vals = ['', "Mr", "Ms", "Mrs", "Mr and Mrs"]
     const options = vals.map((el, ind)=>{
-        return <option key={`title-${ind}`} value={el} dangerouslySetInnerHTML={{__html: ind === 0 ? 'Title* &#9663;' : el}}></option>
+        return <option 
+                key={`title-${ind}`} 
+                value={el} 
+                dangerouslySetInnerHTML={{__html: ind === 0 ? 'Title* &#9663;' : el}} 
+                disabled={ind === 0 ? "disabled" : ""} 
+                hidden={ind === 0 ? "hidden" : ""}
+            ></option>
     })
     return (
         <SelectGroup 
@@ -119,7 +125,7 @@ function NameBlock({getMiddleName, getSuffix, getSpouseInfo, fields, errors, han
                                 error={errors.Suffix}
                                 handleInputChange={handleInputChange}
                                 options={[
-                                    <option key="suff-0" value="">Suffix* &#9663;</option>,
+                                    <option key="suff-0" value="" disabled="disabled">Suffix* &#9663;</option>,
                                     <option key="suff-1" value="Jr">Jr</option>,
                                     <option key="suff-2" value="Sr">Sr</option>,
                                     <option key="suff-3" value="III">III</option>,

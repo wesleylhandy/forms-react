@@ -25,9 +25,10 @@ class App extends Component {
         
         if (formData === null) {
             localStorage.removeItem('store')
-            if (info) {
-                formData = read(info)
-            }
+        }
+
+        if (info) {
+            formData = read(info)
         }
 
         if (formData === null) {

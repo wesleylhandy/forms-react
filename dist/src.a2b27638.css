@@ -236,7 +236,8 @@
 }
 
 .error__2x8Zr.other-amt-error__2STLF {
-    bottom: 43px;
+    bottom: unset;
+    top: 12px;
     left: 50%;
     -webkit-transform: translateX(-50%);
         -ms-transform: translateX(-50%);
@@ -738,8 +739,8 @@ select.ccdate__1v9EL {
 .form-group__1kRMz {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    margin-bottom: calc(19px * .6);
-    margin-top: calc(19px * .6);
+    margin-bottom: calc(19px * .7);
+    margin-top: calc(19px * .7);
     position: relative;
     -ms-flex: 1 1 auto;
         flex: 1 1 auto;
@@ -776,11 +777,9 @@ select.ccdate__1v9EL {
 }
 
 .form-group--Title__3ZgMv {
-    -ms-flex-preferred-size: 115px;
-        flex-basis: 115px;
-    width: 115px;
-    -ms-flex: 0 0 auto;
-        flex: 0 0 auto;
+    width: 120px;
+    -ms-flex: 0 0 120px;
+        flex: 0 0 120px;
 }
 
 .form-group--Firstname__2zXJY,
@@ -808,12 +807,13 @@ select.form-control__1RcRn {
     font-family: var(--semibold-font-family);
     font-style: var(--semibold-font-style);
     font-weight: var(--semibold-font-weight);
-    height: calc(19px * 2);
+    height: 40px;
     display: block;
     width: 100%;
     margin-top: 5px;
     padding: 6px;
     line-height: 1.42857143;
+    background: none;
     background-color: var(--input-bg-color);
     border: 1px solid var(--input-border-color);
     border-radius: var(--input-border-radius);
@@ -888,6 +888,10 @@ select.form-control__1RcRn:hover {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px var(--focus-box-shadow);
 }
 
+select.form-control__1RcRn:invalid {
+    color: var(--placeholder-color);
+}
+
 div.error__1zQ64 {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
@@ -895,8 +899,9 @@ div.error__1zQ64 {
     color: var(--error-color);
     width: auto;
     line-height: unset;
-    left: 5px;
-    bottom: calc(0% - 13px);
+    left: 7px;
+    bottom: unset;
+    top: 40px;
     font-family: var(--bold-font-family);
     font-style: var(--bold-font-style);
     font-weight: var(--bold-font-weight);
@@ -1423,6 +1428,11 @@ h3.form-header__3OWCX,
         -ms-transform: translateX(-50%);
             transform: translateX(-50%);
     bottom: calc(0% - 20px);
+}
+
+.error__3olFm.amount-error__2G2h0 {
+    bottom: unset;
+    top: 38px;
 }.loading_spinner__2HC5B {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;

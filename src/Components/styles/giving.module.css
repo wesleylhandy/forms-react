@@ -142,7 +142,8 @@ h3.askarray__header {
 }
 
 .error.other-amt-error {
-    bottom: 43px;
+    bottom: unset;
+    top: 12px;
     left: 50%;
     transform: translateX(-50%);
 }

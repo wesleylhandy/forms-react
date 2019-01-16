@@ -31,7 +31,7 @@ async function getConfiguration() {
     const cssConfigUrl = base + (isWordpress ?  "?type=css_setup" : "config/css-config.json");
     let cssConfig;
     try {
-        cssConfig = await callApi(cssConfigUrl);
+        cssConfig = await callApi(cssConfigUrl, {method: 'GET'});
         // console.log({cssConfig})
         cssConfig["--base-font-size"] = "19px";
         const styleEl = document.createElement('style');
@@ -70,7 +70,7 @@ async function getConfiguration() {
     const formConfigUrl = base + (isWordpress ? "?type=form_setup" : "config/form-config.json");
     let initialState;
     try {
-        initialState = await callApi(formConfigUrl);
+        initialState = await callApi(formConfigUrl, {method: 'GET'});
         if (initialState.mode === "production") {
             if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
                 window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {}

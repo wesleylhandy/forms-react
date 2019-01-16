@@ -60,7 +60,7 @@ function AddressBlock({fields, errors, handleInputChange, getPhone, internationa
                     value={fields.State}
                     error={errors.State}
                     handleInputChange={handleInputChange}
-                    options={[<option key="state-base-0" value="">State* &#9663;</option>, getStateOptions(international)]}
+                    options={[<option key="state-base-0" value="" disabled="disabled">State* &#9663;</option>, getStateOptions(international)]}
                 />
             </div>
 
@@ -88,7 +88,7 @@ function AddressBlock({fields, errors, handleInputChange, getPhone, internationa
                             value={fields.Country}
                             error={errors.Country}
                             handleInputChange={handleInputChange}
-                            options={[<option key="country-base-0" value="">Country* &#9663;</option>, countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)]}
+                            options={[<option key="country-base-0" value="" disabled="disabled">Country* &#9663;</option>, countries.map((country, i)=><option key={`country-${i}`} value={country}>{country}</option>)]}
                         />
                     ) 
                 }

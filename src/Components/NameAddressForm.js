@@ -99,8 +99,9 @@ class NameAddressForm extends Component {
     }
 
     componentDidMount(){
+        const { hydratedData } = this.props
         // check to see if this is a postback from confirmation page
-        if (this.props.hydratedData && this.props.hydratedData.MultipleDonations) {
+        if (hydratedData && hydratedData.MultipleDonations) {
             // initialize variables in such a way as to not mutate state
             let amount = 0, 
                 isMonthly = false, 
@@ -112,7 +113,7 @@ class NameAddressForm extends Component {
                 { productsOrdered } = this.state, 
                 givingInfo = [...this.state.givingInfo], 
                 fundInfo = {...this.state.fundInfo}
-            const MultipleDonations = [...this.props.hydratedData.MultipleDonations];
+            const MultipleDonations = [...hydratedData.MultipleDonations];
             const {monthlyPledgeData, singlePledgeData, funds} = this.props
             const detailNames = [], fundNames = []
             if (monthlyPledgeData) {
@@ -175,10 +176,10 @@ class NameAddressForm extends Component {
                 hydratedAdditionalGift: additionalGift,  
                 monthlyChecked
             })
-        }
+        } 
     }
 
-    componentWillUnmount() {
+    async componentWillUnmount() {
         // if user has selected to save personal info,  
         const {savePersonalInfo} = this.state.fields
         if (savePersonalInfo) {
@@ -493,7 +494,7 @@ class NameAddressForm extends Component {
         } else {
             items.push(item)
         }
-        // console.log({items})
+        console.log({items})
         this.setState({cart: {items}})
     }
 

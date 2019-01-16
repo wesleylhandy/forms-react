@@ -31,10 +31,12 @@ class GivingArray extends Component {
             arr = monthlyOption ? monthlyAmounts : singleAmounts
         }
         const amt = defaultAmount
-        const index = getIndex(arr, amt);
-        const selectedIndex = index >=0 ? index : 99;
-        if (selectedIndex >= 0) {
-            this.addToCart(amt, index);
+        if (amt > 0 && arr.length) {
+            const index = getIndex(arr, amt);
+            const selectedIndex = index >=0 ? index : 99;
+            if (selectedIndex >= 0) {
+                this.addToCart(amt, index);
+            }
         }
     }
 

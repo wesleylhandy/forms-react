@@ -40,7 +40,7 @@ class PaymentForm extends Component {
                 <iframe styleName={confirmationSubmitted ? "styles.hidden" : "styles.form-panel"} name="paymentprocess" width="100%" height="1000px"></iframe>
                 {
                     confirmationSubmitted && (
-                        <div styleName="styles.form-panel">
+                        <div styleName="styles.form-panel" style={{height: "1000px"}}>
                             <Spinner />
                         </div>
                     )

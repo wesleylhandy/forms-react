@@ -32,7 +32,7 @@ const breakingErrors = [
  * @returns {Object} - { breaking: Boolean, name: String}
  */
 export function getErrorType(message) {
-    if (breakingErrors.indexOf(message) > -1) {
+    if (breakingErrors.indexOf(message) > -1 || message[0] == "<") {
         return { breaking: true, name: ''}
     } else {
         let name = formErrors[message];
