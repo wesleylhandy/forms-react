@@ -494,7 +494,7 @@ class NameAddressForm extends Component {
         } else {
             items.push(item)
         }
-        console.log({items})
+        // console.log({items})
         this.setState({cart: {items}})
     }
 

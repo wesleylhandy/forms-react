@@ -7,4 +7,5 @@ import('promise-polyfill');
 import('raf/polyfill');
 import('react');
 import('react-dom');
-import('node-rsa')
+import('node-rsa');
+import('shortid');
