@@ -36761,7 +36761,7 @@ var breakingErrors = ["Proxy Error", "Invalid API Access Key or Request URL", "I
  */
 
 function getErrorType(message) {
-  if (breakingErrors.indexOf(message) > -1) {
+  if (breakingErrors.indexOf(message) > -1 || message[0] == "<") {
     return {
       breaking: true,
       name: ''
@@ -66652,10 +66652,10 @@ function (_Component) {
 
     if (formData === null) {
       localStorage.removeItem('store');
+    }
 
-      if (info) {
-        formData = (0, _crypt.read)(info);
-      }
+    if (info) {
+      formData = (0, _crypt.read)(info);
     }
 
     if (formData === null) {
@@ -66828,7 +66828,9 @@ function _getConfiguration() {
             cssConfigUrl = base + (isWordpress ? "?type=css_setup" : "config/css-config.json");
             _context.prev = 8;
             _context.next = 11;
-            return (0, _fetchHelpers.callApi)(cssConfigUrl);
+            return (0, _fetchHelpers.callApi)(cssConfigUrl, {
+              method: 'GET'
+            });
 
           case 11:
             cssConfig = _context.sent;
@@ -66873,7 +66875,9 @@ function _getConfiguration() {
             formConfigUrl = base + (isWordpress ? "?type=form_setup" : "config/form-config.json");
             _context.prev = 28;
             _context.next = 31;
-            return (0, _fetchHelpers.callApi)(formConfigUrl);
+            return (0, _fetchHelpers.callApi)(formConfigUrl, {
+              method: 'GET'
+            });
 
           case 31:
             initialState = _context.sent;
@@ -67016,7 +67020,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55116" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62893" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

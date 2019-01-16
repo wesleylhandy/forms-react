@@ -1051,6 +1051,9 @@ input[type='text'].form-control__1RcRn:disabled {
 }
 
 input[type="submit"].submit-button__LRMQT {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
     background: var(--primary-color);
     -webkit-box-sizing: border-box;
             box-sizing: border-box;

@@ -376,6 +376,9 @@ input[type="checkbox"].checkbox-input__1XcRE+label:hover:before {
 }
 
 input[type="submit"].submit-button__LRMQT {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
     background: var(--primary-color);
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
