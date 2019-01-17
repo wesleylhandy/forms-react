@@ -11,7 +11,6 @@ class GivingArray extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            hydrated: false,
             initialUpdate: false,
             selectedIndex: null,
             otherAmount: 0,
@@ -40,35 +39,6 @@ class GivingArray extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        const {initialUpdate} = nextProps;
-        if (initialUpdate && !this.state.initialUpdate) {
-            return this.setState({initialUpdate})
-        }
-        const {givingInfo, monthlyChecked} = nextProps;
-        if (givingInfo && givingInfo.length && !nextProps.hydrated && !this.state.hydrated) {
-            return this.hydrateGiving(givingInfo);
-        } 
-        if (monthlyChecked !== this.props.monthlyChecked) {
-             return this.setState({monthlyChecked, selectedIndex: null}, ()=>this.props.removeFromCart('donation'))
-        }
-    }
-
-    hydrateGiving(givingInfo) {
-        const {arrayOptions: { monthlyAmounts, singleAmounts } } = this.props;
-        let { otherAmount, selectedIndex } = this.state
-        const {isMonthly, amount} = givingInfo[0]
-        const arr = isMonthly ? monthlyAmounts : singleAmounts
-        const index = getIndex(arr, amount);
-        selectedIndex = index > -1 ? index : 99;
-        otherAmount = selectedIndex == 99 ? amount : 0;
-        this.setState({selectedIndex, otherAmount, hydrated: true}, ()=> {
-            if (selectedIndex >= 0) {
-                this.addToCart(amount, index);
-            } 
-        })
-    }
-
     renderArray(amounts, selectedIndex) {
         return amounts.map((amount, i)=>(
             <div key={`array${i}`} styleName={`styles.askbutton flex.flex flex.flex-center flex.flex-axes-center ${selectedIndex == i ? "styles.selected" : ""}`} onClick={()=>this.addToCart(amount, i)}>
@@ -83,7 +53,8 @@ class GivingArray extends Component {
      * @param {Number} index - index of selected item or custom amount
      */
     addToCart(amt, index) {
-        this.setState({otherAmount: index == 99 ? amt : 0, selectedIndex: index}, () => {
+        const { otherAmountError } = this.state;
+        this.setState({otherAmount: index == 99 ? amt : 0, selectedIndex: index, otherAmountError: index !== 99 ? "" : otherAmountError}, () => {
             if (amt) {
                 const { monthlyChecked, arrayOptions: {monthlyPledgeData, singlePledgeData} } = this.props;
                 this.props.addToCart({
@@ -114,7 +85,8 @@ class GivingArray extends Component {
     }
     
     render() {
-        const { 
+        let { 
+            givingInfo : { amount, isMonthly },
             monthlyChecked,
             arrayOptions: {
                 givingFormat,
@@ -124,12 +96,20 @@ class GivingArray extends Component {
                 singleAmounts
             } 
         } = this.props;
-        const {
+        let {
             otherAmount,
             otherAmountError,
             selectedIndex
         } = this.state
-
+        // console.log({amount, selectedIndex})
+        if (amount && selectedIndex === null) {
+                const index = isMonthly ? monthlyAmounts.indexOf(amount) : singleAmounts.indexOf(amount);
+                selectedIndex =  index > -1 ? index : 99;
+                otherAmount = amount;
+                monthlyChecked = isMonthly;
+        } else {
+            otherAmount = selectedIndex == 99 ? otherAmount : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] )
+        }
         return (
             <React.Fragment>
                 <h3 styleName="styles.askarray__header">Select A {monthlyChecked ? "Monthly" : "Single"} Donation Amount</h3>
@@ -140,7 +120,7 @@ class GivingArray extends Component {
                 </div>
                 <div id="OtherGiftAmount" styleName="styles.askarray--other flex.flex flex.flex-row flex.flex-center">
                     <div id="OtherAmout" styleName={`styles.askarray__form-group--other flex.flex flex.flex-center flex.flex-axes-center${selectedIndex == 99 ? " styles.selected": ""}`}>
-                        <label styleName="styles.form-group__other-input--label" htmlFor="other-amt-input">Other Amount</label>
+                        <label styleName="styles.form-group__other-input--label" htmlFor="other-amt-input">Or Other Amount:</label>
                         <input styleName="styles.form-group__other-input" name="other-amt-input" onChange={this.handleOtherAmt} value={otherAmount == 0 ? '' : otherAmount}/>
                         <div styleName="styles.error styles.other-amt-error">{otherAmountError}</div>
                     </div> 

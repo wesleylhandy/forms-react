@@ -1,0 +1,34 @@
+{
+    "mode": "development",
+    "givingFormat": "buttons",
+    "getMiddleName": false,
+    "getSuffix": false,
+    "getSpouseInfo": false,
+    "shipping": true,
+    "international": true,
+    "getPhone": true,
+    "showGivingArray": true,
+    "monthlyOption": true,
+    "singleOption": true,
+    "defaultOption": "single",
+    "defaultAmount": 50,
+    "addGivingDescription": false,
+    "monthlyPledgeData": {
+        "DetailCprojCredit": "043250",
+        "DetailCprojMail": "043251",
+        "DetailName": "MPOrphansPromise",
+        "DetailDescription": "Orphans Promise Pledge"
+    },
+    "singlePledgeData": {
+        "DetailCprojCredit": "043250",
+        "DetailCprojMail": "043251",
+        "DetailName": "SPGFOrphansPromise",
+        "DetailDescription": "Orphans Promise Donation"
+    },
+    "AddContactYN": "Y",
+    "ContactSource": "700Club Donor",
+    "ActivityName": "700Club_Donation_Activity",
+    "SectionName": "700Club",
+    "proxy": "http://10.100.43.57:8080/api",
+    "thankYouUrl": "http://10.100.43.57:8080/thankyou"
+}

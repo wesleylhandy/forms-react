@@ -75,7 +75,7 @@ class NameAddressForm extends Component {
             hydratedFund: false,
             productsOrdered: false,
             productInfo: [],
-            givingInfo: [],
+            givingInfo: {},
             cart: {
                 items: []
             },
@@ -111,7 +111,7 @@ class NameAddressForm extends Component {
             const { products } = this.props
             let productInfo = [...this.state.productInfo], 
                 { productsOrdered } = this.state, 
-                givingInfo = [...this.state.givingInfo], 
+                givingInfo = {...this.state.givingInfo}, 
                 fundInfo = {...this.state.fundInfo}
             const MultipleDonations = [...hydratedData.MultipleDonations];
             const {monthlyPledgeData, singlePledgeData, funds} = this.props
@@ -135,7 +135,7 @@ class NameAddressForm extends Component {
                 if (type == "donation") {
                     amount = +PledgeAmount
                     isMonthly = DetailName.includes("MP") ? true : false;
-                    givingInfo.push({amount, isMonthly})
+                    givingInfo = { amount, isMonthly }
                     if (fundNames.includes(DetailName)) {
                         const index = funds.findIndex(fund=>fund.DetailDescription == DetailDescription)
                         fundInfo = funds[index]
@@ -214,7 +214,7 @@ class NameAddressForm extends Component {
         if (found > -1) {
             items[found] = {
                 type: 'donation',
-                PledgeAmount: 0,
+                PledgeAmount: items[found].PledgeAmount,
                 DetailCprojMail: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojMail : this.props.monthlyPledgeData.DetailCprojMail,
                 DetailCprojCredit: id == "singlegift"  ? this.props.singlePledgeData.DetailCprojCredit : this.props.monthlyPledgeData.DetailCprojCredit,
                 DetailDescription: id == "singlegift" ? this.props.singlePledgeData.DetailDescription : this.props.monthlyPledgeData.DetailDescription,

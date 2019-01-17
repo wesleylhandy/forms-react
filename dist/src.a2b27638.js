@@ -34766,7 +34766,6 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(GivingArray).call(this, props));
     _this.state = {
-      hydrated: false,
       initialUpdate: false,
       selectedIndex: null,
       otherAmount: 0,
@@ -34808,72 +34807,15 @@ function (_Component) {
       }
     }
   }, {
-    key: "componentWillReceiveProps",
-    value: function componentWillReceiveProps(nextProps) {
-      var _this2 = this;
-
-      var initialUpdate = nextProps.initialUpdate;
-
-      if (initialUpdate && !this.state.initialUpdate) {
-        return this.setState({
-          initialUpdate: initialUpdate
-        });
-      }
-
-      var givingInfo = nextProps.givingInfo,
-          monthlyChecked = nextProps.monthlyChecked;
-
-      if (givingInfo && givingInfo.length && !nextProps.hydrated && !this.state.hydrated) {
-        return this.hydrateGiving(givingInfo);
-      }
-
-      if (monthlyChecked !== this.props.monthlyChecked) {
-        return this.setState({
-          monthlyChecked: monthlyChecked,
-          selectedIndex: null
-        }, function () {
-          return _this2.props.removeFromCart('donation');
-        });
-      }
-    }
-  }, {
-    key: "hydrateGiving",
-    value: function hydrateGiving(givingInfo) {
-      var _this3 = this;
-
-      var _this$props$arrayOpti2 = this.props.arrayOptions,
-          monthlyAmounts = _this$props$arrayOpti2.monthlyAmounts,
-          singleAmounts = _this$props$arrayOpti2.singleAmounts;
-      var _this$state = this.state,
-          otherAmount = _this$state.otherAmount,
-          selectedIndex = _this$state.selectedIndex;
-      var _givingInfo$ = givingInfo[0],
-          isMonthly = _givingInfo$.isMonthly,
-          amount = _givingInfo$.amount;
-      var arr = isMonthly ? monthlyAmounts : singleAmounts;
-      var index = getIndex(arr, amount);
-      selectedIndex = index > -1 ? index : 99;
-      otherAmount = selectedIndex == 99 ? amount : 0;
-      this.setState({
-        selectedIndex: selectedIndex,
-        otherAmount: otherAmount,
-        hydrated: true
-      }, function () {
-        if (selectedIndex >= 0) {
-          _this3.addToCart(amount, index);
-        }
-      });
-    }
-  }, {
     key: "renderArray",
     value: function renderArray(amounts, selectedIndex) {
-      var _this4 = this;
+      var _this2 = this;
 
       return amounts.map(function (amount, i) {
         return _react.default.createElement("div", {
           key: "array".concat(i),
           onClick: function onClick() {
-            return _this4.addToCart(amount, i);
+            return _this2.addToCart(amount, i);
           },
           className: (0, _getClassName2.default)("styles.askbutton flex.flex flex.flex-center flex.flex-axes-center ".concat(selectedIndex == i ? "styles.selected" : ""), _styleModuleImportMap, {
             "handleMissingStyleName": "warn"
@@ -34892,20 +34834,22 @@ function (_Component) {
   }, {
     key: "addToCart",
     value: function addToCart(amt, index) {
-      var _this5 = this;
+      var _this3 = this;
 
+      var otherAmountError = this.state.otherAmountError;
       this.setState({
         otherAmount: index == 99 ? amt : 0,
-        selectedIndex: index
+        selectedIndex: index,
+        otherAmountError: index !== 99 ? "" : otherAmountError
       }, function () {
         if (amt) {
-          var _this5$props = _this5.props,
-              monthlyChecked = _this5$props.monthlyChecked,
-              _this5$props$arrayOpt = _this5$props.arrayOptions,
-              monthlyPledgeData = _this5$props$arrayOpt.monthlyPledgeData,
-              singlePledgeData = _this5$props$arrayOpt.singlePledgeData;
+          var _this3$props = _this3.props,
+              monthlyChecked = _this3$props.monthlyChecked,
+              _this3$props$arrayOpt = _this3$props.arrayOptions,
+              monthlyPledgeData = _this3$props$arrayOpt.monthlyPledgeData,
+              singlePledgeData = _this3$props$arrayOpt.singlePledgeData;
 
-          _this5.props.addToCart({
+          _this3.props.addToCart({
             type: 'donation',
             PledgeAmount: amt,
             DetailCprojMail: monthlyChecked ? monthlyPledgeData.DetailCprojMail : singlePledgeData.DetailCprojMail,
@@ -34915,14 +34859,14 @@ function (_Component) {
             monthly: monthlyChecked
           });
         } else {
-          _this5.props.removeFromCart('donation');
+          _this3.props.removeFromCart('donation');
         }
       });
     }
   }, {
     key: "handleOtherAmt",
     value: function handleOtherAmt(e) {
-      var _this6 = this;
+      var _this4 = this;
 
       var value = e.target.value.trim();
       var isValid = /^[0-9]{1,}$/.test(value);
@@ -34931,7 +34875,7 @@ function (_Component) {
         this.setState({
           otherAmountError: ''
         }, function () {
-          return _this6.addToCart(+value, 99);
+          return _this4.addToCart(+value, 99);
         });
       } else if (isValid) {
         this.setState({
@@ -34939,7 +34883,7 @@ function (_Component) {
           selectedIndex: null,
           otherAmountError: ''
         }, function () {
-          return _this6.props.removeFromCart('donation');
+          return _this4.props.removeFromCart('donation');
         });
       } else {
         this.setState({
@@ -34952,6 +34896,9 @@ function (_Component) {
     key: "render",
     value: function render() {
       var _this$props2 = this.props,
+          _this$props2$givingIn = _this$props2.givingInfo,
+          amount = _this$props2$givingIn.amount,
+          isMonthly = _this$props2$givingIn.isMonthly,
           monthlyChecked = _this$props2.monthlyChecked,
           _this$props2$arrayOpt = _this$props2.arrayOptions,
           givingFormat = _this$props2$arrayOpt.givingFormat,
@@ -34959,10 +34906,20 @@ function (_Component) {
           monthlyOption = _this$props2$arrayOpt.monthlyOption,
           monthlyAmounts = _this$props2$arrayOpt.monthlyAmounts,
           singleAmounts = _this$props2$arrayOpt.singleAmounts;
-      var _this$state2 = this.state,
-          otherAmount = _this$state2.otherAmount,
-          otherAmountError = _this$state2.otherAmountError,
-          selectedIndex = _this$state2.selectedIndex;
+      var _this$state = this.state,
+          otherAmount = _this$state.otherAmount,
+          otherAmountError = _this$state.otherAmountError,
+          selectedIndex = _this$state.selectedIndex; // console.log({amount, selectedIndex})
+
+      if (amount && selectedIndex === null) {
+        var index = isMonthly ? monthlyAmounts.indexOf(amount) : singleAmounts.indexOf(amount);
+        selectedIndex = index > -1 ? index : 99;
+        otherAmount = amount;
+        monthlyChecked = isMonthly;
+      } else {
+        otherAmount = selectedIndex == 99 ? otherAmount : monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex];
+      }
+
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("h3", {
         className: "askarray__header__3P2Zh"
       }, "Select A ", monthlyChecked ? "Monthly" : "Single", " Donation Amount"), _react.default.createElement("div", {
@@ -34979,7 +34936,7 @@ function (_Component) {
       }, _react.default.createElement("label", {
         className: "form-group__other-input--label__1gNEk",
         htmlFor: "other-amt-input"
-      }, "Other Amount"), _react.default.createElement("input", {
+      }, "Or Other Amount:"), _react.default.createElement("input", {
         className: "form-group__other-input__3hTcz",
         name: "other-amt-input",
         onChange: this.handleOtherAmt,
@@ -64769,7 +64726,7 @@ function (_Component) {
       hydratedFund: false,
       productsOrdered: false,
       productInfo: [],
-      givingInfo: [],
+      givingInfo: {},
       cart: {
         items: []
       },
@@ -64809,7 +64766,7 @@ function (_Component) {
 
         var productInfo = _toConsumableArray(this.state.productInfo),
             productsOrdered = this.state.productsOrdered,
-            givingInfo = _toConsumableArray(this.state.givingInfo),
+            givingInfo = _extends({}, this.state.givingInfo),
             fundInfo = _extends({}, this.state.fundInfo);
 
         var MultipleDonations = _toConsumableArray(hydratedData.MultipleDonations);
@@ -64849,10 +64806,10 @@ function (_Component) {
           if (type == "donation") {
             amount = +PledgeAmount;
             isMonthly = DetailName.includes("MP") ? true : false;
-            givingInfo.push({
+            givingInfo = {
               amount: amount,
               isMonthly: isMonthly
-            });
+            };
 
             if (fundNames.includes(DetailName)) {
               var index = funds.findIndex(function (fund) {
@@ -64996,7 +64953,7 @@ function (_Component) {
       if (found > -1) {
         items[found] = {
           type: 'donation',
-          PledgeAmount: 0,
+          PledgeAmount: items[found].PledgeAmount,
           DetailCprojMail: id == "singlegift" ? this.props.singlePledgeData.DetailCprojMail : this.props.monthlyPledgeData.DetailCprojMail,
           DetailCprojCredit: id == "singlegift" ? this.props.singlePledgeData.DetailCprojCredit : this.props.monthlyPledgeData.DetailCprojCredit,
           DetailDescription: id == "singlegift" ? this.props.singlePledgeData.DetailDescription : this.props.monthlyPledgeData.DetailDescription,
@@ -66724,7 +66681,7 @@ function (_Component) {
           type = _ref2.type,
           tracking_vars = _ref2.tracking_vars;
 
-      var types = ["go back clicked", "render receipt", "confirmation submitted"];
+      var types = ["go back clicked", "render receipt", "confirmation submitted", "form error"];
 
       if (!types.includes(type)) {
         return;
@@ -66747,9 +66704,15 @@ function (_Component) {
           break;
 
         case "confirmation submitted":
-          console.log(type);
+          // console.log(type)
           this.setState({
             confirmationSubmitted: true
+          });
+          break;
+
+        case "form error":
+          this.setState({
+            confirmationSubmited: false
           });
           break;
       }
@@ -67391,7 +67354,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58832" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56633" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

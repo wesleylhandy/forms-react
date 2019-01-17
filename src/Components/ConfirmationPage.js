@@ -50,7 +50,7 @@ class ConfirmationPage extends Component {
 
     handleMessage(e) {
         const { type, tracking_vars } = e.data ? JSON.parse(e.data) : {}
-        const types = ["go back clicked", "render receipt", "confirmation submitted"]
+        const types = ["go back clicked", "render receipt", "confirmation submitted", "form error"]
         if (!types.includes(type)) {
             return;
         } 
@@ -67,8 +67,11 @@ class ConfirmationPage extends Component {
                 this.renderReceiptPage(tracking_vars);
                 break;
             case "confirmation submitted":
-                console.log(type)
+                // console.log(type)
                 this.setState({confirmationSubmitted: true})
+                break;
+            case "form error" :
+                this.setState({confirmationSubmited: false});
                 break;
         }
         return;
