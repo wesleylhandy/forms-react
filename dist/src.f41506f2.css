@@ -10,6 +10,7 @@
     --bold-italic-font-style: italic;
     --bold-italic-font-weight: 700;
     --btn-text-color: #fff;
+    --btn-border-radius: 0;
     --error-color: crimson;
     --focus-box-shadow: rgba(102, 175, 233, .6);
     --form-bg-color: #fff;
@@ -517,19 +518,19 @@ input[type="submit"].submit-button__LRMQT>.error__2XDgr {
 .askarray--other__y-GeO {
     margin-top: 0;
     margin-bottom: 20px;
-    height: calc(19px * 3.5);
+    height: 80px;
 }
 
 .askbutton__1REXt {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    height: calc(19px * 3.5);
+    height: 65px;
     width: calc(100% / 3);
 }
 
 .askbutton__amt__20Y8v {
     background-color: var(--primary-color);
-    border-radius: var(--input-border-radius);
+    border-radius: var(--btn-border-radius);
     border: 2px solid transparent;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
@@ -560,7 +561,7 @@ input[type="submit"].submit-button__LRMQT>.error__2XDgr {
 .askarray__form-group--other__ibtGr {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    height: calc(19px * 3.5);
+    height: 80px;
     margin-bottom: 0;
     position: relative;
     white-space: nowrap;
@@ -582,7 +583,7 @@ input[type="submit"].submit-button__LRMQT>.error__2XDgr {
     -o-transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
     transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
     border: 2px solid var(--primary-color);
-    border-radius: var(--input-border-radius);
+    border-radius: var(--btn-border-radius);
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     color: var(--primary-color);

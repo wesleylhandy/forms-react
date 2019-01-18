@@ -10,6 +10,7 @@
     --bold-italic-font-style: italic;
     --bold-italic-font-weight: 700;
     --btn-text-color: #fff;
+    --btn-border-radius: 0;
     --error-color: crimson;
     --focus-box-shadow: rgba(102, 175, 233, .6);
     --form-bg-color: #fff;

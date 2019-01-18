@@ -42,7 +42,7 @@ class GivingArray extends Component {
     renderArray(amounts, selectedIndex) {
         return amounts.map((amount, i)=>(
             <div key={`array${i}`} styleName={`styles.askbutton flex.flex flex.flex-center flex.flex-axes-center ${selectedIndex == i ? "styles.selected" : ""}`} onClick={()=>this.addToCart(amount, i)}>
-                <div styleName="styles.askbutton__amt flex.flex flex.flex-center flex.flex-axes-center flex.flex-no-grow">{amount}</div>
+                <div styleName="styles.askbutton__amt flex.flex flex.flex-center flex.flex-axes-center flex.flex-no-grow">${amount}</div>
             </div>
         ))
     }
@@ -76,7 +76,7 @@ class GivingArray extends Component {
         const value = e.target.value.trim();
         const isValid = (/^[0-9]{1,}$/).test(value)
         if (isValid && value > 0) {
-            this.setState({otherAmountError: ''}, ()=> this.addToCart(+value, 99))
+            this.setState({otherAmountError: '', otherAmount: value}, ()=> this.addToCart(+value, 99))
         } else if (isValid) {
             this.setState({otherAmount: 0, selectedIndex: null, otherAmountError: ''}, ()=> this.props.removeFromCart('donation'))
         } else {
@@ -101,14 +101,16 @@ class GivingArray extends Component {
             otherAmountError,
             selectedIndex
         } = this.state
+        let key = "controlled"
         // console.log({amount, selectedIndex})
         if (amount && selectedIndex === null) {
-                const index = isMonthly ? monthlyAmounts.indexOf(amount) : singleAmounts.indexOf(amount);
-                selectedIndex =  index > -1 ? index : 99;
-                otherAmount = amount;
-                monthlyChecked = isMonthly;
+            const index = isMonthly ? monthlyAmounts.indexOf(amount) : singleAmounts.indexOf(amount);
+            selectedIndex =  index > -1 ? index : 99;
+            otherAmount = amount;
+            monthlyChecked = isMonthly;
         } else {
             otherAmount = selectedIndex == 99 ? otherAmount : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] )
+            key = selectedIndex == 99 ? key : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] ) + "-key"
         }
         return (
             <React.Fragment>
@@ -120,8 +122,8 @@ class GivingArray extends Component {
                 </div>
                 <div id="OtherGiftAmount" styleName="styles.askarray--other flex.flex flex.flex-row flex.flex-center">
                     <div id="OtherAmout" styleName={`styles.askarray__form-group--other flex.flex flex.flex-center flex.flex-axes-center${selectedIndex == 99 ? " styles.selected": ""}`}>
-                        <label styleName="styles.form-group__other-input--label" htmlFor="other-amt-input">Or Other Amount:</label>
-                        <input styleName="styles.form-group__other-input" name="other-amt-input" onChange={this.handleOtherAmt} value={otherAmount == 0 ? '' : otherAmount}/>
+                        <label styleName="styles.form-group__other-input--label" htmlFor="other-amt-input">Other Amount</label>
+                        <input key={key} styleName="styles.form-group__other-input" name="other-amt-input" onChange={this.handleOtherAmt} value={otherAmount == 0 ? '' : otherAmount}/>
                         <div styleName="styles.error styles.other-amt-error">{otherAmountError}</div>
                     </div> 
                 </div>

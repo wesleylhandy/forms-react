@@ -34822,7 +34822,7 @@ function (_Component) {
           })
         }, _react.default.createElement("div", {
           className: "askbutton__amt__20Y8v flex__ayltN flex-center__1HhTj flex-axes-center__33a6C flex-no-grow__3iHTz"
-        }, amount));
+        }, "$", amount));
       });
     }
     /**
@@ -34873,7 +34873,8 @@ function (_Component) {
 
       if (isValid && value > 0) {
         this.setState({
-          otherAmountError: ''
+          otherAmountError: '',
+          otherAmount: value
         }, function () {
           return _this4.addToCart(+value, 99);
         });
@@ -34909,7 +34910,8 @@ function (_Component) {
       var _this$state = this.state,
           otherAmount = _this$state.otherAmount,
           otherAmountError = _this$state.otherAmountError,
-          selectedIndex = _this$state.selectedIndex; // console.log({amount, selectedIndex})
+          selectedIndex = _this$state.selectedIndex;
+      var key = "controlled"; // console.log({amount, selectedIndex})
 
       if (amount && selectedIndex === null) {
         var index = isMonthly ? monthlyAmounts.indexOf(amount) : singleAmounts.indexOf(amount);
@@ -34918,6 +34920,7 @@ function (_Component) {
         monthlyChecked = isMonthly;
       } else {
         otherAmount = selectedIndex == 99 ? otherAmount : monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex];
+        key = selectedIndex == 99 ? key : (monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex]) + "-key";
       }
 
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("h3", {
@@ -34936,7 +34939,8 @@ function (_Component) {
       }, _react.default.createElement("label", {
         className: "form-group__other-input--label__1gNEk",
         htmlFor: "other-amt-input"
-      }, "Or Other Amount:"), _react.default.createElement("input", {
+      }, "Other Amount"), _react.default.createElement("input", {
+        key: key,
         className: "form-group__other-input__3hTcz",
         name: "other-amt-input",
         onChange: this.handleOtherAmt,
@@ -66712,7 +66716,7 @@ function (_Component) {
 
         case "form error":
           this.setState({
-            confirmationSubmited: false
+            confirmationSubmitted: false
           });
           break;
       }
@@ -67354,7 +67358,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56633" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55660" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

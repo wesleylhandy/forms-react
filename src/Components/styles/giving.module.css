@@ -30,18 +30,18 @@ h3.askarray__header {
 .askarray--other {
     margin-top: 0;
     margin-bottom: 20px;
-    height: calc(19px * 3.5);
+    height: 80px;
 }
 
 .askbutton {
     box-sizing: border-box;
-    height: calc(19px * 3.5);
+    height: 65px;
     width: calc(100% / 3);
 }
 
 .askbutton__amt {
     background-color: var(--primary-color);
-    border-radius: var(--input-border-radius);
+    border-radius: var(--btn-border-radius);
     border: 2px solid transparent;
     box-sizing: border-box;
     color: var(--btn-text-color);
@@ -70,7 +70,7 @@ h3.askarray__header {
 .askarray__form-group,
 .askarray__form-group--other {
     box-sizing: border-box;
-    height: calc(19px * 3.5);
+    height: 80px;
     margin-bottom: 0;
     position: relative;
     white-space: nowrap;
@@ -89,7 +89,7 @@ h3.askarray__header {
     -webkit-transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
     transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
     border: 2px solid var(--primary-color);
-    border-radius: var(--input-border-radius);
+    border-radius: var(--btn-border-radius);
     box-sizing: border-box;
     color: var(--primary-color);
     font-size: calc(19px * 1.4);
