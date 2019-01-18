@@ -71,7 +71,7 @@ class ConfirmationPage extends Component {
                 this.setState({confirmationSubmitted: true})
                 break;
             case "form error" :
-                this.setState({confirmationSubmited: false});
+                this.setState({confirmationSubmitted: false});
                 break;
         }
         return;
