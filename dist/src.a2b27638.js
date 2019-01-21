@@ -34661,6 +34661,8 @@ module.exports = {
   "askarray__form-group--other": "askarray__form-group--other__ibtGr",
   "form-group__other-input": "form-group__other-input__3hTcz",
   "form-group__other-input--label": "form-group__other-input--label__1gNEk",
+  "OtherGiftAmount": "OtherGiftAmount__1famW",
+  "OtherAmount": "OtherAmount__1Tt7b",
   "error": "error__2x8Zr",
   "other-amt-error": "other-amt-error__2STLF"
 };
@@ -34731,6 +34733,8 @@ var _styleModuleImportMap = {
     "askarray__form-group--other": "askarray__form-group--other__ibtGr",
     "form-group__other-input": "form-group__other-input__3hTcz",
     "form-group__other-input--label": "form-group__other-input--label__1gNEk",
+    "OtherGiftAmount": "OtherGiftAmount__1famW",
+    "OtherAmount": "OtherAmount__1Tt7b",
     "error": "error__2x8Zr",
     "other-amt-error": "other-amt-error__2STLF"
   }
@@ -34765,8 +34769,10 @@ function (_Component) {
     _classCallCheck(this, GivingArray);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(GivingArray).call(this, props));
+    _this.otherAmountField = _react.default.createRef();
     _this.state = {
       initialUpdate: false,
+      prevIndex: null,
       selectedIndex: null,
       otherAmount: 0,
       otherAmountError: ''
@@ -34774,6 +34780,7 @@ function (_Component) {
     _this.renderArray = _this.renderArray.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.addToCart = _this.addToCart.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleOtherAmt = _this.handleOtherAmt.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleFocus = _this.handleFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -34836,11 +34843,14 @@ function (_Component) {
     value: function addToCart(amt, index) {
       var _this3 = this;
 
-      var otherAmountError = this.state.otherAmountError;
+      var _this$state = this.state,
+          otherAmountError = _this$state.otherAmountError,
+          selectedIndex = _this$state.selectedIndex;
       this.setState({
         otherAmount: index == 99 ? amt : 0,
         selectedIndex: index,
-        otherAmountError: index !== 99 ? "" : otherAmountError
+        otherAmountError: index !== 99 ? "" : otherAmountError,
+        prevIndex: selectedIndex
       }, function () {
         if (amt) {
           var _this3$props = _this3.props,
@@ -34864,32 +34874,56 @@ function (_Component) {
       });
     }
   }, {
-    key: "handleOtherAmt",
-    value: function handleOtherAmt(e) {
+    key: "handleFocus",
+    value: function handleFocus(e) {
       var _this4 = this;
 
+      this.setState(function (state, props) {
+        if (state.selectedIndex !== 99) {
+          return {
+            selectedIndex: 99,
+            prevIndex: state.selectedIndex
+          };
+        }
+      }, function () {
+        if (_this4.state.otherAmount == 0 && _this4.props.givingInfo && !_this4.props.givingInfo.amount) {
+          _this4.props.removeFromCart('donation');
+        }
+
+        _this4.otherAmountField.current.focus();
+      });
+    }
+  }, {
+    key: "handleOtherAmt",
+    value: function handleOtherAmt(e) {
+      var _this5 = this;
+
+      var selectedIndex = this.state.selectedIndex;
       var value = e.target.value.trim();
       var isValid = /^[0-9]{1,}$/.test(value);
 
       if (isValid && value > 0) {
         this.setState({
           otherAmountError: '',
-          otherAmount: value
+          otherAmount: value,
+          prevIndex: selectedIndex
         }, function () {
-          return _this4.addToCart(+value, 99);
+          return _this5.addToCart(+value, 99);
         });
       } else if (isValid) {
         this.setState({
           otherAmount: 0,
           selectedIndex: null,
-          otherAmountError: ''
+          otherAmountError: '',
+          prevIndex: selectedIndex
         }, function () {
-          return _this4.props.removeFromCart('donation');
+          return _this5.props.removeFromCart('donation');
         });
       } else {
         this.setState({
-          otherAmount: '',
-          otherAmountError: "Number > 0"
+          otherAmount: 0,
+          otherAmountError: value !== "" ? "Number greater than Zero Only" : "",
+          prevIndex: selectedIndex
         });
       }
     }
@@ -34907,10 +34941,10 @@ function (_Component) {
           monthlyOption = _this$props2$arrayOpt.monthlyOption,
           monthlyAmounts = _this$props2$arrayOpt.monthlyAmounts,
           singleAmounts = _this$props2$arrayOpt.singleAmounts;
-      var _this$state = this.state,
-          otherAmount = _this$state.otherAmount,
-          otherAmountError = _this$state.otherAmountError,
-          selectedIndex = _this$state.selectedIndex;
+      var _this$state2 = this.state,
+          otherAmount = _this$state2.otherAmount,
+          otherAmountError = _this$state2.otherAmountError,
+          selectedIndex = _this$state2.selectedIndex;
       var key = "controlled"; // console.log({amount, selectedIndex})
 
       if (amount && selectedIndex === null) {
@@ -34920,7 +34954,7 @@ function (_Component) {
         monthlyChecked = isMonthly;
       } else {
         otherAmount = selectedIndex == 99 ? otherAmount : monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex];
-        key = selectedIndex == 99 ? key : (monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex]) + "-key";
+        key = selectedIndex == 99 || selectedIndex === null ? key : (monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex]) + "-key";
       }
 
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("h3", {
@@ -34941,10 +34975,12 @@ function (_Component) {
         htmlFor: "other-amt-input"
       }, "Other Amount"), _react.default.createElement("input", {
         key: key,
+        ref: this.otherAmountField,
         className: "form-group__other-input__3hTcz",
         name: "other-amt-input",
         onChange: this.handleOtherAmt,
-        value: otherAmount == 0 ? '' : otherAmount
+        value: otherAmount == 0 ? '' : otherAmount,
+        onFocus: this.handleFocus
       }), _react.default.createElement("div", {
         className: "error__2x8Zr other-amt-error__2STLF"
       }, otherAmountError))));
@@ -67358,7 +67394,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55660" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65359" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

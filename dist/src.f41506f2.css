@@ -622,6 +622,11 @@ input[type="submit"].submit-button__LRMQT>.error__2XDgr {
         transform: translateX(-50%);
 }
 
+#OtherGiftAmount__1famW,
+#OtherAmount__1Tt7b {
+    line-height: unset;
+}
+
 .error__2x8Zr {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
@@ -642,7 +647,7 @@ input[type="submit"].submit-button__LRMQT>.error__2XDgr {
 
 .error__2x8Zr.other-amt-error__2STLF {
     bottom: unset;
-    top: 12px;
+    top: 19px;
     left: 50%;
     -webkit-transform: translateX(-50%);
         -ms-transform: translateX(-50%);

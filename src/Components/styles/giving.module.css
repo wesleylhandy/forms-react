@@ -124,6 +124,11 @@ h3.askarray__header {
     transform: translateX(-50%);
 }
 
+#OtherGiftAmount,
+#OtherAmount {
+    line-height: unset;
+}
+
 .error {
     box-sizing: border-box;
     position: absolute;
@@ -143,7 +148,7 @@ h3.askarray__header {
 
 .error.other-amt-error {
     bottom: unset;
-    top: 12px;
+    top: 19px;
     left: 50%;
     transform: translateX(-50%);
 }

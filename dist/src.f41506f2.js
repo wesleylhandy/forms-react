@@ -267,6 +267,8 @@ module.exports = {
   "askarray__form-group--other": "askarray__form-group--other__ibtGr",
   "form-group__other-input": "form-group__other-input__3hTcz",
   "form-group__other-input--label": "form-group__other-input--label__1gNEk",
+  "OtherGiftAmount": "OtherGiftAmount__1famW",
+  "OtherAmount": "OtherAmount__1Tt7b",
   "error": "error__2x8Zr",
   "other-amt-error": "other-amt-error__2STLF"
 };
@@ -411,7 +413,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55660" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65359" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

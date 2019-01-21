@@ -10,8 +10,10 @@ function getIndex(arr,amount) {
 class GivingArray extends Component {
     constructor(props) {
         super(props)
+        this.otherAmountField = React.createRef();
         this.state = {
             initialUpdate: false,
+            prevIndex: null,
             selectedIndex: null,
             otherAmount: 0,
             otherAmountError: ''
@@ -19,6 +21,7 @@ class GivingArray extends Component {
         this.renderArray = this.renderArray.bind(this)
         this.addToCart = this.addToCart.bind(this)
         this.handleOtherAmt = this.handleOtherAmt.bind(this)
+        this.handleFocus = this.handleFocus.bind(this)
     }
 
     componentDidMount() {
@@ -53,8 +56,8 @@ class GivingArray extends Component {
      * @param {Number} index - index of selected item or custom amount
      */
     addToCart(amt, index) {
-        const { otherAmountError } = this.state;
-        this.setState({otherAmount: index == 99 ? amt : 0, selectedIndex: index, otherAmountError: index !== 99 ? "" : otherAmountError}, () => {
+        const { otherAmountError, selectedIndex } = this.state;
+        this.setState({otherAmount: index == 99 ? amt : 0, selectedIndex: index, otherAmountError: index !== 99 ? "" : otherAmountError, prevIndex: selectedIndex}, () => {
             if (amt) {
                 const { monthlyChecked, arrayOptions: {monthlyPledgeData, singlePledgeData} } = this.props;
                 this.props.addToCart({
@@ -72,15 +75,29 @@ class GivingArray extends Component {
         });
     }
 
+    handleFocus(e) {
+        this.setState((state, props)=>{
+            if (state.selectedIndex !== 99) {
+                return { selectedIndex: 99, prevIndex: state.selectedIndex}
+            }
+        }, ()=> {
+            if (this.state.otherAmount == 0 && (this.props.givingInfo && !this.props.givingInfo.amount) ){
+                this.props.removeFromCart('donation');
+            }
+            this.otherAmountField.current.focus();
+        });
+    }
+
     handleOtherAmt(e) {
+        const {selectedIndex} = this.state
         const value = e.target.value.trim();
         const isValid = (/^[0-9]{1,}$/).test(value)
         if (isValid && value > 0) {
-            this.setState({otherAmountError: '', otherAmount: value}, ()=> this.addToCart(+value, 99))
+            this.setState({otherAmountError: '', otherAmount: value, prevIndex: selectedIndex}, ()=> this.addToCart(+value, 99))
         } else if (isValid) {
-            this.setState({otherAmount: 0, selectedIndex: null, otherAmountError: ''}, ()=> this.props.removeFromCart('donation'))
+            this.setState({otherAmount: 0, selectedIndex: null, otherAmountError: '', prevIndex: selectedIndex}, ()=> this.props.removeFromCart('donation'))
         } else {
-            this.setState({otherAmount: '', otherAmountError: "Number > 0"})
+            this.setState({otherAmount: 0, otherAmountError: value !== "" ? "Number greater than Zero Only" : "", prevIndex: selectedIndex})
         }
     }
     
@@ -110,7 +127,7 @@ class GivingArray extends Component {
             monthlyChecked = isMonthly;
         } else {
             otherAmount = selectedIndex == 99 ? otherAmount : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] )
-            key = selectedIndex == 99 ? key : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] ) + "-key"
+            key = selectedIndex == 99 || selectedIndex === null ? key : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] ) + "-key"
         }
         return (
             <React.Fragment>
@@ -123,7 +140,15 @@ class GivingArray extends Component {
                 <div id="OtherGiftAmount" styleName="styles.askarray--other flex.flex flex.flex-row flex.flex-center">
                     <div id="OtherAmout" styleName={`styles.askarray__form-group--other flex.flex flex.flex-center flex.flex-axes-center${selectedIndex == 99 ? " styles.selected": ""}`}>
                         <label styleName="styles.form-group__other-input--label" htmlFor="other-amt-input">Other Amount</label>
-                        <input key={key} styleName="styles.form-group__other-input" name="other-amt-input" onChange={this.handleOtherAmt} value={otherAmount == 0 ? '' : otherAmount}/>
+                        <input 
+                            key={key} 
+                            ref={this.otherAmountField} 
+                            styleName="styles.form-group__other-input" 
+                            name="other-amt-input" 
+                            onChange={this.handleOtherAmt} 
+                            value={otherAmount == 0 ? '' : otherAmount} 
+                            onFocus={this.handleFocus}
+                        />
                         <div styleName="styles.error styles.other-amt-error">{otherAmountError}</div>
                     </div> 
                 </div>
