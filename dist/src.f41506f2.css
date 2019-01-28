@@ -729,12 +729,12 @@ select.form-control__1RcRn {
     font-family: var(--semibold-font-family);
     font-style: var(--semibold-font-style);
     font-weight: var(--semibold-font-weight);
-    height: 40px;
+    height: 44px;
     display: block;
     width: 100%;
     margin-top: 5px;
-    padding: 6px;
-    line-height: 1.42857143;
+    padding: 0 6px;
+    line-height: 44px !important;
     background: none;
     background-color: var(--input-bg-color);
     border: 1px solid var(--input-border-color);
@@ -823,7 +823,7 @@ div.error__1zQ64 {
     line-height: unset;
     left: 7px;
     bottom: unset;
-    top: 40px;
+    top: 52px;
     font-family: var(--bold-font-family);
     font-style: var(--bold-font-style);
     font-weight: var(--bold-font-weight);
