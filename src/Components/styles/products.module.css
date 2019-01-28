@@ -126,10 +126,11 @@ label.select-product__label {
 .product-total__input--label {
     box-sizing: border-box;
     font-size: calc(19px * .8);
-    height: calc(19px * 2);
-    line-height: calc(19px * 2);
+    height: 40px;
+    line-height: 40px !important;
     margin-right: 5px;
     margin-top: 5px;
+    margin-bottom: 0;
     font-family: var(--semibold-font-family);
     font-style: var(--semibold-font-style);
     font-weight: var(--semibold-font-weight);

@@ -184,9 +184,6 @@ input[type='text'].form-control:disabled {
         max-width: 100%;
         width: 100%;
     }
-}
-
-@media screen and (max-width: 375px) {
     .form-group--Firstname {
         width: 100%;
     }

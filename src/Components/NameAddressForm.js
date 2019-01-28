@@ -680,7 +680,8 @@ class NameAddressForm extends Component {
             getPhone,
             getSuffix,
             getMiddleName,
-            getSpouseInfo
+            getSpouseInfo,
+            showSeals
         } = this.props;
   
         const arrayOptions = {
@@ -825,7 +826,7 @@ class NameAddressForm extends Component {
                             submitting={submitting}
                         />
                     </fieldset>
-                    <Seals/>
+                    { showSeals && <Seals/> }
                 </div>
             </form>
 

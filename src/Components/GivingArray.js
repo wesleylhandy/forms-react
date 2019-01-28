@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
 import flex from './styles/flex.module.css'
 import styles from './styles/giving.module.css'
@@ -130,7 +130,7 @@ class GivingArray extends Component {
             key = selectedIndex == 99 || selectedIndex === null ? key : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] ) + "-key"
         }
         return (
-            <React.Fragment>
+            <Fragment>
                 <h3 styleName="styles.askarray__header">Select A {monthlyChecked ? "Monthly" : "Single"} Donation Amount</h3>
                 <div id="AskArray" styleName="styles.askarray flex.flex flex.flex-row flex.flex-center flex.flex-wrap">
                     { monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex) : null }
@@ -152,7 +152,7 @@ class GivingArray extends Component {
                         <div styleName="styles.error styles.other-amt-error">{otherAmountError}</div>
                     </div> 
                 </div>
-            </React.Fragment>
+            </Fragment>
         )
     }
 }

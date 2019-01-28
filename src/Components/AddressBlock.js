@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 
 import InputGroup from './InputGroup'
 import SelectGroup from './SelectGroup'
@@ -11,7 +11,7 @@ import { countries } from '../config/dropdowns.json'
 
 function AddressBlock({fields, errors, handleInputChange, getPhone, international}){
     return (
-        <React.Fragment>
+        <Fragment>
             <div styleName="styles.form-row flex.flex flex.flex-row flex.flex-between">
                 <InputGroup
                     type="text"
@@ -123,7 +123,7 @@ function AddressBlock({fields, errors, handleInputChange, getPhone, internationa
                     )
                 }
             </div>
-        </React.Fragment>
+        </Fragment>
     )
 }
 

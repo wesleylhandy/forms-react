@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 
 import SelectGroup from './SelectGroup'
 import InputGroup from './InputGroup'
@@ -89,7 +89,7 @@ function SpouseInput({value, error, handleInputChange}) {
 function NameBlock({getMiddleName, getSuffix, getSpouseInfo, fields, errors, handleInputChange}){  
     if (!getMiddleName && !getSuffix) {
         return (
-            <React.Fragment>
+            <Fragment>
                 <div styleName="styles.form-row styles.name-row flex.flex flex.flex-row flex.flex-between">
                     <TitleDropdown value={fields.Title} error={errors.Title} handleInputChange={handleInputChange}/>
                     <NameInput type={"First"} required={true} handleInputChange={handleInputChange} value={fields["Firstname"]} error={errors["Firstname"]}/>
@@ -100,11 +100,11 @@ function NameBlock({getMiddleName, getSuffix, getSpouseInfo, fields, errors, han
                         <SpouseInput value={fields.Spousename} error={errors.Spousename} handleInputChange={handleInputChange} />
                     )
                 }
-            </React.Fragment>
+            </Fragment>
         )
     } else {
         return (
-            <React.Fragment>
+            <Fragment>
                 <div styleName="styles.form-row flex.flex flex.flex-row flex.flex-between">
                     <TitleDropdown value={fields.Title} error={errors.Title}/>
                     <NameInput type={"First"} required={true} handleInputChange={handleInputChange} value={fields["Firstname"]} error={errors["Firstname"]}/>
@@ -141,7 +141,7 @@ function NameBlock({getMiddleName, getSuffix, getSpouseInfo, fields, errors, han
                         <SpouseInput value={fields.Spousename} error={errors.Spousename} handleInputChange={handleInputChange} />
                     )
                 }
-            </React.Fragment>
+            </Fragment>
         )
     }
 }

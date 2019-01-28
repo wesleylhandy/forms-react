@@ -34957,7 +34957,7 @@ function (_Component) {
         key = selectedIndex == 99 || selectedIndex === null ? key : (monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex]) + "-key";
       }
 
-      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("h3", {
+      return _react.default.createElement(_react.Fragment, null, _react.default.createElement("h3", {
         className: "askarray__header__3P2Zh"
       }, "Select A ", monthlyChecked ? "Monthly" : "Single", " Donation Amount"), _react.default.createElement("div", {
         id: "AskArray",
@@ -35672,7 +35672,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _RadioButton = _interopRequireDefault(require("./RadioButton"));
 
@@ -35681,6 +35681,8 @@ var _monthlyRadioModule = _interopRequireDefault(require("./styles/monthly-radio
 var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 if (module.hot) {
   module.hot.accept("./styles/flex.module.css", function () {
@@ -35712,7 +35714,7 @@ function MonthlyRadioGroup(_ref) {
       }, i));
     }
 
-    return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("h5", {
+    return _react.default.createElement(_react.Fragment, null, _react.default.createElement("h5", {
       className: "ccDayOfMonth__36uNQ"
     }, "Charge automatically on day\xA0", _react.default.createElement("label", {
       htmlFor: "Monthlypledgeday",
@@ -35964,7 +35966,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _SelectGroup = _interopRequireDefault(require("./SelectGroup"));
 
@@ -35975,6 +35977,8 @@ var _formRowModule = _interopRequireDefault(require("./styles/form-row.module.cs
 var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 if (module.hot) {
   module.hot.accept("./styles/flex.module.css", function () {
@@ -36086,7 +36090,7 @@ function NameBlock(_ref4) {
       handleInputChange = _ref4.handleInputChange;
 
   if (!getMiddleName && !getSuffix) {
-    return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
+    return _react.default.createElement(_react.Fragment, null, _react.default.createElement("div", {
       className: "form-row__3cr4u name-row__1AcL3 flex__ayltN flex-row__16BBq flex-between__3zYkx"
     }, _react.default.createElement(TitleDropdown, {
       value: fields.Title,
@@ -36110,7 +36114,7 @@ function NameBlock(_ref4) {
       handleInputChange: handleInputChange
     }));
   } else {
-    return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
+    return _react.default.createElement(_react.Fragment, null, _react.default.createElement("div", {
       className: "form-row__3cr4u flex__ayltN flex-row__16BBq flex-between__3zYkx"
     }, _react.default.createElement(TitleDropdown, {
       value: fields.Title,
@@ -36367,7 +36371,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _InputGroup = _interopRequireDefault(require("./InputGroup"));
 
@@ -36382,6 +36386,8 @@ var _renderStateOptions = _interopRequireDefault(require("./helpers/renderStateO
 var _dropdowns = require("../config/dropdowns.json");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 if (module.hot) {
   module.hot.accept("./styles/flex.module.css", function () {
@@ -36401,7 +36407,7 @@ function AddressBlock(_ref) {
       handleInputChange = _ref.handleInputChange,
       getPhone = _ref.getPhone,
       international = _ref.international;
-  return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("div", {
+  return _react.default.createElement(_react.Fragment, null, _react.default.createElement("div", {
     className: "form-row__3cr4u flex__ayltN flex-row__16BBq flex-between__3zYkx"
   }, _react.default.createElement(_InputGroup.default, {
     type: "text",
@@ -36528,11 +36534,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _checkboxModule = _interopRequireDefault(require("./styles/checkbox.module.css"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 if (module.hot) {
   module.hot.accept("./styles/checkbox.module.css", function () {
@@ -36541,7 +36549,7 @@ if (module.hot) {
 }
 
 function Checkbox(props) {
-  return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("input", {
+  return _react.default.createElement(_react.Fragment, null, _react.default.createElement("input", {
     type: "checkbox",
     className: "checkbox-input__1XcRE",
     id: props.id,
@@ -65814,7 +65822,8 @@ function (_Component) {
           getPhone = _this$props3.getPhone,
           getSuffix = _this$props3.getSuffix,
           getMiddleName = _this$props3.getMiddleName,
-          getSpouseInfo = _this$props3.getSpouseInfo;
+          getSpouseInfo = _this$props3.getSpouseInfo,
+          showSeals = _this$props3.showSeals;
       var arrayOptions = {
         givingFormat: givingFormat,
         monthlyOption: monthlyOption,
@@ -65947,7 +65956,7 @@ function (_Component) {
         error: errors.amount,
         handleSubmit: this.handleSubmit,
         submitting: submitting
-      })), _react.default.createElement(_Seals.default, null)));
+      })), showSeals && _react.default.createElement(_Seals.default, null)));
     }
   }]);
 
@@ -66541,7 +66550,7 @@ function (_Component) {
         });
       }); // console.log(JSON.stringify(this.props.cssConfig))
 
-      return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("form", {
+      return _react.default.createElement(_react.Fragment, null, _react.default.createElement("form", {
         id: "hiddenform",
         className: "hidden__1Q3CY",
         action: formAction,
@@ -66797,7 +66806,7 @@ function (_Component) {
 
       var cacheToken = _shortid.default.generate();
 
-      return _react.default.createElement(_react.default.Fragment, null, ready ? _react.default.createElement(_PaymentForm.default, {
+      return _react.default.createElement(_react.Fragment, null, ready ? _react.default.createElement(_PaymentForm.default, {
         cssConfig: cssConfig,
         formAction: formAction + "&cacheToken=".concat(cacheToken),
         formData: formData,
@@ -67394,7 +67403,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65359" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51654" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

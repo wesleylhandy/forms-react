@@ -1,9 +1,9 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import styles from './styles/checkbox.module.css'
 
 function Checkbox(props) {
     return (
-        <React.Fragment>
+        <Fragment>
             <input 
                 type='checkbox' 
                 styleName="styles.checkbox-input"
@@ -13,7 +13,7 @@ function Checkbox(props) {
                 onChange={props.handleInputChange}
             />
             <label htmlFor={props.id}>{props.label}</label> 
-        </React.Fragment>
+        </Fragment>
     )
 }
 

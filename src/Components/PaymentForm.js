@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 
 import Spinner from './Spinner'
 
@@ -31,7 +31,7 @@ class PaymentForm extends Component {
         const inputs = keys.map((k,i)=><input key={i + "-" + k} name={k} value={formData[k] ? formData[k] : ''} type="hidden"/>)
         // console.log(JSON.stringify(this.props.cssConfig))
         return (
-            <React.Fragment>
+            <Fragment>
                 <form id="hiddenform" styleName="styles.hidden" action={formAction} method="POST" target="paymentprocess">
                     {inputs}
                     <input type='hidden' name="cssVars" value={JSON.stringify(cssConfig)}/> 
@@ -45,7 +45,7 @@ class PaymentForm extends Component {
                         </div>
                     )
                 }
-            </React.Fragment>
+            </Fragment>
         )
     }
 }

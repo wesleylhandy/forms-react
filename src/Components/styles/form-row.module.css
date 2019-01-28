@@ -51,6 +51,7 @@
 }
 
 .ship-to-yes-row {
+    line-height: 19px !important;
     margin-bottom: 10px;
 }
 
@@ -158,9 +159,6 @@ input[type="submit"].submit-button>.error {
     .city-state-row>div+div {
         margin-left: 0;
     }
-}
-
-@media screen and (max-width: 375px) {
     .name-row>div+div {
         margin-left: 0;
     }

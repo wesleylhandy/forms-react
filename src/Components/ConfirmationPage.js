@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import shortid from 'shortid'
 
 import PaymentForm from './PaymentForm'
@@ -109,13 +109,13 @@ class ConfirmationPage extends Component {
         } = this.props
         const cacheToken = shortid.generate();
         return ( 
-            <React.Fragment>
+            <Fragment>
                 { 
                     ready ? (
                         <PaymentForm cssConfig={cssConfig} formAction={formAction + `&cacheToken=${cacheToken}`} formData={formData} confirmationSubmitted={confirmationSubmitted}/>  
                     ) : <Spinner />
                 }            
-            </React.Fragment>
+            </Fragment>
         )
     }
 }

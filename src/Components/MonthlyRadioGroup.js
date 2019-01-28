@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 
 import RadioButton from './RadioButton'
 
@@ -16,14 +16,14 @@ function MonthlyRadioGroup({handleInputChange, monthlyChecked, Monthlypledgeday,
             options.push(<option key={"date-option-" + i} value={i}>{i}</option>)
         }
         return (
-            <React.Fragment>
+            <Fragment>
                 <h5 styleName="styles.ccDayOfMonth">Charge automatically on day&nbsp;
                     <label htmlFor="Monthlypledgeday" styleName="styles.hidden">Select Date</label>
                     <select styleName="styles.ccdate" name="Monthlypledgeday" onChange={handleInputChange} value={Monthlypledgeday}>
                         { options }
                     </select>
                 &nbsp;each month.</h5>
-            </React.Fragment>  
+            </Fragment>  
         )
     }
     return (
