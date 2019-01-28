@@ -1,24 +1,20 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 
-import main from './styles/main.css'
-import form from './styles/form.css'
+import Spinner from './Spinner'
 
-import {crypt} from './helpers/crypt'
+import styles from './styles/payment-form.module.css'
+
+import {cryptLS} from './helpers/crypt'
 import {scrollToPoint, offsetTop} from './helpers/scrollToPoint'
 
-export default class PaymentForm extends Component {
+class PaymentForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            formAction: props.formAction,
-            cssConfig: props.cssConfig
-        }
     }
     componentDidMount() {
         const {formData} = this.props;
         const lifetime = 60 * 1000; // 60 seconds * 1000 milliseconds
-        const cookie = crypt({formData, lifetime})
-        localStorage.setItem("store", cookie);
+        cryptLS({formData}, lifetime, 'store')
 
         document.forms.hiddenform.submit.click();
         
@@ -29,19 +25,28 @@ export default class PaymentForm extends Component {
         scrollToPoint(top);
     }
     render() {
-        const {formData} = this.props;
+        const {formData, formAction, cssConfig, confirmationSubmitted} = this.props;
         const keys = Object.keys(formData)
         const inputs = keys.map((k,i)=><input key={i + "-" + k} name={k} value={formData[k] ? formData[k] : ''} type="hidden"/>)
         // console.log(JSON.stringify(this.props.cssConfig))
         return (
-            <React.Fragment>
-                <form id="hiddenform" styleName="main.hidden" action={this.state.formAction} method="POST" target="paymentprocess">
+            <Fragment>
+                <form id="hiddenform" styleName="styles.hidden" action={formAction} method="POST" target="paymentprocess">
                     {inputs}
-                    <input type='hidden' name="cssVars" value={JSON.stringify(this.state.cssConfig)}/> 
+                    <input type='hidden' name="cssVars" value={JSON.stringify(cssConfig)}/> 
                     <input id="submit" type="submit" hidden/>
                 </form>
-                <iframe styleName="form.form-panel" name="paymentprocess" width="100%" height="1000px"></iframe>
-            </React.Fragment>
+                <iframe styleName={confirmationSubmitted ? "styles.hidden" : "styles.form-panel"} name="paymentprocess" width="100%" height="1000px"></iframe>
+                {
+                    confirmationSubmitted && (
+                        <div styleName="styles.form-panel" style={{height: "1000px"}}>
+                            <Spinner />
+                        </div>
+                    )
+                }
+            </Fragment>
         )
     }
 }
+
+export default PaymentForm

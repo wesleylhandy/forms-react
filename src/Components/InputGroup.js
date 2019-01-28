@@ -1,25 +1,27 @@
 import React from 'react'
 
-import flex from './styles/flex.css'
-import input from './styles/input.css'
-import error from './styles/error.css'
+import styles from './styles/input.module.css'
 
-export default function InputGroup(props) {
+function InputGroup({id, specialStyle, label, required, international, error, value, type, maxLength, placeholder, disabled, validation, handleInputChange}) {
     return (
-        <div id={`form-field-${props.id}`} styleName={`${props.specialStyle ? props.specialStyle : ""} input.form-group flex.flex-grow`}>
-            <label htmlFor={props.id}>{props.label}<span>{props.required ? '*' : ''}</span>{ props.international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
-            <input styleName={`input.form-control${props.error ? " input.error" : ""}`}
-                type={props.type} 
-                id={props.id}
-                maxLength={props.maxLength} 
-                name={props.id} 
-                placeholder={props.placeholder}
-                required={props.required}
-                value={props.value}
-                onChange={props.handleInputChange}
-                aria-invalid={props.error ? true : false} 
+        <div id={`form-field-${id}`} styleName={`${specialStyle ? specialStyle : ""} styles.form-group`}>
+            <label htmlFor={id}>{label}<span>{required ? '*' : ''}</span>{ international ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }</label>
+            <input styleName={`styles.form-control${error ? " styles.error" : ""}`}
+                type={type} 
+                id={id}
+                maxLength={maxLength} 
+                name={id} 
+                placeholder={placeholder}
+                required={required}
+                value={value}
+                onChange={handleInputChange}
+                aria-invalid={error ? true : false}
+                disabled={disabled}
+                pattern={validation ? validation : ".*"} 
             />
-            <div styleName="error.error">{props.error}</div>
+            <div styleName="styles.error">{error}</div>
         </div>
     )
 }
+
+export default InputGroup;

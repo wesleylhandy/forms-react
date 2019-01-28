@@ -1,21 +1,18 @@
-const NodeRSA = require('node-rsa');
+import SecureLS from 'secure-ls';
+
+const ls = new SecureLS({encryptionSecret: '$3cr3t5'});
 
 /**
- * Takes in a cookie value and returns either decrypted text or null
- * @param {String} data - stringified JSON with structure
+ * Returns decrypted text or null
+ * @param {String} type - either full store or just info
  * @returns {Object|null}
  */
-export function read(data) {
-    const parsed = JSON.parse(data)
-    // console.log({parsed})
-    if (typeof parsed === "object" && parsed.hasOwnProperty("f") && parsed.hasOwnProperty("d") && parsed.hasOwnProperty("q")) {
-        let {f, d, q} = parsed;
-        const k = '-----BEGIN RSA PRIVATE KEY-----\n' + f.replace(/\^/g, '/').replace(/%/g, '9') + '\n-----END RSA PRIVATE KEY-----';
-        const rsa = new NodeRSA(k);
-        const decrypted = JSON.parse(rsa.decrypt(d.replace(/\^/g, '/'), 'utf8'))
-        const expiration = JSON.parse(rsa.decrypt(q.replace(/\^/g, '/'), 'utf8'))
+export function readLS(type) {
+    const {formData, expiration} = ls.get(type);
+    // console.log({formData, expiration})
+    if (formData && expiration) {
         const present = Date.now();
-        return present > +expiration ? null : decrypted
+        return present > +expiration ? null : formData
     } else {
         return null
     }
@@ -25,20 +22,17 @@ export function read(data) {
  * Encrypts Data for storing in browser memory
  * @param {Object} formData - Object representing the data stored
  * @param {Number} lifetime - number of milliseconds in the future to set expiration
- * @returns {String} value of the cookie, encrtyped and stringified
+ * @param {String} type - either full store or just info
  */
-export function crypt({formData, lifetime}) {
-    const expires = Date.now() + lifetime;
-    const rsa = new NodeRSA({b: 512});
-    const stringyFormData = JSON.stringify(formData)
-    const encrypted = rsa.encrypt(stringyFormData, 'base64').replace(/\//g, '^')
-    const expiration = rsa.encrypt(expires, 'base64').replace(/\//g, '^')
-    let pubKey = rsa.exportKey()
-    //remove explicit identification of this as an encription key
-    const parts = pubKey.split('\n')
-    parts.pop()
-    parts.shift()
-    pubKey = parts.join("\n").replace(/\//g, '^').replace(/9/g, '%')
-    // using replace function to mask key and encrypted data
-    return JSON.stringify({f: pubKey, d: encrypted, q: expiration })
+export function cryptLS({formData}, lifetime, type) {
+    const expiration = Date.now() + lifetime;
+    ls.set(type, {formData, expiration})
+}
+
+export function removeOneLS(type){
+    ls.remove(type);
+}
+
+export function emptyLS() {
+    ls.removeAll();
 }

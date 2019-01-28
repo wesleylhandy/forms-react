@@ -1,0 +1,76 @@
+.form-panel__MNvL5 {
+    background: var(--panel-bg-color);
+    border: var(--panel-border-width) solid var(--panel-border-color);
+    border-radius: var(--panel-border-radius);
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    padding: var(--panel-padding);
+    width: 100%;
+}
+
+.form-panel__MNvL5+.form-panel__MNvL5 {
+    margin-top: var(--panel-space-between);
+}
+
+.hidden__1Q3CY {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}.loading_spinner__2HC5B {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    height: 150px;
+    margin: 150px auto;
+    position: relative;
+    width: 150px;
+    z-index: 100;
+}
+
+.loading_spinner__flames__3druA {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    height: 150px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 150px;
+    z-index: 100;
+}
+
+.loading_spinner__back__2cJwJ {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    height: 150px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 150px;
+    z-index: 95;
+    -webkit-animation: flamerotate__fGeMI .75s linear infinite;
+    animation: flamerotate__fGeMI .75s linear infinite;
+}
+
+@-webkit-keyframes flamerotate__fGeMI {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes flamerotate__fGeMI {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}

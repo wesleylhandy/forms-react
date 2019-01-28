@@ -1,82 +1,51 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
-import flex from './styles/flex.css'
-import form from './styles/form.css'
-import main from './styles/main.css'
+import flex from './styles/flex.module.css'
+import styles from './styles/giving.module.css'
 
 function getIndex(arr,amount) {
     return arr.findIndex(amt=> +amt == +amount)
 }
 
-export default class GivingArray extends Component {
+class GivingArray extends Component {
     constructor(props) {
         super(props)
+        this.otherAmountField = React.createRef();
         this.state = {
-            defaultAmount: props.arrayOptions.defaultAmount,
-            defaultOption: props.arrayOptions.defaultOption,
-            givingFormat: props.arrayOptions.givingFormat,
-            monthlyOption: props.arrayOptions.monthlyOption,
-            singleOption: props.arrayOptions.singleOption,
-            monthlyAmounts: [...props.arrayOptions.monthlyAmounts],
-            singleAmounts: [...props.arrayOptions.singleAmounts],
-            monthlyChecked: props.arrayOptions.defaultOption == 'monthly',
-            monthlyPledgeData: {
-                DetailCprojCredit: props.arrayOptions.monthlyPledgeData.DetailCprojCredit,
-                DetailCprojMail: props.arrayOptions.monthlyPledgeData.DetailCprojMail
-            },
-            singlePledgeData: {
-                DetailCprojCredit: props.arrayOptions.singlePledgeData.DetailCprojCredit,
-                DetailCprojMail: props.arrayOptions.singlePledgeData.DetailCprojMail
-            },
+            initialUpdate: false,
+            prevIndex: null,
             selectedIndex: null,
             otherAmount: 0,
-            otherAmountError: '',
-            hydrated: false,
-            initialUpdate: false
+            otherAmountError: ''
         }
-
         this.renderArray = this.renderArray.bind(this)
         this.addToCart = this.addToCart.bind(this)
         this.handleOtherAmt = this.handleOtherAmt.bind(this)
+        this.handleFocus = this.handleFocus.bind(this)
     }
 
     componentDidMount() {
-        // console.log({hydratedAmount: this.props.hydratedAmount})
-        if (this.props.hydratedAmount) {
-            const arr = this.props.hydratedMonthly ? this.state.monthlyAmounts : this.state.singleAmounts;
-            const amt = this.props.hydratedAmount
-            const index = getIndex(arr, amt);
-            this.setState({selectedIndex: index >=0 ? index : null, hydrated: true})
+        const { defaultAmount, defaultOption, arrayOptions: { monthlyAmounts, singleAmounts, monthlyOption } } = this.props;
+        let arr = []
+        if (defaultOption !== "") {
+            arr = defaultOption == 'monthly' ? monthlyAmounts : singleAmounts;
         } else {
-            const arr = this.props.arrayOptions.defaultOption == 'monthly' ? this.state.monthlyAmounts : this.state.singleAmounts;
-            const amt = this.props.arrayOptions.defaultAmount
+            arr = monthlyOption ? monthlyAmounts : singleAmounts
+        }
+        const amt = defaultAmount
+        if (amt > 0 && arr.length) {
             const index = getIndex(arr, amt);
-            if (index >= 0) {
+            const selectedIndex = index >=0 ? index : 99;
+            if (selectedIndex >= 0) {
                 this.addToCart(amt, index);
             }
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        const {initialUpdate} = nextProps;
-        if (initialUpdate && !this.state.initialUpdate) {
-            const {givingFormat, monthlyOption, singleOption, monthlyAmounts, singleAmounts, monthlyPledgeData, singlePledgeData} = nextProps.arrayOptions;
-            return this.setState({givingFormat, monthlyOption, singleOption, monthlyAmounts: [...monthlyAmounts], singleAmounts: [...singleAmounts], monthlyChecked: nextProps.monthlyChecked ? true : false, monthlyPledgeData, singlePledgeData, initialUpdate})
-        }
-        if (nextProps.monthlyChecked != this.state.monthlyChecked) {
-            this.setState({monthlyChecked: nextProps.monthlyChecked, selectedIndex: null, otherAmount: 0})
-        }
-        if (nextProps.hydratedAmount && !this.state.hydrated) {
-            const index = nextProps.hydratedMonthly ? getIndex(this.state.monthlyAmounts, nextProps.hydratedAmount) : getIndex(this.state.singleAmounts, nextProps.hydratedAmount)
-            this.setState({selectedIndex: index >=0 ? index : null, hydrated: true})
-        }
-    }
-
     renderArray(amounts, selectedIndex) {
-
         return amounts.map((amount, i)=>(
-            <div key={`array${i}`} styleName={`form.askbutton flex.flex flex.flex-center flex.flex-axes-center ${selectedIndex == i ? "form.selected" : ""}`} onClick={()=>this.addToCart(amount, i)}>
-                <div styleName="form.askbutton__amt flex.flex flex.flex-center flex.flex-axes-center flex.flex-no-grow">{amount}</div>
+            <div key={`array${i}`} styleName={`styles.askbutton flex.flex flex.flex-center flex.flex-axes-center ${selectedIndex == i ? "styles.selected" : ""}`} onClick={()=>this.addToCart(amount, i)}>
+                <div styleName="styles.askbutton__amt flex.flex flex.flex-center flex.flex-axes-center flex.flex-no-grow">${amount}</div>
             </div>
         ))
     }
@@ -87,46 +56,105 @@ export default class GivingArray extends Component {
      * @param {Number} index - index of selected item or custom amount
      */
     addToCart(amt, index) {
-        this.setState({otherAmount: index == 99 ? amt : '', selectedIndex: index})
-        const monthlyChecked = this.state.monthlyChecked;
-        this.props.addToCart({
-            type: 'donation',
-            PledgeAmount: amt,
-            DetailCprojMail: monthlyChecked ? this.state.monthlyPledgeData.DetailCprojMail : this.state.singlePledgeData.DetailCprojMail,
-            DetailCprojCredit: monthlyChecked ? this.state.monthlyPledgeData.DetailCprojCredit : this.state.singlePledgeData.DetailCprojCredit,
-            DetailDescription: monthlyChecked ? "Monthly Pledge" : "Single Pledge",
-            DetailName: monthlyChecked ? "MP" : "SPGF",
-            monthly: monthlyChecked
-        })
+        const { otherAmountError, selectedIndex } = this.state;
+        this.setState({otherAmount: index == 99 ? amt : 0, selectedIndex: index, otherAmountError: index !== 99 ? "" : otherAmountError, prevIndex: selectedIndex}, () => {
+            if (amt) {
+                const { monthlyChecked, arrayOptions: {monthlyPledgeData, singlePledgeData} } = this.props;
+                this.props.addToCart({
+                    type: 'donation',
+                    PledgeAmount: amt,
+                    DetailCprojMail: monthlyChecked ? monthlyPledgeData.DetailCprojMail : singlePledgeData.DetailCprojMail,
+                    DetailCprojCredit: monthlyChecked ? monthlyPledgeData.DetailCprojCredit : singlePledgeData.DetailCprojCredit,
+                    DetailDescription: monthlyChecked ? monthlyPledgeData.DetailDescription : singlePledgeData.DetailDescription,
+                    DetailName: monthlyChecked ? monthlyPledgeData.DetailName : singlePledgeData.DetailName,
+                    monthly: monthlyChecked
+                })
+            } else {
+                this.props.removeFromCart('donation')
+            }
+        });
+    }
+
+    handleFocus(e) {
+        this.setState((state, props)=>{
+            if (state.selectedIndex !== 99) {
+                return { selectedIndex: 99, prevIndex: state.selectedIndex}
+            }
+        }, ()=> {
+            if (this.state.otherAmount == 0 && (this.props.givingInfo && !this.props.givingInfo.amount) ){
+                this.props.removeFromCart('donation');
+            }
+            this.otherAmountField.current.focus();
+        });
     }
 
     handleOtherAmt(e) {
+        const {selectedIndex} = this.state
         const value = e.target.value.trim();
         const isValid = (/^[0-9]{1,}$/).test(value)
         if (isValid && value > 0) {
-            this.addToCart(+value, 99)
+            this.setState({otherAmountError: '', otherAmount: value, prevIndex: selectedIndex}, ()=> this.addToCart(+value, 99))
         } else if (isValid) {
-            this.setState({otherAmount: 0, selectedIndex: null})
+            this.setState({otherAmount: 0, selectedIndex: null, otherAmountError: '', prevIndex: selectedIndex}, ()=> this.props.removeFromCart('donation'))
         } else {
-            this.setState({otherAmount: '', otherAmountError: "Number > 0"})
+            this.setState({otherAmount: 0, otherAmountError: value !== "" ? "Number greater than Zero Only" : "", prevIndex: selectedIndex})
         }
-        
     }
     
     render() {
+        let { 
+            givingInfo : { amount, isMonthly },
+            monthlyChecked,
+            arrayOptions: {
+                givingFormat,
+                singleOption,
+                monthlyOption,
+                monthlyAmounts, 
+                singleAmounts
+            } 
+        } = this.props;
+        let {
+            otherAmount,
+            otherAmountError,
+            selectedIndex
+        } = this.state
+        let key = "controlled"
+        // console.log({amount, selectedIndex})
+        if (amount && selectedIndex === null) {
+            const index = isMonthly ? monthlyAmounts.indexOf(amount) : singleAmounts.indexOf(amount);
+            selectedIndex =  index > -1 ? index : 99;
+            otherAmount = amount;
+            monthlyChecked = isMonthly;
+        } else {
+            otherAmount = selectedIndex == 99 ? otherAmount : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] )
+            key = selectedIndex == 99 || selectedIndex === null ? key : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] ) + "-key"
+        }
         return (
-            <React.Fragment>
-                <h3 styleName="main.caps form.form-header">Select A {this.state.monthlyChecked ? "Monthly" : "Single"} Donation Amount</h3>
-                <div id="AskArray" styleName="form.askarray flex.flex flex.flex-row flex.flex-center flex.flex-wrap">
-                    { this.state.monthlyOption && this.state.monthlyChecked ? this.renderArray(this.state.monthlyAmounts, this.state.selectedIndex) : null }
-                    { this.state.singleOption && !this.state.monthlyChecked ?  this.renderArray(this.state.singleAmounts, this.state.selectedIndex) : null }
-                    <div id="OtherAmout" styleName={`form.askarray__form-group flex.flex flex.flex-center flex.flex-axes-center${this.state.selectedIndex == 99 ? " form.selected": ""}`}>
-                        <label styleName="form.form-group__other-input--label" htmlFor="other-amt-input">Other Amount</label>
-                        <input styleName="form.form-group__other-input" name="other-amt-input" onChange={this.handleOtherAmt} value={this.state.otherAmount == 0 ? '' : this.state.otherAmount}/>
-                        <div styleName="form.error">{this.state.otherAmountError}</div>
+            <Fragment>
+                <h3 styleName="styles.askarray__header">Select A {monthlyChecked ? "Monthly" : "Single"} Donation Amount</h3>
+                <div id="AskArray" styleName="styles.askarray flex.flex flex.flex-row flex.flex-center flex.flex-wrap">
+                    { monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex) : null }
+                    { singleOption && !monthlyChecked ?  this.renderArray(singleAmounts, selectedIndex) : null }
+                    
+                </div>
+                <div id="OtherGiftAmount" styleName="styles.askarray--other flex.flex flex.flex-row flex.flex-center">
+                    <div id="OtherAmout" styleName={`styles.askarray__form-group--other flex.flex flex.flex-center flex.flex-axes-center${selectedIndex == 99 ? " styles.selected": ""}`}>
+                        <label styleName="styles.form-group__other-input--label" htmlFor="other-amt-input">Other Amount</label>
+                        <input 
+                            key={key} 
+                            ref={this.otherAmountField} 
+                            styleName="styles.form-group__other-input" 
+                            name="other-amt-input" 
+                            onChange={this.handleOtherAmt} 
+                            value={otherAmount == 0 ? '' : otherAmount} 
+                            onFocus={this.handleFocus}
+                        />
+                        <div styleName="styles.error styles.other-amt-error">{otherAmountError}</div>
                     </div> 
                 </div>
-            </React.Fragment>
+            </Fragment>
         )
     }
 }
+
+export default GivingArray

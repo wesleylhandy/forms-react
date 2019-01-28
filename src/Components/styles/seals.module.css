@@ -1,0 +1,30 @@
+.seals {
+    box-sizing: border-box;
+    margin-top: 20px;
+    padding: 0;
+    width: 100%;
+}
+
+.seals__seal {
+    box-sizing: border-box;
+    display: block;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+a.seals__seal--link,
+img.seals__seal-img {
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+
+@media screen and (max-width: 550px) {
+    .seals {
+        flex-wrap: wrap;
+    }
+    .seals__seal {
+        margin-top: 20px;
+    }
+}

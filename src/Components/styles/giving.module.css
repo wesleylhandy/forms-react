@@ -1,0 +1,154 @@
+h3.askarray__header {
+    box-sizing: border-box;
+    color: var(--heading-color);
+    text-align: center;
+    font-size: 19px;
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
+    line-height: calc(19px * 1.15);
+    margin-bottom: 5px;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-padding-before: 0;
+    -webkit-padding-start: 0;
+    -webkit-padding-after: 0;
+    text-transform: uppercase;
+}
+
+.askarray,
+.askarray--other {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    margin-bottom: 0;
+}
+
+.askarray--other {
+    margin-top: 0;
+    margin-bottom: 20px;
+    height: 80px;
+}
+
+.askbutton {
+    box-sizing: border-box;
+    height: 65px;
+    width: calc(100% / 3);
+}
+
+.askbutton__amt {
+    background-color: var(--primary-color);
+    border-radius: var(--btn-border-radius);
+    border: 2px solid transparent;
+    box-sizing: border-box;
+    color: var(--btn-text-color);
+    cursor: pointer;
+    -webkit-flex-basis: calc(19px * 4.55);
+    -ms-flex-preferred-size: calc(19px * 4.55);
+    flex-basis: calc(19px * 4.55);
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
+    font-size: calc(19px * 1.4);
+    height: calc(19px * 2.5);
+    text-align: center;
+    -webkit-transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
+    transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
+}
+
+.askbutton:hover .askbutton__amt,
+.askbutton__amt:hover,
+.askbutton.selected .askbutton__amt {
+    background-color: var(--btn-text-color);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.askarray__form-group,
+.askarray__form-group--other {
+    box-sizing: border-box;
+    height: 80px;
+    margin-bottom: 0;
+    position: relative;
+    white-space: nowrap;
+    width: calc(100% / 3);
+}
+
+.askarray__form-group--other {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-group__other-input {
+    appearance: none;
+    height: calc(19px * 2.5);
+    width: 100%;
+    -webkit-transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
+    transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--btn-border-radius);
+    box-sizing: border-box;
+    color: var(--primary-color);
+    font-size: calc(19px * 1.4);
+    text-align: center;
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
+    max-width: 220px;
+    white-space: nowrap;
+}
+
+.form-group__other-input:hover,
+.form-group__other-input:active,
+.form-group__other-input:focus {
+    border: 2px solid var(--primary-color);
+    background-color: var(--hover-bg-color);
+    box-sizing: border-box;
+    outline: none;
+}
+
+.form-group__other-input--label {
+    font-family: var(--semibold-font-family);
+    font-size: calc(19px * .7);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
+    color: var(--primary-color);
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: calc(100% - (19px * .5));
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+#OtherGiftAmount,
+#OtherAmount {
+    line-height: unset;
+}
+
+.error {
+    box-sizing: border-box;
+    position: absolute;
+    color: var(--error-color);
+    width: auto;
+    left: 5px;
+    bottom: calc(0% - 11px);
+    font-family: var(--bold-font-family);
+    font-style: var(--bold-font-style);
+    font-weight: var(--bold-font-weight);
+    font-size: calc(19px * .5);
+    opacity: 1;
+    overflow: hidden;
+    max-width: 100%;
+    white-space: nowrap;
+}
+
+.error.other-amt-error {
+    bottom: unset;
+    top: 19px;
+    left: 50%;
+    transform: translateX(-50%);
+}

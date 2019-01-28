@@ -1,18 +1,20 @@
-import React from 'react'
-import checkbox from './styles/checkbox.css'
+import React, {Fragment} from 'react'
+import styles from './styles/checkbox.module.css'
 
-export default function Checkbox(props) {
+function Checkbox(props) {
     return (
-        <React.Fragment>
+        <Fragment>
             <input 
                 type='checkbox' 
-                styleName="checkbox.checkbox-input"
+                styleName="styles.checkbox-input"
                 id={props.id} 
                 name={props.id} 
                 checked={props.checked} 
                 onChange={props.handleInputChange}
             />
             <label htmlFor={props.id}>{props.label}</label> 
-        </React.Fragment>
+        </Fragment>
     )
 }
+
+export default Checkbox

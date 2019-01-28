@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import shortid from 'shortid'
 
 import PaymentForm from './PaymentForm'
 import Spinner from './Spinner'
@@ -10,21 +11,13 @@ function handleUnload(e){
     return "Are you sure you want to go back?\n You may lose all your changes to this page."
 }
 
-function handleUnload(e){
-    e.returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page."
-    return "Are you sure you want to go back?\n You may lose all your changes to this page."
-}
-
-export default class ConfirmationPage extends Component {
+class ConfirmationPage extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            mode: props.mode,
-            cssConfig: props.cssConfig,
-            formData: props.formData,
-            formAction: props.formAction,
-            ready: false
+            ready: false,
+            confirmationSubmitted: false,
+            msgUris: []
         }
         this.getGlobals = this.getGlobals.bind(this)
         this.handleMessage = this.handleMessage.bind(this)
@@ -36,36 +29,50 @@ export default class ConfirmationPage extends Component {
 
         window.addEventListener('beforeunload', handleUnload)
         window.addEventListener('message', this.handleMessage, false)   
-        this.getGlobals();
+        try {
+            this.getGlobals();
+        } catch (err) {
+            console.error({err})
+        }
         
     }
 
     async getGlobals() {
-        const url = this.state.mode == "development" ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'http://securegiving.cbn.com/UI/globals/form-config.json'
+        const isSecure = window.location.protocol == "https:"
+        const url = !isSecure ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json'
         try {
             const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUri} = await callApi(url)
-            this.setState({ready: true, devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri})
+            this.setState({ready: true, msgUris: [devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri]})
         } catch (err) {
-            console.error(err);
+            console.error({err});
         }
     }
 
     handleMessage(e) {
-        const data = e.data ? JSON.parse(e.data) : {}
-        if (data.type !== "go back clicked" && data.type !=="render receipt") {
+        const { type, tracking_vars } = e.data ? JSON.parse(e.data) : {}
+        const types = ["go back clicked", "render receipt", "confirmation submitted", "form error"]
+        if (!types.includes(type)) {
             return;
         } 
         const {origin} = e;
-        const isOrigin = this.state.mode == "development" ? origin == this.state.devServicesUri || origin == this.state.preProdServicesUri : origin == this.state.prodServicesUri;
+        const isOrigin = this.state.msgUris.includes(origin)
         if (!isOrigin) {
             return
         }
-        if (data.type === "go back clicked") {
-            this.reRenderForm(this.state.formData);
-        } else if (data.type === "render receipt") {
-            // console.log('Render Receipt')
-            // console.log({tracking_vars:data.tracking_vars})
-            this.renderReceiptPage(data.tracking_vars);
+        switch(type) {
+            case "go back clicked" :
+                this.reRenderForm(this.props.formData);
+                break;
+            case "render receipt":
+                this.renderReceiptPage(tracking_vars);
+                break;
+            case "confirmation submitted":
+                // console.log(type)
+                this.setState({confirmationSubmitted: true})
+                break;
+            case "form error" :
+                this.setState({confirmationSubmitted: false});
+                break;
         }
         return;
     }
@@ -79,7 +86,7 @@ export default class ConfirmationPage extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.state.ready !== nextState.ready) {
+        if (this.state.ready !== nextState.ready || this.state.confirmationSubmitted !== nextState.confirmationSubmitted) {
             return true
         }
         return false
@@ -91,16 +98,26 @@ export default class ConfirmationPage extends Component {
     }
 
     render() {
-
+        const { 
+            ready, 
+            confirmationSubmitted, 
+        } = this.state
+        const {
+            cssConfig, 
+            formAction, 
+            formData
+        } = this.props
+        const cacheToken = shortid.generate();
         return ( 
-            <React.Fragment>
-            { this.state.ready ? (
-                    <PaymentForm cssConfig={this.state.cssConfig} formAction={this.state.formAction} formData={this.state.formData}  />                
-                ) : (
-                    <Spinner />
-                )
-            }
-            </React.Fragment>
+            <Fragment>
+                { 
+                    ready ? (
+                        <PaymentForm cssConfig={cssConfig} formAction={formAction + `&cacheToken=${cacheToken}`} formData={formData} confirmationSubmitted={confirmationSubmitted}/>  
+                    ) : <Spinner />
+                }            
+            </Fragment>
         )
     }
 }
+
+export default ConfirmationPage

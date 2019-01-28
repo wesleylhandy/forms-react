@@ -8,12 +8,15 @@ export async function callApi(uri, options = {}) {
     let data;
     try {
         data = await loadData(uri, options);
+        return data;
     } catch (err) {
         console.error(err)
-        throw new Error(err.body);
+        if (typeof err == "string") {
+            throw new Error(err);
+        } else {
+            throw new Error(err.message)
+        }
     }
-
-    return data;
 }
 
 /**

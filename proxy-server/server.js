@@ -9,6 +9,7 @@ const ipaddr = require('ipaddr.js');
 const multer = require('multer');
 const upload = multer();
 const fs = require('fs');
+const NodeRSA = require('node-rsa');
 
 process.title = "ProxyServer"
 
@@ -64,7 +65,7 @@ router.post('/thankyou', (req, res) => {
 router.get('/config/:filename', (req, res) => {
     const {filename} = req.params;
     const files = fs.readdirSync(path.resolve(__dirname, "config"))
-    if (filename && files.indexOf(filename) > -1) {
+    if (filename && files.indexOf(filename) > -1) {    
         res.sendFile(path.resolve(__dirname, "config", filename))
     } else {
         const error = new Error();
@@ -117,6 +118,45 @@ router.get('/api', (req, res) => {
     res.json({Error: "Not for Snooping Eyes"});
 });
 
+router.post("/api/encrypt", (req, res)=> {
+    const {formData, lifetime} = JSON.parse(req.body)
+    console.log({method: "Encrypt Cookie!", formData, lifetime})
+    const expiration = Date.now() + lifetime;
+    const rsa = new NodeRSA({b: 512});
+    const stringyFormData = JSON.stringify(formData)
+    const encrypted = rsa.encrypt(stringyFormData, 'base64')
+    let key = rsa.exportKey()
+    storeKeys({key, encrypted, expiration})
+    res.json({ encrypted, expiration })
+})
+
+router.post("/api/decrypt", (req, res)=>{
+    const {data} = req.body
+    console.log(JSON.stringify(req.body, null, 5))
+    console.log({method: "Decrypt Cookie!", data})
+    if (data) {
+        const parsed = JSON.parse(data)
+        const now = Date.now()
+        getKeys(parsed, now, (err, {key = '', encrypted = ''}) => {
+            if (err) {
+                res.statusCode = 500
+                res.json({"Error":err})
+                return
+            }
+        // console.log({parsed})
+            if (key && encrypted) {
+                const rsa = new NodeRSA(key);
+                const decrypted = JSON.parse(rsa.decrypt(encrypted, 'utf8'))
+                res.json(decrypted)
+            } else {
+                res.send(null)
+            }
+            return
+        })
+        res.send(null)
+    }
+})
+
 router.post('/api', (req, res) => {
     const data = {...req.body};
     if (!data) {
@@ -141,7 +181,8 @@ router.post('/api', (req, res) => {
     const mode = data.mode;
     delete data.mode;
     const api = process.env.epsilon
-    fetch(api,
+    console.log({api})
+    callApi(api,
     {
         method: 'POST',
         headers: {
@@ -149,40 +190,100 @@ router.post('/api', (req, res) => {
         },
         body: JSON.stringify(data)
     })
-    .catch(handleError)
-    .then(checkStatus)
-    .then(response => response.text())
     .then(msg => res.send(msg))
     .catch(error => {
+        console.log({BeforeResSentErr: JSON.stringify(error, null, 2)})
         res.statusCode = error.status
-        console.log({error})
-        res.send(error)
+        res.send(error.body)
     })
 })
 
-const checkStatus = response => {
-    if (response.status >= 200 && response.status < 300) {
-      return response;
+async function callApi(uri, options = {}) {
+    let data;
+    try {
+        data = await loadData(uri, options);
+        return data;
+    } catch ({body, status}) {
+        console.log({body, status})
+        const error = new Error(body);
+        error.status = status
+        error.body = body
+        console.error({callApiFetchErr:error})
+        throw error;
     }
+}
 
-    return response.text().then(text => {
-      return Promise.reject({
-        status: response.status,
-        ok: false,
-        statusText: response.statusText,
-        body: text
-      });
-    });
-  };
+async function loadData(uri, options = {}) {
+    let response = await fetch(uri, options);
+    const contentType = response.headers.get("content-type");
+    const {status} = response;
+    console.log({status, contentType})
+    if (status >= 200 && status < 300) { 
+        if (contentType && contentType.includes('application/json')) {
+            return response.json();
+        } else {
+            return response.text();
+        }
+    } else {
+        
+        return getErrorBody(response, contentType)
+            .then(body=>{
+                return Promise.reject({
+                    body, 
+                    status
+                })
+            })
+    }
+}
 
-const handleError = error => {
-    error.response = {
-      status: 0,
-      statusText:
-        "Cannot connect. Please make sure you are connected to internet."
-    };
-    throw error;
-};
+async function getErrorBody(response, contentType = 'text') {
+    let body;
+    if (contentType.includes('application/json')) {
+        body = await response.json();
+    } else {
+        body = await response.text();
+    }
+    return body;
+}
+
+function storeKeys({key, encrypted, expiration}) {
+    console.log("Store Keys")
+    const fileName = path.resolve(__dirname, "config", "cookies.json")
+    console.log({fileName})
+    // console.log({key, encrypted, expiration})
+    if (!fs.existsSync(fileName)) {
+        fs.writeFileSync(fileName, JSON.stringify([{key, encrypted, expiration}]))
+    } else {
+        fs.readFile(fileName, 'utf-8', (err, data) => {
+            if (err) console.error({err})
+            console.log({data})
+            let arr = data ? JSON.parse(data) : []
+            console.log({arr})
+            arr.push({key, encrypted, expiration})
+
+            fs.writeFileSync(fileName, JSON.stringify(arr) )
+        })
+    }
+}
+
+
+function getKeys(encrypted = {}, now = 0, cb) {
+    console.log("Get Keys")
+    const fileName = path.resolve(__dirname, "config", "cookies.json")
+    console.log({ fileName} )
+    fs.readFile(fileName, 'utf-8', (err, data) => {
+        if (err) cb(err, null)
+        const arr = JSON.parse(data)
+        if (arr && arr.length) {
+            const found = arr.find(obj=>obj.encrypted === encrypted)
+            console.log({ found })
+            cb(null, found && found.expiration > now ? found : {})
+        } else {
+            cb(null, {})
+        }
+    })
+}
+
 
 app.use("/", router);
 

@@ -5,7 +5,6 @@
             "webpackHotModuleReloading": true,
             "handleMissingStyleName": "warn"
         }],
-        "react-hot-loader/babel",
         "transform-object-rest-spread"
     ],
     "presets": [

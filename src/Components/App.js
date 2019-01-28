@@ -1,36 +1,30 @@
-import React, { Component } from 'react'
+import React, { Component} from 'react'
 
 import NameAddressForm from "./NameAddressForm"
-import ConfirmationPage from "./ConfirmationPage"
-import RedirectForm from './RedirectForm';
+import ConfirmationPage from './ConfirmationPage'
+import RedirectForm from './RedirectForm'
+// const ConfirmationPage = lazy ( ()=> import("./ConfirmationPage") )
+// const RedirectForm = lazy( ()=> import('./RedirectForm') );
+import Banner from './Banner'
 
-import './styles/form.css'
+import styles from './styles/app.module.css'
 
-import {read} from "./helpers/crypt"
+import {readLS, removeOneLS, emptyLS} from "./helpers/crypt"
 
 class App extends Component {
     constructor(props) {
         super(props)
-        let formData = null;
-        const store = localStorage.getItem("store")
-        const info = localStorage.getItem("info")
-
-        if (store) {
-            // console.log({store})
-            formData = read(store)
-        }
         
-        if (formData === null) {
-            localStorage.removeItem('store')
-            if (info) {
-                formData = read(info)
-            }
+        const store = readLS('store'); 
+        const info = readLS('info');
+        const formData = store ? store : info;
+        // console.log({store, info, formData})
+        if (!formData) {
+            emptyLS();
         }
-
-        if (formData === null) {
-            localStorage.clear()
+        if (!store) {
+            removeOneLS('store')
         }
-
         this.state = {
             ...props.config.initialState,
             submitted: false,
@@ -41,8 +35,7 @@ class App extends Component {
             formAction: null,
             formData: formData,
             donorID: null,
-            hydratedData: formData,
-            cssConfig: props.config.cssConfig
+            hydratedData: formData
         }
         this.submitForm = this.submitForm.bind(this)
         this.hydrateForm = this.hydrateForm.bind(this)
@@ -68,23 +61,49 @@ class App extends Component {
     }
 
     render() {
-          return ( 
-            <div styleName='form-wrapper' id="react-form-top"> 
+        const { cssConfig } = this.props.config
+        const {
+            mode, 
+            finalized, 
+            submitted, 
+            thankYouUrl, 
+            finalizedData, 
+            formData, 
+            formAction,
+            ...formState
+        } = this.state
+        return ( 
+            <div styleName='styles.form-wrapper' id="react-form-top"> 
                 { 
-                    this.state.finalized ? (
-                        <RedirectForm thankYouUrl={this.state.thankYouUrl} receiptVars={this.state.finalizedData} />
-                    ) : this.state.submitted ? ( 
-                        <ConfirmationPage 
-                            mode={this.state.mode}
-                            cssConfig={this.state.cssConfig}
-                            formData={this.state.formData} 
-                            formAction={this.state.formAction}
-                            hydrateForm={this.hydrateForm}
-                            renderReceiptPage={this.renderReceiptPage}
-                        /> 
-                    ) : (
-                        <NameAddressForm { ...this.state } submitForm={ this.submitForm }/> 
-                    )        
+                    mode !== 'production' && (
+                        <Banner />
+                    ) 
+                }
+                { 
+                    (()=> {
+                        if (finalized) {
+                            return  (
+         
+                                    <RedirectForm thankYouUrl={thankYouUrl} receiptVars={finalizedData} />
+   
+                            )
+                        } else if (submitted) {
+                            return (
+
+                                    <ConfirmationPage 
+                                        mode={mode}
+                                        cssConfig={cssConfig}
+                                        formData={formData} 
+                                        formAction={formAction}
+                                        hydrateForm={this.hydrateForm}
+                                        renderReceiptPage={this.renderReceiptPage}
+                                    />
+ 
+                            )
+                        } else {
+                            return <NameAddressForm { ...formState } mode={mode} submitForm={ this.submitForm }/>
+                        }
+                    })()     
                 } 
              </div>
         )

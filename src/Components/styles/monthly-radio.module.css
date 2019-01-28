@@ -1,0 +1,74 @@
+.monthlyGivingDay {
+    align-items: center;
+    box-sizing: border-box;
+    font-size: calc(19px * .8);
+    height: calc(19px * 2);
+}
+
+.monthly-radio {
+    box-sizing: border-box;
+    margin: 19px auto;
+    max-width: calc(19px * 15);
+}
+
+h3.form-header {
+    box-sizing: border-box;
+    color: var(--heading-color);
+    text-align: center;
+    font-size: 19px;
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
+    line-height: calc(19px * 1.15);
+    margin-bottom: 5px;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-padding-before: 0;
+    -webkit-padding-start: 0;
+    -webkit-padding-after: 0;
+}
+
+h5.ccDayOfMonth {
+    font-family: var(--form-font-family);
+    font-size: calc(19px * .7);
+    font-style: var(--form-font-style);
+    font-weight: var(--form-font-weight);
+    box-sizing: border-box;
+    opacity: 1;
+    text-align: center;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-padding-before: 0;
+    -webkit-padding-start: 0;
+    -webkit-padding-after: 0;
+    letter-spacing: unset;
+    text-transform: unset;
+    color: var(--form-text-color);
+}
+
+select.ccdate {
+    display: inline-block;
+    width: auto;
+    appearance: unset;
+    background: unset;
+    border: 1px solid var(--input-border-color);
+    border-radius: var(--input-border-radius);
+    box-sizing: border-box;
+    color: var(--form-text-color);
+    font-size: calc(19px * .7);
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
+    text-align: center;
+    height: unset;
+    padding: calc(19px * .2) calc(19px * .3);
+}
+
+.hidden {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
