@@ -4,7 +4,7 @@ import Spinner from './Spinner'
 
 import styles from './styles/payment-form.module.css'
 
-import {crypt} from './helpers/crypt'
+import {cryptLS} from './helpers/crypt'
 import {scrollToPoint, offsetTop} from './helpers/scrollToPoint'
 
 class PaymentForm extends Component {
@@ -14,8 +14,7 @@ class PaymentForm extends Component {
     componentDidMount() {
         const {formData} = this.props;
         const lifetime = 60 * 1000; // 60 seconds * 1000 milliseconds
-        const cookie = crypt({formData, lifetime})
-        localStorage.setItem("store", cookie);
+        cryptLS({formData}, lifetime, 'store')
 
         document.forms.hiddenform.submit.click();
         

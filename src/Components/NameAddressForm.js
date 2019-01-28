@@ -16,7 +16,7 @@ import styles from './styles/name-address-form.module.css'
 
 import { getErrorType } from './helpers/error-types';
 import { callApi } from './helpers/fetch-helpers';
-import { crypt } from './helpers/crypt';
+import { cryptLS, removeOneLS } from './helpers/crypt';
 
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
@@ -195,11 +195,11 @@ class NameAddressForm extends Component {
             //convert days into milliseconds
             const lifetime = days * 24 * 60 * 60 * 1000 // n days = x days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
             // encrypt and add to local storage,
-            const info = crypt({formData, lifetime});
-            localStorage.setItem("info", info);
+            cryptLS({formData}, lifetime, 'info');
+            
         } else {
             // otherwise remove any stored data from local storage
-            localStorage.removeItem("info");
+            removeOneLS('info');
         }
     }
 

@@ -9,32 +9,22 @@ import Banner from './Banner'
 
 import styles from './styles/app.module.css'
 
-import {read} from "./helpers/crypt"
+import {readLS, removeOneLS, emptyLS} from "./helpers/crypt"
 
 class App extends Component {
     constructor(props) {
         super(props)
-        let formData = null;
-        const store = localStorage.getItem("store")
-        const info = localStorage.getItem("info")
-
-        if (store) {
-            // console.log({store})
-            formData = read(store)
-        }
         
-        if (formData === null) {
-            localStorage.removeItem('store')
+        const store = readLS('store'); 
+        const info = readLS('info');
+        const formData = store ? store : info;
+        // console.log({store, info, formData})
+        if (!formData) {
+            emptyLS();
         }
-
-        if (info) {
-            formData = read(info)
+        if (!store) {
+            removeOneLS('store')
         }
-
-        if (formData === null) {
-            localStorage.clear()
-        }
-
         this.state = {
             ...props.config.initialState,
             submitted: false,
