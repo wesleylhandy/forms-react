@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 
 class HiddenForm extends Component {
     componentDidMount() {
-        console.log("Loaded and Clicking...")
+        // console.log("Loaded and Clicking...")
         window.name = JSON.stringify(this.props.receiptVars);
         document.forms.hiddenform.submit.click()
     }
