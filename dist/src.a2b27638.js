@@ -42276,8 +42276,9 @@ var _secureLs = _interopRequireDefault(require("secure-ls"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var alphabetSoup = '$3cr3t5';
 var ls = new _secureLs.default({
-  encryptionSecret: '$3cr3t5'
+  encryptionSecret: alphabetSoup
 });
 /**
  * Returns decrypted text or null
@@ -44598,6 +44599,7 @@ function (_Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       console.log("Loaded and Clicking...");
+      window.name = JSON.stringify(this.props.receiptVars);
       document.forms.hiddenform.submit.click();
     }
   }, {
@@ -44841,6 +44843,9 @@ function (_Component) {
         id: "react-form-top"
       }, mode !== 'production' && _react.default.createElement(_Banner.default, null), function () {
         if (finalized) {
+          console.log({
+            thankYouUrl: thankYouUrl
+          });
           return _react.default.createElement(_RedirectForm.default, {
             thankYouUrl: thankYouUrl,
             receiptVars: finalizedData
@@ -45127,7 +45132,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59253" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62993" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

@@ -1,6 +1,8 @@
 import SecureLS from 'secure-ls';
 
-const ls = new SecureLS({encryptionSecret: '$3cr3t5'});
+const alphabetSoup = '$3cr3t5';
+
+const ls = new SecureLS({encryptionSecret: alphabetSoup});
 
 /**
  * Returns decrypted text or null
