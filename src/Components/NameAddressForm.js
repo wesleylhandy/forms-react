@@ -282,7 +282,7 @@ class NameAddressForm extends Component {
                 let addressError, shipZipError, shipAddressError;
                 if (!zipError) {
                     try {
-                        addressError = await this.callAddressVerification(this.state.fields["Address1"], this.state.fields["City"], this.state.fields["State"], this.state.fields["Zip"])
+                        addressError = await this.callAddressVerification(this.state.fields["Address1"], this.state.fields["Address2"], this.state.fields["City"], this.state.fields["State"], this.state.fields["Zip"])
                     } catch(err) {
                         console.log("AddressVerificationError")
                         console.error({err})
@@ -298,7 +298,7 @@ class NameAddressForm extends Component {
                 }
                 if (!shipZipError && this.state.fields.ShipToYes) {
                     try {
-                        shipAddressError = await this.callAddressVerification(this.state.fields["ShipToAddress1"], this.state.fields["ShipToCity"], this.state.fields["ShipToState"], this.state.fields["ShipToZip"])
+                        shipAddressError = await this.callAddressVerification(this.state.fields["ShipToAddress1"], this.state.fields["ShipToAddress2"], this.state.fields["ShipToCity"], this.state.fields["ShipToState"], this.state.fields["ShipToZip"])
                     } catch(err) {
                         console.log("AddressVerificationError__SHIPPING")
                         console.error({err})
@@ -641,15 +641,23 @@ class NameAddressForm extends Component {
 
     /**
      * 
-     * @param {string} addr1 - user entered address
+     * @param {string} addr1 - user entered address1
+     * @param {string} addr2 - user entered address2
      * @param {string} city - user entered city
      * @param {string} state - user entered state
      * @param {string} zip - user entered zip
      * @returns {string} either empty or with error
      */
-    async callAddressVerification(addr1, city, state, zip) {
-        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx?" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx?";
-        const url = encodeURI(`${base}addr1=${encodeURIComponent(addr1)}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}&zip=${encodeURIComponent(zip)}`)
+    async callAddressVerification(addr1, addr2 = "", city, state, zip) {
+        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx";
+        const url = encodeURI(`
+            ${base}
+            ?addr1=${encodeURIComponent(addr1)}
+            &addr2=${encodeURIComponent(addr2)}
+            &city=${encodeURIComponent(city)}
+            &state=${encodeURIComponent(state)}
+            &zip=${encodeURIComponent(zip)}`
+        )
         try {
             const result = await callApi(url);
             // console.log({result})
