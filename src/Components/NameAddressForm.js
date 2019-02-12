@@ -650,14 +650,7 @@ class NameAddressForm extends Component {
      */
     async callAddressVerification(addr1, addr2 = "", city, state, zip) {
         const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx";
-        const url = encodeURI(`
-            ${base}
-            ?addr1=${encodeURIComponent(addr1)}
-            &addr2=${encodeURIComponent(addr2)}
-            &city=${encodeURIComponent(city)}
-            &state=${encodeURIComponent(state)}
-            &zip=${encodeURIComponent(zip)}`
-        )
+        const url = encodeURI(`${base}?addr1=${encodeURIComponent(addr1)}&addr2=${encodeURIComponent(addr2)}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}&zip=${encodeURIComponent(zip)}`)
         try {
             const result = await callApi(url);
             // console.log({result})
