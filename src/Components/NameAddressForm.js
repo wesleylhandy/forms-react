@@ -509,7 +509,6 @@ class NameAddressForm extends Component {
         }
     }
 
-
     /**
      * Sets the state with new fund information from the fund select dropdown
      * @param {Object} fundInfo - Selected Fund 
@@ -650,7 +649,7 @@ class NameAddressForm extends Component {
      */
     async callAddressVerification(addr1, city, state, zip) {
         const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx?" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx?";
-        const url = encodeURI(`${base}addr1=${addr1}&city=${city}&state=${state}&zip=${zip}`)
+        const url = encodeURI(`${base}addr1=${encodeURIComponent(addr1)}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}&zip=${encodeURIComponent(zip)}`)
         try {
             const result = await callApi(url);
             // console.log({result})
