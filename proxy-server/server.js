@@ -9,7 +9,6 @@ const ipaddr = require('ipaddr.js');
 const multer = require('multer');
 const upload = multer();
 const fs = require('fs');
-const NodeRSA = require('node-rsa');
 
 process.title = "ProxyServer"
 
@@ -48,6 +47,25 @@ router.options('*', cors());
 router.get("/", (req, res) => {
     res.statusCode = 200;
     res.render(path.resolve(__dirname, 'views', 'thankyou.hbs'), {})
+})
+
+router.get("/build", (req, res) => {
+    res.statusCode = 200
+    res.sendFile(path.resolve(__dirname, 'views', 'build.html'))
+})
+
+router.get("/build/:filename", (req, res) => {
+    const {filename} = req.params;
+    console.log({filename});
+    const pth = path.resolve(__dirname, '../', 'dist', 'v1', filename.includes('index') ? "index" : "", filename);
+    console.log({pathToFile: pth})
+    const filenames = ["index.js", "index.css", ...fs.readdirSync(path.resolve(__dirname, '../', 'dist', 'v1'))]
+    if (filenames.indexOf(filename) < 0) {
+        res.sendStatus(404);
+    } else {
+        res.statusCode = 200
+        res.sendFile(pth)
+    }
 })
 
 router.post('/thankyou', (req, res) => {
@@ -117,45 +135,6 @@ router.get('/api', (req, res) => {
     res.statusCode = 403;
     res.json({Error: "Not for Snooping Eyes"});
 });
-
-router.post("/api/encrypt", (req, res)=> {
-    const {formData, lifetime} = JSON.parse(req.body)
-    console.log({method: "Encrypt Cookie!", formData, lifetime})
-    const expiration = Date.now() + lifetime;
-    const rsa = new NodeRSA({b: 512});
-    const stringyFormData = JSON.stringify(formData)
-    const encrypted = rsa.encrypt(stringyFormData, 'base64')
-    let key = rsa.exportKey()
-    storeKeys({key, encrypted, expiration})
-    res.json({ encrypted, expiration })
-})
-
-router.post("/api/decrypt", (req, res)=>{
-    const {data} = req.body
-    console.log(JSON.stringify(req.body, null, 5))
-    console.log({method: "Decrypt Cookie!", data})
-    if (data) {
-        const parsed = JSON.parse(data)
-        const now = Date.now()
-        getKeys(parsed, now, (err, {key = '', encrypted = ''}) => {
-            if (err) {
-                res.statusCode = 500
-                res.json({"Error":err})
-                return
-            }
-        // console.log({parsed})
-            if (key && encrypted) {
-                const rsa = new NodeRSA(key);
-                const decrypted = JSON.parse(rsa.decrypt(encrypted, 'utf8'))
-                res.json(decrypted)
-            } else {
-                res.send(null)
-            }
-            return
-        })
-        res.send(null)
-    }
-})
 
 router.post('/api', (req, res) => {
     const data = {...req.body};

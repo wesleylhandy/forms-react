@@ -1,3 +1,4 @@
+import 'raf/polyfill';
 /**
  * Function to scroll to a particular point on the DOM
  * @param {Number} top - pageYoffset of form
