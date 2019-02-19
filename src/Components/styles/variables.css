@@ -17,6 +17,7 @@
     --form-border-color: transparent;
     --form-border-radius: 0;
     --form-border-width: 2px;
+    --form-max-width: 680px;
     --form-padding: 0;
     --form-text-color: #091d44;
     --heading-color: #313131;
@@ -46,4 +47,6 @@
     --semibold-italic-font-family: proxima-nova, sans-serif;
     --semibold-italic-font-style: italic;
     --semibold-italic-font-weight: 600;
+    --submit-btn-bg-color: #262626;
+    --submit-btn-txt-color: #fff;
 }

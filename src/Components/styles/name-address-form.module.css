@@ -87,14 +87,8 @@ h3.form-header,
     white-space: nowrap;
 }
 
-.error.amount-error,
 .error.submit-error {
     left: 50%;
     transform: translateX(-50%);
     bottom: calc(0% - 20px);
-}
-
-.error.amount-error {
-    bottom: unset;
-    top: 30px;
 }

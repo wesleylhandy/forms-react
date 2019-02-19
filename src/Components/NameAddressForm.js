@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 
-import GivingArray from './GivingArray'
-import ProductDisplay from './ProductDisplay'
+import GivingLayout from './GivingLayout'
+import ProductLayout from './ProductLayout'
 import FundDisplay from './FundDisplay'
-import MonthlyRadioGroup from './MonthlyRadioGroup'
 import NameBlock from './NameBlock'
 import ShippingAddressBlock from './ShippingAddressBlock';
 import AddressBlock from './AddressBlock';
@@ -649,7 +648,7 @@ class NameAddressForm extends Component {
      * @returns {string} either empty or with error
      */
     async callAddressVerification(addr1, addr2 = "", city, state, zip) {
-        const base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx";
+        const base = this.state.mode == "local" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx";
         const url = encodeURI(`${base}?addr1=${encodeURIComponent(addr1)}&addr2=${encodeURIComponent(addr2)}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}&zip=${encodeURIComponent(zip)}`)
         try {
             const result = await callApi(url);
@@ -666,6 +665,7 @@ class NameAddressForm extends Component {
         const {
             showGivingArray, 
             givingFormat, 
+            productFormat,
             monthlyOption, 
             singleOption, 
             monthlyAmounts, 
@@ -684,8 +684,7 @@ class NameAddressForm extends Component {
             showSeals
         } = this.props;
   
-        const arrayOptions = {
-                givingFormat,
+        const givingOptions = {
                 monthlyOption,
                 singleOption,
                 monthlyAmounts: monthlyAmounts ? monthlyAmounts : [],
@@ -720,51 +719,59 @@ class NameAddressForm extends Component {
         const hasErrors = Object.values(errors).filter(val => val && val.length > 0).length > 0;
         return (
             <form id="react-form" autoComplete="off" onSubmit={this.handleSubmit}>
-                <div styleName={showGivingArray ? "styles.form-panel" : "styles.form-panel styles.hidden"}>
-                    <div styleName="styles.gift-choice">
-                        <GivingArray 
-                            defaultAmount={defaultAmount}
-                            defaultOption={defaultOption}
-                            arrayOptions={arrayOptions} 
-                            initialUpdate={initialUpdate}
-                            monthlyChecked={monthlyChecked} 
-                            addToCart={this.addToCart}
-                            removeFromCart={this.removeFromCart}
-                            givingInfo={givingInfo}
-                        />
-                        <div styleName="styles.error styles.amount-error">{errors.amount}</div>
-                    </div>
-                    { 
-                        monthlyOption && singleOption && (
-                            <MonthlyRadioGroup 
+                { 
+                    showGivingArray && (
+                        <div styleName="styles.form-panel">
+                            <GivingLayout
+                                givingFormat={givingFormat}
+                                defaultAmount={defaultAmount}
+                                defaultOption={defaultOption}
+                                givingOptions={givingOptions} 
+                                initialUpdate={initialUpdate}
+                                monthlyChecked={monthlyChecked} 
+                                addToCart={this.addToCart}
+                                removeFromCart={this.removeFromCart}
+                                givingInfo={givingInfo}
+                                amountError={errors.amount}
                                 monthlyChecked={monthlyChecked} 
                                 Monthlypledgeday={fields.Monthlypledgeday} 
                                 handleInputChange={this.handleInputChange} 
                                 handleRadioClick={this.handleRadioClick}
+                                monthlyOption={monthlyOption}
+                                singleOption={singleOption}
                             />
-                        ) 
-                    }
-                </div>
-                <div styleName={fundOptions.numFunds ? "styles.form-panel" : "styles.form-panel styles.hidden"}>
-                    <FundDisplay 
-                        fundOptions={fundOptions} 
-                        initialUpdate={initialUpdate}
-                        updateDonation={this.updateDonation}
-                        fundInfo={fundInfo}
-                        hydratedFund={hydratedFund}
-                    />
-                </div>
-                <div styleName={productOptions.numProducts ? "styles.form-panel" : "styles.form-panel styles.hidden"}>
-                    <ProductDisplay 
-                        productInfo={productInfo}
-                        productOptions={productOptions} 
-                        updateProducts={this.updateProducts}
-                        addToCart={this.addToCart}
-                        removeFromCart={this.removeFromCart}
-                        initialUpdate={initialUpdate}
-                        hydratedAdditionalGift={hydratedAdditionalGift}
-                      />
-                </div>
+                        </div>
+                    )
+                }
+                {
+                    fundOptions.numFunds > 0 && (
+                        <div styleName="styles.form-panel">
+                            <FundDisplay
+                                fundOptions={fundOptions} 
+                                initialUpdate={initialUpdate}
+                                updateDonation={this.updateDonation}
+                                fundInfo={fundInfo}
+                                hydratedFund={hydratedFund}
+                            />
+                        </div>
+                    )
+                }
+                {
+                    productOptions.numProducts > 0 && (
+                        <div styleName="styles.form-panel">
+                            <ProductLayout 
+                                productFormat={productFormat}
+                                productInfo={productInfo}
+                                productOptions={productOptions} 
+                                updateProducts={this.updateProducts}
+                                addToCart={this.addToCart}
+                                removeFromCart={this.removeFromCart}
+                                initialUpdate={initialUpdate}
+                                hydratedAdditionalGift={hydratedAdditionalGift}
+                            />
+                        </div>
+                    )
+                }               
                 <div styleName="styles.form-panel">
                     <fieldset styleName="styles.fieldset">
                         <div styleName="styles.name-address__info">
@@ -826,7 +833,9 @@ class NameAddressForm extends Component {
                             submitting={submitting}
                         />
                     </fieldset>
-                    { showSeals && <Seals/> }
+                    { 
+                        showSeals && <Seals/> 
+                    }
                 </div>
             </form>
 

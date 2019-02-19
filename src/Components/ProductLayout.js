@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import styles from './styles/products.module.css'
 import flex from './styles/flex.module.css'
 
-class ProductDisplay extends Component {
+class ProductLayout extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -156,4 +156,4 @@ class ProductDisplay extends Component {
     }
 }
 
-export default ProductDisplay
+export default ProductLayout
