@@ -116,11 +116,12 @@ class GivingArray extends Component {
         let {
             otherAmount,
             otherAmountError,
-            selectedIndex
+            selectedIndex,
+            prevIndex
         } = this.state
         let key = "controlled"
         // console.log({amount, selectedIndex})
-        if (amount && selectedIndex === null) {
+        if (amount) {
             const index = isMonthly ? monthlyAmounts.indexOf(amount) : singleAmounts.indexOf(amount);
             selectedIndex =  index > -1 ? index : 99;
             otherAmount = amount;
@@ -129,6 +130,7 @@ class GivingArray extends Component {
             otherAmount = selectedIndex == 99 ? otherAmount : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] )
             key = selectedIndex == 99 || selectedIndex === null ? key : ( monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex] ) + "-key"
         }
+
         return (
             <Fragment>
                 <h3 styleName="styles.askarray__header">Select A {monthlyChecked ? "Monthly" : "Single"} Donation Amount</h3>

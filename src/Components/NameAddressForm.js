@@ -124,8 +124,12 @@ class NameAddressForm extends Component {
             }
             if (funds && funds.length) {
                 funds.forEach(fund=> {
-                    detailNames.push(fund.DetailName)
-                    fundNames.push(fund.DetailName)
+                    const monthlyDetailName = `MP${fund.DetailName}`;
+                    const singleDetailName = `SP${fund.DetailName}`;
+                    detailNames.push(monthlyDetailName)
+                    detailNames.push(singleDetailName)
+                    fundNames.push(monthlyDetailName)
+                    fundNames.push(singleDetailName)
                 })
             }
             // loop through multiple donations and reconstruct virual cart
@@ -135,7 +139,7 @@ class NameAddressForm extends Component {
                 if (type == "donation") {
                     amount = +PledgeAmount
                     isMonthly = DetailName.includes("MP") ? true : false;
-                    givingInfo = { amount, isMonthly }
+                    givingInfo = { amount, isMonthly, source: "hydratingForm" }
                     if (fundNames.includes(DetailName)) {
                         const index = funds.findIndex(fund=>fund.DetailDescription == DetailDescription)
                         fundInfo = funds[index]
@@ -208,6 +212,8 @@ class NameAddressForm extends Component {
      * @param {Event} e 
      */
     handleRadioClick(e) {
+        const fundInfo = {...this.state.fundInfo}
+        const givingInfo = {...this.state.givingInfo}
         const items = [...this.state.cart.items];
         const found = items.findIndex(el=>el && el.type == "donation")
         const id = e.target.id;
@@ -221,12 +227,26 @@ class NameAddressForm extends Component {
                 DetailName: id == "singlegift" ? this.props.singlePledgeData.DetailName : this.props.monthlyPledgeData.DetailName,
                 monthly: id == "singlegift" ? false : true
             }
+            givingInfo.amount = items[found].PledgeAmount
+            givingInfo.isMonthly = id !== 'singlegift'
+            givingInfo.source = "radioClick"
+        }
+        if (fundInfo && fundInfo.DetailName) {
+            const detailName = fundInfo.DetailName;
+            const prefix = detailName.slice(0,2);
+            if (prefix == "MP" || prefix == "SP") {
+                const originalDetailName = detailName.slice(2)
+                fundInfo.DetailName = id == "singlegift" ? `SP${originalDetailName}` : `MP${originalDetailName}`
+            } else {
+                fundInfo.DetailName = id == "singlegift" ? `SP${detailName}` : `MP${detailName}`
+            }
+            // console.log({fundInfo})
         }
         // console.log({items})
         if(id == "singlegift") {
-             this.setState({monthlyChecked: false, cart: {items}})
+             this.setState({monthlyChecked: false, cart: {items}, fundInfo, givingInfo})
         } else {
-            this.setState({monthlyChecked: true, cart: {items}})
+            this.setState({monthlyChecked: true, cart: {items}, fundInfo, givingInfo})
         }
     }
 
@@ -366,6 +386,7 @@ class NameAddressForm extends Component {
                 DetailCprojCredit = this.state.fundInfo.DetailCprojCredit
                 DetailCprojMail = this.state.fundInfo.DetailCprojMail
             }
+            // console.log({DetailName});
             return {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail, PledgeAmount}
         })
         const MultipleDonations = multipleDonations();
@@ -495,7 +516,7 @@ class NameAddressForm extends Component {
             items.push(item)
         }
         // console.log({items})
-        this.setState({cart: {items}})
+        this.setState({cart: {items}, givingInfo: {}})
     }
 
     removeFromCart(type) {
@@ -505,7 +526,7 @@ class NameAddressForm extends Component {
         if (found > -1) {
             items.splice(found, 1)
             // console.log({items})
-            this.setState({cart: {items}})
+            this.setState({cart: {items}, givingInfo: {}})
         }
     }
 
@@ -518,6 +539,10 @@ class NameAddressForm extends Component {
      * @param {String} fundInfo.DetailCprojMail
      */
     updateDonation(fundInfo){
+        const {monthlyChecked} = this.state;
+        const detailName = fundInfo.DetailName;
+        fundInfo.DetailName = monthlyChecked ? `MP${detailName}` : `SP${detailName}`;
+        // console.log({fundInfo})
         this.setState({fundSelected: true, fundInfo})
     }
 
