@@ -114,19 +114,57 @@ exports.default = void 0;
 
 /*!
  * css-vars-ponyfill
- * v1.7.2
+ * v1.16.4
  * https://github.com/jhildenbiddle/css-vars-ponyfill
- * (c) 2018 John Hildenbiddle <http://hildenbiddle.com>
+ * (c) 2018-2019 John Hildenbiddle <http://hildenbiddle.com>
+ * MIT license
+ */
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+}
+
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+/*!
+ * get-css-data
+ * v1.6.3
+ * https://github.com/jhildenbiddle/get-css-data
+ * (c) 2018-2019 John Hildenbiddle <http://hildenbiddle.com>
  * MIT license
  */
 
-/*!
- * get-css-data
- * v1.3.2
- * https://github.com/jhildenbiddle/get-css-data
- * (c) 2018 John Hildenbiddle <http://hildenbiddle.com>
- * MIT license
- */
+
 function getUrls(urls) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var settings = {
@@ -140,6 +178,12 @@ function getUrls(urls) {
   var urlQueue = Array.apply(null, Array(urlArray.length)).map(function (x) {
     return null;
   });
+
+  function isValidCss() {
+    var cssText = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+    var isHTML = cssText.trim().charAt(0) === "<";
+    return !isHTML;
+  }
 
   function onError(xhr, urlIndex) {
     settings.onError(xhr, urlArray[urlIndex], urlIndex);
@@ -155,14 +199,16 @@ function getUrls(urls) {
     }
   }
 
+  var parser = document.createElement("a");
   urlArray.forEach(function (url, i) {
-    var parser = document.createElement("a");
     parser.setAttribute("href", url);
-    parser.href = parser.href;
-    var isCrossDomain = parser.host !== location.host;
-    var isSameProtocol = parser.protocol === location.protocol;
+    parser.href = String(parser.href);
+    var isIElte9 = Boolean(document.all && !window.atob);
+    var isIElte9CORS = isIElte9 && parser.host.split(":")[0] !== location.host.split(":")[0];
 
-    if (isCrossDomain && typeof XDomainRequest !== "undefined") {
+    if (isIElte9CORS) {
+      var isSameProtocol = parser.protocol === location.protocol;
+
       if (isSameProtocol) {
         var xdr = new XDomainRequest();
         xdr.open("GET", url);
@@ -171,7 +217,11 @@ function getUrls(urls) {
         xdr.ontimeout = Function.prototype;
 
         xdr.onload = function () {
-          onSuccess(xdr.responseText, i);
+          if (isValidCss(xdr.responseText)) {
+            onSuccess(xdr.responseText, i);
+          } else {
+            onError(xdr, i);
+          }
         };
 
         xdr.onerror = function (err) {
@@ -182,7 +232,7 @@ function getUrls(urls) {
           xdr.send();
         }, 0);
       } else {
-        console.log("Internet Explorer 9 Cross-Origin (CORS) requests must use the same protocol");
+        console.warn("Internet Explorer 9 Cross-Origin (CORS) requests must use the same protocol (".concat(url, ")"));
         onError(null, i);
       }
     } else {
@@ -197,7 +247,7 @@ function getUrls(urls) {
 
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
+          if (xhr.status === 200 && isValidCss(xhr.responseText)) {
             onSuccess(xhr.responseText, i);
           } else {
             onError(xhr, i);
@@ -216,6 +266,8 @@ function getUrls(urls) {
  *
  * @preserve
  * @param {object}   [options] The options object
+ * @param {object}   [options.rootElement=document] Root element to traverse for
+ *                   <link> and <style> nodes.
  * @param {string}   [options.include] CSS selector matching <link> and <style>
  *                   nodes to include
  * @param {string}   [options.exclude] CSS selector matching <link> and <style>
@@ -223,6 +275,12 @@ function getUrls(urls) {
  * @param {object}   [options.filter] Regular expression used to filter node CSS
  *                   data. Each block of CSS data is tested against the filter,
  *                   and only matching data is included.
+ * @param {object}   [options.useCSSOM=false] Determines if CSS data will be
+ *                   collected from a stylesheet's runtime values instead of its
+ *                   text content. This is required to get accurate CSS data
+ *                   when a stylesheet has been modified using the deleteRule()
+ *                   or insertRule() methods because these modifications will
+ *                   not be reflected in the stylesheet's text content.
  * @param {function} [options.onBeforeSend] Callback before XHR is sent. Passes
  *                   1) the XHR object, 2) source node reference, and 3) the
  *                   source URL as arguments.
@@ -241,9 +299,11 @@ function getUrls(urls) {
  * @example
  *
  *   getCssData({
- *     include: 'style,link[rel="stylesheet"]', // default
- *     exclude: '[href="skip.css"]',
- *     filter : /red/,
+ *     rootElement: document,
+ *     include    : 'style,link[rel="stylesheet"]',
+ *     exclude    : '[href="skip.css"]',
+ *     filter     : /red/,
+ *     useCSSOM   : false,
  *     onBeforeSend(xhr, node, url) {
  *       // ...
  *     }
@@ -253,9 +313,9 @@ function getUrls(urls) {
  *     onError(xhr, node, url) {
  *       // ...
  *     },
- *     onComplete(cssText, cssArray) {
+ *     onComplete(cssText, cssArray, nodeArray) {
  *       // ...
- *     },
+ *     }
  *   });
  */
 
@@ -266,15 +326,17 @@ function getCssData(options) {
     cssImports: /(?:@import\s*)(?:url\(\s*)?(?:['"])([^'"]*)(?:['"])(?:\s*\))?(?:[^;]*;)/g
   };
   var settings = {
+    rootElement: options.rootElement || document,
     include: options.include || 'style,link[rel="stylesheet"]',
     exclude: options.exclude || null,
     filter: options.filter || null,
+    useCSSOM: options.useCSSOM || false,
     onBeforeSend: options.onBeforeSend || Function.prototype,
     onSuccess: options.onSuccess || Function.prototype,
     onError: options.onError || Function.prototype,
     onComplete: options.onComplete || Function.prototype
   };
-  var sourceNodes = Array.apply(null, document.querySelectorAll(settings.include)).filter(function (node) {
+  var sourceNodes = Array.apply(null, settings.rootElement.querySelectorAll(settings.include)).filter(function (node) {
     return !matchesSelector(node, settings.exclude);
   });
   var cssArray = Array.apply(null, Array(sourceNodes.length)).map(function (x) {
@@ -292,7 +354,7 @@ function getCssData(options) {
 
   function handleSuccess(cssText, cssIndex, node, sourceUrl) {
     var returnVal = settings.onSuccess(cssText, node, sourceUrl);
-    cssText = returnVal === false ? "" : returnVal || cssText;
+    cssText = returnVal !== undefined && Boolean(returnVal) === false ? "" : returnVal || cssText;
     resolveImports(cssText, node, sourceUrl, function (resolvedCssText, errorData) {
       if (cssArray[cssIndex] === null) {
         errorData.forEach(function (data) {
@@ -397,7 +459,15 @@ function getCssData(options) {
           }
         });
       } else if (isStyle) {
-        handleSuccess(node.textContent, i, node, location.href);
+        var cssText = node.textContent;
+
+        if (settings.useCSSOM) {
+          cssText = Array.apply(null, node.sheet.cssRules).map(function (rule) {
+            return rule.cssText;
+          }).join("");
+        }
+
+        handleSuccess(cssText, i, node, location.href);
       } else {
         cssArray[i] = "";
         handleComplete();
@@ -423,30 +493,6 @@ function getFullUrl(url) {
 function matchesSelector(elm, selector) {
   var matches = elm.matches || elm.matchesSelector || elm.webkitMatchesSelector || elm.mozMatchesSelector || elm.msMatchesSelector || elm.oMatchesSelector;
   return matches.call(elm, selector);
-}
-
-function mergeDeep() {
-  var isObject = function isObject(obj) {
-    return obj instanceof Object && obj.constructor === Object;
-  };
-
-  for (var _len = arguments.length, objects = Array(_len), _key = 0; _key < _len; _key++) {
-    objects[_key] = arguments[_key];
-  }
-
-  return objects.reduce(function (prev, obj) {
-    Object.keys(obj).forEach(function (key) {
-      var pVal = prev[key];
-      var oVal = obj[key];
-
-      if (isObject(pVal) && isObject(oVal)) {
-        prev[key] = mergeDeep(pVal, oVal);
-      } else {
-        prev[key] = oVal;
-      }
-    });
-    return prev;
-  }, {});
 }
 
 var balancedMatch = balanced;
@@ -510,10 +556,18 @@ function range(a, b, str) {
 }
 
 function cssParse(css) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var defaults = {
+    onlyVars: false,
+    removeComments: false
+  };
+
+  var settings = _extends({}, defaults, options);
+
   var errors = [];
 
   function error(msg) {
-    throw new Error("CSS parse error: " + msg);
+    throw new Error("CSS parse error: ".concat(msg));
   }
 
   function match(re) {
@@ -525,16 +579,16 @@ function cssParse(css) {
     }
   }
 
-  function whitespace() {
-    match(/^\s*/);
-  }
-
   function open() {
     return match(/^{\s*/);
   }
 
   function close() {
     return match(/^}/);
+  }
+
+  function whitespace() {
+    match(/^\s*/);
   }
 
   function comment() {
@@ -564,13 +618,13 @@ function cssParse(css) {
 
   function comments() {
     var cmnts = [];
-    var c = void 0;
+    var c;
 
     while (c = comment()) {
       cmnts.push(c);
     }
 
-    return cmnts;
+    return settings.removeComments ? [] : cmnts;
   }
 
   function selector() {
@@ -583,7 +637,7 @@ function cssParse(css) {
     var m = match(/^(("(?:\\"|[^"])*"|'(?:\\'|[^'])*'|[^{])+)/);
 
     if (m) {
-      return m[0].trim().replace(/\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*\/+/g, "").replace(/"(?:\\"|[^"])*"|'(?:\\'|[^'])*'/g, function (m) {
+      return m[0].trim().replace(/\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*\/+/g, "").replace(/"(?:\\"|[^"])*"|'(?:\\'|[^'])*'/g, function (m) {
         return m.replace(/,/g, "‌");
       }).split(/\s*(?![^(]*\)),\s*/).map(function (s) {
         return s.replace(/\u200C/g, ",");
@@ -593,8 +647,8 @@ function cssParse(css) {
 
   function declaration() {
     match(/^([;\s]*)+/);
-    var comment_regexp = /\/\*[^*]*\*+([^/*][^*]*\*+)*\//g;
-    var prop = match(/^(\*?[-#/*\\\w]+(\[[0-9a-z_-]+\])?)\s*/);
+    var comment_regexp = /\/\*[^*]*\*+([^\/*][^*]*\*+)*\//g;
+    var prop = match(/^(\*?[-#\/*\\\w]+(\[[0-9a-z_-]+\])?)\s*/);
 
     if (!prop) {
       return;
@@ -621,8 +675,8 @@ function cssParse(css) {
       return error("missing '{'");
     }
 
-    var d = void 0,
-        decls = comments();
+    var d;
+    var decls = comments();
 
     while (d = declaration()) {
       decls.push(d);
@@ -639,7 +693,7 @@ function cssParse(css) {
   function keyframe() {
     whitespace();
     var vals = [];
-    var m = void 0;
+    var m;
 
     while (m = match(/^((\d+\.\d+|\.\d+|\d+)%?|[a-z]+)\s*/)) {
       vals.push(m[1]);
@@ -675,8 +729,8 @@ function cssParse(css) {
       return error("@keyframes missing '{'");
     }
 
-    var frame = void 0,
-        frames = comments();
+    var frame;
+    var frames = comments();
 
     while (frame = keyframe()) {
       frames.push(frame);
@@ -794,18 +848,59 @@ function cssParse(css) {
     whitespace();
 
     if (css[0] === "@") {
-      return at_keyframes() || at_supports() || at_host() || at_media() || at_custom_m() || at_page() || at_document() || at_fontface() || at_x();
+      var ret = at_keyframes() || at_supports() || at_host() || at_media() || at_custom_m() || at_page() || at_document() || at_fontface() || at_x();
+
+      if (ret && settings.onlyVars) {
+        var hasVarFunc = false;
+
+        if (ret.declarations) {
+          hasVarFunc = ret.declarations.some(function (decl) {
+            return /var\(/.test(decl.value);
+          });
+        } else {
+          var arr = ret.keyframes || ret.rules || [];
+          hasVarFunc = arr.some(function (obj) {
+            return (obj.declarations || []).some(function (decl) {
+              return /var\(/.test(decl.value);
+            });
+          });
+        }
+
+        return hasVarFunc ? ret : {};
+      }
+
+      return ret;
     }
   }
 
   function rule() {
+    if (settings.onlyVars) {
+      var balancedMatch$$1 = balancedMatch("{", "}", css);
+
+      if (balancedMatch$$1) {
+        var hasVarDecl = balancedMatch$$1.pre.indexOf(":root") !== -1 && /--\S*\s*:/.test(balancedMatch$$1.body);
+        var hasVarFunc = /var\(/.test(balancedMatch$$1.body);
+
+        if (!hasVarDecl && !hasVarFunc) {
+          css = css.slice(balancedMatch$$1.end + 1);
+          return {};
+        }
+      }
+    }
+
     var sel = selector() || [];
+    var decls = !settings.onlyVars ? declarations() : declarations().filter(function (decl) {
+      var hasVarDecl = sel.some(function (s) {
+        return s.indexOf(":root") !== -1;
+      }) && /^--\S/.test(decl.property);
+      var hasVarFunc = /var\(/.test(decl.value);
+      return hasVarDecl || hasVarFunc;
+    });
 
     if (!sel.length) {
       error("selector missing");
     }
 
-    var decls = declarations();
     return {
       type: "rule",
       selectors: sel,
@@ -818,11 +913,14 @@ function cssParse(css) {
       return error("missing '{'");
     }
 
-    var node = void 0,
-        rules = comments();
+    var node;
+    var rules = comments();
 
     while (css.length && (core || css[0] !== "}") && (node = at_rule() || rule())) {
-      rules.push(node);
+      if (node.type) {
+        rules.push(node);
+      }
+
       rules = rules.concat(comments());
     }
 
@@ -844,7 +942,7 @@ function cssParse(css) {
 
 function stringifyCss(tree) {
   var delim = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
-  var cb = arguments[2];
+  var cb = arguments.length > 2 ? arguments[2] : undefined;
   var renderMethods = {
     charset: function charset(node) {
       return "@charset " + node.name + ";";
@@ -948,29 +1046,31 @@ function walkCss(node, fn) {
   });
 }
 
-var persistStore = {};
 var VAR_PROP_IDENTIFIER = "--";
 var VAR_FUNC_IDENTIFIER = "var";
+var variableStore = {
+  dom: {},
+  temp: {},
+  user: {}
+};
 
 function transformVars(cssText) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var defaults = {
     fixNestedCalc: true,
-    onlyVars: true,
+    onlyVars: false,
     persist: false,
     preserve: false,
     variables: {},
     onWarning: function onWarning() {}
   };
-  var map = {};
-  var settings = mergeDeep(defaults, options);
-  var varSource = settings.persist ? persistStore : settings.variables;
-  var cssTree = cssParse(cssText);
 
-  if (settings.onlyVars) {
-    cssTree.stylesheet.rules = filterVars(cssTree.stylesheet.rules);
-  }
+  var settings = _extends({}, defaults, options);
 
+  var map = settings.persist ? variableStore.dom : variableStore.temp = JSON.parse(JSON.stringify(variableStore.dom));
+  var cssTree = cssParse(cssText, {
+    onlyVars: settings.onlyVars
+  });
   cssTree.stylesheet.rules.forEach(function (rule) {
     var varNameIndices = [];
 
@@ -998,48 +1098,43 @@ function transformVars(cssText) {
       }
     }
   });
-  Object.keys(settings.variables).forEach(function (key) {
-    var prop = "--" + key.replace(/^-+/, "");
-    var value = settings.variables[key];
-
-    if (key !== prop) {
-      settings.variables[prop] = value;
-      delete settings.variables[key];
-    }
-
-    if (settings.persist) {
-      persistStore[prop] = value;
-    }
+  Object.keys(variableStore.user).forEach(function (key) {
+    map[key] = variableStore.user[key];
   });
 
-  if (Object.keys(varSource).length) {
+  if (Object.keys(settings.variables).length) {
     var newRule = {
       declarations: [],
       selectors: [":root"],
       type: "rule"
     };
-    Object.keys(varSource).forEach(function (key) {
-      map[key] = varSource[key];
-      newRule.declarations.push({
-        type: "declaration",
-        property: key,
-        value: varSource[key]
-      });
+    Object.keys(settings.variables).forEach(function (key) {
+      var prop = "--".concat(key.replace(/^-+/, ""));
+      var value = settings.variables[key];
 
       if (settings.persist) {
-        persistStore[key] = varSource[key];
+        variableStore.user[prop] = value;
+      }
+
+      if (map[prop] !== value) {
+        map[prop] = value;
+        newRule.declarations.push({
+          type: "declaration",
+          property: prop,
+          value: value
+        });
       }
     });
 
-    if (settings.preserve) {
+    if (settings.preserve && newRule.declarations.length) {
       cssTree.stylesheet.rules.push(newRule);
     }
   }
 
   walkCss(cssTree.stylesheet, function (declarations, node) {
-    var decl = void 0;
-    var resolvedValue = void 0;
-    var value = void 0;
+    var decl;
+    var resolvedValue;
+    var value;
 
     for (var i = 0; i < declarations.length; i++) {
       decl = declarations[i];
@@ -1055,7 +1150,7 @@ function transformVars(cssText) {
 
       resolvedValue = resolveValue(value, map, settings);
 
-      if (resolvedValue !== "undefined") {
+      if (resolvedValue !== decl.value) {
         if (!settings.preserve) {
           decl.value = resolvedValue;
         } else {
@@ -1077,39 +1172,6 @@ function transformVars(cssText) {
   return stringifyCss(cssTree);
 }
 
-function filterVars(rules) {
-  return rules.filter(function (rule) {
-    if (rule.declarations) {
-      var declArray = rule.declarations.filter(function (d) {
-        var hasVarProp = d.property && d.property.indexOf(VAR_PROP_IDENTIFIER) === 0;
-        var hasVarVal = d.value && d.value.indexOf(VAR_FUNC_IDENTIFIER + "(") > -1;
-        return hasVarProp || hasVarVal;
-      });
-
-      if (rule.type !== "font-face") {
-        rule.declarations = declArray;
-      }
-
-      return Boolean(declArray.length);
-    } else if (rule.keyframes) {
-      return Boolean(rule.keyframes.filter(function (k) {
-        return Boolean(k.declarations.filter(function (d) {
-          var hasVarProp = d.property && d.property.indexOf(VAR_PROP_IDENTIFIER) === 0;
-          var hasVarVal = d.value && d.value.indexOf(VAR_FUNC_IDENTIFIER + "(") > -1;
-          return hasVarProp || hasVarVal;
-        }).length);
-      }).length);
-    } else if (rule.rules) {
-      rule.rules = filterVars(rule.rules).filter(function (r) {
-        return r.declarations && r.declarations.length;
-      });
-      return Boolean(rule.rules.length);
-    }
-
-    return true;
-  });
-}
-
 function fixNestedCalc(rules) {
   var reCalcExp = /(-[a-z]+-)?calc\(/;
   rules.forEach(function (rule) {
@@ -1124,11 +1186,11 @@ function fixNestedCalc(rules) {
 
           while (reCalcExp.test(rootCalc.body)) {
             var nestedCalc = balancedMatch(reCalcExp, ")", rootCalc.body);
-            rootCalc.body = nestedCalc.pre + "(" + nestedCalc.body + ")" + nestedCalc.post;
+            rootCalc.body = "".concat(nestedCalc.pre, "(").concat(nestedCalc.body, ")").concat(nestedCalc.post);
           }
 
-          newValue += rootCalc.pre + "calc(" + rootCalc.body;
-          newValue += !reCalcExp.test(oldValue) ? ")" + rootCalc.post : "";
+          newValue += "".concat(rootCalc.pre, "calc(").concat(rootCalc.body);
+          newValue += !reCalcExp.test(oldValue) ? ")".concat(rootCalc.post) : "";
         }
 
         decl.value = newValue || decl.value;
@@ -1137,56 +1199,73 @@ function fixNestedCalc(rules) {
   });
 }
 
-function resolveValue(value, map, settings) {
-  var RE_VAR = /([\w-]+)(?:\s*,\s*)?(.*)?/;
-  var balancedParens = balancedMatch("(", ")", value);
-  var varStartIndex = value.indexOf("var(");
-  var varRef = balancedMatch("(", ")", value.substring(varStartIndex)).body;
+function resolveValue(value, map) {
+  var settings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+  var __recursiveFallback = arguments.length > 3 ? arguments[3] : undefined;
+
+  if (value.indexOf("var(") === -1) {
+    return value;
+  }
+
+  var valueData = balancedMatch("(", ")", value);
   var warningIntro = "CSS transform warning:";
 
-  if (!balancedParens) {
-    settings.onWarning(warningIntro + ' missing closing ")" in the value "' + value + '"');
-  }
+  function resolveFunc(value) {
+    var name = value.split(",")[0].replace(/[\s\n\t]/g, "");
+    var fallback = (value.match(/(?:\s*,\s*){1}(.*)?/) || [])[1];
+    var match = map.hasOwnProperty(name) ? String(map[name]) : undefined;
+    var replacement = match || (fallback ? String(fallback) : undefined);
+    var unresolvedFallback = __recursiveFallback || value;
 
-  if (varRef === "") {
-    settings.onWarning(warningIntro + " var() must contain a non-whitespace string");
-  }
-
-  var varFunc = VAR_FUNC_IDENTIFIER + "(" + varRef + ")";
-  var varResult = varRef.replace(RE_VAR, function (_, name, fallback) {
-    var replacement = map[name];
-
-    if (!replacement && !fallback) {
-      settings.onWarning(warningIntro + ' variable "' + name + '" is undefined');
+    if (!match) {
+      settings.onWarning("".concat(warningIntro, ' variable "').concat(name, '" is undefined'));
     }
 
-    if (!replacement && fallback) {
-      return fallback;
+    if (replacement && replacement !== "undefined" && replacement.length > 0) {
+      return resolveValue(replacement, map, settings, unresolvedFallback);
+    } else {
+      return "var(".concat(unresolvedFallback, ")");
     }
-
-    return replacement;
-  });
-  value = value.split(varFunc).join(varResult);
-
-  if (value.indexOf(VAR_FUNC_IDENTIFIER + "(") !== -1) {
-    value = resolveValue(value, map, settings);
   }
 
-  return value;
+  if (!valueData) {
+    if (value.indexOf("var(") !== -1) {
+      settings.onWarning("".concat(warningIntro, ' missing closing ")" in the value "').concat(value, '"'));
+    }
+
+    return value;
+  } else if (valueData.pre.slice(-3) === "var") {
+    var isEmptyVarFunc = valueData.body.trim().length === 0;
+
+    if (isEmptyVarFunc) {
+      settings.onWarning("".concat(warningIntro, " var() must contain a non-whitespace string"));
+      return value;
+    } else {
+      return valueData.pre.slice(0, -3) + resolveFunc(valueData.body) + resolveValue(valueData.post, map, settings);
+    }
+  } else {
+    return valueData.pre + "(".concat(resolveValue(valueData.body, map, settings), ")") + resolveValue(valueData.post, map, settings);
+  }
 }
 
 var name = "css-vars-ponyfill";
+var isBrowser = typeof window !== "undefined";
+var isNativeSupport = isBrowser && window.CSS && window.CSS.supports && window.CSS.supports("(--a: 0)");
 var defaults = {
+  rootElement: isBrowser ? document : null,
   include: "style,link[rel=stylesheet]",
   exclude: "",
   fixNestedCalc: true,
   onlyLegacy: true,
   onlyVars: false,
   preserve: false,
+  shadowDOM: false,
   silent: false,
   updateDOM: true,
   updateURLs: true,
   variables: {},
+  watch: null,
   onBeforeSend: function onBeforeSend() {},
   onSuccess: function onSuccess() {},
   onWarning: function onWarning() {},
@@ -1195,9 +1274,13 @@ var defaults = {
 };
 var regex = {
   cssComments: /\/\*[\s\S]+?\*\//g,
+  cssKeyframes: /@(?:-\w*-)?keyframes/,
+  cssRootRules: /(?::root\s*{\s*[^}]*})/g,
   cssUrls: /url\((?!['"]?(?:data|http|\/\/):)['"]?([^'")]*)['"]?\)/g,
   cssVars: /(?:(?::root\s*{\s*[^;]*;*\s*)|(?:var\(\s*))(--[^:)]+)(?:\s*[:)])/
 };
+var cssVarsObserver = null;
+var isShadowDOMReady = false;
 /**
  * Fetches, parses, and transforms CSS custom properties from specified
  * <style> and <link> elements into static values, then appends a new <style>
@@ -1207,6 +1290,8 @@ var regex = {
  *
  * @preserve
  * @param {object}   [options] Options object
+ * @param {object}   [options.rootElement=document] Root element to traverse for
+ *                   <link> and <style> nodes.
  * @param {string}   [options.include="style,link[rel=stylesheet]"] CSS selector
  *                   matching <link re="stylesheet"> and <style> nodes to
  *                   process
@@ -1224,6 +1309,8 @@ var regex = {
  * @param {boolean}  [options.preserve=false] Determines if the original CSS
  *                   custom property declaration will be retained in the
  *                   ponyfill-generated CSS.
+ * @param {boolean}  [options.shadowDOM=false] Determines if shadow DOM <link>
+ *                   and <style> nodes will be processed.
  * @param {boolean}  [options.silent=false] Determines if warning and error
  *                   messages will be displayed on the console
  * @param {boolean}  [options.updateDOM=true] Determines if the ponyfill will
@@ -1234,6 +1321,9 @@ var regex = {
  *                   pairs. Property names can omit or include the leading
  *                   double-hyphen (—), and values specified will override
  *                   previous values.
+ * @param {boolean}  [options.watch=false] Determines if a MutationObserver will
+ *                   be created that will execute the ponyfill when a <link> or
+ *                   <style> DOM mutation is observed.
  * @param {function} [options.onBeforeSend] Callback before XHR is sent. Passes
  *                   1) the XHR object, 2) source node reference, and 3) the
  *                   source URL as arguments.
@@ -1252,24 +1342,28 @@ var regex = {
  * @param {function} [options.onComplete] Callback after all CSS has been
  *                   processed, legacy-compatible CSS has been generated, and
  *                   (optionally) the DOM has been updated. Passes 1) a CSS
- *                   string with CSS variable values resolved, and 2) a
- *                   reference to the appended <style> node.
+ *                   string with CSS variable values resolved, 2) a reference to
+ *                   the appended <style> node, and 3) an object containing all
+ *                   custom properies names and values.
  *
  * @example
  *
  *   cssVars({
- *     include      : 'style,link[rel="stylesheet"]', // default
+ *     rootElement  : document,
+ *     include      : 'style,link[rel="stylesheet"]',
  *     exclude      : '',
- *     fixNestedCalc: true,  // default
- *     onlyLegacy   : true,  // default
- *     onlyVars     : false, // default
- *     preserve     : false, // default
- *     silent       : false, // default
- *     updateDOM    : true,  // default
- *     updateURLs   : true,  // default
+ *     fixNestedCalc: true,
+ *     onlyLegacy   : true,
+ *     onlyVars     : false,
+ *     preserve     : false,
+ *     shadowDOM    : false,
+ *     silent       : false,
+ *     updateDOM    : true,
+ *     updateURLs   : true,
  *     variables    : {
  *       // ...
  *     },
+ *     watch        : false,
  *     onBeforeSend(xhr, node, url) {
  *       // ...
  *     }
@@ -1290,11 +1384,15 @@ var regex = {
 
 function cssVars() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var settings = mergeDeep(defaults, options);
+
+  var settings = _extends({}, defaults, options);
+
+  var styleNodeId = name;
+  settings.exclude = "#".concat(styleNodeId) + (settings.exclude ? ",".concat(settings.exclude) : "");
 
   function handleError(message, sourceNode, xhr, url) {
     if (!settings.silent) {
-      console.error(message + "\n", sourceNode);
+      console.error("".concat(message, "\n"), sourceNode);
     }
 
     settings.onError(message, sourceNode, xhr, url);
@@ -1308,19 +1406,55 @@ function cssVars() {
     settings.onWarning(message);
   }
 
-  if (document.readyState !== "loading") {
-    var hasNativeSupport = window.CSS && window.CSS.supports && window.CSS.supports("(--a: 0)");
+  if (!isBrowser) {
+    return;
+  }
 
-    if (!hasNativeSupport || !settings.onlyLegacy) {
-      var styleNodeId = name;
+  if (document.readyState !== "loading") {
+    var isShadowElm = settings.shadowDOM || settings.rootElement.shadowRoot || settings.rootElement.host;
+
+    if (isNativeSupport && settings.onlyLegacy) {
+      if (settings.updateDOM) {
+        var targetElm = settings.rootElement.host || (settings.rootElement === document ? document.documentElement : settings.rootElement);
+        Object.keys(settings.variables).forEach(function (key) {
+          var prop = "--".concat(key.replace(/^-+/, ""));
+          var value = settings.variables[key];
+          targetElm.style.setProperty(prop, value);
+        });
+      }
+    } else if (isShadowElm && !isShadowDOMReady) {
       getCssData({
+        rootElement: defaults.rootElement,
+        include: defaults.include,
+        exclude: settings.exclude,
+        onSuccess: function onSuccess(cssText, node, url) {
+          var cssRootDecls = (cssText.match(regex.cssRootRules) || []).join("");
+          return cssRootDecls || false;
+        },
+        onComplete: function onComplete(cssText, cssArray, nodeArray) {
+          transformVars(cssText, {
+            persist: true
+          });
+          isShadowDOMReady = true;
+          cssVars(settings);
+        }
+      });
+    } else {
+      if (settings.watch) {
+        addMutationObserver(settings, styleNodeId);
+      } else if (settings.watch === false && cssVarsObserver) {
+        cssVarsObserver.disconnect();
+      }
+
+      getCssData({
+        rootElement: settings.rootElement,
         include: settings.include,
-        exclude: "#" + styleNodeId + (settings.exclude ? "," + settings.exclude : ""),
+        exclude: settings.exclude,
         filter: settings.onlyVars ? regex.cssVars : null,
         onBeforeSend: settings.onBeforeSend,
         onSuccess: function onSuccess(cssText, node, url) {
           var returnVal = settings.onSuccess(cssText, node, url);
-          cssText = returnVal === false ? "" : returnVal || cssText;
+          cssText = returnVal !== undefined && Boolean(returnVal) === false ? "" : returnVal || cssText;
 
           if (settings.updateURLs) {
             var cssUrls = cssText.replace(regex.cssComments, "").match(regex.cssUrls) || [];
@@ -1335,15 +1469,15 @@ function cssVars() {
         },
         onError: function onError(xhr, node, url) {
           var responseUrl = xhr.responseURL || getFullUrl$1(url, location.href);
-          var statusText = xhr.statusText ? "(" + xhr.statusText + ")" : "Unspecified Error" + (xhr.status === 0 ? " (possibly CORS related)" : "");
-          var errorMsg = "CSS XHR Error: " + responseUrl + " " + xhr.status + " " + statusText;
+          var statusText = xhr.statusText ? "(".concat(xhr.statusText, ")") : "Unspecified Error" + (xhr.status === 0 ? " (possibly CORS related)" : "");
+          var errorMsg = "CSS XHR Error: ".concat(responseUrl, " ").concat(xhr.status, " ").concat(statusText);
           handleError(errorMsg, node, xhr, responseUrl);
         },
         onComplete: function onComplete(cssText, cssArray, nodeArray) {
           var cssMarker = /\/\*__CSSVARSPONYFILL-(\d+)__\*\//g;
           var styleNode = null;
           cssText = cssArray.map(function (css, i) {
-            return regex.cssVars.test(css) ? css : "/*__CSSVARSPONYFILL-" + i + "__*/";
+            return regex.cssVars.test(css) ? css : "/*__CSSVARSPONYFILL-".concat(i, "__*/");
           }).join("");
 
           try {
@@ -1355,26 +1489,26 @@ function cssVars() {
               variables: settings.variables,
               onWarning: handleWarning
             });
-            var cssMarkerMatch = cssMarker.exec(cssText);
-
-            while (cssMarkerMatch !== null) {
-              var matchedText = cssMarkerMatch[0];
-              var cssArrayIndex = cssMarkerMatch[1];
-              cssText = cssText.replace(matchedText, cssArray[cssArrayIndex]);
-              cssMarkerMatch = cssMarker.exec(cssText);
-            }
+            var hasKeyframes = regex.cssKeyframes.test(cssText);
+            cssText = cssText.replace(cssMarker, function (match, group1) {
+              return cssArray[group1];
+            });
 
             if (settings.updateDOM && nodeArray && nodeArray.length) {
               var lastNode = nodeArray[nodeArray.length - 1];
-              styleNode = document.querySelector("#" + styleNodeId) || document.createElement("style");
+              styleNode = settings.rootElement.querySelector("#".concat(styleNodeId)) || document.createElement("style");
               styleNode.setAttribute("id", styleNodeId);
 
               if (styleNode.textContent !== cssText) {
                 styleNode.textContent = cssText;
               }
 
-              if (lastNode.nextSibling !== styleNode) {
+              if (lastNode.nextSibling !== styleNode && lastNode.parentNode) {
                 lastNode.parentNode.insertBefore(styleNode, lastNode.nextSibling);
+              }
+
+              if (hasKeyframes) {
+                fixKeyframes(settings.rootElement);
               }
             }
           } catch (err) {
@@ -1394,14 +1528,23 @@ function cssVars() {
             }
           }
 
-          settings.onComplete(cssText, styleNode);
+          if (settings.shadowDOM) {
+            var elms = [settings.rootElement].concat(_toConsumableArray(settings.rootElement.querySelectorAll("*")));
+
+            for (var i = 0, elm; elm = elms[i]; ++i) {
+              if (elm.shadowRoot && elm.shadowRoot.querySelector("style")) {
+                var shadowSettings = _extends({}, settings, {
+                  rootElement: elm.shadowRoot,
+                  variables: variableStore.dom
+                });
+
+                cssVars(shadowSettings);
+              }
+            }
+          }
+
+          settings.onComplete(cssText, styleNode, JSON.parse(JSON.stringify(settings.updateDOM ? variableStore.dom : variableStore.temp)));
         }
-      });
-    } else if (hasNativeSupport && settings.updateDOM) {
-      Object.keys(settings.variables).forEach(function (key) {
-        var prop = "--" + key.replace(/^-+/, "");
-        var value = settings.variables[key];
-        document.documentElement.style.setProperty(prop, value);
       });
     }
   } else {
@@ -1409,6 +1552,86 @@ function cssVars() {
       cssVars(options);
       document.removeEventListener("DOMContentLoaded", init);
     });
+  }
+}
+
+function addMutationObserver(settings, ignoreId) {
+  if (!window.MutationObserver) {
+    return;
+  }
+
+  var isLink = function isLink(node) {
+    return node.tagName === "LINK" && (node.getAttribute("rel") || "").indexOf("stylesheet") !== -1;
+  };
+
+  var isStyle = function isStyle(node) {
+    return node.tagName === "STYLE" && (ignoreId ? node.id !== ignoreId : true);
+  };
+
+  var debounceTimer = null;
+
+  if (cssVarsObserver) {
+    cssVarsObserver.disconnect();
+  }
+
+  settings.watch = defaults.watch;
+  cssVarsObserver = new MutationObserver(function (mutations) {
+    var isUpdateMutation = false;
+    mutations.forEach(function (mutation) {
+      if (mutation.type === "attributes") {
+        isUpdateMutation = isLink(mutation.target) || isStyle(mutation.target);
+      } else if (mutation.type === "childList") {
+        var addedNodes = Array.apply(null, mutation.addedNodes);
+        var removedNodes = Array.apply(null, mutation.removedNodes);
+        isUpdateMutation = [].concat(addedNodes, removedNodes).some(function (node) {
+          var isValidLink = isLink(node) && !node.disabled;
+          var isValidStyle = isStyle(node) && !node.disabled && regex.cssVars.test(node.textContent);
+          return isValidLink || isValidStyle;
+        });
+      }
+
+      if (isUpdateMutation) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function () {
+          cssVars(settings);
+        }, 1);
+      }
+    });
+  });
+  cssVarsObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["disabled", "href"],
+    childList: true,
+    subtree: true
+  });
+}
+
+function fixKeyframes(rootElement) {
+  var animationNameProp = ["animation-name", "-moz-animation-name", "-webkit-animation-name"].filter(function (prop) {
+    return getComputedStyle(document.body)[prop];
+  })[0];
+
+  if (animationNameProp) {
+    var allNodes = rootElement.getElementsByTagName("*");
+    var keyframeNodes = [];
+    var nameMarker = "__CSSVARSPONYFILL-KEYFRAMES__";
+
+    for (var i = 0, len = allNodes.length; i < len; i++) {
+      var node = allNodes[i];
+      var animationName = getComputedStyle(node)[animationNameProp];
+
+      if (animationName !== "none") {
+        node.style[animationNameProp] += nameMarker;
+        keyframeNodes.push(node);
+      }
+    }
+
+    void document.body.offsetHeight;
+
+    for (var _i = 0, _len = keyframeNodes.length; _i < _len; _i++) {
+      var nodeStyle = keyframeNodes[_i].style;
+      nodeStyle[animationNameProp] = nodeStyle[animationNameProp].replace(nameMarker, "");
+    }
   }
 }
 
@@ -1453,7 +1676,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50135" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56818" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

@@ -1,8 +1,8 @@
-import "babel-polyfill";
+
+import "./vendors";
+import "./require-babel-polyfill"
 import cssVars from 'css-vars-ponyfill';
-import 'whatwg-fetch';
 import Promise from 'promise-polyfill';
-import 'raf/polyfill';
 
 import React from 'react';
 import * as ReactDOM from 'react-dom';

@@ -82,6 +82,7 @@ class App extends Component {
                 { 
                     (()=> {
                         if (finalized) {
+                            console.log({thankYouUrl})
                             return  (
          
                                     <RedirectForm thankYouUrl={thankYouUrl} receiptVars={finalizedData} />
