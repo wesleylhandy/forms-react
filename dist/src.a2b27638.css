@@ -498,6 +498,7 @@ h3.funds__header__1jN9Q {
     display: none;
     padding: 5px 10px;
     height: 90px;
+    width:100%;
     z-index: 0;
 }
 
@@ -1062,6 +1063,7 @@ input[type="submit"].submit-button__LRMQT {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     color: var(--btn-text-color);
+    cursor:pointer;
     display: block;
     border: 2px solid transparent;
     border-radius: var(--input-border-radius);
@@ -1084,6 +1086,10 @@ input[type="submit"].submit-button__LRMQT:hover {
     color: var(--primary-color);
     border-color: var(--primary-color);
     cursor: pointer;
+}
+
+input[type="submit"].submit-button__LRMQT:disabled {
+    cursor: wait;
 }
 
 input[type="submit"].submit-button__LRMQT>.error__2XDgr {

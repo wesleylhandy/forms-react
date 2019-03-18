@@ -147,7 +147,7 @@ class NameAddressForm extends Component {
                     }
                 }
                 if (type == "product") {
-                    const idx = products.findIndex(el=> el.DetailDescription === DetailDescription)
+                    const idx = products ? products.findIndex(el=> el.DetailDescription === DetailDescription) : -1
                     if (idx > -1) {
                         const quantity = parseInt(DetailName.split('|')[1])
                         productInfo.push({idx, quantity})
@@ -355,7 +355,7 @@ class NameAddressForm extends Component {
         }
         //deconstruct necessary fields from state
         const {Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone} = fields
-        let {mode, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy} = this.props
+        let {mode, EmailSubjectLine = "Thank You for Your Contribution", APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy} = this.props
         const ClientBrowser = window && window.navigator ? window.navigator.userAgent : ''
         const UrlReferer = window.location.origin + window.location.pathname
          
@@ -404,6 +404,7 @@ class NameAddressForm extends Component {
             Country,
             DonationType,
             Emailaddress,
+            EmailSubjectLine,
             Firstname,
             IsRecurringCreditCardDonation,
             Lastname,

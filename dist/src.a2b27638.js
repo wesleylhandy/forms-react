@@ -11057,9 +11057,9 @@ function (_Component) {
           }
 
           if (type == "product") {
-            var idx = products.findIndex(function (el) {
+            var idx = products ? products.findIndex(function (el) {
               return el.DetailDescription === DetailDescription;
-            });
+            }) : -1;
 
             if (idx > -1) {
               var quantity = parseInt(DetailName.split('|')[1]);
@@ -11308,7 +11308,7 @@ function (_Component) {
       regeneratorRuntime.mark(function _callee3(e) {
         var _this3 = this;
 
-        var items, pledgeFound, addGiftFound, productFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props2, mode, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, message, _getErrorType, breaking, _name;
+        var items, pledgeFound, addGiftFound, productFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props2, mode, _this$props2$EmailSub, EmailSubjectLine, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, message, _getErrorType, breaking, _name;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -11487,7 +11487,7 @@ function (_Component) {
               case 64:
                 //deconstruct necessary fields from state
                 Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
-                _this$props2 = this.props, mode = _this$props2.mode, APIAccessID = _this$props2.APIAccessID, subscriptions = _this$props2.subscriptions, AddContactYN = _this$props2.AddContactYN, ActivityName = _this$props2.ActivityName, ContactSource = _this$props2.ContactSource, SectionName = _this$props2.SectionName, proxy = _this$props2.proxy;
+                _this$props2 = this.props, mode = _this$props2.mode, _this$props2$EmailSub = _this$props2.EmailSubjectLine, EmailSubjectLine = _this$props2$EmailSub === void 0 ? "Thank You for Your Contribution" : _this$props2$EmailSub, APIAccessID = _this$props2.APIAccessID, subscriptions = _this$props2.subscriptions, AddContactYN = _this$props2.AddContactYN, ActivityName = _this$props2.ActivityName, ContactSource = _this$props2.ContactSource, SectionName = _this$props2.SectionName, proxy = _this$props2.proxy;
                 ClientBrowser = window && window.navigator ? window.navigator.userAgent : '';
                 UrlReferer = window.location.origin + window.location.pathname; //construct phone fields from regex
 
@@ -11550,6 +11550,7 @@ function (_Component) {
                   Country: Country,
                   DonationType: DonationType,
                   Emailaddress: Emailaddress,
+                  EmailSubjectLine: EmailSubjectLine,
                   Firstname: Firstname,
                   IsRecurringCreditCardDonation: IsRecurringCreditCardDonation,
                   Lastname: Lastname,
@@ -12459,8 +12460,6 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _shortid = _interopRequireDefault(require("shortid"));
-
 var _PaymentForm = _interopRequireDefault(require("./PaymentForm"));
 
 var _Spinner = _interopRequireDefault(require("./Spinner"));
@@ -12666,13 +12665,11 @@ function (_Component) {
       var _this$props = this.props,
           cssConfig = _this$props.cssConfig,
           formAction = _this$props.formAction,
-          formData = _this$props.formData;
-
-      var cacheToken = _shortid.default.generate();
+          formData = _this$props.formData; // const cacheToken = shortid.generate();
 
       return _react.default.createElement(_react.Fragment, null, ready ? _react.default.createElement(_PaymentForm.default, {
         cssConfig: cssConfig,
-        formAction: formAction + "&cacheToken=".concat(cacheToken),
+        formAction: formAction,
         formData: formData,
         confirmationSubmitted: confirmationSubmitted
       }) : _react.default.createElement(_Spinner.default, null));
@@ -12684,7 +12681,7 @@ function (_Component) {
 
 var _default = ConfirmationPage;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","shortid":"node_modules/shortid/index.js","./PaymentForm":"src/Components/PaymentForm.js","./Spinner":"src/Components/Spinner.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js"}],"src/Components/RedirectForm.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./PaymentForm":"src/Components/PaymentForm.js","./Spinner":"src/Components/Spinner.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js"}],"src/Components/RedirectForm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13466,7 +13463,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56818" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60501" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -13631,6 +13628,6 @@ module.exports = function loadJSBundle(bundle) {
   });
 };
 },{}],0:[function(require,module,exports) {
-var b=require("../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.load([["react.545e1cc3.js","node_modules/react/index.js"],["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],["polyfill.cde8445e.js","node_modules/raf/polyfill.js"],["shortid.e3ad9acd.js","node_modules/shortid/index.js"],["css-vars-ponyfill.esm.9e0932d1.js","node_modules/css-vars-ponyfill/dist/css-vars-ponyfill.esm.js"],["src.7aaf042a.js","node_modules/promise-polyfill/src/index.js"],["react-dom.29872971.js","node_modules/react-dom/index.js"]]).then(function(){require("src/index.js");});
+var b=require("../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.load([["react.545e1cc3.js","node_modules/react/index.js"],["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],["polyfill.cde8445e.js","node_modules/raf/polyfill.js"],["css-vars-ponyfill.esm.9e0932d1.js","node_modules/css-vars-ponyfill/dist/css-vars-ponyfill.esm.js"],["src.7aaf042a.js","node_modules/promise-polyfill/src/index.js"],["react-dom.29872971.js","node_modules/react-dom/index.js"]]).then(function(){require("src/index.js");});
 },{}]},{},["../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js",0], null)
 //# sourceMappingURL=/src.a2b27638.map

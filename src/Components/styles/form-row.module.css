@@ -88,6 +88,7 @@ input[type="submit"].submit-button {
     background: var(--primary-color);
     box-sizing: border-box;
     color: var(--btn-text-color);
+    cursor:pointer;
     display: block;
     border: 2px solid transparent;
     border-radius: var(--input-border-radius);
@@ -109,6 +110,10 @@ input[type="submit"].submit-button:hover {
     color: var(--primary-color);
     border-color: var(--primary-color);
     cursor: pointer;
+}
+
+input[type="submit"].submit-button:disabled {
+    cursor: wait;
 }
 
 input[type="submit"].submit-button>.error {
