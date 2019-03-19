@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import shortid from 'shortid'
+// import shortid from 'shortid'
 
 import PaymentForm from './PaymentForm'
 import Spinner from './Spinner'
@@ -49,7 +49,7 @@ class ConfirmationPage extends Component {
     }
 
     handleMessage(e) {
-        const { type, tracking_vars } = e.data ? JSON.parse(e.data) : {}
+        const { type, tracking_vars } = e.data && typeof e.data == "string" ? JSON.parse(e.data) : {}
         const types = ["go back clicked", "render receipt", "confirmation submitted", "form error"]
         if (!types.includes(type)) {
             return;
@@ -107,12 +107,12 @@ class ConfirmationPage extends Component {
             formAction, 
             formData
         } = this.props
-        const cacheToken = shortid.generate();
+        // const cacheToken = shortid.generate();
         return ( 
             <Fragment>
                 { 
                     ready ? (
-                        <PaymentForm cssConfig={cssConfig} formAction={formAction + `&cacheToken=${cacheToken}`} formData={formData} confirmationSubmitted={confirmationSubmitted}/>  
+                        <PaymentForm cssConfig={cssConfig} formAction={formAction} formData={formData} confirmationSubmitted={confirmationSubmitted}/>  
                     ) : <Spinner />
                 }            
             </Fragment>

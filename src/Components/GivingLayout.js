@@ -122,11 +122,12 @@ class GivingLayout extends Component {
         let {
             otherAmount,
             otherAmountError,
-            selectedIndex
+            selectedIndex,
+            prevIndex
         } = this.state
         let key = "controlled"
         // console.log({amount, selectedIndex})
-        if (amount && selectedIndex === null) {
+        if (amount) {
             const index = isMonthly ? monthlyAmounts.indexOf(amount) : singleAmounts.indexOf(amount);
             selectedIndex =  index > -1 ? index : 99;
             otherAmount = amount;
