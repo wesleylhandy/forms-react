@@ -201,6 +201,17 @@ module.hot.accept(reloadCSS);
 module.exports = {
   "checkbox-input": "checkbox-input__1XcRE"
 };
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/ccinfo.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "monthlyGivingDay": "monthlyGivingDay__25iZt",
+  "ccDayOfMonth": "ccDayOfMonth__1p68o",
+  "ccdate": "ccdate__2v2UI",
+  "hidden": "hidden__2QP7z"
+};
 },{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/flex.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
@@ -251,26 +262,58 @@ module.exports = {
   "city-state-row": "city-state-row__CzC30",
   "zip-country-row": "zip-country-row__x4uyF"
 };
-},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/giving.module.css":[function(require,module,exports) {
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/funds.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
 module.exports = {
-  "askarray__header": "askarray__header__3P2Zh",
-  "askarray": "askarray__UQ1ey",
-  "askarray--other": "askarray--other__y-GeO",
-  "askbutton": "askbutton__1REXt",
-  "askbutton__amt": "askbutton__amt__20Y8v",
-  "selected": "selected__52P9N",
-  "askarray__form-group": "askarray__form-group__1rkB9",
-  "askarray__form-group--other": "askarray__form-group--other__ibtGr",
-  "form-group__other-input": "form-group__other-input__3hTcz",
-  "form-group__other-input--label": "form-group__other-input--label__1gNEk",
-  "OtherGiftAmount": "OtherGiftAmount__1famW",
-  "OtherAmount": "OtherAmount__1Tt7b",
-  "error": "error__2x8Zr",
-  "other-amt-error": "other-amt-error__2STLF"
+  "hidden": "hidden__YzG3s",
+  "img-responsive": "img-responsive__1nEgI",
+  "funds__header": "funds__header__1jN9Q",
+  "select-fund": "select-fund__1H6ol",
+  "select-fund__dropdown": "select-fund__dropdown__1Ievl",
+  "fund-card": "fund-card__15At6",
+  "fund-card__dropdown": "fund-card__dropdown__18TeI",
+  "selected": "selected__3oS9p",
+  "funds-display": "funds-display__2VS1a",
+  "dropDownArrow": "dropDownArrow__2MRFt",
+  "fund-card__body--title": "fund-card__body--title__2p-6O",
+  "fund-card__image": "fund-card__image__1CTES",
+  "fund-card__body": "fund-card__body__9IylK",
+  "fund-card__body--description": "fund-card__body--description__23WXP"
+};
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/giving-array.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "askarray__header": "askarray__header__6ItDR",
+  "gift-choice": "gift-choice__1Kxhd",
+  "askarray": "askarray__1tdrR",
+  "askarray--other": "askarray--other__2mbag",
+  "askarray__tabs--other": "askarray__tabs--other__6uCeG",
+  "askarray__tabs": "askarray__tabs__hadRL",
+  "askbutton": "askbutton__3K46_",
+  "askbutton__tabs": "askbutton__tabs__1_cOw",
+  "askbutton__amt": "askbutton__amt__3_6p2",
+  "askbutton__amt--tabs": "askbutton__amt--tabs__3z7Fh",
+  "selected": "selected__3lVba",
+  "askarray__form-group": "askarray__form-group__2CruR",
+  "askarray__form-group--other": "askarray__form-group--other__2gNu9",
+  "askarray__form-group--tabs": "askarray__form-group--tabs__braV8",
+  "form-group__other-input": "form-group__other-input__3eYLR",
+  "form-group-tabs__other-input": "form-group-tabs__other-input__2pFMd",
+  "form-group-tabs--dollar": "form-group-tabs--dollar__3cuSs",
+  "form-group__other-input--label": "form-group__other-input--label__2Qrbr",
+  "form-group-tabs__other-input--label": "form-group-tabs__other-input--label__22V-r",
+  "OtherGiftAmount": "OtherGiftAmount__2VX6n",
+  "OtherAmount": "OtherAmount__2VlIH",
+  "error": "error__2C-Jl",
+  "other-amt-error": "other-amt-error__24VKJ",
+  "amount-error": "amount-error__3A2yL",
+  "submit-error": "submit-error__1Vx3y"
 };
 },{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/input.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -293,18 +336,38 @@ module.exports = {
   "form-group--City": "form-group--City__3Zk-Y",
   "form-group--Zip": "form-group--Zip__237PV"
 };
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/main.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "caps": "caps__HjY6y",
+  "hidden": "hidden__Nb_OH",
+  "center": "center__13BWi",
+  "img-responsive": "img-responsive__3Ir7U",
+  "img-circle": "img-circle__3klqW",
+  "hoverable": "hoverable__3CtuR",
+  "italic": "italic__qWrhf",
+  "bold": "bold__3UoQx",
+  "semi-bold": "semi-bold__lgu8d"
+};
 },{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/monthly-radio.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
 module.exports = {
-  "monthlyGivingDay": "monthlyGivingDay__1D4Rg",
   "monthly-radio": "monthly-radio__o1E-N",
-  "form-header": "form-header__gkJCU",
-  "ccDayOfMonth": "ccDayOfMonth__36uNQ",
-  "ccdate": "ccdate__1v9EL",
-  "hidden": "hidden__NI9Fz"
+  "form-header": "form-header__gkJCU"
+};
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/monthly-tab.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "monthly-tab": "monthly-tab__lApRw"
 };
 },{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/name-address-form.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -321,7 +384,6 @@ module.exports = {
   "gift-choice": "gift-choice__vKNi_",
   "hidden": "hidden__88z0P",
   "error": "error__3olFm",
-  "amount-error": "amount-error__2G2h0",
   "submit-error": "submit-error__3WT6H"
 };
 },{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/payment-form.module.css":[function(require,module,exports) {
@@ -413,7 +475,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60501" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65324" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

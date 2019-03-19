@@ -6,4 +6,3 @@ import('raf/polyfill');
 import('react');
 import('react-dom');
 import('secure-ls');
-import('shortid');

@@ -4,6 +4,9 @@ import flex from './styles/flex.module.css'
 import styles from './styles/giving-array.module.css'
 
 import MonthlyRadioGroup from './MonthlyRadioGroup'
+import MonthlyTabGroup from './MonthlyTabGroup'
+import CCInfo from './CCInfo'
+import Divider from './Divider'
 
 function getIndex(arr,amount) {
     return arr.findIndex(amt=> +amt == +amount)
@@ -27,7 +30,7 @@ class GivingLayout extends Component {
     }
 
     componentDidMount() {
-        const { defaultAmount, defaultOption, arrayOptions: { monthlyAmounts, singleAmounts, monthlyOption } } = this.props;
+        const { defaultAmount, defaultOption, givingOptions: { monthlyAmounts, singleAmounts, monthlyOption } } = this.props;
         let arr = []
         if (defaultOption !== "") {
             arr = defaultOption == 'monthly' ? monthlyAmounts : singleAmounts;
@@ -44,10 +47,10 @@ class GivingLayout extends Component {
         }
     }
 
-    renderArray(amounts, selectedIndex) {
+    renderArray(amounts, selectedIndex, type) {
         return amounts.map((amount, i)=>(
-            <div key={`array${i}`} styleName={`styles.askbutton flex.flex flex.flex-center flex.flex-axes-center ${selectedIndex == i ? "styles.selected" : ""}`} onClick={()=>this.addToCart(amount, i)}>
-                <div styleName="styles.askbutton__amt flex.flex flex.flex-center flex.flex-axes-center flex.flex-no-grow">${amount}</div>
+            <div key={`array${i}`} styleName={`styles.askbutton${type == "tabs" ? "__tabs" : ""} flex.flex flex.flex-center flex.flex-axes-center ${selectedIndex == i ? "styles.selected" : ""}`} onClick={()=>this.addToCart(amount, i)}>
+                <div styleName={`styles.askbutton__amt${type == "tabs" ? "--tabs" : " flex.flex-no-grow"} flex.flex flex.flex-center flex.flex-axes-center`}>${amount}</div>
             </div>
         ))
     }
@@ -61,7 +64,7 @@ class GivingLayout extends Component {
         const { otherAmountError, selectedIndex } = this.state;
         this.setState({otherAmount: index == 99 ? amt : 0, selectedIndex: index, otherAmountError: index !== 99 ? "" : otherAmountError, prevIndex: selectedIndex}, () => {
             if (amt) {
-                const { monthlyChecked, arrayOptions: {monthlyPledgeData, singlePledgeData} } = this.props;
+                const { monthlyChecked, givingOptions: {monthlyPledgeData, singlePledgeData} } = this.props;
                 this.props.addToCart({
                     type: 'donation',
                     PledgeAmount: amt,
@@ -106,18 +109,18 @@ class GivingLayout extends Component {
     render() {
         let { 
             givingFormat,
+            givingInfo: { amount, isMonthly },
             amountError,
-            givingInfo : { amount, isMonthly },
             monthlyChecked,
-            monthlyPledgeDay,
+            Monthlypledgeday,
             handleInputChange,
             handleRadioClick,
-            arrayOptions: {
+            givingOptions: {
                 singleOption,
                 monthlyOption,
                 monthlyAmounts, 
                 singleAmounts
-            } 
+            }
         } = this.props;
         let {
             otherAmount,
@@ -141,12 +144,12 @@ class GivingLayout extends Component {
                     <div styleName="styles.gift-choice">
                         <h3 styleName="styles.askarray__header">Select A {monthlyChecked ? "Monthly" : "Single"} Donation Amount</h3>
                         <div id="AskArray" styleName="styles.askarray flex.flex flex.flex-row flex.flex-center flex.flex-wrap">
-                            { monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex) : null }
-                            { singleOption && !monthlyChecked ?  this.renderArray(singleAmounts, selectedIndex) : null }
+                            { monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex, givingFormat) : null }
+                            { singleOption && !monthlyChecked ?  this.renderArray(singleAmounts, selectedIndex, givingFormat) : null }
                             
                         </div>
                         <div id="OtherGiftAmount" styleName="styles.askarray--other flex.flex flex.flex-row flex.flex-center">
-                            <div id="OtherAmout" styleName={`styles.askarray__form-group--other flex.flex flex.flex-center flex.flex-axes-center${selectedIndex == 99 ? " styles.selected": ""}`}>
+                            <div id="OtherAmount" styleName={`styles.askarray__form-group--other flex.flex flex.flex-center flex.flex-axes-center${selectedIndex == 99 ? " styles.selected": ""}`}>
                                 <label styleName="styles.form-group__other-input--label" htmlFor="other-amt-input">Other Amount</label>
                                 <input 
                                     key={key} 
@@ -165,7 +168,7 @@ class GivingLayout extends Component {
                     { 
                         monthlyOption && singleOption && (
                             <MonthlyRadioGroup 
-                                monthlyPledgeDay={monthlyPledgeDay}
+                                Monthlypledgeday={Monthlypledgeday}
                                 monthlyChecked={monthlyChecked}
                                 handleInputChange={handleInputChange}
                                 handleRadioClick={handleRadioClick}
@@ -175,7 +178,42 @@ class GivingLayout extends Component {
                 </Fragment>
             ) : (
                 <Fragment>
-                    
+                    { 
+                        monthlyOption && singleOption && (
+                            <MonthlyTabGroup 
+                                monthlyChecked={monthlyChecked}
+                                handleTabClick={handleRadioClick}
+                            />
+                        ) 
+                    }
+                    <div id="AskArray" styleName="styles.askarray__tabs flex.flex flex.flex-row flex.flex-center flex.flex-wrap">
+                            { monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex, givingFormat) : null }
+                            { singleOption && !monthlyChecked ?  this.renderArray(singleAmounts, selectedIndex, givingFormat) : null }
+                    </div>
+                    <div id="OtherGiftAmount" styleName="styles.askarray__tabs--other flex.flex flex.flex-row flex.flex-center flex.flex-axes-center">
+                        <div id="OtherAmount" styleName={`styles.askarray__form-group--tabs flex.flex flex.flex-between flex.flex-axes-center${selectedIndex == 99 ? " styles.selected": ""}`}>
+                            <label styleName="styles.form-group-tabs__other-input--label" htmlFor="other-amt-input">Or specify amount</label>
+                            <div styleName="flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
+                                <div styleName="styles.form-group-tabs--dollar">$</div>
+                                <input 
+                                    key={key} 
+                                    ref={this.otherAmountField} 
+                                    styleName="styles.form-group-tabs__other-input" 
+                                    name="other-amt-input" 
+                                    onChange={this.handleOtherAmt} 
+                                    value={otherAmount == 0 ? '' : otherAmount} 
+                                    onFocus={this.handleFocus}
+                                />
+                                <div styleName="styles.error styles.other-amt-error">{otherAmountError}</div>
+                            </div>
+                        </div> 
+                    </div>
+                    { 
+                        monthlyChecked && (
+                            <CCInfo handleInputChange={handleInputChange} Monthlypledgeday={Monthlypledgeday}/> 
+                        )
+                    }
+                    <div styleName="styles.error styles.amount-error">{amountError}</div>
                 </Fragment>
             )
     }
