@@ -6,22 +6,26 @@
 }
 
 .tab-group__input {
-    position: absolute;
-    left: -10000px;
-    top: auto;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
+    position: absolute !important;
+    left: -10000px !important;
+    top: auto !important;
+    bottom: unset !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
 }
 
 .tab-group__input + label  {
     display: block;
+    height: 80px;
+    line-height: 80px !important;
     cursor: pointer;
     width: 100%;
     text-align: center;
     background: var(--tab-bg-color);
     border-radius: var(--tab-border-radius);
     border: 2px solid var(--tab-border-color);
+    margin-bottom: 0;
     color: var(--tab-text-color);
     transition: color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out;
 }
