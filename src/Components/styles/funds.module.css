@@ -85,6 +85,7 @@ h3.funds__header {
     display: none;
     padding: 5px 10px;
     height: 90px;
+    width:100%;
     z-index: 0;
 }
 

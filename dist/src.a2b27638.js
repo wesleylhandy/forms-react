@@ -231,9 +231,7 @@ require("_bundle_loader")(require.resolve('react'));
 require("_bundle_loader")(require.resolve('react-dom'));
 
 require("_bundle_loader")(require.resolve('secure-ls'));
-
-require("_bundle_loader")(require.resolve('shortid'));
-},{"_bundle_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-loader.js","css-vars-ponyfill":[["css-vars-ponyfill.esm.9e0932d1.js","node_modules/css-vars-ponyfill/dist/css-vars-ponyfill.esm.js"],"css-vars-ponyfill.esm.9e0932d1.map","node_modules/css-vars-ponyfill/dist/css-vars-ponyfill.esm.js"],"whatwg-fetch":[["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],"fetch.6e6c81fd.map","node_modules/whatwg-fetch/fetch.js"],"promise-polyfill":[["src.7aaf042a.js","node_modules/promise-polyfill/src/index.js"],"src.7aaf042a.map","node_modules/promise-polyfill/src/index.js"],"raf/polyfill":[["polyfill.cde8445e.js","node_modules/raf/polyfill.js"],"polyfill.cde8445e.map","node_modules/raf/polyfill.js"],"react":[["react.545e1cc3.js","node_modules/react/index.js"],"react.545e1cc3.map","node_modules/react/index.js"],"react-dom":[["react-dom.29872971.js","node_modules/react-dom/index.js"],"react-dom.29872971.map","node_modules/react-dom/index.js"],"secure-ls":[["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],"secure-ls.0cd04304.map","node_modules/secure-ls/dist/secure-ls.js"],"shortid":[["shortid.e3ad9acd.js","node_modules/shortid/index.js"],"shortid.e3ad9acd.map","node_modules/shortid/index.js"]}],"node_modules/core-js/modules/_global.js":[function(require,module,exports) {
+},{"_bundle_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-loader.js","css-vars-ponyfill":[["css-vars-ponyfill.esm.9e0932d1.js","node_modules/css-vars-ponyfill/dist/css-vars-ponyfill.esm.js"],"css-vars-ponyfill.esm.9e0932d1.map","node_modules/css-vars-ponyfill/dist/css-vars-ponyfill.esm.js"],"whatwg-fetch":[["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],"fetch.6e6c81fd.map","node_modules/whatwg-fetch/fetch.js"],"promise-polyfill":[["src.7aaf042a.js","node_modules/promise-polyfill/src/index.js"],"src.7aaf042a.map","node_modules/promise-polyfill/src/index.js"],"raf/polyfill":[["polyfill.cde8445e.js","node_modules/raf/polyfill.js"],"polyfill.cde8445e.map","node_modules/raf/polyfill.js"],"react":[["react.545e1cc3.js","node_modules/react/index.js"],"react.545e1cc3.map","node_modules/react/index.js"],"react-dom":[["react-dom.29872971.js","node_modules/react-dom/index.js"],"react-dom.29872971.map","node_modules/react-dom/index.js"],"secure-ls":[["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],"secure-ls.0cd04304.map","node_modules/secure-ls/dist/secure-ls.js"]}],"node_modules/core-js/modules/_global.js":[function(require,module,exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
@@ -8377,28 +8375,384 @@ module.exports = {
   "-ms-flex-negative": "flex-shrink__1LQT2",
   "flex-shrink": "flex-shrink__1LQT2"
 };
-},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/giving.module.css":[function(require,module,exports) {
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/giving-array.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
 module.exports = {
-  "askarray__header": "askarray__header__3P2Zh",
-  "askarray": "askarray__UQ1ey",
-  "askarray--other": "askarray--other__y-GeO",
-  "askbutton": "askbutton__1REXt",
-  "askbutton__amt": "askbutton__amt__20Y8v",
-  "selected": "selected__52P9N",
-  "askarray__form-group": "askarray__form-group__1rkB9",
-  "askarray__form-group--other": "askarray__form-group--other__ibtGr",
-  "form-group__other-input": "form-group__other-input__3hTcz",
-  "form-group__other-input--label": "form-group__other-input--label__1gNEk",
-  "OtherGiftAmount": "OtherGiftAmount__1famW",
-  "OtherAmount": "OtherAmount__1Tt7b",
-  "error": "error__2x8Zr",
-  "other-amt-error": "other-amt-error__2STLF"
+  "askarray__header": "askarray__header__6ItDR",
+  "gift-choice": "gift-choice__1Kxhd",
+  "askarray": "askarray__1tdrR",
+  "askarray--other": "askarray--other__2mbag",
+  "askarray__tabs--other": "askarray__tabs--other__6uCeG",
+  "askarray__tabs": "askarray__tabs__hadRL",
+  "askbutton": "askbutton__3K46_",
+  "askbutton__tabs": "askbutton__tabs__1_cOw",
+  "askbutton__amt": "askbutton__amt__3_6p2",
+  "askbutton__amt--tabs": "askbutton__amt--tabs__3z7Fh",
+  "selected": "selected__3lVba",
+  "askarray__form-group": "askarray__form-group__2CruR",
+  "askarray__form-group--other": "askarray__form-group--other__2gNu9",
+  "askarray__form-group--tabs": "askarray__form-group--tabs__braV8",
+  "form-group__other-input": "form-group__other-input__3eYLR",
+  "form-group-tabs__other-input": "form-group-tabs__other-input__2pFMd",
+  "form-group-tabs--dollar": "form-group-tabs--dollar__3cuSs",
+  "form-group__other-input--label": "form-group__other-input--label__2Qrbr",
+  "form-group-tabs__other-input--label": "form-group-tabs__other-input--label__22V-r",
+  "OtherGiftAmount": "OtherGiftAmount__2VX6n",
+  "OtherAmount": "OtherAmount__2VlIH",
+  "error": "error__2C-Jl",
+  "other-amt-error": "other-amt-error__24VKJ",
+  "amount-error": "amount-error__3A2yL",
+  "submit-error": "submit-error__1Vx3y"
 };
-},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/GivingArray.js":[function(require,module,exports) {
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/styles/radio.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "radio-group": "radio-group__1Ai8X",
+  "radio-group__input": "radio-group__input__jkbDU"
+};
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/RadioButton.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
+
+var _radioModule = _interopRequireDefault(require("./styles/radio.module.css"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+if (module.hot) {
+  module.hot.accept("./styles/radio.module.css", function () {
+    require("./styles/radio.module.css");
+  });
+}
+
+if (module.hot) {
+  module.hot.accept("./styles/flex.module.css", function () {
+    require("./styles/flex.module.css");
+  });
+}
+
+function RadioButton(props) {
+  return _react.default.createElement("div", {
+    id: "".concat(props.id, "-group"),
+    className: "flex__ayltN flex-row__16BBq flex-axes-center__33a6C radio-group__1Ai8X"
+  }, _react.default.createElement("input", {
+    className: "radio-group__input__jkbDU",
+    name: props.name,
+    id: "".concat(props.id, "gift"),
+    type: "radio",
+    checked: props.checked,
+    onChange: props.handleRadioClick
+  }), _react.default.createElement("label", {
+    htmlFor: "".concat(props.id, "gift")
+  }, props.label));
+}
+
+var _default = RadioButton;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/radio.module.css":"src/Components/styles/radio.module.css"}],"src/Components/styles/ccinfo.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "monthlyGivingDay": "monthlyGivingDay__25iZt",
+  "ccDayOfMonth": "ccDayOfMonth__1p68o",
+  "ccdate": "ccdate__2v2UI",
+  "hidden": "hidden__2QP7z"
+};
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/CCInfo.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _ccinfoModule = _interopRequireDefault(require("./styles/ccinfo.module.css"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+if (module.hot) {
+  module.hot.accept("./styles/ccinfo.module.css", function () {
+    require("./styles/ccinfo.module.css");
+  });
+}
+
+function CCInfo(_ref) {
+  var handleInputChange = _ref.handleInputChange,
+      Monthlypledgeday = _ref.Monthlypledgeday;
+  var options = [];
+
+  for (var i = 2; i <= 28; i++) {
+    options.push(_react.default.createElement("option", {
+      key: "date-option-" + i,
+      value: i
+    }, i));
+  }
+
+  return _react.default.createElement("div", {
+    className: "monthlyGivingDay__25iZt"
+  }, _react.default.createElement("h5", {
+    className: "ccDayOfMonth__1p68o"
+  }, "Charge automatically on day\xA0", _react.default.createElement("label", {
+    htmlFor: "Monthlypledgeday",
+    className: "hidden__2QP7z"
+  }, "Select Date"), _react.default.createElement("select", {
+    className: "ccdate__2v2UI",
+    name: "Monthlypledgeday",
+    onChange: handleInputChange,
+    value: Monthlypledgeday
+  }, options), "\xA0each month."));
+}
+
+var _default = CCInfo;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","./styles/ccinfo.module.css":"src/Components/styles/ccinfo.module.css"}],"src/Components/styles/monthly-radio.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "monthly-radio": "monthly-radio__o1E-N",
+  "form-header": "form-header__gkJCU"
+};
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/MonthlyRadioGroup.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _RadioButton = _interopRequireDefault(require("./RadioButton"));
+
+var _CCInfo = _interopRequireDefault(require("./CCInfo"));
+
+var _monthlyRadioModule = _interopRequireDefault(require("./styles/monthly-radio.module.css"));
+
+var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+if (module.hot) {
+  module.hot.accept("./styles/flex.module.css", function () {
+    require("./styles/flex.module.css");
+  });
+}
+
+if (module.hot) {
+  module.hot.accept("./styles/monthly-radio.module.css", function () {
+    require("./styles/monthly-radio.module.css");
+  });
+}
+
+function MonthlyRadioGroup(_ref) {
+  var handleInputChange = _ref.handleInputChange,
+      monthlyChecked = _ref.monthlyChecked,
+      Monthlypledgeday = _ref.Monthlypledgeday,
+      handleRadioClick = _ref.handleRadioClick;
+  var monthly = monthlyChecked;
+  var single = !monthlyChecked;
+  return _react.default.createElement("div", {
+    id: "MonthlyGivingInfo"
+  }, _react.default.createElement("h3", {
+    className: "form-header__gkJCU"
+  }, "How Often Do You Want to Give This Amount?"), _react.default.createElement("div", {
+    className: "flex__ayltN flex-row__16BBq flex-between__3zYkx monthly-radio__o1E-N"
+  }, _react.default.createElement(_RadioButton.default, {
+    id: "monthly",
+    name: "monthly-toggle",
+    label: "Monthly Gift",
+    checked: monthly,
+    handleRadioClick: handleRadioClick
+  }), _react.default.createElement(_RadioButton.default, {
+    id: "single",
+    name: "monthly-toggle",
+    label: "Single Gift",
+    checked: single,
+    handleRadioClick: handleRadioClick
+  })), monthlyChecked && _react.default.createElement(_CCInfo.default, {
+    handleInputChange: handleInputChange,
+    Monthlypledgeday: Monthlypledgeday
+  }));
+}
+
+var _default = MonthlyRadioGroup;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","./RadioButton":"src/Components/RadioButton.js","./CCInfo":"src/Components/CCInfo.js","./styles/monthly-radio.module.css":"src/Components/styles/monthly-radio.module.css","./styles/flex.module.css":"src/Components/styles/flex.module.css"}],"src/Components/styles/tab.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "tab-group": "tab-group__1pThZ",
+  "tab-group__input": "tab-group__input__1bjdY"
+};
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/Tab.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
+
+var _tabModule = _interopRequireDefault(require("./styles/tab.module.css"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+if (module.hot) {
+  module.hot.accept("./styles/tab.module.css", function () {
+    require("./styles/tab.module.css");
+  });
+}
+
+if (module.hot) {
+  module.hot.accept("./styles/flex.module.css", function () {
+    require("./styles/flex.module.css");
+  });
+}
+
+function Tab(_ref) {
+  var id = _ref.id,
+      name = _ref.name,
+      checked = _ref.checked,
+      handleTabClick = _ref.handleTabClick,
+      label = _ref.label;
+  return _react.default.createElement("div", {
+    id: "".concat(id, "-group"),
+    className: "flex__ayltN flex-row__16BBq flex-center__1HhTj flex-axes-center__33a6C tab-group__1pThZ"
+  }, _react.default.createElement("input", {
+    className: "tab-group__input__1bjdY",
+    name: name,
+    id: "".concat(id, "gift"),
+    type: "checkbox",
+    checked: checked,
+    onChange: handleTabClick
+  }), _react.default.createElement("label", {
+    htmlFor: "".concat(id, "gift")
+  }, label));
+}
+
+var _default = Tab;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/tab.module.css":"src/Components/styles/tab.module.css"}],"src/Components/Divider.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Divider(_ref) {
+  var color = _ref.color;
+  return _react.default.createElement("div", {
+    style: {
+      background: color,
+      flex: "0 0 5px"
+    }
+  });
+}
+
+var _default = Divider;
+exports.default = _default;
+},{"react":"node_modules/react/index.js"}],"src/Components/styles/monthly-tab.module.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+module.exports = {
+  "monthly-tab": "monthly-tab__lApRw"
+};
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/MonthlyTabGroup.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _Tab = _interopRequireDefault(require("./Tab"));
+
+var _Divider = _interopRequireDefault(require("./Divider"));
+
+var _monthlyTabModule = _interopRequireDefault(require("./styles/monthly-tab.module.css"));
+
+var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+if (module.hot) {
+  module.hot.accept("./styles/flex.module.css", function () {
+    require("./styles/flex.module.css");
+  });
+}
+
+if (module.hot) {
+  module.hot.accept("./styles/monthly-tab.module.css", function () {
+    require("./styles/monthly-tab.module.css");
+  });
+}
+
+function MonthlyTabGroup(_ref) {
+  var monthlyChecked = _ref.monthlyChecked,
+      handleTabClick = _ref.handleTabClick;
+  var monthly = monthlyChecked;
+  var single = !monthlyChecked;
+  return _react.default.createElement("div", {
+    id: "MonthlyGivingInfo"
+  }, _react.default.createElement("div", {
+    className: "flex__ayltN flex-row__16BBq flex-center__1HhTj monthly-tab__lApRw"
+  }, _react.default.createElement(_Tab.default, {
+    id: "monthly",
+    name: "monthly-toggle",
+    label: "give monthly",
+    checked: monthly,
+    handleTabClick: handleTabClick
+  }), _react.default.createElement(_Divider.default, {
+    color: "transparent"
+  }), _react.default.createElement(_Tab.default, {
+    id: "single",
+    name: "monthly-toggle",
+    label: "one time gift",
+    checked: single,
+    handleTabClick: handleTabClick
+  })));
+}
+
+var _default = MonthlyTabGroup;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","./Tab":"src/Components/Tab.js","./Divider":"src/Components/Divider.js","./styles/monthly-tab.module.css":"src/Components/styles/monthly-tab.module.css","./styles/flex.module.css":"src/Components/styles/flex.module.css"}],"src/Components/GivingLayout.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8412,7 +8766,15 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
 
-var _givingModule = _interopRequireDefault(require("./styles/giving.module.css"));
+var _givingArrayModule = _interopRequireDefault(require("./styles/giving-array.module.css"));
+
+var _MonthlyRadioGroup = _interopRequireDefault(require("./MonthlyRadioGroup"));
+
+var _MonthlyTabGroup = _interopRequireDefault(require("./MonthlyTabGroup"));
+
+var _CCInfo = _interopRequireDefault(require("./CCInfo"));
+
+var _Divider = _interopRequireDefault(require("./Divider"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -8455,26 +8817,37 @@ var _styleModuleImportMap = {
     "flex-shrink": "flex-shrink__1LQT2"
   },
   "styles": {
-    "askarray__header": "askarray__header__3P2Zh",
-    "askarray": "askarray__UQ1ey",
-    "askarray--other": "askarray--other__y-GeO",
-    "askbutton": "askbutton__1REXt",
-    "askbutton__amt": "askbutton__amt__20Y8v",
-    "selected": "selected__52P9N",
-    "askarray__form-group": "askarray__form-group__1rkB9",
-    "askarray__form-group--other": "askarray__form-group--other__ibtGr",
-    "form-group__other-input": "form-group__other-input__3hTcz",
-    "form-group__other-input--label": "form-group__other-input--label__1gNEk",
-    "OtherGiftAmount": "OtherGiftAmount__1famW",
-    "OtherAmount": "OtherAmount__1Tt7b",
-    "error": "error__2x8Zr",
-    "other-amt-error": "other-amt-error__2STLF"
+    "askarray__header": "askarray__header__6ItDR",
+    "gift-choice": "gift-choice__1Kxhd",
+    "askarray": "askarray__1tdrR",
+    "askarray--other": "askarray--other__2mbag",
+    "askarray__tabs--other": "askarray__tabs--other__6uCeG",
+    "askarray__tabs": "askarray__tabs__hadRL",
+    "askbutton": "askbutton__3K46_",
+    "askbutton__tabs": "askbutton__tabs__1_cOw",
+    "askbutton__amt": "askbutton__amt__3_6p2",
+    "askbutton__amt--tabs": "askbutton__amt--tabs__3z7Fh",
+    "selected": "selected__3lVba",
+    "askarray__form-group": "askarray__form-group__2CruR",
+    "askarray__form-group--other": "askarray__form-group--other__2gNu9",
+    "askarray__form-group--tabs": "askarray__form-group--tabs__braV8",
+    "form-group__other-input": "form-group__other-input__3eYLR",
+    "form-group-tabs__other-input": "form-group-tabs__other-input__2pFMd",
+    "form-group-tabs--dollar": "form-group-tabs--dollar__3cuSs",
+    "form-group__other-input--label": "form-group__other-input--label__2Qrbr",
+    "form-group-tabs__other-input--label": "form-group-tabs__other-input--label__22V-r",
+    "OtherGiftAmount": "OtherGiftAmount__2VX6n",
+    "OtherAmount": "OtherAmount__2VlIH",
+    "error": "error__2C-Jl",
+    "other-amt-error": "other-amt-error__24VKJ",
+    "amount-error": "amount-error__3A2yL",
+    "submit-error": "submit-error__1Vx3y"
   }
 };
 
 if (module.hot) {
-  module.hot.accept("./styles/giving.module.css", function () {
-    require("./styles/giving.module.css");
+  module.hot.accept("./styles/giving-array.module.css", function () {
+    require("./styles/giving-array.module.css");
   });
 }
 
@@ -8490,17 +8863,17 @@ function getIndex(arr, amount) {
   });
 }
 
-var GivingArray =
+var GivingLayout =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(GivingArray, _Component);
+  _inherits(GivingLayout, _Component);
 
-  function GivingArray(props) {
+  function GivingLayout(props) {
     var _this;
 
-    _classCallCheck(this, GivingArray);
+    _classCallCheck(this, GivingLayout);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(GivingArray).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(GivingLayout).call(this, props));
     _this.otherAmountField = _react.default.createRef();
     _this.state = {
       initialUpdate: false,
@@ -8516,16 +8889,16 @@ function (_Component) {
     return _this;
   }
 
-  _createClass(GivingArray, [{
+  _createClass(GivingLayout, [{
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this$props = this.props,
           defaultAmount = _this$props.defaultAmount,
           defaultOption = _this$props.defaultOption,
-          _this$props$arrayOpti = _this$props.arrayOptions,
-          monthlyAmounts = _this$props$arrayOpti.monthlyAmounts,
-          singleAmounts = _this$props$arrayOpti.singleAmounts,
-          monthlyOption = _this$props$arrayOpti.monthlyOption;
+          _this$props$givingOpt = _this$props.givingOptions,
+          monthlyAmounts = _this$props$givingOpt.monthlyAmounts,
+          singleAmounts = _this$props$givingOpt.singleAmounts,
+          monthlyOption = _this$props$givingOpt.monthlyOption;
       var arr = [];
 
       if (defaultOption !== "") {
@@ -8547,7 +8920,7 @@ function (_Component) {
     }
   }, {
     key: "renderArray",
-    value: function renderArray(amounts, selectedIndex) {
+    value: function renderArray(amounts, selectedIndex, type) {
       var _this2 = this;
 
       return amounts.map(function (amount, i) {
@@ -8556,11 +8929,13 @@ function (_Component) {
           onClick: function onClick() {
             return _this2.addToCart(amount, i);
           },
-          className: (0, _getClassName2.default)("styles.askbutton flex.flex flex.flex-center flex.flex-axes-center ".concat(selectedIndex == i ? "styles.selected" : ""), _styleModuleImportMap, {
+          className: (0, _getClassName2.default)("styles.askbutton".concat(type == "tabs" ? "__tabs" : "", " flex.flex flex.flex-center flex.flex-axes-center ").concat(selectedIndex == i ? "styles.selected" : ""), _styleModuleImportMap, {
             "handleMissingStyleName": "warn"
           })
         }, _react.default.createElement("div", {
-          className: "askbutton__amt__20Y8v flex__ayltN flex-center__1HhTj flex-axes-center__33a6C flex-no-grow__3iHTz"
+          className: (0, _getClassName2.default)("styles.askbutton__amt".concat(type == "tabs" ? "--tabs" : " flex.flex-no-grow", " flex.flex flex.flex-center flex.flex-axes-center"), _styleModuleImportMap, {
+            "handleMissingStyleName": "warn"
+          })
         }, "$", amount));
       });
     }
@@ -8587,9 +8962,9 @@ function (_Component) {
         if (amt) {
           var _this3$props = _this3.props,
               monthlyChecked = _this3$props.monthlyChecked,
-              _this3$props$arrayOpt = _this3$props.arrayOptions,
-              monthlyPledgeData = _this3$props$arrayOpt.monthlyPledgeData,
-              singlePledgeData = _this3$props$arrayOpt.singlePledgeData;
+              _this3$props$givingOp = _this3$props.givingOptions,
+              monthlyPledgeData = _this3$props$givingOp.monthlyPledgeData,
+              singlePledgeData = _this3$props$givingOp.singlePledgeData;
 
           _this3.props.addToCart({
             type: 'donation',
@@ -8663,16 +9038,20 @@ function (_Component) {
     key: "render",
     value: function render() {
       var _this$props2 = this.props,
+          givingFormat = _this$props2.givingFormat,
           _this$props2$givingIn = _this$props2.givingInfo,
           amount = _this$props2$givingIn.amount,
           isMonthly = _this$props2$givingIn.isMonthly,
+          amountError = _this$props2.amountError,
           monthlyChecked = _this$props2.monthlyChecked,
-          _this$props2$arrayOpt = _this$props2.arrayOptions,
-          givingFormat = _this$props2$arrayOpt.givingFormat,
-          singleOption = _this$props2$arrayOpt.singleOption,
-          monthlyOption = _this$props2$arrayOpt.monthlyOption,
-          monthlyAmounts = _this$props2$arrayOpt.monthlyAmounts,
-          singleAmounts = _this$props2$arrayOpt.singleAmounts;
+          Monthlypledgeday = _this$props2.Monthlypledgeday,
+          handleInputChange = _this$props2.handleInputChange,
+          handleRadioClick = _this$props2.handleRadioClick,
+          _this$props2$givingOp = _this$props2.givingOptions,
+          singleOption = _this$props2$givingOp.singleOption,
+          monthlyOption = _this$props2$givingOp.monthlyOption,
+          monthlyAmounts = _this$props2$givingOp.monthlyAmounts,
+          singleAmounts = _this$props2$givingOp.singleAmounts;
       var _this$state2 = this.state,
           otherAmount = _this$state2.otherAmount,
           otherAmountError = _this$state2.otherAmountError,
@@ -8690,42 +9069,87 @@ function (_Component) {
         key = selectedIndex == 99 || selectedIndex === null ? key : (monthlyChecked ? monthlyAmounts[selectedIndex] : singleAmounts[selectedIndex]) + "-key";
       }
 
-      return _react.default.createElement(_react.Fragment, null, _react.default.createElement("h3", {
-        className: "askarray__header__3P2Zh"
+      return givingFormat === "buttons" ? _react.default.createElement(_react.Fragment, null, _react.default.createElement("div", {
+        className: "gift-choice__1Kxhd"
+      }, _react.default.createElement("h3", {
+        className: "askarray__header__6ItDR"
       }, "Select A ", monthlyChecked ? "Monthly" : "Single", " Donation Amount"), _react.default.createElement("div", {
         id: "AskArray",
-        className: "askarray__UQ1ey flex__ayltN flex-row__16BBq flex-center__1HhTj flex-wrap__1FN6A"
-      }, monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex) : null, singleOption && !monthlyChecked ? this.renderArray(singleAmounts, selectedIndex) : null), _react.default.createElement("div", {
+        className: "askarray__1tdrR flex__ayltN flex-row__16BBq flex-center__1HhTj flex-wrap__1FN6A"
+      }, monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex, givingFormat) : null, singleOption && !monthlyChecked ? this.renderArray(singleAmounts, selectedIndex, givingFormat) : null), _react.default.createElement("div", {
         id: "OtherGiftAmount",
-        className: "askarray--other__y-GeO flex__ayltN flex-row__16BBq flex-center__1HhTj"
+        className: "askarray--other__2mbag flex__ayltN flex-row__16BBq flex-center__1HhTj"
       }, _react.default.createElement("div", {
-        id: "OtherAmout",
+        id: "OtherAmount",
         className: (0, _getClassName2.default)("styles.askarray__form-group--other flex.flex flex.flex-center flex.flex-axes-center".concat(selectedIndex == 99 ? " styles.selected" : ""), _styleModuleImportMap, {
           "handleMissingStyleName": "warn"
         })
       }, _react.default.createElement("label", {
-        className: "form-group__other-input--label__1gNEk",
+        className: "form-group__other-input--label__2Qrbr",
         htmlFor: "other-amt-input"
       }, "Other Amount"), _react.default.createElement("input", {
         key: key,
         ref: this.otherAmountField,
-        className: "form-group__other-input__3hTcz",
+        className: "form-group__other-input__3eYLR",
         name: "other-amt-input",
         onChange: this.handleOtherAmt,
         value: otherAmount == 0 ? '' : otherAmount,
         onFocus: this.handleFocus
       }), _react.default.createElement("div", {
-        className: "error__2x8Zr other-amt-error__2STLF"
-      }, otherAmountError))));
+        className: "error__2C-Jl other-amt-error__24VKJ"
+      }, otherAmountError))), _react.default.createElement("div", {
+        className: "error__2C-Jl amount-error__3A2yL"
+      }, amountError)), monthlyOption && singleOption && _react.default.createElement(_MonthlyRadioGroup.default, {
+        Monthlypledgeday: Monthlypledgeday,
+        monthlyChecked: monthlyChecked,
+        handleInputChange: handleInputChange,
+        handleRadioClick: handleRadioClick
+      })) : _react.default.createElement(_react.Fragment, null, monthlyOption && singleOption && _react.default.createElement(_MonthlyTabGroup.default, {
+        monthlyChecked: monthlyChecked,
+        handleTabClick: handleRadioClick
+      }), _react.default.createElement("div", {
+        id: "AskArray",
+        className: "askarray__tabs__hadRL flex__ayltN flex-row__16BBq flex-center__1HhTj flex-wrap__1FN6A"
+      }, monthlyOption && monthlyChecked ? this.renderArray(monthlyAmounts, selectedIndex, givingFormat) : null, singleOption && !monthlyChecked ? this.renderArray(singleAmounts, selectedIndex, givingFormat) : null), _react.default.createElement("div", {
+        id: "OtherGiftAmount",
+        className: "askarray__tabs--other__6uCeG flex__ayltN flex-row__16BBq flex-center__1HhTj flex-axes-center__33a6C"
+      }, _react.default.createElement("div", {
+        id: "OtherAmount",
+        className: (0, _getClassName2.default)("styles.askarray__form-group--tabs flex.flex flex.flex-between flex.flex-axes-center".concat(selectedIndex == 99 ? " styles.selected" : ""), _styleModuleImportMap, {
+          "handleMissingStyleName": "warn"
+        })
+      }, _react.default.createElement("label", {
+        className: "form-group-tabs__other-input--label__22V-r",
+        htmlFor: "other-amt-input"
+      }, "Or specify amount"), _react.default.createElement("div", {
+        className: "flex__ayltN flex-row__16BBq flex-left__3xW5i flex-axes-center__33a6C"
+      }, _react.default.createElement("div", {
+        className: "form-group-tabs--dollar__3cuSs"
+      }, "$"), _react.default.createElement("input", {
+        key: key,
+        ref: this.otherAmountField,
+        className: "form-group-tabs__other-input__2pFMd",
+        name: "other-amt-input",
+        onChange: this.handleOtherAmt,
+        value: otherAmount == 0 ? '' : otherAmount,
+        onFocus: this.handleFocus
+      }), _react.default.createElement("div", {
+        className: "error__2C-Jl other-amt-error__24VKJ"
+      }, otherAmountError)))), monthlyChecked && _react.default.createElement(_CCInfo.default, {
+        handleInputChange: handleInputChange,
+        Monthlypledgeday: Monthlypledgeday
+      }), _react.default.createElement("div", {
+        className: "error__2C-Jl amount-error__3A2yL"
+      }, amountError));
     }
   }]);
 
-  return GivingArray;
+  return GivingLayout;
 }(_react.Component);
 
-var _default = GivingArray;
+var _default = GivingLayout;
 exports.default = _default;
-},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/giving.module.css":"src/Components/styles/giving.module.css"}],"src/Components/styles/products.module.css":[function(require,module,exports) {
+},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/giving-array.module.css":"src/Components/styles/giving-array.module.css","./MonthlyRadioGroup":"src/Components/MonthlyRadioGroup.js","./MonthlyTabGroup":"src/Components/MonthlyTabGroup.js","./CCInfo":"src/Components/CCInfo.js","./Divider":"src/Components/Divider.js"}],"src/Components/styles/products.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -8747,7 +9171,7 @@ module.exports = {
   "additional-amount__input--label": "additional-amount__input--label__1mgWu",
   "product-total__input--label": "product-total__input--label__1r4ld"
 };
-},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/ProductDisplay.js":[function(require,module,exports) {
+},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/ProductLayout.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8797,17 +9221,17 @@ if (module.hot) {
   });
 }
 
-var ProductDisplay =
+var ProductLayout =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(ProductDisplay, _Component);
+  _inherits(ProductLayout, _Component);
 
-  function ProductDisplay(props) {
+  function ProductLayout(props) {
     var _this;
 
-    _classCallCheck(this, ProductDisplay);
+    _classCallCheck(this, ProductLayout);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ProductDisplay).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ProductLayout).call(this, props));
     _this.state = {
       fields: {
         additionalGift: 0
@@ -8832,7 +9256,7 @@ function (_Component) {
    */
 
 
-  _createClass(ProductDisplay, [{
+  _createClass(ProductLayout, [{
     key: "calculateTotalGift",
     value: function calculateTotalGift() {
       var productInfo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
@@ -9014,10 +9438,10 @@ function (_Component) {
     }
   }]);
 
-  return ProductDisplay;
+  return ProductLayout;
 }(_react.Component);
 
-var _default = ProductDisplay;
+var _default = ProductLayout;
 exports.default = _default;
 },{"react":"node_modules/react/index.js","./styles/products.module.css":"src/Components/styles/products.module.css","./styles/flex.module.css":"src/Components/styles/flex.module.css"}],"src/Components/styles/funds.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -9329,163 +9753,7 @@ function (_Component) {
 
 var _default = FundDisplay;
 exports.default = _default;
-},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./styles/funds.module.css":"src/Components/styles/funds.module.css","./styles/flex.module.css":"src/Components/styles/flex.module.css"}],"src/Components/styles/radio.module.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-module.exports = {
-  "radio-group": "radio-group__1Ai8X",
-  "radio-group__input": "radio-group__input__jkbDU"
-};
-},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/RadioButton.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
-
-var _radioModule = _interopRequireDefault(require("./styles/radio.module.css"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-if (module.hot) {
-  module.hot.accept("./styles/radio.module.css", function () {
-    require("./styles/radio.module.css");
-  });
-}
-
-if (module.hot) {
-  module.hot.accept("./styles/flex.module.css", function () {
-    require("./styles/flex.module.css");
-  });
-}
-
-function RadioButton(props) {
-  return _react.default.createElement("div", {
-    id: "".concat(props.id, "-group"),
-    className: "flex__ayltN flex-row__16BBq flex-axes-center__33a6C radio-group__1Ai8X"
-  }, _react.default.createElement("input", {
-    className: "radio-group__input__jkbDU",
-    name: props.name,
-    id: "".concat(props.id, "gift"),
-    type: "radio",
-    checked: props.checked,
-    onChange: props.handleRadioClick
-  }), _react.default.createElement("label", {
-    htmlFor: "".concat(props.id, "gift")
-  }, props.label));
-}
-
-var _default = RadioButton;
-exports.default = _default;
-},{"react":"node_modules/react/index.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/radio.module.css":"src/Components/styles/radio.module.css"}],"src/Components/styles/monthly-radio.module.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-module.exports = {
-  "monthlyGivingDay": "monthlyGivingDay__1D4Rg",
-  "monthly-radio": "monthly-radio__o1E-N",
-  "form-header": "form-header__gkJCU",
-  "ccDayOfMonth": "ccDayOfMonth__36uNQ",
-  "ccdate": "ccdate__1v9EL",
-  "hidden": "hidden__NI9Fz"
-};
-},{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/MonthlyRadioGroup.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _RadioButton = _interopRequireDefault(require("./RadioButton"));
-
-var _monthlyRadioModule = _interopRequireDefault(require("./styles/monthly-radio.module.css"));
-
-var _flexModule = _interopRequireDefault(require("./styles/flex.module.css"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-if (module.hot) {
-  module.hot.accept("./styles/flex.module.css", function () {
-    require("./styles/flex.module.css");
-  });
-}
-
-if (module.hot) {
-  module.hot.accept("./styles/monthly-radio.module.css", function () {
-    require("./styles/monthly-radio.module.css");
-  });
-}
-
-function MonthlyRadioGroup(_ref) {
-  var handleInputChange = _ref.handleInputChange,
-      monthlyChecked = _ref.monthlyChecked,
-      Monthlypledgeday = _ref.Monthlypledgeday,
-      handleRadioClick = _ref.handleRadioClick;
-  var monthly = monthlyChecked;
-  var single = !monthlyChecked;
-
-  function renderCCInfo() {
-    var options = [];
-
-    for (var i = 2; i <= 28; i++) {
-      options.push(_react.default.createElement("option", {
-        key: "date-option-" + i,
-        value: i
-      }, i));
-    }
-
-    return _react.default.createElement(_react.Fragment, null, _react.default.createElement("h5", {
-      className: "ccDayOfMonth__36uNQ"
-    }, "Charge automatically on day\xA0", _react.default.createElement("label", {
-      htmlFor: "Monthlypledgeday",
-      className: "hidden__NI9Fz"
-    }, "Select Date"), _react.default.createElement("select", {
-      className: "ccdate__1v9EL",
-      name: "Monthlypledgeday",
-      onChange: handleInputChange,
-      value: Monthlypledgeday
-    }, options), "\xA0each month."));
-  }
-
-  return _react.default.createElement("div", {
-    id: "MonthlyGivingInfo"
-  }, _react.default.createElement("h3", {
-    className: "form-header__gkJCU"
-  }, "How Often Do You Want to Give This Amount?"), _react.default.createElement("div", {
-    className: "flex__ayltN flex-row__16BBq flex-between__3zYkx monthly-radio__o1E-N"
-  }, _react.default.createElement(_RadioButton.default, {
-    id: "monthly",
-    name: "monthly-toggle",
-    label: "Monthly Gift",
-    checked: monthly,
-    handleRadioClick: handleRadioClick
-  }), _react.default.createElement(_RadioButton.default, {
-    id: "single",
-    name: "monthly-toggle",
-    label: "Single Gift",
-    checked: single,
-    handleRadioClick: handleRadioClick
-  })), _react.default.createElement("div", {
-    className: "monthlyGivingDay__1D4Rg"
-  }, monthlyChecked ? renderCCInfo() : null));
-}
-
-var _default = MonthlyRadioGroup;
-exports.default = _default;
-},{"react":"node_modules/react/index.js","./RadioButton":"src/Components/RadioButton.js","./styles/monthly-radio.module.css":"src/Components/styles/monthly-radio.module.css","./styles/flex.module.css":"src/Components/styles/flex.module.css"}],"src/Components/styles/input.module.css":[function(require,module,exports) {
+},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./styles/funds.module.css":"src/Components/styles/funds.module.css","./styles/flex.module.css":"src/Components/styles/flex.module.css"}],"src/Components/styles/input.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -10465,7 +10733,6 @@ module.exports = {
   "gift-choice": "gift-choice__vKNi_",
   "hidden": "hidden__88z0P",
   "error": "error__3olFm",
-  "amount-error": "amount-error__2G2h0",
   "submit-error": "submit-error__3WT6H"
 };
 },{"_css_loader":"../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/helpers/error-types.js":[function(require,module,exports) {
@@ -10776,17 +11043,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _getClassName2 = _interopRequireDefault(require("babel-plugin-react-css-modules/dist/browser/getClassName"));
-
 var _react = _interopRequireWildcard(require("react"));
 
-var _GivingArray = _interopRequireDefault(require("./GivingArray"));
+var _GivingLayout = _interopRequireDefault(require("./GivingLayout"));
 
-var _ProductDisplay = _interopRequireDefault(require("./ProductDisplay"));
+var _ProductLayout = _interopRequireDefault(require("./ProductLayout"));
 
 var _FundDisplay = _interopRequireDefault(require("./FundDisplay"));
-
-var _MonthlyRadioGroup = _interopRequireDefault(require("./MonthlyRadioGroup"));
 
 var _NameBlock = _interopRequireDefault(require("./NameBlock"));
 
@@ -10812,11 +11075,13 @@ var _crypt = require("./helpers/crypt");
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -10845,39 +11110,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-var _styleModuleImportMap = {
-  "flex": {
-    "flex": "flex__ayltN",
-    "flex-row": "flex-row__16BBq",
-    "flex-center": "flex-center__1HhTj",
-    "flex-around": "flex-around__25IHb",
-    "flex-between": "flex-between__3zYkx",
-    "flex-left": "flex-left__3xW5i",
-    "flex-start": "flex-start__1kKvj",
-    "flex-end": "flex-end__I3jk2",
-    "flex-row-reverse": "flex-row-reverse__39Jm4",
-    "flex-axes-center": "flex-axes-center__33a6C",
-    "flex-column": "flex-column__lQLZG",
-    "flex-wrap": "flex-wrap__1FN6A",
-    "flex-grow": "flex-grow__1FqT_",
-    "flex-no-grow": "flex-no-grow__3iHTz",
-    "flex-shrink": "flex-shrink__1LQT2"
-  },
-  "styles": {
-    "form-panel": "form-panel__2bLqQ",
-    "fieldset": "fieldset__2zxYC",
-    "name-address__info": "name-address__info__3TjNS",
-    "form-header": "form-header__3OWCX",
-    "divider-title": "divider-title__1zzty",
-    "shipping-address__container": "shipping-address__container__1dAUs",
-    "gift-choice": "gift-choice__vKNi_",
-    "hidden": "hidden__88z0P",
-    "error": "error__3olFm",
-    "amount-error": "amount-error__2G2h0",
-    "submit-error": "submit-error__3WT6H"
-  }
-};
 
 if (module.hot) {
   module.hot.accept("./styles/name-address-form.module.css", function () {
@@ -11057,9 +11289,9 @@ function (_Component) {
           }
 
           if (type == "product") {
-            var idx = products.findIndex(function (el) {
+            var idx = products ? products.findIndex(function (el) {
               return el.DetailDescription === DetailDescription;
-            });
+            }) : -1;
 
             if (idx > -1) {
               var quantity = parseInt(DetailName.split('|')[1]);
@@ -11308,7 +11540,7 @@ function (_Component) {
       regeneratorRuntime.mark(function _callee3(e) {
         var _this3 = this;
 
-        var items, pledgeFound, addGiftFound, productFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props2, mode, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, message, _getErrorType, breaking, _name;
+        var items, pledgeFound, addGiftFound, productFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props2, mode, _this$props2$EmailSub, EmailSubjectLine, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, message, _getErrorType, breaking, _name;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -11487,7 +11719,7 @@ function (_Component) {
               case 64:
                 //deconstruct necessary fields from state
                 Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
-                _this$props2 = this.props, mode = _this$props2.mode, APIAccessID = _this$props2.APIAccessID, subscriptions = _this$props2.subscriptions, AddContactYN = _this$props2.AddContactYN, ActivityName = _this$props2.ActivityName, ContactSource = _this$props2.ContactSource, SectionName = _this$props2.SectionName, proxy = _this$props2.proxy;
+                _this$props2 = this.props, mode = _this$props2.mode, _this$props2$EmailSub = _this$props2.EmailSubjectLine, EmailSubjectLine = _this$props2$EmailSub === void 0 ? "Thank You for Your Contribution" : _this$props2$EmailSub, APIAccessID = _this$props2.APIAccessID, subscriptions = _this$props2.subscriptions, AddContactYN = _this$props2.AddContactYN, ActivityName = _this$props2.ActivityName, ContactSource = _this$props2.ContactSource, SectionName = _this$props2.SectionName, proxy = _this$props2.proxy;
                 ClientBrowser = window && window.navigator ? window.navigator.userAgent : '';
                 UrlReferer = window.location.origin + window.location.pathname; //construct phone fields from regex
 
@@ -11550,6 +11782,7 @@ function (_Component) {
                   Country: Country,
                   DonationType: DonationType,
                   Emailaddress: Emailaddress,
+                  EmailSubjectLine: EmailSubjectLine,
                   Firstname: Firstname,
                   IsRecurringCreditCardDonation: IsRecurringCreditCardDonation,
                   Lastname: Lastname,
@@ -12002,7 +12235,7 @@ function (_Component) {
                 city = _args5.length > 2 ? _args5[2] : undefined;
                 state = _args5.length > 3 ? _args5[3] : undefined;
                 zip = _args5.length > 4 ? _args5[4] : undefined;
-                base = this.state.mode == "development" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx";
+                base = this.state.mode == "local" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx";
                 url = encodeURI("".concat(base, "?addr1=").concat(encodeURIComponent(addr1), "&addr2=").concat(encodeURIComponent(addr2), "&city=").concat(encodeURIComponent(city), "&state=").concat(encodeURIComponent(state), "&zip=").concat(encodeURIComponent(zip)));
                 _context5.prev = 6;
                 _context5.next = 9;
@@ -12037,9 +12270,12 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _React$createElement;
+
       var _this$props3 = this.props,
           showGivingArray = _this$props3.showGivingArray,
           givingFormat = _this$props3.givingFormat,
+          productFormat = _this$props3.productFormat,
           monthlyOption = _this$props3.monthlyOption,
           singleOption = _this$props3.singleOption,
           monthlyAmounts = _this$props3.monthlyAmounts,
@@ -12056,8 +12292,7 @@ function (_Component) {
           getMiddleName = _this$props3.getMiddleName,
           getSpouseInfo = _this$props3.getSpouseInfo,
           showSeals = _this$props3.showSeals;
-      var arrayOptions = {
-        givingFormat: givingFormat,
+      var givingOptions = {
         monthlyOption: monthlyOption,
         singleOption: singleOption,
         monthlyAmounts: monthlyAmounts ? monthlyAmounts : [],
@@ -12095,43 +12330,31 @@ function (_Component) {
         id: "react-form",
         autoComplete: "off",
         onSubmit: this.handleSubmit
-      }, _react.default.createElement("div", {
-        className: (0, _getClassName2.default)(showGivingArray ? "styles.form-panel" : "styles.form-panel styles.hidden", _styleModuleImportMap, {
-          "handleMissingStyleName": "warn"
-        })
-      }, _react.default.createElement("div", {
-        className: "gift-choice__vKNi_"
-      }, _react.default.createElement(_GivingArray.default, {
+      }, showGivingArray && _react.default.createElement("div", {
+        className: "form-panel__2bLqQ"
+      }, _react.default.createElement(_GivingLayout.default, (_React$createElement = {
+        givingFormat: givingFormat,
         defaultAmount: defaultAmount,
         defaultOption: defaultOption,
-        arrayOptions: arrayOptions,
+        givingOptions: givingOptions,
         initialUpdate: initialUpdate,
         monthlyChecked: monthlyChecked,
         addToCart: this.addToCart,
         removeFromCart: this.removeFromCart,
-        givingInfo: givingInfo
-      }), _react.default.createElement("div", {
-        className: "error__3olFm amount-error__2G2h0"
-      }, errors.amount)), monthlyOption && singleOption && _react.default.createElement(_MonthlyRadioGroup.default, {
-        monthlyChecked: monthlyChecked,
-        Monthlypledgeday: fields.Monthlypledgeday,
-        handleInputChange: this.handleInputChange,
-        handleRadioClick: this.handleRadioClick
-      })), _react.default.createElement("div", {
-        className: (0, _getClassName2.default)(fundOptions.numFunds ? "styles.form-panel" : "styles.form-panel styles.hidden", _styleModuleImportMap, {
-          "handleMissingStyleName": "warn"
-        })
+        givingInfo: givingInfo,
+        amountError: errors.amount
+      }, _defineProperty(_React$createElement, "monthlyChecked", monthlyChecked), _defineProperty(_React$createElement, "Monthlypledgeday", fields.Monthlypledgeday), _defineProperty(_React$createElement, "handleInputChange", this.handleInputChange), _defineProperty(_React$createElement, "handleRadioClick", this.handleRadioClick), _defineProperty(_React$createElement, "monthlyOption", monthlyOption), _defineProperty(_React$createElement, "singleOption", singleOption), _React$createElement))), fundOptions.numFunds > 0 && _react.default.createElement("div", {
+        className: "form-panel__2bLqQ"
       }, _react.default.createElement(_FundDisplay.default, {
         fundOptions: fundOptions,
         initialUpdate: initialUpdate,
         updateDonation: this.updateDonation,
         fundInfo: fundInfo,
         hydratedFund: hydratedFund
-      })), _react.default.createElement("div", {
-        className: (0, _getClassName2.default)(productOptions.numProducts ? "styles.form-panel" : "styles.form-panel styles.hidden", _styleModuleImportMap, {
-          "handleMissingStyleName": "warn"
-        })
-      }, _react.default.createElement(_ProductDisplay.default, {
+      })), productOptions.numProducts > 0 && _react.default.createElement("div", {
+        className: "form-panel__2bLqQ"
+      }, _react.default.createElement(_ProductLayout.default, {
+        productFormat: productFormat,
         productInfo: productInfo,
         productOptions: productOptions,
         updateProducts: this.updateProducts,
@@ -12197,7 +12420,7 @@ function (_Component) {
 
 var _default = NameAddressForm;
 exports.default = _default;
-},{"babel-plugin-react-css-modules/dist/browser/getClassName":"node_modules/babel-plugin-react-css-modules/dist/browser/getClassName.js","react":"node_modules/react/index.js","./GivingArray":"src/Components/GivingArray.js","./ProductDisplay":"src/Components/ProductDisplay.js","./FundDisplay":"src/Components/FundDisplay.js","./MonthlyRadioGroup":"src/Components/MonthlyRadioGroup.js","./NameBlock":"src/Components/NameBlock.js","./ShippingAddressBlock":"src/Components/ShippingAddressBlock.js","./AddressBlock":"src/Components/AddressBlock.js","./FormOptionsBlock":"src/Components/FormOptionsBlock.js","./SubmitButton":"src/Components/SubmitButton.js","./Seals":"src/Components/Seals.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/name-address-form.module.css":"src/Components/styles/name-address-form.module.css","./helpers/error-types":"src/Components/helpers/error-types.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js","./helpers/crypt":"src/Components/helpers/crypt.js"}],"src/Components/styles/spinner.module.css":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./GivingLayout":"src/Components/GivingLayout.js","./ProductLayout":"src/Components/ProductLayout.js","./FundDisplay":"src/Components/FundDisplay.js","./NameBlock":"src/Components/NameBlock.js","./ShippingAddressBlock":"src/Components/ShippingAddressBlock.js","./AddressBlock":"src/Components/AddressBlock.js","./FormOptionsBlock":"src/Components/FormOptionsBlock.js","./SubmitButton":"src/Components/SubmitButton.js","./Seals":"src/Components/Seals.js","./styles/flex.module.css":"src/Components/styles/flex.module.css","./styles/name-address-form.module.css":"src/Components/styles/name-address-form.module.css","./helpers/error-types":"src/Components/helpers/error-types.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js","./helpers/crypt":"src/Components/helpers/crypt.js"}],"src/Components/styles/spinner.module.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -12459,8 +12682,6 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _shortid = _interopRequireDefault(require("shortid"));
-
 var _PaymentForm = _interopRequireDefault(require("./PaymentForm"));
 
 var _Spinner = _interopRequireDefault(require("./Spinner"));
@@ -12666,13 +12887,11 @@ function (_Component) {
       var _this$props = this.props,
           cssConfig = _this$props.cssConfig,
           formAction = _this$props.formAction,
-          formData = _this$props.formData;
-
-      var cacheToken = _shortid.default.generate();
+          formData = _this$props.formData; // const cacheToken = shortid.generate();
 
       return _react.default.createElement(_react.Fragment, null, ready ? _react.default.createElement(_PaymentForm.default, {
         cssConfig: cssConfig,
-        formAction: formAction + "&cacheToken=".concat(cacheToken),
+        formAction: formAction,
         formData: formData,
         confirmationSubmitted: confirmationSubmitted
       }) : _react.default.createElement(_Spinner.default, null));
@@ -12684,7 +12903,7 @@ function (_Component) {
 
 var _default = ConfirmationPage;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","shortid":"node_modules/shortid/index.js","./PaymentForm":"src/Components/PaymentForm.js","./Spinner":"src/Components/Spinner.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js"}],"src/Components/RedirectForm.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./PaymentForm":"src/Components/PaymentForm.js","./Spinner":"src/Components/Spinner.js","./helpers/fetch-helpers":"src/Components/helpers/fetch-helpers.js"}],"src/Components/RedirectForm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13466,7 +13685,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56818" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65324" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -13631,6 +13850,6 @@ module.exports = function loadJSBundle(bundle) {
   });
 };
 },{}],0:[function(require,module,exports) {
-var b=require("../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.load([["react.545e1cc3.js","node_modules/react/index.js"],["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],["polyfill.cde8445e.js","node_modules/raf/polyfill.js"],["shortid.e3ad9acd.js","node_modules/shortid/index.js"],["css-vars-ponyfill.esm.9e0932d1.js","node_modules/css-vars-ponyfill/dist/css-vars-ponyfill.esm.js"],["src.7aaf042a.js","node_modules/promise-polyfill/src/index.js"],["react-dom.29872971.js","node_modules/react-dom/index.js"]]).then(function(){require("src/index.js");});
+var b=require("../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.load([["react.545e1cc3.js","node_modules/react/index.js"],["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],["polyfill.cde8445e.js","node_modules/raf/polyfill.js"],["css-vars-ponyfill.esm.9e0932d1.js","node_modules/css-vars-ponyfill/dist/css-vars-ponyfill.esm.js"],["src.7aaf042a.js","node_modules/promise-polyfill/src/index.js"],["react-dom.29872971.js","node_modules/react-dom/index.js"]]).then(function(){require("src/index.js");});
 },{}]},{},["../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js",0], null)
 //# sourceMappingURL=/src.a2b27638.map

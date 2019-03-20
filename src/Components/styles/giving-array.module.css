@@ -16,6 +16,10 @@ h3.askarray__header {
     text-transform: uppercase;
 }
 
+.gift-choice {
+    /**/
+}
+
 .askarray,
 .askarray--other {
     position: relative;
@@ -33,10 +37,31 @@ h3.askarray__header {
     height: 80px;
 }
 
+.askarray__tabs--other {
+    /**/
+}
+
+.askarray__tabs {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    width: 100%;
+    margin: -2.5px;
+    border-bottom: 5px solid transparent;
+}
+
 .askbutton {
     box-sizing: border-box;
     height: 65px;
     width: calc(100% / 3);
+}
+
+.askbutton__tabs {
+    height: 80px;
+    box-sizing: border-box;
+    flex: 1;
+    flex-basis: calc((100% / 3) - 10px);
+    margin: 2.5px;
 }
 
 .askbutton__amt {
@@ -59,6 +84,31 @@ h3.askarray__header {
     transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
 }
 
+.askbutton__amt--tabs {
+    background-color: var(--amt-tab-bg-color);
+    border: 1px solid var(--amt-tab-text-color);
+    border-radius: var(--amt-tab-border-radius);
+    box-sizing: border-box;
+    color: var(--amt-tab-text-color);
+    cursor: pointer;
+    width: 100%;
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
+    font-size: calc(19px * 1.4);
+    height: 80px;
+    text-align: center;
+    transition: border-color 200ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out;
+}
+
+.askbutton__tabs:hover .askbutton__amt--tabs,
+.askbutton__amt--tabs:hover,
+.askbutton__tabs.selected .askbutton__amt--tabs {
+    background-color:  var(--amt-tab-hover-bg-color);
+    color: #fff;
+    border-color: #fff;
+}
+
 .askbutton:hover .askbutton__amt,
 .askbutton__amt:hover,
 .askbutton.selected .askbutton__amt {
@@ -68,7 +118,8 @@ h3.askarray__header {
 }
 
 .askarray__form-group,
-.askarray__form-group--other {
+.askarray__form-group--other, 
+.askarray__form-group--tabs {
     box-sizing: border-box;
     height: 80px;
     margin-bottom: 0;
@@ -82,7 +133,13 @@ h3.askarray__header {
     max-width: 400px;
 }
 
-.form-group__other-input {
+.askarray__form-group--tabs {
+    width: 100%;
+}
+
+.form-group__other-input,
+.form-group-tabs__other-input {
+    position: relative;
     appearance: none;
     height: calc(19px * 2.5);
     width: 100%;
@@ -91,7 +148,7 @@ h3.askarray__header {
     border: 2px solid var(--primary-color);
     border-radius: var(--btn-border-radius);
     box-sizing: border-box;
-    color: var(--primary-color);
+    color: var(--form-text-color);
     font-size: calc(19px * 1.4);
     text-align: center;
     font-family: var(--semibold-font-family);
@@ -101,6 +158,31 @@ h3.askarray__header {
     white-space: nowrap;
 }
 
+.form-group-tabs__other-input {
+    border-width: 1px;
+    border-radius: var(--amt-tab-border-radius);
+    border-color: var(--amt-tab-text-color);
+    color: var(--amt-tab-text-color);
+}
+
+.form-group-tabs--dollar {
+    box-sizing: border-box;
+    color: var(--amt-tab-text-color);
+    margin: 0 5px;
+    font-family: var(--semibold-font-family);
+    font-style: var(--semibold-font-style);
+    font-weight: var(--semibold-font-weight);
+    font-size: 19px;
+}
+
+.form-group-tabs__other-input:hover,
+.form-group-tabs__other-input:active,
+.form-group-tabs__other-input:focus {
+    border: 1px solid var(--amt-tab-hover-bg-color);
+    background-color: #fff;
+    box-sizing: border-box;
+    outline: none;
+}
 .form-group__other-input:hover,
 .form-group__other-input:active,
 .form-group__other-input:focus {
@@ -110,7 +192,8 @@ h3.askarray__header {
     outline: none;
 }
 
-.form-group__other-input--label {
+.form-group__other-input--label,
+.form-group-tabs__other-input--label {
     font-family: var(--semibold-font-family);
     font-size: calc(19px * .7);
     font-style: var(--semibold-font-style);
@@ -120,8 +203,18 @@ h3.askarray__header {
     position: absolute;
     left: 50%;
     top: calc(100% - (19px * .5));
-    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
+}
+
+.form-group-tabs__other-input--label {
+    position: relative;
+    left:unset;
+    top: unset;
+    transform: unset;
+    font-size: 19px;
+    color: var(--form-text-color);
+    line-height: 80px !important;
+    margin-bottom: 0;
 }
 
 #OtherGiftAmount,
@@ -151,4 +244,25 @@ h3.askarray__header {
     top: 19px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.error.amount-error,
+.error.submit-error {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: calc(0% - 20px);
+}
+
+.error.amount-error {
+    bottom: unset;
+    top: 30px;
+}
+
+@media screen and (max-width: 450px) {
+    .form-group-tabs__other-input--label {
+        font-size: 15px;
+    }
+    .form-group-tabs__other-input {
+        max-width: 160px;
+    }
 }
