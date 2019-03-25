@@ -28,10 +28,14 @@ async function getConfiguration() {
 
     const base = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet);
     
-    const cssConfigUrl = base + (isWordpress ?  "?type=css_setup" : "config/css-config.json");
-    let cssConfig;
+    const cssConfigUrl = base + (isWordpress ?  "&type=css_setup" : "config/css-config.json"),
+        formConfigUrl = base + (isWordpress ? "&type=form_setup" : "config/form-config.json");
+    let initialState, cssConfig;
     try {
-        cssConfig = await callApi(cssConfigUrl, {method: 'GET'});
+        [cssConfig, initialState] = await Promise.all([
+            callApi(cssConfigUrl, {method: 'GET'}),
+            callApi(formConfigUrl, {method: 'GET'})
+        ])
         // console.log({cssConfig})
         cssConfig["--base-font-size"] = "19px";
         const styleEl = document.createElement('style');
@@ -62,15 +66,7 @@ async function getConfiguration() {
             onComplete(cssText, styleNode) {
             }
         });
-    } catch (err) {
-        console.error(err);
-        alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
-    }
 
-    const formConfigUrl = base + (isWordpress ? "?type=form_setup" : "config/form-config.json");
-    let initialState;
-    try {
-        initialState = await callApi(formConfigUrl, {method: 'GET'});
         if (initialState.mode === "production") {
             if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
                 window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {}
@@ -86,7 +82,6 @@ async function getConfiguration() {
         console.error(err);
         alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
     }
-
     return { cssConfig, initialState } 
 }
 
@@ -99,7 +94,8 @@ async function getConfiguration() {
 */
 function handleWordpress(isWordpress, proxyUri, formName) {
     if (isWordpress) {
-        return `${proxyUri}cbngiving/v1/${formName}`
+        //return `${proxyUri}cbngiving/v1/${formName}`
+        return `/wp-content/plugins/cbngiving-plugin/json/init-form.php?campaign=${formName}`
     }
     return ''
 }

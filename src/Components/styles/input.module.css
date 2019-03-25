@@ -82,6 +82,7 @@ select.form-control {
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     position: relative;
+    margin-bottom: 0;
 }
 
 .form-control::-webkit-input-placeholder,
