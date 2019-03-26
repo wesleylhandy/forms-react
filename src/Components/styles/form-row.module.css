@@ -85,12 +85,12 @@
 
 input[type="submit"].submit-button {
     appearance: none;
-    background: var(--primary-color);
+    background: var(--submit-btn-bg-color);
     box-sizing: border-box;
-    color: var(--btn-text-color);
+    color: var(--submit-btn-txt-color);
     cursor:pointer;
     display: block;
-    border: 2px solid transparent;
+    border: 2px solid var(--submit-btn-border-color);
     border-radius: var(--input-border-radius);
     display: block;
     font-family: var(--semibold-font-family);
@@ -106,9 +106,9 @@ input[type="submit"].submit-button {
 }
 
 input[type="submit"].submit-button:hover {
-    background-color: var(--btn-text-color);
-    color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: var(--submit-btn-hover-bg-color);
+    color: var(--submit-btn-hover-txt-color);
+    border-color: var(--submit-btn-hover-border-color);
     cursor: pointer;
 }
 

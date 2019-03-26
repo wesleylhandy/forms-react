@@ -556,7 +556,7 @@ class NameAddressForm extends Component {
     validateInput(submitting, name, value) {
         let error = '';
         const { international } = this.state;
-        const {ShipToYes} = this.state.fields;
+        const { ShipToYes } = this.state.fields;
         switch(name) {
             case "Title":
             case "State":
@@ -635,31 +635,35 @@ class NameAddressForm extends Component {
      * @param {string} value - five digit zip code
      */
     async callZipCityStateService(name, value) {
-        const base = this.state.mode == "local" ? "http://Services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "https://Services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
-        const url = `${base}${value}`;
-        const fields = {...this.state.fields};
-        try {
-            const result = await callApi(url);
-            const oldCity = fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
-            let { city, state, zip, returnCode, returnMessage } = JSON.parse(result);
-            // console.log({ city, state, zip, returnCode, returnMessage })
-            if (returnCode == 1) {
-                // console.log(city)
-                const error = oldCity && !city.toUpperCase().includes(oldCity);
-                const newCity = error || !oldCity ? city.split(";")[0] : oldCity;
-                fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
-                fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
-                // fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
-                if (name == "Zip") {
-                    fields["Country"] = "United States";
+        if (value) {
+            const base = this.state.mode == "local" ? "http://services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "https://services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+            const url = `${base}${value}`;
+            const fields = {...this.state.fields};
+            try {
+                const result = await callApi(url);
+                const oldCity = fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
+                let { city, state, zip, returnCode, returnMessage } = JSON.parse(result);
+                // console.log({ city, state, zip, returnCode, returnMessage })
+                if (returnCode == 1) {
+                    // console.log(city)
+                    const error = oldCity && !city.toUpperCase().includes(oldCity);
+                    const newCity = error || !oldCity ? city.split(";")[0] : oldCity;
+                    fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
+                    fields[name == "ShipToZip" ? "ShipToState" : "State"] = state;
+                    // fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
+                    if (name == "Zip") {
+                        fields["Country"] = "United States";
+                    }
+                    this.setState({fields});
+                    return error ? city : '' ;
+                } else {
+                    return returnMessage;
                 }
-                this.setState({fields});
-                return error ? city : '' ;
-            } else {
-                return returnMessage;
+            } catch (err) {
+                console.error(err);
+                return '';
             }
-        } catch (err) {
-            console.error(err);
+        } else {
             return '';
         }
     }
@@ -674,7 +678,7 @@ class NameAddressForm extends Component {
      * @returns {string} either empty or with error
      */
     async callAddressVerification(addr1, addr2 = "", city, state, zip) {
-        const base = this.state.mode == "local" ? "http://Services.cbn.local/AddressValidation/AddressVerification.aspx" : "https://Services.cbn.com/AddressValidation/AddressVerification.aspx";
+        const base = this.state.mode == "local" ? "http://services.cbn.local/AddressValidation/AddressVerification.aspx" : "https://services.cbn.com/AddressValidation/AddressVerification.aspx";
         const url = encodeURI(`${base}?addr1=${encodeURIComponent(addr1)}&addr2=${encodeURIComponent(addr2)}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}&zip=${encodeURIComponent(zip)}`)
         try {
             const result = await callApi(url);

@@ -26,7 +26,7 @@ async function getConfiguration() {
     const isDrupal = generator && generator.includes('drupal');
     const isDotNet = generator && generator.includes('dotnet');
 
-    const base = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet);
+    const base = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, true);
     
     const cssConfigUrl = base + (isWordpress ?  "&type=css_setup" : "config/css-config.json"),
         formConfigUrl = base + (isWordpress ? "&type=form_setup" : "config/form-config.json");
@@ -76,7 +76,7 @@ async function getConfiguration() {
             }
         }
         if (isWordpress) {
-            initialState.proxy = base
+            initialState.proxy = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, false)
         }
     } catch (err) {
         console.error(err);
@@ -90,12 +90,14 @@ async function getConfiguration() {
 * @param {Boolean} isWordpress - only return value if True
 * @param {String} proxyUri - uri of proxy endpoint
 * @param {String} formName - name of the form
+* @param {Boolean} init - flag whether this is initial call or for passing to app
 * @returns {String} - URL base for Wordpress based on giving page URL
 */
-function handleWordpress(isWordpress, proxyUri, formName) {
-    if (isWordpress) {
-        //return `${proxyUri}cbngiving/v1/${formName}`
+function handleWordpress(isWordpress, proxyUri, formName, init) {
+    if (isWordpress && init) {
         return `/wp-content/plugins/cbngiving-plugin/json/init-form.php?campaign=${formName}`
+    } else if (isWordpress && !init) {
+        return `${proxyUri}cbngiving/v1/${formName}`
     }
     return ''
 }
@@ -135,11 +137,12 @@ function handleDotNet(isDotNet, proxyUri, formName) {
  * @param {Boolean} isWordpress - data-rest == 'wordpress'
  * @param {Boolean} isDrupal - data-rest == 'drupal'
  * @param {Boolean} isDotNet - data-rest == 'dotnet'
+ * @param {Boolean} init - flag whether this is initial call or for passing to app
  * @returns {String} uri of proxy api
  */
-function deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet) {
+function deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, init) {
     if (isWordpress) {
-        return handleWordpress(isWordpress, proxyUri, formName)
+        return handleWordpress(isWordpress, proxyUri, formName, init)
     } else if (isDrupal) {
         return handleDrupal(isDrupal, proxyUri, formName)
     } else if (isDotNet) {

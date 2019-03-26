@@ -48,7 +48,11 @@
     --semibold-italic-font-style: italic;
     --semibold-italic-font-weight: 600;
     --submit-btn-bg-color: #262626;
+    --submit-btn-border-color: #262626;
     --submit-btn-txt-color: #fff;
+    --submit-btn-hover-txt-color: #262626;
+    --submit-btn-hover-bg-color: #fff;
+    --submit-btn-hover-border-color: #262626;
     --amt-tab-bg-color: transparent;
     --amt-tab-border-radius: 4px;
     --amt-tab-hover-bg-color: #73bf43;
@@ -60,6 +64,4 @@
     --tab-hover-bg-color: #73bf43;
     --tab-hover-border-color:#091d44;
     --tab-text-color: #091d44;
-
-    
 }
