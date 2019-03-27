@@ -48,7 +48,11 @@
     --semibold-italic-font-style: italic;
     --semibold-italic-font-weight: 600;
     --submit-btn-bg-color: #262626;
+    --submit-btn-border-color: #262626;
     --submit-btn-txt-color: #fff;
+    --submit-btn-hover-txt-color: #262626;
+    --submit-btn-hover-bg-color: #fff;
+    --submit-btn-hover-border-color: #262626;
     --amt-tab-bg-color: transparent;
     --amt-tab-border-radius: 4px;
     --amt-tab-hover-bg-color: #73bf43;
@@ -60,8 +64,6 @@
     --tab-hover-bg-color: #73bf43;
     --tab-hover-border-color:#091d44;
     --tab-text-color: #091d44;
-
-    
 }.form-wrapper__MMJ_H {
     background: var(--form-bg-color);
     -webkit-box-sizing: border-box;
@@ -269,6 +271,7 @@ select.ccdate__2v2UI {
     text-align: center;
     height: unset;
     padding: calc(19px * .2) calc(19px * .3);
+    margin-bottom: 0;
 }
 
 .hidden__2QP7z {
@@ -455,13 +458,13 @@ input[type="submit"].submit-button__LRMQT {
     -webkit-appearance: none;
        -moz-appearance: none;
             appearance: none;
-    background: var(--primary-color);
+    background: var(--submit-btn-bg-color);
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    color: var(--btn-text-color);
+    color: var(--submit-btn-txt-color);
     cursor:pointer;
     display: block;
-    border: 2px solid transparent;
+    border: 2px solid var(--submit-btn-border-color);
     border-radius: var(--input-border-radius);
     display: block;
     font-family: var(--semibold-font-family);
@@ -478,9 +481,9 @@ input[type="submit"].submit-button__LRMQT {
 }
 
 input[type="submit"].submit-button__LRMQT:hover {
-    background-color: var(--btn-text-color);
-    color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: var(--submit-btn-hover-bg-color);
+    color: var(--submit-btn-hover-txt-color);
+    border-color: var(--submit-btn-hover-border-color);
     cursor: pointer;
 }
 
@@ -979,6 +982,8 @@ h3.funds__header__1jN9Q {
             transform: unset;
     font-size: 19px;
     color: var(--form-text-color);
+    line-height: 80px !important;
+    margin-bottom: 0;
 }
 
 #OtherGiftAmount__2VX6n,
@@ -1115,7 +1120,7 @@ select.form-control__1RcRn {
     display: block;
     width: 100%;
     margin-top: 5px;
-    padding: 0 6px;
+    padding: 0 10px;
     line-height: 44px !important;
     background: none;
     background-color: var(--input-bg-color);
@@ -1129,6 +1134,7 @@ select.form-control__1RcRn {
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
     position: relative;
+    margin-bottom: 0;
 }
 
 .form-control::-webkit-input-placeholder,
