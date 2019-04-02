@@ -94,9 +94,10 @@ async function getConfiguration() {
 * @returns {String} - URL base for Wordpress based on giving page URL
 */
 function handleWordpress(isWordpress, proxyUri, formName, init) {
-    if (isWordpress && init) {
-        return `/wp-content/plugins/cbngiving-plugin/json/init-form.php?campaign=${formName}`
-    } else if (isWordpress && !init) {
+    // if (isWordpress && init) {
+    //     return `/wp-content/plugins/cbngiving-plugin/json/init-form.php?campaign=${formName}`
+    // } else if (isWordpress && !init) {
+    if (isWordpress) {
         return `${proxyUri}cbngiving/v1/${formName}`
     }
     return ''
