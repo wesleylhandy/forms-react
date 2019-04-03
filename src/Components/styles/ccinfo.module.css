@@ -19,7 +19,7 @@ h5.ccDayOfMonth {
     -webkit-padding-start: 0;
     -webkit-padding-after: 0;
     letter-spacing: unset;
-    text-transform: unset;
+    text-transform: none;
     color: var(--form-text-color);
 }
 

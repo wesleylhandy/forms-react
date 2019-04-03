@@ -140,7 +140,7 @@ div.error {
     width: auto;
     line-height: unset;
     left: 7px;
-    bottom: unset;
+    bottom: auto;
     top: 52px;
     font-family: var(--bold-font-family);
     font-style: var(--bold-font-style);

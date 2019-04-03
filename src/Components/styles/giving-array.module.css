@@ -208,9 +208,9 @@ h3.askarray__header {
 
 .form-group-tabs__other-input--label {
     position: relative;
-    left:unset;
-    top: unset;
-    transform: unset;
+    left:auto !important;
+    top:auto !important;
+    transform: none !important;
     font-size: 19px;
     color: var(--form-text-color);
     line-height: 80px !important;
@@ -240,7 +240,7 @@ h3.askarray__header {
 }
 
 .error.other-amt-error {
-    bottom: unset;
+    bottom: auto;
     top: 19px;
     left: 50%;
     transform: translateX(-50%);
@@ -254,7 +254,7 @@ h3.askarray__header {
 }
 
 .error.amount-error {
-    bottom: unset;
+    bottom: auto;
     top: 30px;
 }
 

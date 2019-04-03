@@ -28,8 +28,8 @@ async function getConfiguration() {
 
     const base = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, true);
     
-    const cssConfigUrl = base + (isWordpress ?  "&type=css_setup" : "config/css-config.json"),
-        formConfigUrl = base + (isWordpress ? "&type=form_setup" : "config/form-config.json");
+    const cssConfigUrl = base + (isWordpress ?  "?&type=css_setup" : "config/css-config.json"),
+        formConfigUrl = base + (isWordpress ? "?&type=form_setup" : "config/form-config.json");
     let initialState, cssConfig;
     try {
         [cssConfig, initialState] = await Promise.all([

@@ -311,11 +311,11 @@
 
 .form-group-tabs__other-input--label__22V-r {
     position: relative;
-    left:unset;
-    top: unset;
-    -webkit-transform: unset;
-        -ms-transform: unset;
-            transform: unset;
+    left:auto !important;
+    top:auto !important;
+    -webkit-transform: none !important;
+        -ms-transform: none !important;
+            transform: none !important;
     font-size: 19px;
     color: var(--form-text-color);
     line-height: 80px !important;
@@ -346,7 +346,7 @@
 }
 
 .error__2C-Jl.other-amt-error__24VKJ {
-    bottom: unset;
+    bottom: auto;
     top: 19px;
     left: 50%;
     -webkit-transform: translateX(-50%);
@@ -364,7 +364,7 @@
 }
 
 .error__2C-Jl.amount-error__3A2yL {
-    bottom: unset;
+    bottom: auto;
     top: 30px;
 }
 
@@ -477,7 +477,7 @@ h5.ccDayOfMonth__1p68o {
     -webkit-padding-start: 0;
     -webkit-padding-after: 0;
     letter-spacing: unset;
-    text-transform: unset;
+    text-transform: none;
     color: var(--form-text-color);
 }
 
@@ -546,7 +546,7 @@ h3.form-header__gkJCU {
     position: absolute !important;
     left: -10000px !important;
     top: auto !important;
-    bottom: unset !important;
+    bottom: auto !important;
     width: 1px !important;
     height: 1px !important;
     overflow: hidden !important;
@@ -1082,7 +1082,7 @@ div.error__1zQ64 {
     width: auto;
     line-height: unset;
     left: 7px;
-    bottom: unset;
+    bottom: auto;
     top: 52px;
     font-family: var(--bold-font-family);
     font-style: var(--bold-font-style);
@@ -1272,7 +1272,7 @@ input[type="submit"].submit-button__LRMQT>.error__2XDgr {
     -webkit-transform: translateX(-50%);
         -ms-transform: translateX(-50%);
             transform: translateX(-50%);
-    bottom: unset;
+    bottom: auto;
     margin-top: 10px;
 }
 

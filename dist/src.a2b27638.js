@@ -9122,7 +9122,10 @@ function (_Component) {
         className: "form-group-tabs__other-input--label__22V-r",
         htmlFor: "other-amt-input"
       }, "Or specify amount"), _react.default.createElement("div", {
-        className: "flex__ayltN flex-row__16BBq flex-left__3xW5i flex-axes-center__33a6C"
+        className: "flex__ayltN flex-row__16BBq flex-left__3xW5i flex-axes-center__33a6C",
+        style: {
+          position: "relative"
+        }
       }, _react.default.createElement("div", {
         className: "form-group-tabs--dollar__3cuSs"
       }, "$"), _react.default.createElement("input", {
@@ -9134,7 +9137,10 @@ function (_Component) {
         value: otherAmount == 0 ? '' : otherAmount,
         onFocus: this.handleFocus
       }), _react.default.createElement("div", {
-        className: "error__2C-Jl other-amt-error__24VKJ"
+        className: "error__2C-Jl other-amt-error__24VKJ",
+        style: {
+          top: "100%"
+        }
       }, otherAmountError)))), monthlyChecked && _react.default.createElement(_CCInfo.default, {
         handleInputChange: handleInputChange,
         Monthlypledgeday: Monthlypledgeday
@@ -13338,7 +13344,7 @@ function _getConfiguration() {
             isDrupal = generator && generator.includes('drupal');
             isDotNet = generator && generator.includes('dotnet');
             base = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, true);
-            cssConfigUrl = base + (isWordpress ? "&type=css_setup" : "config/css-config.json"), formConfigUrl = base + (isWordpress ? "&type=form_setup" : "config/form-config.json");
+            cssConfigUrl = base + (isWordpress ? "?&type=css_setup" : "config/css-config.json"), formConfigUrl = base + (isWordpress ? "?&type=form_setup" : "config/form-config.json");
             _context.prev = 8;
             _context.next = 11;
             return _promisePolyfill.default.all([(0, _fetchHelpers.callApi)(cssConfigUrl, {
@@ -13421,9 +13427,10 @@ function _getConfiguration() {
 }
 
 function handleWordpress(isWordpress, proxyUri, formName, init) {
-  if (isWordpress && init) {
-    return "/wp-content/plugins/cbngiving-plugin/json/init-form.php?campaign=".concat(formName);
-  } else if (isWordpress && !init) {
+  // if (isWordpress && init) {
+  //     return `/wp-content/plugins/cbngiving-plugin/json/init-form.php?campaign=${formName}`
+  // } else if (isWordpress && !init) {
+  if (isWordpress) {
     return "".concat(proxyUri, "cbngiving/v1/").concat(formName);
   }
 
@@ -13728,7 +13735,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54260" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60673" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
