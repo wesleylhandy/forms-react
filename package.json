@@ -9,7 +9,8 @@
         "start": "parcel index.html",
         "stop": "pkill SIGINT ProxyServer",
         "build": "parcel build src/index.js --detailed-report -d dist",
-        "build:test": "parcel build src/index.js --detailed-report -d dist/test/v1"
+        "build:test": "parcel build src/index.js --detailed-report -d dist/test/v1",
+        "postbuild":  "pax -rws /index/form/ dist/index* . && rm dist/index*"
     },
     "repository": {
         "type": "git",
