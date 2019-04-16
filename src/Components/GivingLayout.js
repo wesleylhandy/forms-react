@@ -193,7 +193,7 @@ class GivingLayout extends Component {
                     <div id="OtherGiftAmount" styleName="styles.askarray__tabs--other flex.flex flex.flex-row flex.flex-center flex.flex-axes-center">
                         <div id="OtherAmount" styleName={`styles.askarray__form-group--tabs flex.flex flex.flex-between flex.flex-axes-center${selectedIndex == 99 ? " styles.selected": ""}`}>
                             <label styleName="styles.form-group-tabs__other-input--label" htmlFor="other-amt-input">Or specify amount</label>
-                            <div styleName="flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
+                            <div styleName="flex.flex flex.flex-row flex.flex-left flex.flex-axes-center" style={{position:"relative"}}>
                                 <div styleName="styles.form-group-tabs--dollar">$</div>
                                 <input 
                                     key={key} 
@@ -204,7 +204,7 @@ class GivingLayout extends Component {
                                     value={otherAmount == 0 ? '' : otherAmount} 
                                     onFocus={this.handleFocus}
                                 />
-                                <div styleName="styles.error styles.other-amt-error">{otherAmountError}</div>
+                                <div styleName="styles.error styles.other-amt-error" style={{top: "100%"}}>{otherAmountError}</div>
                             </div>
                         </div> 
                     </div>

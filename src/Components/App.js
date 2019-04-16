@@ -57,7 +57,26 @@ class App extends Component {
     }
 
     renderReceiptPage(varsArray) {
-        this.setState({finalized: true, finalizedData: [...varsArray]})
+        const {
+            formData: {
+                Firstname,
+                Lastname,
+                Middlename,
+                Address1,
+                Address2,
+                City,
+                Country,
+                Phoneareacode,
+                Phoneexchange,
+                Phonenumber,
+                Spousename,
+                State,
+                Suffix,
+                Title,
+                Zip
+            } 
+        } = this.state;
+        this.setState({finalized: true, finalizedData: [...varsArray, { Firstname, Lastname, Middlename, Address1, Address2, City, Country, Phoneareacode, Phoneexchange, Phonenumber, Spousename, State, Suffix, Title, Zip } ]})
     }
 
     render() {
@@ -85,7 +104,7 @@ class App extends Component {
                             console.log({thankYouUrl})
                             return  (
          
-                                    <RedirectForm thankYouUrl={thankYouUrl} receiptVars={finalizedData} />
+                                    <RedirectForm thankYouUrl={thankYouUrl} receiptVars={finalizedData}/>
    
                             )
                         } else if (submitted) {

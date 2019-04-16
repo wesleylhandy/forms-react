@@ -311,13 +311,15 @@
 
 .form-group-tabs__other-input--label__22V-r {
     position: relative;
-    left:unset;
-    top: unset;
-    -webkit-transform: unset;
-        -ms-transform: unset;
-            transform: unset;
+    left:auto !important;
+    top:auto !important;
+    -webkit-transform: none !important;
+        -ms-transform: none !important;
+            transform: none !important;
     font-size: 19px;
     color: var(--form-text-color);
+    line-height: 80px !important;
+    margin-bottom: 0;
 }
 
 #OtherGiftAmount__2VX6n,
@@ -344,7 +346,7 @@
 }
 
 .error__2C-Jl.other-amt-error__24VKJ {
-    bottom: unset;
+    bottom: auto;
     top: 19px;
     left: 50%;
     -webkit-transform: translateX(-50%);
@@ -362,7 +364,7 @@
 }
 
 .error__2C-Jl.amount-error__3A2yL {
-    bottom: unset;
+    bottom: auto;
     top: 30px;
 }
 
@@ -475,7 +477,7 @@ h5.ccDayOfMonth__1p68o {
     -webkit-padding-start: 0;
     -webkit-padding-after: 0;
     letter-spacing: unset;
-    text-transform: unset;
+    text-transform: none;
     color: var(--form-text-color);
 }
 
@@ -498,6 +500,7 @@ select.ccdate__2v2UI {
     text-align: center;
     height: unset;
     padding: calc(19px * .2) calc(19px * .3);
+    margin-bottom: 0;
 }
 
 .hidden__2QP7z {
@@ -540,22 +543,26 @@ h3.form-header__gkJCU {
 }
 
 .tab-group__input__1bjdY {
-    position: absolute;
-    left: -10000px;
-    top: auto;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
+    position: absolute !important;
+    left: -10000px !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
 }
 
 .tab-group__input__1bjdY + label  {
     display: block;
+    height: 80px;
+    line-height: 80px !important;
     cursor: pointer;
     width: 100%;
     text-align: center;
     background: var(--tab-bg-color);
     border-radius: var(--tab-border-radius);
     border: 2px solid var(--tab-border-color);
+    margin-bottom: 0;
     color: var(--tab-text-color);
     -webkit-transition: color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out;
     -o-transition: color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out;
@@ -985,7 +992,7 @@ select.form-control__1RcRn {
     display: block;
     width: 100%;
     margin-top: 5px;
-    padding: 0 6px;
+    padding: 0 10px;
     line-height: 44px !important;
     background: none;
     background-color: var(--input-bg-color);
@@ -999,6 +1006,7 @@ select.form-control__1RcRn {
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
     position: relative;
+    margin-bottom: 0;
 }
 
 .form-control::-webkit-input-placeholder,
@@ -1074,7 +1082,7 @@ div.error__1zQ64 {
     width: auto;
     line-height: unset;
     left: 7px;
-    bottom: unset;
+    bottom: auto;
     top: 52px;
     font-family: var(--bold-font-family);
     font-style: var(--bold-font-style);
@@ -1226,13 +1234,13 @@ input[type="submit"].submit-button__LRMQT {
     -webkit-appearance: none;
        -moz-appearance: none;
             appearance: none;
-    background: var(--primary-color);
+    background: var(--submit-btn-bg-color);
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    color: var(--btn-text-color);
+    color: var(--submit-btn-txt-color);
     cursor:pointer;
     display: block;
-    border: 2px solid transparent;
+    border: 2px solid var(--submit-btn-border-color);
     border-radius: var(--input-border-radius);
     display: block;
     font-family: var(--semibold-font-family);
@@ -1249,9 +1257,9 @@ input[type="submit"].submit-button__LRMQT {
 }
 
 input[type="submit"].submit-button__LRMQT:hover {
-    background-color: var(--btn-text-color);
-    color: var(--primary-color);
-    border-color: var(--primary-color);
+    background-color: var(--submit-btn-hover-bg-color);
+    color: var(--submit-btn-hover-txt-color);
+    border-color: var(--submit-btn-hover-border-color);
     cursor: pointer;
 }
 
@@ -1264,7 +1272,7 @@ input[type="submit"].submit-button__LRMQT>.error__2XDgr {
     -webkit-transform: translateX(-50%);
         -ms-transform: translateX(-50%);
             transform: translateX(-50%);
-    bottom: unset;
+    bottom: auto;
     margin-top: 10px;
 }
 

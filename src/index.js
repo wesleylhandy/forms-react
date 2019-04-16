@@ -18,20 +18,25 @@ const rootEntry = document.getElementById('form-root')
 
 async function getConfiguration() {
 
-    const generator = rootEntry.dataset.environment.toLowerCase();
+    const generator = rootEntry.dataset.environment ? rootEntry.dataset.environment.toLowerCase() : null;
     const formName = rootEntry.dataset.formName;
     const proxyUri = rootEntry.dataset.rest;
+
 
     const isWordpress = generator && generator.includes('wordpress');
     const isDrupal = generator && generator.includes('drupal');
     const isDotNet = generator && generator.includes('dotnet');
 
-    const base = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet);
+    const base = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, true);
     
-    const cssConfigUrl = base + (isWordpress ?  "?type=css_setup" : "config/css-config.json");
-    let cssConfig;
+    const cssConfigUrl = base + (isWordpress ?  "?type=css_setup" : "config/css-config.json"),
+        formConfigUrl = base + (isWordpress ? "?type=form_setup" : "config/form-config.json");
+    let initialState, cssConfig;
     try {
-        cssConfig = await callApi(cssConfigUrl, {method: 'GET'});
+        [cssConfig, initialState] = await Promise.all([
+            callApi(cssConfigUrl, {method: 'GET'}),
+            callApi(formConfigUrl, {method: 'GET'})
+        ])
         // console.log({cssConfig})
         cssConfig["--base-font-size"] = "19px";
         const styleEl = document.createElement('style');
@@ -62,15 +67,7 @@ async function getConfiguration() {
             onComplete(cssText, styleNode) {
             }
         });
-    } catch (err) {
-        console.error(err);
-        alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
-    }
 
-    const formConfigUrl = base + (isWordpress ? "?type=form_setup" : "config/form-config.json");
-    let initialState;
-    try {
-        initialState = await callApi(formConfigUrl, {method: 'GET'});
         if (initialState.mode === "production") {
             if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
                 window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {}
@@ -80,13 +77,13 @@ async function getConfiguration() {
             }
         }
         if (isWordpress) {
-            initialState.proxy = base
+            initialState.proxy = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, false)
         }
+
     } catch (err) {
         console.error(err);
         alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
     }
-
     return { cssConfig, initialState } 
 }
 
@@ -95,9 +92,13 @@ async function getConfiguration() {
 * @param {Boolean} isWordpress - only return value if True
 * @param {String} proxyUri - uri of proxy endpoint
 * @param {String} formName - name of the form
+* @param {Boolean} init - flag whether this is initial call or for passing to app
 * @returns {String} - URL base for Wordpress based on giving page URL
 */
-function handleWordpress(isWordpress, proxyUri, formName) {
+function handleWordpress(isWordpress, proxyUri, formName, init) {
+    // if (isWordpress && init) {
+    //     return `/wp-content/plugins/cbngiving-plugin/json/init-form.php?campaign=${formName}`
+    // } else if (isWordpress && !init) {
     if (isWordpress) {
         return `${proxyUri}cbngiving/v1/${formName}`
     }
@@ -139,11 +140,12 @@ function handleDotNet(isDotNet, proxyUri, formName) {
  * @param {Boolean} isWordpress - data-rest == 'wordpress'
  * @param {Boolean} isDrupal - data-rest == 'drupal'
  * @param {Boolean} isDotNet - data-rest == 'dotnet'
+ * @param {Boolean} init - flag whether this is initial call or for passing to app
  * @returns {String} uri of proxy api
  */
-function deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet) {
+function deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, init) {
     if (isWordpress) {
-        return handleWordpress(isWordpress, proxyUri, formName)
+        return handleWordpress(isWordpress, proxyUri, formName, init)
     } else if (isDrupal) {
         return handleDrupal(isDrupal, proxyUri, formName)
     } else if (isDotNet) {
@@ -154,5 +156,10 @@ function deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet) {
 }
 
 getConfiguration().then(({cssConfig, initialState}) => {
-    ReactDOM.render( <App config={{cssConfig, initialState}}/>, rootEntry);
+    if (cssConfig && initialState) {
+        ReactDOM.render( <App config={{cssConfig, initialState}}/>, rootEntry);
+    } else {
+        console.error({error: "Initial State is Undefined"})
+        alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
+    }
 });
