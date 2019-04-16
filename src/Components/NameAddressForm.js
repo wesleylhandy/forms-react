@@ -864,7 +864,7 @@ class NameAddressForm extends Component {
                         />
                     </fieldset>
                     { 
-                        showSeals && <Seals/> 
+                        showSeals && <Seals /> 
                     }
                 </div>
             </form>

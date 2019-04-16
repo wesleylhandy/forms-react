@@ -18,9 +18,10 @@ const rootEntry = document.getElementById('form-root')
 
 async function getConfiguration() {
 
-    const generator = rootEntry.dataset.environment.toLowerCase();
+    const generator = rootEntry.dataset.environment ? rootEntry.dataset.environment.toLowerCase() : null;
     const formName = rootEntry.dataset.formName;
     const proxyUri = rootEntry.dataset.rest;
+
 
     const isWordpress = generator && generator.includes('wordpress');
     const isDrupal = generator && generator.includes('drupal');
@@ -28,8 +29,8 @@ async function getConfiguration() {
 
     const base = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, true);
     
-    const cssConfigUrl = base + (isWordpress ?  "?&type=css_setup" : "config/css-config.json"),
-        formConfigUrl = base + (isWordpress ? "?&type=form_setup" : "config/form-config.json");
+    const cssConfigUrl = base + (isWordpress ?  "?type=css_setup" : "config/css-config.json"),
+        formConfigUrl = base + (isWordpress ? "?type=form_setup" : "config/form-config.json");
     let initialState, cssConfig;
     try {
         [cssConfig, initialState] = await Promise.all([
@@ -78,6 +79,7 @@ async function getConfiguration() {
         if (isWordpress) {
             initialState.proxy = deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, false)
         }
+
     } catch (err) {
         console.error(err);
         alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
@@ -154,5 +156,10 @@ function deriveBaseUri(proxyUri, formName, isWordpress, isDrupal, isDotNet, init
 }
 
 getConfiguration().then(({cssConfig, initialState}) => {
-    ReactDOM.render( <App config={{cssConfig, initialState}}/>, rootEntry);
+    if (cssConfig && initialState) {
+        ReactDOM.render( <App config={{cssConfig, initialState}}/>, rootEntry);
+    } else {
+        console.error({error: "Initial State is Undefined"})
+        alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
+    }
 });
