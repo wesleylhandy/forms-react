@@ -1,6 +1,6 @@
 {
     "name": "react-form",
-    "version": "1.6.6",
+    "version": "1.7.1",
     "description": "",
     "main": "index.html",
     "scripts": {
@@ -8,7 +8,7 @@
         "start:proxy": "node proxy-server/server.js",
         "start": "parcel index.html",
         "stop": "pkill SIGINT ProxyServer",
-        "build": "parcel build src/index.js --detailed-report -d dist/v1",
+        "build": "parcel build src/index.js --detailed-report -d dist",
         "build:test": "parcel build src/index.js --detailed-report -d dist/test/v1"
     },
     "repository": {

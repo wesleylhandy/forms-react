@@ -15,7 +15,7 @@ import styles from './styles/name-address-form.module.css'
 
 import { getErrorType } from './helpers/error-types';
 import { callApi } from './helpers/fetch-helpers';
-import { cryptLS, removeOneLS } from './helpers/crypt';
+import { cryptLS, removeOneLS } from './helpers/ls';
 
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 

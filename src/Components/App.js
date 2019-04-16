@@ -9,7 +9,7 @@ import Banner from './Banner'
 
 import styles from './styles/app.module.css'
 
-import {readLS, removeOneLS, emptyLS} from "./helpers/crypt"
+import {readLS, removeOneLS, emptyLS} from "./helpers/ls"
 
 class App extends Component {
     constructor(props) {
