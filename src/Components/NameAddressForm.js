@@ -64,8 +64,10 @@ class NameAddressForm extends Component {
             errors[field] = ""
         }
         errors.amount = ""
+        const hasMonthlyAmounts = props.monthlyAmounts && props.monthlyAmounts.length;
+        const hasSingleAmounts = props.singleAmounts && props.singleAmounts.length;
         this.state = {
-            monthlyChecked: props.defaultOption == "monthly",
+            monthlyChecked: props.defaultOption == "monthly" || ( hasMonthlyAmounts && !hasSingleAmounts ),
             totalGift: 0,
             submitted: false,
             submitting: false,
