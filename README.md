@@ -1,10 +1,10 @@
-# Configurable React Giving Form
+# Configurable React Form to Handle CBN Form Apis
 
 This project is being designed for use by the Digital Media Group at CBN, Inc. 
 
 ## Installation
 
-1. parceljs is required for simple transpiling of `jsx`, `es6`, `postcss` with `autoprefixer` and  `react-css-modules`
+1. parceljs is required for simple transpiling of `jsx`, `es6`+, and  `emotion`;
 
 ```
     npm install -g parcel-bundler
