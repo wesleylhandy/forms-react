@@ -4,8 +4,8 @@ import Spinner from './Spinner'
 
 import styles from './styles/payment-form.module.css'
 
-import {cryptLS} from './helpers/ls'
-import {scrollToPoint, offsetTop} from './helpers/scrollToPoint'
+import {cryptLS} from '../helpers/ls'
+import {scrollToPoint, offsetTop} from '../helpers/scrollToPoint'
 
 class PaymentForm extends Component {
     constructor(props) {

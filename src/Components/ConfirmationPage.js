@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react'
 import PaymentForm from './PaymentForm'
 import Spinner from './Spinner'
 
-import {callApi} from './helpers/fetch-helpers'
+import {callApi} from '../helpers/fetch-helpers'
 
 function handleUnload(e){
     e.returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page."

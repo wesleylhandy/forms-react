@@ -1,13 +1,31 @@
 {
     "plugins": [
-        ["react-css-modules", {
-            "generateScopedName": "[local]__[hash:base64:5]",
-            "webpackHotModuleReloading": true,
-            "handleMissingStyleName": "warn"
-        }],
-        "transform-object-rest-spread"
+      "react-hot-loader/babel",
+      ["@babel/plugin-transform-runtime",
+        {
+          "regenerator": true
+        }
+      ],
+      "transform-inline-environment-variables"
     ],
     "presets": [
-        ["env", { "useBuiltIns": true }], "react"
+      [
+        "@babel/preset-env", 
+        { 
+          "useBuiltIns": "entry", 
+          "corejs": 3, 
+          "targets": { 
+            "node": "current" 
+          } 
+        }
+      ], 
+      "@babel/preset-react", 
+      [
+        "@emotion/babel-preset-css-prop",
+        {
+          "autoLabel": true,
+          "labelFormat": "[local]"
+        }
+      ]
     ]
-}
+  }

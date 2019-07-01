@@ -1,0 +1,33 @@
+.form-panel {
+    background: var(--panel-bg-color);
+    border: var(--panel-border-width) solid var(--panel-border-color);
+    border-radius: var(--panel-border-radius);
+    box-sizing: border-box;
+    padding: var(--panel-padding);
+    width: 100%;
+}
+
+.form-panel+.form-panel {
+    margin-top: var(--panel-space-between);
+}
+
+.hidden {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+.form-wrapper {
+    background: var(--form-bg-color);
+    box-sizing: border-box;
+    border: var(--form-border-width) solid var(--form-border-color);
+    border-radius: var(--form-border-radius);
+    color: var(--form-text-color);
+    max-width: var(--form-max-width);
+    padding: var(--form-padding);
+    width: 100%;
+}
+
+/*# sourceMappingURL=/src.a2b27638.css.map */

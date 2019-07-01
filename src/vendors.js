@@ -1,8 +1,10 @@
 //for code-splitting - separate node modules from components
-import('css-vars-ponyfill');
-import('whatwg-fetch');
-import('promise-polyfill');
-import('raf/polyfill');
-import('react');
-import('react-dom');
+import("core-js/stable");
+import("react");
+import("react-dom");
+import("typography");
+import("react-typography");
+import("@emotion/styled");
+import("@emotion/core");
+import("prop-types");
 import('secure-ls');

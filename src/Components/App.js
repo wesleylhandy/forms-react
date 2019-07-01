@@ -1,6 +1,6 @@
 import React, { Component} from 'react'
 
-import NameAddressForm from "./NameAddressForm"
+import GivingForm from "./Forms/GivingForm"
 import ConfirmationPage from './ConfirmationPage'
 import RedirectForm from './RedirectForm'
 // const ConfirmationPage = lazy ( ()=> import("./ConfirmationPage") )
@@ -9,7 +9,7 @@ import Banner from './Banner'
 
 import styles from './styles/app.module.css'
 
-import {readLS, removeOneLS, emptyLS} from "./helpers/ls"
+import {readLS, removeOneLS, emptyLS} from "../helpers/ls"
 
 class App extends Component {
     constructor(props) {
@@ -121,7 +121,7 @@ class App extends Component {
  
                             )
                         } else {
-                            return <NameAddressForm { ...formState } mode={mode} submitForm={ this.submitForm }/>
+                            return <GivingForm { ...formState } mode={mode} submitForm={ this.submitForm }/>
                         }
                     })()     
                 } 

@@ -1,20 +1,20 @@
 import React, {Component} from 'react'
 
-import FormPanel from "./FormComponents/StyledComponents/FormPanel" 
-import FieldSet from "./FormComponents/StyledComponents/FieldSet"
-import FormHeader from "./FormComponents/StyledComponents/FormHeader"
-import GivingLayout from './GivingLayout'
-import ProductLayout from './ProductLayout'
-import FundDisplay from './FundDisplay'
-import NameBlock from './NameBlock'
-import ShippingAddressBlock from './ShippingAddressBlock';
-import AddressBlock from './AddressBlock';
-import FormOptionsBlock from './FormOptionsBlock';
-import SubmitButton from './FormComponents/SubmitButton';
+import FormPanel from "../FormComponents/StyledComponents/FormPanel" 
+import FieldSet from "../FormComponents/StyledComponents/FieldSet"
+import FormHeader from "../FormComponents/StyledComponents/FormHeader"
+import GivingLayout from '../FormComponents/Layouts/GivingLayout'
+import ProductLayout from '../FormComponents/Layouts/ProductLayout'
+import FundDisplay from '../FormComponents/Blocks/DesignationBlock'
+import NameBlock from '../FormComponents/Blocks/NameBlock'
+import ShippingAddressBlock from '../FormComponents/Blocks/ShippingAddressBlock';
+import AddressBlock from '../FormComponents/Blocks/AddressBlock';
+import FormOptionsBlock from '../FormComponents/Blocks/FormOptionsBlock';
+import SubmitButton from '../FormComponents/SubmitButton';
 
-import { getErrorType } from '../helpers/error-types';
-import { callApi } from '../helpers/fetch-helpers';
-import { cryptLS, removeOneLS } from '../helpers/ls';
+import { getErrorType } from '../../helpers/error-types';
+import { callApi } from '../../helpers/fetch-helpers';
+import { cryptLS, removeOneLS } from '../../helpers/ls';
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
     phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/,
@@ -27,7 +27,7 @@ const getDay = () => {
     return date >= 2 && date <=28 ? date : 2
 }
 
-class NameAddressForm extends Component {
+class GivingForm extends Component {
     constructor(props){
         super(props)
         // console.log({hydratedData: props.hydratedData})
@@ -216,6 +216,7 @@ class NameAddressForm extends Component {
         const items = [...this.state.cart.items];
         const found = items.findIndex(el=>el && el.type == "donation")
         const id = e.target.id;
+        console.log(id)
         if (found > -1) {
             items[found] = {
                 type: 'donation',
@@ -233,11 +234,11 @@ class NameAddressForm extends Component {
         if (fundInfo && fundInfo.DetailName) {
             const detailName = fundInfo.DetailName;
             const prefix = detailName.slice(0,2);
-            if (prefix == "MP" || prefix == "SP") {
+            if (prefix == "MP" || prefix == "SG") {
                 const originalDetailName = detailName.slice(2)
-                fundInfo.DetailName = id == "singlegift" ? `SP${originalDetailName}` : `MP${originalDetailName}`
+                fundInfo.DetailName = id == "singlegift" ? `SG${originalDetailName}` : `MP${originalDetailName}`
             } else {
-                fundInfo.DetailName = id == "singlegift" ? `SP${detailName}` : `MP${detailName}`
+                fundInfo.DetailName = id == "singlegift" ? `SG${detailName}` : `MP${detailName}`
             }
             // console.log({fundInfo})
         }
@@ -875,4 +876,4 @@ class NameAddressForm extends Component {
     }
 }
 
-export default NameAddressForm
+export default GivingForm

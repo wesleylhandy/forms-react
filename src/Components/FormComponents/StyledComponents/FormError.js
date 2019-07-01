@@ -1,0 +1,20 @@
+import React from "react";
+import styled from "@emotion/styled";
+
+const FormError = styled.div`
+  box-sizing: border-box;
+  position: absolute;
+  color: crimson;
+  width: auto;
+  font-weight: 700;
+  font-size: calc(19px * 0.5);
+  opacity: 1;
+  overflow: hidden;
+  max-width: 100%;
+  white-space: nowrap;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(0% - 20px);
+`;
+
+export default FormError
