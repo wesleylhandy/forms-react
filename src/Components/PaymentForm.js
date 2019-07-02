@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 
-import Spinner from './Spinner'
+import Spinner from './StyledComponents/Spinner'
 
 import styles from './styles/payment-form.module.css'
 

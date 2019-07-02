@@ -117,776 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/regenerator-runtime/runtime.js":[function(require,module,exports) {
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var runtime = (function (exports) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  exports.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  IteratorPrototype[iteratorSymbol] = function () {
-    return this;
-  };
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-  GeneratorFunctionPrototype[toStringTagSymbol] =
-    GeneratorFunction.displayName = "GeneratorFunction";
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      prototype[method] = function(arg) {
-        return this._invoke(method, arg);
-      };
-    });
-  }
-
-  exports.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  exports.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      if (!(toStringTagSymbol in genFun)) {
-        genFun[toStringTagSymbol] = "GeneratorFunction";
-      }
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  exports.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return Promise.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function(error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new Promise(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-    return this;
-  };
-  exports.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList) {
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList)
-    );
-
-    return exports.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        // Note: ["return"] must be used for ES3 parsing compatibility.
-        if (delegate.iterator["return"]) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  Gp[toStringTagSymbol] = "Generator";
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  Gp[iteratorSymbol] = function() {
-    return this;
-  };
-
-  Gp.toString = function() {
-    return "[object Generator]";
-  };
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  exports.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  exports.values = values;
-
-  function doneResult() {
-    return { value: undefined, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-
-  // Regardless of whether this script is executing as a CommonJS module
-  // or not, return the runtime object so that we can declare the variable
-  // regeneratorRuntime in the outer scope, which allows this module to be
-  // injected easily by `bin/regenerator --include-runtime script.js`.
-  return exports;
-
-}(
-  // If this script is executing as a CommonJS module, use module.exports
-  // as the regeneratorRuntime namespace. Otherwise create a new empty
-  // object. Either way, the resulting object will be used to initialize
-  // the regeneratorRuntime variable at the top of this file.
-  typeof module === "object" ? module.exports : {}
-));
-
-try {
-  regeneratorRuntime = runtime;
-} catch (accidentalStrictMode) {
-  // This module should not be running in strict mode, so the above
-  // assignment should always work unless something is misconfigured. Just
-  // in case runtime.js accidentally runs in strict mode, we can escape
-  // strict mode using a global Function call. This could conceivably fail
-  // if a Content Security Policy forbids using Function, but in that case
-  // the proper solution is to fix the accidental strict mode problem. If
-  // you've misconfigured your bundler to force strict mode and applied a
-  // CSP to forbid Function, and you're not willing to fix either of those
-  // problems, please detail your unique predicament in a GitHub issue.
-  Function("r", "regeneratorRuntime = r")(runtime);
-}
-
-},{}],"node_modules/@babel/runtime/regenerator/index.js":[function(require,module,exports) {
-module.exports = require("regenerator-runtime");
-
-},{"regenerator-runtime":"node_modules/regenerator-runtime/runtime.js"}],"node_modules/@babel/runtime/helpers/asyncToGenerator.js":[function(require,module,exports) {
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-module.exports = _asyncToGenerator;
-},{}],"node_modules/@babel/runtime/helpers/inheritsLoose.js":[function(require,module,exports) {
+})({"node_modules/@babel/runtime/helpers/inheritsLoose.js":[function(require,module,exports) {
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
@@ -35475,143 +34706,7 @@ require("_bundle_loader")(require.resolve("@emotion/core"));
 require("_bundle_loader")(require.resolve("prop-types"));
 
 require("_bundle_loader")(require.resolve('secure-ls'));
-},{"_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","core-js/stable":[["stable.7461f3b3.js","node_modules/core-js/stable/index.js"],"stable.7461f3b3.js.map","node_modules/core-js/stable/index.js"],"react":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/react/index.js"],"react-dom":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/react-dom/index.js"],"typography":[["dist.a16385fa.js","node_modules/typography/dist/index.js"],"dist.a16385fa.js.map","node_modules/typography/dist/index.js"],"react-typography":[["dist.c0d38775.js","node_modules/react-typography/dist/index.js"],"dist.c0d38775.js.map","node_modules/react-typography/dist/index.js"],"@emotion/styled":[["styled.browser.esm.1eb75cdb.js","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"styled.browser.esm.1eb75cdb.js.map","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"@emotion/core":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/@emotion/core/dist/core.browser.esm.js"],"prop-types":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/prop-types/index.js"],"secure-ls":[["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],"secure-ls.0cd04304.js.map","node_modules/secure-ls/dist/secure-ls.js"]}],"node_modules/@babel/runtime/helpers/extends.js":[function(require,module,exports) {
-function _extends() {
-  module.exports = _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
-
-module.exports = _extends;
-},{}],"node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js":[function(require,module,exports) {
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-
-module.exports = _objectWithoutPropertiesLoose;
-},{}],"node_modules/@babel/runtime/helpers/objectWithoutProperties.js":[function(require,module,exports) {
-var objectWithoutPropertiesLoose = require("./objectWithoutPropertiesLoose");
-
-function _objectWithoutProperties(source, excluded) {
-  if (source == null) return {};
-  var target = objectWithoutPropertiesLoose(source, excluded);
-  var key, i;
-
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-}
-
-module.exports = _objectWithoutProperties;
-},{"./objectWithoutPropertiesLoose":"node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js"}],"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":[function(require,module,exports) {
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  }
-}
-
-module.exports = _arrayWithoutHoles;
-},{}],"node_modules/@babel/runtime/helpers/iterableToArray.js":[function(require,module,exports) {
-function _iterableToArray(iter) {
-  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
-}
-
-module.exports = _iterableToArray;
-},{}],"node_modules/@babel/runtime/helpers/nonIterableSpread.js":[function(require,module,exports) {
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance");
-}
-
-module.exports = _nonIterableSpread;
-},{}],"node_modules/@babel/runtime/helpers/toConsumableArray.js":[function(require,module,exports) {
-var arrayWithoutHoles = require("./arrayWithoutHoles");
-
-var iterableToArray = require("./iterableToArray");
-
-var nonIterableSpread = require("./nonIterableSpread");
-
-function _toConsumableArray(arr) {
-  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
-}
-
-module.exports = _toConsumableArray;
-},{"./arrayWithoutHoles":"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js","./iterableToArray":"node_modules/@babel/runtime/helpers/iterableToArray.js","./nonIterableSpread":"node_modules/@babel/runtime/helpers/nonIterableSpread.js"}],"node_modules/@babel/runtime/helpers/defineProperty.js":[function(require,module,exports) {
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-module.exports = _defineProperty;
-},{}],"node_modules/@babel/runtime/helpers/objectSpread.js":[function(require,module,exports) {
-var defineProperty = require("./defineProperty");
-
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-    var ownKeys = Object.keys(source);
-
-    if (typeof Object.getOwnPropertySymbols === 'function') {
-      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-      }));
-    }
-
-    ownKeys.forEach(function (key) {
-      defineProperty(target, key, source[key]);
-    });
-  }
-
-  return target;
-}
-
-module.exports = _objectSpread;
-},{"./defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js"}],"node_modules/@babel/runtime/helpers/classCallCheck.js":[function(require,module,exports) {
+},{"_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","core-js/stable":[["stable.7461f3b3.js","node_modules/core-js/stable/index.js"],"stable.7461f3b3.js.map","node_modules/core-js/stable/index.js"],"react":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/react/index.js"],"react-dom":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/react-dom/index.js"],"typography":[["dist.a16385fa.js","node_modules/typography/dist/index.js"],"dist.a16385fa.js.map","node_modules/typography/dist/index.js"],"react-typography":[["dist.c0d38775.js","node_modules/react-typography/dist/index.js"],"dist.c0d38775.js.map","node_modules/react-typography/dist/index.js"],"@emotion/styled":[["styled.browser.esm.1eb75cdb.js","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"styled.browser.esm.1eb75cdb.js.map","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"@emotion/core":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/@emotion/core/dist/core.browser.esm.js"],"prop-types":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/prop-types/index.js"],"secure-ls":[["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],"secure-ls.0cd04304.js.map","node_modules/secure-ls/dist/secure-ls.js"]}],"node_modules/@babel/runtime/helpers/classCallCheck.js":[function(require,module,exports) {
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -35718,7 +34813,2427 @@ function _inherits(subClass, superClass) {
 }
 
 module.exports = _inherits;
-},{"./setPrototypeOf":"node_modules/@babel/runtime/helpers/setPrototypeOf.js"}],"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js":[function(require,module,exports) {
+},{"./setPrototypeOf":"node_modules/@babel/runtime/helpers/setPrototypeOf.js"}],"node_modules/regenerator-runtime/runtime.js":[function(require,module,exports) {
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList)
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+  typeof module === "object" ? module.exports : {}
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+
+},{}],"node_modules/@babel/runtime/regenerator/index.js":[function(require,module,exports) {
+module.exports = require("regenerator-runtime");
+
+},{"regenerator-runtime":"node_modules/regenerator-runtime/runtime.js"}],"node_modules/@babel/runtime/helpers/asyncToGenerator.js":[function(require,module,exports) {
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+module.exports = _asyncToGenerator;
+},{}],"node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
+(function(self) {
+  'use strict';
+
+  if (self.fetch) {
+    return
+  }
+
+  var support = {
+    searchParams: 'URLSearchParams' in self,
+    iterable: 'Symbol' in self && 'iterator' in Symbol,
+    blob: 'FileReader' in self && 'Blob' in self && (function() {
+      try {
+        new Blob()
+        return true
+      } catch(e) {
+        return false
+      }
+    })(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  }
+
+  if (support.arrayBuffer) {
+    var viewClasses = [
+      '[object Int8Array]',
+      '[object Uint8Array]',
+      '[object Uint8ClampedArray]',
+      '[object Int16Array]',
+      '[object Uint16Array]',
+      '[object Int32Array]',
+      '[object Uint32Array]',
+      '[object Float32Array]',
+      '[object Float64Array]'
+    ]
+
+    var isDataView = function(obj) {
+      return obj && DataView.prototype.isPrototypeOf(obj)
+    }
+
+    var isArrayBufferView = ArrayBuffer.isView || function(obj) {
+      return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1
+    }
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name)
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name')
+    }
+    return name.toLowerCase()
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value)
+    }
+    return value
+  }
+
+  // Build a destructive iterator for the value list
+  function iteratorFor(items) {
+    var iterator = {
+      next: function() {
+        var value = items.shift()
+        return {done: value === undefined, value: value}
+      }
+    }
+
+    if (support.iterable) {
+      iterator[Symbol.iterator] = function() {
+        return iterator
+      }
+    }
+
+    return iterator
+  }
+
+  function Headers(headers) {
+    this.map = {}
+
+    if (headers instanceof Headers) {
+      headers.forEach(function(value, name) {
+        this.append(name, value)
+      }, this)
+    } else if (Array.isArray(headers)) {
+      headers.forEach(function(header) {
+        this.append(header[0], header[1])
+      }, this)
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function(name) {
+        this.append(name, headers[name])
+      }, this)
+    }
+  }
+
+  Headers.prototype.append = function(name, value) {
+    name = normalizeName(name)
+    value = normalizeValue(value)
+    var oldValue = this.map[name]
+    this.map[name] = oldValue ? oldValue+','+value : value
+  }
+
+  Headers.prototype['delete'] = function(name) {
+    delete this.map[normalizeName(name)]
+  }
+
+  Headers.prototype.get = function(name) {
+    name = normalizeName(name)
+    return this.has(name) ? this.map[name] : null
+  }
+
+  Headers.prototype.has = function(name) {
+    return this.map.hasOwnProperty(normalizeName(name))
+  }
+
+  Headers.prototype.set = function(name, value) {
+    this.map[normalizeName(name)] = normalizeValue(value)
+  }
+
+  Headers.prototype.forEach = function(callback, thisArg) {
+    for (var name in this.map) {
+      if (this.map.hasOwnProperty(name)) {
+        callback.call(thisArg, this.map[name], name, this)
+      }
+    }
+  }
+
+  Headers.prototype.keys = function() {
+    var items = []
+    this.forEach(function(value, name) { items.push(name) })
+    return iteratorFor(items)
+  }
+
+  Headers.prototype.values = function() {
+    var items = []
+    this.forEach(function(value) { items.push(value) })
+    return iteratorFor(items)
+  }
+
+  Headers.prototype.entries = function() {
+    var items = []
+    this.forEach(function(value, name) { items.push([name, value]) })
+    return iteratorFor(items)
+  }
+
+  if (support.iterable) {
+    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
+  }
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'))
+    }
+    body.bodyUsed = true
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function(resolve, reject) {
+      reader.onload = function() {
+        resolve(reader.result)
+      }
+      reader.onerror = function() {
+        reject(reader.error)
+      }
+    })
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader()
+    var promise = fileReaderReady(reader)
+    reader.readAsArrayBuffer(blob)
+    return promise
+  }
+
+  function readBlobAsText(blob) {
+    var reader = new FileReader()
+    var promise = fileReaderReady(reader)
+    reader.readAsText(blob)
+    return promise
+  }
+
+  function readArrayBufferAsText(buf) {
+    var view = new Uint8Array(buf)
+    var chars = new Array(view.length)
+
+    for (var i = 0; i < view.length; i++) {
+      chars[i] = String.fromCharCode(view[i])
+    }
+    return chars.join('')
+  }
+
+  function bufferClone(buf) {
+    if (buf.slice) {
+      return buf.slice(0)
+    } else {
+      var view = new Uint8Array(buf.byteLength)
+      view.set(new Uint8Array(buf))
+      return view.buffer
+    }
+  }
+
+  function Body() {
+    this.bodyUsed = false
+
+    this._initBody = function(body) {
+      this._bodyInit = body
+      if (!body) {
+        this._bodyText = ''
+      } else if (typeof body === 'string') {
+        this._bodyText = body
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body
+      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+        this._bodyText = body.toString()
+      } else if (support.arrayBuffer && support.blob && isDataView(body)) {
+        this._bodyArrayBuffer = bufferClone(body.buffer)
+        // IE 10-11 can't handle a DataView body.
+        this._bodyInit = new Blob([this._bodyArrayBuffer])
+      } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
+        this._bodyArrayBuffer = bufferClone(body)
+      } else {
+        throw new Error('unsupported BodyInit type')
+      }
+
+      if (!this.headers.get('content-type')) {
+        if (typeof body === 'string') {
+          this.headers.set('content-type', 'text/plain;charset=UTF-8')
+        } else if (this._bodyBlob && this._bodyBlob.type) {
+          this.headers.set('content-type', this._bodyBlob.type)
+        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+        }
+      }
+    }
+
+    if (support.blob) {
+      this.blob = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob)
+        } else if (this._bodyArrayBuffer) {
+          return Promise.resolve(new Blob([this._bodyArrayBuffer]))
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob')
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]))
+        }
+      }
+
+      this.arrayBuffer = function() {
+        if (this._bodyArrayBuffer) {
+          return consumed(this) || Promise.resolve(this._bodyArrayBuffer)
+        } else {
+          return this.blob().then(readBlobAsArrayBuffer)
+        }
+      }
+    }
+
+    this.text = function() {
+      var rejected = consumed(this)
+      if (rejected) {
+        return rejected
+      }
+
+      if (this._bodyBlob) {
+        return readBlobAsText(this._bodyBlob)
+      } else if (this._bodyArrayBuffer) {
+        return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer))
+      } else if (this._bodyFormData) {
+        throw new Error('could not read FormData body as text')
+      } else {
+        return Promise.resolve(this._bodyText)
+      }
+    }
+
+    if (support.formData) {
+      this.formData = function() {
+        return this.text().then(decode)
+      }
+    }
+
+    this.json = function() {
+      return this.text().then(JSON.parse)
+    }
+
+    return this
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase()
+    return (methods.indexOf(upcased) > -1) ? upcased : method
+  }
+
+  function Request(input, options) {
+    options = options || {}
+    var body = options.body
+
+    if (input instanceof Request) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read')
+      }
+      this.url = input.url
+      this.credentials = input.credentials
+      if (!options.headers) {
+        this.headers = new Headers(input.headers)
+      }
+      this.method = input.method
+      this.mode = input.mode
+      if (!body && input._bodyInit != null) {
+        body = input._bodyInit
+        input.bodyUsed = true
+      }
+    } else {
+      this.url = String(input)
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit'
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers)
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET')
+    this.mode = options.mode || this.mode || null
+    this.referrer = null
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests')
+    }
+    this._initBody(body)
+  }
+
+  Request.prototype.clone = function() {
+    return new Request(this, { body: this._bodyInit })
+  }
+
+  function decode(body) {
+    var form = new FormData()
+    body.trim().split('&').forEach(function(bytes) {
+      if (bytes) {
+        var split = bytes.split('=')
+        var name = split.shift().replace(/\+/g, ' ')
+        var value = split.join('=').replace(/\+/g, ' ')
+        form.append(decodeURIComponent(name), decodeURIComponent(value))
+      }
+    })
+    return form
+  }
+
+  function parseHeaders(rawHeaders) {
+    var headers = new Headers()
+    // Replace instances of \r\n and \n followed by at least one space or horizontal tab with a space
+    // https://tools.ietf.org/html/rfc7230#section-3.2
+    var preProcessedHeaders = rawHeaders.replace(/\r?\n[\t ]+/g, ' ')
+    preProcessedHeaders.split(/\r?\n/).forEach(function(line) {
+      var parts = line.split(':')
+      var key = parts.shift().trim()
+      if (key) {
+        var value = parts.join(':').trim()
+        headers.append(key, value)
+      }
+    })
+    return headers
+  }
+
+  Body.call(Request.prototype)
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {}
+    }
+
+    this.type = 'default'
+    this.status = options.status === undefined ? 200 : options.status
+    this.ok = this.status >= 200 && this.status < 300
+    this.statusText = 'statusText' in options ? options.statusText : 'OK'
+    this.headers = new Headers(options.headers)
+    this.url = options.url || ''
+    this._initBody(bodyInit)
+  }
+
+  Body.call(Response.prototype)
+
+  Response.prototype.clone = function() {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    })
+  }
+
+  Response.error = function() {
+    var response = new Response(null, {status: 0, statusText: ''})
+    response.type = 'error'
+    return response
+  }
+
+  var redirectStatuses = [301, 302, 303, 307, 308]
+
+  Response.redirect = function(url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code')
+    }
+
+    return new Response(null, {status: status, headers: {location: url}})
+  }
+
+  self.Headers = Headers
+  self.Request = Request
+  self.Response = Response
+
+  self.fetch = function(input, init) {
+    return new Promise(function(resolve, reject) {
+      var request = new Request(input, init)
+      var xhr = new XMLHttpRequest()
+
+      xhr.onload = function() {
+        var options = {
+          status: xhr.status,
+          statusText: xhr.statusText,
+          headers: parseHeaders(xhr.getAllResponseHeaders() || '')
+        }
+        options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL')
+        var body = 'response' in xhr ? xhr.response : xhr.responseText
+        resolve(new Response(body, options))
+      }
+
+      xhr.onerror = function() {
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.ontimeout = function() {
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.open(request.method, request.url, true)
+
+      if (request.credentials === 'include') {
+        xhr.withCredentials = true
+      } else if (request.credentials === 'omit') {
+        xhr.withCredentials = false
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob'
+      }
+
+      request.headers.forEach(function(value, name) {
+        xhr.setRequestHeader(name, value)
+      })
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+    })
+  }
+  self.fetch.polyfill = true
+})(typeof self !== 'undefined' ? self : this);
+
+},{}],"src/helpers/fetch-helpers.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.callApi = callApi;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+require("whatwg-fetch");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+/**
+ * Asynchronous function
+ * @param {string} uri - Endpoint being called
+ * @param {Object} [options={}] - Request Options Object to set headers, method, body, etc
+ * @returns {string|Object} - Resolves data being requested or Rejects Error
+ */
+function callApi(_x) {
+  return _callApi.apply(this, arguments);
+}
+/**
+ * Calls FETCH API and expects Text or JSON response
+ * @param {string} uri -  Endpoint being called
+ * @param {Object} [options={}] - Options being passed to Fetch API
+ * @returns {Object|string} - will return JSON if contentType is json or String if not, and an Error Object if call failes
+ */
+
+
+function _callApi() {
+  _callApi = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(uri) {
+    var options,
+        data,
+        _args = arguments;
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
+            _context.prev = 1;
+            _context.next = 4;
+            return loadData(uri, options);
+
+          case 4:
+            data = _context.sent;
+            return _context.abrupt("return", data);
+
+          case 8:
+            _context.prev = 8;
+            _context.t0 = _context["catch"](1);
+            console.error(_context.t0);
+
+            if (!(typeof _context.t0 == "string")) {
+              _context.next = 15;
+              break;
+            }
+
+            throw new Error(_context.t0);
+
+          case 15:
+            throw new Error(_context.t0.message);
+
+          case 16:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[1, 8]]);
+  }));
+  return _callApi.apply(this, arguments);
+}
+
+function loadData(_x2) {
+  return _loadData.apply(this, arguments);
+}
+
+function _loadData() {
+  _loadData = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee2(uri) {
+    var options,
+        response,
+        contentType,
+        _args2 = arguments;
+    return _regenerator.default.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            options = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : {};
+            _context2.next = 3;
+            return fetch(uri, options);
+
+          case 3:
+            response = _context2.sent;
+            contentType = response.headers.get("content-type");
+
+            if (!(response.status >= 200 && response.status < 300)) {
+              _context2.next = 13;
+              break;
+            }
+
+            if (!(contentType && contentType.includes('application/json'))) {
+              _context2.next = 10;
+              break;
+            }
+
+            return _context2.abrupt("return", response.json());
+
+          case 10:
+            return _context2.abrupt("return", response.text());
+
+          case 11:
+            _context2.next = 14;
+            break;
+
+          case 13:
+            return _context2.abrupt("return", getErrorBody(response, contentType).then(function (body) {
+              return Promise.reject(body);
+            }));
+
+          case 14:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _loadData.apply(this, arguments);
+}
+
+function getErrorBody(_x3) {
+  return _getErrorBody.apply(this, arguments);
+}
+
+function _getErrorBody() {
+  _getErrorBody = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee3(response) {
+    var contentType,
+        body,
+        _args3 = arguments;
+    return _regenerator.default.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            contentType = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : 'text';
+
+            if (!contentType.includes('application/json')) {
+              _context3.next = 7;
+              break;
+            }
+
+            _context3.next = 4;
+            return response.json();
+
+          case 4:
+            body = _context3.sent;
+            _context3.next = 10;
+            break;
+
+          case 7:
+            _context3.next = 9;
+            return response.text();
+
+          case 9:
+            body = _context3.sent;
+
+          case 10:
+            return _context3.abrupt("return", body);
+
+          case 11:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+  return _getErrorBody.apply(this, arguments);
+}
+
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(callApi, "callApi", "/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js");
+  reactHotLoader.register(loadData, "loadData", "/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js");
+  reactHotLoader.register(getErrorBody, "getErrorBody", "/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","react-hot-loader":"node_modules/react-hot-loader/index.js","whatwg-fetch":"node_modules/whatwg-fetch/fetch.js"}],"src/Components/Context/FormContext.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.FormContext = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _fetchHelpers = require("../../helpers/fetch-helpers");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var FormContext = _react.default.createContext();
+
+exports.FormContext = FormContext;
+
+var FormProvider =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inherits2.default)(FormProvider, _Component);
+
+  function FormProvider() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    (0, _classCallCheck2.default)(this, FormProvider);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(FormProvider)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.state = {
+      status: "initial",
+      formConfig: {}
+    };
+
+    _this.getConfiguration =
+    /*#__PURE__*/
+    function () {
+      var _ref = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(rootEntry) {
+        var initialState, generator, formName, proxyUri, isDrupal;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                generator = rootEntry.dataset.environment ? rootEntry.dataset.environment.toLowerCase() : null;
+                formName = rootEntry.dataset.formName;
+                proxyUri = rootEntry.dataset.rest;
+                isDrupal = generator && generator.includes('drupal');
+
+                if (!isDrupal) {
+                  _context.next = 9;
+                  break;
+                }
+
+                initialState = rootEntry.dataset.initialState;
+                _context.next = 12;
+                break;
+
+              case 9:
+                _context.next = 11;
+                return (0, _fetchHelpers.callApi)("http://10.100.43.42:8080/config/form-config.json", {
+                  method: 'GET'
+                });
+
+              case 11:
+                initialState = _context.sent;
+
+              case 12:
+                if (initialState.mode === "production") {
+                  if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+                    window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
+
+                    if (Object.keys(window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers).length) {
+                      window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers = {};
+                    }
+                  }
+                }
+
+                _this.setState({
+                  formConfig: initialState,
+                  status: "loaded"
+                });
+
+                _context.next = 19;
+                break;
+
+              case 16:
+                _context.prev = 16;
+                _context.t0 = _context["catch"](0);
+
+                _this.setState({
+                  status: "error"
+                }, function () {
+                  console.error(_context.t0);
+                  alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
+                });
+
+              case 19:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 16]]);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }();
+
+    return _this;
+  }
+
+  (0, _createClass2.default)(FormProvider, [{
+    key: "render",
+    value: function render() {
+      return (0, _core.jsx)(FormContext.Provider, {
+        value: {
+          state: this.state,
+          getConfiguration: this.getConfiguration
+        }
+      }, this.props.children);
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+  return FormProvider;
+}(_react.Component);
+
+var _default = FormProvider;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(FormContext, "FormContext", "/Users/wehand/Code/react-form-drupal/src/Components/Context/FormContext.js");
+  reactHotLoader.register(FormProvider, "FormProvider", "/Users/wehand/Code/react-form-drupal/src/Components/Context/FormContext.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Context/FormContext.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"node_modules/@babel/runtime/helpers/extends.js":[function(require,module,exports) {
+function _extends() {
+  module.exports = _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+module.exports = _extends;
+},{}],"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":[function(require,module,exports) {
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
+}
+
+module.exports = _arrayWithoutHoles;
+},{}],"node_modules/@babel/runtime/helpers/iterableToArray.js":[function(require,module,exports) {
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+module.exports = _iterableToArray;
+},{}],"node_modules/@babel/runtime/helpers/nonIterableSpread.js":[function(require,module,exports) {
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+module.exports = _nonIterableSpread;
+},{}],"node_modules/@babel/runtime/helpers/toConsumableArray.js":[function(require,module,exports) {
+var arrayWithoutHoles = require("./arrayWithoutHoles");
+
+var iterableToArray = require("./iterableToArray");
+
+var nonIterableSpread = require("./nonIterableSpread");
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray;
+},{"./arrayWithoutHoles":"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js","./iterableToArray":"node_modules/@babel/runtime/helpers/iterableToArray.js","./nonIterableSpread":"node_modules/@babel/runtime/helpers/nonIterableSpread.js"}],"node_modules/@babel/runtime/helpers/defineProperty.js":[function(require,module,exports) {
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+},{}],"node_modules/@babel/runtime/helpers/objectSpread.js":[function(require,module,exports) {
+var defineProperty = require("./defineProperty");
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+    var ownKeys = Object.keys(source);
+
+    if (typeof Object.getOwnPropertySymbols === 'function') {
+      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+      }));
+    }
+
+    ownKeys.forEach(function (key) {
+      defineProperty(target, key, source[key]);
+    });
+  }
+
+  return target;
+}
+
+module.exports = _objectSpread;
+},{"./defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js"}],"src/helpers/ls.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.readLS = readLS;
+exports.cryptLS = cryptLS;
+exports.removeOneLS = removeOneLS;
+exports.emptyLS = emptyLS;
+
+var _secureLs = _interopRequireDefault(require("secure-ls"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var alphabetSoup = '$3cr3t5';
+var ls = new _secureLs.default({
+  encryptionSecret: alphabetSoup
+});
+/**
+ * Returns decrypted text or null
+ * @param {String} type - either full store or just info
+ * @returns {Object|null}
+ */
+
+function readLS(type) {
+  var _ls$get = ls.get(type),
+      formData = _ls$get.formData,
+      expiration = _ls$get.expiration; // console.log({formData, expiration})
+
+
+  if (formData && expiration) {
+    var present = Date.now();
+    return present > +expiration ? null : formData;
+  } else {
+    return null;
+  }
+}
+/**
+ * Encrypts Data for storing in browser memory
+ * @param {Object} formData - Object representing the data stored
+ * @param {Number} lifetime - number of milliseconds in the future to set expiration
+ * @param {String} type - either full store or just info
+ */
+
+
+function cryptLS(_ref, lifetime, type) {
+  var formData = _ref.formData;
+  var expiration = Date.now() + lifetime;
+  ls.set(type, {
+    formData: formData,
+    expiration: expiration
+  });
+}
+
+function removeOneLS(type) {
+  ls.remove(type);
+}
+
+function emptyLS() {
+  ls.removeAll();
+}
+
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(alphabetSoup, "alphabetSoup", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(ls, "ls", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(readLS, "readLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(cryptLS, "cryptLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(removeOneLS, "removeOneLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(emptyLS, "emptyLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"react-hot-loader":"node_modules/react-hot-loader/index.js","secure-ls":"node_modules/secure-ls/dist/secure-ls.js"}],"src/Components/Context/DataContext.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.DataContext = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _ls = require("../../helpers/ls");
+
+var _fetchHelpers = require("../../helpers/fetch-helpers");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var DataContext = _react.default.createContext();
+
+exports.DataContext = DataContext;
+
+var reducer = function reducer(state, action) {
+  var fields = (0, _objectSpread2.default)({}, state.fields);
+  var errors = (0, _objectSpread2.default)({}, state.errors);
+  var formData = action.formData,
+      name = action.name,
+      value = action.value,
+      error = action.error;
+
+  switch (action.type) {
+    case "INIT_FORM_STATE":
+      return (0, _objectSpread2.default)({}, state, {
+        initialized: true,
+        fields: action.fields,
+        errors: action.errors,
+        international: action.international,
+        type: action.formType
+      });
+      break;
+
+    case "LOAD":
+      for (var datum in formData) {
+        fields[datum] = formData[datum];
+      }
+
+      return (0, _objectSpread2.default)({}, state, {
+        fields: fields
+      });
+      break;
+
+    case "UPDATE_FIELD":
+      fields[name] = value;
+      errors[name] = error;
+      return (0, _objectSpread2.default)({}, state, {
+        fields: fields,
+        errors: errors
+      });
+      break;
+
+    case "UPDATE_FIELDS":
+      action.fields.forEach(function (_ref) {
+        var name = _ref.name,
+            value = _ref.value,
+            error = _ref.error;
+        fields[name] = value;
+        errors[name] = error;
+      });
+      return (0, _objectSpread2.default)({}, state, {
+        fields: fields,
+        errors: errors
+      });
+      break;
+
+    default:
+      return (0, _objectSpread2.default)({}, state);
+      break;
+  }
+};
+
+var email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
+    phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/,
+    zip_regex = /^\d{5}$/,
+    firstname_regex = /^([a-zA-Z0-9\-\.' ]+)$/i,
+    lastname_regex = /^([a-zA-Z0-9\-\.' ]+)(?:(,|\s|,\s)(jr|sr|ii|iii|iv|esq)\.*)?$/i;
+
+var DataProvider =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inherits2.default)(DataProvider, _Component);
+
+  function DataProvider() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    (0, _classCallCheck2.default)(this, DataProvider);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(DataProvider)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.state = {
+      initialized: false,
+      submitted: false,
+      confirmed: false,
+      finalized: false,
+      confirmationData: null,
+      finalizedData: null,
+      formAction: null,
+      international: false,
+      fields: {},
+      errors: {},
+      donorID: null,
+      type: "",
+      initFields: function initFields(action) {
+        return _this.setState(function (state) {
+          return reducer(state, action);
+        });
+      },
+      loadLS: function loadLS(action) {
+        var store = (0, _ls.readLS)('store');
+        var info = (0, _ls.readLS)('info');
+        var formData = store ? store : info; // console.log({store, info, formData})
+
+        if (!formData) {
+          (0, _ls.emptyLS)();
+        }
+
+        if (!store) {
+          (0, _ls.removeOneLS)('store');
+        }
+
+        action.formData = formData;
+
+        _this.setState(function (state) {
+          return reducer(state, action);
+        });
+      },
+      saveLS: function saveLS(action, formData) {
+        var days = 30;
+        var lifetime = days * 24 * 60 * 60 * 1000;
+        (0, _ls.cryptLS)({
+          formData: formData
+        }, lifetime, 'info');
+      },
+      removeOneLS: function removeOneLS(type) {
+        (0, _ls.removeOneLS)('info');
+      },
+      updateField: function updateField(action) {
+        return _this.setState(function (state) {
+          return reducer(state, action);
+        });
+      },
+      validateAndUpdateField: function () {
+        var _validateAndUpdateField = (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
+        _regenerator.default.mark(function _callee(action) {
+          var name, value, isZip;
+          return _regenerator.default.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  name = action.name, value = action.value;
+                  isZip = name.includes("Zip") && value.length >= 5;
+
+                  if (!isZip) {
+                    _context.next = 19;
+                    break;
+                  }
+
+                  if (zip_regex.test(value)) {
+                    _context.next = 7;
+                    break;
+                  }
+
+                  action.error = "Invalid Postal Code";
+                  _context.next = 17;
+                  break;
+
+                case 7:
+                  _context.prev = 7;
+                  _context.next = 10;
+                  return _this.callZipCityStateService(name, value);
+
+                case 10:
+                  action.error = _context.sent;
+                  _context.next = 17;
+                  break;
+
+                case 13:
+                  _context.prev = 13;
+                  _context.t0 = _context["catch"](7);
+                  console.error('CallZipCityStateServiceError');
+                  console.error({
+                    err: _context.t0
+                  });
+
+                case 17:
+                  _context.next = 22;
+                  break;
+
+                case 19:
+                  _context.next = 21;
+                  return _this.validateInput(false, name, value);
+
+                case 21:
+                  action.error = _context.sent;
+
+                case 22:
+                  _this.setState(function (state) {
+                    return reducer(state, action);
+                  });
+
+                case 23:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, null, [[7, 13]]);
+        }));
+
+        function validateAndUpdateField(_x) {
+          return _validateAndUpdateField.apply(this, arguments);
+        }
+
+        return validateAndUpdateField;
+      }(),
+      validateForm: function () {
+        var _validateForm = (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
+        _regenerator.default.mark(function _callee2(action) {
+          return _regenerator.default.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                case "end":
+                  return _context2.stop();
+              }
+            }
+          }, _callee2);
+        }));
+
+        function validateForm(_x2) {
+          return _validateForm.apply(this, arguments);
+        }
+
+        return validateForm;
+      }()
+      /**
+         * 
+         * @param {string} name - either Zip or ShipToZip
+         * @param {string} value - five digit zip code
+         */
+
+    };
+
+    _this.callZipCityStateService =
+    /*#__PURE__*/
+    function () {
+      var _ref2 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee3(name, value) {
+        var base, url, result, oldCity, _JSON$parse, city, state, zip, returnCode, returnMessage, error, newCity, action;
+
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (!value) {
+                  _context3.next = 27;
+                  break;
+                }
+
+                base = "https://services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+                url = "".concat(base).concat(value);
+                _context3.prev = 3;
+                _context3.next = 6;
+                return (0, _fetchHelpers.callApi)(url);
+
+              case 6:
+                result = _context3.sent;
+                oldCity = _this.state.fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
+                _JSON$parse = JSON.parse(result), city = _JSON$parse.city, state = _JSON$parse.state, zip = _JSON$parse.zip, returnCode = _JSON$parse.returnCode, returnMessage = _JSON$parse.returnMessage; // console.log({ city, state, zip, returnCode, returnMessage })
+
+                if (!(returnCode == 1)) {
+                  _context3.next = 18;
+                  break;
+                }
+
+                // console.log(city)
+                error = oldCity && !city.toUpperCase().includes(oldCity);
+                newCity = error || !oldCity ? city.split(";")[0] : oldCity;
+                action = {
+                  type: "UPDATE_FIELDS",
+                  fields: [{
+                    name: name == "ShipToZip" ? "ShipToCity" : "City",
+                    value: newCity,
+                    error: ''
+                  }, {
+                    name: name == "ShipToZip" ? "ShipToState" : "State",
+                    value: state,
+                    error: ''
+                  }]
+                };
+
+                if (name == "Zip") {
+                  action.fields.push({
+                    name: "Country",
+                    value: "United States",
+                    error: ''
+                  });
+                }
+
+                _this.setState(function (state) {
+                  return reducer(state, action);
+                });
+
+                return _context3.abrupt("return", error ? city : '');
+
+              case 18:
+                return _context3.abrupt("return", returnMessage);
+
+              case 19:
+                _context3.next = 25;
+                break;
+
+              case 21:
+                _context3.prev = 21;
+                _context3.t0 = _context3["catch"](3);
+                console.error(_context3.t0);
+                return _context3.abrupt("return", '');
+
+              case 25:
+                _context3.next = 28;
+                break;
+
+              case 27:
+                return _context3.abrupt("return", '');
+
+              case 28:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[3, 21]]);
+      }));
+
+      return function (_x3, _x4) {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
+    _this.validateInput = function (submitting, name, value) {
+      var error = '';
+      var international = _this.state.international;
+      var ShipToYes = _this.state.fields.ShipToYes;
+
+      switch (name) {
+        case "Title":
+        case "State":
+        case "Address1":
+        case "City":
+          if (!value && submitting) {
+            error = "Required";
+          }
+
+          break;
+
+        case "ShipToState":
+        case "ShipToAddress1":
+        case "ShipToCity":
+          if (!value && submitting && ShipToYes) {
+            error = "Required";
+          }
+
+          break;
+
+        case "Firstname":
+          if (value && !firstname_regex.test(value)) {
+            error = "No special characters allowed. Please call if you need assistance.";
+          }
+
+          if (!value && submitting) {
+            error = "Required";
+          }
+
+          break;
+
+        case "Middlename":
+          if (value && !firstname_regex.test(value)) {
+            error = "No special characters allowed. Please call if you need assistance.";
+          }
+
+          break;
+
+        case "Lastname":
+          if (value && !lastname_regex.test(value)) {
+            error = "No special characters allowed. Please call if you need assistance.";
+          }
+
+          if (!value && submitting) {
+            error = "Required";
+          }
+
+          break;
+
+        case "ShipToName":
+          if (value && !lastname_regex.test(value)) {
+            error = "No special characters allowed. Please call if you need assistance.";
+          }
+
+          if (!value && ShipToYes && submitting) {
+            error = "Required";
+          }
+
+          break;
+
+        case "Spousename":
+          if (value && !lastname_regex.test(value)) {
+            error = "No special characters allowed. Please call if you need assistance.";
+          }
+
+          break;
+
+        case "Country":
+          if (!value && submitting && international) {
+            error = "Required";
+          }
+
+          break;
+
+        case "Emailaddress":
+          if (value && !email_regex.test(value)) {
+            error = "Please enter a valid email: ie. you@example.com";
+          }
+
+          if (!value && submitting) {
+            error = "Required";
+          }
+
+          break;
+
+        case "phone":
+          if (value && !phone_regex.test(value)) {
+            error = "Please enter a valid phone number, numbers only: ie. 7575551212";
+          }
+
+          break;
+      }
+
+      return error;
+    };
+
+    return _this;
+  }
+
+  (0, _createClass2.default)(DataProvider, [{
+    key: "hydrateForm",
+    value: function hydrateForm(data) {
+      // console.log({data})
+      this.setState({
+        submitted: false,
+        hydratedData: data
+      });
+    }
+  }, {
+    key: "renderReceiptPage",
+    value: function renderReceiptPage(varsArray) {
+      var _this$state$formData = this.state.formData,
+          Firstname = _this$state$formData.Firstname,
+          Lastname = _this$state$formData.Lastname,
+          Middlename = _this$state$formData.Middlename,
+          Address1 = _this$state$formData.Address1,
+          Address2 = _this$state$formData.Address2,
+          City = _this$state$formData.City,
+          Country = _this$state$formData.Country,
+          Phoneareacode = _this$state$formData.Phoneareacode,
+          Phoneexchange = _this$state$formData.Phoneexchange,
+          Phonenumber = _this$state$formData.Phonenumber,
+          Spousename = _this$state$formData.Spousename,
+          State = _this$state$formData.State,
+          Suffix = _this$state$formData.Suffix,
+          Title = _this$state$formData.Title,
+          Zip = _this$state$formData.Zip;
+      this.setState({
+        finalized: true,
+        finalizedData: [].concat((0, _toConsumableArray2.default)(varsArray), [{
+          Firstname: Firstname,
+          Lastname: Lastname,
+          Middlename: Middlename,
+          Address1: Address1,
+          Address2: Address2,
+          City: City,
+          Country: Country,
+          Phoneareacode: Phoneareacode,
+          Phoneexchange: Phoneexchange,
+          Phonenumber: Phonenumber,
+          Spousename: Spousename,
+          State: State,
+          Suffix: Suffix,
+          Title: Title,
+          Zip: Zip
+        }])
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var state = this.state,
+          children = this.props.children;
+      return (0, _core.jsx)(DataContext.Provider, {
+        value: state
+      }, children);
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+  return DataProvider;
+}(_react.Component);
+
+var _default = DataProvider;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(DataContext, "DataContext", "/Users/wehand/Code/react-form-drupal/src/Components/Context/DataContext.js");
+  reactHotLoader.register(reducer, "reducer", "/Users/wehand/Code/react-form-drupal/src/Components/Context/DataContext.js");
+  reactHotLoader.register(email_regex, "email_regex", "/Users/wehand/Code/react-form-drupal/src/Components/Context/DataContext.js");
+  reactHotLoader.register(phone_regex, "phone_regex", "/Users/wehand/Code/react-form-drupal/src/Components/Context/DataContext.js");
+  reactHotLoader.register(zip_regex, "zip_regex", "/Users/wehand/Code/react-form-drupal/src/Components/Context/DataContext.js");
+  reactHotLoader.register(firstname_regex, "firstname_regex", "/Users/wehand/Code/react-form-drupal/src/Components/Context/DataContext.js");
+  reactHotLoader.register(lastname_regex, "lastname_regex", "/Users/wehand/Code/react-form-drupal/src/Components/Context/DataContext.js");
+  reactHotLoader.register(DataProvider, "DataProvider", "/Users/wehand/Code/react-form-drupal/src/Components/Context/DataContext.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Context/DataContext.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../helpers/ls":"src/helpers/ls.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38956,7 +40471,79 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./StyledComponents/SubmitButtonGroup":"src/Components/FormComponents/StyledComponents/SubmitButtonGroup.js","./StyledComponents/FormError":"src/Components/FormComponents/StyledComponents/FormError.js"}],"src/helpers/error-types.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./StyledComponents/SubmitButtonGroup":"src/Components/FormComponents/StyledComponents/SubmitButtonGroup.js","./StyledComponents/FormError":"src/Components/FormComponents/StyledComponents/FormError.js"}],"src/Components/StyledComponents/Spinner.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var LoadingSpinner = (0, _styledBase.default)("div", {
+  target: "eivx7ht0",
+  label: "LoadingSpinner"
+})("development" === "production" ? {
+  name: "1jte2s1",
+  styles: "&.loading_spinner{box-sizing:border-box;height:150px;margin:150px auto;position:relative;width:150px;z-index:100;}.loading_spinner__flames{box-sizing:border-box;height:150px;left:0;position:absolute;top:0;width:150px;z-index:100;}.loading_spinner__back{box-sizing:border-box;height:150px;left:0;position:absolute;top:0;width:150px;z-index:95;-webkit-animation:flamerotate .75s linear infinite;-moz-animation:flamerotate .75s linear infinite;animation:flamerotate .75s linear infinite;}@keyframes flamerotate{from{-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);transform:rotate(0deg);}to{-webkit-transform:rotate(360deg);-moz-transform:rotate(360deg);transform:rotate(360deg);}}"
+} : {
+  name: "1jte2s1",
+  styles: "&.loading_spinner{box-sizing:border-box;height:150px;margin:150px auto;position:relative;width:150px;z-index:100;}.loading_spinner__flames{box-sizing:border-box;height:150px;left:0;position:absolute;top:0;width:150px;z-index:100;}.loading_spinner__back{box-sizing:border-box;height:150px;left:0;position:absolute;top:0;width:150px;z-index:95;-webkit-animation:flamerotate .75s linear infinite;-moz-animation:flamerotate .75s linear infinite;animation:flamerotate .75s linear infinite;}@keyframes flamerotate{from{-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);transform:rotate(0deg);}to{-webkit-transform:rotate(360deg);-moz-transform:rotate(360deg);transform:rotate(360deg);}}",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlNwaW5uZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBSWlDIiwiZmlsZSI6IlNwaW5uZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnXG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIlxuXG5cbmNvbnN0IExvYWRpbmdTcGlubmVyID0gc3R5bGVkLmRpdmBcbiAgICAmLmxvYWRpbmdfc3Bpbm5lciB7XG4gICAgICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgICAgIGhlaWdodDogMTUwcHg7XG4gICAgICAgIG1hcmdpbjogMTUwcHggYXV0bztcbiAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgICB3aWR0aDogMTUwcHg7XG4gICAgICAgIHotaW5kZXg6IDEwMDtcbiAgICB9XG5cbiAgICAubG9hZGluZ19zcGlubmVyX19mbGFtZXMge1xuICAgICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xuICAgICAgICBoZWlnaHQ6IDE1MHB4O1xuICAgICAgICBsZWZ0OiAwO1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICAgIHRvcDogMDtcbiAgICAgICAgd2lkdGg6IDE1MHB4O1xuICAgICAgICB6LWluZGV4OiAxMDA7XG4gICAgfVxuXG4gICAgLmxvYWRpbmdfc3Bpbm5lcl9fYmFjayB7XG4gICAgICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgICAgIGhlaWdodDogMTUwcHg7XG4gICAgICAgIGxlZnQ6IDA7XG4gICAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgICAgdG9wOiAwO1xuICAgICAgICB3aWR0aDogMTUwcHg7XG4gICAgICAgIHotaW5kZXg6IDk1O1xuICAgICAgICAtd2Via2l0LWFuaW1hdGlvbjogZmxhbWVyb3RhdGUgLjc1cyBsaW5lYXIgaW5maW5pdGU7XG4gICAgICAgIC1tb3otYW5pbWF0aW9uOiBmbGFtZXJvdGF0ZSAuNzVzIGxpbmVhciBpbmZpbml0ZTtcbiAgICAgICAgYW5pbWF0aW9uOiBmbGFtZXJvdGF0ZSAuNzVzIGxpbmVhciBpbmZpbml0ZTtcbiAgICB9XG5cbiAgICBAa2V5ZnJhbWVzIGZsYW1lcm90YXRlIHtcbiAgICAgICAgZnJvbSB7XG4gICAgICAgICAgICAtd2Via2l0LXRyYW5zZm9ybTogcm90YXRlKDBkZWcpO1xuICAgICAgICAgICAgLW1vei10cmFuc2Zvcm06IHJvdGF0ZSgwZGVnKTtcbiAgICAgICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDBkZWcpO1xuICAgICAgICB9XG4gICAgICAgIHRvIHtcbiAgICAgICAgICAgIC13ZWJraXQtdHJhbnNmb3JtOiByb3RhdGUoMzYwZGVnKTtcbiAgICAgICAgICAgIC1tb3otdHJhbnNmb3JtOiByb3RhdGUoMzYwZGVnKTtcbiAgICAgICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZyk7XG4gICAgICAgIH1cbiAgICB9XG5gXG5cbmZ1bmN0aW9uIFNwaW5uZXIgKCkge1xuICAgIHJldHVybiAoXG4gICAgICAgIDxMb2FkaW5nU3Bpbm5lciBjbGFzc05hbWU9XCJsb2FkaW5nX3NwaW5uZXJcIj5cbiAgICAgICAgICAgIDxpbWcgY2xhc3NOYW1lPVwibG9hZGluZ19zcGlubmVyX19mbGFtZXNcIiBzcmM9XCIvL3d3dzEuY2JuLmNvbS9zaXRlcy9hbGwvdGhlbWVzL2Nibl9kZWZhdWx0L2ltYWdlcy9zcGlubmVyL2Nibi1mbGFtZS1jaXJjbGUucG5nXCIvPlxuICAgICAgICAgICAgPGltZyBjbGFzc05hbWU9XCJsb2FkaW5nX3NwaW5uZXJfX2JhY2tcIiBzcmM9XCIvL3d3dzEuY2JuLmNvbS9zaXRlcy9hbGwvdGhlbWVzL2Nibl9kZWZhdWx0L2ltYWdlcy9zcGlubmVyL2xvYWRlci1zcGlubmVyQDN4LnBuZ1wiLz5cbiAgICAgICAgPC9Mb2FkaW5nU3Bpbm5lcj5cbiAgICApXG59XG5cbmV4cG9ydCBkZWZhdWx0IFNwaW5uZXIiXX0= */"
+});
+
+function Spinner() {
+  return (0, _core.jsx)(LoadingSpinner, {
+    className: "loading_spinner"
+  }, (0, _core.jsx)("img", {
+    className: "loading_spinner__flames",
+    src: "//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/cbn-flame-circle.png"
+  }), (0, _core.jsx)("img", {
+    className: "loading_spinner__back",
+    src: "//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/loader-spinner@3x.png"
+  }));
+}
+
+var _default = Spinner;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(LoadingSpinner, "LoadingSpinner", "/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Spinner.js");
+  reactHotLoader.register(Spinner, "Spinner", "/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Spinner.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Spinner.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/helpers/error-types.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -39042,785 +40629,7 @@ function getErrorType(message) {
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"react-hot-loader":"node_modules/react-hot-loader/index.js"}],"node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
-(function(self) {
-  'use strict';
-
-  if (self.fetch) {
-    return
-  }
-
-  var support = {
-    searchParams: 'URLSearchParams' in self,
-    iterable: 'Symbol' in self && 'iterator' in Symbol,
-    blob: 'FileReader' in self && 'Blob' in self && (function() {
-      try {
-        new Blob()
-        return true
-      } catch(e) {
-        return false
-      }
-    })(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  }
-
-  if (support.arrayBuffer) {
-    var viewClasses = [
-      '[object Int8Array]',
-      '[object Uint8Array]',
-      '[object Uint8ClampedArray]',
-      '[object Int16Array]',
-      '[object Uint16Array]',
-      '[object Int32Array]',
-      '[object Uint32Array]',
-      '[object Float32Array]',
-      '[object Float64Array]'
-    ]
-
-    var isDataView = function(obj) {
-      return obj && DataView.prototype.isPrototypeOf(obj)
-    }
-
-    var isArrayBufferView = ArrayBuffer.isView || function(obj) {
-      return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1
-    }
-  }
-
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name)
-    }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name')
-    }
-    return name.toLowerCase()
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value)
-    }
-    return value
-  }
-
-  // Build a destructive iterator for the value list
-  function iteratorFor(items) {
-    var iterator = {
-      next: function() {
-        var value = items.shift()
-        return {done: value === undefined, value: value}
-      }
-    }
-
-    if (support.iterable) {
-      iterator[Symbol.iterator] = function() {
-        return iterator
-      }
-    }
-
-    return iterator
-  }
-
-  function Headers(headers) {
-    this.map = {}
-
-    if (headers instanceof Headers) {
-      headers.forEach(function(value, name) {
-        this.append(name, value)
-      }, this)
-    } else if (Array.isArray(headers)) {
-      headers.forEach(function(header) {
-        this.append(header[0], header[1])
-      }, this)
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function(name) {
-        this.append(name, headers[name])
-      }, this)
-    }
-  }
-
-  Headers.prototype.append = function(name, value) {
-    name = normalizeName(name)
-    value = normalizeValue(value)
-    var oldValue = this.map[name]
-    this.map[name] = oldValue ? oldValue+','+value : value
-  }
-
-  Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)]
-  }
-
-  Headers.prototype.get = function(name) {
-    name = normalizeName(name)
-    return this.has(name) ? this.map[name] : null
-  }
-
-  Headers.prototype.has = function(name) {
-    return this.map.hasOwnProperty(normalizeName(name))
-  }
-
-  Headers.prototype.set = function(name, value) {
-    this.map[normalizeName(name)] = normalizeValue(value)
-  }
-
-  Headers.prototype.forEach = function(callback, thisArg) {
-    for (var name in this.map) {
-      if (this.map.hasOwnProperty(name)) {
-        callback.call(thisArg, this.map[name], name, this)
-      }
-    }
-  }
-
-  Headers.prototype.keys = function() {
-    var items = []
-    this.forEach(function(value, name) { items.push(name) })
-    return iteratorFor(items)
-  }
-
-  Headers.prototype.values = function() {
-    var items = []
-    this.forEach(function(value) { items.push(value) })
-    return iteratorFor(items)
-  }
-
-  Headers.prototype.entries = function() {
-    var items = []
-    this.forEach(function(value, name) { items.push([name, value]) })
-    return iteratorFor(items)
-  }
-
-  if (support.iterable) {
-    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'))
-    }
-    body.bodyUsed = true
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result)
-      }
-      reader.onerror = function() {
-        reject(reader.error)
-      }
-    })
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader()
-    var promise = fileReaderReady(reader)
-    reader.readAsArrayBuffer(blob)
-    return promise
-  }
-
-  function readBlobAsText(blob) {
-    var reader = new FileReader()
-    var promise = fileReaderReady(reader)
-    reader.readAsText(blob)
-    return promise
-  }
-
-  function readArrayBufferAsText(buf) {
-    var view = new Uint8Array(buf)
-    var chars = new Array(view.length)
-
-    for (var i = 0; i < view.length; i++) {
-      chars[i] = String.fromCharCode(view[i])
-    }
-    return chars.join('')
-  }
-
-  function bufferClone(buf) {
-    if (buf.slice) {
-      return buf.slice(0)
-    } else {
-      var view = new Uint8Array(buf.byteLength)
-      view.set(new Uint8Array(buf))
-      return view.buffer
-    }
-  }
-
-  function Body() {
-    this.bodyUsed = false
-
-    this._initBody = function(body) {
-      this._bodyInit = body
-      if (!body) {
-        this._bodyText = ''
-      } else if (typeof body === 'string') {
-        this._bodyText = body
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body
-      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-        this._bodyText = body.toString()
-      } else if (support.arrayBuffer && support.blob && isDataView(body)) {
-        this._bodyArrayBuffer = bufferClone(body.buffer)
-        // IE 10-11 can't handle a DataView body.
-        this._bodyInit = new Blob([this._bodyArrayBuffer])
-      } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
-        this._bodyArrayBuffer = bufferClone(body)
-      } else {
-        throw new Error('unsupported BodyInit type')
-      }
-
-      if (!this.headers.get('content-type')) {
-        if (typeof body === 'string') {
-          this.headers.set('content-type', 'text/plain;charset=UTF-8')
-        } else if (this._bodyBlob && this._bodyBlob.type) {
-          this.headers.set('content-type', this._bodyBlob.type)
-        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
-        }
-      }
-    }
-
-    if (support.blob) {
-      this.blob = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob)
-        } else if (this._bodyArrayBuffer) {
-          return Promise.resolve(new Blob([this._bodyArrayBuffer]))
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob')
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]))
-        }
-      }
-
-      this.arrayBuffer = function() {
-        if (this._bodyArrayBuffer) {
-          return consumed(this) || Promise.resolve(this._bodyArrayBuffer)
-        } else {
-          return this.blob().then(readBlobAsArrayBuffer)
-        }
-      }
-    }
-
-    this.text = function() {
-      var rejected = consumed(this)
-      if (rejected) {
-        return rejected
-      }
-
-      if (this._bodyBlob) {
-        return readBlobAsText(this._bodyBlob)
-      } else if (this._bodyArrayBuffer) {
-        return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer))
-      } else if (this._bodyFormData) {
-        throw new Error('could not read FormData body as text')
-      } else {
-        return Promise.resolve(this._bodyText)
-      }
-    }
-
-    if (support.formData) {
-      this.formData = function() {
-        return this.text().then(decode)
-      }
-    }
-
-    this.json = function() {
-      return this.text().then(JSON.parse)
-    }
-
-    return this
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase()
-    return (methods.indexOf(upcased) > -1) ? upcased : method
-  }
-
-  function Request(input, options) {
-    options = options || {}
-    var body = options.body
-
-    if (input instanceof Request) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read')
-      }
-      this.url = input.url
-      this.credentials = input.credentials
-      if (!options.headers) {
-        this.headers = new Headers(input.headers)
-      }
-      this.method = input.method
-      this.mode = input.mode
-      if (!body && input._bodyInit != null) {
-        body = input._bodyInit
-        input.bodyUsed = true
-      }
-    } else {
-      this.url = String(input)
-    }
-
-    this.credentials = options.credentials || this.credentials || 'omit'
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers)
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET')
-    this.mode = options.mode || this.mode || null
-    this.referrer = null
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests')
-    }
-    this._initBody(body)
-  }
-
-  Request.prototype.clone = function() {
-    return new Request(this, { body: this._bodyInit })
-  }
-
-  function decode(body) {
-    var form = new FormData()
-    body.trim().split('&').forEach(function(bytes) {
-      if (bytes) {
-        var split = bytes.split('=')
-        var name = split.shift().replace(/\+/g, ' ')
-        var value = split.join('=').replace(/\+/g, ' ')
-        form.append(decodeURIComponent(name), decodeURIComponent(value))
-      }
-    })
-    return form
-  }
-
-  function parseHeaders(rawHeaders) {
-    var headers = new Headers()
-    // Replace instances of \r\n and \n followed by at least one space or horizontal tab with a space
-    // https://tools.ietf.org/html/rfc7230#section-3.2
-    var preProcessedHeaders = rawHeaders.replace(/\r?\n[\t ]+/g, ' ')
-    preProcessedHeaders.split(/\r?\n/).forEach(function(line) {
-      var parts = line.split(':')
-      var key = parts.shift().trim()
-      if (key) {
-        var value = parts.join(':').trim()
-        headers.append(key, value)
-      }
-    })
-    return headers
-  }
-
-  Body.call(Request.prototype)
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {}
-    }
-
-    this.type = 'default'
-    this.status = options.status === undefined ? 200 : options.status
-    this.ok = this.status >= 200 && this.status < 300
-    this.statusText = 'statusText' in options ? options.statusText : 'OK'
-    this.headers = new Headers(options.headers)
-    this.url = options.url || ''
-    this._initBody(bodyInit)
-  }
-
-  Body.call(Response.prototype)
-
-  Response.prototype.clone = function() {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    })
-  }
-
-  Response.error = function() {
-    var response = new Response(null, {status: 0, statusText: ''})
-    response.type = 'error'
-    return response
-  }
-
-  var redirectStatuses = [301, 302, 303, 307, 308]
-
-  Response.redirect = function(url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code')
-    }
-
-    return new Response(null, {status: status, headers: {location: url}})
-  }
-
-  self.Headers = Headers
-  self.Request = Request
-  self.Response = Response
-
-  self.fetch = function(input, init) {
-    return new Promise(function(resolve, reject) {
-      var request = new Request(input, init)
-      var xhr = new XMLHttpRequest()
-
-      xhr.onload = function() {
-        var options = {
-          status: xhr.status,
-          statusText: xhr.statusText,
-          headers: parseHeaders(xhr.getAllResponseHeaders() || '')
-        }
-        options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL')
-        var body = 'response' in xhr ? xhr.response : xhr.responseText
-        resolve(new Response(body, options))
-      }
-
-      xhr.onerror = function() {
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.ontimeout = function() {
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.open(request.method, request.url, true)
-
-      if (request.credentials === 'include') {
-        xhr.withCredentials = true
-      } else if (request.credentials === 'omit') {
-        xhr.withCredentials = false
-      }
-
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob'
-      }
-
-      request.headers.forEach(function(value, name) {
-        xhr.setRequestHeader(name, value)
-      })
-
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
-    })
-  }
-  self.fetch.polyfill = true
-})(typeof self !== 'undefined' ? self : this);
-
-},{}],"src/helpers/fetch-helpers.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.callApi = callApi;
-
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
-require("whatwg-fetch");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-/**
- * Asynchronous function
- * @param {string} uri - Endpoint being called
- * @param {Object} [options={}] - Request Options Object to set headers, method, body, etc
- * @returns {string|Object} - Resolves data being requested or Rejects Error
- */
-function callApi(_x) {
-  return _callApi.apply(this, arguments);
-}
-/**
- * Calls FETCH API and expects Text or JSON response
- * @param {string} uri -  Endpoint being called
- * @param {Object} [options={}] - Options being passed to Fetch API
- * @returns {Object|string} - will return JSON if contentType is json or String if not, and an Error Object if call failes
- */
-
-
-function _callApi() {
-  _callApi = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee(uri) {
-    var options,
-        data,
-        _args = arguments;
-    return _regenerator.default.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
-            _context.prev = 1;
-            _context.next = 4;
-            return loadData(uri, options);
-
-          case 4:
-            data = _context.sent;
-            return _context.abrupt("return", data);
-
-          case 8:
-            _context.prev = 8;
-            _context.t0 = _context["catch"](1);
-            console.error(_context.t0);
-
-            if (!(typeof _context.t0 == "string")) {
-              _context.next = 15;
-              break;
-            }
-
-            throw new Error(_context.t0);
-
-          case 15:
-            throw new Error(_context.t0.message);
-
-          case 16:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, null, [[1, 8]]);
-  }));
-  return _callApi.apply(this, arguments);
-}
-
-function loadData(_x2) {
-  return _loadData.apply(this, arguments);
-}
-
-function _loadData() {
-  _loadData = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee2(uri) {
-    var options,
-        response,
-        contentType,
-        _args2 = arguments;
-    return _regenerator.default.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            options = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : {};
-            _context2.next = 3;
-            return fetch(uri, options);
-
-          case 3:
-            response = _context2.sent;
-            contentType = response.headers.get("content-type");
-
-            if (!(response.status >= 200 && response.status < 300)) {
-              _context2.next = 13;
-              break;
-            }
-
-            if (!(contentType && contentType.includes('application/json'))) {
-              _context2.next = 10;
-              break;
-            }
-
-            return _context2.abrupt("return", response.json());
-
-          case 10:
-            return _context2.abrupt("return", response.text());
-
-          case 11:
-            _context2.next = 14;
-            break;
-
-          case 13:
-            return _context2.abrupt("return", getErrorBody(response, contentType).then(function (body) {
-              return Promise.reject(body);
-            }));
-
-          case 14:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-  return _loadData.apply(this, arguments);
-}
-
-function getErrorBody(_x3) {
-  return _getErrorBody.apply(this, arguments);
-}
-
-function _getErrorBody() {
-  _getErrorBody = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee3(response) {
-    var contentType,
-        body,
-        _args3 = arguments;
-    return _regenerator.default.wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            contentType = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : 'text';
-
-            if (!contentType.includes('application/json')) {
-              _context3.next = 7;
-              break;
-            }
-
-            _context3.next = 4;
-            return response.json();
-
-          case 4:
-            body = _context3.sent;
-            _context3.next = 10;
-            break;
-
-          case 7:
-            _context3.next = 9;
-            return response.text();
-
-          case 9:
-            body = _context3.sent;
-
-          case 10:
-            return _context3.abrupt("return", body);
-
-          case 11:
-          case "end":
-            return _context3.stop();
-        }
-      }
-    }, _callee3);
-  }));
-  return _getErrorBody.apply(this, arguments);
-}
-
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(callApi, "callApi", "/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js");
-  reactHotLoader.register(loadData, "loadData", "/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js");
-  reactHotLoader.register(getErrorBody, "getErrorBody", "/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","react-hot-loader":"node_modules/react-hot-loader/index.js","whatwg-fetch":"node_modules/whatwg-fetch/fetch.js"}],"src/helpers/ls.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.readLS = readLS;
-exports.cryptLS = cryptLS;
-exports.removeOneLS = removeOneLS;
-exports.emptyLS = emptyLS;
-
-var _secureLs = _interopRequireDefault(require("secure-ls"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var alphabetSoup = '$3cr3t5';
-var ls = new _secureLs.default({
-  encryptionSecret: alphabetSoup
-});
-/**
- * Returns decrypted text or null
- * @param {String} type - either full store or just info
- * @returns {Object|null}
- */
-
-function readLS(type) {
-  var _ls$get = ls.get(type),
-      formData = _ls$get.formData,
-      expiration = _ls$get.expiration; // console.log({formData, expiration})
-
-
-  if (formData && expiration) {
-    var present = Date.now();
-    return present > +expiration ? null : formData;
-  } else {
-    return null;
-  }
-}
-/**
- * Encrypts Data for storing in browser memory
- * @param {Object} formData - Object representing the data stored
- * @param {Number} lifetime - number of milliseconds in the future to set expiration
- * @param {String} type - either full store or just info
- */
-
-
-function cryptLS(_ref, lifetime, type) {
-  var formData = _ref.formData;
-  var expiration = Date.now() + lifetime;
-  ls.set(type, {
-    formData: formData,
-    expiration: expiration
-  });
-}
-
-function removeOneLS(type) {
-  ls.remove(type);
-}
-
-function emptyLS() {
-  ls.removeAll();
-}
-
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(alphabetSoup, "alphabetSoup", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-  reactHotLoader.register(ls, "ls", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-  reactHotLoader.register(readLS, "readLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-  reactHotLoader.register(cryptLS, "cryptLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-  reactHotLoader.register(removeOneLS, "removeOneLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-  reactHotLoader.register(emptyLS, "emptyLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"react-hot-loader":"node_modules/react-hot-loader/index.js","secure-ls":"node_modules/secure-ls/dist/secure-ls.js"}],"src/Components/Forms/GivingForm.js":[function(require,module,exports) {
+},{"react-hot-loader":"node_modules/react-hot-loader/index.js"}],"src/Components/Forms/GivingForm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -39854,6 +40663,8 @@ var _core = require("@emotion/core");
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _DataContext = require("../Context/DataContext");
+
 var _FormPanel = _interopRequireDefault(require("../FormComponents/StyledComponents/FormPanel"));
 
 var _FieldSet = _interopRequireDefault(require("../FormComponents/StyledComponents/FieldSet"));
@@ -39876,11 +40687,11 @@ var _FormOptionsBlock = _interopRequireDefault(require("../FormComponents/Blocks
 
 var _SubmitButton = _interopRequireDefault(require("../FormComponents/SubmitButton"));
 
+var _Spinner = _interopRequireDefault(require("../StyledComponents/Spinner"));
+
 var _errorTypes = require("../../helpers/error-types");
 
 var _fetchHelpers = require("../../helpers/fetch-helpers");
-
-var _ls = require("../../helpers/ls");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -39915,41 +40726,8 @@ function (_Component) {
     var _this;
 
     (0, _classCallCheck2.default)(this, GivingForm);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(GivingForm).call(this, props)); // console.log({hydratedData: props.hydratedData})
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(GivingForm).call(this, props)); // console.log({props})
 
-    var fields = {
-      Zip: props.hydratedData ? props.hydratedData.Zip : "",
-      Monthlypledgeday: props.hydratedData && props.hydratedData.Monthlypledgeday ? props.hydratedData.Monthlypledgeday : getDay(),
-      Title: props.hydratedData ? props.hydratedData.Title : "",
-      Firstname: props.hydratedData ? props.hydratedData.Firstname : "",
-      Middlename: props.hydratedData ? props.hydratedData.Middlename : "",
-      Lastname: props.hydratedData ? props.hydratedData.Lastname : "",
-      Suffix: props.hydratedData ? props.hydratedData.Suffix : "",
-      Spousename: props.hydratedData ? props.hydratedData.Spousename : "",
-      Address1: props.hydratedData ? props.hydratedData.Address1 : "",
-      Address2: props.hydratedData ? props.hydratedData.Address2 : "",
-      City: props.hydratedData ? props.hydratedData.City : "",
-      State: props.hydratedData ? props.hydratedData.State : "",
-      Country: props.hydratedData ? props.hydratedData.Country : props.international ? "" : "United States",
-      Emailaddress: props.hydratedData ? props.hydratedData.Emailaddress : "",
-      phone: props.hydratedData ? props.hydratedData.Phoneareacode + props.hydratedData.Phoneexchange + props.hydratedData.Phonenumber : "",
-      savePersonalInfo: true,
-      ShipToYes: props.hydratedData && props.hydratedData.ShipTo === "Yes" ? true : false,
-      ShipToName: props.hydratedData ? props.hydratedData.ShipToName : "",
-      ShipToAddress1: props.hydratedData ? props.hydratedData.ShipToAddress1 : "",
-      ShipToAddress2: props.hydratedData ? props.hydratedData.ShipToAddress2 : "",
-      ShipToCity: props.hydratedData ? props.hydratedData.ShipToCity : "",
-      ShipToCountry: props.hydratedData ? props.hydratedData.ShipToCountry : "",
-      ShipToZip: props.hydratedData ? props.hydratedData.ShipToZip : "",
-      ShipToState: props.hydratedData ? props.hydratedData.ShipToState : ""
-    };
-    var errors = {};
-
-    for (var field in fields) {
-      errors[field] = "";
-    }
-
-    errors.amount = "";
     var hasMonthlyAmounts = props.monthlyAmounts && props.monthlyAmounts.length;
     var hasSingleAmounts = props.singleAmounts && props.singleAmounts.length;
     _this.state = {
@@ -39966,10 +40744,8 @@ function (_Component) {
       cart: {
         items: []
       },
-      fields: fields,
-      errors: errors,
-      defaultAmount: props.hydratedData && props.hydratedData.MultipleDonations ? -1 : props.defaultAmount,
-      defaultOption: props.hydratedData && props.hydratedData.MultipleDonations ? '' : props.defaultOption,
+      defaultAmount: props.defaultAmount,
+      defaultOption: props.defaultOption,
       hydratedAdditionalGift: 0,
       initialUpdate: false
     };
@@ -39989,6 +40765,49 @@ function (_Component) {
   (0, _createClass2.default)(GivingForm, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      var fields = {
+        Zip: "",
+        Monthlypledgeday: getDay(),
+        Title: "",
+        Firstname: "",
+        Middlename: "",
+        Lastname: "",
+        Suffix: "",
+        Spousename: "",
+        Address1: "",
+        Address2: "",
+        City: "",
+        State: "",
+        Country: this.props.international ? "" : "United States",
+        Emailaddress: "",
+        phone: "",
+        savePersonalInfo: true,
+        ShipToYes: false,
+        ShipToName: "",
+        ShipToAddress1: "",
+        ShipToAddress2: "",
+        ShipToCity: "",
+        ShipToCountry: "",
+        ShipToZip: "",
+        ShipToState: ""
+      };
+      var errors = {};
+
+      for (var field in fields) {
+        errors[field] = "";
+      }
+
+      errors.amount = "";
+      this.context.initFields({
+        type: "INIT_FORM_STATE",
+        fields: fields,
+        errors: errors,
+        international: this.props.international,
+        formType: this.props.type
+      });
+      this.context.loadLS({
+        type: "LOAD"
+      });
       var hydratedData = this.props.hydratedData; // check to see if this is a postback from confirmation page
 
       if (hydratedData && hydratedData.MultipleDonations) {
@@ -40114,7 +40933,7 @@ function (_Component) {
       var _componentWillUnmount = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee() {
-        var savePersonalInfo, _this$state$fields, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, phone, Phoneareacode, Phoneexchange, Phonenumber, formData, days, lifetime;
+        var savePersonalInfo, _this$state$fields, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, phone, Phoneareacode, Phoneexchange, Phonenumber, formData;
 
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
@@ -40146,17 +40965,12 @@ function (_Component) {
                     Zip: Zip // lifetime of stored data on this form
 
                   };
-                  days = 30; //convert days into milliseconds
-
-                  lifetime = days * 24 * 60 * 60 * 1000; // n days = x days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-                  // encrypt and add to local storage,
-
-                  (0, _ls.cryptLS)({
-                    formData: formData
-                  }, lifetime, 'info');
+                  this.context.saveLS({
+                    type: "SAVE"
+                  }, formData);
                 } else {
                   // otherwise remove any stored data from local storage
-                  (0, _ls.removeOneLS)('info');
+                  this.context.removeOneLS('info');
                 }
 
               case 2:
@@ -40242,86 +41056,37 @@ function (_Component) {
   }, {
     key: "handleInputChange",
     value: function handleInputChange(e) {
-      var _this2 = this;
-
       var target = e.target;
       var value = target.type === 'checkbox' ? target.checked : target.value;
       var name = target.name;
-      var fields = (0, _objectSpread2.default)({}, this.state.fields),
-          errors = (0, _objectSpread2.default)({}, this.state.errors);
-      fields[name] = value;
-      var isZip = name.includes("Zip") && value.length >= 5;
-
-      if (isZip) {
-        this.setState({
-          fields: fields
-        },
-        /*#__PURE__*/
-        (0, _asyncToGenerator2.default)(
-        /*#__PURE__*/
-        _regenerator.default.mark(function _callee2() {
-          return _regenerator.default.wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  if (zip_regex.test(value)) {
-                    _context2.next = 4;
-                    break;
-                  }
-
-                  errors[name] = "Invalid Postal Code";
-                  _context2.next = 7;
-                  break;
-
-                case 4:
-                  _context2.next = 6;
-                  return _this2.callZipCityStateService(name, value);
-
-                case 6:
-                  errors[name] = _context2.sent;
-
-                case 7:
-                  _this2.setState({
-                    errors: errors
-                  });
-
-                case 8:
-                case "end":
-                  return _context2.stop();
-              }
-            }
-          }, _callee2);
-        })));
-      } else {
-        errors[name] = this.validateInput(false, name, value);
-        this.setState({
-          fields: fields,
-          errors: errors
-        });
-      }
+      this.context.validateAndUpdateField({
+        type: "UPDATE_FIELD",
+        name: name,
+        value: value
+      });
     }
   }, {
     key: "handleSubmit",
     value: function () {
       var _handleSubmit = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(e) {
-        var _this3 = this;
+      _regenerator.default.mark(function _callee2(e) {
+        var _this2 = this;
 
-        var items, pledgeFound, addGiftFound, productFound, _errors, errors, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props2, mode, _this$props2$EmailSub, EmailSubjectLine, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, message, _getErrorType, breaking, _name;
+        var items, pledgeFound, addGiftFound, productFound, isValidForm, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$props2, mode, _this$props2$EmailSub, EmailSubjectLine, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, message, _getErrorType, breaking, _name;
 
-        return _regenerator.default.wrap(function _callee3$(_context3) {
+        return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 e.preventDefault(); // console.log(this.state.submitting)
 
                 if (!this.state.submitting) {
-                  _context3.next = 3;
+                  _context2.next = 3;
                   break;
                 }
 
-                return _context3.abrupt("return");
+                return _context2.abrupt("return");
 
               case 3:
                 // ie. disallow multiple submissions
@@ -40341,102 +41106,105 @@ function (_Component) {
                 });
 
                 if (!(items.length == 0 || pledgeFound > -1 && items[pledgeFound].PledgeAmount == 0 && addGiftFound < 0 || pledgeFound < 0 && addGiftFound < 0 && productFound < 0)) {
-                  _context3.next = 12;
+                  _context2.next = 10;
                   break;
                 }
 
-                _errors = this.state.errors;
-                _errors.amount = "Please make a valid donation";
-                return _context3.abrupt("return", this.setState({
-                  submitting: false,
-                  errors: _errors
+                return _context2.abrupt("return", this.setState({
+                  submitting: false
+                }, function () {
+                  _this2.context.updateField({
+                    type: "UPDATE_FIELD",
+                    name: "amount",
+                    value: "",
+                    error: "Please make a valid donation"
+                  });
                 }));
 
-              case 12:
-                errors = (0, _objectSpread2.default)({}, this.state.errors);
+              case 10:
                 isValidForm = true;
 
                 if (!(this.state.fields.Country == "United States")) {
-                  _context3.next = 59;
+                  _context2.next = 56;
                   break;
                 }
 
-                _context3.prev = 15;
-                _context3.next = 18;
+                _context2.prev = 12;
+                _context2.next = 15;
                 return this.callZipCityStateService("Zip", this.state.fields["Zip"]);
 
-              case 18:
-                zipError = _context3.sent;
+              case 15:
+                zipError = _context2.sent;
 
                 if (zipError) {
-                  _context3.next = 30;
+                  _context2.next = 27;
                   break;
                 }
 
-                _context3.prev = 20;
-                _context3.next = 23;
+                _context2.prev = 17;
+                _context2.next = 20;
                 return this.callAddressVerification(this.state.fields["Address1"], this.state.fields["Address2"], this.state.fields["City"], this.state.fields["State"], this.state.fields["Zip"]);
 
-              case 23:
-                addressError = _context3.sent;
-                _context3.next = 30;
+              case 20:
+                addressError = _context2.sent;
+                _context2.next = 27;
                 break;
 
-              case 26:
-                _context3.prev = 26;
-                _context3.t0 = _context3["catch"](20);
+              case 23:
+                _context2.prev = 23;
+                _context2.t0 = _context2["catch"](17);
                 console.log("AddressVerificationError");
                 console.error({
-                  err: _context3.t0
+                  err: _context2.t0
                 });
 
-              case 30:
+              case 27:
                 if (!(this.state.fields["ShipToZip"] && this.state.fields.ShipToYes)) {
-                  _context3.next = 41;
+                  _context2.next = 38;
                   break;
                 }
 
-                _context3.prev = 31;
-                _context3.next = 34;
+                _context2.prev = 28;
+                _context2.next = 31;
                 return this.callZipCityStateService("ShipToZip", this.state.fields["ShipToZip"]);
 
-              case 34:
-                shipZipError = _context3.sent;
-                _context3.next = 41;
+              case 31:
+                shipZipError = _context2.sent;
+                _context2.next = 38;
                 break;
 
-              case 37:
-                _context3.prev = 37;
-                _context3.t1 = _context3["catch"](31);
+              case 34:
+                _context2.prev = 34;
+                _context2.t1 = _context2["catch"](28);
                 console.log("CSZValidationError__SHIPPING");
                 console.error({
-                  err: _context3.t1
+                  err: _context2.t1
                 });
 
-              case 41:
+              case 38:
                 if (!(!shipZipError && this.state.fields.ShipToYes)) {
-                  _context3.next = 52;
+                  _context2.next = 49;
                   break;
                 }
 
-                _context3.prev = 42;
-                _context3.next = 45;
+                _context2.prev = 39;
+                _context2.next = 42;
                 return this.callAddressVerification(this.state.fields["ShipToAddress1"], this.state.fields["ShipToAddress2"], this.state.fields["ShipToCity"], this.state.fields["ShipToState"], this.state.fields["ShipToZip"]);
 
-              case 45:
-                shipAddressError = _context3.sent;
-                _context3.next = 52;
+              case 42:
+                shipAddressError = _context2.sent;
+                _context2.next = 49;
                 break;
 
-              case 48:
-                _context3.prev = 48;
-                _context3.t2 = _context3["catch"](42);
+              case 45:
+                _context2.prev = 45;
+                _context2.t2 = _context2["catch"](39);
                 console.log("AddressVerificationError__SHIPPING");
                 console.error({
-                  err: _context3.t2
+                  err: _context2.t2
                 });
 
-              case 52:
+              case 49:
                 if (addressError || shipAddressError || zipError || shipZipError) {
                   isValidForm = false;
                   errors["Address1"] = addressError;
@@ -40445,18 +41213,18 @@ function (_Component) {
                   errors["ShipToZip"] = shipZipError;
                 }
 
-                _context3.next = 59;
+                _context2.next = 56;
                 break;
 
-              case 55:
-                _context3.prev = 55;
-                _context3.t3 = _context3["catch"](15);
+              case 52:
+                _context2.prev = 52;
+                _context2.t3 = _context2["catch"](12);
                 console.log("CSZValidationError");
                 console.error({
-                  err: _context3.t3
+                  err: _context2.t3
                 });
 
-              case 59:
+              case 56:
                 fields = this.state.fields;
                 fieldNames = Object.keys(fields);
 
@@ -40475,16 +41243,16 @@ function (_Component) {
                 }
 
                 if (isValidForm) {
-                  _context3.next = 64;
+                  _context2.next = 61;
                   break;
                 }
 
-                return _context3.abrupt("return", this.setState({
+                return _context2.abrupt("return", this.setState({
                   submitting: false,
                   errors: errors
                 }));
 
-              case 64:
+              case 61:
                 //deconstruct necessary fields from state
                 Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
                 _this$props2 = this.props, mode = _this$props2.mode, _this$props2$EmailSub = _this$props2.EmailSubjectLine, EmailSubjectLine = _this$props2$EmailSub === void 0 ? "Thank You for Your Contribution" : _this$props2$EmailSub, APIAccessID = _this$props2.APIAccessID, subscriptions = _this$props2.subscriptions, AddContactYN = _this$props2.AddContactYN, ActivityName = _this$props2.ActivityName, ContactSource = _this$props2.ContactSource, SectionName = _this$props2.SectionName, proxy = _this$props2.proxy;
@@ -40512,18 +41280,18 @@ function (_Component) {
                 ShipTo = ShipToYes === true ? "Yes" : "No";
 
                 multipleDonations = function multipleDonations() {
-                  return items.map(function (_ref2, index) {
-                    var DetailName = _ref2.DetailName,
-                        DetailDescription = _ref2.DetailDescription,
-                        DetailCprojCredit = _ref2.DetailCprojCredit,
-                        DetailCprojMail = _ref2.DetailCprojMail,
-                        PledgeAmount = _ref2.PledgeAmount;
+                  return items.map(function (_ref, index) {
+                    var DetailName = _ref.DetailName,
+                        DetailDescription = _ref.DetailDescription,
+                        DetailCprojCredit = _ref.DetailCprojCredit,
+                        DetailCprojMail = _ref.DetailCprojMail,
+                        PledgeAmount = _ref.PledgeAmount;
 
-                    if (index === pledgeFound && _this3.state.fundSelected) {
-                      DetailName = _this3.state.fundInfo.DetailName;
-                      DetailDescription = _this3.state.fundInfo.DetailDescription;
-                      DetailCprojCredit = _this3.state.fundInfo.DetailCprojCredit;
-                      DetailCprojMail = _this3.state.fundInfo.DetailCprojMail;
+                    if (index === pledgeFound && _this2.state.fundSelected) {
+                      DetailName = _this2.state.fundInfo.DetailName;
+                      DetailDescription = _this2.state.fundInfo.DetailDescription;
+                      DetailCprojCredit = _this2.state.fundInfo.DetailCprojCredit;
+                      DetailCprojMail = _this2.state.fundInfo.DetailCprojMail;
                     } // console.log({DetailName});
 
 
@@ -40592,8 +41360,8 @@ function (_Component) {
                 // console.log({data})
 
 
-                _context3.prev = 84;
-                _context3.next = 87;
+                _context2.prev = 81;
+                _context2.next = 84;
                 return (0, _fetchHelpers.callApi)(proxy, {
                   method: 'POST',
                   mode: 'cors',
@@ -40603,21 +41371,21 @@ function (_Component) {
                   body: JSON.stringify(data)
                 });
 
-              case 87:
-                msg = _context3.sent;
+              case 84:
+                msg = _context2.sent;
                 // console.log({msg, data})
                 this.props.submitForm({
                   msg: msg,
                   data: data
                 });
-                _context3.next = 98;
+                _context2.next = 95;
                 break;
 
-              case 91:
-                _context3.prev = 91;
-                _context3.t4 = _context3["catch"](84);
-                console.error(_context3.t4.message);
-                message = _context3.t4.message;
+              case 88:
+                _context2.prev = 88;
+                _context2.t4 = _context2["catch"](81);
+                console.error(_context2.t4.message);
+                message = _context2.t4.message;
                 _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
 
                 if (breaking) {
@@ -40631,12 +41399,12 @@ function (_Component) {
                   errors: errors
                 });
 
-              case 98:
+              case 95:
               case "end":
-                return _context3.stop();
+                return _context2.stop();
             }
           }
-        }, _callee3, this, [[15, 55], [20, 26], [31, 37], [42, 48], [84, 91]]);
+        }, _callee2, this, [[12, 52], [17, 23], [28, 34], [39, 45], [81, 88]]);
       }));
 
       function handleSubmit(_x) {
@@ -40654,9 +41422,9 @@ function (_Component) {
 
   }, {
     key: "updateProducts",
-    value: function updateProducts(_ref3) {
-      var idx = _ref3.idx,
-          quantity = _ref3.quantity;
+    value: function updateProducts(_ref2) {
+      var idx = _ref2.idx,
+          quantity = _ref2.quantity;
       // productInfo and productsOrdered to be used by Product Display to calculate a total donation
       var productInfo = (0, _toConsumableArray2.default)(this.state.productInfo),
           productsOrdered = this.state.productsOrdered;
@@ -40721,11 +41489,11 @@ function (_Component) {
       if (found > -1) {
         items[found] = item;
 
-        var _errors2 = (0, _objectSpread2.default)({}, this.state.errors);
+        var _errors = (0, _objectSpread2.default)({}, this.state.errors);
 
-        _errors2.amount = "";
+        _errors.amount = "";
         this.setState({
-          errors: _errors2
+          errors: _errors
         });
       } else {
         items.push(item);
@@ -40900,76 +41668,76 @@ function (_Component) {
     value: function () {
       var _callZipCityStateService = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(name, value) {
-        var base, url, _fields, result, oldCity, _JSON$parse, city, state, zip, returnCode, returnMessage, error, newCity;
+      _regenerator.default.mark(function _callee3(name, value) {
+        var base, url, fields, result, oldCity, _JSON$parse, city, state, zip, returnCode, returnMessage, error, newCity;
 
-        return _regenerator.default.wrap(function _callee4$(_context4) {
+        return _regenerator.default.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 if (!value) {
-                  _context4.next = 29;
+                  _context3.next = 29;
                   break;
                 }
 
                 base = this.state.mode == "local" ? "http://services.cbn.local/AddressValidation/CityStatebyZip.aspx?PostalCode=" : "https://services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
                 url = "".concat(base).concat(value);
-                _fields = (0, _objectSpread2.default)({}, this.state.fields);
-                _context4.prev = 4;
-                _context4.next = 7;
+                fields = (0, _objectSpread2.default)({}, this.state.fields);
+                _context3.prev = 4;
+                _context3.next = 7;
                 return (0, _fetchHelpers.callApi)(url);
 
               case 7:
-                result = _context4.sent;
-                oldCity = _fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
+                result = _context3.sent;
+                oldCity = fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
                 _JSON$parse = JSON.parse(result), city = _JSON$parse.city, state = _JSON$parse.state, zip = _JSON$parse.zip, returnCode = _JSON$parse.returnCode, returnMessage = _JSON$parse.returnMessage; // console.log({ city, state, zip, returnCode, returnMessage })
 
                 if (!(returnCode == 1)) {
-                  _context4.next = 20;
+                  _context3.next = 20;
                   break;
                 }
 
                 // console.log(city)
                 error = oldCity && !city.toUpperCase().includes(oldCity);
                 newCity = error || !oldCity ? city.split(";")[0] : oldCity;
-                _fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
-                _fields[name == "ShipToZip" ? "ShipToState" : "State"] = state; // fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
+                fields[name == "ShipToZip" ? "ShipToCity" : "City"] = newCity;
+                fields[name == "ShipToZip" ? "ShipToState" : "State"] = state; // fields[name == "ShipToZip" ? "ShipToZip" : "Zip"] = zip;
 
                 if (name == "Zip") {
-                  _fields["Country"] = "United States";
+                  fields["Country"] = "United States";
                 }
 
                 this.setState({
-                  fields: _fields
+                  fields: fields
                 });
-                return _context4.abrupt("return", error ? city : '');
+                return _context3.abrupt("return", error ? city : '');
 
               case 20:
-                return _context4.abrupt("return", returnMessage);
+                return _context3.abrupt("return", returnMessage);
 
               case 21:
-                _context4.next = 27;
+                _context3.next = 27;
                 break;
 
               case 23:
-                _context4.prev = 23;
-                _context4.t0 = _context4["catch"](4);
-                console.error(_context4.t0);
-                return _context4.abrupt("return", '');
+                _context3.prev = 23;
+                _context3.t0 = _context3["catch"](4);
+                console.error(_context3.t0);
+                return _context3.abrupt("return", '');
 
               case 27:
-                _context4.next = 30;
+                _context3.next = 30;
                 break;
 
               case 29:
-                return _context4.abrupt("return", '');
+                return _context3.abrupt("return", '');
 
               case 30:
               case "end":
-                return _context4.stop();
+                return _context3.stop();
             }
           }
-        }, _callee4, this, [[4, 23]]);
+        }, _callee3, this, [[4, 23]]);
       }));
 
       function callZipCityStateService(_x2, _x3) {
@@ -40993,7 +41761,7 @@ function (_Component) {
     value: function () {
       var _callAddressVerification = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee5(addr1) {
+      _regenerator.default.mark(function _callee4(addr1) {
         var addr2,
             city,
             state,
@@ -41004,42 +41772,42 @@ function (_Component) {
             _JSON$parse2,
             returnCode,
             returnMessage,
-            _args5 = arguments;
+            _args4 = arguments;
 
-        return _regenerator.default.wrap(function _callee5$(_context5) {
+        return _regenerator.default.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
-                addr2 = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : "";
-                city = _args5.length > 2 ? _args5[2] : undefined;
-                state = _args5.length > 3 ? _args5[3] : undefined;
-                zip = _args5.length > 4 ? _args5[4] : undefined;
+                addr2 = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : "";
+                city = _args4.length > 2 ? _args4[2] : undefined;
+                state = _args4.length > 3 ? _args4[3] : undefined;
+                zip = _args4.length > 4 ? _args4[4] : undefined;
                 base = this.state.mode == "local" ? "http://services.cbn.local/AddressValidation/AddressVerification.aspx" : "https://services.cbn.com/AddressValidation/AddressVerification.aspx";
                 url = encodeURI("".concat(base, "?addr1=").concat(encodeURIComponent(addr1), "&addr2=").concat(encodeURIComponent(addr2), "&city=").concat(encodeURIComponent(city), "&state=").concat(encodeURIComponent(state), "&zip=").concat(encodeURIComponent(zip)));
-                _context5.prev = 6;
-                _context5.next = 9;
+                _context4.prev = 6;
+                _context4.next = 9;
                 return (0, _fetchHelpers.callApi)(url);
 
               case 9:
-                result = _context5.sent;
+                result = _context4.sent;
                 // console.log({result})
                 _JSON$parse2 = JSON.parse(result), returnCode = _JSON$parse2.returnCode, returnMessage = _JSON$parse2.returnMessage;
-                return _context5.abrupt("return", returnCode == 1 ? '' : returnMessage);
+                return _context4.abrupt("return", returnCode == 1 ? '' : returnMessage);
 
               case 14:
-                _context5.prev = 14;
-                _context5.t0 = _context5["catch"](6);
+                _context4.prev = 14;
+                _context4.t0 = _context4["catch"](6);
                 console.error({
-                  err: _context5.t0
+                  err: _context4.t0
                 });
-                return _context5.abrupt("return", '');
+                return _context4.abrupt("return", '');
 
               case 18:
               case "end":
-                return _context5.stop();
+                return _context4.stop();
             }
           }
-        }, _callee5, this, [[6, 14]]);
+        }, _callee4, this, [[6, 14]]);
       }));
 
       function callAddressVerification(_x4) {
@@ -41094,8 +41862,6 @@ function (_Component) {
       var _this$state = this.state,
           defaultAmount = _this$state.defaultAmount,
           defaultOption = _this$state.defaultOption,
-          errors = _this$state.errors,
-          fields = _this$state.fields,
           fundInfo = _this$state.fundInfo,
           givingInfo = _this$state.givingInfo,
           productInfo = _this$state.productInfo,
@@ -41104,6 +41870,14 @@ function (_Component) {
           monthlyChecked = _this$state.monthlyChecked,
           hydratedAdditionalGift = _this$state.hydratedAdditionalGift,
           hydratedFund = _this$state.hydratedFund;
+      var _this$context = this.context,
+          errors = _this$context.errors,
+          fields = _this$context.fields,
+          initialized = _this$context.initialized;
+      console.log({
+        fields: fields,
+        errors: errors
+      });
       var hasErrors = Object.values(errors).filter(function (val) {
         return val && val.length > 0;
       }).length > 0;
@@ -41143,7 +41917,7 @@ function (_Component) {
         removeFromCart: this.removeFromCart,
         initialUpdate: initialUpdate,
         hydratedAdditionalGift: hydratedAdditionalGift
-      })), (0, _core.jsx)(_FormPanel.default, {
+      })), initialized ? (0, _core.jsx)(_FormPanel.default, {
         className: "form-panel"
       }, (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Name and Billing Address Block"), (0, _core.jsx)(_FormPanel.default, {
         className: "name-address__info"
@@ -41186,7 +41960,9 @@ function (_Component) {
         error: errors.amount,
         handleSubmit: this.handleSubmit,
         submitting: submitting
-      }))));
+      }))) : (0, _core.jsx)(_FormPanel.default, {
+        className: "form-panel"
+      }, (0, _core.jsx)(_Spinner.default, null)));
     }
   }, {
     key: "__reactstandin__regenerateByEval",
@@ -41199,6 +41975,7 @@ function (_Component) {
   return GivingForm;
 }(_react.Component);
 
+GivingForm.contextType = _DataContext.DataContext;
 var _default = GivingForm;
 var _default2 = _default;
 exports.default = _default2;
@@ -41227,7 +42004,15 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js","@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/assertThisInitialized":"node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Layouts/GivingLayout":"src/Components/FormComponents/Layouts/GivingLayout.js","../FormComponents/Layouts/ProductLayout":"src/Components/FormComponents/Layouts/ProductLayout.js","../FormComponents/Blocks/DesignationBlock":"src/Components/FormComponents/Blocks/DesignationBlock.js","../FormComponents/Blocks/NameBlock":"src/Components/FormComponents/Blocks/NameBlock.js","../FormComponents/Blocks/ShippingAddressBlock":"src/Components/FormComponents/Blocks/ShippingAddressBlock.js","../FormComponents/Blocks/AddressBlock":"src/Components/FormComponents/Blocks/AddressBlock.js","../FormComponents/Blocks/FormOptionsBlock":"src/Components/FormComponents/Blocks/FormOptionsBlock.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../../helpers/error-types":"src/helpers/error-types.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js","../../helpers/ls":"src/helpers/ls.js"}],"src/Components/Spinner.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js","@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/assertThisInitialized":"node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Context/DataContext":"src/Components/Context/DataContext.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Layouts/GivingLayout":"src/Components/FormComponents/Layouts/GivingLayout.js","../FormComponents/Layouts/ProductLayout":"src/Components/FormComponents/Layouts/ProductLayout.js","../FormComponents/Blocks/DesignationBlock":"src/Components/FormComponents/Blocks/DesignationBlock.js","../FormComponents/Blocks/NameBlock":"src/Components/FormComponents/Blocks/NameBlock.js","../FormComponents/Blocks/ShippingAddressBlock":"src/Components/FormComponents/Blocks/ShippingAddressBlock.js","../FormComponents/Blocks/AddressBlock":"src/Components/FormComponents/Blocks/AddressBlock.js","../FormComponents/Blocks/FormOptionsBlock":"src/Components/FormComponents/Blocks/FormOptionsBlock.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js","../../helpers/error-types":"src/helpers/error-types.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"src/Components/Forms/ProductForm.js":[function(require,module,exports) {
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+},{}],"src/Components/Forms/EmailForm.js":[function(require,module,exports) {
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+},{}],"src/Components/Forms/FormRouter.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41235,564 +42020,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
-
-var _core = require("@emotion/core");
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var LoadingSpinner = (0, _styledBase.default)("div", {
-  target: "ebmswtr0",
-  label: "LoadingSpinner"
-})("development" === "production" ? {
-  name: "1jte2s1",
-  styles: "&.loading_spinner{box-sizing:border-box;height:150px;margin:150px auto;position:relative;width:150px;z-index:100;}.loading_spinner__flames{box-sizing:border-box;height:150px;left:0;position:absolute;top:0;width:150px;z-index:100;}.loading_spinner__back{box-sizing:border-box;height:150px;left:0;position:absolute;top:0;width:150px;z-index:95;-webkit-animation:flamerotate .75s linear infinite;-moz-animation:flamerotate .75s linear infinite;animation:flamerotate .75s linear infinite;}@keyframes flamerotate{from{-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);transform:rotate(0deg);}to{-webkit-transform:rotate(360deg);-moz-transform:rotate(360deg);transform:rotate(360deg);}}"
-} : {
-  name: "1jte2s1",
-  styles: "&.loading_spinner{box-sizing:border-box;height:150px;margin:150px auto;position:relative;width:150px;z-index:100;}.loading_spinner__flames{box-sizing:border-box;height:150px;left:0;position:absolute;top:0;width:150px;z-index:100;}.loading_spinner__back{box-sizing:border-box;height:150px;left:0;position:absolute;top:0;width:150px;z-index:95;-webkit-animation:flamerotate .75s linear infinite;-moz-animation:flamerotate .75s linear infinite;animation:flamerotate .75s linear infinite;}@keyframes flamerotate{from{-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);transform:rotate(0deg);}to{-webkit-transform:rotate(360deg);-moz-transform:rotate(360deg);transform:rotate(360deg);}}",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlNwaW5uZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBSWlDIiwiZmlsZSI6IlNwaW5uZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnXG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIlxuXG5cbmNvbnN0IExvYWRpbmdTcGlubmVyID0gc3R5bGVkLmRpdmBcbiAgICAmLmxvYWRpbmdfc3Bpbm5lciB7XG4gICAgICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgICAgIGhlaWdodDogMTUwcHg7XG4gICAgICAgIG1hcmdpbjogMTUwcHggYXV0bztcbiAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgICB3aWR0aDogMTUwcHg7XG4gICAgICAgIHotaW5kZXg6IDEwMDtcbiAgICB9XG5cbiAgICAubG9hZGluZ19zcGlubmVyX19mbGFtZXMge1xuICAgICAgICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xuICAgICAgICBoZWlnaHQ6IDE1MHB4O1xuICAgICAgICBsZWZ0OiAwO1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICAgIHRvcDogMDtcbiAgICAgICAgd2lkdGg6IDE1MHB4O1xuICAgICAgICB6LWluZGV4OiAxMDA7XG4gICAgfVxuXG4gICAgLmxvYWRpbmdfc3Bpbm5lcl9fYmFjayB7XG4gICAgICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgICAgIGhlaWdodDogMTUwcHg7XG4gICAgICAgIGxlZnQ6IDA7XG4gICAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgICAgdG9wOiAwO1xuICAgICAgICB3aWR0aDogMTUwcHg7XG4gICAgICAgIHotaW5kZXg6IDk1O1xuICAgICAgICAtd2Via2l0LWFuaW1hdGlvbjogZmxhbWVyb3RhdGUgLjc1cyBsaW5lYXIgaW5maW5pdGU7XG4gICAgICAgIC1tb3otYW5pbWF0aW9uOiBmbGFtZXJvdGF0ZSAuNzVzIGxpbmVhciBpbmZpbml0ZTtcbiAgICAgICAgYW5pbWF0aW9uOiBmbGFtZXJvdGF0ZSAuNzVzIGxpbmVhciBpbmZpbml0ZTtcbiAgICB9XG5cbiAgICBAa2V5ZnJhbWVzIGZsYW1lcm90YXRlIHtcbiAgICAgICAgZnJvbSB7XG4gICAgICAgICAgICAtd2Via2l0LXRyYW5zZm9ybTogcm90YXRlKDBkZWcpO1xuICAgICAgICAgICAgLW1vei10cmFuc2Zvcm06IHJvdGF0ZSgwZGVnKTtcbiAgICAgICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDBkZWcpO1xuICAgICAgICB9XG4gICAgICAgIHRvIHtcbiAgICAgICAgICAgIC13ZWJraXQtdHJhbnNmb3JtOiByb3RhdGUoMzYwZGVnKTtcbiAgICAgICAgICAgIC1tb3otdHJhbnNmb3JtOiByb3RhdGUoMzYwZGVnKTtcbiAgICAgICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZyk7XG4gICAgICAgIH1cbiAgICB9XG5gXG5cbmZ1bmN0aW9uIFNwaW5uZXIgKCkge1xuICAgIHJldHVybiAoXG4gICAgICAgIDxMb2FkaW5nU3Bpbm5lciBjbGFzc05hbWU9XCJsb2FkaW5nX3NwaW5uZXJcIj5cbiAgICAgICAgICAgIDxpbWcgY2xhc3NOYW1lPVwibG9hZGluZ19zcGlubmVyX19mbGFtZXNcIiBzcmM9XCIvL3d3dzEuY2JuLmNvbS9zaXRlcy9hbGwvdGhlbWVzL2Nibl9kZWZhdWx0L2ltYWdlcy9zcGlubmVyL2Nibi1mbGFtZS1jaXJjbGUucG5nXCIvPlxuICAgICAgICAgICAgPGltZyBjbGFzc05hbWU9XCJsb2FkaW5nX3NwaW5uZXJfX2JhY2tcIiBzcmM9XCIvL3d3dzEuY2JuLmNvbS9zaXRlcy9hbGwvdGhlbWVzL2Nibl9kZWZhdWx0L2ltYWdlcy9zcGlubmVyL2xvYWRlci1zcGlubmVyQDN4LnBuZ1wiLz5cbiAgICAgICAgPC9Mb2FkaW5nU3Bpbm5lcj5cbiAgICApXG59XG5cbmV4cG9ydCBkZWZhdWx0IFNwaW5uZXIiXX0= */"
-});
-
-function Spinner() {
-  return (0, _core.jsx)(LoadingSpinner, {
-    className: "loading_spinner"
-  }, (0, _core.jsx)("img", {
-    className: "loading_spinner__flames",
-    src: "//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/cbn-flame-circle.png"
-  }), (0, _core.jsx)("img", {
-    className: "loading_spinner__back",
-    src: "//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/loader-spinner@3x.png"
-  }));
-}
-
-var _default = Spinner;
-var _default2 = _default;
-exports.default = _default2;
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(LoadingSpinner, "LoadingSpinner", "/Users/wehand/Code/react-form-drupal/src/Components/Spinner.js");
-  reactHotLoader.register(Spinner, "Spinner", "/Users/wehand/Code/react-form-drupal/src/Components/Spinner.js");
-  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Spinner.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/Components/styles/payment-form.module.css":[function(require,module,exports) {
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/process/browser.js":[function(require,module,exports) {
-
-// shim for using process in browser
-var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-  throw new Error('setTimeout has not been defined');
-}
-
-function defaultClearTimeout() {
-  throw new Error('clearTimeout has not been defined');
-}
-
-(function () {
-  try {
-    if (typeof setTimeout === 'function') {
-      cachedSetTimeout = setTimeout;
-    } else {
-      cachedSetTimeout = defaultSetTimout;
-    }
-  } catch (e) {
-    cachedSetTimeout = defaultSetTimout;
-  }
-
-  try {
-    if (typeof clearTimeout === 'function') {
-      cachedClearTimeout = clearTimeout;
-    } else {
-      cachedClearTimeout = defaultClearTimeout;
-    }
-  } catch (e) {
-    cachedClearTimeout = defaultClearTimeout;
-  }
-})();
-
-function runTimeout(fun) {
-  if (cachedSetTimeout === setTimeout) {
-    //normal enviroments in sane situations
-    return setTimeout(fun, 0);
-  } // if setTimeout wasn't available but was latter defined
-
-
-  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-    cachedSetTimeout = setTimeout;
-    return setTimeout(fun, 0);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedSetTimeout(fun, 0);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-      return cachedSetTimeout.call(null, fun, 0);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-      return cachedSetTimeout.call(this, fun, 0);
-    }
-  }
-}
-
-function runClearTimeout(marker) {
-  if (cachedClearTimeout === clearTimeout) {
-    //normal enviroments in sane situations
-    return clearTimeout(marker);
-  } // if clearTimeout wasn't available but was latter defined
-
-
-  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-    cachedClearTimeout = clearTimeout;
-    return clearTimeout(marker);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedClearTimeout(marker);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-      return cachedClearTimeout.call(null, marker);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-      return cachedClearTimeout.call(this, marker);
-    }
-  }
-}
-
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-  if (!draining || !currentQueue) {
-    return;
-  }
-
-  draining = false;
-
-  if (currentQueue.length) {
-    queue = currentQueue.concat(queue);
-  } else {
-    queueIndex = -1;
-  }
-
-  if (queue.length) {
-    drainQueue();
-  }
-}
-
-function drainQueue() {
-  if (draining) {
-    return;
-  }
-
-  var timeout = runTimeout(cleanUpNextTick);
-  draining = true;
-  var len = queue.length;
-
-  while (len) {
-    currentQueue = queue;
-    queue = [];
-
-    while (++queueIndex < len) {
-      if (currentQueue) {
-        currentQueue[queueIndex].run();
-      }
-    }
-
-    queueIndex = -1;
-    len = queue.length;
-  }
-
-  currentQueue = null;
-  draining = false;
-  runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-  var args = new Array(arguments.length - 1);
-
-  if (arguments.length > 1) {
-    for (var i = 1; i < arguments.length; i++) {
-      args[i - 1] = arguments[i];
-    }
-  }
-
-  queue.push(new Item(fun, args));
-
-  if (queue.length === 1 && !draining) {
-    runTimeout(drainQueue);
-  }
-}; // v8 likes predictible objects
-
-
-function Item(fun, array) {
-  this.fun = fun;
-  this.array = array;
-}
-
-Item.prototype.run = function () {
-  this.fun.apply(null, this.array);
-};
-
-process.title = 'browser';
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) {
-  return [];
-};
-
-process.binding = function (name) {
-  throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () {
-  return '/';
-};
-
-process.chdir = function (dir) {
-  throw new Error('process.chdir is not supported');
-};
-
-process.umask = function () {
-  return 0;
-};
-},{}],"node_modules/performance-now/lib/performance-now.js":[function(require,module,exports) {
-var process = require("process");
-// Generated by CoffeeScript 1.12.2
-(function() {
-  var getNanoSeconds, hrtime, loadTime, moduleLoadTime, nodeLoadTime, upTime;
-
-  if ((typeof performance !== "undefined" && performance !== null) && performance.now) {
-    module.exports = function() {
-      return performance.now();
-    };
-  } else if ((typeof process !== "undefined" && process !== null) && process.hrtime) {
-    module.exports = function() {
-      return (getNanoSeconds() - nodeLoadTime) / 1e6;
-    };
-    hrtime = process.hrtime;
-    getNanoSeconds = function() {
-      var hr;
-      hr = hrtime();
-      return hr[0] * 1e9 + hr[1];
-    };
-    moduleLoadTime = getNanoSeconds();
-    upTime = process.uptime() * 1e9;
-    nodeLoadTime = moduleLoadTime - upTime;
-  } else if (Date.now) {
-    module.exports = function() {
-      return Date.now() - loadTime;
-    };
-    loadTime = Date.now();
-  } else {
-    module.exports = function() {
-      return new Date().getTime() - loadTime;
-    };
-    loadTime = new Date().getTime();
-  }
-
-}).call(this);
-
-
-
-},{"process":"node_modules/process/browser.js"}],"node_modules/raf/index.js":[function(require,module,exports) {
-var global = arguments[3];
-var now = require('performance-now')
-  , root = typeof window === 'undefined' ? global : window
-  , vendors = ['moz', 'webkit']
-  , suffix = 'AnimationFrame'
-  , raf = root['request' + suffix]
-  , caf = root['cancel' + suffix] || root['cancelRequest' + suffix]
-
-for(var i = 0; !raf && i < vendors.length; i++) {
-  raf = root[vendors[i] + 'Request' + suffix]
-  caf = root[vendors[i] + 'Cancel' + suffix]
-      || root[vendors[i] + 'CancelRequest' + suffix]
-}
-
-// Some versions of FF have rAF but not cAF
-if(!raf || !caf) {
-  var last = 0
-    , id = 0
-    , queue = []
-    , frameDuration = 1000 / 60
-
-  raf = function(callback) {
-    if(queue.length === 0) {
-      var _now = now()
-        , next = Math.max(0, frameDuration - (_now - last))
-      last = next + _now
-      setTimeout(function() {
-        var cp = queue.slice(0)
-        // Clear queue here to prevent
-        // callbacks from appending listeners
-        // to the current frame's queue
-        queue.length = 0
-        for(var i = 0; i < cp.length; i++) {
-          if(!cp[i].cancelled) {
-            try{
-              cp[i].callback(last)
-            } catch(e) {
-              setTimeout(function() { throw e }, 0)
-            }
-          }
-        }
-      }, Math.round(next))
-    }
-    queue.push({
-      handle: ++id,
-      callback: callback,
-      cancelled: false
-    })
-    return id
-  }
-
-  caf = function(handle) {
-    for(var i = 0; i < queue.length; i++) {
-      if(queue[i].handle === handle) {
-        queue[i].cancelled = true
-      }
-    }
-  }
-}
-
-module.exports = function(fn) {
-  // Wrap in a new function to prevent
-  // `cancel` potentially being assigned
-  // to the native rAF function
-  return raf.call(root, fn)
-}
-module.exports.cancel = function() {
-  caf.apply(root, arguments)
-}
-module.exports.polyfill = function(object) {
-  if (!object) {
-    object = root;
-  }
-  object.requestAnimationFrame = raf
-  object.cancelAnimationFrame = caf
-}
-
-},{"performance-now":"node_modules/performance-now/lib/performance-now.js"}],"node_modules/raf/polyfill.js":[function(require,module,exports) {
-require('./').polyfill()
-
-},{"./":"node_modules/raf/index.js"}],"src/helpers/scrollToPoint.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.scrollToPoint = scrollToPoint;
-exports.offsetTop = offsetTop;
-
-require("raf/polyfill");
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-/**
- * Function to scroll to a particular point on the DOM
- * @param {Number} top - pageYoffset of form
- */
-function scrollToPoint(top) {
-  var docHeight = document.documentElement.scrollHeight;
-  var winHeight = window.innerHeight;
-  var speed = 40;
-  var initialPoint = window.scrollY ? window.scrollY : window.pageYOffset;
-  var scrollDown = top >= initialPoint;
-
-  if (scrollDown) {
-    top = top > docHeight - winHeight ? docHeight - winHeight : top;
-  } else {
-    top = docHeight <= winHeight ? 0 : top;
-  }
-
-  window.requestAnimationFrame(winScroll);
-
-  function winScroll(timestamp) {
-    var scroll = window.scrollY ? window.scrollY : window.pageYOffset;
-
-    if (scrollDown) {
-      if (scroll >= top) {
-        return window.cancelAnimationFrame(timestamp);
-      }
-
-      scroll += speed;
-    } else {
-      if (scroll <= top) {
-        return window.cancelAnimationFrame(timestamp);
-      }
-
-      scroll -= speed;
-    }
-
-    window.scroll(0, scroll);
-    window.requestAnimationFrame(winScroll);
-  }
-}
-/**
- * 
- * @param {Node} el - DOM Element
- * @returns {Number} - integer representing offsetTop of the element relative to the viewport
- */
-
-
-function offsetTop(el) {
-  var rect = el.getBoundingClientRect(),
-      scrollTop = window.scrollY ? window.scrollY : window.pageYOffset;
-  return rect.top + scrollTop;
-}
-
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(scrollToPoint, "scrollToPoint", "/Users/wehand/Code/react-form-drupal/src/helpers/scrollToPoint.js");
-  reactHotLoader.register(offsetTop, "offsetTop", "/Users/wehand/Code/react-form-drupal/src/helpers/scrollToPoint.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"react-hot-loader":"node_modules/react-hot-loader/index.js","raf/polyfill":"node_modules/raf/polyfill.js"}],"src/Components/PaymentForm.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
-
-var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-
-var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
 var _core = require("@emotion/core");
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _Spinner = _interopRequireDefault(require("./Spinner"));
+var _FormContext = require("../Context/FormContext");
 
-var _paymentFormModule = _interopRequireDefault(require("./styles/payment-form.module.css"));
+var _DataContext = _interopRequireDefault(require("../Context/DataContext"));
 
-var _ls = require("../helpers/ls");
+var _GivingForm = _interopRequireDefault(require("./GivingForm"));
 
-var _scrollToPoint = require("../helpers/scrollToPoint");
+var _ProductForm = _interopRequireDefault(require("./ProductForm"));
+
+var _EmailForm = _interopRequireDefault(require("./EmailForm"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -41807,470 +42049,40 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
   return a;
 };
 
-var PaymentForm =
-/*#__PURE__*/
-function (_Component) {
-  (0, _inherits2.default)(PaymentForm, _Component);
-
-  function PaymentForm(props) {
-    (0, _classCallCheck2.default)(this, PaymentForm);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(PaymentForm).call(this, props));
-  }
-
-  (0, _createClass2.default)(PaymentForm, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var formData = this.props.formData;
-      var lifetime = 60 * 1000; // 60 seconds * 1000 milliseconds
-
-      (0, _ls.cryptLS)({
-        formData: formData
-      }, lifetime, 'store');
-      document.forms.hiddenform.submit.click(); // scroll to top of form
-
-      var target = document.getElementById('react-form-top');
-      var top = (0, _scrollToPoint.offsetTop)(target); // console.log({top})
-
-      (0, _scrollToPoint.scrollToPoint)(top);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          formData = _this$props.formData,
-          formAction = _this$props.formAction,
-          cssConfig = _this$props.cssConfig,
-          confirmationSubmitted = _this$props.confirmationSubmitted;
-      var keys = Object.keys(formData);
-      var inputs = keys.map(function (k, i) {
-        return (0, _core.jsx)("input", {
-          key: i + "-" + k,
-          name: k,
-          value: formData[k] ? formData[k] : '',
-          type: "hidden"
-        });
-      }); // console.log(JSON.stringify(this.props.cssConfig))
-
-      return (0, _core.jsx)(_react.Fragment, null, (0, _core.jsx)("form", {
-        id: "hiddenform",
-        styleName: "styles.hidden",
-        action: formAction,
-        method: "POST",
-        target: "paymentprocess"
-      }, inputs, (0, _core.jsx)("input", {
-        type: "hidden",
-        name: "cssVars",
-        value: JSON.stringify(cssConfig)
-      }), (0, _core.jsx)("input", {
-        id: "submit",
-        type: "submit",
-        hidden: true
-      })), (0, _core.jsx)("iframe", {
-        styleName: confirmationSubmitted ? "styles.hidden" : "styles.form-panel",
-        name: "paymentprocess",
-        width: "100%",
-        height: "1000px"
-      }), confirmationSubmitted && (0, _core.jsx)("div", {
-        styleName: "styles.form-panel",
-        style: {
-          height: "1000px"
-        }
-      }, (0, _core.jsx)(_Spinner.default, null)));
-    }
-  }, {
-    key: "__reactstandin__regenerateByEval",
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return PaymentForm;
-}(_react.Component);
-
-var _default = PaymentForm;
-var _default2 = _default;
-exports.default = _default2;
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(PaymentForm, "PaymentForm", "/Users/wehand/Code/react-form-drupal/src/Components/PaymentForm.js");
-  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/PaymentForm.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./Spinner":"src/Components/Spinner.js","./styles/payment-form.module.css":"src/Components/styles/payment-form.module.css","../helpers/ls":"src/helpers/ls.js","../helpers/scrollToPoint":"src/helpers/scrollToPoint.js"}],"src/Components/ConfirmationPage.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
-
-var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-
-var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
-
-var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
-
-var _core = require("@emotion/core");
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _PaymentForm = _interopRequireDefault(require("./PaymentForm"));
-
-var _Spinner = _interopRequireDefault(require("./Spinner"));
-
-var _fetchHelpers = require("../helpers/fetch-helpers");
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-function handleUnload(e) {
-  e.returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page.";
-  return "Are you sure you want to go back?\n You may lose all your changes to this page.";
-}
-
-var ConfirmationPage =
-/*#__PURE__*/
-function (_Component) {
-  (0, _inherits2.default)(ConfirmationPage, _Component);
-
-  function ConfirmationPage(props) {
-    var _this;
-
-    (0, _classCallCheck2.default)(this, ConfirmationPage);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ConfirmationPage).call(this, props));
-    _this.state = {
-      ready: false,
-      confirmationSubmitted: false,
-      msgUris: []
-    };
-    _this.getGlobals = _this.getGlobals.bind((0, _assertThisInitialized2.default)(_this));
-    _this.handleMessage = _this.handleMessage.bind((0, _assertThisInitialized2.default)(_this));
-    _this.reRenderForm = _this.reRenderForm.bind((0, _assertThisInitialized2.default)(_this));
-    _this.renderReceiptPage = _this.renderReceiptPage.bind((0, _assertThisInitialized2.default)(_this));
-    return _this;
-  }
-
-  (0, _createClass2.default)(ConfirmationPage, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      window.addEventListener('beforeunload', handleUnload);
-      window.addEventListener('message', this.handleMessage, false);
-
-      try {
-        this.getGlobals();
-      } catch (err) {
-        console.error({
-          err: err
-        });
-      }
-    }
-  }, {
-    key: "getGlobals",
-    value: function () {
-      var _getGlobals = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee() {
-        var isSecure, url, _ref, devServicesUri, preProdServicesUri, prodServicesUri, devReceiptUri, preProdReceiptUri, prodReceiptUri;
-
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                isSecure = window.location.protocol == "https:";
-                url = !isSecure ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json';
-                _context.prev = 2;
-                _context.next = 5;
-                return (0, _fetchHelpers.callApi)(url);
-
-              case 5:
-                _ref = _context.sent;
-                devServicesUri = _ref.devServicesUri;
-                preProdServicesUri = _ref.preProdServicesUri;
-                prodServicesUri = _ref.prodServicesUri;
-                devReceiptUri = _ref.devReceiptUri;
-                preProdReceiptUri = _ref.preProdReceiptUri;
-                prodReceiptUri = _ref.prodReceiptUri;
-                this.setState({
-                  ready: true,
-                  msgUris: [devServicesUri, devReceiptUri, preProdServicesUri, preProdReceiptUri, prodServicesUri, prodReceiptUri]
-                });
-                _context.next = 18;
-                break;
-
-              case 15:
-                _context.prev = 15;
-                _context.t0 = _context["catch"](2);
-                console.error({
-                  err: _context.t0
-                });
-
-              case 18:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this, [[2, 15]]);
-      }));
-
-      function getGlobals() {
-        return _getGlobals.apply(this, arguments);
-      }
-
-      return getGlobals;
-    }()
-  }, {
-    key: "handleMessage",
-    value: function handleMessage(e) {
-      var _ref2 = e.data && typeof e.data == "string" ? JSON.parse(e.data) : {},
-          type = _ref2.type,
-          tracking_vars = _ref2.tracking_vars;
-
-      var types = ["go back clicked", "render receipt", "confirmation submitted", "form error"];
-
-      if (!types.includes(type)) {
-        return;
-      }
-
-      var origin = e.origin;
-      var isOrigin = this.state.msgUris.includes(origin);
-
-      if (!isOrigin) {
-        return;
-      }
-
-      switch (type) {
-        case "go back clicked":
-          this.reRenderForm(this.props.formData);
-          break;
-
-        case "render receipt":
-          this.renderReceiptPage(tracking_vars);
-          break;
-
-        case "confirmation submitted":
-          // console.log(type)
-          this.setState({
-            confirmationSubmitted: true
-          });
-          break;
-
-        case "form error":
-          this.setState({
-            confirmationSubmitted: false
-          });
-          break;
-      }
-
-      return;
-    }
-  }, {
-    key: "reRenderForm",
-    value: function reRenderForm(data) {
-      this.props.hydrateForm(data);
-    }
-  }, {
-    key: "renderReceiptPage",
-    value: function renderReceiptPage(varsArray) {
-      this.props.renderReceiptPage(varsArray);
-    }
-  }, {
-    key: "shouldComponentUpdate",
-    value: function shouldComponentUpdate(nextProps, nextState) {
-      if (this.state.ready !== nextState.ready || this.state.confirmationSubmitted !== nextState.confirmationSubmitted) {
-        return true;
-      }
-
-      return false;
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      window.removeEventListener('beforeunload', handleUnload);
-      window.removeEventListener('message', this.handleMessage);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$state = this.state,
-          ready = _this$state.ready,
-          confirmationSubmitted = _this$state.confirmationSubmitted;
-      var _this$props = this.props,
-          cssConfig = _this$props.cssConfig,
-          formAction = _this$props.formAction,
-          formData = _this$props.formData; // const cacheToken = shortid.generate();
-
-      return (0, _core.jsx)(_react.Fragment, null, ready ? (0, _core.jsx)(_PaymentForm.default, {
-        cssConfig: cssConfig,
-        formAction: formAction,
-        formData: formData,
-        confirmationSubmitted: confirmationSubmitted
-      }) : (0, _core.jsx)(_Spinner.default, null));
-    }
-  }, {
-    key: "__reactstandin__regenerateByEval",
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return ConfirmationPage;
-}(_react.Component);
-
-var _default = ConfirmationPage;
-var _default2 = _default;
-exports.default = _default2;
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(handleUnload, "handleUnload", "/Users/wehand/Code/react-form-drupal/src/Components/ConfirmationPage.js");
-  reactHotLoader.register(ConfirmationPage, "ConfirmationPage", "/Users/wehand/Code/react-form-drupal/src/Components/ConfirmationPage.js");
-  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/ConfirmationPage.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/assertThisInitialized":"node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./PaymentForm":"src/Components/PaymentForm.js","./Spinner":"src/Components/Spinner.js","../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"src/Components/RedirectForm.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
-
-var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-
-var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
-
-var _core = require("@emotion/core");
-
-var _react = _interopRequireWildcard(require("react"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var HiddenForm =
-/*#__PURE__*/
-function (_Component) {
-  (0, _inherits2.default)(HiddenForm, _Component);
-
-  function HiddenForm() {
-    (0, _classCallCheck2.default)(this, HiddenForm);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(HiddenForm).apply(this, arguments));
-  }
-
-  (0, _createClass2.default)(HiddenForm, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      // console.log("Loaded and Clicking...")
-      window.name = JSON.stringify(this.props.receiptVars);
-      document.forms.hiddenform.submit.click();
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          receiptVars = _this$props.receiptVars,
-          thankYouUrl = _this$props.thankYouUrl;
-      var inputs = receiptVars.map(function (v, i) {
-        return (0, _core.jsx)("input", {
-          key: "hiddenInput-" + i,
-          name: Object.keys(v)[0],
-          value: Object.values(v)[0],
-          type: "hidden"
-        });
+var FormRouter = function FormRouter(props) {
+  var _useContext = (0, _react.useContext)(_FormContext.FormContext),
+      formConfig = _useContext.state.formConfig;
+
+  var type = formConfig.type;
+
+  switch (type) {
+    case "giving":
+      return (0, _core.jsx)(_DataContext.default, null, (0, _core.jsx)(_GivingForm.default, (0, _extends2.default)({}, props, formConfig)));
+      break;
+
+    case "product":
+      return (0, _core.jsx)(_ProductForm.default, (0, _extends2.default)({}, props, formConfig));
+      break;
+
+    case "email":
+      return (0, _core.jsx)(_EmailForm.default, (0, _extends2.default)({}, props, formConfig));
+      break;
+
+    default:
+      console.error({
+        type: type,
+        formConfig: formConfig,
+        props: props
       });
-      var styles = {
-        position: "absolute",
-        left: "-10000px",
-        top: "auto",
-        width: "1px",
-        height: "1px",
-        overflow: "hidden"
-      };
-      return (0, _core.jsx)("form", {
-        id: "hiddenform",
-        style: styles,
-        action: thankYouUrl,
-        method: "POST"
-      }, inputs, (0, _core.jsx)("input", {
-        id: "submit",
-        type: "submit",
-        hidden: true
-      }));
-    }
-  }, {
-    key: "__reactstandin__regenerateByEval",
-    // @ts-ignore
-    value: function __reactstandin__regenerateByEval(key, code) {
-      // @ts-ignore
-      this[key] = eval(code);
-    }
-  }]);
-  return HiddenForm;
-}(_react.Component);
+      alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
+      return null;
+      break;
+  }
+};
 
-var _default = HiddenForm;
+__signature__(FormRouter, "useContext{{ state: { formConfig } }}");
+
+var _default = FormRouter;
 var _default2 = _default;
 exports.default = _default2;
 ;
@@ -42282,8 +42094,8 @@ exports.default = _default2;
     return;
   }
 
-  reactHotLoader.register(HiddenForm, "HiddenForm", "/Users/wehand/Code/react-form-drupal/src/Components/RedirectForm.js");
-  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/RedirectForm.js");
+  reactHotLoader.register(FormRouter, "FormRouter", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
 })();
 
 ;
@@ -42292,7 +42104,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/Banner.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/extends":"node_modules/@babel/runtime/helpers/extends.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Context/FormContext":"src/Components/Context/FormContext.js","../Context/DataContext":"src/Components/Context/DataContext.js","./GivingForm":"src/Components/Forms/GivingForm.js","./ProductForm":"src/Components/Forms/ProductForm.js","./EmailForm":"src/Components/Forms/EmailForm.js"}],"src/Components/StyledComponents/Banner.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42318,7 +42130,7 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
 };
 
 var DevBanner = (0, _styledBase.default)("div", {
-  target: "eom7yt30",
+  target: "ezbeoyg0",
   label: "DevBanner"
 })("development" === "production" ? {
   name: "b509kx",
@@ -42347,9 +42159,9 @@ exports.default = _default2;
     return;
   }
 
-  reactHotLoader.register(DevBanner, "DevBanner", "/Users/wehand/Code/react-form-drupal/src/Components/Banner.js");
-  reactHotLoader.register(Banner, "Banner", "/Users/wehand/Code/react-form-drupal/src/Components/Banner.js");
-  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Banner.js");
+  reactHotLoader.register(DevBanner, "DevBanner", "/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Banner.js");
+  reactHotLoader.register(Banner, "Banner", "/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Banner.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Banner.js");
 })();
 
 ;
@@ -42358,16 +42170,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/styles/app.module.css":[function(require,module,exports) {
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/Components/App.js":[function(require,module,exports) {
+},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/StyledComponents/FormWrapper.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42375,13 +42178,61 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
 
-var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutProperties"));
+var _react = _interopRequireDefault(require("react"));
 
-var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var FormWrapper = (0, _styledBase.default)("div", {
+  target: "e4d8g8r0",
+  label: "FormWrapper"
+})("development" === "production" ? {
+  name: "1g9ifyu",
+  styles: "background:#fff;box-sizing:border-box;border:0 solid #333;border-radius:10px;color:#333;max-width:768px;padding:20px;width:100%;"
+} : {
+  name: "1g9ifyu",
+  styles: "background:#fff;box-sizing:border-box;border:0 solid #333;border-radius:10px;color:#333;max-width:768px;padding:20px;width:100%;",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1XcmFwcGVyLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUc4QiIsImZpbGUiOiJGb3JtV3JhcHBlci5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCdcbmltcG9ydCBzdHlsZWQgZnJvbSAnQGVtb3Rpb24vc3R5bGVkJ1xuXG5jb25zdCBGb3JtV3JhcHBlciA9IHN0eWxlZC5kaXZgXG4gICAgYmFja2dyb3VuZDogI2ZmZjtcbiAgICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xuICAgIGJvcmRlcjogMCBzb2xpZCAjMzMzO1xuICAgIGJvcmRlci1yYWRpdXM6MTBweDtcbiAgICBjb2xvcjogIzMzMztcbiAgICBtYXgtd2lkdGg6IDc2OHB4O1xuICAgIHBhZGRpbmc6IDIwcHg7XG4gICAgd2lkdGg6IDEwMCU7XG5gXG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1XcmFwcGVyIl19 */"
+});
+var _default = FormWrapper;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(FormWrapper, "FormWrapper", "/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/FormWrapper.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/FormWrapper.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/App.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -42391,25 +42242,21 @@ var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime
 
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
 
-var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
-
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
 var _core = require("@emotion/core");
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _GivingForm = _interopRequireDefault(require("./Forms/GivingForm"));
+var _FormContext = require("./Context/FormContext");
 
-var _ConfirmationPage = _interopRequireDefault(require("./ConfirmationPage"));
+var _FormRouter = _interopRequireDefault(require("./Forms/FormRouter"));
 
-var _RedirectForm = _interopRequireDefault(require("./RedirectForm"));
+var _Banner = _interopRequireDefault(require("./StyledComponents/Banner"));
 
-var _Banner = _interopRequireDefault(require("./Banner"));
+var _FormWrapper = _interopRequireDefault(require("./StyledComponents/FormWrapper"));
 
-var _appModule = _interopRequireDefault(require("./styles/app.module.css"));
-
-var _ls = require("../helpers/ls");
+var _Spinner = _interopRequireDefault(require("./StyledComponents/Spinner"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -42429,148 +42276,25 @@ var App =
 function (_Component) {
   (0, _inherits2.default)(App, _Component);
 
-  function App(props) {
-    var _this;
-
+  function App() {
     (0, _classCallCheck2.default)(this, App);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(App).call(this, props));
-    var store = (0, _ls.readLS)('store');
-    var info = (0, _ls.readLS)('info');
-    var formData = store ? store : info; // console.log({store, info, formData})
-
-    if (!formData) {
-      (0, _ls.emptyLS)();
-    }
-
-    if (!store) {
-      (0, _ls.removeOneLS)('store');
-    }
-
-    _this.state = (0, _objectSpread2.default)({}, props.config.initialState, {
-      submitted: false,
-      confirmed: false,
-      finalized: false,
-      confirmationData: null,
-      finalizedData: null,
-      formAction: null,
-      formData: formData,
-      donorID: null,
-      hydratedData: formData
-    });
-    _this.submitForm = _this.submitForm.bind((0, _assertThisInitialized2.default)(_this));
-    _this.hydrateForm = _this.hydrateForm.bind((0, _assertThisInitialized2.default)(_this));
-    _this.renderReceiptPage = _this.renderReceiptPage.bind((0, _assertThisInitialized2.default)(_this));
-    return _this;
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(App).apply(this, arguments));
   }
 
   (0, _createClass2.default)(App, [{
-    key: "submitForm",
-    value: function submitForm(_ref) {
-      var msg = _ref.msg,
-          data = _ref.data;
-      // console.log(msg)
-      var DonorID = msg.split(";")[0].split(" - ")[1];
-      var formAction = msg.split(" is ")[1]; // console.log({DonorID, formAction})
-
-      data.DonorID = DonorID;
-      this.setState({
-        submitted: true,
-        formData: data,
-        formAction: formAction
-      });
-    }
-  }, {
-    key: "hydrateForm",
-    value: function hydrateForm(data) {
-      // console.log({data})
-      this.setState({
-        submitted: false,
-        hydratedData: data
-      });
-    }
-  }, {
-    key: "renderReceiptPage",
-    value: function renderReceiptPage(varsArray) {
-      var _this$state$formData = this.state.formData,
-          Firstname = _this$state$formData.Firstname,
-          Lastname = _this$state$formData.Lastname,
-          Middlename = _this$state$formData.Middlename,
-          Address1 = _this$state$formData.Address1,
-          Address2 = _this$state$formData.Address2,
-          City = _this$state$formData.City,
-          Country = _this$state$formData.Country,
-          Phoneareacode = _this$state$formData.Phoneareacode,
-          Phoneexchange = _this$state$formData.Phoneexchange,
-          Phonenumber = _this$state$formData.Phonenumber,
-          Spousename = _this$state$formData.Spousename,
-          State = _this$state$formData.State,
-          Suffix = _this$state$formData.Suffix,
-          Title = _this$state$formData.Title,
-          Zip = _this$state$formData.Zip;
-      this.setState({
-        finalized: true,
-        finalizedData: [].concat((0, _toConsumableArray2.default)(varsArray), [{
-          Firstname: Firstname,
-          Lastname: Lastname,
-          Middlename: Middlename,
-          Address1: Address1,
-          Address2: Address2,
-          City: City,
-          Country: Country,
-          Phoneareacode: Phoneareacode,
-          Phoneexchange: Phoneexchange,
-          Phonenumber: Phonenumber,
-          Spousename: Spousename,
-          State: State,
-          Suffix: Suffix,
-          Title: Title,
-          Zip: Zip
-        }])
-      });
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      // console.log({props: this.props, context: this.context})
+      this.context.getConfiguration(this.props.rootEntry);
     }
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
-      var cssConfig = this.props.config.cssConfig;
-      var _this$state = this.state,
-          mode = _this$state.mode,
-          finalized = _this$state.finalized,
-          submitted = _this$state.submitted,
-          thankYouUrl = _this$state.thankYouUrl,
-          finalizedData = _this$state.finalizedData,
-          formData = _this$state.formData,
-          formAction = _this$state.formAction,
-          formState = (0, _objectWithoutProperties2.default)(_this$state, ["mode", "finalized", "submitted", "thankYouUrl", "finalizedData", "formData", "formAction"]);
-      return (0, _core.jsx)("div", {
-        styleName: "styles.form-wrapper",
+      var status = this.context.state.status;
+      return (0, _core.jsx)(_FormWrapper.default, {
+        className: "form-wrapper",
         id: "react-form-top"
-      }, mode !== 'production' && (0, _core.jsx)(_Banner.default, null), function () {
-        if (finalized) {
-          console.log({
-            thankYouUrl: thankYouUrl
-          });
-          return (0, _core.jsx)(_RedirectForm.default, {
-            thankYouUrl: thankYouUrl,
-            receiptVars: finalizedData
-          });
-        } else if (submitted) {
-          return (0, _core.jsx)(_ConfirmationPage.default, {
-            mode: mode,
-            cssConfig: cssConfig,
-            formData: formData,
-            formAction: formAction,
-            hydrateForm: _this2.hydrateForm,
-            renderReceiptPage: _this2.renderReceiptPage
-          });
-        } else {
-          return (0, _core.jsx)(_GivingForm.default, (0, _extends2.default)({}, formState, {
-            mode: mode,
-            submitForm: _this2.submitForm
-          }));
-        }
-      }());
+      }, status !== "loaded" ? (0, _core.jsx)(_Spinner.default, null) : (0, _core.jsx)(_FormRouter.default, null));
     }
   }, {
     key: "__reactstandin__regenerateByEval",
@@ -42583,6 +42307,7 @@ function (_Component) {
   return App;
 }(_react.Component);
 
+App.contextType = _FormContext.FormContext;
 var _default = App;
 var _default2 = _default;
 exports.default = _default2;
@@ -42605,12 +42330,8 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/extends":"node_modules/@babel/runtime/helpers/extends.js","@babel/runtime/helpers/objectWithoutProperties":"node_modules/@babel/runtime/helpers/objectWithoutProperties.js","@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/assertThisInitialized":"node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./Forms/GivingForm":"src/Components/Forms/GivingForm.js","./ConfirmationPage":"src/Components/ConfirmationPage.js","./RedirectForm":"src/Components/RedirectForm.js","./Banner":"src/Components/Banner.js","./styles/app.module.css":"src/Components/styles/app.module.css","../helpers/ls":"src/helpers/ls.js"}],"src/index.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./Context/FormContext":"src/Components/Context/FormContext.js","./Forms/FormRouter":"src/Components/Forms/FormRouter.js","./StyledComponents/Banner":"src/Components/StyledComponents/Banner.js","./StyledComponents/FormWrapper":"src/Components/StyledComponents/FormWrapper.js","./StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"src/index.js":[function(require,module,exports) {
 "use strict";
-
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var _core = require("@emotion/core");
 
@@ -42624,7 +42345,7 @@ var ReactDOM = _interopRequireWildcard(require("react-dom"));
 
 var _App = _interopRequireDefault(require("./Components/App"));
 
-var _fetchHelpers = require("./helpers/fetch-helpers");
+var _FormContext = _interopRequireDefault(require("./Components/Context/FormContext"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -42640,95 +42361,9 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
 };
 
 var rootEntry = document.getElementById('form-root');
-
-function getConfiguration() {
-  return _getConfiguration.apply(this, arguments);
-}
-
-function _getConfiguration() {
-  _getConfiguration = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee() {
-    var initialState, generator, formName, proxyUri, isDrupal;
-    return _regenerator.default.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.prev = 0;
-            generator = rootEntry.dataset.environment ? rootEntry.dataset.environment.toLowerCase() : null;
-            formName = rootEntry.dataset.formName;
-            proxyUri = rootEntry.dataset.rest;
-            isDrupal = generator && generator.includes('drupal');
-
-            if (!isDrupal) {
-              _context.next = 9;
-              break;
-            }
-
-            initialState = rootEntry.dataset.initialState;
-            _context.next = 12;
-            break;
-
-          case 9:
-            _context.next = 11;
-            return (0, _fetchHelpers.callApi)("http://10.100.43.42:8080/config/form-config.json", {
-              method: 'GET'
-            });
-
-          case 11:
-            initialState = _context.sent;
-
-          case 12:
-            if (initialState.mode === "production") {
-              if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
-                window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
-
-                if (Object.keys(window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers).length) {
-                  window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers = {};
-                }
-              }
-            }
-
-            _context.next = 19;
-            break;
-
-          case 15:
-            _context.prev = 15;
-            _context.t0 = _context["catch"](0);
-            console.error(_context.t0);
-            alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
-
-          case 19:
-            return _context.abrupt("return", {
-              initialState: initialState
-            });
-
-          case 20:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, null, [[0, 15]]);
-  }));
-  return _getConfiguration.apply(this, arguments);
-}
-
-getConfiguration().then(function (_ref) {
-  var initialState = _ref.initialState;
-
-  if (initialState) {
-    ReactDOM.render((0, _core.jsx)(_App.default, {
-      config: {
-        initialState: initialState
-      }
-    }), rootEntry);
-  } else {
-    console.error({
-      error: "Initial State is Undefined"
-    });
-    alert('There was an internal error loading this form. Please check back later or call us at 1-800-759-0700');
-  }
-});
+ReactDOM.render((0, _core.jsx)(_FormContext.default, null, (0, _core.jsx)(_App.default, {
+  rootEntry: rootEntry
+})), rootEntry);
 ;
 
 (function () {
@@ -42739,7 +42374,6 @@ getConfiguration().then(function (_ref) {
   }
 
   reactHotLoader.register(rootEntry, "rootEntry", "/Users/wehand/Code/react-form-drupal/src/index.js");
-  reactHotLoader.register(getConfiguration, "getConfiguration", "/Users/wehand/Code/react-form-drupal/src/index.js");
 })();
 
 ;
@@ -42748,7 +42382,7 @@ getConfiguration().then(function (_ref) {
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","./vendors":"src/vendors.js","core-js/stable":"node_modules/core-js/stable/index.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./Components/App":"src/Components/App.js","./helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","./vendors":"src/vendors.js","core-js/stable":"node_modules/core-js/stable/index.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./Components/App":"src/Components/App.js","./Components/Context/FormContext":"src/Components/Context/FormContext.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -42776,7 +42410,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55894" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51762" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -42973,27 +42607,7 @@ module.exports = function loadJSBundle(bundle) {
     document.getElementsByTagName('head')[0].appendChild(script);
   });
 };
-},{}],"node_modules/parcel-bundler/src/builtins/loaders/browser/css-loader.js":[function(require,module,exports) {
-module.exports = function loadCSSBundle(bundle) {
-  return new Promise(function (resolve, reject) {
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = bundle;
-
-    link.onerror = function (e) {
-      link.onerror = link.onload = null;
-      reject(e);
-    };
-
-    link.onload = function () {
-      link.onerror = link.onload = null;
-      resolve();
-    };
-
-    document.getElementsByTagName('head')[0].appendChild(link);
-  });
-};
 },{}],0:[function(require,module,exports) {
-var b=require("node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.register("css",require("node_modules/parcel-bundler/src/builtins/loaders/browser/css-loader.js"));b.load([["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],["stable.7461f3b3.js","node_modules/core-js/stable/index.js"]]).then(function(){require("src/index.js");});
+var b=require("node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.load([["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],["stable.7461f3b3.js","node_modules/core-js/stable/index.js"]]).then(function(){require("src/index.js");});
 },{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js",0], null)
 //# sourceMappingURL=/src.a2b27638.js.map

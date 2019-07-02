@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 
+import { DataContext } from '../Context/DataContext'
+
 import FormPanel from "../FormComponents/StyledComponents/FormPanel" 
 import FieldSet from "../FormComponents/StyledComponents/FieldSet"
 import FormHeader from "../FormComponents/StyledComponents/FormHeader"
@@ -11,10 +13,11 @@ import ShippingAddressBlock from '../FormComponents/Blocks/ShippingAddressBlock'
 import AddressBlock from '../FormComponents/Blocks/AddressBlock';
 import FormOptionsBlock from '../FormComponents/Blocks/FormOptionsBlock';
 import SubmitButton from '../FormComponents/SubmitButton';
+import Spinner from "../StyledComponents/Spinner"
 
 import { getErrorType } from '../../helpers/error-types';
 import { callApi } from '../../helpers/fetch-helpers';
-import { cryptLS, removeOneLS } from '../../helpers/ls';
+
 
 const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, 
     phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/,
@@ -30,38 +33,7 @@ const getDay = () => {
 class GivingForm extends Component {
     constructor(props){
         super(props)
-        // console.log({hydratedData: props.hydratedData})
-        const fields = {
-            Zip: props.hydratedData ? props.hydratedData.Zip : "",
-            Monthlypledgeday: props.hydratedData && props.hydratedData.Monthlypledgeday ? props.hydratedData.Monthlypledgeday : getDay(),
-            Title: props.hydratedData ? props.hydratedData.Title : "",
-            Firstname: props.hydratedData ? props.hydratedData.Firstname : "",
-            Middlename: props.hydratedData ? props.hydratedData.Middlename : "",
-            Lastname: props.hydratedData ? props.hydratedData.Lastname : "",
-            Suffix: props.hydratedData ? props.hydratedData.Suffix : "",
-            Spousename: props.hydratedData ? props.hydratedData.Spousename : "",
-            Address1: props.hydratedData ? props.hydratedData.Address1 : "",
-            Address2: props.hydratedData ? props.hydratedData.Address2 : "",
-            City: props.hydratedData ? props.hydratedData.City  : "",
-            State: props.hydratedData ? props.hydratedData.State : "",
-            Country: props.hydratedData ? props.hydratedData.Country : props.international ? "" : "United States",
-            Emailaddress: props.hydratedData ? props.hydratedData.Emailaddress : "",
-            phone: props.hydratedData ? props.hydratedData.Phoneareacode + props.hydratedData.Phoneexchange + props.hydratedData.Phonenumber : "",
-            savePersonalInfo: true,
-            ShipToYes: props.hydratedData && props.hydratedData.ShipTo === "Yes" ? true : false,
-            ShipToName: props.hydratedData ? props.hydratedData.ShipToName : "",
-            ShipToAddress1: props.hydratedData ? props.hydratedData.ShipToAddress1 : "",
-            ShipToAddress2: props.hydratedData ? props.hydratedData.ShipToAddress2 : "",
-            ShipToCity: props.hydratedData ? props.hydratedData.ShipToCity : "",
-            ShipToCountry: props.hydratedData ? props.hydratedData.ShipToCountry : "",
-            ShipToZip: props.hydratedData ? props.hydratedData.ShipToZip : "",
-            ShipToState: props.hydratedData ? props.hydratedData.ShipToState : ""
-        }
-        const errors = {}
-        for (let field in fields) {
-            errors[field] = ""
-        }
-        errors.amount = ""
+        // console.log({props})
         const hasMonthlyAmounts = props.monthlyAmounts && props.monthlyAmounts.length;
         const hasSingleAmounts = props.singleAmounts && props.singleAmounts.length;
         this.state = {
@@ -78,10 +50,8 @@ class GivingForm extends Component {
             cart: {
                 items: []
             },
-            fields,
-            errors,
-            defaultAmount: props.hydratedData && props.hydratedData.MultipleDonations ? -1 : props.defaultAmount,
-            defaultOption: props.hydratedData && props.hydratedData.MultipleDonations ? '' : props.defaultOption,
+            defaultAmount: props.defaultAmount,
+            defaultOption: props.defaultOption,
             hydratedAdditionalGift: 0,
             initialUpdate: false
         }
@@ -98,6 +68,41 @@ class GivingForm extends Component {
     }
 
     componentDidMount(){
+        const fields = {
+            Zip: "",
+            Monthlypledgeday: getDay(),
+            Title: "",
+            Firstname: "",
+            Middlename: "",
+            Lastname:  "",
+            Suffix:  "",
+            Spousename:  "",
+            Address1: "",
+            Address2: "",
+            City: "",
+            State: "",
+            Country: this.props.international ? "" : "United States",
+            Emailaddress:  "",
+            phone:  "",
+            savePersonalInfo: true,
+            ShipToYes: false,
+            ShipToName:  "",
+            ShipToAddress1:  "",
+            ShipToAddress2:  "",
+            ShipToCity:  "",
+            ShipToCountry:  "",
+            ShipToZip:  "",
+            ShipToState:  ""
+        }
+        const errors = {}
+        for (let field in fields) {
+            errors[field] = ""
+        }
+        errors.amount = ""
+        this.context.initFields({type: "INIT_FORM_STATE", fields, errors, international: this.props.international, formType: this.props.type})
+
+        this.context.loadLS({type: "LOAD"})
+
         const { hydratedData } = this.props
         // check to see if this is a postback from confirmation page
         if (hydratedData && hydratedData.MultipleDonations) {
@@ -194,15 +199,12 @@ class GivingForm extends Component {
 
             const formData = { Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Phoneareacode, Phoneexchange, Phonenumber, Spousename, Suffix, State, Title, Zip }
             // lifetime of stored data on this form
-            const days = 30
-            //convert days into milliseconds
-            const lifetime = days * 24 * 60 * 60 * 1000 // n days = x days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-            // encrypt and add to local storage,
-            cryptLS({formData}, lifetime, 'info');
+           
+            this.context.saveLS({type: "SAVE"}, formData)
             
         } else {
             // otherwise remove any stored data from local storage
-            removeOneLS('info');
+            this.context.removeOneLS('info');
         }
     }
 
@@ -255,22 +257,8 @@ class GivingForm extends Component {
         let value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        const fields = {...this.state.fields},  errors = {...this.state.errors};
-        fields[name] = value;
-        const isZip = name.includes("Zip") && value.length >= 5;  
-        if (isZip) {
-            this.setState({fields}, async () =>{
-                if (!zip_regex.test(value)) {
-                    errors[name] = "Invalid Postal Code"
-                } else {
-                    errors[name] = await this.callZipCityStateService(name, value)
-                }
-                this.setState({errors})
-            })
-        } else {
-            errors[name] = this.validateInput(false, name, value);
-            this.setState({ fields, errors });
-        }
+        this.context.validateAndUpdateField({type: "UPDATE_FIELD", name, value})
+
     }
 
     async handleSubmit(e) {
@@ -289,12 +277,11 @@ class GivingForm extends Component {
             (pledgeFound > -1 && items[pledgeFound].PledgeAmount == 0 && addGiftFound < 0) || 
             (pledgeFound < 0 && addGiftFound < 0 && productFound < 0)
             ) {
-            const errors = this.state.errors
-            errors.amount = "Please make a valid donation"
-            return this.setState({submitting: false, errors})
+            return this.setState({submitting: false}, ()=>{
+                this.context.updateField({type: "UPDATE_FIELD", name: "amount", value: "", error: "Please make a valid donation"})
+            })
         }
 
-        const errors = {...this.state.errors};
         let isValidForm = true;
         if (this.state.fields.Country == "United States") {
             try {
@@ -736,8 +723,6 @@ class GivingForm extends Component {
         const { 
             defaultAmount,
             defaultOption,
-            errors, 
-            fields,
             fundInfo,
             givingInfo,
             productInfo, 
@@ -747,6 +732,12 @@ class GivingForm extends Component {
             hydratedAdditionalGift,
             hydratedFund
         } = this.state;
+        const {
+            errors, 
+            fields,
+            initialized
+        } = this.context;
+        console.log({fields, errors})
         const hasErrors = Object.values(errors).filter(val => val && val.length > 0).length > 0;
         return (
             <form id="react-form" autoComplete="off" onSubmit={this.handleSubmit}>
@@ -802,78 +793,89 @@ class GivingForm extends Component {
                             />
                         </FormPanel>
                     )
-                }               
-                <FormPanel className="form-panel">
-                    <FieldSet>
-                        <legend>Name and Billing Address Block</legend>
-                        <FormPanel className="name-address__info">
-                            <FormHeader className="form-header">Please Enter Your Billing Information</FormHeader>
-                            <NameBlock
-                                fields={fields} 
-                                errors={errors} 
-                                getMiddleName={getMiddleName}
-                                getSuffix={getSuffix}
-                                getSpouseInfo={getSpouseInfo}
-                                handleInputChange={this.handleInputChange}
-                                type="Name" 
-                            />
-                            <AddressBlock 
-                                fields={fields} 
-                                errors={errors} 
-                                handleInputChange={this.handleInputChange} 
-                                getPhone={getPhone}
-                                international={international}
-                                type="Billing"
-                            />
-                        </FormPanel>               
-                    </FieldSet>
-                    { 
-                        shipping && (
+                }
+                { 
+                    initialized ? (               
+                        <FormPanel className="form-panel">
                             <FieldSet>
-                                <legend>Shipping Address Block</legend>
-                                <FormPanel className="shipping-address__container">
-                                    <FormOptionsBlock 
-                                        id="ShipToYes"
-                                        checked={fields.ShipToYes}
+                                <legend>Name and Billing Address Block</legend>
+                                <FormPanel className="name-address__info">
+                                    <FormHeader className="form-header">Please Enter Your Billing Information</FormHeader>
+                                    <NameBlock
+                                        fields={fields} 
+                                        errors={errors} 
+                                        getMiddleName={getMiddleName}
+                                        getSuffix={getSuffix}
+                                        getSpouseInfo={getSpouseInfo}
                                         handleInputChange={this.handleInputChange}
-                                        label="&nbsp;My shipping address is different than my billing address."
+                                        type="Name" 
                                     />
-                                    {
-                                        fields.ShipToYes && (
-                                            <ShippingAddressBlock 
-                                                fields={fields} 
-                                                errors={errors} 
-                                                handleInputChange={this.handleInputChange} 
-                                                international={international}
-                                            />
-                                        )
-                                    }
-                                </FormPanel>
+                                    <AddressBlock 
+                                        fields={fields} 
+                                        errors={errors} 
+                                        handleInputChange={this.handleInputChange} 
+                                        getPhone={getPhone}
+                                        international={international}
+                                        type="Billing"
+                                    />
+                                </FormPanel>               
                             </FieldSet>
-                        ) 
-                    } 
-                    <FieldSet>
-                        <legend>Save Personal Info Block</legend>
-                        <FormOptionsBlock
-                            id="savePersonalInfo" 
-                            checked={fields.savePersonalInfo} 
-                            handleInputChange={this.handleInputChange} 
-                            label="&nbsp;Remember my name and address next time"
-                        />
-                    </FieldSet>
-                    <FieldSet>
-                        <legend>Form Submit Block</legend>
-                        <SubmitButton 
-                            hasErrors={hasErrors}
-                            error={errors.amount}
-                            handleSubmit={this.handleSubmit}
-                            submitting={submitting}
-                        />
-                    </FieldSet>
-                </FormPanel>
+                            { 
+                                shipping && (
+                                    <FieldSet>
+                                        <legend>Shipping Address Block</legend>
+                                        <FormPanel className="shipping-address__container">
+                                            <FormOptionsBlock 
+                                                id="ShipToYes"
+                                                checked={fields.ShipToYes}
+                                                handleInputChange={this.handleInputChange}
+                                                label="&nbsp;My shipping address is different than my billing address."
+                                            />
+                                            {
+                                                fields.ShipToYes && (
+                                                    <ShippingAddressBlock 
+                                                        fields={fields} 
+                                                        errors={errors} 
+                                                        handleInputChange={this.handleInputChange} 
+                                                        international={international}
+                                                    />
+                                                )
+                                            }
+                                        </FormPanel>
+                                    </FieldSet>
+                                ) 
+                            } 
+                            <FieldSet>
+                                <legend>Save Personal Info Block</legend>
+                                <FormOptionsBlock
+                                    id="savePersonalInfo" 
+                                    checked={fields.savePersonalInfo} 
+                                    handleInputChange={this.handleInputChange} 
+                                    label="&nbsp;Remember my name and address next time"
+                                />
+                            </FieldSet>
+                            <FieldSet>
+                                <legend>Form Submit Block</legend>
+                                <SubmitButton 
+                                    hasErrors={hasErrors}
+                                    error={errors.amount}
+                                    handleSubmit={this.handleSubmit}
+                                    submitting={submitting}
+                                />
+                            </FieldSet>
+                        </FormPanel>
+                    ) : ( 
+                        <FormPanel className="form-panel">
+                            <Spinner />
+                        </FormPanel>
+                    )
+                }
             </form>
+
         )
     }
 }
+
+GivingForm.contextType = DataContext
 
 export default GivingForm

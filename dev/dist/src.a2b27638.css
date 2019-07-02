@@ -19,15 +19,5 @@
     height: 1px;
     overflow: hidden;
 }
-.form-wrapper {
-    background: var(--form-bg-color);
-    box-sizing: border-box;
-    border: var(--form-border-width) solid var(--form-border-color);
-    border-radius: var(--form-border-radius);
-    color: var(--form-text-color);
-    max-width: var(--form-max-width);
-    padding: var(--form-padding);
-    width: 100%;
-}
 
 /*# sourceMappingURL=/src.a2b27638.css.map */

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 // import shortid from 'shortid'
 
 import PaymentForm from './PaymentForm'
-import Spinner from './Spinner'
+import Spinner from './StyledComponents/Spinner'
 
 import {callApi} from '../helpers/fetch-helpers'
 
