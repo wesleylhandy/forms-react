@@ -3,10 +3,31 @@ import { callApi } from "../../helpers/fetch-helpers";
 
 export const FormConfigContext = React.createContext();
 
+const reducer = (state, action) => {
+	const { type,  status, formConfig, DonorID, formAction, confirmationData } = action
+	switch (type) {
+		case "INIT_FORM_STATE":
+			return {...state, status, formConfig }
+			break;
+		case "LOAD_ERROR":
+			return {...state, status }
+			break;
+		case "SUBMIT_FORM":
+			return {...state, submitted: true, DonorID, formAction, confirmationData}
+			break;
+		default:
+			return {...state}
+	}
+}
+
 class FormConfigProvider extends Component {
 	state = {
 		status: "initial",
 		formConfig: {},
+		submitted: false,
+		DonorID: "",
+		formAction: "",
+		confirmationData: [],
 		getConfiguration: async rootEntry => {
 			let initialState;
 			try {
@@ -36,9 +57,9 @@ class FormConfigProvider extends Component {
 						}
 					}
 				}
-				this.setState({ formConfig: initialState, status: "loaded" });
+				this.setState(state=> reducer(state, {type: "INIT_FORM_STATE", formConfig: initialState, status: "loaded" }));
 			} catch (err) {
-				this.setState({ status: "error" }, () => {
+				this.setState(state=> reducer(state, {type: "LOAD_ERROR", status: "error" }), () => {
 					console.error(err);
 					alert(
 						"There was an internal error loading this form. Please check back later or call us at 1-800-759-0700"
@@ -46,6 +67,7 @@ class FormConfigProvider extends Component {
 				});
 			}
 		},
+		submitForm: action => this.setState(state=> reducer(state,action))
 	};
 	render() {
 		const {

@@ -18,17 +18,16 @@ const reducer = (state, action) => {
 		singlePledgeData,
 		monthlyPledgeData,
 		source,
+		type,
 	} = action;
 	let found, fields, errors, items, givingInfo, productInfo, designationInfo;
-	switch (action.type) {
+	switch (type) {
 		case "INIT_FORM_STATE":
 			return {
 				...state,
 				initialized: true,
 				fields: action.fields,
-				errors: action.errors,
-				international: action.international,
-				type: action.formType,
+				errors: action.errors
 			};
 			break;
 		case "LOAD":
@@ -128,8 +127,6 @@ const reducer = (state, action) => {
 				...state,
 				submitted: true,
 				submitting: false,
-				DonorID: action.DonorID,
-				formAction: action.formAction,
 			};
 		default:
 			return { ...state };
@@ -151,21 +148,10 @@ class GivingFormProvider extends Component {
 		givingInfo: {},
 		productInfo: [],
 		designationInfo: {},
-		formAction: "",
-		DonorID: "",
 		initialized: false,
-		submitted: false,
 		submitting: false,
-		confirmed: false,
-		finalized: false,
-		confirmationData: null,
-		finalizedData: null,
-		formAction: null,
-		international: false,
 		fields: {},
 		errors: {},
-		donorID: null,
-		type: "",
 		initFields: action => this.setState(state => reducer(state, action)),
 		loadLS: action => {
 			const store = readLS("store");
@@ -427,7 +413,7 @@ class GivingFormProvider extends Component {
 						ContactSource,
 						SectionName,
 						proxy,
-					} = this.context;
+					} = this.context.formConfig;
 					const ClientBrowser =
 						window && window.navigator ? window.navigator.userAgent : "";
 					const UrlReferer = window.location.origin + window.location.pathname;
@@ -445,6 +431,8 @@ class GivingFormProvider extends Component {
 
 					//process cart
 					let TransactionType = "Product";
+					const items = [...this.state.cart.items];
+					const pledgeFound = items.findIndex(el=>el && el.type == "donation")
 					const isMonthly =
 						pledgeFound > -1 ? items[pledgeFound].monthly : false;
 					const DonationType = isMonthly ? "CR" : "CC";
@@ -559,13 +547,37 @@ class GivingFormProvider extends Component {
 							body: JSON.stringify(data),
 						});
 						const DonorID = msg.split(";")[0].split(" - ")[1];
-						const formAction = msg.split(" is ")[1];
+						const confirmUrl = msg.split(" is ")[1];
+						const bodyFormData = new FormData()
+						bodyFormData.append("DonorID", DonorID);
+						const confirmationData = []
+						let formAction
+						try {
+							const html = await callApi(confirmUrl, {
+								method: "POST",
+								body: new URLSearchParams(bodyFormData)
+							})
+							const parser = new DOMParser();
+							const doc = parser.parseFromString(html, "text/html");
+							const form = doc.querySelector('form')
+							formAction = form ? form.action : '';
+							const inputs = doc.querySelectorAll('input[type="hidden"]')
+							inputs.forEach(input=> confirmationData.push({name: input.name, value: input.value}))
+						} catch (err) {
+							console.error("GetConfirmationPageError")
+							console.error({err})
+						}
 						return this.setState(state =>
 							reducer(state, {
 								type: "SUBMIT_GIVING_FORM",
-								DonorID,
-								formAction,
-							})
+							}), () => {
+								this.context.submitForm({
+									type: "SUBMIT_FORM",
+									DonorID,
+									formAction,
+									confirmationData
+								})
+							}
 						);
 					} catch (err) {
 						console.error(err.message);
@@ -715,7 +727,7 @@ class GivingFormProvider extends Component {
 	 */
 	validateInput = (submitting, name, value) => {
 		let error = "";
-		const { international } = this.state;
+		const { international } = this.context.formConfig;
 		const { ShipToYes } = this.state.fields;
 		switch (name) {
 			case "Title":

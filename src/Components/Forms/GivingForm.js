@@ -76,9 +76,7 @@ class GivingForm extends Component {
 		this.context.initFields({
 			type: "INIT_FORM_STATE",
 			fields,
-			errors,
-			international: this.props.international,
-			formType: this.props.type,
+			errors
 		});
 		this.context.loadLS({ type: "LOAD" });
 	}

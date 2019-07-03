@@ -35582,7 +35582,47 @@ function _asyncToGenerator(fn) {
 }
 
 module.exports = _asyncToGenerator;
-},{}],"node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
+},{}],"node_modules/@babel/runtime/helpers/defineProperty.js":[function(require,module,exports) {
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+},{}],"node_modules/@babel/runtime/helpers/objectSpread.js":[function(require,module,exports) {
+var defineProperty = require("./defineProperty");
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+    var ownKeys = Object.keys(source);
+
+    if (typeof Object.getOwnPropertySymbols === 'function') {
+      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+      }));
+    }
+
+    ownKeys.forEach(function (key) {
+      defineProperty(target, key, source[key]);
+    });
+  }
+
+  return target;
+}
+
+module.exports = _objectSpread;
+},{"./defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js"}],"node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
 (function(self) {
   'use strict';
 
@@ -36287,6 +36327,8 @@ var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
+var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
+
 var _core = require("@emotion/core");
 
 var _react = _interopRequireWildcard(require("react"));
@@ -36310,6 +36352,42 @@ var FormConfigContext = _react.default.createContext();
 
 exports.FormConfigContext = FormConfigContext;
 
+var reducer = function reducer(state, action) {
+  var type = action.type,
+      status = action.status,
+      formConfig = action.formConfig,
+      DonorID = action.DonorID,
+      formAction = action.formAction,
+      confirmationData = action.confirmationData;
+
+  switch (type) {
+    case "INIT_FORM_STATE":
+      return (0, _objectSpread2.default)({}, state, {
+        status: status,
+        formConfig: formConfig
+      });
+      break;
+
+    case "LOAD_ERROR":
+      return (0, _objectSpread2.default)({}, state, {
+        status: status
+      });
+      break;
+
+    case "SUBMIT_FORM":
+      return (0, _objectSpread2.default)({}, state, {
+        submitted: true,
+        DonorID: DonorID,
+        formAction: formAction,
+        confirmationData: confirmationData
+      });
+      break;
+
+    default:
+      return (0, _objectSpread2.default)({}, state);
+  }
+};
+
 var FormConfigProvider =
 /*#__PURE__*/
 function (_Component) {
@@ -36330,6 +36408,10 @@ function (_Component) {
     _this.state = {
       status: "initial",
       formConfig: {},
+      submitted: false,
+      DonorID: "",
+      formAction: "",
+      confirmationData: [],
       getConfiguration: function () {
         var _getConfiguration = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
@@ -36374,9 +36456,12 @@ function (_Component) {
                     }
                   }
 
-                  _this.setState({
-                    formConfig: initialState,
-                    status: "loaded"
+                  _this.setState(function (state) {
+                    return reducer(state, {
+                      type: "INIT_FORM_STATE",
+                      formConfig: initialState,
+                      status: "loaded"
+                    });
                   });
 
                   _context.next = 19;
@@ -36386,8 +36471,11 @@ function (_Component) {
                   _context.prev = 16;
                   _context.t0 = _context["catch"](0);
 
-                  _this.setState({
-                    status: "error"
+                  _this.setState(function (state) {
+                    return reducer(state, {
+                      type: "LOAD_ERROR",
+                      status: "error"
+                    });
                   }, function () {
                     console.error(_context.t0);
                     alert("There was an internal error loading this form. Please check back later or call us at 1-800-759-0700");
@@ -36406,7 +36494,12 @@ function (_Component) {
         }
 
         return getConfiguration;
-      }()
+      }(),
+      submitForm: function submitForm(action) {
+        return _this.setState(function (state) {
+          return reducer(state, action);
+        });
+      }
     };
     return _this;
   }
@@ -36444,6 +36537,7 @@ exports.default = _default2;
   }
 
   reactHotLoader.register(FormConfigContext, "FormConfigContext", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/FormConfigProvider.js");
+  reactHotLoader.register(reducer, "reducer", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/FormConfigProvider.js");
   reactHotLoader.register(FormConfigProvider, "FormConfigProvider", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/FormConfigProvider.js");
   reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/FormConfigProvider.js");
 })();
@@ -36454,7 +36548,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"node_modules/@babel/runtime/helpers/extends.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"node_modules/@babel/runtime/helpers/extends.js":[function(require,module,exports) {
 function _extends() {
   module.exports = _extends = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -36474,23 +36568,6 @@ function _extends() {
 }
 
 module.exports = _extends;
-},{}],"node_modules/@babel/runtime/helpers/defineProperty.js":[function(require,module,exports) {
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-module.exports = _defineProperty;
 },{}],"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":[function(require,module,exports) {
 function _arrayWithoutHoles(arr) {
   if (Array.isArray(arr)) {
@@ -36527,30 +36604,7 @@ function _toConsumableArray(arr) {
 }
 
 module.exports = _toConsumableArray;
-},{"./arrayWithoutHoles":"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js","./iterableToArray":"node_modules/@babel/runtime/helpers/iterableToArray.js","./nonIterableSpread":"node_modules/@babel/runtime/helpers/nonIterableSpread.js"}],"node_modules/@babel/runtime/helpers/objectSpread.js":[function(require,module,exports) {
-var defineProperty = require("./defineProperty");
-
-function _objectSpread(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-    var ownKeys = Object.keys(source);
-
-    if (typeof Object.getOwnPropertySymbols === 'function') {
-      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-      }));
-    }
-
-    ownKeys.forEach(function (key) {
-      defineProperty(target, key, source[key]);
-    });
-  }
-
-  return target;
-}
-
-module.exports = _objectSpread;
-},{"./defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js"}],"src/helpers/ls.js":[function(require,module,exports) {
+},{"./arrayWithoutHoles":"node_modules/@babel/runtime/helpers/arrayWithoutHoles.js","./iterableToArray":"node_modules/@babel/runtime/helpers/iterableToArray.js","./nonIterableSpread":"node_modules/@babel/runtime/helpers/nonIterableSpread.js"}],"src/helpers/ls.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36739,8 +36793,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = exports.GivingFormContext = void 0;
 
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
@@ -36797,17 +36849,16 @@ var reducer = function reducer(state, action) {
       typeId = action.typeId,
       singlePledgeData = action.singlePledgeData,
       monthlyPledgeData = action.monthlyPledgeData,
-      source = action.source;
+      source = action.source,
+      type = action.type;
   var found, fields, errors, items, givingInfo, productInfo, designationInfo;
 
-  switch (action.type) {
+  switch (type) {
     case "INIT_FORM_STATE":
       return (0, _objectSpread2.default)({}, state, {
         initialized: true,
         fields: action.fields,
-        errors: action.errors,
-        international: action.international,
-        type: action.formType
+        errors: action.errors
       });
       break;
 
@@ -36944,9 +36995,7 @@ var reducer = function reducer(state, action) {
     case "SUBMIT_GIVING_FORM":
       return (0, _objectSpread2.default)({}, state, {
         submitted: true,
-        submitting: false,
-        DonorID: action.DonorID,
-        formAction: action.formAction
+        submitting: false
       });
 
     default:
@@ -36967,7 +37016,7 @@ function (_Component) {
   (0, _inherits2.default)(GivingFormProvider, _Component);
 
   function GivingFormProvider() {
-    var _getPrototypeOf2, _this$state;
+    var _getPrototypeOf2;
 
     var _this;
 
@@ -36978,577 +37027,626 @@ function (_Component) {
     }
 
     _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(GivingFormProvider)).call.apply(_getPrototypeOf2, [this].concat(args)));
-    _this.state = (_this$state = {
+    _this.state = {
       cart: {
         items: []
       },
       givingInfo: {},
       productInfo: [],
       designationInfo: {},
-      formAction: "",
-      DonorID: "",
       initialized: false,
-      submitted: false,
       submitting: false,
-      confirmed: false,
-      finalized: false,
-      confirmationData: null,
-      finalizedData: null
-    }, (0, _defineProperty2.default)(_this$state, "formAction", null), (0, _defineProperty2.default)(_this$state, "international", false), (0, _defineProperty2.default)(_this$state, "fields", {}), (0, _defineProperty2.default)(_this$state, "errors", {}), (0, _defineProperty2.default)(_this$state, "donorID", null), (0, _defineProperty2.default)(_this$state, "type", ""), (0, _defineProperty2.default)(_this$state, "initFields", function initFields(action) {
-      return _this.setState(function (state) {
-        return reducer(state, action);
-      });
-    }), (0, _defineProperty2.default)(_this$state, "loadLS", function loadLS(action) {
-      var store = (0, _ls.readLS)("store");
-      var info = (0, _ls.readLS)("info");
-      var formData = store ? store : info; // console.log({store, info, formData})
+      fields: {},
+      errors: {},
+      initFields: function initFields(action) {
+        return _this.setState(function (state) {
+          return reducer(state, action);
+        });
+      },
+      loadLS: function loadLS(action) {
+        var store = (0, _ls.readLS)("store");
+        var info = (0, _ls.readLS)("info");
+        var formData = store ? store : info; // console.log({store, info, formData})
 
-      if (!formData) {
-        (0, _ls.emptyLS)();
-      }
+        if (!formData) {
+          (0, _ls.emptyLS)();
+        }
 
-      if (!store) {
-        (0, _ls.removeOneLS)("store");
-      }
+        if (!store) {
+          (0, _ls.removeOneLS)("store");
+        }
 
-      action.formData = formData;
+        action.formData = formData;
 
-      _this.setState(function (state) {
-        return reducer(state, action);
-      });
-    }), (0, _defineProperty2.default)(_this$state, "saveLS", function saveLS() {
-      var days = 30;
-      var lifetime = days * 24 * 60 * 60 * 1000;
-      var _this$state$fields = _this.state.fields,
-          Address1 = _this$state$fields.Address1,
-          Address2 = _this$state$fields.Address2,
-          City = _this$state$fields.City,
-          Country = _this$state$fields.Country,
-          Emailaddress = _this$state$fields.Emailaddress,
-          Firstname = _this$state$fields.Firstname,
-          Middlename = _this$state$fields.Middlename,
-          Lastname = _this$state$fields.Lastname,
-          Spousename = _this$state$fields.Spousename,
-          Suffix = _this$state$fields.Suffix,
-          State = _this$state$fields.State,
-          Title = _this$state$fields.Title,
-          Zip = _this$state$fields.Zip,
-          phone = _this$state$fields.phone;
-      var Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
-          Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "",
-          Phonenumber = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
-      var formData = {
-        Address1: Address1,
-        Address2: Address2,
-        City: City,
-        Country: Country,
-        Emailaddress: Emailaddress,
-        Firstname: Firstname,
-        Middlename: Middlename,
-        Lastname: Lastname,
-        Phoneareacode: Phoneareacode,
-        Phoneexchange: Phoneexchange,
-        Phonenumber: Phonenumber,
-        Spousename: Spousename,
-        Suffix: Suffix,
-        State: State,
-        Title: Title,
-        Zip: Zip
-      };
-      (0, _ls.cryptLS)({
-        formData: formData
-      }, lifetime, "info");
-    }), (0, _defineProperty2.default)(_this$state, "removeOneLS", function removeOneLS(type) {
-      (0, _ls.removeOneLS)("info");
-    }), (0, _defineProperty2.default)(_this$state, "updateField", function updateField(action) {
-      return _this.setState(function (state) {
-        return reducer(state, action);
-      });
-    }), (0, _defineProperty2.default)(_this$state, "validateAndUpdateField", function () {
-      var _validateAndUpdateField = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(action) {
-        var name, value, isZip;
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                name = action.name, value = action.value;
-                isZip = name.includes("Zip") && value.length >= 5;
+        _this.setState(function (state) {
+          return reducer(state, action);
+        });
+      },
+      saveLS: function saveLS() {
+        var days = 30;
+        var lifetime = days * 24 * 60 * 60 * 1000;
+        var _this$state$fields = _this.state.fields,
+            Address1 = _this$state$fields.Address1,
+            Address2 = _this$state$fields.Address2,
+            City = _this$state$fields.City,
+            Country = _this$state$fields.Country,
+            Emailaddress = _this$state$fields.Emailaddress,
+            Firstname = _this$state$fields.Firstname,
+            Middlename = _this$state$fields.Middlename,
+            Lastname = _this$state$fields.Lastname,
+            Spousename = _this$state$fields.Spousename,
+            Suffix = _this$state$fields.Suffix,
+            State = _this$state$fields.State,
+            Title = _this$state$fields.Title,
+            Zip = _this$state$fields.Zip,
+            phone = _this$state$fields.phone;
+        var Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
+            Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "",
+            Phonenumber = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
+        var formData = {
+          Address1: Address1,
+          Address2: Address2,
+          City: City,
+          Country: Country,
+          Emailaddress: Emailaddress,
+          Firstname: Firstname,
+          Middlename: Middlename,
+          Lastname: Lastname,
+          Phoneareacode: Phoneareacode,
+          Phoneexchange: Phoneexchange,
+          Phonenumber: Phonenumber,
+          Spousename: Spousename,
+          Suffix: Suffix,
+          State: State,
+          Title: Title,
+          Zip: Zip
+        };
+        (0, _ls.cryptLS)({
+          formData: formData
+        }, lifetime, "info");
+      },
+      removeOneLS: function removeOneLS(type) {
+        (0, _ls.removeOneLS)("info");
+      },
+      updateField: function updateField(action) {
+        return _this.setState(function (state) {
+          return reducer(state, action);
+        });
+      },
+      validateAndUpdateField: function () {
+        var _validateAndUpdateField = (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
+        _regenerator.default.mark(function _callee(action) {
+          var name, value, isZip;
+          return _regenerator.default.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  name = action.name, value = action.value;
+                  isZip = name.includes("Zip") && value.length >= 5;
 
-                if (!isZip) {
-                  _context.next = 19;
+                  if (!isZip) {
+                    _context.next = 19;
+                    break;
+                  }
+
+                  if (zip_regex.test(value)) {
+                    _context.next = 7;
+                    break;
+                  }
+
+                  action.error = "Invalid Postal Code";
+                  _context.next = 17;
                   break;
-                }
 
-                if (zip_regex.test(value)) {
-                  _context.next = 7;
+                case 7:
+                  _context.prev = 7;
+                  _context.next = 10;
+                  return _this.callZipCityStateService(name, value);
+
+                case 10:
+                  action.error = _context.sent;
+                  _context.next = 17;
                   break;
-                }
 
-                action.error = "Invalid Postal Code";
-                _context.next = 17;
-                break;
-
-              case 7:
-                _context.prev = 7;
-                _context.next = 10;
-                return _this.callZipCityStateService(name, value);
-
-              case 10:
-                action.error = _context.sent;
-                _context.next = 17;
-                break;
-
-              case 13:
-                _context.prev = 13;
-                _context.t0 = _context["catch"](7);
-                console.error("CallZipCityStateServiceError");
-                console.error({
-                  err: _context.t0
-                });
-
-              case 17:
-                _context.next = 22;
-                break;
-
-              case 19:
-                _context.next = 21;
-                return _this.validateInput(false, name, value);
-
-              case 21:
-                action.error = _context.sent;
-
-              case 22:
-                _this.setState(function (state) {
-                  return reducer(state, action);
-                });
-
-              case 23:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, null, [[7, 13]]);
-      }));
-
-      function validateAndUpdateField(_x) {
-        return _validateAndUpdateField.apply(this, arguments);
-      }
-
-      return validateAndUpdateField;
-    }()), (0, _defineProperty2.default)(_this$state, "submitGivingForm", function () {
-      var _submitGivingForm = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee3(action) {
-        return _regenerator.default.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                _this.setState(function (state) {
-                  return reducer(state, {
-                    type: "TOGGLE_SUBMITTING"
+                case 13:
+                  _context.prev = 13;
+                  _context.t0 = _context["catch"](7);
+                  console.error("CallZipCityStateServiceError");
+                  console.error({
+                    err: _context.t0
                   });
-                },
-                /*#__PURE__*/
-                (0, _asyncToGenerator2.default)(
-                /*#__PURE__*/
-                _regenerator.default.mark(function _callee2() {
-                  var isValidGift, isValidForm, zipError, addressError, shipZipError, shipAddressError, _action, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$context, mode, _this$context$EmailSu, EmailSubjectLine, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, DonorID, formAction, message, _getErrorType, breaking, _name;
 
-                  return _regenerator.default.wrap(function _callee2$(_context2) {
-                    while (1) {
-                      switch (_context2.prev = _context2.next) {
-                        case 0:
-                          isValidGift = _this.validateGift();
+                case 17:
+                  _context.next = 22;
+                  break;
 
-                          if (isValidGift) {
-                            _context2.next = 3;
-                            break;
-                          }
+                case 19:
+                  _context.next = 21;
+                  return _this.validateInput(false, name, value);
 
-                          return _context2.abrupt("return", _this.setState(function (state) {
-                            return reducer(state, {
-                              type: "TOGGLE_SUBMITTING"
-                            });
-                          }, function () {
-                            _this.setState(function (state) {
+                case 21:
+                  action.error = _context.sent;
+
+                case 22:
+                  _this.setState(function (state) {
+                    return reducer(state, action);
+                  });
+
+                case 23:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, null, [[7, 13]]);
+        }));
+
+        function validateAndUpdateField(_x) {
+          return _validateAndUpdateField.apply(this, arguments);
+        }
+
+        return validateAndUpdateField;
+      }(),
+      submitGivingForm: function () {
+        var _submitGivingForm = (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
+        _regenerator.default.mark(function _callee3(action) {
+          return _regenerator.default.wrap(function _callee3$(_context3) {
+            while (1) {
+              switch (_context3.prev = _context3.next) {
+                case 0:
+                  _this.setState(function (state) {
+                    return reducer(state, {
+                      type: "TOGGLE_SUBMITTING"
+                    });
+                  },
+                  /*#__PURE__*/
+                  (0, _asyncToGenerator2.default)(
+                  /*#__PURE__*/
+                  _regenerator.default.mark(function _callee2() {
+                    var isValidGift, isValidForm, zipError, addressError, shipZipError, shipAddressError, _action, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$context$formCon, mode, _this$context$formCon2, EmailSubjectLine, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, items, pledgeFound, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, DonorID, confirmUrl, bodyFormData, confirmationData, formAction, html, parser, doc, form, inputs, message, _getErrorType, breaking, _name;
+
+                    return _regenerator.default.wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            isValidGift = _this.validateGift();
+
+                            if (isValidGift) {
+                              _context2.next = 3;
+                              break;
+                            }
+
+                            return _context2.abrupt("return", _this.setState(function (state) {
                               return reducer(state, {
-                                type: "UPDATE_FIELD",
-                                name: "amount",
-                                value: "",
-                                error: "Please make a valid donation"
+                                type: "TOGGLE_SUBMITTING"
                               });
-                            });
-                          }));
+                            }, function () {
+                              _this.setState(function (state) {
+                                return reducer(state, {
+                                  type: "UPDATE_FIELD",
+                                  name: "amount",
+                                  value: "",
+                                  error: "Please make a valid donation"
+                                });
+                              });
+                            }));
 
-                        case 3:
-                          isValidForm = true;
+                          case 3:
+                            isValidForm = true;
 
-                          if (!(_this.state.fields.Country == "United States")) {
-                            _context2.next = 49;
-                            break;
-                          }
+                            if (!(_this.state.fields.Country == "United States")) {
+                              _context2.next = 49;
+                              break;
+                            }
 
-                          _context2.prev = 5;
-                          _context2.next = 8;
-                          return _this.callZipCityStateService("Zip", _this.state.fields["Zip"]);
+                            _context2.prev = 5;
+                            _context2.next = 8;
+                            return _this.callZipCityStateService("Zip", _this.state.fields["Zip"]);
 
-                        case 8:
-                          zipError = _context2.sent;
+                          case 8:
+                            zipError = _context2.sent;
 
-                          if (zipError) {
+                            if (zipError) {
+                              _context2.next = 20;
+                              break;
+                            }
+
+                            _context2.prev = 10;
+                            _context2.next = 13;
+                            return _this.callAddressVerification(_this.state.fields["Address1"], _this.state.fields["Address2"], _this.state.fields["City"], _this.state.fields["State"], _this.state.fields["Zip"]);
+
+                          case 13:
+                            addressError = _context2.sent;
                             _context2.next = 20;
                             break;
-                          }
 
-                          _context2.prev = 10;
-                          _context2.next = 13;
-                          return _this.callAddressVerification(_this.state.fields["Address1"], _this.state.fields["Address2"], _this.state.fields["City"], _this.state.fields["State"], _this.state.fields["Zip"]);
+                          case 16:
+                            _context2.prev = 16;
+                            _context2.t0 = _context2["catch"](10);
+                            console.log("AddressVerificationError");
+                            console.error({
+                              err: _context2.t0
+                            });
 
-                        case 13:
-                          addressError = _context2.sent;
-                          _context2.next = 20;
-                          break;
+                          case 20:
+                            if (!(_this.state.fields["ShipToZip"] && _this.state.fields.ShipToYes)) {
+                              _context2.next = 31;
+                              break;
+                            }
 
-                        case 16:
-                          _context2.prev = 16;
-                          _context2.t0 = _context2["catch"](10);
-                          console.log("AddressVerificationError");
-                          console.error({
-                            err: _context2.t0
-                          });
+                            _context2.prev = 21;
+                            _context2.next = 24;
+                            return _this.callZipCityStateService("ShipToZip", _this.state.fields["ShipToZip"]);
 
-                        case 20:
-                          if (!(_this.state.fields["ShipToZip"] && _this.state.fields.ShipToYes)) {
+                          case 24:
+                            shipZipError = _context2.sent;
                             _context2.next = 31;
                             break;
-                          }
 
-                          _context2.prev = 21;
-                          _context2.next = 24;
-                          return _this.callZipCityStateService("ShipToZip", _this.state.fields["ShipToZip"]);
+                          case 27:
+                            _context2.prev = 27;
+                            _context2.t1 = _context2["catch"](21);
+                            console.log("CSZValidationError__SHIPPING");
+                            console.error({
+                              err: _context2.t1
+                            });
 
-                        case 24:
-                          shipZipError = _context2.sent;
-                          _context2.next = 31;
-                          break;
+                          case 31:
+                            if (!(!shipZipError && _this.state.fields.ShipToYes)) {
+                              _context2.next = 42;
+                              break;
+                            }
 
-                        case 27:
-                          _context2.prev = 27;
-                          _context2.t1 = _context2["catch"](21);
-                          console.log("CSZValidationError__SHIPPING");
-                          console.error({
-                            err: _context2.t1
-                          });
+                            _context2.prev = 32;
+                            _context2.next = 35;
+                            return _this.callAddressVerification(_this.state.fields["ShipToAddress1"], _this.state.fields["ShipToAddress2"], _this.state.fields["ShipToCity"], _this.state.fields["ShipToState"], _this.state.fields["ShipToZip"]);
 
-                        case 31:
-                          if (!(!shipZipError && _this.state.fields.ShipToYes)) {
+                          case 35:
+                            shipAddressError = _context2.sent;
                             _context2.next = 42;
                             break;
-                          }
 
-                          _context2.prev = 32;
-                          _context2.next = 35;
-                          return _this.callAddressVerification(_this.state.fields["ShipToAddress1"], _this.state.fields["ShipToAddress2"], _this.state.fields["ShipToCity"], _this.state.fields["ShipToState"], _this.state.fields["ShipToZip"]);
+                          case 38:
+                            _context2.prev = 38;
+                            _context2.t2 = _context2["catch"](32);
+                            console.log("AddressVerificationError__SHIPPING");
+                            console.error({
+                              err: _context2.t2
+                            });
 
-                        case 35:
-                          shipAddressError = _context2.sent;
-                          _context2.next = 42;
-                          break;
+                          case 42:
+                            if (addressError || shipAddressError || zipError || shipZipError) {
+                              isValidForm = false;
+                              _action = {
+                                type: "UPDATE_FIELDS",
+                                fields: []
+                              };
 
-                        case 38:
-                          _context2.prev = 38;
-                          _context2.t2 = _context2["catch"](32);
-                          console.log("AddressVerificationError__SHIPPING");
-                          console.error({
-                            err: _context2.t2
-                          });
+                              if (addressError) {
+                                _action.fields.push({
+                                  name: "Address1",
+                                  value: _this.state.fields.Address1,
+                                  error: addressError
+                                });
+                              }
 
-                        case 42:
-                          if (addressError || shipAddressError || zipError || shipZipError) {
-                            isValidForm = false;
-                            _action = {
+                              if (shipAddressError) {
+                                _action.fields.push({
+                                  name: "ShipToAddress1",
+                                  value: _this.state.fields.ShipToAddress1,
+                                  error: shipAddressError
+                                });
+                              }
+
+                              if (zipError) {
+                                _action.fields.push({
+                                  name: "Zip",
+                                  value: _this.state.fields.Zip,
+                                  error: zipError
+                                });
+                              }
+
+                              if (shipZipError) {
+                                _action.fields.push({
+                                  name: "ShipToZip",
+                                  value: _this.state.fields.ShipToZip,
+                                  error: shipZipError
+                                });
+                              }
+
+                              _this.setState(function (state) {
+                                return reducer(state, _action);
+                              });
+                            }
+
+                            _context2.next = 49;
+                            break;
+
+                          case 45:
+                            _context2.prev = 45;
+                            _context2.t3 = _context2["catch"](5);
+                            console.log("CSZValidationError");
+                            console.error({
+                              err: _context2.t3
+                            });
+
+                          case 49:
+                            fields = _this.state.fields;
+                            fieldNames = Object.keys(fields);
+                            action = {
                               type: "UPDATE_FIELDS",
                               fields: []
                             };
 
-                            if (addressError) {
-                              _action.fields.push({
-                                name: "Address1",
-                                value: _this.state.fields.Address1,
-                                error: addressError
-                              });
-                            }
+                            for (i = 0; i < fieldNames.length; i++) {
+                              error = void 0;
+                              name = fieldNames[i];
 
-                            if (shipAddressError) {
-                              _action.fields.push({
-                                name: "ShipToAddress1",
-                                value: _this.state.fields.ShipToAddress1,
-                                error: shipAddressError
-                              });
-                            }
+                              if (!name.includes("Zip")) {
+                                error = _this.validateInput(true, name, fields[name]);
 
-                            if (zipError) {
-                              _action.fields.push({
-                                name: "Zip",
-                                value: _this.state.fields.Zip,
-                                error: zipError
-                              });
-                            }
-
-                            if (shipZipError) {
-                              _action.fields.push({
-                                name: "ShipToZip",
-                                value: _this.state.fields.ShipToZip,
-                                error: shipZipError
-                              });
-                            }
-
-                            _this.setState(function (state) {
-                              return reducer(state, _action);
-                            });
-                          }
-
-                          _context2.next = 49;
-                          break;
-
-                        case 45:
-                          _context2.prev = 45;
-                          _context2.t3 = _context2["catch"](5);
-                          console.log("CSZValidationError");
-                          console.error({
-                            err: _context2.t3
-                          });
-
-                        case 49:
-                          fields = _this.state.fields;
-                          fieldNames = Object.keys(fields);
-                          action = {
-                            type: "UPDATE_FIELDS",
-                            fields: []
-                          };
-
-                          for (i = 0; i < fieldNames.length; i++) {
-                            error = void 0;
-                            name = fieldNames[i];
-
-                            if (!name.includes("Zip")) {
-                              error = _this.validateInput(true, name, fields[name]);
-
-                              if (error) {
-                                isValidForm = false;
-                                action.fields.push({
-                                  name: name,
-                                  value: fields[name],
-                                  error: error
-                                });
+                                if (error) {
+                                  isValidForm = false;
+                                  action.fields.push({
+                                    name: name,
+                                    value: fields[name],
+                                    error: error
+                                  });
+                                }
                               }
                             }
-                          }
 
-                          if (isValidForm) {
-                            _context2.next = 55;
-                            break;
-                          }
+                            if (isValidForm) {
+                              _context2.next = 55;
+                              break;
+                            }
 
-                          return _context2.abrupt("return", _this.setState(function (state) {
-                            return reducer(state, {
-                              type: "TOGGLE_SUBMITTING"
-                            });
-                          }, function () {
-                            _this.setState(function (state) {
-                              return reducer(state, action);
-                            });
-                          }));
-
-                        case 55:
-                          Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
-                          _this$context = _this.context, mode = _this$context.mode, _this$context$EmailSu = _this$context.EmailSubjectLine, EmailSubjectLine = _this$context$EmailSu === void 0 ? "Thank You for Your Contribution" : _this$context$EmailSu, APIAccessID = _this$context.APIAccessID, subscriptions = _this$context.subscriptions, AddContactYN = _this$context.AddContactYN, ActivityName = _this$context.ActivityName, ContactSource = _this$context.ContactSource, SectionName = _this$context.SectionName, proxy = _this$context.proxy;
-                          ClientBrowser = window && window.navigator ? window.navigator.userAgent : "";
-                          UrlReferer = window.location.origin + window.location.pathname; //construct phone fields from regex
-
-                          Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "", Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "", Phonenumber = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : ""; //process cart
-
-                          TransactionType = "Product";
-                          isMonthly = pledgeFound > -1 ? items[pledgeFound].monthly : false;
-                          DonationType = isMonthly ? "CR" : "CC";
-                          IsRecurringCreditCardDonation = isMonthly;
-                          Monthlypledgeday = isMonthly ? _this.state.fields.Monthlypledgeday : null;
-                          Monthlypledgeamount = isMonthly && pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
-                          Singledonationamount = !isMonthly && pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
-
-                          if (Monthlypledgeamount > 0) {
-                            TransactionType = "Monthly";
-                          }
-
-                          if (Singledonationamount > 0) {
-                            TransactionType = "Single";
-                          }
-
-                          ShipTo = ShipToYes === true ? "Yes" : "No";
-
-                          multipleDonations = function multipleDonations() {
-                            return items.map(function (_ref3, index) {
-                              var DetailName = _ref3.DetailName,
-                                  DetailDescription = _ref3.DetailDescription,
-                                  DetailCprojCredit = _ref3.DetailCprojCredit,
-                                  DetailCprojMail = _ref3.DetailCprojMail,
-                                  PledgeAmount = _ref3.PledgeAmount;
-
-                              if (index === pledgeFound && _this.state.designationSelected) {
-                                DetailName = _this.state.designationInfo.DetailName;
-                                DetailDescription = _this.state.designationInfo.DetailDescription;
-                                DetailCprojCredit = _this.state.designationInfo.DetailCprojCredit;
-                                DetailCprojMail = _this.state.designationInfo.DetailCprojMail;
-                              } // console.log({DetailName});
-
-
-                              return {
-                                DetailName: DetailName,
-                                DetailDescription: DetailDescription,
-                                DetailCprojCredit: DetailCprojCredit,
-                                DetailCprojMail: DetailCprojMail,
-                                PledgeAmount: PledgeAmount
-                              };
-                            });
-                          };
-
-                          MultipleDonations = multipleDonations();
-                          MotivationText = window.cbn_obj && window.cbn_obj.motivation ? window.cbn_obj.motivation : "041181";
-                          data = {
-                            ActivityName: ActivityName,
-                            AddContactYN: AddContactYN,
-                            Address1: Address1,
-                            Address2: Address2,
-                            APIAccessID: APIAccessID,
-                            City: City,
-                            ContactSource: ContactSource,
-                            Country: Country,
-                            DonationType: DonationType,
-                            Emailaddress: Emailaddress,
-                            EmailSubjectLine: EmailSubjectLine,
-                            Firstname: Firstname,
-                            IsRecurringCreditCardDonation: IsRecurringCreditCardDonation,
-                            Lastname: Lastname,
-                            Middlename: Middlename,
-                            Monthlypledgeamount: Monthlypledgeamount,
-                            Monthlypledgeday: Monthlypledgeday,
-                            MotivationText: MotivationText,
-                            MultipleDonations: MultipleDonations,
-                            Phoneareacode: Phoneareacode,
-                            Phoneexchange: Phoneexchange,
-                            Phonenumber: Phonenumber,
-                            SectionName: SectionName,
-                            ShipTo: ShipTo,
-                            Singledonationamount: Singledonationamount,
-                            Spousename: Spousename,
-                            State: State,
-                            Suffix: Suffix,
-                            Title: Title,
-                            TransactionType: TransactionType,
-                            UrlReferer: UrlReferer,
-                            Zip: Zip,
-                            ClientBrowser: ClientBrowser,
-                            ShipToAddress1: ShipToAddress1,
-                            ShipToAddress2: ShipToAddress2,
-                            ShipToCity: ShipToCity,
-                            ShipToState: ShipToState,
-                            ShipToZip: ShipToZip,
-                            ShipToCountry: ShipToCountry,
-                            ShipToName: ShipToName,
-                            mode: mode
-                          }; //flatten subscription information
-
-                          if (subscriptions && subscriptions.length) {
-                            subscriptions.forEach(function (sub) {
-                              return data[sub.key] = sub.value;
-                            });
-                          }
-
-                          _context2.prev = 75;
-                          _context2.next = 78;
-                          return (0, _fetchHelpers.callApi)(proxy, {
-                            method: "POST",
-                            mode: "cors",
-                            headers: {
-                              "Content-Type": "application/json; charset=utf-8"
-                            },
-                            body: JSON.stringify(data)
-                          });
-
-                        case 78:
-                          msg = _context2.sent;
-                          DonorID = msg.split(";")[0].split(" - ")[1];
-                          formAction = msg.split(" is ")[1];
-                          return _context2.abrupt("return", _this.setState(function (state) {
-                            return reducer(state, {
-                              type: "SUBMIT_GIVING_FORM",
-                              DonorID: DonorID,
-                              formAction: formAction
-                            });
-                          }));
-
-                        case 84:
-                          _context2.prev = 84;
-                          _context2.t4 = _context2["catch"](75);
-                          console.error(_context2.t4.message);
-                          message = _context2.t4.message;
-                          _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
-
-                          if (breaking) {
-                            alert("There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700");
-                          } else {
-                            _this.setState(function (state) {
+                            return _context2.abrupt("return", _this.setState(function (state) {
                               return reducer(state, {
-                                type: "UPDATE_FIELD",
-                                name: _name,
-                                value: fields[_name],
-                                error: message
+                                type: "TOGGLE_SUBMITTING"
+                              });
+                            }, function () {
+                              _this.setState(function (state) {
+                                return reducer(state, action);
+                              });
+                            }));
+
+                          case 55:
+                            Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
+                            _this$context$formCon = _this.context.formConfig, mode = _this$context$formCon.mode, _this$context$formCon2 = _this$context$formCon.EmailSubjectLine, EmailSubjectLine = _this$context$formCon2 === void 0 ? "Thank You for Your Contribution" : _this$context$formCon2, APIAccessID = _this$context$formCon.APIAccessID, subscriptions = _this$context$formCon.subscriptions, AddContactYN = _this$context$formCon.AddContactYN, ActivityName = _this$context$formCon.ActivityName, ContactSource = _this$context$formCon.ContactSource, SectionName = _this$context$formCon.SectionName, proxy = _this$context$formCon.proxy;
+                            ClientBrowser = window && window.navigator ? window.navigator.userAgent : "";
+                            UrlReferer = window.location.origin + window.location.pathname; //construct phone fields from regex
+
+                            Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "", Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "", Phonenumber = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : ""; //process cart
+
+                            TransactionType = "Product";
+                            items = (0, _toConsumableArray2.default)(_this.state.cart.items);
+                            pledgeFound = items.findIndex(function (el) {
+                              return el && el.type == "donation";
+                            });
+                            isMonthly = pledgeFound > -1 ? items[pledgeFound].monthly : false;
+                            DonationType = isMonthly ? "CR" : "CC";
+                            IsRecurringCreditCardDonation = isMonthly;
+                            Monthlypledgeday = isMonthly ? _this.state.fields.Monthlypledgeday : null;
+                            Monthlypledgeamount = isMonthly && pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
+                            Singledonationamount = !isMonthly && pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
+
+                            if (Monthlypledgeamount > 0) {
+                              TransactionType = "Monthly";
+                            }
+
+                            if (Singledonationamount > 0) {
+                              TransactionType = "Single";
+                            }
+
+                            ShipTo = ShipToYes === true ? "Yes" : "No";
+
+                            multipleDonations = function multipleDonations() {
+                              return items.map(function (_ref3, index) {
+                                var DetailName = _ref3.DetailName,
+                                    DetailDescription = _ref3.DetailDescription,
+                                    DetailCprojCredit = _ref3.DetailCprojCredit,
+                                    DetailCprojMail = _ref3.DetailCprojMail,
+                                    PledgeAmount = _ref3.PledgeAmount;
+
+                                if (index === pledgeFound && _this.state.designationSelected) {
+                                  DetailName = _this.state.designationInfo.DetailName;
+                                  DetailDescription = _this.state.designationInfo.DetailDescription;
+                                  DetailCprojCredit = _this.state.designationInfo.DetailCprojCredit;
+                                  DetailCprojMail = _this.state.designationInfo.DetailCprojMail;
+                                } // console.log({DetailName});
+
+
+                                return {
+                                  DetailName: DetailName,
+                                  DetailDescription: DetailDescription,
+                                  DetailCprojCredit: DetailCprojCredit,
+                                  DetailCprojMail: DetailCprojMail,
+                                  PledgeAmount: PledgeAmount
+                                };
+                              });
+                            };
+
+                            MultipleDonations = multipleDonations();
+                            MotivationText = window.cbn_obj && window.cbn_obj.motivation ? window.cbn_obj.motivation : "041181";
+                            data = {
+                              ActivityName: ActivityName,
+                              AddContactYN: AddContactYN,
+                              Address1: Address1,
+                              Address2: Address2,
+                              APIAccessID: APIAccessID,
+                              City: City,
+                              ContactSource: ContactSource,
+                              Country: Country,
+                              DonationType: DonationType,
+                              Emailaddress: Emailaddress,
+                              EmailSubjectLine: EmailSubjectLine,
+                              Firstname: Firstname,
+                              IsRecurringCreditCardDonation: IsRecurringCreditCardDonation,
+                              Lastname: Lastname,
+                              Middlename: Middlename,
+                              Monthlypledgeamount: Monthlypledgeamount,
+                              Monthlypledgeday: Monthlypledgeday,
+                              MotivationText: MotivationText,
+                              MultipleDonations: MultipleDonations,
+                              Phoneareacode: Phoneareacode,
+                              Phoneexchange: Phoneexchange,
+                              Phonenumber: Phonenumber,
+                              SectionName: SectionName,
+                              ShipTo: ShipTo,
+                              Singledonationamount: Singledonationamount,
+                              Spousename: Spousename,
+                              State: State,
+                              Suffix: Suffix,
+                              Title: Title,
+                              TransactionType: TransactionType,
+                              UrlReferer: UrlReferer,
+                              Zip: Zip,
+                              ClientBrowser: ClientBrowser,
+                              ShipToAddress1: ShipToAddress1,
+                              ShipToAddress2: ShipToAddress2,
+                              ShipToCity: ShipToCity,
+                              ShipToState: ShipToState,
+                              ShipToZip: ShipToZip,
+                              ShipToCountry: ShipToCountry,
+                              ShipToName: ShipToName,
+                              mode: mode
+                            }; //flatten subscription information
+
+                            if (subscriptions && subscriptions.length) {
+                              subscriptions.forEach(function (sub) {
+                                return data[sub.key] = sub.value;
+                              });
+                            }
+
+                            _context2.prev = 77;
+                            _context2.next = 80;
+                            return (0, _fetchHelpers.callApi)(proxy, {
+                              method: "POST",
+                              mode: "cors",
+                              headers: {
+                                "Content-Type": "application/json; charset=utf-8"
+                              },
+                              body: JSON.stringify(data)
+                            });
+
+                          case 80:
+                            msg = _context2.sent;
+                            DonorID = msg.split(";")[0].split(" - ")[1];
+                            confirmUrl = msg.split(" is ")[1];
+                            bodyFormData = new FormData();
+                            bodyFormData.append("DonorID", DonorID);
+                            confirmationData = [];
+                            _context2.prev = 86;
+                            _context2.next = 89;
+                            return (0, _fetchHelpers.callApi)(confirmUrl, {
+                              method: "POST",
+                              body: new URLSearchParams(bodyFormData)
+                            });
+
+                          case 89:
+                            html = _context2.sent;
+                            parser = new DOMParser();
+                            doc = parser.parseFromString(html, "text/html");
+                            form = doc.querySelector('form');
+                            formAction = form ? form.action : '';
+                            inputs = doc.querySelectorAll('input[type="hidden"]');
+                            inputs.forEach(function (input) {
+                              return confirmationData.push({
+                                name: input.name,
+                                value: input.value
                               });
                             });
-                          }
+                            _context2.next = 102;
+                            break;
 
-                          return _context2.abrupt("return", _this.setState(function (state) {
-                            return reducer(state, {
-                              type: "TOGGLE_SUBMITTING"
+                          case 98:
+                            _context2.prev = 98;
+                            _context2.t4 = _context2["catch"](86);
+                            console.error("GetConfirmationPageError");
+                            console.error({
+                              err: _context2.t4
                             });
-                          }));
 
-                        case 91:
-                        case "end":
-                          return _context2.stop();
+                          case 102:
+                            return _context2.abrupt("return", _this.setState(function (state) {
+                              return reducer(state, {
+                                type: "SUBMIT_GIVING_FORM"
+                              });
+                            }, function () {
+                              _this.context.submitForm({
+                                type: "SUBMIT_FORM",
+                                DonorID: DonorID,
+                                formAction: formAction,
+                                confirmationData: confirmationData
+                              });
+                            }));
+
+                          case 105:
+                            _context2.prev = 105;
+                            _context2.t5 = _context2["catch"](77);
+                            console.error(_context2.t5.message);
+                            message = _context2.t5.message;
+                            _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
+
+                            if (breaking) {
+                              alert("There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700");
+                            } else {
+                              _this.setState(function (state) {
+                                return reducer(state, {
+                                  type: "UPDATE_FIELD",
+                                  name: _name,
+                                  value: fields[_name],
+                                  error: message
+                                });
+                              });
+                            }
+
+                            return _context2.abrupt("return", _this.setState(function (state) {
+                              return reducer(state, {
+                                type: "TOGGLE_SUBMITTING"
+                              });
+                            }));
+
+                          case 112:
+                          case "end":
+                            return _context2.stop();
+                        }
                       }
-                    }
-                  }, _callee2, null, [[5, 45], [10, 16], [21, 27], [32, 38], [75, 84]]);
-                })));
+                    }, _callee2, null, [[5, 45], [10, 16], [21, 27], [32, 38], [77, 105], [86, 98]]);
+                  })));
 
-              case 1:
-              case "end":
-                return _context3.stop();
+                case 1:
+                case "end":
+                  return _context3.stop();
+              }
             }
-          }
-        }, _callee3);
-      }));
+          }, _callee3);
+        }));
 
-      function submitGivingForm(_x2) {
-        return _submitGivingForm.apply(this, arguments);
+        function submitGivingForm(_x2) {
+          return _submitGivingForm.apply(this, arguments);
+        }
+
+        return submitGivingForm;
+      }(),
+      addToCart: function addToCart(action) {
+        return _this.setState(function (state) {
+          return reducer(state, action);
+        });
+      },
+      removeFromCart: function removeFromCart(action) {
+        return _this.setState(function (state) {
+          return reducer(state, action);
+        });
+      },
+      updateGivingType: function updateGivingType(action) {
+        return _this.setState(function (state) {
+          return reducer(state, action);
+        });
       }
-
-      return submitGivingForm;
-    }()), (0, _defineProperty2.default)(_this$state, "addToCart", function addToCart(action) {
-      return _this.setState(function (state) {
-        return reducer(state, action);
-      });
-    }), (0, _defineProperty2.default)(_this$state, "removeFromCart", function removeFromCart(action) {
-      return _this.setState(function (state) {
-        return reducer(state, action);
-      });
-    }), (0, _defineProperty2.default)(_this$state, "updateGivingType", function updateGivingType(action) {
-      return _this.setState(function (state) {
-        return reducer(state, action);
-      });
-    }), _this$state);
+    };
 
     _this.validateGift = function () {
       var items = (0, _toConsumableArray2.default)(_this.state.cart.items);
@@ -37726,7 +37824,7 @@ function (_Component) {
 
     _this.validateInput = function (submitting, name, value) {
       var error = "";
-      var international = _this.state.international;
+      var international = _this.context.formConfig.international;
       var ShipToYes = _this.state.fields.ShipToYes;
 
       switch (name) {
@@ -37878,7 +37976,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js","@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../../helpers/ls":"src/helpers/ls.js","../../helpers/error-types":"src/helpers/error-types.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../../helpers/ls":"src/helpers/ls.js","../../helpers/error-types":"src/helpers/error-types.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41362,9 +41460,7 @@ function (_Component) {
       this.context.initFields({
         type: "INIT_FORM_STATE",
         fields: fields,
-        errors: errors,
-        international: this.props.international,
-        formType: this.props.type
+        errors: errors
       });
       this.context.loadLS({
         type: "LOAD"
@@ -42156,7 +42252,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50129" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50784" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
