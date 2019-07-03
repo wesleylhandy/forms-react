@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-
+import React, { Component } from "react";
 
 // class ProductLayout extends Component {
 //     constructor(props) {
@@ -37,7 +36,7 @@ import React, { Component } from 'react'
 //         const target = e.target;
 //         let value = target.value;
 //         const name = target.name;
-        
+
 //         const fields = {...this.state.fields}, errors = {...this.state.errors};
 
 //         if (name === "additionalGift") {
@@ -58,7 +57,7 @@ import React, { Component } from 'react'
 //             }
 //             fields[name] = isValid ? +value : 0;
 //         } else {
-//             fields[name] = value;   
+//             fields[name] = value;
 //             const idx = parseInt(name.split("product-select-")[1])
 //             // console.log({name, idx, value})
 //             this.props.updateProducts({idx, quantity: value})
@@ -81,17 +80,17 @@ import React, { Component } from 'react'
 //         return additionalGift.display ? (
 //             <div styleName="styles.additional-amount flex.flex flex.flex-left flex.flex-axes-center">
 //                 <label styleName="styles.product-total__input--label" htmlFor="additionalGift">$</label>
-//                 <input styleName='styles.additional-amount__input' 
+//                 <input styleName='styles.additional-amount__input'
 //                     name="additionalGift"
 //                     placeholder="0"
 //                     onBlur={e=> e.target.value === "" ? e.target.value = 0 : true}
 //                     onFocus={e=> e.target.value === 0 ? e.target.value = "" : true}
-//                     onChange={this.handleInputChange} 
+//                     onChange={this.handleInputChange}
 //                     value={ val }
 //                 />
 //                 <div styleName="styles.additional-amount__input--label">{additionalGift.additionalGiftMessage}</div>
 //                 <div styleName="styles.error">{errors.additionalGift}</div>
-//             </div> 
+//             </div>
 //         ) : null;
 //     }
 
@@ -124,14 +123,14 @@ import React, { Component } from 'react'
 //                             <div key={`product${i}`} styleName="styles.product-card flex.flex flex.flex-row flex.flex-left flex.flex-axes-center">
 //                                 <div styleName="flex.flex flex.flex-column">
 //                                     <label htmlFor={`product-select-${i}`} styleName="styles.select-product__label">Quantity</label>
-//                                     <select styleName="styles.select-product flex.flex-no-grow" 
-//                                         name={`product-select-${i}`} 
-//                                         value={val >= 0 ? val : 0} 
+//                                     <select styleName="styles.select-product flex.flex-no-grow"
+//                                         name={`product-select-${i}`}
+//                                         value={val >= 0 ? val : 0}
 //                                         onChange={this.handleInputChange}
 //                                     >
 
 //                                         { renderOptions(i) }
-                                        
+
 //                                     </select>
 //                                 </div>
 //                                 <div styleName="styles.product-card__body flex.flex-grow">
@@ -154,6 +153,6 @@ import React, { Component } from 'react'
 //     }
 // }
 
-const ProductLayout = () => null
+const ProductLayout = () => null;
 
-export default ProductLayout
+export default ProductLayout;

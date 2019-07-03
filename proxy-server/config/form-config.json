@@ -10,8 +10,8 @@
     "getPhone": true,
     "numProducts": 0,
     "products": [],
-    "numFunds": 0,
-    "funds": [],
+    "numDesignations": 0,
+    "designations": [],
     "subscriptions": [{
         "value": "israel",
         "key": "NewsletterSubs"

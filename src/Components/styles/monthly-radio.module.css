@@ -1,22 +1,22 @@
 .monthly-radio {
-    box-sizing: border-box;
-    margin: 19px auto;
-    max-width: calc(19px * 15);
+	box-sizing: border-box;
+	margin: 19px auto;
+	max-width: calc(19px * 15);
 }
 
 h3.form-header {
-    box-sizing: border-box;
-    color: var(--heading-color);
-    text-align: center;
-    font-size: 19px;
-    font-family: var(--semibold-font-family);
-    font-style: var(--semibold-font-style);
-    font-weight: var(--semibold-font-weight);
-    line-height: calc(19px * 1.15);
-    margin-bottom: 5px;
-    -webkit-margin-before: 0;
-    -webkit-margin-after: 0;
-    -webkit-padding-before: 0;
-    -webkit-padding-start: 0;
-    -webkit-padding-after: 0;
+	box-sizing: border-box;
+	color: var(--heading-color);
+	text-align: center;
+	font-size: 19px;
+	font-family: var(--semibold-font-family);
+	font-style: var(--semibold-font-style);
+	font-weight: var(--semibold-font-weight);
+	line-height: calc(19px * 1.15);
+	margin-bottom: 5px;
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
+	-webkit-padding-before: 0;
+	-webkit-padding-start: 0;
+	-webkit-padding-after: 0;
 }

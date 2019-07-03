@@ -1,8 +1,8 @@
-import SecureLS from 'secure-ls';
+import SecureLS from "secure-ls";
 
-const alphabetSoup = '$3cr3t5';
+const alphabetSoup = "$3cr3t5";
 
-const ls = new SecureLS({encryptionSecret: alphabetSoup});
+const ls = new SecureLS({ encryptionSecret: alphabetSoup });
 
 /**
  * Returns decrypted text or null
@@ -10,14 +10,14 @@ const ls = new SecureLS({encryptionSecret: alphabetSoup});
  * @returns {Object|null}
  */
 export function readLS(type) {
-    const {formData, expiration} = ls.get(type);
-    // console.log({formData, expiration})
-    if (formData && expiration) {
-        const present = Date.now();
-        return present > +expiration ? null : formData
-    } else {
-        return null
-    }
+	const { formData, expiration } = ls.get(type);
+	// console.log({formData, expiration})
+	if (formData && expiration) {
+		const present = Date.now();
+		return present > +expiration ? null : formData;
+	} else {
+		return null;
+	}
 }
 
 /**
@@ -26,15 +26,15 @@ export function readLS(type) {
  * @param {Number} lifetime - number of milliseconds in the future to set expiration
  * @param {String} type - either full store or just info
  */
-export function cryptLS({formData}, lifetime, type) {
-    const expiration = Date.now() + lifetime;
-    ls.set(type, {formData, expiration})
+export function cryptLS({ formData }, lifetime, type) {
+	const expiration = Date.now() + lifetime;
+	ls.set(type, { formData, expiration });
 }
 
-export function removeOneLS(type){
-    ls.remove(type);
+export function removeOneLS(type) {
+	ls.remove(type);
 }
 
 export function emptyLS() {
-    ls.removeAll();
+	ls.removeAll();
 }

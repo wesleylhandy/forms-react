@@ -7,4 +7,4 @@ import("react-typography");
 import("@emotion/styled");
 import("@emotion/core");
 import("prop-types");
-import('secure-ls');
+import("secure-ls");

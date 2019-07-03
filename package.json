@@ -4,6 +4,7 @@
     "description": "",
     "main": "index.html",
     "scripts": {
+        "prettify": "prettier --write \"**/*.{js,css,html}\"",
         "start:proxy": "node proxy-server/server.js",
         "start": "parcel index.html --out-dir dev/dist",
         "stop": "pkill SIGINT ProxyServer",
@@ -62,6 +63,7 @@
         "multer": "^1.4.1",
         "node-fetch": "^2.3.0",
         "parcel-bundler": "^1.12.3",
+        "prettier": "1.18.2",
         "react-hot-loader": "^4.12.0"
     }
 }

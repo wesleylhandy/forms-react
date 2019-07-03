@@ -1,38 +1,39 @@
 .tab-group {
-    box-sizing: border-box;
-    height:80px;
-    line-height: 80px;
-    flex: 1 1 auto;
+	box-sizing: border-box;
+	height: 80px;
+	line-height: 80px;
+	flex: 1 1 auto;
 }
 
 .tab-group__input {
-    position: absolute !important;
-    left: -10000px !important;
-    top: auto !important;
-    bottom: auto !important;
-    width: 1px !important;
-    height: 1px !important;
-    overflow: hidden !important;
+	position: absolute !important;
+	left: -10000px !important;
+	top: auto !important;
+	bottom: auto !important;
+	width: 1px !important;
+	height: 1px !important;
+	overflow: hidden !important;
 }
 
-.tab-group__input + label  {
-    display: block;
-    height: 80px;
-    line-height: 80px !important;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-    background: var(--tab-bg-color);
-    border-radius: var(--tab-border-radius);
-    border: 2px solid var(--tab-border-color);
-    margin-bottom: 0;
-    color: var(--tab-text-color);
-    transition: color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out;
+.tab-group__input + label {
+	display: block;
+	height: 80px;
+	line-height: 80px !important;
+	cursor: pointer;
+	width: 100%;
+	text-align: center;
+	background: var(--tab-bg-color);
+	border-radius: var(--tab-border-radius);
+	border: 2px solid var(--tab-border-color);
+	margin-bottom: 0;
+	color: var(--tab-text-color);
+	transition: color 200ms ease-in-out, background-color 200ms ease-in-out,
+		border-color 200ms ease-in-out;
 }
 
 .tab-group__input:checked + label,
 .tab-group__input + label:hover {
-    color: var(--tab-hover-text-color);
-    background-color: var(--tab-hover-bg-color);
-    border-color: var(--tab-hover-border-color);
+	color: var(--tab-hover-text-color);
+	background-color: var(--tab-hover-bg-color);
+	border-color: var(--tab-hover-border-color);
 }
