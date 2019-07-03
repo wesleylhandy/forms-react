@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { GivingFormContext } from "../../Context/GivingFormProvider";
+import { GivingFormContext } from "../../Contexts/GivingFormProvider";
 import FormRow from "../StyledComponents/FormRow";
 
 function CCInfoBlock({ Monthlypledgeday }) {

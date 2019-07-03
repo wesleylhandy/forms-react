@@ -801,7 +801,7 @@ class GivingFormProvider extends Component {
 			props: { children },
 		} = this;
 		return (
-			<DataContext.Provider value={state}>{children}</DataContext.Provider>
+			<GivingFormContext.Provider value={state}>{children}</GivingFormContext.Provider>
 		);
 	}
 }

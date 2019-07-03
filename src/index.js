@@ -6,7 +6,7 @@ import * as ReactDOM from "react-dom";
 
 import App from "./Components/App";
 
-import FormProvider from "./Components/Context/FormContext";
+import FormConfigProvider from "./Components/Contexts/FormConfigProvider";
 
 const givingRootEntry = document.getElementById("giving-form-root");
 const signupRootEntry = document.getElementById("signup-form-root");
@@ -14,27 +14,27 @@ const productRootEntry = document.getElementById("product-form-root");
 
 if (givingRootEntry) {
 	ReactDOM.render(
-		<FormProvider>
+		<FormConfigProvider>
 			<App rootEntry={givingRootEntry} />
-		</FormProvider>,
+		</FormConfigProvider>,
 		givingRootEntry
 	);
 }
 
 if (signupRootEntry) {
 	ReactDOM.render(
-		<FormProvider>
+		<FormConfigProvider>
 			<App rootEntry={signupRootEntry} />
-		</FormProvider>,
+		</FormConfigProvider>,
 		signupRootEntry
 	);
 }
 
 if (productRootEntry) {
 	ReactDOM.render(
-		<FormProvider>
+		<FormConfigProvider>
 			<App rootEntry={productRootEntry} />
-		</FormProvider>,
+		</FormConfigProvider>,
 		productRootEntry
 	);
 }

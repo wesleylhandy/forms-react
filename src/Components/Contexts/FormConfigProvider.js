@@ -53,7 +53,7 @@ class FormConfigProvider extends Component {
 			props: { children },
 		} = this;
 		return (
-			<FormContext.Provider value={state}>{children}</FormContext.Provider>
+			<FormConfigContext.Provider value={state}>{children}</FormConfigContext.Provider>
 		);
 	}
 }

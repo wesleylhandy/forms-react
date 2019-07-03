@@ -22,6 +22,6 @@ class App extends Component {
 	}
 }
 
-App.contextType = FormContext;
+App.contextType = FormConfigContext;
 
 export default App;
