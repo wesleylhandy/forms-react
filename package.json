@@ -8,6 +8,7 @@
         "start:proxy": "node proxy-server/server.js",
         "start": "parcel index.html --out-dir dev/dist",
         "stop": "pkill SIGINT ProxyServer",
+        "prebuild": "yarn prettify",
         "build": "parcel build src/index.js --detailed-report -d dist",
         "build:test": "parcel build src/index.js --detailed-report -d dist/test/v1",
         "postbuild": "pax -rws /index/form/ dist/index* . && rm dist/index*",
