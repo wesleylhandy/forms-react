@@ -196,6 +196,87 @@ router.post("/api", (req, res) => {
 		});
 });
 
+router.get("/signup", (req, res) => {
+	res.statusCode = 403;
+	res.json({ Error: "Not for Snooping Eyes" });
+});
+
+router.post("/signup", (req, res) => {
+	const data = { ...req.body };
+	if (!data) {
+		res.statusCode = 400;
+		return res.send({
+			error:
+				"Bad Request - Your request is missing parameters. Please verify and resubmit.",
+		});
+	}
+	console.log("________ NEW POST TO SIGNUP API __________");
+	console.log({ reqHeaders: req.headers });
+	let CBN_HTTP_X_FORWARDED_FOR;
+	const ApiKey = process.env.gamma;
+	if (
+		req.headers["x-forwarded-for"] &&
+		req.headers["x-forwarded-for"].split(",")[0]
+	) {
+		CBN_HTTP_X_FORWARDED_FOR = req.headers["x-forwarded-for"].split(",")[0];
+	}
+	if (!CBN_HTTP_X_FORWARDED_FOR && req.connection.remoteAddress) {
+		const parsed = ipaddr.process(req.connection.remoteAddress);
+		CBN_HTTP_X_FORWARDED_FOR = parsed.toString();
+	}
+	console.log({ CBN_HTTP_X_FORWARDED_FOR });
+	const mode = data.mode;
+	const contactAPI = [...data.contactAPI]
+	const endpoints = {
+		"feedback": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}feedback.aspx`,
+		"activity": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}activity.aspx`,
+		"newsletters": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}newsletters.aspx`,
+	}
+	let responses = []
+	contactAPI.forEach(async ({type, call, headers})=>{
+		if (call) {
+			const endpoint = endpoints[type]
+			headers.ApiKey = ApiKey;
+			headers.CBN_HTTP_X_FORWARDED_FOR = CBN_HTTP_X_FORWARDED_FOR
+			try {
+				const msg = await callApi(endpoint, {
+					method: "GET",
+					headers
+				})
+				console.log(msg)
+				responses.push(msg)
+			} catch(err) {
+				console.log({ BeforeResSentErr: JSON.stringify(error, null, 2) });
+				res.statusCode = error.status;
+				res.send(error.body);
+			}
+		}
+	})
+
+	// need to parse XML responses
+	res.send(responses)
+
+});
+
+router.get("/product", (req, res) => {
+	res.statusCode = 403;
+	res.json({ Error: "Not for Snooping Eyes" });
+});
+
+router.post("/product", (req, res) => {
+	const data = { ...req.body };
+	if (!data) {
+		res.statusCode = 400;
+		return res.send({
+			error:
+				"Bad Request - Your request is missing parameters. Please verify and resubmit.",
+		});
+	}
+	console.log("________ NEW POST TO PRODUCT API __________");
+	console.log({ reqHeaders: req.headers });
+
+});
+
 async function callApi(uri, options = {}) {
 	let data;
 	try {

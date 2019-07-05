@@ -4,141 +4,10 @@ import { FormConfigContext } from "./FormConfigProvider";
 import { cryptLS, readLS, removeOneLS, emptyLS } from "../../helpers/ls";
 import { getErrorType } from "../../helpers/error-types";
 import { callApi } from "../../helpers/fetch-helpers";
+import { zip_regex, callZipCityStateService, validateInput, callAddressVerification } from "../../helpers/validators"
+import reducer from "../../helpers/reducer"
 
 export const GivingFormContext = React.createContext();
-
-const reducer = (state, action) => {
-	const {
-		formData,
-		name,
-		value,
-		error,
-		item,
-		typeId,
-		singlePledgeData,
-		monthlyPledgeData,
-		source,
-		type,
-	} = action;
-	let found, fields, errors, items, givingInfo, productInfo, designationInfo;
-	switch (type) {
-		case "INIT_FORM_STATE":
-			return {
-				...state,
-				initialized: true,
-				fields: action.fields,
-				errors: action.errors
-			};
-			break;
-		case "LOAD":
-			fields = { ...state.fields };
-			for (let datum in formData) {
-				fields[datum] = formData[datum];
-			}
-			return { ...state, fields };
-			break;
-		case "UPDATE_FIELD":
-			fields = { ...state.fields };
-			errors = { ...state.errors };
-			fields[name] = value;
-			errors[name] = error;
-			return { ...state, fields, errors };
-			break;
-		case "UPDATE_FIELDS":
-			fields = { ...state.fields };
-			errors = { ...state.errors };
-			action.fields.forEach(({ name, value, error }) => {
-				fields[name] = value;
-				errors[name] = error;
-			});
-			return { ...state, fields, errors };
-			break;
-		case "TOGGLE_SUBMITTING":
-			return { ...state, submitting: !state.submitting };
-			break;
-		case "ADD_TO_CART":
-			items = [...state.cart.items];
-			errors = { ...state.errors };
-			found = items.findIndex(el => el && el.type == item.type);
-			if (found > -1) {
-				items[found] = item;
-				errors.amount = "";
-			} else {
-				items.push(item);
-			}
-			return { ...state, cart: { items }, errors, givingInfo: {} };
-			break;
-		case "REMOVE_FROM_CART":
-			items = [...state.cart.items];
-			found = items.findIndex(el => el && el.type == action.itemType);
-			if (found > -1) {
-				items.splice(found, 1);
-			}
-			return { ...state, cart: { items }, givingInfo: {} };
-			break;
-		case "UPDATE_GIVING_TYPE":
-			items = [...state.cart.items];
-			found = items.findIndex(el => el && el.type == "donation");
-			givingInfo = { ...state.givingInfo };
-			if (found > -1) {
-				items[found] = {
-					type: "donation",
-					PledgeAmount: items[found].PledgeAmount,
-					DetailCprojMail:
-						typeId == "singlegift"
-							? singlePledgeData.DetailCprojMail
-							: monthlyPledgeData.DetailCprojMail,
-					DetailCprojCredit:
-						typeId == "singlegift"
-							? singlePledgeData.DetailCprojCredit
-							: monthlyPledgeData.DetailCprojCredit,
-					DetailDescription:
-						typeId == "singlegift"
-							? singlePledgeData.DetailDescription
-							: monthlyPledgeData.DetailDescription,
-					DetailName:
-						typeId == "singlegift"
-							? singlePledgeData.DetailName
-							: monthlyPledgeData.DetailName,
-					monthly: typeId == "singlegift" ? false : true,
-				};
-				givingInfo.amount = items[found].PledgeAmount;
-				givingInfo.isMonthly = typeId !== "singlegift";
-				givingInfo.source = "radioClick";
-			}
-			designationInfo = { ...state.designationInfo };
-			if (designationInfo && designationInfo.DetailName) {
-				const detailName = designationInfo.DetailName;
-				const prefix = detailName.slice(0, 2);
-				if (prefix == "MP" || prefix == "SG") {
-					const originalDetailName = detailName.slice(2);
-					designationInfo.DetailName =
-						id == "singlegift"
-							? `SG${originalDetailName}`
-							: `MP${originalDetailName}`;
-				} else {
-					designationInfo.DetailName =
-						id == "singlegift" ? `SG${detailName}` : `MP${detailName}`;
-				}
-			}
-			return { ...state, cart: { items }, givingInfo, designationInfo };
-		case "SUBMIT_GIVING_FORM":
-			return {
-				...state,
-				submitted: true,
-				submitting: false,
-			};
-		default:
-			return { ...state };
-			break;
-	}
-};
-
-const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
-	phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/,
-	zip_regex = /^\d{5}$/,
-	firstname_regex = /^([a-zA-Z0-9\-\.' ]+)$/i,
-	lastname_regex = /^([a-zA-Z0-9\-\.' ]+)(?:(,|\s|,\s)(jr|sr|ii|iii|iv|esq)\.*)?$/i;
 
 class GivingFormProvider extends Component {
 	state = {
@@ -227,14 +96,22 @@ class GivingFormProvider extends Component {
 					action.error = "Invalid Postal Code";
 				} else {
 					try {
-						action.error = await this.callZipCityStateService(name, value);
+						const oldCity = this.state.fields[
+							name == "ShipToZip" ? "ShipToCity" : "City"
+						].toUpperCase();
+						const response = await callZipCityStateService(name, value, oldCity);
+						if ( response.action ) {
+							this.setState(state => reducer(state, response.action))
+						}
+						action.error = response.error;
 					} catch (err) {
 						console.error("CallZipCityStateServiceError");
 						console.error({ err });
 					}
 				}
 			} else {
-				action.error = await this.validateInput(false, name, value);
+				const { getHonorific, allowInternational } = this.context
+				action.error = await validateInput(false, name, value, true, getHonorific, allowInternational, this.state.ShipToYes);
 			}
 			this.setState(state => reducer(state, action));
 		},
@@ -260,15 +137,19 @@ class GivingFormProvider extends Component {
 					}
 					let isValidForm = true;
 					if (this.state.fields.Country == "United States") {
+						let oldCity, response;
 						try {
-							const zipError = await this.callZipCityStateService(
-								"Zip",
-								this.state.fields["Zip"]
-							);
+							oldCity = this.state.fields.City.toUpperCase();
+							response = await callZipCityStateService("Zip", this.state.fields.Zip, oldCity);
+
+							if ( response.action ) {
+								this.setState(state => reducer(state, response.action))
+							}
+							const zipError = response.error;
 							let addressError, shipZipError, shipAddressError;
 							if (!zipError) {
 								try {
-									addressError = await this.callAddressVerification(
+									addressError = await callAddressVerification(
 										this.state.fields["Address1"],
 										this.state.fields["Address2"],
 										this.state.fields["City"],
@@ -285,10 +166,16 @@ class GivingFormProvider extends Component {
 								this.state.fields.ShipToYes
 							) {
 								try {
-									shipZipError = await this.callZipCityStateService(
+									oldCity = this.state.fields.ShipToCity.toUpperCase();
+									response = await callZipCityStateService(
 										"ShipToZip",
-										this.state.fields["ShipToZip"]
+										this.state.fields.ShipToZip,
+										oldCity
 									);
+									if ( response.action ) {
+										this.setState(state => reducer(state, response.action))
+									}
+									shipZipError = response.error
 								} catch (err) {
 									console.log("CSZValidationError__SHIPPING");
 									console.error({ err });
@@ -296,7 +183,7 @@ class GivingFormProvider extends Component {
 							}
 							if (!shipZipError && this.state.fields.ShipToYes) {
 								try {
-									shipAddressError = await this.callAddressVerification(
+									shipAddressError = await callAddressVerification(
 										this.state.fields["ShipToAddress1"],
 										this.state.fields["ShipToAddress2"],
 										this.state.fields["ShipToCity"],
@@ -364,7 +251,8 @@ class GivingFormProvider extends Component {
 						let error;
 						const name = fieldNames[i];
 						if (!name.includes("Zip")) {
-							error = this.validateInput(true, name, fields[name]);
+							const { getHonorific, allowInternational } = this.context
+							error = validateInput(true, name, fields[name], true, getHonorific, allowInternational, this.state.ShipToYes);
 							if (error) {
 								isValidForm = false;
 								action.fields.push({ name, value: fields[name], error });
@@ -406,7 +294,6 @@ class GivingFormProvider extends Component {
 					let {
 						mode,
 						EmailSubjectLine = "Thank You for Your Contribution",
-						APIAccessID,
 						subscriptions,
 						AddContactYN,
 						ActivityName,
@@ -495,7 +382,6 @@ class GivingFormProvider extends Component {
 						AddContactYN,
 						Address1,
 						Address2,
-						APIAccessID,
 						City,
 						ContactSource,
 						Country,
@@ -569,7 +455,7 @@ class GivingFormProvider extends Component {
 						}
 						return this.setState(state =>
 							reducer(state, {
-								type: "SUBMIT_GIVING_FORM",
+								type: "SUBMIT_FORM",
 							}), () => {
 								this.context.submitForm({
 									type: "SUBMIT_FORM",
@@ -626,185 +512,6 @@ class GivingFormProvider extends Component {
 			return false;
 		}
 		return true;
-	};
-
-	/**
-	 *
-	 * @param {string} name - either Zip or ShipToZip
-	 * @param {string} value - five digit zip code
-	 */
-	callZipCityStateService = async (name, value) => {
-		if (value) {
-			const base =
-				"https://services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
-			const url = `${base}${value}`;
-			try {
-				const result = await callApi(url);
-				const oldCity = this.state.fields[
-					name == "ShipToZip" ? "ShipToCity" : "City"
-				].toUpperCase();
-				let { city, state, zip, returnCode, returnMessage } = JSON.parse(
-					result
-				);
-				// console.log({ city, state, zip, returnCode, returnMessage })
-				if (returnCode == 1) {
-					// console.log(city)
-					const error = oldCity && !city.toUpperCase().includes(oldCity);
-					const newCity = error || !oldCity ? city.split(";")[0] : oldCity;
-
-					const action = {
-						type: "UPDATE_FIELDS",
-						fields: [
-							{
-								name: name == "ShipToZip" ? "ShipToCity" : "City",
-								value: newCity,
-								error: "",
-							},
-							{
-								name: name == "ShipToZip" ? "ShipToState" : "State",
-								value: state,
-								error: "",
-							},
-						],
-					};
-					if (name == "Zip") {
-						action.fields.push({
-							name: "Country",
-							value: "United States",
-							error: "",
-						});
-					}
-					this.setState(state => reducer(state, action));
-					return error ? city : "";
-				} else {
-					return returnMessage;
-				}
-			} catch (err) {
-				console.error(err);
-				return "";
-			}
-		} else {
-			return "";
-		}
-	};
-
-	/**
-	 *
-	 * @param {string} addr1 - user entered address1
-	 * @param {string} addr2 - user entered address2
-	 * @param {string} city - user entered city
-	 * @param {string} state - user entered state
-	 * @param {string} zip - user entered zip
-	 * @returns {string} either empty or with error
-	 */
-	callAddressVerification = async (addr1, addr2 = "", city, state, zip) => {
-		const base =
-			"https://services.cbn.com/AddressValidation/AddressVerification.aspx";
-		const url = encodeURI(
-			`${base}?addr1=${encodeURIComponent(addr1)}&addr2=${encodeURIComponent(
-				addr2
-			)}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(
-				state
-			)}&zip=${encodeURIComponent(zip)}`
-		);
-		try {
-			const result = await callApi(url);
-			// console.log({result})
-			const { returnCode, returnMessage } = JSON.parse(result);
-			return returnCode == 1 ? "" : returnMessage;
-		} catch (err) {
-			console.error({ err });
-			return "";
-		}
-	};
-
-	/**
-	 * Function to validate the input fields of the form
-	 * @param {Boolean} submitting - current state of the form, true if being submitted
-	 * @param {String} name - name of the input being validated
-	 * @param {*} value - String, Number or Boolean of value from the input
-	 * @returns {String} - an empty String if no errors, else a string with a single error message
-	 */
-	validateInput = (submitting, name, value) => {
-		let error = "";
-		const { international } = this.context.formConfig;
-		const { ShipToYes } = this.state.fields;
-		switch (name) {
-			case "Title":
-			case "State":
-			case "Address1":
-			case "City":
-				if (!value && submitting) {
-					error = "Required";
-				}
-				break;
-			case "ShipToState":
-			case "ShipToAddress1":
-			case "ShipToCity":
-				if (!value && submitting && ShipToYes) {
-					error = "Required";
-				}
-				break;
-			case "Firstname":
-				if (value && !firstname_regex.test(value)) {
-					error =
-						"No special characters allowed. Please call if you need assistance.";
-				}
-				if (!value && submitting) {
-					error = "Required";
-				}
-				break;
-			case "Middlename":
-				if (value && !firstname_regex.test(value)) {
-					error =
-						"No special characters allowed. Please call if you need assistance.";
-				}
-				break;
-			case "Lastname":
-				if (value && !lastname_regex.test(value)) {
-					error =
-						"No special characters allowed. Please call if you need assistance.";
-				}
-				if (!value && submitting) {
-					error = "Required";
-				}
-				break;
-			case "ShipToName":
-				if (value && !lastname_regex.test(value)) {
-					error =
-						"No special characters allowed. Please call if you need assistance.";
-				}
-				if (!value && ShipToYes && submitting) {
-					error = "Required";
-				}
-				break;
-			case "Spousename":
-				if (value && !lastname_regex.test(value)) {
-					error =
-						"No special characters allowed. Please call if you need assistance.";
-				}
-				break;
-			case "Country":
-				if (!value && submitting && international) {
-					error = "Required";
-				}
-				break;
-			case "Emailaddress":
-				if (value && !email_regex.test(value)) {
-					error = "Please enter a valid email: ie. you@example.com";
-				}
-				if (!value && submitting) {
-					error = "Required";
-				}
-				break;
-			case "phone":
-				if (value && !phone_regex.test(value)) {
-					error =
-						"Please enter a valid phone number, numbers only: ie. 7575551212";
-				}
-				break;
-		}
-		return error;
 	};
 
 	render() {

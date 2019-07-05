@@ -8,8 +8,8 @@ import Spinner from "./StyledComponents/Spinner";
 
 class App extends Component {
 	componentDidMount() {
-		// console.log({props: this.props, context: this.context})
-		this.context.getConfiguration(this.props.rootEntry);
+		const { rootEntry, formType } = this.props
+		this.context.getConfiguration({rootEntry, formType});
 	}
 
 	render() {

@@ -1,14 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-const FormControl = styled.div`
+const FormGroup = styled.div`
 	position: relative;
 	margin-bottom: calc(19px * 0.7);
 	margin-top: calc(19px * 0.7);
 	flex: 1 1 auto;
-	&..form-group--Title {
+	&.form-group--Title, &.form-group--Suffix {
 		width: 120px;
 		flex: 0 0 120px;
+		box-sizing: border-box;
 	}
 	&.form-group--Firstname,
 	&.form-group--Lastname {
@@ -105,7 +106,15 @@ const FormControl = styled.div`
 	}
 	@media screen and (max-width: 613px) {
 		&.form-group--Lastname {
+			flex-basis: calc(100% - 130px);
+			margin-left: 0;
+		}
+		&.form-group--Middlename {
 			width: 100%;
+			margin-left: 0;
+		}
+		&.form-group--Firstname{
+			flex-basis: calc(100% - 130px);
 		}
 	}
 	@media screen and (max-width: 500px) {
@@ -120,8 +129,9 @@ const FormControl = styled.div`
 			max-width: 100%;
 			width: 100%;
 		}
-		&.form-group--Firstname {
+		&.form-group--Firstname, &.form-group--Lastname {
 			width: 100%;
+			flex-basis:auto;
 		}
 	}
 	@media screen and (max-width: 365px) {
@@ -133,10 +143,4 @@ const FormControl = styled.div`
 	}
 `;
 
-const FormGroup = ({ children, style = {}, minHeight = "100px" }) => (
-	<FormControl style={style} minHeight={minHeight}>
-		{children}
-	</FormControl>
-);
-
-export default FormGroup;
+export default FormGroup

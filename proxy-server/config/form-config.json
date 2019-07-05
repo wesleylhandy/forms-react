@@ -1,59 +1,151 @@
 {
-    "mode": "development",
-    "type": "giving",
-    "givingFormat": "buttons",
-    "getMiddleName": false,
-    "getSuffix": false,
-    "getSpouseInfo": false,
-    "shipping": true,
-    "international": true,
-    "getPhone": true,
-    "numProducts": 0,
-    "products": [],
-    "numDesignations": 0,
-    "designations": [],
-    "subscriptions": [{
-        "value": "israel",
-        "key": "NewsletterSubs"
-    }, {
-        "value": "Welcome",
-        "key": "NewsletterUnSubs"
-    }, {
-        "value": "CBN",
-        "key": "MarketingUnSubs"
-    }],
-    "additionalGift": {
-        "display": true,
-        "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
-        "DetailDescription": "Orphans Promise Donation",
-        "DetailCprojCredit": "043258",
-        "DetailCprojMail": "043259",
-        "DetailName": "SGOrphansPromise"
-    },
-    "showGivingArray": true,
-    "monthlyOption": true,
-    "singleOption": true,
-    "monthlyAmounts": [3, 7, 15, 30, 50],
-    "singleAmounts": [25, 50, 100, 250, 300],
-    "defaultOption": "single",
-    "defaultAmount": 50,
-    "addGivingDescription": false,
-    "monthlyPledgeData": {
-        "DetailCprojCredit": "043250",
-        "DetailCprojMail": "043251",
-        "DetailName": "MPOrphansPromise",
-        "DetailDescription": "Orphans Promise Pledge"
-    },
-    "singlePledgeData": {
-        "DetailCprojCredit": "043250",
-        "DetailCprojMail": "043251",
-        "DetailName": "SPGFOrphansPromise",
-        "DetailDescription": "Orphans Promise Donation"
-    },
-    "AddContactYN": "Y",
-    "ContactSource": "700Club Donor",
-    "ActivityName": "700Club_Donation_Activity",
-    "SectionName": "700Club",
-    "proxy": "http://10.100.43.42:8080/api",
-    "thankYouUrl": "http://10.100.43.42:8080/thankyou"
+    "configurations": [
+        {
+            "mode": "development",
+            "formType": "giving",
+            "formTitle": "Please Give Generously Towards This Vital Cause",
+            "submitButtonText": "Continue to Payment",
+            "givingFormat": "buttons",
+            "getHonorific": true,
+            "getMiddleName": false,
+            "getSuffix": false,
+            "getSpouseInfo": true,
+            "getShippingAddress": true,
+            "allowInternational": true,
+            "getPhone": true,
+            "numProducts": 0,
+            "products": [],
+            "numDesignations": 0,
+            "designations": [],
+            "subscriptions": [{
+                "value": "israel",
+                "key": "NewsletterSubs"
+            }, {
+                "value": "Welcome",
+                "key": "NewsletterUnSubs"
+            }, {
+                "value": "CBN",
+                "key": "MarketingUnSubs"
+            }],
+            "additionalGift": {
+                "display": false,
+                "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
+                "DetailDescription": "Orphans Promise Donation",
+                "DetailCprojCredit": "043258",
+                "DetailCprojMail": "043259",
+                "DetailName": "SGOrphansPromise"
+            },
+            "showGivingArray": true,
+            "monthlyOption": true,
+            "singleOption": true,
+            "monthlyAmounts": [3, 7, 15, 30, 50],
+            "singleAmounts": [25, 50, 100, 250, 300],
+            "defaultOption": "single",
+            "defaultAmount": 50,
+            "addGivingDescription": false,
+            "monthlyPledgeData": {
+                "DetailCprojCredit": "043250",
+                "DetailCprojMail": "043251",
+                "DetailName": "MPOrphansPromise",
+                "DetailDescription": "Orphans Promise Pledge"
+            },
+            "singlePledgeData": {
+                "DetailCprojCredit": "043250",
+                "DetailCprojMail": "043251",
+                "DetailName": "SPGFOrphansPromise",
+                "DetailDescription": "Orphans Promise Donation"
+            },
+            "AddContactYN": "Y",
+            "ContactSource": "700Club Donor",
+            "ActivityName": "700Club_Donation_Activity",
+            "SectionName": "700Club",
+            "proxy": "http://10.100.43.42:8080/api",
+            "successMessage":""
+        }, {
+            "mode": "development",
+            "formType": "signup",
+            "formTitle": "Download Your Free Resource Today",
+            "submitButtonText": "Submit",
+            "getName": true,
+            "getHonorific": false,
+            "getMiddleName": false,
+            "getSuffix": false,
+            "getSpouseInfo": false,
+            "getAddress":false,
+            "allowInternational": false,
+            "proxy": "http://10.100.43.42:8080/signup",
+            "contactAPI": [
+                {
+                    "call": false,
+                    "type": "newsletters",
+                    "headers": {
+                        "SubscriptionCode": "israel",
+                        "Subscribe": true,
+                        "UnsubscribeMarketingForNewContacts": true,
+                        "InceptionSource": "Subscribe - Israel Cause Page - Israel Newsletter",
+                        "ActivityCode": "Subscribe - Israel Cause Page - Israel Newsletter"
+                    }
+                }, {
+                    "call": true,
+                    "type": "feedback",
+                    "headers": {
+                        "FeedbackType": "Item Request",
+                        "Topic": "Islam Booklet Download",
+                        "FormUrl": "",
+                        "InceptionSource": "Request Resource - Islam Booklet - Download",
+                        "ActivityCode": "Request Resource - Islam Booklet - Download",
+                        "Message": "--empty--"
+                    }
+                }, {
+                    "call": false,
+                    "type": "activity",
+                    "headers": {
+                        "Activity": "Feedback - Sign Up - Protect The Unborn Petition",
+                        "Topic": "Islam Booklet Download",
+                        "MarketingSubscribes": "CBN",
+                        "Campaign":"",
+                        "Location":"",
+                        "UpdateExisting":true,
+                        "InceptionSource": "Feedback - Sign Up - Protect The Unborn Petition"
+                    }
+                }
+            ],
+            "successMessage":""
+        }, {
+            "mode": "development",
+            "formType": "product",
+            "formTitle": "Get Your Free Resource By Mail Today",
+            "submitButtonText": "Submit",
+            "requiresDonation": false,
+            "getHonorific": false,
+            "getMiddleName": false,
+            "getSuffix": false,
+            "getSpouseInfo": false,
+            "getShippingAddress": true,
+            "allowInternational": true,
+            "getPhone": true,
+            "numProducts": 0,
+            "products": [],
+            "subscriptions": [{
+                "value": "israel",
+                "key": "NewsletterSubs"
+            }, {
+                "value": "Welcome",
+                "key": "NewsletterUnSubs"
+            }, {
+                "value": "CBN",
+                "key": "MarketingUnSubs"
+            }],
+            "additionalGift": {
+                "display": true,
+                "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
+                "DetailDescription": "Orphans Promise Donation",
+                "DetailCprojCredit": "043258",
+                "DetailCprojMail": "043259",
+                "DetailName": "SGOrphansPromise"
+            },
+            "proxy": "http://10.100.43.42:8080/product",
+            "successMessage":""
+        }
+    ]
 }

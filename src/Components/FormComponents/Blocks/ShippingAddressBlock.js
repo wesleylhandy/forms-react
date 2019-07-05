@@ -12,7 +12,7 @@ function ShippingAddressBlock({
 	fields,
 	errors,
 	handleInputChange,
-	international,
+	allowInternational,
 }) {
 	return (
 		<FormPanel className="shipping-address__info">
@@ -89,7 +89,7 @@ function ShippingAddressBlock({
 						<option key="shiptostate-base-0" value="">
 							State* &#9663;
 						</option>,
-						getStateOptions(international),
+						getStateOptions(allowInternational),
 					]}
 				/>
 			</FormRow>
@@ -105,7 +105,7 @@ function ShippingAddressBlock({
 					value={fields.ShipToZip}
 					handleInputChange={handleInputChange}
 					error={errors.ShipToZip}
-					international={international}
+					allowInternational={allowInternational}
 				/>
 			</FormRow>
 		</FormPanel>

@@ -74,7 +74,7 @@ function SpouseInput({ value, error, handleInputChange }) {
 			<InputGroup
 				type="text"
 				id="Spousename"
-				specialStyle=""
+				specialStyle="form-group--Spousename"
 				label="Spouse&rsquo;s Name"
 				placeholder="Spouse&rsquo;s First and Last Name"
 				maxLength="100"
@@ -88,6 +88,7 @@ function SpouseInput({ value, error, handleInputChange }) {
 }
 
 function NameBlock({
+	getHonorific,
 	getMiddleName,
 	getSuffix,
 	getSpouseInfo,
@@ -101,11 +102,14 @@ function NameBlock({
 			<FieldSet>
 				<legend>{`${type} Block`}</legend>
 				<FormRow className="name-row">
-					<TitleDropdown
-						value={fields.Title}
-						error={errors.Title}
-						handleInputChange={handleInputChange}
-					/>
+					{
+						getHonorific && 
+							<TitleDropdown
+								value={fields.Title}
+								error={errors.Title}
+								handleInputChange={handleInputChange}
+							/>
+					}
 					<NameInput
 						type={"First"}
 						required={true}
@@ -134,8 +138,15 @@ function NameBlock({
 		return (
 			<FieldSet>
 				<legend>{`${type} Block`}</legend>
-				<FormRow>
-					<TitleDropdown value={fields.Title} error={errors.Title} />
+				<FormRow className="name-row">
+					{
+						getHonorific && 
+							<TitleDropdown
+								value={fields.Title}
+								error={errors.Title}
+								handleInputChange={handleInputChange}
+							/>
+					}
 					<NameInput
 						type={"First"}
 						required={true}
@@ -153,7 +164,7 @@ function NameBlock({
 						/>
 					)}
 				</FormRow>
-				<FormRow>
+				<FormRow className="name-row">
 					<NameInput
 						type={"Last"}
 						required={true}
@@ -164,7 +175,7 @@ function NameBlock({
 					{getSuffix && (
 						<SelectGroup
 							id="Suffix"
-							specialStyle=""
+							specialStyle="form-group--Suffix"
 							required={false}
 							value={fields.Suffix}
 							error={errors.Suffix}

@@ -86,9 +86,6 @@ const FormRow = styled.div`
 		&.name-row {
 			flex-wrap: wrap;
 		}
-		&.name-row > div:nth-of-type(odd) {
-			margin-left: 0;
-		}
 	}
 	@media screen and (max-width: 500px) {
 		&.email-phone-row {

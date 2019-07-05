@@ -14,6 +14,11 @@ const FormHeader = styled.h3`
 	-webkit-padding-before: 0;
 	-webkit-padding-start: 0;
 	-webkit-padding-after: 0;
+	&.form-title {
+		font-size: 36px;
+		margin: 30px auto;
+		line-height: 1.33;
+	}
 	&.askarray__header {
 		margin-bottom: 19px;
 		text-transform: uppercase;

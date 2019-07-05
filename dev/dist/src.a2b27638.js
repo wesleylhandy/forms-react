@@ -36415,38 +36415,45 @@ function (_Component) {
       getConfiguration: function () {
         var _getConfiguration = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee(rootEntry) {
-          var initialState, generator, formName, proxyUri, isDrupal;
+        _regenerator.default.mark(function _callee(_ref) {
+          var rootEntry, formType, initialState, generator, formName, proxyUri, isDrupal, _initialState, configurations, formConfig;
+
           return _regenerator.default.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
-                  _context.prev = 0;
+                  rootEntry = _ref.rootEntry, formType = _ref.formType;
+                  _context.prev = 1;
                   generator = rootEntry.dataset.environment ? rootEntry.dataset.environment.toLowerCase() : null;
                   formName = rootEntry.dataset.formName;
                   proxyUri = rootEntry.dataset.rest;
                   isDrupal = generator && generator.includes("drupal");
 
                   if (!isDrupal) {
-                    _context.next = 9;
+                    _context.next = 10;
                     break;
                   }
 
                   initialState = rootEntry.dataset.initialState;
-                  _context.next = 12;
+                  _context.next = 13;
                   break;
 
-                case 9:
-                  _context.next = 11;
+                case 10:
+                  _context.next = 12;
                   return (0, _fetchHelpers.callApi)("http://10.100.43.42:8080/config/form-config.json", {
                     method: "GET"
                   });
 
-                case 11:
+                case 12:
                   initialState = _context.sent;
 
-                case 12:
-                  if (initialState.mode === "production") {
+                case 13:
+                  _initialState = initialState, configurations = _initialState.configurations;
+                  formConfig = Array.isArray(configurations) ? configurations.filter(function (config) {
+                    return config.formType == formType;
+                  })[0] : {};
+
+                  if (formConfig.mode === "production") {
                     if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
                       window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
 
@@ -36456,20 +36463,32 @@ function (_Component) {
                     }
                   }
 
+                  if (!Object.keys(formConfig).length) {
+                    _context.next = 20;
+                    break;
+                  }
+
                   _this.setState(function (state) {
                     return reducer(state, {
                       type: "INIT_FORM_STATE",
-                      formConfig: initialState,
+                      formConfig: formConfig,
                       status: "loaded"
                     });
                   });
 
-                  _context.next = 19;
+                  _context.next = 21;
                   break;
 
-                case 16:
-                  _context.prev = 16;
-                  _context.t0 = _context["catch"](0);
+                case 20:
+                  throw new Error("Unable to Load Configuration for ".concat(formType));
+
+                case 21:
+                  _context.next = 26;
+                  break;
+
+                case 23:
+                  _context.prev = 23;
+                  _context.t0 = _context["catch"](1);
 
                   _this.setState(function (state) {
                     return reducer(state, {
@@ -36481,12 +36500,12 @@ function (_Component) {
                     alert("There was an internal error loading this form. Please check back later or call us at 1-800-759-0700");
                   });
 
-                case 19:
+                case 26:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[0, 16]]);
+          }, _callee, null, [[1, 23]]);
         }));
 
         function getConfiguration(_x) {
@@ -36785,45 +36804,19 @@ function getErrorType(message) {
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"react-hot-loader":"node_modules/react-hot-loader/index.js"}],"src/Components/Contexts/GivingFormProvider.js":[function(require,module,exports) {
+},{"react-hot-loader":"node_modules/react-hot-loader/index.js"}],"src/helpers/validators.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.GivingFormContext = void 0;
+exports.validateInput = exports.callAddressVerification = exports.callZipCityStateService = exports.lastname_regex = exports.firstname_regex = exports.zip_regex = exports.phone_regex = exports.email_regex = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
-
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
-var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
-
-var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-
-var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
-
-var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
-
-var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
-
-var _core = require("@emotion/core");
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _FormConfigProvider = require("./FormConfigProvider");
-
-var _ls = require("../../helpers/ls");
-
-var _errorTypes = require("../../helpers/error-types");
-
-var _fetchHelpers = require("../../helpers/fetch-helpers");
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+var _fetchHelpers = require("./fetch-helpers");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36836,9 +36829,370 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
   return a;
 };
 
-var GivingFormContext = _react.default.createContext();
+var email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+exports.email_regex = email_regex;
+var phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/;
+exports.phone_regex = phone_regex;
+var zip_regex = /^\d{5}$/;
+exports.zip_regex = zip_regex;
+var firstname_regex = /^([a-zA-Z0-9\-\.' ]+)$/i;
+exports.firstname_regex = firstname_regex;
+var lastname_regex = /^([a-zA-Z0-9\-\.' ]+)(?:(,|\s|,\s)(jr|sr|ii|iii|iv|esq)\.*)?$/i;
+/**
+ *
+ * @param {string} name - either Zip or ShipToZip
+ * @param {string} value - five digit zip code
+ * @param {string} oldCity - current value of the City Field
+ * @returns {Promise} - action, error
+ */
 
-exports.GivingFormContext = GivingFormContext;
+exports.lastname_regex = lastname_regex;
+
+var callZipCityStateService =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee(name, value, oldCity) {
+    var base, url, result, _JSON$parse, city, state, zip, returnCode, returnMessage, error, newCity, action;
+
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (!value) {
+              _context.next = 26;
+              break;
+            }
+
+            base = "https://services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+            url = "".concat(base).concat(value);
+            _context.prev = 3;
+            _context.next = 6;
+            return (0, _fetchHelpers.callApi)(url);
+
+          case 6:
+            result = _context.sent;
+            _JSON$parse = JSON.parse(result), city = _JSON$parse.city, state = _JSON$parse.state, zip = _JSON$parse.zip, returnCode = _JSON$parse.returnCode, returnMessage = _JSON$parse.returnMessage; // console.log({ city, state, zip, returnCode, returnMessage })
+
+            if (!(returnCode == 1)) {
+              _context.next = 17;
+              break;
+            }
+
+            // console.log(city)
+            error = oldCity && !city.toUpperCase().includes(oldCity);
+            newCity = error || !oldCity ? city.split(";")[0] : oldCity;
+            action = {
+              type: "UPDATE_FIELDS",
+              fields: [{
+                name: name == "ShipToZip" ? "ShipToCity" : "City",
+                value: newCity,
+                error: ""
+              }, {
+                name: name == "ShipToZip" ? "ShipToState" : "State",
+                value: state,
+                error: ""
+              }]
+            };
+
+            if (name == "Zip") {
+              action.fields.push({
+                name: "Country",
+                value: "United States",
+                error: ""
+              });
+            }
+
+            console.error({
+              oldCity: oldCity,
+              newCity: newCity
+            });
+            return _context.abrupt("return", {
+              action: action,
+              error: ""
+            });
+
+          case 17:
+            return _context.abrupt("return", {
+              action: "",
+              error: returnMessage
+            });
+
+          case 18:
+            _context.next = 24;
+            break;
+
+          case 20:
+            _context.prev = 20;
+            _context.t0 = _context["catch"](3);
+            console.error(_context.t0);
+            throw new Error(_context.t0);
+
+          case 24:
+            _context.next = 28;
+            break;
+
+          case 26:
+            console.error({
+              err: "No Value Passed to Validator"
+            });
+            return _context.abrupt("return", {
+              action: "",
+              error: "No Value Passed to Validator"
+            });
+
+          case 28:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[3, 20]]);
+  }));
+
+  return function callZipCityStateService(_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+}();
+/**
+ *
+ * @param {string} addr1 - user entered address1
+ * @param {string} addr2 - user entered address2
+ * @param {string} city - user entered city
+ * @param {string} state - user entered state
+ * @param {string} zip - user entered zip
+ * @returns {string} either empty or with error
+ */
+
+
+exports.callZipCityStateService = callZipCityStateService;
+
+var callAddressVerification =
+/*#__PURE__*/
+function () {
+  var _ref2 = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee2(addr1) {
+    var addr2,
+        city,
+        state,
+        zip,
+        base,
+        url,
+        result,
+        _JSON$parse2,
+        returnCode,
+        returnMessage,
+        _args2 = arguments;
+
+    return _regenerator.default.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            addr2 = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : "";
+            city = _args2.length > 2 ? _args2[2] : undefined;
+            state = _args2.length > 3 ? _args2[3] : undefined;
+            zip = _args2.length > 4 ? _args2[4] : undefined;
+            base = "https://services.cbn.com/AddressValidation/AddressVerification.aspx";
+            url = encodeURI("".concat(base, "?addr1=").concat(encodeURIComponent(addr1), "&addr2=").concat(encodeURIComponent(addr2), "&city=").concat(encodeURIComponent(city), "&state=").concat(encodeURIComponent(state), "&zip=").concat(encodeURIComponent(zip)));
+            _context2.prev = 6;
+            _context2.next = 9;
+            return (0, _fetchHelpers.callApi)(url);
+
+          case 9:
+            result = _context2.sent;
+            // console.log({result})
+            _JSON$parse2 = JSON.parse(result), returnCode = _JSON$parse2.returnCode, returnMessage = _JSON$parse2.returnMessage;
+            return _context2.abrupt("return", returnCode == 1 ? "" : returnMessage);
+
+          case 14:
+            _context2.prev = 14;
+            _context2.t0 = _context2["catch"](6);
+            console.error({
+              err: _context2.t0
+            });
+            return _context2.abrupt("return", "");
+
+          case 18:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[6, 14]]);
+  }));
+
+  return function callAddressVerification(_x4) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+/**
+ * Function to validate the input fields of the form
+ * @param {Boolean} submitting - current state of the form, true if being submitted
+ * @param {String} name - name of the input being validated
+ * @param {*} value - String, Number or Boolean of value from the input
+ * @param {Boolean} [getAddress] - Boolean to determine if a field is required
+ * @param {Boolean} [getHonorific] - Boolean to determine if a field is required
+ * @param {Boolean} [allowInternational] - Boolean only necessary for Country Validation
+ * @param {Boolean} [ShipToYes] - Boolean for validating Shipping Address
+ * @returns {String} - an empty String if no errors, else a string with a single error message
+ */
+
+
+exports.callAddressVerification = callAddressVerification;
+
+var validateInput = function validateInput(submitting, name, value, getAddress, getHonorific, allowInternational, ShipToYes) {
+  var error = "";
+
+  switch (name) {
+    case "Title":
+      if (!value && submitting && getHonorific) {
+        error = "Required";
+      }
+
+      break;
+
+    case "State":
+    case "Address1":
+    case "City":
+      if (!value && submitting && getAddress) {
+        error = "Required";
+      }
+
+      break;
+
+    case "ShipToState":
+    case "ShipToAddress1":
+    case "ShipToCity":
+      if (!value && submitting && ShipToYes) {
+        error = "Required";
+      }
+
+      break;
+
+    case "Firstname":
+      if (value && !firstname_regex.test(value)) {
+        error = "No special characters allowed. Please call if you need assistance.";
+      }
+
+      if (!value && submitting) {
+        error = "Required";
+      }
+
+      break;
+
+    case "Middlename":
+      if (value && !firstname_regex.test(value)) {
+        error = "No special characters allowed. Please call if you need assistance.";
+      }
+
+      break;
+
+    case "Lastname":
+      if (value && !lastname_regex.test(value)) {
+        error = "No special characters allowed. Please call if you need assistance.";
+      }
+
+      if (!value && submitting) {
+        error = "Required";
+      }
+
+      break;
+
+    case "ShipToName":
+      if (value && !lastname_regex.test(value)) {
+        error = "No special characters allowed. Please call if you need assistance.";
+      }
+
+      if (!value && ShipToYes && submitting) {
+        error = "Required";
+      }
+
+      break;
+
+    case "Spousename":
+      if (value && !lastname_regex.test(value)) {
+        error = "No special characters allowed. Please call if you need assistance.";
+      }
+
+      break;
+
+    case "Country":
+      if (!value && submitting && allowInternational) {
+        error = "Required";
+      }
+
+      break;
+
+    case "Emailaddress":
+      if (value && !email_regex.test(value)) {
+        error = "Please enter a valid email: ie. you@example.com";
+      }
+
+      if (!value && submitting) {
+        error = "Required";
+      }
+
+      break;
+
+    case "phone":
+      if (value && !phone_regex.test(value)) {
+        error = "Please enter a valid phone number, numbers only: ie. 7575551212";
+      }
+
+      break;
+  }
+
+  return error;
+};
+
+exports.validateInput = validateInput;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(email_regex, "email_regex", "/Users/wehand/Code/react-form-drupal/src/helpers/validators.js");
+  reactHotLoader.register(phone_regex, "phone_regex", "/Users/wehand/Code/react-form-drupal/src/helpers/validators.js");
+  reactHotLoader.register(zip_regex, "zip_regex", "/Users/wehand/Code/react-form-drupal/src/helpers/validators.js");
+  reactHotLoader.register(firstname_regex, "firstname_regex", "/Users/wehand/Code/react-form-drupal/src/helpers/validators.js");
+  reactHotLoader.register(lastname_regex, "lastname_regex", "/Users/wehand/Code/react-form-drupal/src/helpers/validators.js");
+  reactHotLoader.register(callZipCityStateService, "callZipCityStateService", "/Users/wehand/Code/react-form-drupal/src/helpers/validators.js");
+  reactHotLoader.register(callAddressVerification, "callAddressVerification", "/Users/wehand/Code/react-form-drupal/src/helpers/validators.js");
+  reactHotLoader.register(validateInput, "validateInput", "/Users/wehand/Code/react-form-drupal/src/helpers/validators.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","react-hot-loader":"node_modules/react-hot-loader/index.js","./fetch-helpers":"src/helpers/fetch-helpers.js"}],"src/helpers/reducer.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
 
 var reducer = function reducer(state, action) {
   var formData = action.formData,
@@ -36992,7 +37346,7 @@ var reducer = function reducer(state, action) {
         designationInfo: designationInfo
       });
 
-    case "SUBMIT_GIVING_FORM":
+    case "SUBMIT_FORM":
       return (0, _objectSpread2.default)({}, state, {
         submitted: true,
         submitting: false
@@ -37004,11 +37358,84 @@ var reducer = function reducer(state, action) {
   }
 };
 
-var email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
-    phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/,
-    zip_regex = /^\d{5}$/,
-    firstname_regex = /^([a-zA-Z0-9\-\.' ]+)$/i,
-    lastname_regex = /^([a-zA-Z0-9\-\.' ]+)(?:(,|\s|,\s)(jr|sr|ii|iii|iv|esq)\.*)?$/i;
+var _default = reducer;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(reducer, "reducer", "/Users/wehand/Code/react-form-drupal/src/helpers/reducer.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/helpers/reducer.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","react-hot-loader":"node_modules/react-hot-loader/index.js"}],"src/Components/Contexts/GivingFormProvider.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.GivingFormContext = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _FormConfigProvider = require("./FormConfigProvider");
+
+var _ls = require("../../helpers/ls");
+
+var _errorTypes = require("../../helpers/error-types");
+
+var _fetchHelpers = require("../../helpers/fetch-helpers");
+
+var _validators = require("../../helpers/validators");
+
+var _reducer = _interopRequireDefault(require("../../helpers/reducer"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var GivingFormContext = _react.default.createContext();
+
+exports.GivingFormContext = GivingFormContext;
 
 var GivingFormProvider =
 /*#__PURE__*/
@@ -37040,7 +37467,7 @@ function (_Component) {
       errors: {},
       initFields: function initFields(action) {
         return _this.setState(function (state) {
-          return reducer(state, action);
+          return (0, _reducer.default)(state, action);
         });
       },
       loadLS: function loadLS(action) {
@@ -37059,7 +37486,7 @@ function (_Component) {
         action.formData = formData;
 
         _this.setState(function (state) {
-          return reducer(state, action);
+          return (0, _reducer.default)(state, action);
         });
       },
       saveLS: function saveLS() {
@@ -37110,14 +37537,15 @@ function (_Component) {
       },
       updateField: function updateField(action) {
         return _this.setState(function (state) {
-          return reducer(state, action);
+          return (0, _reducer.default)(state, action);
         });
       },
       validateAndUpdateField: function () {
         var _validateAndUpdateField = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
         _regenerator.default.mark(function _callee(action) {
-          var name, value, isZip;
+          var name, value, isZip, oldCity, response, _this$context, getHonorific, allowInternational;
+
           return _regenerator.default.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -37126,59 +37554,69 @@ function (_Component) {
                   isZip = name.includes("Zip") && value.length >= 5;
 
                   if (!isZip) {
-                    _context.next = 19;
+                    _context.next = 22;
                     break;
                   }
 
-                  if (zip_regex.test(value)) {
+                  if (_validators.zip_regex.test(value)) {
                     _context.next = 7;
                     break;
                   }
 
                   action.error = "Invalid Postal Code";
-                  _context.next = 17;
+                  _context.next = 20;
                   break;
 
                 case 7:
                   _context.prev = 7;
-                  _context.next = 10;
-                  return _this.callZipCityStateService(name, value);
+                  oldCity = _this.state.fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
+                  _context.next = 11;
+                  return (0, _validators.callZipCityStateService)(name, value, oldCity);
 
-                case 10:
-                  action.error = _context.sent;
-                  _context.next = 17;
+                case 11:
+                  response = _context.sent;
+
+                  if (response.action) {
+                    _this.setState(function (state) {
+                      return (0, _reducer.default)(state, response.action);
+                    });
+                  }
+
+                  action.error = response.error;
+                  _context.next = 20;
                   break;
 
-                case 13:
-                  _context.prev = 13;
+                case 16:
+                  _context.prev = 16;
                   _context.t0 = _context["catch"](7);
                   console.error("CallZipCityStateServiceError");
                   console.error({
                     err: _context.t0
                   });
 
-                case 17:
-                  _context.next = 22;
+                case 20:
+                  _context.next = 26;
                   break;
 
-                case 19:
-                  _context.next = 21;
-                  return _this.validateInput(false, name, value);
+                case 22:
+                  _this$context = _this.context, getHonorific = _this$context.getHonorific, allowInternational = _this$context.allowInternational;
+                  _context.next = 25;
+                  return (0, _validators.validateInput)(false, name, value, true, getHonorific, allowInternational, _this.state.ShipToYes);
 
-                case 21:
+                case 25:
                   action.error = _context.sent;
 
-                case 22:
+                case 26:
                   _this.setState(function (state) {
-                    return reducer(state, action);
+                    return (0, _reducer.default)(state, action);
                   });
 
-                case 23:
+                case 27:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[7, 13]]);
+          }, _callee, null, [[7, 16]]);
         }));
 
         function validateAndUpdateField(_x) {
@@ -37196,7 +37634,7 @@ function (_Component) {
               switch (_context3.prev = _context3.next) {
                 case 0:
                   _this.setState(function (state) {
-                    return reducer(state, {
+                    return (0, _reducer.default)(state, {
                       type: "TOGGLE_SUBMITTING"
                     });
                   },
@@ -37204,7 +37642,7 @@ function (_Component) {
                   (0, _asyncToGenerator2.default)(
                   /*#__PURE__*/
                   _regenerator.default.mark(function _callee2() {
-                    var isValidGift, isValidForm, zipError, addressError, shipZipError, shipAddressError, _action, fields, fieldNames, i, error, name, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$context$formCon, mode, _this$context$formCon2, EmailSubjectLine, APIAccessID, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, items, pledgeFound, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, DonorID, confirmUrl, bodyFormData, confirmationData, formAction, html, parser, doc, form, inputs, message, _getErrorType, breaking, _name;
+                    var isValidGift, isValidForm, oldCity, response, zipError, addressError, shipZipError, shipAddressError, _action, fields, fieldNames, i, error, name, _this$context2, getHonorific, allowInternational, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$context$formCon, mode, _this$context$formCon2, EmailSubjectLine, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, items, pledgeFound, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, DonorID, confirmUrl, bodyFormData, confirmationData, formAction, html, parser, doc, form, inputs, message, _getErrorType, breaking, _name;
 
                     return _regenerator.default.wrap(function _callee2$(_context2) {
                       while (1) {
@@ -37218,12 +37656,12 @@ function (_Component) {
                             }
 
                             return _context2.abrupt("return", _this.setState(function (state) {
-                              return reducer(state, {
+                              return (0, _reducer.default)(state, {
                                 type: "TOGGLE_SUBMITTING"
                               });
                             }, function () {
                               _this.setState(function (state) {
-                                return reducer(state, {
+                                return (0, _reducer.default)(state, {
                                   type: "UPDATE_FIELD",
                                   name: "amount",
                                   value: "",
@@ -37236,86 +37674,104 @@ function (_Component) {
                             isValidForm = true;
 
                             if (!(_this.state.fields.Country == "United States")) {
-                              _context2.next = 49;
+                              _context2.next = 55;
                               break;
                             }
 
                             _context2.prev = 5;
-                            _context2.next = 8;
-                            return _this.callZipCityStateService("Zip", _this.state.fields["Zip"]);
+                            oldCity = _this.state.fields.City.toUpperCase();
+                            _context2.next = 9;
+                            return (0, _validators.callZipCityStateService)("Zip", _this.state.fields.Zip, oldCity);
 
-                          case 8:
-                            zipError = _context2.sent;
+                          case 9:
+                            response = _context2.sent;
+
+                            if (response.action) {
+                              _this.setState(function (state) {
+                                return (0, _reducer.default)(state, response.action);
+                              });
+                            }
+
+                            zipError = response.error;
 
                             if (zipError) {
-                              _context2.next = 20;
+                              _context2.next = 23;
                               break;
                             }
 
-                            _context2.prev = 10;
-                            _context2.next = 13;
-                            return _this.callAddressVerification(_this.state.fields["Address1"], _this.state.fields["Address2"], _this.state.fields["City"], _this.state.fields["State"], _this.state.fields["Zip"]);
-
-                          case 13:
-                            addressError = _context2.sent;
-                            _context2.next = 20;
-                            break;
+                            _context2.prev = 13;
+                            _context2.next = 16;
+                            return (0, _validators.callAddressVerification)(_this.state.fields["Address1"], _this.state.fields["Address2"], _this.state.fields["City"], _this.state.fields["State"], _this.state.fields["Zip"]);
 
                           case 16:
-                            _context2.prev = 16;
-                            _context2.t0 = _context2["catch"](10);
+                            addressError = _context2.sent;
+                            _context2.next = 23;
+                            break;
+
+                          case 19:
+                            _context2.prev = 19;
+                            _context2.t0 = _context2["catch"](13);
                             console.log("AddressVerificationError");
                             console.error({
                               err: _context2.t0
                             });
 
-                          case 20:
+                          case 23:
                             if (!(_this.state.fields["ShipToZip"] && _this.state.fields.ShipToYes)) {
-                              _context2.next = 31;
+                              _context2.next = 37;
                               break;
                             }
 
-                            _context2.prev = 21;
-                            _context2.next = 24;
-                            return _this.callZipCityStateService("ShipToZip", _this.state.fields["ShipToZip"]);
+                            _context2.prev = 24;
+                            oldCity = _this.state.fields.ShipToCity.toUpperCase();
+                            _context2.next = 28;
+                            return (0, _validators.callZipCityStateService)("ShipToZip", _this.state.fields.ShipToZip, oldCity);
 
-                          case 24:
-                            shipZipError = _context2.sent;
-                            _context2.next = 31;
+                          case 28:
+                            response = _context2.sent;
+
+                            if (response.action) {
+                              _this.setState(function (state) {
+                                return (0, _reducer.default)(state, response.action);
+                              });
+                            }
+
+                            shipZipError = response.error;
+                            _context2.next = 37;
                             break;
 
-                          case 27:
-                            _context2.prev = 27;
-                            _context2.t1 = _context2["catch"](21);
+                          case 33:
+                            _context2.prev = 33;
+                            _context2.t1 = _context2["catch"](24);
                             console.log("CSZValidationError__SHIPPING");
                             console.error({
                               err: _context2.t1
                             });
 
-                          case 31:
+                          case 37:
                             if (!(!shipZipError && _this.state.fields.ShipToYes)) {
-                              _context2.next = 42;
+                              _context2.next = 48;
                               break;
                             }
 
-                            _context2.prev = 32;
-                            _context2.next = 35;
-                            return _this.callAddressVerification(_this.state.fields["ShipToAddress1"], _this.state.fields["ShipToAddress2"], _this.state.fields["ShipToCity"], _this.state.fields["ShipToState"], _this.state.fields["ShipToZip"]);
+                            _context2.prev = 38;
+                            _context2.next = 41;
+                            return (0, _validators.callAddressVerification)(_this.state.fields["ShipToAddress1"], _this.state.fields["ShipToAddress2"], _this.state.fields["ShipToCity"], _this.state.fields["ShipToState"], _this.state.fields["ShipToZip"]);
 
-                          case 35:
+                          case 41:
                             shipAddressError = _context2.sent;
-                            _context2.next = 42;
+                            _context2.next = 48;
                             break;
 
-                          case 38:
-                            _context2.prev = 38;
-                            _context2.t2 = _context2["catch"](32);
+                          case 44:
+                            _context2.prev = 44;
+                            _context2.t2 = _context2["catch"](38);
                             console.log("AddressVerificationError__SHIPPING");
                             console.error({
                               err: _context2.t2
                             });
 
-                          case 42:
+                          case 48:
                             if (addressError || shipAddressError || zipError || shipZipError) {
                               isValidForm = false;
                               _action = {
@@ -37356,22 +37812,22 @@ function (_Component) {
                               }
 
                               _this.setState(function (state) {
-                                return reducer(state, _action);
+                                return (0, _reducer.default)(state, _action);
                               });
                             }
 
-                            _context2.next = 49;
+                            _context2.next = 55;
                             break;
 
-                          case 45:
-                            _context2.prev = 45;
+                          case 51:
+                            _context2.prev = 51;
                             _context2.t3 = _context2["catch"](5);
                             console.log("CSZValidationError");
                             console.error({
                               err: _context2.t3
                             });
 
-                          case 49:
+                          case 55:
                             fields = _this.state.fields;
                             fieldNames = Object.keys(fields);
                             action = {
@@ -37384,7 +37840,8 @@ function (_Component) {
                               name = fieldNames[i];
 
                               if (!name.includes("Zip")) {
-                                error = _this.validateInput(true, name, fields[name]);
+                                _this$context2 = _this.context, getHonorific = _this$context2.getHonorific, allowInternational = _this$context2.allowInternational;
+                                error = (0, _validators.validateInput)(true, name, fields[name], true, getHonorific, allowInternational, _this.state.ShipToYes);
 
                                 if (error) {
                                   isValidForm = false;
@@ -37398,23 +37855,23 @@ function (_Component) {
                             }
 
                             if (isValidForm) {
-                              _context2.next = 55;
+                              _context2.next = 61;
                               break;
                             }
 
                             return _context2.abrupt("return", _this.setState(function (state) {
-                              return reducer(state, {
+                              return (0, _reducer.default)(state, {
                                 type: "TOGGLE_SUBMITTING"
                               });
                             }, function () {
                               _this.setState(function (state) {
-                                return reducer(state, action);
+                                return (0, _reducer.default)(state, action);
                               });
                             }));
 
-                          case 55:
+                          case 61:
                             Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
-                            _this$context$formCon = _this.context.formConfig, mode = _this$context$formCon.mode, _this$context$formCon2 = _this$context$formCon.EmailSubjectLine, EmailSubjectLine = _this$context$formCon2 === void 0 ? "Thank You for Your Contribution" : _this$context$formCon2, APIAccessID = _this$context$formCon.APIAccessID, subscriptions = _this$context$formCon.subscriptions, AddContactYN = _this$context$formCon.AddContactYN, ActivityName = _this$context$formCon.ActivityName, ContactSource = _this$context$formCon.ContactSource, SectionName = _this$context$formCon.SectionName, proxy = _this$context$formCon.proxy;
+                            _this$context$formCon = _this.context.formConfig, mode = _this$context$formCon.mode, _this$context$formCon2 = _this$context$formCon.EmailSubjectLine, EmailSubjectLine = _this$context$formCon2 === void 0 ? "Thank You for Your Contribution" : _this$context$formCon2, subscriptions = _this$context$formCon.subscriptions, AddContactYN = _this$context$formCon.AddContactYN, ActivityName = _this$context$formCon.ActivityName, ContactSource = _this$context$formCon.ContactSource, SectionName = _this$context$formCon.SectionName, proxy = _this$context$formCon.proxy;
                             ClientBrowser = window && window.navigator ? window.navigator.userAgent : "";
                             UrlReferer = window.location.origin + window.location.pathname; //construct phone fields from regex
 
@@ -37443,12 +37900,12 @@ function (_Component) {
                             ShipTo = ShipToYes === true ? "Yes" : "No";
 
                             multipleDonations = function multipleDonations() {
-                              return items.map(function (_ref3, index) {
-                                var DetailName = _ref3.DetailName,
-                                    DetailDescription = _ref3.DetailDescription,
-                                    DetailCprojCredit = _ref3.DetailCprojCredit,
-                                    DetailCprojMail = _ref3.DetailCprojMail,
-                                    PledgeAmount = _ref3.PledgeAmount;
+                              return items.map(function (_ref2, index) {
+                                var DetailName = _ref2.DetailName,
+                                    DetailDescription = _ref2.DetailDescription,
+                                    DetailCprojCredit = _ref2.DetailCprojCredit,
+                                    DetailCprojMail = _ref2.DetailCprojMail,
+                                    PledgeAmount = _ref2.PledgeAmount;
 
                                 if (index === pledgeFound && _this.state.designationSelected) {
                                   DetailName = _this.state.designationInfo.DetailName;
@@ -37475,7 +37932,6 @@ function (_Component) {
                               AddContactYN: AddContactYN,
                               Address1: Address1,
                               Address2: Address2,
-                              APIAccessID: APIAccessID,
                               City: City,
                               ContactSource: ContactSource,
                               Country: Country,
@@ -37520,8 +37976,8 @@ function (_Component) {
                               });
                             }
 
-                            _context2.prev = 77;
-                            _context2.next = 80;
+                            _context2.prev = 83;
+                            _context2.next = 86;
                             return (0, _fetchHelpers.callApi)(proxy, {
                               method: "POST",
                               mode: "cors",
@@ -37531,21 +37987,21 @@ function (_Component) {
                               body: JSON.stringify(data)
                             });
 
-                          case 80:
+                          case 86:
                             msg = _context2.sent;
                             DonorID = msg.split(";")[0].split(" - ")[1];
                             confirmUrl = msg.split(" is ")[1];
                             bodyFormData = new FormData();
                             bodyFormData.append("DonorID", DonorID);
                             confirmationData = [];
-                            _context2.prev = 86;
-                            _context2.next = 89;
+                            _context2.prev = 92;
+                            _context2.next = 95;
                             return (0, _fetchHelpers.callApi)(confirmUrl, {
                               method: "POST",
                               body: new URLSearchParams(bodyFormData)
                             });
 
-                          case 89:
+                          case 95:
                             html = _context2.sent;
                             parser = new DOMParser();
                             doc = parser.parseFromString(html, "text/html");
@@ -37558,21 +38014,21 @@ function (_Component) {
                                 value: input.value
                               });
                             });
-                            _context2.next = 102;
+                            _context2.next = 108;
                             break;
 
-                          case 98:
-                            _context2.prev = 98;
-                            _context2.t4 = _context2["catch"](86);
+                          case 104:
+                            _context2.prev = 104;
+                            _context2.t4 = _context2["catch"](92);
                             console.error("GetConfirmationPageError");
                             console.error({
                               err: _context2.t4
                             });
 
-                          case 102:
+                          case 108:
                             return _context2.abrupt("return", _this.setState(function (state) {
-                              return reducer(state, {
-                                type: "SUBMIT_GIVING_FORM"
+                              return (0, _reducer.default)(state, {
+                                type: "SUBMIT_FORM"
                               });
                             }, function () {
                               _this.context.submitForm({
@@ -37583,9 +38039,9 @@ function (_Component) {
                               });
                             }));
 
-                          case 105:
-                            _context2.prev = 105;
-                            _context2.t5 = _context2["catch"](77);
+                          case 111:
+                            _context2.prev = 111;
+                            _context2.t5 = _context2["catch"](83);
                             console.error(_context2.t5.message);
                             message = _context2.t5.message;
                             _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
@@ -37594,7 +38050,7 @@ function (_Component) {
                               alert("There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700");
                             } else {
                               _this.setState(function (state) {
-                                return reducer(state, {
+                                return (0, _reducer.default)(state, {
                                   type: "UPDATE_FIELD",
                                   name: _name,
                                   value: fields[_name],
@@ -37604,17 +38060,17 @@ function (_Component) {
                             }
 
                             return _context2.abrupt("return", _this.setState(function (state) {
-                              return reducer(state, {
+                              return (0, _reducer.default)(state, {
                                 type: "TOGGLE_SUBMITTING"
                               });
                             }));
 
-                          case 112:
+                          case 118:
                           case "end":
                             return _context2.stop();
                         }
                       }
-                    }, _callee2, null, [[5, 45], [10, 16], [21, 27], [32, 38], [77, 105], [86, 98]]);
+                    }, _callee2, null, [[5, 51], [13, 19], [24, 33], [38, 44], [83, 111], [92, 104]]);
                   })));
 
                 case 1:
@@ -37633,17 +38089,17 @@ function (_Component) {
       }(),
       addToCart: function addToCart(action) {
         return _this.setState(function (state) {
-          return reducer(state, action);
+          return (0, _reducer.default)(state, action);
         });
       },
       removeFromCart: function removeFromCart(action) {
         return _this.setState(function (state) {
-          return reducer(state, action);
+          return (0, _reducer.default)(state, action);
         });
       },
       updateGivingType: function updateGivingType(action) {
         return _this.setState(function (state) {
-          return reducer(state, action);
+          return (0, _reducer.default)(state, action);
         });
       }
     };
@@ -37665,262 +38121,6 @@ function (_Component) {
       }
 
       return true;
-    };
-
-    _this.callZipCityStateService =
-    /*#__PURE__*/
-    function () {
-      var _ref4 = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee4(name, value) {
-        var base, url, result, oldCity, _JSON$parse, city, state, zip, returnCode, returnMessage, error, newCity, action;
-
-        return _regenerator.default.wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                if (!value) {
-                  _context4.next = 27;
-                  break;
-                }
-
-                base = "https://services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
-                url = "".concat(base).concat(value);
-                _context4.prev = 3;
-                _context4.next = 6;
-                return (0, _fetchHelpers.callApi)(url);
-
-              case 6:
-                result = _context4.sent;
-                oldCity = _this.state.fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
-                _JSON$parse = JSON.parse(result), city = _JSON$parse.city, state = _JSON$parse.state, zip = _JSON$parse.zip, returnCode = _JSON$parse.returnCode, returnMessage = _JSON$parse.returnMessage; // console.log({ city, state, zip, returnCode, returnMessage })
-
-                if (!(returnCode == 1)) {
-                  _context4.next = 18;
-                  break;
-                }
-
-                // console.log(city)
-                error = oldCity && !city.toUpperCase().includes(oldCity);
-                newCity = error || !oldCity ? city.split(";")[0] : oldCity;
-                action = {
-                  type: "UPDATE_FIELDS",
-                  fields: [{
-                    name: name == "ShipToZip" ? "ShipToCity" : "City",
-                    value: newCity,
-                    error: ""
-                  }, {
-                    name: name == "ShipToZip" ? "ShipToState" : "State",
-                    value: state,
-                    error: ""
-                  }]
-                };
-
-                if (name == "Zip") {
-                  action.fields.push({
-                    name: "Country",
-                    value: "United States",
-                    error: ""
-                  });
-                }
-
-                _this.setState(function (state) {
-                  return reducer(state, action);
-                });
-
-                return _context4.abrupt("return", error ? city : "");
-
-              case 18:
-                return _context4.abrupt("return", returnMessage);
-
-              case 19:
-                _context4.next = 25;
-                break;
-
-              case 21:
-                _context4.prev = 21;
-                _context4.t0 = _context4["catch"](3);
-                console.error(_context4.t0);
-                return _context4.abrupt("return", "");
-
-              case 25:
-                _context4.next = 28;
-                break;
-
-              case 27:
-                return _context4.abrupt("return", "");
-
-              case 28:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4, null, [[3, 21]]);
-      }));
-
-      return function (_x3, _x4) {
-        return _ref4.apply(this, arguments);
-      };
-    }();
-
-    _this.callAddressVerification =
-    /*#__PURE__*/
-    function () {
-      var _ref5 = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee5(addr1) {
-        var addr2,
-            city,
-            state,
-            zip,
-            base,
-            url,
-            result,
-            _JSON$parse2,
-            returnCode,
-            returnMessage,
-            _args5 = arguments;
-
-        return _regenerator.default.wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                addr2 = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : "";
-                city = _args5.length > 2 ? _args5[2] : undefined;
-                state = _args5.length > 3 ? _args5[3] : undefined;
-                zip = _args5.length > 4 ? _args5[4] : undefined;
-                base = "https://services.cbn.com/AddressValidation/AddressVerification.aspx";
-                url = encodeURI("".concat(base, "?addr1=").concat(encodeURIComponent(addr1), "&addr2=").concat(encodeURIComponent(addr2), "&city=").concat(encodeURIComponent(city), "&state=").concat(encodeURIComponent(state), "&zip=").concat(encodeURIComponent(zip)));
-                _context5.prev = 6;
-                _context5.next = 9;
-                return (0, _fetchHelpers.callApi)(url);
-
-              case 9:
-                result = _context5.sent;
-                // console.log({result})
-                _JSON$parse2 = JSON.parse(result), returnCode = _JSON$parse2.returnCode, returnMessage = _JSON$parse2.returnMessage;
-                return _context5.abrupt("return", returnCode == 1 ? "" : returnMessage);
-
-              case 14:
-                _context5.prev = 14;
-                _context5.t0 = _context5["catch"](6);
-                console.error({
-                  err: _context5.t0
-                });
-                return _context5.abrupt("return", "");
-
-              case 18:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5, null, [[6, 14]]);
-      }));
-
-      return function (_x5) {
-        return _ref5.apply(this, arguments);
-      };
-    }();
-
-    _this.validateInput = function (submitting, name, value) {
-      var error = "";
-      var international = _this.context.formConfig.international;
-      var ShipToYes = _this.state.fields.ShipToYes;
-
-      switch (name) {
-        case "Title":
-        case "State":
-        case "Address1":
-        case "City":
-          if (!value && submitting) {
-            error = "Required";
-          }
-
-          break;
-
-        case "ShipToState":
-        case "ShipToAddress1":
-        case "ShipToCity":
-          if (!value && submitting && ShipToYes) {
-            error = "Required";
-          }
-
-          break;
-
-        case "Firstname":
-          if (value && !firstname_regex.test(value)) {
-            error = "No special characters allowed. Please call if you need assistance.";
-          }
-
-          if (!value && submitting) {
-            error = "Required";
-          }
-
-          break;
-
-        case "Middlename":
-          if (value && !firstname_regex.test(value)) {
-            error = "No special characters allowed. Please call if you need assistance.";
-          }
-
-          break;
-
-        case "Lastname":
-          if (value && !lastname_regex.test(value)) {
-            error = "No special characters allowed. Please call if you need assistance.";
-          }
-
-          if (!value && submitting) {
-            error = "Required";
-          }
-
-          break;
-
-        case "ShipToName":
-          if (value && !lastname_regex.test(value)) {
-            error = "No special characters allowed. Please call if you need assistance.";
-          }
-
-          if (!value && ShipToYes && submitting) {
-            error = "Required";
-          }
-
-          break;
-
-        case "Spousename":
-          if (value && !lastname_regex.test(value)) {
-            error = "No special characters allowed. Please call if you need assistance.";
-          }
-
-          break;
-
-        case "Country":
-          if (!value && submitting && international) {
-            error = "Required";
-          }
-
-          break;
-
-        case "Emailaddress":
-          if (value && !email_regex.test(value)) {
-            error = "Please enter a valid email: ie. you@example.com";
-          }
-
-          if (!value && submitting) {
-            error = "Required";
-          }
-
-          break;
-
-        case "phone":
-          if (value && !phone_regex.test(value)) {
-            error = "Please enter a valid phone number, numbers only: ie. 7575551212";
-          }
-
-          break;
-      }
-
-      return error;
     };
 
     return _this;
@@ -37960,12 +38160,6 @@ exports.default = _default2;
   }
 
   reactHotLoader.register(GivingFormContext, "GivingFormContext", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js");
-  reactHotLoader.register(reducer, "reducer", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js");
-  reactHotLoader.register(email_regex, "email_regex", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js");
-  reactHotLoader.register(phone_regex, "phone_regex", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js");
-  reactHotLoader.register(zip_regex, "zip_regex", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js");
-  reactHotLoader.register(firstname_regex, "firstname_regex", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js");
-  reactHotLoader.register(lastname_regex, "lastname_regex", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js");
   reactHotLoader.register(GivingFormProvider, "GivingFormProvider", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js");
   reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js");
 })();
@@ -37976,7 +38170,1763 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../../helpers/ls":"src/helpers/ls.js","../../helpers/error-types":"src/helpers/error-types.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../../helpers/ls":"src/helpers/ls.js","../../helpers/error-types":"src/helpers/error-types.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js","../../helpers/validators":"src/helpers/validators.js","../../helpers/reducer":"src/helpers/reducer.js"}],"src/Components/Contexts/ProductFormProvider.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.ProductFormContext = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _FormConfigProvider = require("./FormConfigProvider");
+
+var _ls = require("../../helpers/ls");
+
+var _errorTypes = require("../../helpers/error-types");
+
+var _fetchHelpers = require("../../helpers/fetch-helpers");
+
+var _validators = require("../../helpers/validators");
+
+var _reducer = _interopRequireDefault(require("../../helpers/reducer"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var ProductFormContext = _react.default.createContext();
+
+exports.ProductFormContext = ProductFormContext;
+
+var ProductFormProvider =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inherits2.default)(ProductFormProvider, _Component);
+
+  function ProductFormProvider() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    (0, _classCallCheck2.default)(this, ProductFormProvider);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(ProductFormProvider)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.state = {
+      cart: {
+        items: []
+      },
+      givingInfo: {},
+      productInfo: [],
+      initialized: false,
+      submitting: false,
+      fields: {},
+      errors: {},
+      initFields: function initFields(action) {
+        return _this.setState(function (state) {
+          return (0, _reducer.default)(state, action);
+        });
+      },
+      loadLS: function loadLS(action) {
+        var store = (0, _ls.readLS)("store");
+        var info = (0, _ls.readLS)("info");
+        var formData = store ? store : info; // console.log({store, info, formData})
+
+        if (!formData) {
+          (0, _ls.emptyLS)();
+        }
+
+        if (!store) {
+          (0, _ls.removeOneLS)("store");
+        }
+
+        action.formData = formData;
+
+        _this.setState(function (state) {
+          return (0, _reducer.default)(state, action);
+        });
+      },
+      saveLS: function saveLS() {
+        var days = 30;
+        var lifetime = days * 24 * 60 * 60 * 1000;
+        var _this$state$fields = _this.state.fields,
+            Address1 = _this$state$fields.Address1,
+            Address2 = _this$state$fields.Address2,
+            City = _this$state$fields.City,
+            Country = _this$state$fields.Country,
+            Emailaddress = _this$state$fields.Emailaddress,
+            Firstname = _this$state$fields.Firstname,
+            Middlename = _this$state$fields.Middlename,
+            Lastname = _this$state$fields.Lastname,
+            Spousename = _this$state$fields.Spousename,
+            Suffix = _this$state$fields.Suffix,
+            State = _this$state$fields.State,
+            Title = _this$state$fields.Title,
+            Zip = _this$state$fields.Zip,
+            phone = _this$state$fields.phone;
+        var Phoneareacode = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[1] : "",
+            Phoneexchange = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[2] : "",
+            Phonenumber = phone.trim().match(phone_regex) ? phone.trim().match(phone_regex)[3] : "";
+        var formData = {
+          Address1: Address1,
+          Address2: Address2,
+          City: City,
+          Country: Country,
+          Emailaddress: Emailaddress,
+          Firstname: Firstname,
+          Middlename: Middlename,
+          Lastname: Lastname,
+          Phoneareacode: Phoneareacode,
+          Phoneexchange: Phoneexchange,
+          Phonenumber: Phonenumber,
+          Spousename: Spousename,
+          Suffix: Suffix,
+          State: State,
+          Title: Title,
+          Zip: Zip
+        };
+        (0, _ls.cryptLS)({
+          formData: formData
+        }, lifetime, "info");
+      },
+      removeOneLS: function removeOneLS(type) {
+        (0, _ls.removeOneLS)("info");
+      },
+      updateField: function updateField(action) {
+        return _this.setState(function (state) {
+          return (0, _reducer.default)(state, action);
+        });
+      },
+      validateAndUpdateField: function () {
+        var _validateAndUpdateField = (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
+        _regenerator.default.mark(function _callee(action) {
+          var name, value, isZip, oldCity, response;
+          return _regenerator.default.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  name = action.name, value = action.value;
+                  isZip = name.includes("Zip") && value.length >= 5;
+
+                  if (!isZip) {
+                    _context.next = 22;
+                    break;
+                  }
+
+                  if (_validators.zip_regex.test(value)) {
+                    _context.next = 7;
+                    break;
+                  }
+
+                  action.error = "Invalid Postal Code";
+                  _context.next = 20;
+                  break;
+
+                case 7:
+                  _context.prev = 7;
+                  oldCity = _this.state.fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
+                  _context.next = 11;
+                  return (0, _validators.callZipCityStateService)(name, value, oldCity);
+
+                case 11:
+                  response = _context.sent;
+
+                  if (response.action) {
+                    _this.setState(function (state) {
+                      return (0, _reducer.default)(state, response.action);
+                    });
+                  }
+
+                  action.error = response.error;
+                  _context.next = 20;
+                  break;
+
+                case 16:
+                  _context.prev = 16;
+                  _context.t0 = _context["catch"](7);
+                  console.error("CallZipCityStateServiceError");
+                  console.error({
+                    err: _context.t0
+                  });
+
+                case 20:
+                  _context.next = 25;
+                  break;
+
+                case 22:
+                  _context.next = 24;
+                  return (0, _validators.validateInput)(false, name, value, _this.context.allowInternational, _this.state.ShipToYes);
+
+                case 24:
+                  action.error = _context.sent;
+
+                case 25:
+                  _this.setState(function (state) {
+                    return (0, _reducer.default)(state, action);
+                  });
+
+                case 26:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, null, [[7, 16]]);
+        }));
+
+        function validateAndUpdateField(_x) {
+          return _validateAndUpdateField.apply(this, arguments);
+        }
+
+        return validateAndUpdateField;
+      }(),
+      submitProductForm: function () {
+        var _submitProductForm = (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
+        _regenerator.default.mark(function _callee3(action) {
+          return _regenerator.default.wrap(function _callee3$(_context3) {
+            while (1) {
+              switch (_context3.prev = _context3.next) {
+                case 0:
+                  _this.setState(function (state) {
+                    return (0, _reducer.default)(state, {
+                      type: "TOGGLE_SUBMITTING"
+                    });
+                  },
+                  /*#__PURE__*/
+                  (0, _asyncToGenerator2.default)(
+                  /*#__PURE__*/
+                  _regenerator.default.mark(function _callee2() {
+                    return _regenerator.default.wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                          case "end":
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2);
+                  })));
+
+                case 1:
+                case "end":
+                  return _context3.stop();
+              }
+            }
+          }, _callee3);
+        }));
+
+        function submitProductForm(_x2) {
+          return _submitProductForm.apply(this, arguments);
+        }
+
+        return submitProductForm;
+      }()
+    };
+    return _this;
+  }
+
+  (0, _createClass2.default)(ProductFormProvider, [{
+    key: "render",
+    value: function render() {
+      var state = this.state,
+          children = this.props.children;
+      return (0, _core.jsx)(ProductFormContext.Provider, {
+        value: state
+      }, children);
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+  return ProductFormProvider;
+}(_react.Component);
+
+ProductFormProvider.contextType = _FormConfigProvider.FormConfigContext;
+var _default = ProductFormProvider;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(ProductFormContext, "ProductFormContext", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/ProductFormProvider.js");
+  reactHotLoader.register(ProductFormProvider, "ProductFormProvider", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/ProductFormProvider.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/ProductFormProvider.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../../helpers/ls":"src/helpers/ls.js","../../helpers/error-types":"src/helpers/error-types.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js","../../helpers/validators":"src/helpers/validators.js","../../helpers/reducer":"src/helpers/reducer.js"}],"node_modules/util/support/isBufferBrowser.js":[function(require,module,exports) {
+module.exports = function isBuffer(arg) {
+  return arg && typeof arg === 'object'
+    && typeof arg.copy === 'function'
+    && typeof arg.fill === 'function'
+    && typeof arg.readUInt8 === 'function';
+}
+},{}],"node_modules/util/node_modules/inherits/inherits_browser.js":[function(require,module,exports) {
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+},{}],"node_modules/process/browser.js":[function(require,module,exports) {
+
+// shim for using process in browser
+var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+  throw new Error('setTimeout has not been defined');
+}
+
+function defaultClearTimeout() {
+  throw new Error('clearTimeout has not been defined');
+}
+
+(function () {
+  try {
+    if (typeof setTimeout === 'function') {
+      cachedSetTimeout = setTimeout;
+    } else {
+      cachedSetTimeout = defaultSetTimout;
+    }
+  } catch (e) {
+    cachedSetTimeout = defaultSetTimout;
+  }
+
+  try {
+    if (typeof clearTimeout === 'function') {
+      cachedClearTimeout = clearTimeout;
+    } else {
+      cachedClearTimeout = defaultClearTimeout;
+    }
+  } catch (e) {
+    cachedClearTimeout = defaultClearTimeout;
+  }
+})();
+
+function runTimeout(fun) {
+  if (cachedSetTimeout === setTimeout) {
+    //normal enviroments in sane situations
+    return setTimeout(fun, 0);
+  } // if setTimeout wasn't available but was latter defined
+
+
+  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+    cachedSetTimeout = setTimeout;
+    return setTimeout(fun, 0);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedSetTimeout(fun, 0);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+      return cachedSetTimeout.call(null, fun, 0);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+      return cachedSetTimeout.call(this, fun, 0);
+    }
+  }
+}
+
+function runClearTimeout(marker) {
+  if (cachedClearTimeout === clearTimeout) {
+    //normal enviroments in sane situations
+    return clearTimeout(marker);
+  } // if clearTimeout wasn't available but was latter defined
+
+
+  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+    cachedClearTimeout = clearTimeout;
+    return clearTimeout(marker);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedClearTimeout(marker);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+      return cachedClearTimeout.call(null, marker);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+      return cachedClearTimeout.call(this, marker);
+    }
+  }
+}
+
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+  if (!draining || !currentQueue) {
+    return;
+  }
+
+  draining = false;
+
+  if (currentQueue.length) {
+    queue = currentQueue.concat(queue);
+  } else {
+    queueIndex = -1;
+  }
+
+  if (queue.length) {
+    drainQueue();
+  }
+}
+
+function drainQueue() {
+  if (draining) {
+    return;
+  }
+
+  var timeout = runTimeout(cleanUpNextTick);
+  draining = true;
+  var len = queue.length;
+
+  while (len) {
+    currentQueue = queue;
+    queue = [];
+
+    while (++queueIndex < len) {
+      if (currentQueue) {
+        currentQueue[queueIndex].run();
+      }
+    }
+
+    queueIndex = -1;
+    len = queue.length;
+  }
+
+  currentQueue = null;
+  draining = false;
+  runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+  var args = new Array(arguments.length - 1);
+
+  if (arguments.length > 1) {
+    for (var i = 1; i < arguments.length; i++) {
+      args[i - 1] = arguments[i];
+    }
+  }
+
+  queue.push(new Item(fun, args));
+
+  if (queue.length === 1 && !draining) {
+    runTimeout(drainQueue);
+  }
+}; // v8 likes predictible objects
+
+
+function Item(fun, array) {
+  this.fun = fun;
+  this.array = array;
+}
+
+Item.prototype.run = function () {
+  this.fun.apply(null, this.array);
+};
+
+process.title = 'browser';
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+  return [];
+};
+
+process.binding = function (name) {
+  throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+  return '/';
+};
+
+process.chdir = function (dir) {
+  throw new Error('process.chdir is not supported');
+};
+
+process.umask = function () {
+  return 0;
+};
+},{}],"node_modules/util/util.js":[function(require,module,exports) {
+var process = require("process");
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+var getOwnPropertyDescriptors = Object.getOwnPropertyDescriptors || function getOwnPropertyDescriptors(obj) {
+  var keys = Object.keys(obj);
+  var descriptors = {};
+
+  for (var i = 0; i < keys.length; i++) {
+    descriptors[keys[i]] = Object.getOwnPropertyDescriptor(obj, keys[i]);
+  }
+
+  return descriptors;
+};
+
+var formatRegExp = /%[sdj%]/g;
+
+exports.format = function (f) {
+  if (!isString(f)) {
+    var objects = [];
+
+    for (var i = 0; i < arguments.length; i++) {
+      objects.push(inspect(arguments[i]));
+    }
+
+    return objects.join(' ');
+  }
+
+  var i = 1;
+  var args = arguments;
+  var len = args.length;
+  var str = String(f).replace(formatRegExp, function (x) {
+    if (x === '%%') return '%';
+    if (i >= len) return x;
+
+    switch (x) {
+      case '%s':
+        return String(args[i++]);
+
+      case '%d':
+        return Number(args[i++]);
+
+      case '%j':
+        try {
+          return JSON.stringify(args[i++]);
+        } catch (_) {
+          return '[Circular]';
+        }
+
+      default:
+        return x;
+    }
+  });
+
+  for (var x = args[i]; i < len; x = args[++i]) {
+    if (isNull(x) || !isObject(x)) {
+      str += ' ' + x;
+    } else {
+      str += ' ' + inspect(x);
+    }
+  }
+
+  return str;
+}; // Mark that a method should not be used.
+// Returns a modified function which warns once by default.
+// If --no-deprecation is set, then it is a no-op.
+
+
+exports.deprecate = function (fn, msg) {
+  if (typeof process !== 'undefined' && process.noDeprecation === true) {
+    return fn;
+  } // Allow for deprecating things in the process of starting up.
+
+
+  if (typeof process === 'undefined') {
+    return function () {
+      return exports.deprecate(fn, msg).apply(this, arguments);
+    };
+  }
+
+  var warned = false;
+
+  function deprecated() {
+    if (!warned) {
+      if (process.throwDeprecation) {
+        throw new Error(msg);
+      } else if (process.traceDeprecation) {
+        console.trace(msg);
+      } else {
+        console.error(msg);
+      }
+
+      warned = true;
+    }
+
+    return fn.apply(this, arguments);
+  }
+
+  return deprecated;
+};
+
+var debugs = {};
+var debugEnviron;
+
+exports.debuglog = function (set) {
+  if (isUndefined(debugEnviron)) debugEnviron = undefined || '';
+  set = set.toUpperCase();
+
+  if (!debugs[set]) {
+    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
+      var pid = process.pid;
+
+      debugs[set] = function () {
+        var msg = exports.format.apply(exports, arguments);
+        console.error('%s %d: %s', set, pid, msg);
+      };
+    } else {
+      debugs[set] = function () {};
+    }
+  }
+
+  return debugs[set];
+};
+/**
+ * Echos the value of a value. Trys to print the value out
+ * in the best way possible given the different types.
+ *
+ * @param {Object} obj The object to print out.
+ * @param {Object} opts Optional options object that alters the output.
+ */
+
+/* legacy: obj, showHidden, depth, colors*/
+
+
+function inspect(obj, opts) {
+  // default options
+  var ctx = {
+    seen: [],
+    stylize: stylizeNoColor
+  }; // legacy...
+
+  if (arguments.length >= 3) ctx.depth = arguments[2];
+  if (arguments.length >= 4) ctx.colors = arguments[3];
+
+  if (isBoolean(opts)) {
+    // legacy...
+    ctx.showHidden = opts;
+  } else if (opts) {
+    // got an "options" object
+    exports._extend(ctx, opts);
+  } // set default options
+
+
+  if (isUndefined(ctx.showHidden)) ctx.showHidden = false;
+  if (isUndefined(ctx.depth)) ctx.depth = 2;
+  if (isUndefined(ctx.colors)) ctx.colors = false;
+  if (isUndefined(ctx.customInspect)) ctx.customInspect = true;
+  if (ctx.colors) ctx.stylize = stylizeWithColor;
+  return formatValue(ctx, obj, ctx.depth);
+}
+
+exports.inspect = inspect; // http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
+
+inspect.colors = {
+  'bold': [1, 22],
+  'italic': [3, 23],
+  'underline': [4, 24],
+  'inverse': [7, 27],
+  'white': [37, 39],
+  'grey': [90, 39],
+  'black': [30, 39],
+  'blue': [34, 39],
+  'cyan': [36, 39],
+  'green': [32, 39],
+  'magenta': [35, 39],
+  'red': [31, 39],
+  'yellow': [33, 39]
+}; // Don't use 'blue' not visible on cmd.exe
+
+inspect.styles = {
+  'special': 'cyan',
+  'number': 'yellow',
+  'boolean': 'yellow',
+  'undefined': 'grey',
+  'null': 'bold',
+  'string': 'green',
+  'date': 'magenta',
+  // "name": intentionally not styling
+  'regexp': 'red'
+};
+
+function stylizeWithColor(str, styleType) {
+  var style = inspect.styles[styleType];
+
+  if (style) {
+    return '\u001b[' + inspect.colors[style][0] + 'm' + str + '\u001b[' + inspect.colors[style][1] + 'm';
+  } else {
+    return str;
+  }
+}
+
+function stylizeNoColor(str, styleType) {
+  return str;
+}
+
+function arrayToHash(array) {
+  var hash = {};
+  array.forEach(function (val, idx) {
+    hash[val] = true;
+  });
+  return hash;
+}
+
+function formatValue(ctx, value, recurseTimes) {
+  // Provide a hook for user-specified inspect functions.
+  // Check that value is an object with an inspect function on it
+  if (ctx.customInspect && value && isFunction(value.inspect) && // Filter out the util module, it's inspect function is special
+  value.inspect !== exports.inspect && // Also filter out any prototype objects using the circular check.
+  !(value.constructor && value.constructor.prototype === value)) {
+    var ret = value.inspect(recurseTimes, ctx);
+
+    if (!isString(ret)) {
+      ret = formatValue(ctx, ret, recurseTimes);
+    }
+
+    return ret;
+  } // Primitive types cannot have properties
+
+
+  var primitive = formatPrimitive(ctx, value);
+
+  if (primitive) {
+    return primitive;
+  } // Look up the keys of the object.
+
+
+  var keys = Object.keys(value);
+  var visibleKeys = arrayToHash(keys);
+
+  if (ctx.showHidden) {
+    keys = Object.getOwnPropertyNames(value);
+  } // IE doesn't make error fields non-enumerable
+  // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
+
+
+  if (isError(value) && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
+    return formatError(value);
+  } // Some type of object without properties can be shortcutted.
+
+
+  if (keys.length === 0) {
+    if (isFunction(value)) {
+      var name = value.name ? ': ' + value.name : '';
+      return ctx.stylize('[Function' + name + ']', 'special');
+    }
+
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    }
+
+    if (isDate(value)) {
+      return ctx.stylize(Date.prototype.toString.call(value), 'date');
+    }
+
+    if (isError(value)) {
+      return formatError(value);
+    }
+  }
+
+  var base = '',
+      array = false,
+      braces = ['{', '}']; // Make Array say that they are Array
+
+  if (isArray(value)) {
+    array = true;
+    braces = ['[', ']'];
+  } // Make functions say that they are functions
+
+
+  if (isFunction(value)) {
+    var n = value.name ? ': ' + value.name : '';
+    base = ' [Function' + n + ']';
+  } // Make RegExps say that they are RegExps
+
+
+  if (isRegExp(value)) {
+    base = ' ' + RegExp.prototype.toString.call(value);
+  } // Make dates with properties first say the date
+
+
+  if (isDate(value)) {
+    base = ' ' + Date.prototype.toUTCString.call(value);
+  } // Make error with message first say the error
+
+
+  if (isError(value)) {
+    base = ' ' + formatError(value);
+  }
+
+  if (keys.length === 0 && (!array || value.length == 0)) {
+    return braces[0] + base + braces[1];
+  }
+
+  if (recurseTimes < 0) {
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    } else {
+      return ctx.stylize('[Object]', 'special');
+    }
+  }
+
+  ctx.seen.push(value);
+  var output;
+
+  if (array) {
+    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
+  } else {
+    output = keys.map(function (key) {
+      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
+    });
+  }
+
+  ctx.seen.pop();
+  return reduceToSingleString(output, base, braces);
+}
+
+function formatPrimitive(ctx, value) {
+  if (isUndefined(value)) return ctx.stylize('undefined', 'undefined');
+
+  if (isString(value)) {
+    var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '').replace(/'/g, "\\'").replace(/\\"/g, '"') + '\'';
+    return ctx.stylize(simple, 'string');
+  }
+
+  if (isNumber(value)) return ctx.stylize('' + value, 'number');
+  if (isBoolean(value)) return ctx.stylize('' + value, 'boolean'); // For some reason typeof null is "object", so special case here.
+
+  if (isNull(value)) return ctx.stylize('null', 'null');
+}
+
+function formatError(value) {
+  return '[' + Error.prototype.toString.call(value) + ']';
+}
+
+function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
+  var output = [];
+
+  for (var i = 0, l = value.length; i < l; ++i) {
+    if (hasOwnProperty(value, String(i))) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys, String(i), true));
+    } else {
+      output.push('');
+    }
+  }
+
+  keys.forEach(function (key) {
+    if (!key.match(/^\d+$/)) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys, key, true));
+    }
+  });
+  return output;
+}
+
+function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
+  var name, str, desc;
+  desc = Object.getOwnPropertyDescriptor(value, key) || {
+    value: value[key]
+  };
+
+  if (desc.get) {
+    if (desc.set) {
+      str = ctx.stylize('[Getter/Setter]', 'special');
+    } else {
+      str = ctx.stylize('[Getter]', 'special');
+    }
+  } else {
+    if (desc.set) {
+      str = ctx.stylize('[Setter]', 'special');
+    }
+  }
+
+  if (!hasOwnProperty(visibleKeys, key)) {
+    name = '[' + key + ']';
+  }
+
+  if (!str) {
+    if (ctx.seen.indexOf(desc.value) < 0) {
+      if (isNull(recurseTimes)) {
+        str = formatValue(ctx, desc.value, null);
+      } else {
+        str = formatValue(ctx, desc.value, recurseTimes - 1);
+      }
+
+      if (str.indexOf('\n') > -1) {
+        if (array) {
+          str = str.split('\n').map(function (line) {
+            return '  ' + line;
+          }).join('\n').substr(2);
+        } else {
+          str = '\n' + str.split('\n').map(function (line) {
+            return '   ' + line;
+          }).join('\n');
+        }
+      }
+    } else {
+      str = ctx.stylize('[Circular]', 'special');
+    }
+  }
+
+  if (isUndefined(name)) {
+    if (array && key.match(/^\d+$/)) {
+      return str;
+    }
+
+    name = JSON.stringify('' + key);
+
+    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
+      name = name.substr(1, name.length - 2);
+      name = ctx.stylize(name, 'name');
+    } else {
+      name = name.replace(/'/g, "\\'").replace(/\\"/g, '"').replace(/(^"|"$)/g, "'");
+      name = ctx.stylize(name, 'string');
+    }
+  }
+
+  return name + ': ' + str;
+}
+
+function reduceToSingleString(output, base, braces) {
+  var numLinesEst = 0;
+  var length = output.reduce(function (prev, cur) {
+    numLinesEst++;
+    if (cur.indexOf('\n') >= 0) numLinesEst++;
+    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
+  }, 0);
+
+  if (length > 60) {
+    return braces[0] + (base === '' ? '' : base + '\n ') + ' ' + output.join(',\n  ') + ' ' + braces[1];
+  }
+
+  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
+} // NOTE: These type checking functions intentionally don't use `instanceof`
+// because it is fragile and can be easily faked with `Object.create()`.
+
+
+function isArray(ar) {
+  return Array.isArray(ar);
+}
+
+exports.isArray = isArray;
+
+function isBoolean(arg) {
+  return typeof arg === 'boolean';
+}
+
+exports.isBoolean = isBoolean;
+
+function isNull(arg) {
+  return arg === null;
+}
+
+exports.isNull = isNull;
+
+function isNullOrUndefined(arg) {
+  return arg == null;
+}
+
+exports.isNullOrUndefined = isNullOrUndefined;
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+
+exports.isNumber = isNumber;
+
+function isString(arg) {
+  return typeof arg === 'string';
+}
+
+exports.isString = isString;
+
+function isSymbol(arg) {
+  return typeof arg === 'symbol';
+}
+
+exports.isSymbol = isSymbol;
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+
+exports.isUndefined = isUndefined;
+
+function isRegExp(re) {
+  return isObject(re) && objectToString(re) === '[object RegExp]';
+}
+
+exports.isRegExp = isRegExp;
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+
+exports.isObject = isObject;
+
+function isDate(d) {
+  return isObject(d) && objectToString(d) === '[object Date]';
+}
+
+exports.isDate = isDate;
+
+function isError(e) {
+  return isObject(e) && (objectToString(e) === '[object Error]' || e instanceof Error);
+}
+
+exports.isError = isError;
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+
+exports.isFunction = isFunction;
+
+function isPrimitive(arg) {
+  return arg === null || typeof arg === 'boolean' || typeof arg === 'number' || typeof arg === 'string' || typeof arg === 'symbol' || // ES6 symbol
+  typeof arg === 'undefined';
+}
+
+exports.isPrimitive = isPrimitive;
+exports.isBuffer = require('./support/isBuffer');
+
+function objectToString(o) {
+  return Object.prototype.toString.call(o);
+}
+
+function pad(n) {
+  return n < 10 ? '0' + n.toString(10) : n.toString(10);
+}
+
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; // 26 Feb 16:19:34
+
+function timestamp() {
+  var d = new Date();
+  var time = [pad(d.getHours()), pad(d.getMinutes()), pad(d.getSeconds())].join(':');
+  return [d.getDate(), months[d.getMonth()], time].join(' ');
+} // log is just a thin wrapper to console.log that prepends a timestamp
+
+
+exports.log = function () {
+  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
+};
+/**
+ * Inherit the prototype methods from one constructor into another.
+ *
+ * The Function.prototype.inherits from lang.js rewritten as a standalone
+ * function (not on Function.prototype). NOTE: If this file is to be loaded
+ * during bootstrapping this function needs to be rewritten using some native
+ * functions as prototype setup using normal JavaScript does not work as
+ * expected during bootstrapping (see mirror.js in r114903).
+ *
+ * @param {function} ctor Constructor function which needs to inherit the
+ *     prototype.
+ * @param {function} superCtor Constructor function to inherit prototype from.
+ */
+
+
+exports.inherits = require('inherits');
+
+exports._extend = function (origin, add) {
+  // Don't do anything if add isn't an object
+  if (!add || !isObject(add)) return origin;
+  var keys = Object.keys(add);
+  var i = keys.length;
+
+  while (i--) {
+    origin[keys[i]] = add[keys[i]];
+  }
+
+  return origin;
+};
+
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+var kCustomPromisifiedSymbol = typeof Symbol !== 'undefined' ? Symbol('util.promisify.custom') : undefined;
+
+exports.promisify = function promisify(original) {
+  if (typeof original !== 'function') throw new TypeError('The "original" argument must be of type Function');
+
+  if (kCustomPromisifiedSymbol && original[kCustomPromisifiedSymbol]) {
+    var fn = original[kCustomPromisifiedSymbol];
+
+    if (typeof fn !== 'function') {
+      throw new TypeError('The "util.promisify.custom" argument must be of type Function');
+    }
+
+    Object.defineProperty(fn, kCustomPromisifiedSymbol, {
+      value: fn,
+      enumerable: false,
+      writable: false,
+      configurable: true
+    });
+    return fn;
+  }
+
+  function fn() {
+    var promiseResolve, promiseReject;
+    var promise = new Promise(function (resolve, reject) {
+      promiseResolve = resolve;
+      promiseReject = reject;
+    });
+    var args = [];
+
+    for (var i = 0; i < arguments.length; i++) {
+      args.push(arguments[i]);
+    }
+
+    args.push(function (err, value) {
+      if (err) {
+        promiseReject(err);
+      } else {
+        promiseResolve(value);
+      }
+    });
+
+    try {
+      original.apply(this, args);
+    } catch (err) {
+      promiseReject(err);
+    }
+
+    return promise;
+  }
+
+  Object.setPrototypeOf(fn, Object.getPrototypeOf(original));
+  if (kCustomPromisifiedSymbol) Object.defineProperty(fn, kCustomPromisifiedSymbol, {
+    value: fn,
+    enumerable: false,
+    writable: false,
+    configurable: true
+  });
+  return Object.defineProperties(fn, getOwnPropertyDescriptors(original));
+};
+
+exports.promisify.custom = kCustomPromisifiedSymbol;
+
+function callbackifyOnRejected(reason, cb) {
+  // `!reason` guard inspired by bluebird (Ref: https://goo.gl/t5IS6M).
+  // Because `null` is a special error value in callbacks which means "no error
+  // occurred", we error-wrap so the callback consumer can distinguish between
+  // "the promise rejected with null" or "the promise fulfilled with undefined".
+  if (!reason) {
+    var newReason = new Error('Promise was rejected with a falsy value');
+    newReason.reason = reason;
+    reason = newReason;
+  }
+
+  return cb(reason);
+}
+
+function callbackify(original) {
+  if (typeof original !== 'function') {
+    throw new TypeError('The "original" argument must be of type Function');
+  } // We DO NOT return the promise as it gives the user a false sense that
+  // the promise is actually somehow related to the callback's execution
+  // and that the callback throwing will reject the promise.
+
+
+  function callbackified() {
+    var args = [];
+
+    for (var i = 0; i < arguments.length; i++) {
+      args.push(arguments[i]);
+    }
+
+    var maybeCb = args.pop();
+
+    if (typeof maybeCb !== 'function') {
+      throw new TypeError('The last argument must be of type Function');
+    }
+
+    var self = this;
+
+    var cb = function () {
+      return maybeCb.apply(self, arguments);
+    }; // In true node style we process the callback on `nextTick` with all the
+    // implications (stack, `uncaughtException`, `async_hooks`)
+
+
+    original.apply(this, args).then(function (ret) {
+      process.nextTick(cb, null, ret);
+    }, function (rej) {
+      process.nextTick(callbackifyOnRejected, rej, cb);
+    });
+  }
+
+  Object.setPrototypeOf(callbackified, Object.getPrototypeOf(original));
+  Object.defineProperties(callbackified, getOwnPropertyDescriptors(original));
+  return callbackified;
+}
+
+exports.callbackify = callbackify;
+},{"./support/isBuffer":"node_modules/util/support/isBufferBrowser.js","inherits":"node_modules/util/node_modules/inherits/inherits_browser.js","process":"node_modules/process/browser.js"}],"src/Components/Contexts/SignUpFormProvider.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.SignUpFormContext = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _FormConfigProvider = require("./FormConfigProvider");
+
+var _ls = require("../../helpers/ls");
+
+var _errorTypes = require("../../helpers/error-types");
+
+var _fetchHelpers = require("../../helpers/fetch-helpers");
+
+var _util = require("util");
+
+var _validators = require("../../helpers/validators");
+
+var _reducer = _interopRequireDefault(require("../../helpers/reducer"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var SignUpFormContext = _react.default.createContext();
+
+exports.SignUpFormContext = SignUpFormContext;
+
+var SignUpFormProvider =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inherits2.default)(SignUpFormProvider, _Component);
+
+  function SignUpFormProvider() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    (0, _classCallCheck2.default)(this, SignUpFormProvider);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(SignUpFormProvider)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.state = {
+      fields: {},
+      errors: {},
+      initialized: false,
+      submitting: false,
+      initFields: function initFields(action) {
+        return _this.setState(function (state) {
+          return (0, _reducer.default)(state, action);
+        });
+      },
+      updateField: function updateField(action) {
+        return _this.setState(function (state) {
+          return (0, _reducer.default)(state, action);
+        });
+      },
+      validateAndUpdateField: function () {
+        var _validateAndUpdateField = (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
+        _regenerator.default.mark(function _callee(action) {
+          var name, value, isZip, oldCity, response, _this$context, getAddress, getHonorific, allowInternational;
+
+          return _regenerator.default.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  name = action.name, value = action.value;
+                  isZip = name.includes("Zip") && value.length >= 5;
+
+                  if (!isZip) {
+                    _context.next = 22;
+                    break;
+                  }
+
+                  if (_validators.zip_regex.test(value)) {
+                    _context.next = 7;
+                    break;
+                  }
+
+                  action.error = "Invalid Postal Code";
+                  _context.next = 20;
+                  break;
+
+                case 7:
+                  _context.prev = 7;
+                  oldCity = _this.state.fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
+                  _context.next = 11;
+                  return (0, _validators.callZipCityStateService)(name, value, oldCity);
+
+                case 11:
+                  response = _context.sent;
+
+                  if (response.action) {
+                    _this.setState(function (state) {
+                      return (0, _reducer.default)(state, response.action);
+                    });
+                  }
+
+                  action.error = response.error;
+                  _context.next = 20;
+                  break;
+
+                case 16:
+                  _context.prev = 16;
+                  _context.t0 = _context["catch"](7);
+                  console.error("CallZipCityStateServiceError");
+                  console.error({
+                    err: _context.t0
+                  });
+
+                case 20:
+                  _context.next = 26;
+                  break;
+
+                case 22:
+                  _this$context = _this.context, getAddress = _this$context.getAddress, getHonorific = _this$context.getHonorific, allowInternational = _this$context.allowInternational;
+                  _context.next = 25;
+                  return (0, _validators.validateInput)(false, name, value, getAddress, getHonorific, allowInternational, _this.state.ShipToYes);
+
+                case 25:
+                  action.error = _context.sent;
+
+                case 26:
+                  _this.setState(function (state) {
+                    return (0, _reducer.default)(state, action);
+                  });
+
+                case 27:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, null, [[7, 16]]);
+        }));
+
+        function validateAndUpdateField(_x) {
+          return _validateAndUpdateField.apply(this, arguments);
+        }
+
+        return validateAndUpdateField;
+      }(),
+      submitSignUpForm: function () {
+        var _submitSignUpForm = (0, _asyncToGenerator2.default)(
+        /*#__PURE__*/
+        _regenerator.default.mark(function _callee3(action) {
+          return _regenerator.default.wrap(function _callee3$(_context3) {
+            while (1) {
+              switch (_context3.prev = _context3.next) {
+                case 0:
+                  _this.setState(function (state) {
+                    return (0, _reducer.default)(state, {
+                      type: "TOGGLE_SUBMITTING"
+                    });
+                  },
+                  /*#__PURE__*/
+                  (0, _asyncToGenerator2.default)(
+                  /*#__PURE__*/
+                  _regenerator.default.mark(function _callee2() {
+                    var isValidForm, oldCity, response, zipError, addressError, _action, fields, fieldNames, i, error, name, _this$context2, getAddress, getHonorific, allowInternational, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, Title, phone, _this$context$formCon, mode, proxy, contactAPI, motivation, _i, data, msg;
+
+                    return _regenerator.default.wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            isValidForm = true;
+
+                            if (!_this.context.formConfig.getAddress) {
+                              _context2.next = 27;
+                              break;
+                            }
+
+                            _context2.prev = 2;
+                            oldCity = _this.state.fields.City.toUpperCase();
+                            _context2.next = 6;
+                            return (0, _validators.callZipCityStateService)("Zip", _this.state.fields.Zip, oldCity);
+
+                          case 6:
+                            response = _context2.sent;
+
+                            if (response.action) {
+                              _this.setState(function (state) {
+                                return (0, _reducer.default)(state, response.action);
+                              });
+                            }
+
+                            zipError = response.error;
+
+                            if (zipError) {
+                              _context2.next = 20;
+                              break;
+                            }
+
+                            _context2.prev = 10;
+                            _context2.next = 13;
+                            return (0, _validators.callAddressVerification)(_this.state.fields["Address1"], _this.state.fields["Address2"], _this.state.fields["City"], _this.state.fields["State"], _this.state.fields["Zip"]);
+
+                          case 13:
+                            addressError = _context2.sent;
+                            _context2.next = 20;
+                            break;
+
+                          case 16:
+                            _context2.prev = 16;
+                            _context2.t0 = _context2["catch"](10);
+                            console.log("AddressVerificationError");
+                            console.error({
+                              err: _context2.t0
+                            });
+
+                          case 20:
+                            if (addressError || zipError) {
+                              isValidForm = false;
+                              _action = {
+                                type: "UPDATE_FIELDS",
+                                fields: []
+                              };
+
+                              if (addressError) {
+                                _action.fields.push({
+                                  name: "Address1",
+                                  value: _this.state.fields.Address1,
+                                  error: addressError
+                                });
+                              }
+
+                              if (zipError) {
+                                _action.fields.push({
+                                  name: "Zip",
+                                  value: _this.state.fields.Zip,
+                                  error: zipError
+                                });
+                              }
+
+                              _this.setState(function (state) {
+                                return (0, _reducer.default)(state, _action);
+                              });
+                            }
+
+                            _context2.next = 27;
+                            break;
+
+                          case 23:
+                            _context2.prev = 23;
+                            _context2.t1 = _context2["catch"](2);
+                            console.log("CSZValidationError");
+                            console.error({
+                              err: _context2.t1
+                            });
+
+                          case 27:
+                            fields = _this.state.fields;
+                            fieldNames = Object.keys(fields);
+                            action = {
+                              type: "UPDATE_FIELDS",
+                              fields: []
+                            };
+
+                            for (i = 0; i < fieldNames.length; i++) {
+                              error = void 0;
+                              name = fieldNames[i];
+
+                              if (!name.includes("Zip")) {
+                                _this$context2 = _this.context, getAddress = _this$context2.getAddress, getHonorific = _this$context2.getHonorific, allowInternational = _this$context2.allowInternational;
+                                error = (0, _validators.validateInput)(true, name, fields[name], getAddress, getHonorific, allowInternational, false);
+
+                                if (error) {
+                                  isValidForm = false;
+                                  action.fields.push({
+                                    name: name,
+                                    value: fields[name],
+                                    error: error
+                                  });
+                                }
+                              }
+                            }
+
+                            if (isValidForm) {
+                              _context2.next = 33;
+                              break;
+                            }
+
+                            return _context2.abrupt("return", _this.setState(function (state) {
+                              return (0, _reducer.default)(state, {
+                                type: "TOGGLE_SUBMITTING"
+                              });
+                            }, function () {
+                              _this.setState(function (state) {
+                                return (0, _reducer.default)(state, action);
+                              });
+                            }));
+
+                          case 33:
+                            Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, Title = fields.Title, phone = fields.phone;
+                            _this$context$formCon = _this.context.formConfig, mode = _this$context$formCon.mode, proxy = _this$context$formCon.proxy;
+                            contactAPI = (0, _toConsumableArray2.default)(_this.context.formConfig.contactAPI);
+                            motivation = window.cbn_obj && cbn_obj.motivation ? cbn_obj.motivation : '041148';
+
+                            for (_i = 0; _i < contactAPI.length; _i++) {
+                              if (contactAPI[_i].type = "feedback") {
+                                contactAPI[_i].headers.EmailAddress = Emailaddress;
+                                contactAPI[_i].headers.FirstName = Firstname;
+                                contactAPI[_i].headers.LastName = Lastname;
+                                contactAPI[_i].headers.FormUrl = window.location.origin + window.location.pathname + window.location.search;
+                              } else if (contactAPI[_i].type = "activity") {
+                                contactAPI[_i].headers.Location = window.location.origin + window.location.pathname;
+                                contactAPI[_i].headers.Campaign = contactAPI[_i].headers.Campaign || motivation;
+                                contactAPI[_i].headers.EmailAddress = Emailaddress;
+                                contactAPI[_i].headers.FirstName = Firstname;
+                                contactAPI[_i].headers.LastName = Lastname;
+                                contactAPI[_i].headers.PhoneNumber = phone;
+                              } else if (contactAPI[_i].type = "newsletter") {
+                                contactAPI[_i].headers.EmailAddress = Emailaddress;
+                                contactAPI[_i].headers.FirstName = Firstname;
+                                contactAPI[_i].headers.LastName = Lastname;
+                              }
+                            }
+
+                            data = {
+                              mode: mode,
+                              contactAPI: contactAPI
+                            };
+                            _context2.prev = 39;
+                            _context2.next = 42;
+                            return (0, _fetchHelpers.callApi)(proxy, {
+                              method: "POST",
+                              mode: "cors",
+                              headers: {
+                                "Content-Type": "application/json; charset=utf-8"
+                              },
+                              body: JSON.stringify(data)
+                            });
+
+                          case 42:
+                            msg = _context2.sent;
+                            console.log({
+                              msg: msg
+                            });
+                            return _context2.abrupt("return", _this.setState(function (state) {
+                              return (0, _reducer.default)(state, {
+                                type: "SUBMIT_FORM"
+                              });
+                            }, function () {
+                              _this.context.submitForm({
+                                type: "SUBMIT_FORM"
+                              });
+                            }));
+
+                          case 47:
+                            _context2.prev = 47;
+                            _context2.t2 = _context2["catch"](39);
+                            console.log({
+                              err: _context2.t2
+                            });
+                            return _context2.abrupt("return", _this.setState(function (state) {
+                              return (0, _reducer.default)(state, {
+                                type: "TOGGLE_SUBMITTING"
+                              });
+                            }));
+
+                          case 51:
+                          case "end":
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2, null, [[2, 23], [10, 16], [39, 47]]);
+                  })));
+
+                case 1:
+                case "end":
+                  return _context3.stop();
+              }
+            }
+          }, _callee3);
+        }));
+
+        function submitSignUpForm(_x2) {
+          return _submitSignUpForm.apply(this, arguments);
+        }
+
+        return submitSignUpForm;
+      }()
+    };
+    return _this;
+  }
+
+  (0, _createClass2.default)(SignUpFormProvider, [{
+    key: "render",
+    value: function render() {
+      var state = this.state,
+          children = this.props.children;
+      return (0, _core.jsx)(SignUpFormContext.Provider, {
+        value: state
+      }, children);
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+  return SignUpFormProvider;
+}(_react.Component);
+
+SignUpFormProvider.contextType = _FormConfigProvider.FormConfigContext;
+var _default = SignUpFormProvider;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(SignUpFormContext, "SignUpFormContext", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/SignUpFormProvider.js");
+  reactHotLoader.register(SignUpFormProvider, "SignUpFormProvider", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/SignUpFormProvider.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Contexts/SignUpFormProvider.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../../helpers/ls":"src/helpers/ls.js","../../helpers/error-types":"src/helpers/error-types.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js","util":"node_modules/util/util.js","../../helpers/validators":"src/helpers/validators.js","../../helpers/reducer":"src/helpers/reducer.js"}],"node_modules/@emotion/is-prop-valid/dist/is-prop-valid.browser.esm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38191,12 +40141,12 @@ var FormPanel = (0, _styledBase.default)("div", {
   target: "ekeddun0",
   label: "FormPanel"
 })("development" === "production" ? {
-  name: "1emkyj7",
-  styles: "&.name-address__info{box-sizing:border-box;margin:19px auto;max-width:100%;}&.shipping-address__container{box-sizing:border-box;margin-top:20px;}&.form-panel{background:#fff;border:none;border-radius:0;box-sixing:border-box;padding:20px;width:100%;}& + .form-panel{margin-top:0;}"
+  name: "1ni3nwo",
+  styles: "&.name-address__info{box-sizing:border-box;margin:19px auto;max-width:100%;}&.shipping-address__container{box-sizing:border-box;margin-top:20px;}&.form-panel{background:#fff;border:none;border-radius:0;box-sixing:border-box;padding:0;width:100%;}& + .form-panel{margin-top:0;}"
 } : {
-  name: "1emkyj7",
-  styles: "&.name-address__info{box-sizing:border-box;margin:19px auto;max-width:100%;}&.shipping-address__container{box-sizing:border-box;margin-top:20px;}&.form-panel{background:#fff;border:none;border-radius:0;box-sixing:border-box;padding:20px;width:100%;}& + .form-panel{margin-top:0;}",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1QYW5lbC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHNEIiLCJmaWxlIjoiRm9ybVBhbmVsLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEZvcm1QYW5lbCA9IHN0eWxlZC5kaXZgXG5cdCYubmFtZS1hZGRyZXNzX19pbmZvIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdG1hcmdpbjogMTlweCBhdXRvO1xuXHRcdG1heC13aWR0aDogMTAwJTtcblx0fVxuXHQmLnNoaXBwaW5nLWFkZHJlc3NfX2NvbnRhaW5lciB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRtYXJnaW4tdG9wOiAyMHB4O1xuXHR9XG5cdCYuZm9ybS1wYW5lbCB7XG5cdFx0YmFja2dyb3VuZDogI2ZmZjtcblx0XHRib3JkZXI6IG5vbmU7XG5cdFx0Ym9yZGVyLXJhZGl1czogMDtcblx0XHRib3gtc2l4aW5nOiBib3JkZXItYm94O1xuXHRcdHBhZGRpbmc6IDIwcHg7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdH1cblx0JiArIC5mb3JtLXBhbmVsIHtcblx0XHRtYXJnaW4tdG9wOiAwO1xuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBGb3JtUGFuZWw7XG4iXX0= */"
+  name: "1ni3nwo",
+  styles: "&.name-address__info{box-sizing:border-box;margin:19px auto;max-width:100%;}&.shipping-address__container{box-sizing:border-box;margin-top:20px;}&.form-panel{background:#fff;border:none;border-radius:0;box-sixing:border-box;padding:0;width:100%;}& + .form-panel{margin-top:0;}",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1QYW5lbC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHNEIiLCJmaWxlIjoiRm9ybVBhbmVsLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEZvcm1QYW5lbCA9IHN0eWxlZC5kaXZgXG5cdCYubmFtZS1hZGRyZXNzX19pbmZvIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdG1hcmdpbjogMTlweCBhdXRvO1xuXHRcdG1heC13aWR0aDogMTAwJTtcblx0fVxuXHQmLnNoaXBwaW5nLWFkZHJlc3NfX2NvbnRhaW5lciB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRtYXJnaW4tdG9wOiAyMHB4O1xuXHR9XG5cdCYuZm9ybS1wYW5lbCB7XG5cdFx0YmFja2dyb3VuZDogI2ZmZjtcblx0XHRib3JkZXI6IG5vbmU7XG5cdFx0Ym9yZGVyLXJhZGl1czogMDtcblx0XHRib3gtc2l4aW5nOiBib3JkZXItYm94O1xuXHRcdHBhZGRpbmc6IDA7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdH1cblx0JiArIC5mb3JtLXBhbmVsIHtcblx0XHRtYXJnaW4tdG9wOiAwO1xuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBGb3JtUGFuZWw7XG4iXX0= */"
 });
 var _default = FormPanel;
 var _default2 = _default;
@@ -38303,12 +40253,12 @@ var FormHeader = (0, _styledBase.default)("h3", {
   target: "e1hytkas0",
   label: "FormHeader"
 })("development" === "production" ? {
-  name: "sqjz2n",
-  styles: "box-sizing:border-box;color:#333;text-align:center;font-size:19px;font-weight:600;line-height:calc(19px * 1.15);margin-bottom:5px;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;&.askarray__header{margin-bottom:19px;text-transform:uppercase;}"
+  name: "19ccsr8",
+  styles: "box-sizing:border-box;color:#333;text-align:center;font-size:19px;font-weight:600;line-height:calc(19px * 1.15);margin-bottom:5px;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;&.form-title{font-size:36px;margin:30px auto;line-height:1.33;}&.askarray__header{margin-bottom:19px;text-transform:uppercase;}"
 } : {
-  name: "sqjz2n",
-  styles: "box-sizing:border-box;color:#333;text-align:center;font-size:19px;font-weight:600;line-height:calc(19px * 1.15);margin-bottom:5px;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;&.askarray__header{margin-bottom:19px;text-transform:uppercase;}",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1IZWFkZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRzRCIiwiZmlsZSI6IkZvcm1IZWFkZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgRm9ybUhlYWRlciA9IHN0eWxlZC5oM2Bcblx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0Y29sb3I6ICMzMzM7XG5cdHRleHQtYWxpZ246IGNlbnRlcjtcblx0Zm9udC1zaXplOiAxOXB4O1xuXHRmb250LXdlaWdodDogNjAwO1xuXHRsaW5lLWhlaWdodDogY2FsYygxOXB4ICogMS4xNSk7XG5cdG1hcmdpbi1ib3R0b206IDVweDtcblx0LXdlYmtpdC1tYXJnaW4tYmVmb3JlOiAwO1xuXHQtd2Via2l0LW1hcmdpbi1hZnRlcjogMDtcblx0LXdlYmtpdC1wYWRkaW5nLWJlZm9yZTogMDtcblx0LXdlYmtpdC1wYWRkaW5nLXN0YXJ0OiAwO1xuXHQtd2Via2l0LXBhZGRpbmctYWZ0ZXI6IDA7XG5cdCYuYXNrYXJyYXlfX2hlYWRlciB7XG5cdFx0bWFyZ2luLWJvdHRvbTogMTlweDtcblx0XHR0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlO1xuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBGb3JtSGVhZGVyO1xuIl19 */"
+  name: "19ccsr8",
+  styles: "box-sizing:border-box;color:#333;text-align:center;font-size:19px;font-weight:600;line-height:calc(19px * 1.15);margin-bottom:5px;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;&.form-title{font-size:36px;margin:30px auto;line-height:1.33;}&.askarray__header{margin-bottom:19px;text-transform:uppercase;}",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1IZWFkZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRzRCIiwiZmlsZSI6IkZvcm1IZWFkZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgRm9ybUhlYWRlciA9IHN0eWxlZC5oM2Bcblx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0Y29sb3I6ICMzMzM7XG5cdHRleHQtYWxpZ246IGNlbnRlcjtcblx0Zm9udC1zaXplOiAxOXB4O1xuXHRmb250LXdlaWdodDogNjAwO1xuXHRsaW5lLWhlaWdodDogY2FsYygxOXB4ICogMS4xNSk7XG5cdG1hcmdpbi1ib3R0b206IDVweDtcblx0LXdlYmtpdC1tYXJnaW4tYmVmb3JlOiAwO1xuXHQtd2Via2l0LW1hcmdpbi1hZnRlcjogMDtcblx0LXdlYmtpdC1wYWRkaW5nLWJlZm9yZTogMDtcblx0LXdlYmtpdC1wYWRkaW5nLXN0YXJ0OiAwO1xuXHQtd2Via2l0LXBhZGRpbmctYWZ0ZXI6IDA7XG5cdCYuZm9ybS10aXRsZSB7XG5cdFx0Zm9udC1zaXplOiAzNnB4O1xuXHRcdG1hcmdpbjogMzBweCBhdXRvO1xuXHRcdGxpbmUtaGVpZ2h0OiAxLjMzO1xuXHR9XG5cdCYuYXNrYXJyYXlfX2hlYWRlciB7XG5cdFx0bWFyZ2luLWJvdHRvbTogMTlweDtcblx0XHR0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlO1xuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBGb3JtSGVhZGVyO1xuIl19 */"
 });
 var _default = FormHeader;
 var _default2 = _default;
@@ -38482,12 +40432,12 @@ var FormRow = (0, _styledBase.default)("div", {
   target: "elvnovz0",
   label: "FormRow"
 })("development" === "production" ? {
-  name: "1ui6rmy",
-  styles: "box-sizing:border-box;display:flex;flex-direction:row;justify-content:space-between;width:100%;&.submit-row{position:relative;}&.wrap{flex-wrap:wrap;}&.ship-to-yes-row{line-height:19px !important;margin-bottom:10px;align-items:center;}div + div{box-sizing:border-box;margin-left:calc(19px * 0.5);}&.monthly-radio{box-sizing:border-box;margin:19px auto;max-width:calc(19px * 15);}&.monthly-tab{box-sizing:border-box;margin:0 auto;width:100%;border-bottom:5px solid transparent;div + div{margin-left:0;}}&.monthly-giving-day{position:relative;align-items:center;justify-content:center;box-sizing:border-box;font-size:calc(19px * 0.8);height:calc(19px * 2);h5.cc-day-of-month{font-size:calc(19px * 0.7);box-sizing:border-box;opacity:1;text-align:center;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;letter-spacing:unset;text-transform:none;color:#333;}select.cc-date{display:inline-block;width:auto;appearance:unset;background:unset;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;color:#333;font-size:calc(19px * 0.7);font-weight:600;text-align:center;height:unset;padding:calc(19px * 0.2) calc(19px * 0.3);margin-bottom:0;}label{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}}@media screen and (max-width:613px){&.name-row{flex-wrap:wrap;}&.name-row > div:nth-of-type(odd){margin-left:0;}}@media screen and (max-width:500px){&.email-phone-row{flex-wrap:wrap;}&.email-phone-row > div + div{margin-left:0;}}@media screen and (max-width:414px){&.city-state-row{flex-wrap:wrap;}&.city-state-row > div + div{margin-left:0;}&.name-row > div + div{margin-left:0;}}@media screen and (max-width:365px){&.zip-country-row{flex-wrap:wrap;}&.zip-country-row > div + div{margin-left:0;}}"
+  name: "1ah4d3",
+  styles: "box-sizing:border-box;display:flex;flex-direction:row;justify-content:space-between;width:100%;&.submit-row{position:relative;}&.wrap{flex-wrap:wrap;}&.ship-to-yes-row{line-height:19px !important;margin-bottom:10px;align-items:center;}div + div{box-sizing:border-box;margin-left:calc(19px * 0.5);}&.monthly-radio{box-sizing:border-box;margin:19px auto;max-width:calc(19px * 15);}&.monthly-tab{box-sizing:border-box;margin:0 auto;width:100%;border-bottom:5px solid transparent;div + div{margin-left:0;}}&.monthly-giving-day{position:relative;align-items:center;justify-content:center;box-sizing:border-box;font-size:calc(19px * 0.8);height:calc(19px * 2);h5.cc-day-of-month{font-size:calc(19px * 0.7);box-sizing:border-box;opacity:1;text-align:center;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;letter-spacing:unset;text-transform:none;color:#333;}select.cc-date{display:inline-block;width:auto;appearance:unset;background:unset;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;color:#333;font-size:calc(19px * 0.7);font-weight:600;text-align:center;height:unset;padding:calc(19px * 0.2) calc(19px * 0.3);margin-bottom:0;}label{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}}@media screen and (max-width:613px){&.name-row{flex-wrap:wrap;}}@media screen and (max-width:500px){&.email-phone-row{flex-wrap:wrap;}&.email-phone-row > div + div{margin-left:0;}}@media screen and (max-width:414px){&.city-state-row{flex-wrap:wrap;}&.city-state-row > div + div{margin-left:0;}&.name-row > div + div{margin-left:0;}}@media screen and (max-width:365px){&.zip-country-row{flex-wrap:wrap;}&.zip-country-row > div + div{margin-left:0;}}"
 } : {
-  name: "1ui6rmy",
-  styles: "box-sizing:border-box;display:flex;flex-direction:row;justify-content:space-between;width:100%;&.submit-row{position:relative;}&.wrap{flex-wrap:wrap;}&.ship-to-yes-row{line-height:19px !important;margin-bottom:10px;align-items:center;}div + div{box-sizing:border-box;margin-left:calc(19px * 0.5);}&.monthly-radio{box-sizing:border-box;margin:19px auto;max-width:calc(19px * 15);}&.monthly-tab{box-sizing:border-box;margin:0 auto;width:100%;border-bottom:5px solid transparent;div + div{margin-left:0;}}&.monthly-giving-day{position:relative;align-items:center;justify-content:center;box-sizing:border-box;font-size:calc(19px * 0.8);height:calc(19px * 2);h5.cc-day-of-month{font-size:calc(19px * 0.7);box-sizing:border-box;opacity:1;text-align:center;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;letter-spacing:unset;text-transform:none;color:#333;}select.cc-date{display:inline-block;width:auto;appearance:unset;background:unset;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;color:#333;font-size:calc(19px * 0.7);font-weight:600;text-align:center;height:unset;padding:calc(19px * 0.2) calc(19px * 0.3);margin-bottom:0;}label{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}}@media screen and (max-width:613px){&.name-row{flex-wrap:wrap;}&.name-row > div:nth-of-type(odd){margin-left:0;}}@media screen and (max-width:500px){&.email-phone-row{flex-wrap:wrap;}&.email-phone-row > div + div{margin-left:0;}}@media screen and (max-width:414px){&.city-state-row{flex-wrap:wrap;}&.city-state-row > div + div{margin-left:0;}&.name-row > div + div{margin-left:0;}}@media screen and (max-width:365px){&.zip-country-row{flex-wrap:wrap;}&.zip-country-row > div + div{margin-left:0;}}",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Sb3cuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRzBCIiwiZmlsZSI6IkZvcm1Sb3cuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgRm9ybVJvdyA9IHN0eWxlZC5kaXZgXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0d2lkdGg6IDEwMCU7XG5cdCYuc3VibWl0LXJvdyB7XG5cdFx0cG9zaXRpb246IHJlbGF0aXZlO1xuXHR9XG5cdCYud3JhcCB7XG5cdFx0ZmxleC13cmFwOiB3cmFwO1xuXHR9XG5cdCYuc2hpcC10by15ZXMtcm93IHtcblx0XHRsaW5lLWhlaWdodDogMTlweCAhaW1wb3J0YW50O1xuXHRcdG1hcmdpbi1ib3R0b206IDEwcHg7XG5cdFx0YWxpZ24taXRlbXM6IGNlbnRlcjtcblx0fVxuXHRkaXYgKyBkaXYge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0bWFyZ2luLWxlZnQ6IGNhbGMoMTlweCAqIDAuNSk7XG5cdH1cblx0Ji5tb250aGx5LXJhZGlvIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdG1hcmdpbjogMTlweCBhdXRvO1xuXHRcdG1heC13aWR0aDogY2FsYygxOXB4ICogMTUpO1xuXHR9XG5cdCYubW9udGhseS10YWIge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0bWFyZ2luOiAwIGF1dG87XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0Ym9yZGVyLWJvdHRvbTogNXB4IHNvbGlkIHRyYW5zcGFyZW50O1xuXHRcdGRpdiArIGRpdiB7XG5cdFx0XHRtYXJnaW4tbGVmdDogMDtcblx0XHR9XG5cdH1cblx0Ji5tb250aGx5LWdpdmluZy1kYXkge1xuXHRcdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0XHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHRcdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Zm9udC1zaXplOiBjYWxjKDE5cHggKiAwLjgpO1xuXHRcdGhlaWdodDogY2FsYygxOXB4ICogMik7XG5cdFx0aDUuY2MtZGF5LW9mLW1vbnRoIHtcblx0XHRcdGZvbnQtc2l6ZTogY2FsYygxOXB4ICogMC43KTtcblx0XHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0XHRvcGFjaXR5OiAxO1xuXHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdFx0LXdlYmtpdC1tYXJnaW4tYmVmb3JlOiAwO1xuXHRcdFx0LXdlYmtpdC1tYXJnaW4tYWZ0ZXI6IDA7XG5cdFx0XHQtd2Via2l0LXBhZGRpbmctYmVmb3JlOiAwO1xuXHRcdFx0LXdlYmtpdC1wYWRkaW5nLXN0YXJ0OiAwO1xuXHRcdFx0LXdlYmtpdC1wYWRkaW5nLWFmdGVyOiAwO1xuXHRcdFx0bGV0dGVyLXNwYWNpbmc6IHVuc2V0O1xuXHRcdFx0dGV4dC10cmFuc2Zvcm06IG5vbmU7XG5cdFx0XHRjb2xvcjogIzMzMztcblx0XHR9XG5cdFx0c2VsZWN0LmNjLWRhdGUge1xuXHRcdFx0ZGlzcGxheTogaW5saW5lLWJsb2NrO1xuXHRcdFx0d2lkdGg6IGF1dG87XG5cdFx0XHRhcHBlYXJhbmNlOiB1bnNldDtcblx0XHRcdGJhY2tncm91bmQ6IHVuc2V0O1xuXHRcdFx0Ym9yZGVyOiAxcHggc29saWQgI2NjYztcblx0XHRcdGJvcmRlci1yYWRpdXM6IDRweDtcblx0XHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0XHRjb2xvcjogIzMzMztcblx0XHRcdGZvbnQtc2l6ZTogY2FsYygxOXB4ICogMC43KTtcblx0XHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRoZWlnaHQ6IHVuc2V0O1xuXHRcdFx0cGFkZGluZzogY2FsYygxOXB4ICogMC4yKSBjYWxjKDE5cHggKiAwLjMpO1xuXHRcdFx0bWFyZ2luLWJvdHRvbTogMDtcblx0XHR9XG5cdFx0bGFiZWwge1xuXHRcdFx0cG9zaXRpb246IGFic29sdXRlO1xuXHRcdFx0bGVmdDogLTEwMDAwcHg7XG5cdFx0XHR0b3A6IGF1dG87XG5cdFx0XHR3aWR0aDogMXB4O1xuXHRcdFx0aGVpZ2h0OiAxcHg7XG5cdFx0XHRvdmVyZmxvdzogaGlkZGVuO1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MTNweCkge1xuXHRcdCYubmFtZS1yb3cge1xuXHRcdFx0ZmxleC13cmFwOiB3cmFwO1xuXHRcdH1cblx0XHQmLm5hbWUtcm93ID4gZGl2Om50aC1vZi10eXBlKG9kZCkge1xuXHRcdFx0bWFyZ2luLWxlZnQ6IDA7XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDUwMHB4KSB7XG5cdFx0Ji5lbWFpbC1waG9uZS1yb3cge1xuXHRcdFx0ZmxleC13cmFwOiB3cmFwO1xuXHRcdH1cblx0XHQmLmVtYWlsLXBob25lLXJvdyA+IGRpdiArIGRpdiB7XG5cdFx0XHRtYXJnaW4tbGVmdDogMDtcblx0XHR9XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNDE0cHgpIHtcblx0XHQmLmNpdHktc3RhdGUtcm93IHtcblx0XHRcdGZsZXgtd3JhcDogd3JhcDtcblx0XHR9XG5cdFx0Ji5jaXR5LXN0YXRlLXJvdyA+IGRpdiArIGRpdiB7XG5cdFx0XHRtYXJnaW4tbGVmdDogMDtcblx0XHR9XG5cdFx0Ji5uYW1lLXJvdyA+IGRpdiArIGRpdiB7XG5cdFx0XHRtYXJnaW4tbGVmdDogMDtcblx0XHR9XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogMzY1cHgpIHtcblx0XHQmLnppcC1jb3VudHJ5LXJvdyB7XG5cdFx0XHRmbGV4LXdyYXA6IHdyYXA7XG5cdFx0fVxuXHRcdCYuemlwLWNvdW50cnktcm93ID4gZGl2ICsgZGl2IHtcblx0XHRcdG1hcmdpbi1sZWZ0OiAwO1xuXHRcdH1cblx0fVxuYDtcblxuZXhwb3J0IGRlZmF1bHQgRm9ybVJvdztcbiJdfQ== */"
+  name: "1ah4d3",
+  styles: "box-sizing:border-box;display:flex;flex-direction:row;justify-content:space-between;width:100%;&.submit-row{position:relative;}&.wrap{flex-wrap:wrap;}&.ship-to-yes-row{line-height:19px !important;margin-bottom:10px;align-items:center;}div + div{box-sizing:border-box;margin-left:calc(19px * 0.5);}&.monthly-radio{box-sizing:border-box;margin:19px auto;max-width:calc(19px * 15);}&.monthly-tab{box-sizing:border-box;margin:0 auto;width:100%;border-bottom:5px solid transparent;div + div{margin-left:0;}}&.monthly-giving-day{position:relative;align-items:center;justify-content:center;box-sizing:border-box;font-size:calc(19px * 0.8);height:calc(19px * 2);h5.cc-day-of-month{font-size:calc(19px * 0.7);box-sizing:border-box;opacity:1;text-align:center;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;letter-spacing:unset;text-transform:none;color:#333;}select.cc-date{display:inline-block;width:auto;appearance:unset;background:unset;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;color:#333;font-size:calc(19px * 0.7);font-weight:600;text-align:center;height:unset;padding:calc(19px * 0.2) calc(19px * 0.3);margin-bottom:0;}label{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}}@media screen and (max-width:613px){&.name-row{flex-wrap:wrap;}}@media screen and (max-width:500px){&.email-phone-row{flex-wrap:wrap;}&.email-phone-row > div + div{margin-left:0;}}@media screen and (max-width:414px){&.city-state-row{flex-wrap:wrap;}&.city-state-row > div + div{margin-left:0;}&.name-row > div + div{margin-left:0;}}@media screen and (max-width:365px){&.zip-country-row{flex-wrap:wrap;}&.zip-country-row > div + div{margin-left:0;}}",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Sb3cuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRzBCIiwiZmlsZSI6IkZvcm1Sb3cuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgRm9ybVJvdyA9IHN0eWxlZC5kaXZgXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0d2lkdGg6IDEwMCU7XG5cdCYuc3VibWl0LXJvdyB7XG5cdFx0cG9zaXRpb246IHJlbGF0aXZlO1xuXHR9XG5cdCYud3JhcCB7XG5cdFx0ZmxleC13cmFwOiB3cmFwO1xuXHR9XG5cdCYuc2hpcC10by15ZXMtcm93IHtcblx0XHRsaW5lLWhlaWdodDogMTlweCAhaW1wb3J0YW50O1xuXHRcdG1hcmdpbi1ib3R0b206IDEwcHg7XG5cdFx0YWxpZ24taXRlbXM6IGNlbnRlcjtcblx0fVxuXHRkaXYgKyBkaXYge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0bWFyZ2luLWxlZnQ6IGNhbGMoMTlweCAqIDAuNSk7XG5cdH1cblx0Ji5tb250aGx5LXJhZGlvIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdG1hcmdpbjogMTlweCBhdXRvO1xuXHRcdG1heC13aWR0aDogY2FsYygxOXB4ICogMTUpO1xuXHR9XG5cdCYubW9udGhseS10YWIge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0bWFyZ2luOiAwIGF1dG87XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0Ym9yZGVyLWJvdHRvbTogNXB4IHNvbGlkIHRyYW5zcGFyZW50O1xuXHRcdGRpdiArIGRpdiB7XG5cdFx0XHRtYXJnaW4tbGVmdDogMDtcblx0XHR9XG5cdH1cblx0Ji5tb250aGx5LWdpdmluZy1kYXkge1xuXHRcdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0XHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHRcdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Zm9udC1zaXplOiBjYWxjKDE5cHggKiAwLjgpO1xuXHRcdGhlaWdodDogY2FsYygxOXB4ICogMik7XG5cdFx0aDUuY2MtZGF5LW9mLW1vbnRoIHtcblx0XHRcdGZvbnQtc2l6ZTogY2FsYygxOXB4ICogMC43KTtcblx0XHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0XHRvcGFjaXR5OiAxO1xuXHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdFx0LXdlYmtpdC1tYXJnaW4tYmVmb3JlOiAwO1xuXHRcdFx0LXdlYmtpdC1tYXJnaW4tYWZ0ZXI6IDA7XG5cdFx0XHQtd2Via2l0LXBhZGRpbmctYmVmb3JlOiAwO1xuXHRcdFx0LXdlYmtpdC1wYWRkaW5nLXN0YXJ0OiAwO1xuXHRcdFx0LXdlYmtpdC1wYWRkaW5nLWFmdGVyOiAwO1xuXHRcdFx0bGV0dGVyLXNwYWNpbmc6IHVuc2V0O1xuXHRcdFx0dGV4dC10cmFuc2Zvcm06IG5vbmU7XG5cdFx0XHRjb2xvcjogIzMzMztcblx0XHR9XG5cdFx0c2VsZWN0LmNjLWRhdGUge1xuXHRcdFx0ZGlzcGxheTogaW5saW5lLWJsb2NrO1xuXHRcdFx0d2lkdGg6IGF1dG87XG5cdFx0XHRhcHBlYXJhbmNlOiB1bnNldDtcblx0XHRcdGJhY2tncm91bmQ6IHVuc2V0O1xuXHRcdFx0Ym9yZGVyOiAxcHggc29saWQgI2NjYztcblx0XHRcdGJvcmRlci1yYWRpdXM6IDRweDtcblx0XHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0XHRjb2xvcjogIzMzMztcblx0XHRcdGZvbnQtc2l6ZTogY2FsYygxOXB4ICogMC43KTtcblx0XHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRoZWlnaHQ6IHVuc2V0O1xuXHRcdFx0cGFkZGluZzogY2FsYygxOXB4ICogMC4yKSBjYWxjKDE5cHggKiAwLjMpO1xuXHRcdFx0bWFyZ2luLWJvdHRvbTogMDtcblx0XHR9XG5cdFx0bGFiZWwge1xuXHRcdFx0cG9zaXRpb246IGFic29sdXRlO1xuXHRcdFx0bGVmdDogLTEwMDAwcHg7XG5cdFx0XHR0b3A6IGF1dG87XG5cdFx0XHR3aWR0aDogMXB4O1xuXHRcdFx0aGVpZ2h0OiAxcHg7XG5cdFx0XHRvdmVyZmxvdzogaGlkZGVuO1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MTNweCkge1xuXHRcdCYubmFtZS1yb3cge1xuXHRcdFx0ZmxleC13cmFwOiB3cmFwO1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1MDBweCkge1xuXHRcdCYuZW1haWwtcGhvbmUtcm93IHtcblx0XHRcdGZsZXgtd3JhcDogd3JhcDtcblx0XHR9XG5cdFx0Ji5lbWFpbC1waG9uZS1yb3cgPiBkaXYgKyBkaXYge1xuXHRcdFx0bWFyZ2luLWxlZnQ6IDA7XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDQxNHB4KSB7XG5cdFx0Ji5jaXR5LXN0YXRlLXJvdyB7XG5cdFx0XHRmbGV4LXdyYXA6IHdyYXA7XG5cdFx0fVxuXHRcdCYuY2l0eS1zdGF0ZS1yb3cgPiBkaXYgKyBkaXYge1xuXHRcdFx0bWFyZ2luLWxlZnQ6IDA7XG5cdFx0fVxuXHRcdCYubmFtZS1yb3cgPiBkaXYgKyBkaXYge1xuXHRcdFx0bWFyZ2luLWxlZnQ6IDA7XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDM2NXB4KSB7XG5cdFx0Ji56aXAtY291bnRyeS1yb3cge1xuXHRcdFx0ZmxleC13cmFwOiB3cmFwO1xuXHRcdH1cblx0XHQmLnppcC1jb3VudHJ5LXJvdyA+IGRpdiArIGRpdiB7XG5cdFx0XHRtYXJnaW4tbGVmdDogMDtcblx0XHR9XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1Sb3c7XG4iXX0= */"
 });
 var _default = FormRow;
 var _default2 = _default;
@@ -39891,8 +41841,6 @@ exports.default = void 0;
 
 var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
 
-var _core = require("@emotion/core");
-
 var _react = _interopRequireDefault(require("react"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -39906,27 +41854,14 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
   return a;
 };
 
-var FormControl = (0, _styledBase.default)("div", {
+var FormGroup = (0, _styledBase.default)("div", {
   target: "e1sfz71x0",
-  label: "FormControl"
-})("position:relative;margin-bottom:calc(19px * 0.7);margin-top:calc(19px * 0.7);flex:1 1 auto;&..form-group--Title{width:120px;flex:0 0 120px;}&.form-group--Firstname,&.form-group--Lastname{box-sizing:border-box;}&.form-group--State,&.form-group--Country{max-width:50%;}&.form-group--Phone,&.form-group--Email{width:50%;}label{box-sizing:border-box;color:#333;font-size:calc(19px * 0.7);font-weight:600;margin-bottom:0;position:absolute;opacity:0;bottom:calc(100% - 2px);left:10px;transition:opacity 150ms ease-in-out;}label span{color:crimson;}&:hover label,&:active label,&:focus label{opacity:1;}input,select,textarea{box-sizing:border-box;color:#333;font-size:19px;font-weight:600;height:44px;display:block;width:100%;margin-top:5px;padding:0 10px;line-height:44px !important;background:none;background-color:#f0f0f0;border:1px solid #ccc;border-radius:0;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);transition:border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;position:relative;margin-bottom:0;}textarea{height:auto;", function (props) {
+  label: "FormGroup"
+})("position:relative;margin-bottom:calc(19px * 0.7);margin-top:calc(19px * 0.7);flex:1 1 auto;&.form-group--Title,&.form-group--Suffix{width:120px;flex:0 0 120px;box-sizing:border-box;}&.form-group--Firstname,&.form-group--Lastname{box-sizing:border-box;}&.form-group--State,&.form-group--Country{max-width:50%;}&.form-group--Phone,&.form-group--Email{width:50%;}label{box-sizing:border-box;color:#333;font-size:calc(19px * 0.7);font-weight:600;margin-bottom:0;position:absolute;opacity:0;bottom:calc(100% - 2px);left:10px;transition:opacity 150ms ease-in-out;}label span{color:crimson;}&:hover label,&:active label,&:focus label{opacity:1;}input,select,textarea{box-sizing:border-box;color:#333;font-size:19px;font-weight:600;height:44px;display:block;width:100%;margin-top:5px;padding:0 10px;line-height:44px !important;background:none;background-color:#f0f0f0;border:1px solid #ccc;border-radius:0;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);transition:border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;position:relative;margin-bottom:0;}textarea{height:auto;", function (props) {
   return {
     minHeight: props.minHeight
   };
-}, "}input::placeholder,select::placeholder,textarea::placeholder{font-weight:600;color:#747474;}input:active,input:hover,input:focus,select:active,select:hover,select:focus,textarea:active,textarea:hover,textarea:focus{border:1px solid #777777;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px #747474;background-color:#fff;outline:none;}select:invalid{color:#747474;}input:disabled,select:disabled,textarea:disabled{background:#ededed;}input.error,select.error,textarea.error{box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px crimson;}@media screen and (max-width:613px){&.form-group--Lastname{width:100%;}}@media screen and (max-width:500px){&.form-group--Phone,&.form-group--Email{width:100%;}}@media screen and (max-width:414px){&.form-group--State,&.form-group--City{max-width:100%;width:100%;}&.form-group--Firstname{width:100%;}}@media screen and (max-width:365px){&.form-group--Zip,&.form-group--Country{max-width:100%;width:100%;}}" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Hcm91cC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHOEIiLCJmaWxlIjoiRm9ybUdyb3VwLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEZvcm1Db250cm9sID0gc3R5bGVkLmRpdmBcblx0cG9zaXRpb246IHJlbGF0aXZlO1xuXHRtYXJnaW4tYm90dG9tOiBjYWxjKDE5cHggKiAwLjcpO1xuXHRtYXJnaW4tdG9wOiBjYWxjKDE5cHggKiAwLjcpO1xuXHRmbGV4OiAxIDEgYXV0bztcblx0Ji4uZm9ybS1ncm91cC0tVGl0bGUge1xuXHRcdHdpZHRoOiAxMjBweDtcblx0XHRmbGV4OiAwIDAgMTIwcHg7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1GaXJzdG5hbWUsXG5cdCYuZm9ybS1ncm91cC0tTGFzdG5hbWUge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1TdGF0ZSxcblx0Ji5mb3JtLWdyb3VwLS1Db3VudHJ5IHtcblx0XHRtYXgtd2lkdGg6IDUwJTtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLVBob25lLFxuXHQmLmZvcm0tZ3JvdXAtLUVtYWlsIHtcblx0XHR3aWR0aDogNTAlO1xuXHR9XG5cdGxhYmVsIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGNvbG9yOiAjMzMzO1xuXHRcdGZvbnQtc2l6ZTogY2FsYygxOXB4ICogMC43KTtcblx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdG1hcmdpbi1ib3R0b206IDA7XG5cdFx0cG9zaXRpb246IGFic29sdXRlO1xuXHRcdG9wYWNpdHk6IDA7XG5cdFx0Ym90dG9tOiBjYWxjKDEwMCUgLSAycHgpO1xuXHRcdGxlZnQ6IDEwcHg7XG5cdFx0dHJhbnNpdGlvbjogb3BhY2l0eSAxNTBtcyBlYXNlLWluLW91dDtcblx0fVxuXHRsYWJlbCBzcGFuIHtcblx0XHRjb2xvcjogY3JpbXNvbjtcblx0fVxuXHQmOmhvdmVyIGxhYmVsLFxuXHQmOmFjdGl2ZSBsYWJlbCxcblx0Jjpmb2N1cyBsYWJlbCB7XG5cdFx0b3BhY2l0eTogMTtcblx0fVxuXHRpbnB1dCxcblx0c2VsZWN0LFxuXHR0ZXh0YXJlYSB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRjb2xvcjogIzMzMztcblx0XHRmb250LXNpemU6IDE5cHg7XG5cdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRoZWlnaHQ6IDQ0cHg7XG5cdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0bWFyZ2luLXRvcDogNXB4O1xuXHRcdHBhZGRpbmc6IDAgMTBweDtcblx0XHRsaW5lLWhlaWdodDogNDRweCAhaW1wb3J0YW50O1xuXHRcdGJhY2tncm91bmQ6IG5vbmU7XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogI2YwZjBmMDtcblx0XHRib3JkZXI6IDFweCBzb2xpZCAjY2NjO1xuXHRcdGJvcmRlci1yYWRpdXM6IDA7XG5cdFx0Ym94LXNoYWRvdzogaW5zZXQgMCAxcHggMXB4IHJnYmEoMCwgMCwgMCwgMC4wNzUpO1xuXHRcdHRyYW5zaXRpb246IGJvcmRlci1jb2xvciBlYXNlLWluLW91dCAwLjE1cywgYm94LXNoYWRvdyBlYXNlLWluLW91dCAwLjE1cztcblx0XHRwb3NpdGlvbjogcmVsYXRpdmU7XG5cdFx0bWFyZ2luLWJvdHRvbTogMDtcblx0fVxuXHR0ZXh0YXJlYSB7XG5cdFx0aGVpZ2h0OiBhdXRvO1xuXHRcdCR7cHJvcHMgPT4gKHtcblx0XHRcdG1pbkhlaWdodDogcHJvcHMubWluSGVpZ2h0LFxuXHRcdH0pfVxuXHR9XG5cdGlucHV0OjpwbGFjZWhvbGRlcixcblx0c2VsZWN0OjpwbGFjZWhvbGRlcixcblx0dGV4dGFyZWE6OnBsYWNlaG9sZGVyIHtcblx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdGNvbG9yOiAjNzQ3NDc0O1xuXHR9XG5cdGlucHV0OmFjdGl2ZSxcblx0aW5wdXQ6aG92ZXIsXG5cdGlucHV0OmZvY3VzLFxuXHRzZWxlY3Q6YWN0aXZlLFxuXHRzZWxlY3Q6aG92ZXIsXG5cdHNlbGVjdDpmb2N1cyxcblx0dGV4dGFyZWE6YWN0aXZlLFxuXHR0ZXh0YXJlYTpob3Zlcixcblx0dGV4dGFyZWE6Zm9jdXMge1xuXHRcdGJvcmRlcjogMXB4IHNvbGlkICM3Nzc3Nzc7XG5cdFx0Ym94LXNoYWRvdzogaW5zZXQgMCAxcHggMXB4IHJnYmEoMCwgMCwgMCwgMC4wNzUpLCAwIDAgOHB4ICM3NDc0NzQ7XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogI2ZmZjtcblx0XHRvdXRsaW5lOiBub25lO1xuXHR9XG5cdHNlbGVjdDppbnZhbGlkIHtcblx0XHRjb2xvcjogIzc0NzQ3NDtcblx0fVxuXHRpbnB1dDpkaXNhYmxlZCxcblx0c2VsZWN0OmRpc2FibGVkLFxuXHR0ZXh0YXJlYTpkaXNhYmxlZCB7XG5cdFx0YmFja2dyb3VuZDogI2VkZWRlZDtcblx0fVxuXHRpbnB1dC5lcnJvcixcblx0c2VsZWN0LmVycm9yLFxuXHR0ZXh0YXJlYS5lcnJvciB7XG5cdFx0Ym94LXNoYWRvdzogaW5zZXQgMCAxcHggMXB4IHJnYmEoMCwgMCwgMCwgMC4wNzUpLCAwIDAgOHB4IGNyaW1zb247XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjEzcHgpIHtcblx0XHQmLmZvcm0tZ3JvdXAtLUxhc3RuYW1lIHtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1MDBweCkge1xuXHRcdCYuZm9ybS1ncm91cC0tUGhvbmUsXG5cdFx0Ji5mb3JtLWdyb3VwLS1FbWFpbCB7XG5cdFx0XHR3aWR0aDogMTAwJTtcblx0XHR9XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNDE0cHgpIHtcblx0XHQmLmZvcm0tZ3JvdXAtLVN0YXRlLFxuXHRcdCYuZm9ybS1ncm91cC0tQ2l0eSB7XG5cdFx0XHRtYXgtd2lkdGg6IDEwMCU7XG5cdFx0XHR3aWR0aDogMTAwJTtcblx0XHR9XG5cdFx0Ji5mb3JtLWdyb3VwLS1GaXJzdG5hbWUge1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDM2NXB4KSB7XG5cdFx0Ji5mb3JtLWdyb3VwLS1aaXAsXG5cdFx0Ji5mb3JtLWdyb3VwLS1Db3VudHJ5IHtcblx0XHRcdG1heC13aWR0aDogMTAwJTtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdH1cblx0fVxuYDtcblxuY29uc3QgRm9ybUdyb3VwID0gKHsgY2hpbGRyZW4sIHN0eWxlID0ge30sIG1pbkhlaWdodCA9IFwiMTAwcHhcIiB9KSA9PiAoXG5cdDxGb3JtQ29udHJvbCBzdHlsZT17c3R5bGV9IG1pbkhlaWdodD17bWluSGVpZ2h0fT5cblx0XHR7Y2hpbGRyZW59XG5cdDwvRm9ybUNvbnRyb2w+XG4pO1xuXG5leHBvcnQgZGVmYXVsdCBGb3JtR3JvdXA7XG4iXX0= */"));
-
-var FormGroup = function FormGroup(_ref) {
-  var children = _ref.children,
-      _ref$style = _ref.style,
-      style = _ref$style === void 0 ? {} : _ref$style,
-      _ref$minHeight = _ref.minHeight,
-      minHeight = _ref$minHeight === void 0 ? "100px" : _ref$minHeight;
-  return (0, _core.jsx)(FormControl, {
-    style: style,
-    minHeight: minHeight
-  }, children);
-};
-
+}, "}input::placeholder,select::placeholder,textarea::placeholder{font-weight:600;color:#747474;}input:active,input:hover,input:focus,select:active,select:hover,select:focus,textarea:active,textarea:hover,textarea:focus{border:1px solid #777777;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px #747474;background-color:#fff;outline:none;}select:invalid{color:#747474;}input:disabled,select:disabled,textarea:disabled{background:#ededed;}input.error,select.error,textarea.error{box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px crimson;}@media screen and (max-width:613px){&.form-group--Lastname{flex-basis:calc(100% - 130px);margin-left:0;}&.form-group--Middlename{width:100%;margin-left:0;}&.form-group--Firstname{flex-basis:calc(100% - 130px);}}@media screen and (max-width:500px){&.form-group--Phone,&.form-group--Email{width:100%;}}@media screen and (max-width:414px){&.form-group--State,&.form-group--City{max-width:100%;width:100%;}&.form-group--Firstname,&.form-group--Lastname{width:100%;flex-basis:auto;}}@media screen and (max-width:365px){&.form-group--Zip,&.form-group--Country{max-width:100%;width:100%;}}" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Hcm91cC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHNEIiLCJmaWxlIjoiRm9ybUdyb3VwLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEZvcm1Hcm91cCA9IHN0eWxlZC5kaXZgXG5cdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0bWFyZ2luLWJvdHRvbTogY2FsYygxOXB4ICogMC43KTtcblx0bWFyZ2luLXRvcDogY2FsYygxOXB4ICogMC43KTtcblx0ZmxleDogMSAxIGF1dG87XG5cdCYuZm9ybS1ncm91cC0tVGl0bGUsICYuZm9ybS1ncm91cC0tU3VmZml4IHtcblx0XHR3aWR0aDogMTIwcHg7XG5cdFx0ZmxleDogMCAwIDEyMHB4O1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1GaXJzdG5hbWUsXG5cdCYuZm9ybS1ncm91cC0tTGFzdG5hbWUge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1TdGF0ZSxcblx0Ji5mb3JtLWdyb3VwLS1Db3VudHJ5IHtcblx0XHRtYXgtd2lkdGg6IDUwJTtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLVBob25lLFxuXHQmLmZvcm0tZ3JvdXAtLUVtYWlsIHtcblx0XHR3aWR0aDogNTAlO1xuXHR9XG5cdGxhYmVsIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGNvbG9yOiAjMzMzO1xuXHRcdGZvbnQtc2l6ZTogY2FsYygxOXB4ICogMC43KTtcblx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdG1hcmdpbi1ib3R0b206IDA7XG5cdFx0cG9zaXRpb246IGFic29sdXRlO1xuXHRcdG9wYWNpdHk6IDA7XG5cdFx0Ym90dG9tOiBjYWxjKDEwMCUgLSAycHgpO1xuXHRcdGxlZnQ6IDEwcHg7XG5cdFx0dHJhbnNpdGlvbjogb3BhY2l0eSAxNTBtcyBlYXNlLWluLW91dDtcblx0fVxuXHRsYWJlbCBzcGFuIHtcblx0XHRjb2xvcjogY3JpbXNvbjtcblx0fVxuXHQmOmhvdmVyIGxhYmVsLFxuXHQmOmFjdGl2ZSBsYWJlbCxcblx0Jjpmb2N1cyBsYWJlbCB7XG5cdFx0b3BhY2l0eTogMTtcblx0fVxuXHRpbnB1dCxcblx0c2VsZWN0LFxuXHR0ZXh0YXJlYSB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRjb2xvcjogIzMzMztcblx0XHRmb250LXNpemU6IDE5cHg7XG5cdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRoZWlnaHQ6IDQ0cHg7XG5cdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0bWFyZ2luLXRvcDogNXB4O1xuXHRcdHBhZGRpbmc6IDAgMTBweDtcblx0XHRsaW5lLWhlaWdodDogNDRweCAhaW1wb3J0YW50O1xuXHRcdGJhY2tncm91bmQ6IG5vbmU7XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogI2YwZjBmMDtcblx0XHRib3JkZXI6IDFweCBzb2xpZCAjY2NjO1xuXHRcdGJvcmRlci1yYWRpdXM6IDA7XG5cdFx0Ym94LXNoYWRvdzogaW5zZXQgMCAxcHggMXB4IHJnYmEoMCwgMCwgMCwgMC4wNzUpO1xuXHRcdHRyYW5zaXRpb246IGJvcmRlci1jb2xvciBlYXNlLWluLW91dCAwLjE1cywgYm94LXNoYWRvdyBlYXNlLWluLW91dCAwLjE1cztcblx0XHRwb3NpdGlvbjogcmVsYXRpdmU7XG5cdFx0bWFyZ2luLWJvdHRvbTogMDtcblx0fVxuXHR0ZXh0YXJlYSB7XG5cdFx0aGVpZ2h0OiBhdXRvO1xuXHRcdCR7cHJvcHMgPT4gKHtcblx0XHRcdG1pbkhlaWdodDogcHJvcHMubWluSGVpZ2h0LFxuXHRcdH0pfVxuXHR9XG5cdGlucHV0OjpwbGFjZWhvbGRlcixcblx0c2VsZWN0OjpwbGFjZWhvbGRlcixcblx0dGV4dGFyZWE6OnBsYWNlaG9sZGVyIHtcblx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdGNvbG9yOiAjNzQ3NDc0O1xuXHR9XG5cdGlucHV0OmFjdGl2ZSxcblx0aW5wdXQ6aG92ZXIsXG5cdGlucHV0OmZvY3VzLFxuXHRzZWxlY3Q6YWN0aXZlLFxuXHRzZWxlY3Q6aG92ZXIsXG5cdHNlbGVjdDpmb2N1cyxcblx0dGV4dGFyZWE6YWN0aXZlLFxuXHR0ZXh0YXJlYTpob3Zlcixcblx0dGV4dGFyZWE6Zm9jdXMge1xuXHRcdGJvcmRlcjogMXB4IHNvbGlkICM3Nzc3Nzc7XG5cdFx0Ym94LXNoYWRvdzogaW5zZXQgMCAxcHggMXB4IHJnYmEoMCwgMCwgMCwgMC4wNzUpLCAwIDAgOHB4ICM3NDc0NzQ7XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogI2ZmZjtcblx0XHRvdXRsaW5lOiBub25lO1xuXHR9XG5cdHNlbGVjdDppbnZhbGlkIHtcblx0XHRjb2xvcjogIzc0NzQ3NDtcblx0fVxuXHRpbnB1dDpkaXNhYmxlZCxcblx0c2VsZWN0OmRpc2FibGVkLFxuXHR0ZXh0YXJlYTpkaXNhYmxlZCB7XG5cdFx0YmFja2dyb3VuZDogI2VkZWRlZDtcblx0fVxuXHRpbnB1dC5lcnJvcixcblx0c2VsZWN0LmVycm9yLFxuXHR0ZXh0YXJlYS5lcnJvciB7XG5cdFx0Ym94LXNoYWRvdzogaW5zZXQgMCAxcHggMXB4IHJnYmEoMCwgMCwgMCwgMC4wNzUpLCAwIDAgOHB4IGNyaW1zb247XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjEzcHgpIHtcblx0XHQmLmZvcm0tZ3JvdXAtLUxhc3RuYW1lIHtcblx0XHRcdGZsZXgtYmFzaXM6IGNhbGMoMTAwJSAtIDEzMHB4KTtcblx0XHRcdG1hcmdpbi1sZWZ0OiAwO1xuXHRcdH1cblx0XHQmLmZvcm0tZ3JvdXAtLU1pZGRsZW5hbWUge1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0XHRtYXJnaW4tbGVmdDogMDtcblx0XHR9XG5cdFx0Ji5mb3JtLWdyb3VwLS1GaXJzdG5hbWV7XG5cdFx0XHRmbGV4LWJhc2lzOiBjYWxjKDEwMCUgLSAxMzBweCk7XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDUwMHB4KSB7XG5cdFx0Ji5mb3JtLWdyb3VwLS1QaG9uZSxcblx0XHQmLmZvcm0tZ3JvdXAtLUVtYWlsIHtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA0MTRweCkge1xuXHRcdCYuZm9ybS1ncm91cC0tU3RhdGUsXG5cdFx0Ji5mb3JtLWdyb3VwLS1DaXR5IHtcblx0XHRcdG1heC13aWR0aDogMTAwJTtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdH1cblx0XHQmLmZvcm0tZ3JvdXAtLUZpcnN0bmFtZSwgJi5mb3JtLWdyb3VwLS1MYXN0bmFtZSB7XG5cdFx0XHR3aWR0aDogMTAwJTtcblx0XHRcdGZsZXgtYmFzaXM6YXV0bztcblx0XHR9XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogMzY1cHgpIHtcblx0XHQmLmZvcm0tZ3JvdXAtLVppcCxcblx0XHQmLmZvcm0tZ3JvdXAtLUNvdW50cnkge1xuXHRcdFx0bWF4LXdpZHRoOiAxMDAlO1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0fVxuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBGb3JtR3JvdXBcbiJdfQ== */"));
 var _default = FormGroup;
 var _default2 = _default;
 exports.default = _default2;
@@ -39939,7 +41874,6 @@ exports.default = _default2;
     return;
   }
 
-  reactHotLoader.register(FormControl, "FormControl", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormGroup.js");
   reactHotLoader.register(FormGroup, "FormGroup", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormGroup.js");
   reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormGroup.js");
 })();
@@ -39950,7 +41884,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/FormComponents/StyledComponents/InputError.js":[function(require,module,exports) {
+},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/FormComponents/StyledComponents/InputError.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40122,14 +42056,19 @@ var InputGroup = function InputGroup(_ref) {
       disabled = _ref.disabled,
       validation = _ref.validation,
       handleInputChange = _ref.handleInputChange,
-      textareaSize = _ref.textareaSize;
+      textareaSize = _ref.textareaSize,
+      allowInternational = _ref.allowInternational;
   return (0, _core.jsx)(_FormGroup.default, {
     id: "form-field-".concat(id),
     className: "input-group ".concat(specialStyle ? specialStyle : ""),
     textareaSize: textareaSize
   }, (0, _core.jsx)("label", {
     htmlFor: id
-  }, label, (0, _core.jsx)("span", null, required ? "*" : "")), (0, _core.jsx)("input", {
+  }, label, (0, _core.jsx)("span", null, required ? "*" : ""), allowInternational ? (0, _core.jsx)("small", {
+    style: {
+      fontSize: "10px"
+    }
+  }, "(Outside U.S. use \u201CNA\u201D}") : null), (0, _core.jsx)("input", {
     className: error ? "error" : "",
     type: type,
     id: id,
@@ -40276,7 +42215,7 @@ function SpouseInput(_ref3) {
   return (0, _core.jsx)(_FormRow.default, null, (0, _core.jsx)(_InputGroup.default, {
     type: "text",
     id: "Spousename",
-    specialStyle: "",
+    specialStyle: "form-group--Spousename",
     label: "Spouse\u2019s Name",
     placeholder: "Spouse\u2019s First and Last Name",
     maxLength: "100",
@@ -40288,7 +42227,8 @@ function SpouseInput(_ref3) {
 }
 
 function NameBlock(_ref4) {
-  var getMiddleName = _ref4.getMiddleName,
+  var getHonorific = _ref4.getHonorific,
+      getMiddleName = _ref4.getMiddleName,
       getSuffix = _ref4.getSuffix,
       getSpouseInfo = _ref4.getSpouseInfo,
       fields = _ref4.fields,
@@ -40299,7 +42239,7 @@ function NameBlock(_ref4) {
   if (!getMiddleName && !getSuffix) {
     return (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "".concat(type, " Block")), (0, _core.jsx)(_FormRow.default, {
       className: "name-row"
-    }, (0, _core.jsx)(TitleDropdown, {
+    }, getHonorific && (0, _core.jsx)(TitleDropdown, {
       value: fields.Title,
       error: errors.Title,
       handleInputChange: handleInputChange
@@ -40321,9 +42261,12 @@ function NameBlock(_ref4) {
       handleInputChange: handleInputChange
     }));
   } else {
-    return (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "".concat(type, " Block")), (0, _core.jsx)(_FormRow.default, null, (0, _core.jsx)(TitleDropdown, {
+    return (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "".concat(type, " Block")), (0, _core.jsx)(_FormRow.default, {
+      className: "name-row"
+    }, getHonorific && (0, _core.jsx)(TitleDropdown, {
       value: fields.Title,
-      error: errors.Title
+      error: errors.Title,
+      handleInputChange: handleInputChange
     }), (0, _core.jsx)(NameInput, {
       type: "First",
       required: true,
@@ -40336,7 +42279,9 @@ function NameBlock(_ref4) {
       handleInputChange: handleInputChange,
       value: fields["Middlename"],
       error: errors["Middlename"]
-    })), (0, _core.jsx)(_FormRow.default, null, (0, _core.jsx)(NameInput, {
+    })), (0, _core.jsx)(_FormRow.default, {
+      className: "name-row"
+    }, (0, _core.jsx)(NameInput, {
       type: "Last",
       required: true,
       handleInputChange: handleInputChange,
@@ -40344,7 +42289,7 @@ function NameBlock(_ref4) {
       error: errors["Lastname"]
     }), getSuffix && (0, _core.jsx)(_SelectGroup.default, {
       id: "Suffix",
-      specialStyle: "",
+      specialStyle: "form-group--Suffix",
       required: false,
       value: fields.Suffix,
       error: errors.Suffix,
@@ -40585,7 +42530,7 @@ function ShippingAddressBlock(_ref) {
   var fields = _ref.fields,
       errors = _ref.errors,
       handleInputChange = _ref.handleInputChange,
-      international = _ref.international;
+      allowInternational = _ref.allowInternational;
   return (0, _core.jsx)(_FormPanel.default, {
     className: "shipping-address__info"
   }, (0, _core.jsx)(_FormRow.default, {
@@ -40646,7 +42591,7 @@ function ShippingAddressBlock(_ref) {
     options: [(0, _core.jsx)("option", {
       key: "shiptostate-base-0",
       value: ""
-    }, "State* \u25BF"), (0, _renderStateOptions.default)(international)]
+    }, "State* \u25BF"), (0, _renderStateOptions.default)(allowInternational)]
   })), (0, _core.jsx)(_FormRow.default, null, (0, _core.jsx)(_InputGroup.default, {
     type: "text",
     id: "ShipToZip",
@@ -40658,7 +42603,7 @@ function ShippingAddressBlock(_ref) {
     value: fields.ShipToZip,
     handleInputChange: handleInputChange,
     error: errors.ShipToZip,
-    international: international
+    allowInternational: allowInternational
   })));
 }
 
@@ -40694,7 +42639,7 @@ exports.default = void 0;
 
 var _core = require("@emotion/core");
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _FormRow = _interopRequireDefault(require("../StyledComponents/FormRow"));
 
@@ -40710,6 +42655,8 @@ var _dropdowns = require("../../../config/dropdowns.json");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 (function () {
   var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
   enterModule && enterModule(module);
@@ -40723,17 +42670,18 @@ function AddressBlock(_ref) {
   var fields = _ref.fields,
       errors = _ref.errors,
       handleInputChange = _ref.handleInputChange,
+      getAddress = _ref.getAddress,
       getPhone = _ref.getPhone,
-      international = _ref.international,
+      allowInternational = _ref.allowInternational,
       type = _ref.type;
   return (0, _core.jsx)(_FieldSet.default, {
     className: "address-block"
-  }, (0, _core.jsx)("legend", null, "".concat(type, " Address Block")), (0, _core.jsx)(_FormRow.default, {
+  }, (0, _core.jsx)("legend", null, "".concat(type, " Address Block")), getAddress && (0, _core.jsx)(_react.Fragment, null, (0, _core.jsx)(_FormRow.default, {
     className: "address1-row"
   }, (0, _core.jsx)(_InputGroup.default, {
     type: "text",
     id: "Address1",
-    specialStyle: "",
+    specialStyle: "form-group--Address1",
     label: "Address",
     placeholder: "Address*",
     maxLength: "31",
@@ -40746,7 +42694,7 @@ function AddressBlock(_ref) {
   }, (0, _core.jsx)(_InputGroup.default, {
     type: "text",
     id: "Address2",
-    specialStyle: "",
+    specialStyle: "form-group--Address2",
     label: "Address2",
     placeholder: "Address Line 2",
     maxLength: "31",
@@ -40778,7 +42726,7 @@ function AddressBlock(_ref) {
       key: "state-base-0",
       value: "",
       disabled: "disabled"
-    }, "State* \u25BF"), (0, _renderStateOptions.default)(international)]
+    }, "State* \u25BF"), (0, _renderStateOptions.default)(allowInternational)]
   })), (0, _core.jsx)(_FormRow.default, {
     className: "zip-country-row"
   }, (0, _core.jsx)(_InputGroup.default, {
@@ -40792,8 +42740,8 @@ function AddressBlock(_ref) {
     value: fields.Zip,
     handleInputChange: handleInputChange,
     error: errors.Zip,
-    international: international
-  }), international && (0, _core.jsx)(_SelectGroup.default, {
+    allowInternational: allowInternational
+  }), allowInternational && (0, _core.jsx)(_SelectGroup.default, {
     id: "Country",
     specialStyle: "form-group--Country",
     required: true,
@@ -40810,7 +42758,7 @@ function AddressBlock(_ref) {
         value: country
       }, country);
     })]
-  })), (0, _core.jsx)(_FormRow.default, {
+  }))), (0, _core.jsx)(_FormRow.default, {
     className: "email-phone-row"
   }, (0, _core.jsx)(_InputGroup.default, {
     type: "text",
@@ -41340,9 +43288,7 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
-var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-
-var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
+var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
@@ -41394,25 +43340,165 @@ var GivingForm =
 function (_Component) {
   (0, _inherits2.default)(GivingForm, _Component);
 
-  function GivingForm(props) {
+  function GivingForm() {
+    var _getPrototypeOf2;
+
     var _this;
 
     (0, _classCallCheck2.default)(this, GivingForm);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(GivingForm).call(this, props)); // console.log({props})
 
-    var hasMonthlyAmounts = props.monthlyAmounts && props.monthlyAmounts.length;
-    var hasSingleAmounts = props.singleAmounts && props.singleAmounts.length;
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(GivingForm)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.hasMonthlyAmounts = _this.props.monthlyAmounts && _this.props.monthlyAmounts.length;
+    _this.hasSingleAmounts = _this.props.singleAmounts && _this.props.singleAmounts.length;
     _this.state = {
-      monthlyChecked: props.defaultOption == "monthly" || hasMonthlyAmounts && !hasSingleAmounts,
+      monthlyChecked: _this.props.defaultOption == "monthly" || _this.hasMonthlyAmounts && !_this.hasSingleAmounts,
       totalGift: 0
     };
-    _this.handleInputChange = _this.handleInputChange.bind((0, _assertThisInitialized2.default)(_this));
-    _this.handleSubmit = _this.handleSubmit.bind((0, _assertThisInitialized2.default)(_this));
-    _this.handleRadioClick = _this.handleRadioClick.bind((0, _assertThisInitialized2.default)(_this));
-    _this.addToCart = _this.addToCart.bind((0, _assertThisInitialized2.default)(_this));
-    _this.removeFromCart = _this.removeFromCart.bind((0, _assertThisInitialized2.default)(_this));
-    _this.updateDonation = _this.updateDonation.bind((0, _assertThisInitialized2.default)(_this));
-    _this.updateProducts = _this.updateProducts.bind((0, _assertThisInitialized2.default)(_this));
+
+    _this.handleRadioClick = function (e) {
+      var id = e.target.id;
+      var _this$props = _this.props,
+          singlePledgeData = _this$props.singlePledgeData,
+          monthlyPledgeData = _this$props.monthlyPledgeData;
+
+      _this.setState({
+        monthlyChecked: id !== "singlegift"
+      }, function () {
+        return _this.context.updateGivingType({
+          type: "UPDATE_GIVING_TYPE",
+          typeId: id,
+          singlePledgeData: singlePledgeData,
+          monthlyPledgeData: monthlyPledgeData,
+          source: "radioClick"
+        });
+      });
+    };
+
+    _this.handleInputChange = function (e) {
+      var target = e.target;
+      var value = target.type === "checkbox" ? target.checked : target.value;
+      var name = target.name;
+
+      _this.context.validateAndUpdateField({
+        type: "UPDATE_FIELD",
+        name: name,
+        value: value
+      });
+    };
+
+    _this.handleSubmit =
+    /*#__PURE__*/
+    function () {
+      var _ref = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(e) {
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                e.preventDefault();
+
+                _this.context.submitGivingForm();
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }();
+
+    _this.updateProducts = function (_ref2) {
+      var idx = _ref2.idx,
+          quantity = _ref2.quantity;
+      // productInfo and productsOrdered to be used by Product Display to calculate a total donation
+      var productInfo = (0, _toConsumableArray2.default)(_this.state.productInfo),
+          productsOrdered = _this.state.productsOrdered;
+      var found = productInfo.findIndex(function (prod) {
+        return prod.idx === idx;
+      });
+
+      if (found > -1) {
+        productInfo[found].quantity = quantity;
+      } else {
+        productInfo.push({
+          idx: idx,
+          quantity: quantity
+        });
+      }
+
+      var totalProducts = productInfo.reduce(function (a, b) {
+        return a + b.quantity;
+      }, 0);
+      productsOrdered = totalProducts ? true : false; //update cart by removing all instances of this particular product and adding back new quantity if any
+
+      var items = (0, _toConsumableArray2.default)(_this.state.cart.items);
+      var products = _this.props.products;
+      var _products$idx = products[idx],
+          DetailName = _products$idx.DetailName,
+          DetailCprojCredit = _products$idx.DetailCprojCredit,
+          DetailCprojMail = _products$idx.DetailCprojMail,
+          DetailDescription = _products$idx.DetailDescription,
+          PledgeAmount = _products$idx.PledgeAmount;
+      var newItems = items.filter(function (el) {
+        return el.DetailDescription !== DetailDescription;
+      });
+
+      if (quantity) {
+        newItems.push({
+          type: "product",
+          PledgeAmount: +PledgeAmount * quantity,
+          DetailCprojMail: DetailCprojMail,
+          DetailCprojCredit: DetailCprojCredit,
+          DetailDescription: DetailDescription,
+          DetailName: DetailName + "|" + quantity
+        });
+      } // console.log({productInfo, productsOrdered, totalProducts, newItems})
+
+
+      _this.setState({
+        productInfo: productInfo,
+        productsOrdered: productsOrdered,
+        cart: {
+          items: newItems
+        }
+      });
+    };
+
+    _this.addToCart = function (item) {
+      _this.context.addToCart({
+        type: "ADD_TO_CART",
+        item: item
+      });
+    };
+
+    _this.removeFromCart = function (itemType) {
+      _this.context.removeFromCart({
+        type: "REMOVE_TO_CART",
+        itemType: itemType
+      });
+    };
+
+    _this.updateDonation = function (designationInfo) {
+      var monthlyChecked = _this.state.monthlyChecked;
+      var detailName = designationInfo.DetailName;
+      designationInfo.DetailName = monthlyChecked ? "MP".concat(detailName) : "SG".concat(detailName); // console.log({designationInfo})
+
+      _this.setState({
+        designationSelected: true,
+        designationInfo: designationInfo
+      });
+    };
+
     return _this;
   }
 
@@ -41437,7 +43523,7 @@ function (_Component) {
         Address2: "",
         City: "",
         State: "",
-        Country: this.props.international ? "" : "United States",
+        Country: this.props.allowInternational ? "" : "United States",
         Emailaddress: "",
         phone: "",
         savePersonalInfo: true,
@@ -41471,11 +43557,11 @@ function (_Component) {
     value: function () {
       var _componentWillUnmount = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee() {
+      _regenerator.default.mark(function _callee2() {
         var savePersonalInfo;
-        return _regenerator.default.wrap(function _callee$(_context) {
+        return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 // if user has selected to save personal info,
                 savePersonalInfo = this.context.fields.savePersonalInfo;
@@ -41489,10 +43575,10 @@ function (_Component) {
 
               case 2:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
       function componentWillUnmount() {
@@ -41502,171 +43588,11 @@ function (_Component) {
       return componentWillUnmount;
     }()
   }, {
-    key: "handleRadioClick",
-    value: function handleRadioClick(e) {
-      var _this2 = this;
-
-      var id = e.target.id;
-      var _this$props = this.props,
-          singlePledgeData = _this$props.singlePledgeData,
-          monthlyPledgeData = _this$props.monthlyPledgeData;
-      this.setState({
-        monthlyChecked: id !== "singlegift"
-      }, function () {
-        return _this2.context.updateGivingType({
-          type: "UPDATE_GIVING_TYPE",
-          typeId: id,
-          singlePledgeData: singlePledgeData,
-          monthlyPledgeData: monthlyPledgeData,
-          source: "radioClick"
-        });
-      });
-    }
-  }, {
-    key: "handleInputChange",
-    value: function handleInputChange(e) {
-      var target = e.target;
-      var value = target.type === "checkbox" ? target.checked : target.value;
-      var name = target.name;
-      this.context.validateAndUpdateField({
-        type: "UPDATE_FIELD",
-        name: name,
-        value: value
-      });
-    }
-  }, {
-    key: "handleSubmit",
-    value: function () {
-      var _handleSubmit = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee2(e) {
-        return _regenerator.default.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                e.preventDefault();
-                this.context.submitGivingForm();
-
-              case 2:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function handleSubmit(_x) {
-        return _handleSubmit.apply(this, arguments);
-      }
-
-      return handleSubmit;
-    }()
-    /**
-     * Sets the state with new product order information from the product display
-     * @param {Object} productInfo - Selected designation
-     * @param {Number} productInfo.index - index of product being added or removed from cart
-     * @param {Number} productInfo.quantity - number of total items
-     */
-
-  }, {
-    key: "updateProducts",
-    value: function updateProducts(_ref) {
-      var idx = _ref.idx,
-          quantity = _ref.quantity;
-      // productInfo and productsOrdered to be used by Product Display to calculate a total donation
-      var productInfo = (0, _toConsumableArray2.default)(this.state.productInfo),
-          productsOrdered = this.state.productsOrdered;
-      var found = productInfo.findIndex(function (prod) {
-        return prod.idx === idx;
-      });
-
-      if (found > -1) {
-        productInfo[found].quantity = quantity;
-      } else {
-        productInfo.push({
-          idx: idx,
-          quantity: quantity
-        });
-      }
-
-      var totalProducts = productInfo.reduce(function (a, b) {
-        return a + b.quantity;
-      }, 0);
-      productsOrdered = totalProducts ? true : false; //update cart by removing all instances of this particular product and adding back new quantity if any
-
-      var items = (0, _toConsumableArray2.default)(this.state.cart.items);
-      var products = this.props.products;
-      var _products$idx = products[idx],
-          DetailName = _products$idx.DetailName,
-          DetailCprojCredit = _products$idx.DetailCprojCredit,
-          DetailCprojMail = _products$idx.DetailCprojMail,
-          DetailDescription = _products$idx.DetailDescription,
-          PledgeAmount = _products$idx.PledgeAmount;
-      var newItems = items.filter(function (el) {
-        return el.DetailDescription !== DetailDescription;
-      });
-
-      if (quantity) {
-        newItems.push({
-          type: "product",
-          PledgeAmount: +PledgeAmount * quantity,
-          DetailCprojMail: DetailCprojMail,
-          DetailCprojCredit: DetailCprojCredit,
-          DetailDescription: DetailDescription,
-          DetailName: DetailName + "|" + quantity
-        });
-      } // console.log({productInfo, productsOrdered, totalProducts, newItems})
-
-
-      this.setState({
-        productInfo: productInfo,
-        productsOrdered: productsOrdered,
-        cart: {
-          items: newItems
-        }
-      });
-    }
-  }, {
-    key: "addToCart",
-    value: function addToCart(item) {
-      this.context.addToCart({
-        type: "ADD_TO_CART",
-        item: item
-      });
-    }
-  }, {
-    key: "removeFromCart",
-    value: function removeFromCart(itemType) {
-      this.context.removeFromCart({
-        type: "REMOVE_TO_CART",
-        itemType: itemType
-      });
-    }
-    /**
-     * Sets the state with new designation information from the designation select dropdown
-     * @param {Object} designationInfo - Selected designation
-     * @param {String} designationInfo.DetailName
-     * @param {String} designationInfo.DetailDescription
-     * @param {String} designationInfo.DetailCprojCredit
-     * @param {String} designationInfo.DetailCprojMail
-     */
-
-  }, {
-    key: "updateDonation",
-    value: function updateDonation(designationInfo) {
-      var monthlyChecked = this.state.monthlyChecked;
-      var detailName = designationInfo.DetailName;
-      designationInfo.DetailName = monthlyChecked ? "MP".concat(detailName) : "SG".concat(detailName); // console.log({designationInfo})
-
-      this.setState({
-        designationSelected: true,
-        designationInfo: designationInfo
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
       var _this$props2 = this.props,
+          formTitle = _this$props2.formTitle,
+          submitButtonText = _this$props2.submitButtonText,
           showGivingArray = _this$props2.showGivingArray,
           givingFormat = _this$props2.givingFormat,
           productFormat = _this$props2.productFormat,
@@ -41679,9 +43605,10 @@ function (_Component) {
           singlePledgeData = _this$props2.singlePledgeData,
           products = _this$props2.products,
           additionalGift = _this$props2.additionalGift,
-          shipping = _this$props2.shipping,
-          international = _this$props2.international,
+          getShippingAddress = _this$props2.getShippingAddress,
+          allowInternational = _this$props2.allowInternational,
           getPhone = _this$props2.getPhone,
+          getHonorific = _this$props2.getHonorific,
           getSuffix = _this$props2.getSuffix,
           getMiddleName = _this$props2.getMiddleName,
           getSpouseInfo = _this$props2.getSpouseInfo,
@@ -41716,10 +43643,12 @@ function (_Component) {
         return val && val.length > 0;
       }).length > 0;
       return (0, _core.jsx)("form", {
-        id: "react-form",
+        id: "react-giving-form",
         autoComplete: "off",
         onSubmit: this.handleSubmit
-      }, showGivingArray && (0, _core.jsx)(_FormPanel.default, {
+      }, (0, _core.jsx)(_FormHeader.default, {
+        className: "form-title form-header"
+      }, formTitle), showGivingArray && (0, _core.jsx)(_FormPanel.default, {
         className: "form-panel"
       }, (0, _core.jsx)(_GivingLayout.default, {
         givingFormat: givingFormat,
@@ -41753,6 +43682,7 @@ function (_Component) {
       }, "Please Enter Your Billing Information"), (0, _core.jsx)(_NameBlock.default, {
         fields: fields,
         errors: errors,
+        getHonorific: getHonorific,
         getMiddleName: getMiddleName,
         getSuffix: getSuffix,
         getSpouseInfo: getSpouseInfo,
@@ -41762,10 +43692,11 @@ function (_Component) {
         fields: fields,
         errors: errors,
         handleInputChange: this.handleInputChange,
+        getAddress: true,
         getPhone: getPhone,
-        international: international,
+        allowInternational: allowInternational,
         type: "Billing"
-      }))), shipping && (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Shipping Address Block"), (0, _core.jsx)(_FormPanel.default, {
+      }))), getShippingAddress && (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Shipping Address Block"), (0, _core.jsx)(_FormPanel.default, {
         className: "shipping-address__container"
       }, (0, _core.jsx)(_FormOptionsBlock.default, {
         id: "ShipToYes",
@@ -41776,7 +43707,7 @@ function (_Component) {
         fields: fields,
         errors: errors,
         handleInputChange: this.handleInputChange,
-        international: international
+        allowInternational: allowInternational
       }))), (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Save Personal Info Block"), (0, _core.jsx)(_FormOptionsBlock.default, {
         id: "savePersonalInfo",
         checked: fields.savePersonalInfo,
@@ -41787,7 +43718,7 @@ function (_Component) {
         error: errors.amount,
         handleSubmit: this.handleSubmit,
         submitting: submitting,
-        value: "Continue to Payment"
+        value: submitButtonText
       }))) : (0, _core.jsx)(_FormPanel.default, {
         className: "form-panel"
       }, (0, _core.jsx)(_Spinner.default, null)));
@@ -41826,15 +43757,648 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/assertThisInitialized":"node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Layouts/GivingLayout":"src/Components/FormComponents/Layouts/GivingLayout.js","../FormComponents/Layouts/ProductLayout":"src/Components/FormComponents/Layouts/ProductLayout.js","../FormComponents/Blocks/DesignationBlock":"src/Components/FormComponents/Blocks/DesignationBlock.js","../FormComponents/Blocks/NameBlock":"src/Components/FormComponents/Blocks/NameBlock.js","../FormComponents/Blocks/ShippingAddressBlock":"src/Components/FormComponents/Blocks/ShippingAddressBlock.js","../FormComponents/Blocks/AddressBlock":"src/Components/FormComponents/Blocks/AddressBlock.js","../FormComponents/Blocks/FormOptionsBlock":"src/Components/FormComponents/Blocks/FormOptionsBlock.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"src/Components/Forms/ProductForm.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Layouts/GivingLayout":"src/Components/FormComponents/Layouts/GivingLayout.js","../FormComponents/Layouts/ProductLayout":"src/Components/FormComponents/Layouts/ProductLayout.js","../FormComponents/Blocks/DesignationBlock":"src/Components/FormComponents/Blocks/DesignationBlock.js","../FormComponents/Blocks/NameBlock":"src/Components/FormComponents/Blocks/NameBlock.js","../FormComponents/Blocks/ShippingAddressBlock":"src/Components/FormComponents/Blocks/ShippingAddressBlock.js","../FormComponents/Blocks/AddressBlock":"src/Components/FormComponents/Blocks/AddressBlock.js","../FormComponents/Blocks/FormOptionsBlock":"src/Components/FormComponents/Blocks/FormOptionsBlock.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"src/Components/Forms/ProductForm.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _ProductFormProvider = require("../Contexts/ProductFormProvider");
+
+var _FormPanel = _interopRequireDefault(require("../FormComponents/StyledComponents/FormPanel"));
+
+var _FieldSet = _interopRequireDefault(require("../FormComponents/StyledComponents/FieldSet"));
+
+var _FormHeader = _interopRequireDefault(require("../FormComponents/StyledComponents/FormHeader"));
+
+var _ProductLayout = _interopRequireDefault(require("../FormComponents/Layouts/ProductLayout"));
+
+var _NameBlock = _interopRequireDefault(require("../FormComponents/Blocks/NameBlock"));
+
+var _ShippingAddressBlock = _interopRequireDefault(require("../FormComponents/Blocks/ShippingAddressBlock"));
+
+var _AddressBlock = _interopRequireDefault(require("../FormComponents/Blocks/AddressBlock"));
+
+var _FormOptionsBlock = _interopRequireDefault(require("../FormComponents/Blocks/FormOptionsBlock"));
+
+var _SubmitButton = _interopRequireDefault(require("../FormComponents/SubmitButton"));
+
+var _Spinner = _interopRequireDefault(require("../StyledComponents/Spinner"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
 var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
   return a;
 };
-},{}],"src/Components/Forms/SignUpForm.js":[function(require,module,exports) {
+
+var ProductForm =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inherits2.default)(ProductForm, _Component);
+
+  function ProductForm() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    (0, _classCallCheck2.default)(this, ProductForm);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(ProductForm)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.state = {
+      totalGift: 0
+    };
+
+    _this.updateProducts = function (_ref) {
+      var idx = _ref.idx,
+          quantity = _ref.quantity;
+      // productInfo and productsOrdered to be used by Product Display to calculate a total donation
+      var productInfo = (0, _toConsumableArray2.default)(_this.state.productInfo),
+          productsOrdered = _this.state.productsOrdered;
+      var found = productInfo.findIndex(function (prod) {
+        return prod.idx === idx;
+      });
+
+      if (found > -1) {
+        productInfo[found].quantity = quantity;
+      } else {
+        productInfo.push({
+          idx: idx,
+          quantity: quantity
+        });
+      }
+
+      var totalProducts = productInfo.reduce(function (a, b) {
+        return a + b.quantity;
+      }, 0);
+      productsOrdered = totalProducts ? true : false; //update cart by removing all instances of this particular product and adding back new quantity if any
+
+      var items = (0, _toConsumableArray2.default)(_this.state.cart.items);
+      var products = _this.props.products;
+      var _products$idx = products[idx],
+          DetailName = _products$idx.DetailName,
+          DetailCprojCredit = _products$idx.DetailCprojCredit,
+          DetailCprojMail = _products$idx.DetailCprojMail,
+          DetailDescription = _products$idx.DetailDescription,
+          PledgeAmount = _products$idx.PledgeAmount;
+      var newItems = items.filter(function (el) {
+        return el.DetailDescription !== DetailDescription;
+      });
+
+      if (quantity) {
+        newItems.push({
+          type: "product",
+          PledgeAmount: +PledgeAmount * quantity,
+          DetailCprojMail: DetailCprojMail,
+          DetailCprojCredit: DetailCprojCredit,
+          DetailDescription: DetailDescription,
+          DetailName: DetailName + "|" + quantity
+        });
+      } // console.log({productInfo, productsOrdered, totalProducts, newItems})
+
+
+      _this.setState({
+        productInfo: productInfo,
+        productsOrdered: productsOrdered,
+        cart: {
+          items: newItems
+        }
+      });
+    };
+
+    _this.handleInputChange = function (e) {
+      var target = e.target;
+      var value = target.type === "checkbox" ? target.checked : target.value;
+      var name = target.name;
+
+      _this.context.validateAndUpdateField({
+        type: "UPDATE_FIELD",
+        name: name,
+        value: value
+      });
+    };
+
+    _this.handleSubmit =
+    /*#__PURE__*/
+    function () {
+      var _ref2 = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(e) {
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                e.preventDefault();
+
+                _this.context.submitProductForm();
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function (_x) {
+        return _ref2.apply(this, arguments);
+      };
+    }();
+
+    return _this;
+  }
+
+  (0, _createClass2.default)(ProductForm, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var fields = {
+        Zip: "",
+        Title: "",
+        Firstname: "",
+        Middlename: "",
+        Lastname: "",
+        Suffix: "",
+        Spousename: "",
+        Address1: "",
+        Address2: "",
+        City: "",
+        State: "",
+        Country: this.props.allowInternational ? "" : "United States",
+        Emailaddress: "",
+        phone: "",
+        savePersonalInfo: true,
+        ShipToYes: false,
+        ShipToName: "",
+        ShipToAddress1: "",
+        ShipToAddress2: "",
+        ShipToCity: "",
+        ShipToCountry: "",
+        ShipToZip: "",
+        ShipToState: ""
+      };
+      var errors = {};
+
+      for (var field in fields) {
+        errors[field] = "";
+      }
+
+      errors.amount = "";
+      this.context.initFields({
+        type: "INIT_FORM_STATE",
+        fields: fields,
+        errors: errors
+      });
+      this.context.loadLS({
+        type: "LOAD"
+      });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function () {
+      var _componentWillUnmount = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2() {
+        var savePersonalInfo;
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                // if user has selected to save personal info,
+                savePersonalInfo = this.context.fields.savePersonalInfo;
+
+                if (savePersonalInfo) {
+                  this.context.saveLS();
+                } else {
+                  // otherwise remove any stored data from local storage
+                  this.context.removeOneLS("info");
+                }
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function componentWillUnmount() {
+        return _componentWillUnmount.apply(this, arguments);
+      }
+
+      return componentWillUnmount;
+    }()
+    /**
+    * Sets the state with new product order information from the product display
+    * @param {Object} productInfo - Selected designation
+    * @param {Number} productInfo.index - index of product being added or removed from cart
+    * @param {Number} productInfo.quantity - number of total items
+    */
+
+  }, {
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          formTitle = _this$props.formTitle,
+          submitButtonText = _this$props.submitButtonText,
+          allowInternational = _this$props.allowInternational,
+          productFormat = _this$props.productFormat,
+          products = _this$props.products,
+          additionalGift = _this$props.additionalGift,
+          getAddress = _this$props.getAddress,
+          getName = _this$props.getName,
+          getPhone = _this$props.getPhone,
+          getHonorific = _this$props.getHonorific,
+          getSuffix = _this$props.getSuffix,
+          getMiddleName = _this$props.getMiddleName,
+          getSpouseInfo = _this$props.getSpouseInfo,
+          getShippingAddress = _this$props.getShippingAddress;
+      var productOptions = {
+        products: products ? products : [],
+        numProducts: products && products.length ? products.length : 0,
+        additionalGift: additionalGift
+      };
+      var _this$context = this.context,
+          errors = _this$context.errors,
+          fields = _this$context.fields,
+          initialized = _this$context.initialized,
+          submitting = _this$context.submitting;
+      var hasErrors = Object.values(errors).filter(function (val) {
+        return val && val.length > 0;
+      }).length > 0;
+      return (0, _core.jsx)("form", {
+        id: "react-giving-form",
+        autoComplete: "off",
+        onSubmit: this.handleSubmit
+      }, (0, _core.jsx)(_FormHeader.default, {
+        className: "form-title form-header"
+      }, formTitle), productOptions.numProducts > 0 && (0, _core.jsx)(_FormPanel.default, {
+        className: "form-panel"
+      }, (0, _core.jsx)(_ProductLayout.default, {
+        productFormat: productFormat,
+        productOptions: productOptions,
+        updateProducts: this.updateProducts
+      })), initialized ? (0, _core.jsx)(_FormPanel.default, {
+        className: "form-panel"
+      }, (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Name and Billing Address Block"), (0, _core.jsx)(_FormPanel.default, {
+        className: "name-address__info"
+      }, (0, _core.jsx)(_FormHeader.default, {
+        className: "form-header"
+      }, "Please Enter Your Billing Information"), (0, _core.jsx)(_NameBlock.default, {
+        fields: fields,
+        errors: errors,
+        getHonorific: getHonorific,
+        getMiddleName: getMiddleName,
+        getSuffix: getSuffix,
+        getSpouseInfo: getSpouseInfo,
+        handleInputChange: this.handleInputChange,
+        type: "Name"
+      }), (0, _core.jsx)(_AddressBlock.default, {
+        fields: fields,
+        errors: errors,
+        handleInputChange: this.handleInputChange,
+        getAddress: true,
+        getPhone: getPhone,
+        allowInternational: allowInternational,
+        type: "Billing"
+      }))), getShippingAddress && (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Shipping Address Block"), (0, _core.jsx)(_FormPanel.default, {
+        className: "shipping-address__container"
+      }, (0, _core.jsx)(_FormOptionsBlock.default, {
+        id: "ShipToYes",
+        checked: fields.ShipToYes,
+        handleInputChange: this.handleInputChange,
+        label: "\xA0My shipping address is different than my billing address."
+      }), fields.ShipToYes && (0, _core.jsx)(_ShippingAddressBlock.default, {
+        fields: fields,
+        errors: errors,
+        handleInputChange: this.handleInputChange,
+        allowInternational: allowInternational
+      }))), (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Save Personal Info Block"), (0, _core.jsx)(_FormOptionsBlock.default, {
+        id: "savePersonalInfo",
+        checked: fields.savePersonalInfo,
+        handleInputChange: this.handleInputChange,
+        label: "\xA0Remember my name and address next time"
+      })), (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Form Submit Block"), (0, _core.jsx)(_SubmitButton.default, {
+        hasErrors: hasErrors,
+        error: errors.amount,
+        handleSubmit: this.handleSubmit,
+        submitting: submitting,
+        value: submitButtonText
+      }))) : (0, _core.jsx)(_FormPanel.default, {
+        className: "form-panel"
+      }, (0, _core.jsx)(_Spinner.default, null)));
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+  return ProductForm;
+}(_react.Component);
+
+ProductForm.contextType = _ProductFormProvider.ProductFormContext;
+var _default = ProductForm;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(ProductForm, "ProductForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/ProductForm.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/ProductForm.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/ProductFormProvider":"src/Components/Contexts/ProductFormProvider.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Layouts/ProductLayout":"src/Components/FormComponents/Layouts/ProductLayout.js","../FormComponents/Blocks/NameBlock":"src/Components/FormComponents/Blocks/NameBlock.js","../FormComponents/Blocks/ShippingAddressBlock":"src/Components/FormComponents/Blocks/ShippingAddressBlock.js","../FormComponents/Blocks/AddressBlock":"src/Components/FormComponents/Blocks/AddressBlock.js","../FormComponents/Blocks/FormOptionsBlock":"src/Components/FormComponents/Blocks/FormOptionsBlock.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"src/Components/Forms/SignUpForm.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
+var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _SignUpFormProvider = require("../Contexts/SignUpFormProvider");
+
+var _FormPanel = _interopRequireDefault(require("../FormComponents/StyledComponents/FormPanel"));
+
+var _FieldSet = _interopRequireDefault(require("../FormComponents/StyledComponents/FieldSet"));
+
+var _FormHeader = _interopRequireDefault(require("../FormComponents/StyledComponents/FormHeader"));
+
+var _NameBlock = _interopRequireDefault(require("../FormComponents/Blocks/NameBlock"));
+
+var _AddressBlock = _interopRequireDefault(require("../FormComponents/Blocks/AddressBlock"));
+
+var _SubmitButton = _interopRequireDefault(require("../FormComponents/SubmitButton"));
+
+var _Spinner = _interopRequireDefault(require("../StyledComponents/Spinner"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
 var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
   return a;
 };
-},{}],"src/Components/Forms/FormRouter.js":[function(require,module,exports) {
+
+var SignUpForm =
+/*#__PURE__*/
+function (_Component) {
+  (0, _inherits2.default)(SignUpForm, _Component);
+
+  function SignUpForm() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    (0, _classCallCheck2.default)(this, SignUpForm);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(SignUpForm)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _this.handleInputChange = function (e) {
+      var target = e.target;
+      var value = target.type === "checkbox" ? target.checked : target.value;
+      var name = target.name;
+
+      _this.context.validateAndUpdateField({
+        type: "UPDATE_FIELD",
+        name: name,
+        value: value
+      });
+    };
+
+    _this.handleSubmit =
+    /*#__PURE__*/
+    function () {
+      var _ref = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(e) {
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                e.preventDefault();
+
+                _this.context.submitSignUpForm();
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }();
+
+    return _this;
+  }
+
+  (0, _createClass2.default)(SignUpForm, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var fields = {
+        Title: "",
+        Firstname: "",
+        Middlename: "",
+        Lastname: "",
+        Suffix: "",
+        Spousename: "",
+        Emailaddress: "",
+        phone: "",
+        savePersonalInfo: true
+      };
+
+      if (this.context.getAddress) {
+        fields.Address1 = "";
+        fields.Address2 = "";
+        fields.City = "";
+        fields.State = "";
+        fields.Country = this.props.allowInternational ? "" : "United States";
+      }
+
+      var errors = {};
+
+      for (var field in fields) {
+        errors[field] = "";
+      }
+
+      this.context.initFields({
+        type: "INIT_FORM_STATE",
+        fields: fields,
+        errors: errors
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          formTitle = _this$props.formTitle,
+          submitButtonText = _this$props.submitButtonText,
+          allowInternational = _this$props.allowInternational,
+          getAddress = _this$props.getAddress,
+          getName = _this$props.getName,
+          getPhone = _this$props.getPhone,
+          getHonorific = _this$props.getHonorific,
+          getSuffix = _this$props.getSuffix,
+          getMiddleName = _this$props.getMiddleName,
+          getSpouseInfo = _this$props.getSpouseInfo;
+      var _this$context = this.context,
+          errors = _this$context.errors,
+          fields = _this$context.fields,
+          initialized = _this$context.initialized,
+          submitting = _this$context.submitting;
+      var hasErrors = Object.values(errors).filter(function (val) {
+        return val && val.length > 0;
+      }).length > 0;
+      return (0, _core.jsx)("form", {
+        id: "react-signup-form",
+        autoComplete: "off",
+        onSubmit: this.handleSubmit
+      }, (0, _core.jsx)(_FormHeader.default, {
+        className: "form-title form-header"
+      }, formTitle), initialized ? (0, _core.jsx)(_FormPanel.default, {
+        className: "form-panel"
+      }, (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Name and Address Block"), (0, _core.jsx)(_FormPanel.default, {
+        className: "name-address__info"
+      }, (0, _core.jsx)(_FormHeader.default, {
+        className: "form-header"
+      }), getName && (0, _core.jsx)(_NameBlock.default, {
+        fields: fields,
+        errors: errors,
+        getHonorific: getHonorific,
+        getMiddleName: getMiddleName,
+        getSuffix: getSuffix,
+        getSpouseInfo: getSpouseInfo,
+        handleInputChange: this.handleInputChange,
+        type: "Name"
+      }), (0, _core.jsx)(_AddressBlock.default, {
+        fields: fields,
+        errors: errors,
+        handleInputChange: this.handleInputChange,
+        getPhone: getPhone,
+        getAddress: getAddress,
+        allowInternational: allowInternational,
+        type: "Billing"
+      }))), (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Form Submit Block"), (0, _core.jsx)(_SubmitButton.default, {
+        hasErrors: hasErrors,
+        error: errors.amount,
+        handleSubmit: this.handleSubmit,
+        submitting: submitting,
+        value: submitButtonText
+      }))) : (0, _core.jsx)(_FormPanel.default, {
+        className: "form-panel"
+      }, (0, _core.jsx)(_Spinner.default, null)));
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+  return SignUpForm;
+}(_react.Component);
+
+SignUpForm.contextType = _SignUpFormProvider.SignUpFormContext;
+var _default = SignUpForm;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(SignUpForm, "SignUpForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/SignUpForm.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/SignUpForm.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Blocks/NameBlock":"src/Components/FormComponents/Blocks/NameBlock.js","../FormComponents/Blocks/AddressBlock":"src/Components/FormComponents/Blocks/AddressBlock.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"src/Components/Forms/FormRouter.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41851,6 +44415,10 @@ var _react = _interopRequireWildcard(require("react"));
 var _FormConfigProvider = require("../Contexts/FormConfigProvider");
 
 var _GivingFormProvider = _interopRequireDefault(require("../Contexts/GivingFormProvider"));
+
+var _ProductFormProvider = _interopRequireDefault(require("../Contexts/ProductFormProvider"));
+
+var _SignUpFormProvider = _interopRequireDefault(require("../Contexts/SignUpFormProvider"));
 
 var _GivingForm = _interopRequireDefault(require("./GivingForm"));
 
@@ -41875,24 +44443,24 @@ var FormRouter = function FormRouter(props) {
   var _useContext = (0, _react.useContext)(_FormConfigProvider.FormConfigContext),
       formConfig = _useContext.formConfig;
 
-  var type = formConfig.type;
+  var formType = formConfig.formType;
 
-  switch (type) {
+  switch (formType) {
     case "giving":
       return (0, _core.jsx)(_GivingFormProvider.default, null, (0, _core.jsx)(_GivingForm.default, (0, _extends2.default)({}, props, formConfig)));
       break;
 
     case "product":
-      return (0, _core.jsx)(_ProductForm.default, (0, _extends2.default)({}, props, formConfig));
+      return (0, _core.jsx)(_ProductFormProvider.default, null, (0, _core.jsx)(_ProductForm.default, (0, _extends2.default)({}, props, formConfig)));
       break;
 
-    case "email":
-      return (0, _core.jsx)(_SignUpForm.default, (0, _extends2.default)({}, props, formConfig));
+    case "signup":
+      return (0, _core.jsx)(_SignUpFormProvider.default, null, (0, _core.jsx)(_SignUpForm.default, (0, _extends2.default)({}, props, formConfig)));
       break;
 
     default:
       console.error({
-        type: type,
+        formType: formType,
         formConfig: formConfig,
         props: props
       });
@@ -41926,7 +44494,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/extends":"node_modules/@babel/runtime/helpers/extends.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","./GivingForm":"src/Components/Forms/GivingForm.js","./ProductForm":"src/Components/Forms/ProductForm.js","./SignUpForm":"src/Components/Forms/SignUpForm.js"}],"src/Components/StyledComponents/Banner.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/extends":"node_modules/@babel/runtime/helpers/extends.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../Contexts/ProductFormProvider":"src/Components/Contexts/ProductFormProvider.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","./GivingForm":"src/Components/Forms/GivingForm.js","./ProductForm":"src/Components/Forms/ProductForm.js","./SignUpForm":"src/Components/Forms/SignUpForm.js"}],"src/Components/StyledComponents/Banner.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42106,8 +44674,13 @@ function (_Component) {
   (0, _createClass2.default)(App, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      // console.log({props: this.props, context: this.context})
-      this.context.getConfiguration(this.props.rootEntry);
+      var _this$props = this.props,
+          rootEntry = _this$props.rootEntry,
+          formType = _this$props.formType;
+      this.context.getConfiguration({
+        rootEntry: rootEntry,
+        formType: formType
+      });
     }
   }, {
     key: "render",
@@ -42188,19 +44761,22 @@ var productRootEntry = document.getElementById("product-form-root");
 
 if (givingRootEntry) {
   ReactDOM.render((0, _core.jsx)(_FormConfigProvider.default, null, (0, _core.jsx)(_App.default, {
-    rootEntry: givingRootEntry
+    rootEntry: givingRootEntry,
+    formType: "giving"
   })), givingRootEntry);
 }
 
 if (signupRootEntry) {
   ReactDOM.render((0, _core.jsx)(_FormConfigProvider.default, null, (0, _core.jsx)(_App.default, {
-    rootEntry: signupRootEntry
+    rootEntry: signupRootEntry,
+    formType: "signup"
   })), signupRootEntry);
 }
 
 if (productRootEntry) {
   ReactDOM.render((0, _core.jsx)(_FormConfigProvider.default, null, (0, _core.jsx)(_App.default, {
-    rootEntry: productRootEntry
+    rootEntry: productRootEntry,
+    formType: "product"
   })), productRootEntry);
 }
 
@@ -42252,7 +44828,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50784" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61294" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

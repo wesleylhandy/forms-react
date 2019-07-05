@@ -28,7 +28,7 @@ class FormConfigProvider extends Component {
 		DonorID: "",
 		formAction: "",
 		confirmationData: [],
-		getConfiguration: async rootEntry => {
+		getConfiguration: async ({rootEntry, formType}) => {
 			let initialState;
 			try {
 				const generator = rootEntry.dataset.environment
@@ -46,7 +46,11 @@ class FormConfigProvider extends Component {
 					);
 				}
 
-				if (initialState.mode === "production") {
+				const { configurations } = initialState
+
+				const formConfig = Array.isArray(configurations) ? configurations.filter(config => config.formType == formType)[0] : {}
+
+				if (formConfig.mode === "production") {
 					if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
 						window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
 						if (
@@ -57,7 +61,12 @@ class FormConfigProvider extends Component {
 						}
 					}
 				}
-				this.setState(state=> reducer(state, {type: "INIT_FORM_STATE", formConfig: initialState, status: "loaded" }));
+
+				if (Object.keys(formConfig).length) {
+					this.setState(state=> reducer(state, {type: "INIT_FORM_STATE", formConfig, status: "loaded" }));
+				} else {
+					throw new Error(`Unable to Load Configuration for ${formType}`)
+				}
 			} catch (err) {
 				this.setState(state=> reducer(state, {type: "LOAD_ERROR", status: "error" }), () => {
 					console.error(err);

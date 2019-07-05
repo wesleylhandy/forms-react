@@ -16,7 +16,7 @@ const FormPanel = styled.div`
 		border: none;
 		border-radius: 0;
 		box-sixing: border-box;
-		padding: 20px;
+		padding: 0;
 		width: 100%;
 	}
 	& + .form-panel {

@@ -16,25 +16,13 @@ import SubmitButton from "../FormComponents/SubmitButton";
 import Spinner from "../StyledComponents/Spinner";
 
 class GivingForm extends Component {
-	constructor(props) {
-		super(props);
-		// console.log({props})
-		const hasMonthlyAmounts =
-			props.monthlyAmounts && props.monthlyAmounts.length;
-		const hasSingleAmounts = props.singleAmounts && props.singleAmounts.length;
-		this.state = {
-			monthlyChecked:
-				props.defaultOption == "monthly" ||
-				(hasMonthlyAmounts && !hasSingleAmounts),
-			totalGift: 0,
-		};
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleRadioClick = this.handleRadioClick.bind(this);
-		this.addToCart = this.addToCart.bind(this);
-		this.removeFromCart = this.removeFromCart.bind(this);
-		this.updateDonation = this.updateDonation.bind(this);
-		this.updateProducts = this.updateProducts.bind(this);
+	hasMonthlyAmounts = this.props.monthlyAmounts && this.props.monthlyAmounts.length;
+	hasSingleAmounts = this.props.singleAmounts && this.props.singleAmounts.length;
+	state = {
+		monthlyChecked:
+			this.props.defaultOption == "monthly" ||
+			(this.hasMonthlyAmounts && !this.hasSingleAmounts),
+		totalGift: 0,
 	}
 
 	componentDidMount() {
@@ -55,7 +43,7 @@ class GivingForm extends Component {
 			Address2: "",
 			City: "",
 			State: "",
-			Country: this.props.international ? "" : "United States",
+			Country: this.props.allowInternational ? "" : "United States",
 			Emailaddress: "",
 			phone: "",
 			savePersonalInfo: true,
@@ -92,7 +80,7 @@ class GivingForm extends Component {
 		}
 	}
 
-	handleRadioClick(e) {
+	handleRadioClick = e => {
 		const id = e.target.id;
 		const { singlePledgeData, monthlyPledgeData } = this.props;
 		this.setState({ monthlyChecked: id !== "singlegift" }, () =>
@@ -106,14 +94,14 @@ class GivingForm extends Component {
 		);
 	}
 
-	handleInputChange(e) {
+	handleInputChange = e => {
 		const target = e.target;
 		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
 		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name, value });
 	}
 
-	async handleSubmit(e) {
+	handleSubmit = async e => {
 		e.preventDefault();
 		this.context.submitGivingForm();
 	}
@@ -123,7 +111,7 @@ class GivingForm extends Component {
 	 * @param {Number} productInfo.index - index of product being added or removed from cart
 	 * @param {Number} productInfo.quantity - number of total items
 	 */
-	updateProducts({ idx, quantity }) {
+	updateProducts = ({ idx, quantity }) => {
 		// productInfo and productsOrdered to be used by Product Display to calculate a total donation
 		let productInfo = [...this.state.productInfo],
 			{ productsOrdered } = this.state;
@@ -163,11 +151,11 @@ class GivingForm extends Component {
 		this.setState({ productInfo, productsOrdered, cart: { items: newItems } });
 	}
 
-	addToCart(item) {
+	addToCart = item => {
 		this.context.addToCart({ type: "ADD_TO_CART", item });
 	}
 
-	removeFromCart(itemType) {
+	removeFromCart = itemType => {
 		this.context.removeFromCart({ type: "REMOVE_TO_CART", itemType });
 	}
 
@@ -179,7 +167,7 @@ class GivingForm extends Component {
 	 * @param {String} designationInfo.DetailCprojCredit
 	 * @param {String} designationInfo.DetailCprojMail
 	 */
-	updateDonation(designationInfo) {
+	updateDonation = designationInfo => {
 		const { monthlyChecked } = this.state;
 		const detailName = designationInfo.DetailName;
 		designationInfo.DetailName = monthlyChecked
@@ -191,6 +179,8 @@ class GivingForm extends Component {
 
 	render() {
 		const {
+			formTitle,
+			submitButtonText,
 			showGivingArray,
 			givingFormat,
 			productFormat,
@@ -203,9 +193,10 @@ class GivingForm extends Component {
 			singlePledgeData,
 			products,
 			additionalGift,
-			shipping,
-			international,
+			getShippingAddress,
+			allowInternational,
 			getPhone,
+			getHonorific,
 			getSuffix,
 			getMiddleName,
 			getSpouseInfo,
@@ -238,7 +229,10 @@ class GivingForm extends Component {
 		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
 		return (
-			<form id="react-form" autoComplete="off" onSubmit={this.handleSubmit}>
+			<form id="react-giving-form" autoComplete="off" onSubmit={this.handleSubmit}>
+				<FormHeader className="form-title form-header">
+					{ formTitle }
+				</FormHeader>
 				{showGivingArray && (
 					<FormPanel className="form-panel">
 						<GivingLayout
@@ -284,6 +278,7 @@ class GivingForm extends Component {
 								<NameBlock
 									fields={fields}
 									errors={errors}
+									getHonorific={getHonorific}
 									getMiddleName={getMiddleName}
 									getSuffix={getSuffix}
 									getSpouseInfo={getSpouseInfo}
@@ -294,13 +289,14 @@ class GivingForm extends Component {
 									fields={fields}
 									errors={errors}
 									handleInputChange={this.handleInputChange}
+									getAddress={true}
 									getPhone={getPhone}
-									international={international}
+									allowInternational={allowInternational}
 									type="Billing"
 								/>
 							</FormPanel>
 						</FieldSet>
-						{shipping && (
+						{getShippingAddress && (
 							<FieldSet>
 								<legend>Shipping Address Block</legend>
 								<FormPanel className="shipping-address__container">
@@ -315,7 +311,7 @@ class GivingForm extends Component {
 											fields={fields}
 											errors={errors}
 											handleInputChange={this.handleInputChange}
-											international={international}
+											allowInternational={allowInternational}
 										/>
 									)}
 								</FormPanel>
@@ -337,7 +333,7 @@ class GivingForm extends Component {
 								error={errors.amount}
 								handleSubmit={this.handleSubmit}
 								submitting={submitting}
-								value="Continue to Payment"
+								value={submitButtonText}
 							/>
 						</FieldSet>
 					</FormPanel>
