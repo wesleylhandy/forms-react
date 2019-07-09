@@ -105,7 +105,8 @@ function ShippingAddressBlock({
 					value={fields.ShipToZip}
 					handleInputChange={handleInputChange}
 					error={errors.ShipToZip}
-					allowInternational={allowInternational}
+					allowInternational={false}
+					validation="\d*"
 				/>
 			</FormRow>
 		</FormPanel>

@@ -93,6 +93,7 @@ function AddressBlock({
 								handleInputChange={handleInputChange}
 								error={errors.Zip}
 								allowInternational={allowInternational}
+								validation={fields.Country != "United States" ? "*" : "\d*"}
 							/>
 
 							{allowInternational && (
@@ -145,6 +146,7 @@ function AddressBlock({
 							value={fields.phone}
 							handleInputChange={handleInputChange}
 							error={errors.phone}
+							validation="\d*"
 						/>
 					)
 				}

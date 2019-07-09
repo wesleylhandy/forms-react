@@ -4,8 +4,12 @@ import { FormConfigContext } from "./FormConfigProvider";
 import { cryptLS, readLS, removeOneLS, emptyLS } from "../../helpers/ls";
 import { getErrorType } from "../../helpers/error-types";
 import { callApi } from "../../helpers/fetch-helpers";
-import { zip_regex, callZipCityStateService, validateInput, callAddressVerification } from "../../helpers/validators"
+import { zip_regex, phone_regex, callZipCityStateService, validateInput, callAddressVerification } from "../../helpers/validators"
 import reducer from "../../helpers/reducer"
+
+const d = new Date();
+const curMonth = "0" + (d.getMonth() + 1);
+const curYear = d.getFullYear();
 
 export const GivingFormContext = React.createContext();
 
@@ -21,24 +25,34 @@ class GivingFormProvider extends Component {
 		submitting: false,
 		fields: {},
 		errors: {},
+		submitted: false,
+		DonorID: "",
+		formAction: "",
+		confirmationData: [],
+		confirmed: false,
+		trackingVars: [],
 		initFields: action => this.setState(state => reducer(state, action)),
 		loadLS: action => {
 			const store = readLS("store");
 			const info = readLS("info");
-			const formData = store ? store : info;
-			// console.log({store, info, formData})
-			if (!formData) {
-				emptyLS();
+			const data = store ? store : info;
+			if (data) {
+				const { items, ...formData } = data;
+			
+				if (!formData) {
+					emptyLS();
+				}
+				if (!store) {
+					removeOneLS("store");
+				}
+				action.formData = formData;
+				action.items = items;
+				this.setState(state => reducer(state, action));
 			}
-			if (!store) {
-				removeOneLS("store");
-			}
-			action.formData = formData;
-			this.setState(state => reducer(state, action));
+			return 
 		},
-		saveLS: () => {
-			const days = 30;
-			const lifetime = days * 24 * 60 * 60 * 1000;
+		saveLS: async (lifetime, type) => {
+
 			const {
 				Address1,
 				Address2,
@@ -55,13 +69,13 @@ class GivingFormProvider extends Component {
 				Zip,
 				phone,
 			} = this.state.fields;
-			const Phoneareacode = phone.trim().match(phone_regex)
+			const Phoneareacode = phone && phone.trim().match(phone_regex)
 					? phone.trim().match(phone_regex)[1]
 					: "",
-				Phoneexchange = phone.trim().match(phone_regex)
+				Phoneexchange = phone && phone.trim().match(phone_regex)
 					? phone.trim().match(phone_regex)[2]
 					: "",
-				Phonenumber = phone.trim().match(phone_regex)
+				Phonenumber = phone && phone.trim().match(phone_regex)
 					? phone.trim().match(phone_regex)[3]
 					: "";
 			const formData = {
@@ -82,10 +96,19 @@ class GivingFormProvider extends Component {
 				Title,
 				Zip,
 			};
-			cryptLS({ formData }, lifetime, "info");
+			let monthlychecked = false
+			if (type === "store") {
+				const items = [...this.state.cart.items];
+				formData.items = items
+				const pledgeFound = items.findIndex(el=>el && el.type == "donation")
+				monthlychecked =
+						pledgeFound > -1 ? items[pledgeFound].monthly : false;
+			}
+			cryptLS({ formData }, lifetime, type);
+			return monthlychecked
 		},
 		removeOneLS: type => {
-			removeOneLS("info");
+			removeOneLS(type);
 		},
 		updateField: action => this.setState(state => reducer(state, action)),
 		validateAndUpdateField: async action => {
@@ -456,14 +479,14 @@ class GivingFormProvider extends Component {
 						return this.setState(state =>
 							reducer(state, {
 								type: "SUBMIT_FORM",
-							}), () => {
+								DonorID,
+								formAction,
+								confirmationData
+							}, () => {
 								this.context.submitForm({
-									type: "SUBMIT_FORM",
-									DonorID,
-									formAction,
-									confirmationData
+									type: "SUBMIT_FORM"
 								})
-							}
+							})
 						);
 					} catch (err) {
 						console.error(err.message);
@@ -494,6 +517,35 @@ class GivingFormProvider extends Component {
 		addToCart: action => this.setState(state => reducer(state, action)),
 		removeFromCart: action => this.setState(state => reducer(state, action)),
 		updateGivingType: action => this.setState(state => reducer(state, action)),
+		getGlobals: async () => {
+			const isSecure = window.location.protocol == "https:"
+			const url = !isSecure ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json'
+			try {
+				const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUri} = await callApi(url)
+				const action = {
+					type: "GLOBAL_URIS",
+					msgUris: [
+						devServicesUri,
+						preProdServicesUri,
+						prodServicesUri,
+						devReceiptUri,
+						preProdReceiptUri,
+						prodReceiptUri
+					]
+				}
+				this.setState(state =>reducer(state, action));
+				return true
+			} catch (err) {
+				console.error({err});
+				throw new Error(err)
+			}
+		},
+		setConfirmed: action => this.setState(state=> reducer(state, action), () => {
+			this.context.setConfirmed(action)
+		}),
+		goBack: action => this.setState(state=> reducer(state, action), () => {
+			this.context.goBack(action)
+		})
 	};
 	validateGift = () => {
 		const items = [...this.state.cart.items];

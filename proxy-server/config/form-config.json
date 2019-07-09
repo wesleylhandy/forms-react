@@ -60,7 +60,7 @@
             "ActivityName": "700Club_Donation_Activity",
             "SectionName": "700Club",
             "proxy": "http://10.100.43.42:8080/api",
-            "successMessage":""
+            "successMessage":"<h1>Thank You</h1>"
         }, {
             "mode": "development",
             "formType": "signup",
@@ -90,7 +90,7 @@
                     "type": "feedback",
                     "headers": {
                         "FeedbackType": "Item Request",
-                        "Topic": "Islam Booklet Download",
+                        "Topic": "Islam Booklet",
                         "FormUrl": "",
                         "InceptionSource": "Request Resource - Islam Booklet - Download",
                         "ActivityCode": "Request Resource - Islam Booklet - Download",

@@ -82,6 +82,21 @@ const FormRow = styled.div`
 			overflow: hidden;
 		}
 	}
+	&.go-back-row {
+		justify-content: center;
+		margin: 30px auto;
+		span + span {
+			margin-left: 4px;
+		}
+		span>a {
+			color: #999;
+			cursor: pointer;
+			transition: color 200ms ease-in-out;
+		}
+		span>a:hover, a:active, a:focus {
+			color: #333;
+		}
+	}
 	@media screen and (max-width: 613px) {
 		&.name-row {
 			flex-wrap: wrap;

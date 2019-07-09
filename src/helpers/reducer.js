@@ -10,6 +10,11 @@ const reducer = (state, action) => {
 		monthlyPledgeData,
 		source,
 		type,
+		DonorID,
+		formAction,
+		confirmationData,
+		msgUris,
+		trackingVars
 	} = action;
 	let found, fields, errors, items, givingInfo, productInfo, designationInfo;
 	switch (type) {
@@ -26,7 +31,8 @@ const reducer = (state, action) => {
 			for (let datum in formData) {
 				fields[datum] = formData[datum];
 			}
-			return { ...state, fields };
+			const cart = { items: action.items || [] }
+			return { ...state, fields, cart };
 			break;
 		case "UPDATE_FIELD":
 			fields = { ...state.fields };
@@ -118,7 +124,31 @@ const reducer = (state, action) => {
 				...state,
 				submitted: true,
 				submitting: false,
+				DonorID,
+				formAction,
+				confirmationData
 			};
+		case "GLOBAL_URIS":
+			return {
+				...state,
+				msgUris
+			}
+		case "CONFIRMED":
+			return {
+				...state,
+				confirmed: true,
+				trackingVars
+			}
+		case "GO_BACK":
+			items = [...state.cart.items];
+			found = items.findIndex(el => el && el.type == "donation");
+			givingInfo = { ...state.givingInfo };
+			if (found > -1) {
+				givingInfo.amount = items[found].PledgeAmount;
+				givingInfo.isMonthly = items[found].monthly;
+				givingInfo.source = "goBackBtn";
+			}
+			return { ...state, givingInfo, submitted: false, submitting: false, confirmed: false }
 		default:
 			return { ...state };
 			break;

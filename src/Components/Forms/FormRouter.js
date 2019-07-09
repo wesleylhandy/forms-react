@@ -5,17 +5,21 @@ import GivingFormProvider from "../Contexts/GivingFormProvider";
 import ProductFormProvider from "../Contexts/ProductFormProvider";
 import SignUpFormProvider from "../Contexts/SignUpFormProvider";
 import GivingForm from "./GivingForm";
+import PaymentForm from './PaymentForm'
 import ProductForm from "./ProductForm";
 import SignUpForm from "./SignUpForm";
+import GivingSuccessMessage from "../SuccessPages/GivingSuccessMessage"
 
 const FormRouter = props => {
-	const { formConfig } = useContext(FormConfigContext);
+	const { formConfig, submitted, confirmed } = useContext(FormConfigContext);
 	const { formType } = formConfig;
 	switch (formType) {
 		case "giving":
 			return (
 				<GivingFormProvider>
-					<GivingForm {...props} {...formConfig} />
+					<GivingForm {...props} {...formConfig} submitted={submitted}/>
+					<PaymentForm submitted={submitted}/>
+					<GivingSuccessMessage confirmed={confirmed} successMessage={formConfig.successMessage}/>
 				</GivingFormProvider>
 			);
 			break;
@@ -23,6 +27,7 @@ const FormRouter = props => {
 			return (
 				<ProductFormProvider>
 					<ProductForm {...props} {...formConfig} />
+					
 				</ProductFormProvider>
 			);
 			break;

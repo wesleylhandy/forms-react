@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import { GivingFormContext } from "../Contexts/GivingFormProvider";
 
+import withErrorBoundary from "../withErrorBoundary"
+
 import FormPanel from "../FormComponents/StyledComponents/FormPanel";
 import FieldSet from "../FormComponents/StyledComponents/FieldSet";
 import FormHeader from "../FormComponents/StyledComponents/FormHeader";
@@ -26,54 +28,64 @@ class GivingForm extends Component {
 	}
 
 	componentDidMount() {
-		const getDay = () => {
-			let date = new Date().getDate();
-			return date >= 2 && date <= 28 ? date : 2;
-		};
-		const fields = {
-			Zip: "",
-			Monthlypledgeday: getDay(),
-			Title: "",
-			Firstname: "",
-			Middlename: "",
-			Lastname: "",
-			Suffix: "",
-			Spousename: "",
-			Address1: "",
-			Address2: "",
-			City: "",
-			State: "",
-			Country: this.props.allowInternational ? "" : "United States",
-			Emailaddress: "",
-			phone: "",
-			savePersonalInfo: true,
-			ShipToYes: false,
-			ShipToName: "",
-			ShipToAddress1: "",
-			ShipToAddress2: "",
-			ShipToCity: "",
-			ShipToCountry: "",
-			ShipToZip: "",
-			ShipToState: "",
-		};
-		const errors = {};
-		for (let field in fields) {
-			errors[field] = "";
+		if (!this.context.initialized) {
+			const getDay = () => {
+				let date = new Date().getDate();
+				return date >= 2 && date <= 28 ? date : 2;
+			};
+			const fields = {
+				Zip: "",
+				Monthlypledgeday: getDay(),
+				Title: "",
+				Firstname: "",
+				Middlename: "",
+				Lastname: "",
+				Suffix: "",
+				Spousename: "",
+				Address1: "",
+				Address2: "",
+				City: "",
+				State: "",
+				Country: this.props.allowInternational ? "" : "United States",
+				Emailaddress: "",
+				phone: "",
+				savePersonalInfo: true,
+				ShipToYes: false,
+				ShipToName: "",
+				ShipToAddress1: "",
+				ShipToAddress2: "",
+				ShipToCity: "",
+				ShipToCountry: "",
+				ShipToZip: "",
+				ShipToState: "",
+			};
+			const errors = {};
+			for (let field in fields) {
+				errors[field] = "";
+			}
+			errors.amount = "";
+			this.context.initFields({
+				type: "INIT_FORM_STATE",
+				fields,
+				errors
+			});
 		}
-		errors.amount = "";
-		this.context.initFields({
-			type: "INIT_FORM_STATE",
-			fields,
-			errors
-		});
-		this.context.loadLS({ type: "LOAD" });
+		try {
+			const monthlyChecked = this.context.loadLS({ type: "LOAD" });
+			this.setState({ monthlyChecked })
+		} catch (err) {
+			console.error(err.message)
+			console.error(err.stack)
+		}
 	}
 
 	async componentWillUnmount() {
 		// if user has selected to save personal info,
 		const { savePersonalInfo } = this.context.fields;
 		if (savePersonalInfo) {
-			this.context.saveLS();
+			const days = 30;
+			const lifetime = days * 24 * 60 * 60 * 1000;
+			this.context.saveLS(lifetime, "info");
 		} else {
 			// otherwise remove any stored data from local storage
 			this.context.removeOneLS("info");
@@ -224,12 +236,12 @@ class GivingForm extends Component {
 					designations && designations.length ? designations.length : 0,
 			};
 		const { monthlyChecked } = this.state;
-		const { errors, fields, initialized, submitting } = this.context;
+		const { errors, fields, initialized, submitting, submitted } = this.context;
 		// console.log({fields, errors})
 		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
-		return (
-			<form id="react-giving-form" autoComplete="off" onSubmit={this.handleSubmit}>
+		return !submitted ? (
+			<form id="react-giving-form" autoComplete="off" onSubmit={this.handleSubmit} >
 				<FormHeader className="form-title form-header">
 					{ formTitle }
 				</FormHeader>
@@ -343,10 +355,10 @@ class GivingForm extends Component {
 					</FormPanel>
 				)}
 			</form>
-		);
+		) : null;
 	}
 }
 
 GivingForm.contextType = GivingFormContext;
 
-export default GivingForm;
+export default withErrorBoundary(GivingForm);

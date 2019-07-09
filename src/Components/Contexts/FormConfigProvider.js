@@ -4,7 +4,7 @@ import { callApi } from "../../helpers/fetch-helpers";
 export const FormConfigContext = React.createContext();
 
 const reducer = (state, action) => {
-	const { type,  status, formConfig, DonorID, formAction, confirmationData } = action
+	const { type,  status, formConfig } = action
 	switch (type) {
 		case "INIT_FORM_STATE":
 			return {...state, status, formConfig }
@@ -13,8 +13,12 @@ const reducer = (state, action) => {
 			return {...state, status }
 			break;
 		case "SUBMIT_FORM":
-			return {...state, submitted: true, DonorID, formAction, confirmationData}
+			return {...state, submitted: true }
 			break;
+		case "GO_BACK":
+			return {...state, submitted: false, confirmed: false }
+		case "CONFIRMED":
+			return {...state, confirmed: true }
 		default:
 			return {...state}
 	}
@@ -25,9 +29,7 @@ class FormConfigProvider extends Component {
 		status: "initial",
 		formConfig: {},
 		submitted: false,
-		DonorID: "",
-		formAction: "",
-		confirmationData: [],
+		confirmed: false,
 		getConfiguration: async ({rootEntry, formType}) => {
 			let initialState;
 			try {
@@ -76,7 +78,9 @@ class FormConfigProvider extends Component {
 				});
 			}
 		},
-		submitForm: action => this.setState(state=> reducer(state,action))
+		submitForm: action => this.setState(state=> reducer(state,action)),
+		setConfirmed: action => this.setState(state=> reducer(state,action)),
+		goBack: action => this.setState(state=> reducer(state,action))
 	};
 	render() {
 		const {

@@ -20,6 +20,25 @@ const RadioButton = styled.div`
 		font-size: calc(19px * 0.7);
 		font-weight: 600;
 	}
+	input[type="radio"] + label.Visa, input[type="radio"] + label.MasterCard, input[type="radio"] + label.AmericanExpress, input[type="radio"] + label.Discover {
+		box-sizing: border-box;
+		font-size: 40px;
+		font-weight: 600;
+		display: flex;
+		align-items: center;
+	}
+	input[type="radio"] + label.Visa {
+		color: #172274;
+	}
+	input[type="radio"] + label.MasterCard {
+		color: #EA001B;
+	}
+	input[type="radio"] + label.AmericanExpress {
+		color: #2E78BF;
+	}
+	input[type="radio"] + label.Discover {
+		color: #F58220;
+	}
 	input[type="radio"] + label:before {
 		content: "";
 		background: #ffffff;

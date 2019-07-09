@@ -33,23 +33,33 @@ class GivingLayout extends Component {
 	}
 
 	componentDidMount() {
+		let amt = 0, arr = [];
 		const {
 			defaultAmount,
 			defaultOption,
 			givingOptions: { monthlyAmounts, singleAmounts, monthlyOption },
 		} = this.props;
-		let arr = [];
-		if (defaultOption !== "") {
-			arr = defaultOption == "monthly" ? monthlyAmounts : singleAmounts;
+		const { initialized, cart } = this.context
+		if (!initialized) {
+			if (defaultOption !== "") {
+				arr = defaultOption == "monthly" ? monthlyAmounts : singleAmounts;
+			} else {
+				arr = monthlyOption ? monthlyAmounts : singleAmounts;
+			}
+			amt = defaultAmount;
 		} else {
-			arr = monthlyOption ? monthlyAmounts : singleAmounts;
+			const items = [...cart.items]
+			const pledgeFound = items.findIndex(el=>el && el.type == "donation")
+			const monthly = pledgeFound > -1 ? items[pledgeFound].monthly : false;
+			amt = items[pledgeFound].PledgeAmount;
+			arr = monthly ? monthlyAmounts : singleAmounts;
 		}
-		const amt = defaultAmount;
 		if (amt > 0 && arr.length) {
 			const index = getIndex(arr, amt);
 			const selectedIndex = index >= 0 ? index : 99;
 			if (selectedIndex >= 0) {
-				this.addToCart(amt, index);
+				// console.log({amt, index})
+				this.addToCart(amt, selectedIndex);
 			}
 		}
 	}
@@ -218,6 +228,7 @@ class GivingLayout extends Component {
 							? monthlyAmounts[selectedIndex]
 							: singleAmounts[selectedIndex]) + "-key";
 		}
+		// console.log({amount, otherAmount, selectedIndex, key})
 		return givingFormat === "buttons" ? (
 			<FieldSet>
 				<legend>Giving Amounts and Giving Options</legend>

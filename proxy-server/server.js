@@ -190,7 +190,7 @@ router.post("/api", (req, res) => {
 	})
 		.then(msg => res.send(msg))
 		.catch(error => {
-			console.log({ BeforeResSentErr: JSON.stringify(error, null, 2) });
+			console.error({ BeforeResSentErr: JSON.stringify(error, null, 2) });
 			res.statusCode = error.status;
 			res.send(error.body);
 		});
@@ -246,9 +246,9 @@ router.post("/signup", (req, res) => {
 				console.log(msg)
 				responses.push(msg)
 			} catch(err) {
-				console.log({ BeforeResSentErr: JSON.stringify(error, null, 2) });
+				console.error({ BeforeResSentErr: JSON.stringify(err, null, 2) });
 				res.statusCode = error.status;
-				res.send(error.body);
+				return res.send(error.body);
 			}
 		}
 	})
