@@ -33,13 +33,14 @@ class GivingLayout extends Component {
 	}
 
 	componentDidMount() {
-		let amt = 0, arr = [];
+		let amt = 0,
+			arr = [];
 		const {
 			defaultAmount,
 			defaultOption,
 			givingOptions: { monthlyAmounts, singleAmounts, monthlyOption },
 		} = this.props;
-		const { initialized, cart } = this.context
+		const { initialized, cart } = this.context;
 		if (!initialized) {
 			if (defaultOption !== "") {
 				arr = defaultOption == "monthly" ? monthlyAmounts : singleAmounts;
@@ -48,8 +49,8 @@ class GivingLayout extends Component {
 			}
 			amt = defaultAmount;
 		} else {
-			const items = [...cart.items]
-			const pledgeFound = items.findIndex(el=>el && el.type == "donation")
+			const items = [...cart.items];
+			const pledgeFound = items.findIndex(el => el && el.type == "donation");
 			const monthly = pledgeFound > -1 ? items[pledgeFound].monthly : false;
 			amt = items[pledgeFound].PledgeAmount;
 			arr = monthly ? monthlyAmounts : singleAmounts;

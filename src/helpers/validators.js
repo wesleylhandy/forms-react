@@ -1,10 +1,10 @@
 import { callApi } from "./fetch-helpers";
 
-export const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-export const phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/
-export const zip_regex = /^\d{5}$/
-export const firstname_regex = /^([a-zA-Z0-9\-\.' ]+)$/i
-export const lastname_regex = /^([a-zA-Z0-9\-\.' ]+)(?:(,|\s|,\s)(jr|sr|ii|iii|iv|esq)\.*)?$/i
+export const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+export const phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/;
+export const zip_regex = /^\d{5}$/;
+export const firstname_regex = /^([a-zA-Z0-9\-\.' ]+)$/i;
+export const lastname_regex = /^([a-zA-Z0-9\-\.' ]+)(?:(,|\s|,\s)(jr|sr|ii|iii|iv|esq)\.*)?$/i;
 
 /**
  *
@@ -14,57 +14,55 @@ export const lastname_regex = /^([a-zA-Z0-9\-\.' ]+)(?:(,|\s|,\s)(jr|sr|ii|iii|i
  * @returns {Promise} - action, error
  */
 export const callZipCityStateService = async (name, value, oldCity) => {
-		if (value) {
-			const base =
-				"https://services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
-			const url = `${base}${value}`;
-			try {
-				const result = await callApi(url);
-				let { city, state, zip, returnCode, returnMessage } = JSON.parse(
-					result
-				);
-				// console.log({ city, state, zip, returnCode, returnMessage })
-				if (returnCode == 1) {
-					// console.log(city)
-					const error = oldCity && !city.toUpperCase().includes(oldCity);
-					const newCity = error || !oldCity ? city.split(";")[0] : oldCity;
+	if (value) {
+		const base =
+			"https://services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+		const url = `${base}${value}`;
+		try {
+			const result = await callApi(url);
+			let { city, state, zip, returnCode, returnMessage } = JSON.parse(result);
+			// console.log({ city, state, zip, returnCode, returnMessage })
+			if (returnCode == 1) {
+				// console.log(city)
+				const error = oldCity && !city.toUpperCase().includes(oldCity);
+				const newCity = error || !oldCity ? city.split(";")[0] : oldCity;
 
-					const action = {
-						type: "UPDATE_FIELDS",
-						fields: [
-							{
-								name: name == "ShipToZip" ? "ShipToCity" : "City",
-								value: newCity,
-								error: "",
-							},
-							{
-								name: name == "ShipToZip" ? "ShipToState" : "State",
-								value: state,
-								error: "",
-							},
-						],
-					};
-					if (name == "Zip") {
-						action.fields.push({
-							name: "Country",
-							value: "United States",
+				const action = {
+					type: "UPDATE_FIELDS",
+					fields: [
+						{
+							name: name == "ShipToZip" ? "ShipToCity" : "City",
+							value: newCity,
 							error: "",
-						});
-                    }
-                    console.error({oldCity, newCity})
-					return { action, error: "" };
-				} else {
-					return { action: "", error: returnMessage };
+						},
+						{
+							name: name == "ShipToZip" ? "ShipToState" : "State",
+							value: state,
+							error: "",
+						},
+					],
+				};
+				if (name == "Zip") {
+					action.fields.push({
+						name: "Country",
+						value: "United States",
+						error: "",
+					});
 				}
-			} catch (err) {
-				console.error(err);
-				throw new Error (err)
+				console.error({ oldCity, newCity });
+				return { action, error: "" };
+			} else {
+				return { action: "", error: returnMessage };
 			}
-		} else {
-            console.error({ err: "No Value Passed to Validator" })
-			return { action: "", error: "No Value Passed to Validator" }
+		} catch (err) {
+			console.error(err);
+			throw new Error(err);
 		}
-	};
+	} else {
+		console.error({ err: "No Value Passed to Validator" });
+		return { action: "", error: "No Value Passed to Validator" };
+	}
+};
 
 /**
  *
@@ -75,25 +73,31 @@ export const callZipCityStateService = async (name, value, oldCity) => {
  * @param {string} zip - user entered zip
  * @returns {string} either empty or with error
  */
-export const callAddressVerification = async (addr1, addr2 = "", city, state, zip) => {
-    const base =
-        "https://services.cbn.com/AddressValidation/AddressVerification.aspx";
-    const url = encodeURI(
-        `${base}?addr1=${encodeURIComponent(addr1)}&addr2=${encodeURIComponent(
-            addr2
-        )}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(
-            state
-        )}&zip=${encodeURIComponent(zip)}`
-    );
-    try {
-        const result = await callApi(url);
-        // console.log({result})
-        const { returnCode, returnMessage } = JSON.parse(result);
-        return returnCode == 1 ? "" : returnMessage;
-    } catch (err) {
-        console.error({ err });
-        return "";
-    }
+export const callAddressVerification = async (
+	addr1,
+	addr2 = "",
+	city,
+	state,
+	zip
+) => {
+	const base =
+		"https://services.cbn.com/AddressValidation/AddressVerification.aspx";
+	const url = encodeURI(
+		`${base}?addr1=${encodeURIComponent(addr1)}&addr2=${encodeURIComponent(
+			addr2
+		)}&city=${encodeURIComponent(city)}&state=${encodeURIComponent(
+			state
+		)}&zip=${encodeURIComponent(zip)}`
+	);
+	try {
+		const result = await callApi(url);
+		// console.log({result})
+		const { returnCode, returnMessage } = JSON.parse(result);
+		return returnCode == 1 ? "" : returnMessage;
+	} catch (err) {
+		console.error({ err });
+		return "";
+	}
 };
 
 /**
@@ -107,86 +111,94 @@ export const callAddressVerification = async (addr1, addr2 = "", city, state, zi
  * @param {Boolean} [ShipToYes] - Boolean for validating Shipping Address
  * @returns {String} - an empty String if no errors, else a string with a single error message
  */
-export const validateInput = (submitting, name, value, getAddress, getHonorific, allowInternational, ShipToYes) => {
-    let error = "";
-    switch (name) {
-        case "Title":
-                if (!value && submitting && getHonorific) {
-                    error = "Required";
-                }
-                break;
-        case "State":
-        case "Address1":
-        case "City":
-            if (!value && submitting && getAddress) {
-                error = "Required";
-            }
-            break;
-        case "ShipToState":
-        case "ShipToAddress1":
-        case "ShipToCity":
-            if (!value && submitting && ShipToYes) {
-                error = "Required";
-            }
-            break;
-        case "Firstname":
-            if (value && !firstname_regex.test(value)) {
-                error =
-                    "No special characters allowed. Please call if you need assistance.";
-            }
-            if (!value && submitting) {
-                error = "Required";
-            }
-            break;
-        case "Middlename":
-            if (value && !firstname_regex.test(value)) {
-                error =
-                    "No special characters allowed. Please call if you need assistance.";
-            }
-            break;
-        case "Lastname":
-            if (value && !lastname_regex.test(value)) {
-                error =
-                    "No special characters allowed. Please call if you need assistance.";
-            }
-            if (!value && submitting) {
-                error = "Required";
-            }
-            break;
-        case "ShipToName":
-            if (value && !lastname_regex.test(value)) {
-                error =
-                    "No special characters allowed. Please call if you need assistance.";
-            }
-            if (!value && ShipToYes && submitting) {
-                error = "Required";
-            }
-            break;
-        case "Spousename":
-            if (value && !lastname_regex.test(value)) {
-                error =
-                    "No special characters allowed. Please call if you need assistance.";
-            }
-            break;
-        case "Country":
-            if (!value && submitting && allowInternational) {
-                error = "Required";
-            }
-            break;
-        case "Emailaddress":
-            if (value && !email_regex.test(value)) {
-                error = "Please enter a valid email: ie. you@example.com";
-            }
-            if (!value && submitting) {
-                error = "Required";
-            }
-            break;
-        case "phone":
-            if (value && !phone_regex.test(value)) {
-                error =
-                    "Please enter a valid phone number, numbers only: ie. 7575551212";
-            }
-            break;
-    }
-    return error;
+export const validateInput = (
+	submitting,
+	name,
+	value,
+	getAddress,
+	getHonorific,
+	allowInternational,
+	ShipToYes
+) => {
+	let error = "";
+	switch (name) {
+		case "Title":
+			if (!value && submitting && getHonorific) {
+				error = "Required";
+			}
+			break;
+		case "State":
+		case "Address1":
+		case "City":
+			if (!value && submitting && getAddress) {
+				error = "Required";
+			}
+			break;
+		case "ShipToState":
+		case "ShipToAddress1":
+		case "ShipToCity":
+			if (!value && submitting && ShipToYes) {
+				error = "Required";
+			}
+			break;
+		case "Firstname":
+			if (value && !firstname_regex.test(value)) {
+				error =
+					"No special characters allowed. Please call if you need assistance.";
+			}
+			if (!value && submitting) {
+				error = "Required";
+			}
+			break;
+		case "Middlename":
+			if (value && !firstname_regex.test(value)) {
+				error =
+					"No special characters allowed. Please call if you need assistance.";
+			}
+			break;
+		case "Lastname":
+			if (value && !lastname_regex.test(value)) {
+				error =
+					"No special characters allowed. Please call if you need assistance.";
+			}
+			if (!value && submitting) {
+				error = "Required";
+			}
+			break;
+		case "ShipToName":
+			if (value && !lastname_regex.test(value)) {
+				error =
+					"No special characters allowed. Please call if you need assistance.";
+			}
+			if (!value && ShipToYes && submitting) {
+				error = "Required";
+			}
+			break;
+		case "Spousename":
+			if (value && !lastname_regex.test(value)) {
+				error =
+					"No special characters allowed. Please call if you need assistance.";
+			}
+			break;
+		case "Country":
+			if (!value && submitting && allowInternational) {
+				error = "Required";
+			}
+			break;
+		case "Emailaddress":
+			if (value && !email_regex.test(value)) {
+				error = "Please enter a valid email: ie. you@example.com";
+			}
+			if (!value && submitting) {
+				error = "Required";
+			}
+			break;
+		case "phone":
+			if (value && !phone_regex.test(value)) {
+				error =
+					"Please enter a valid phone number, numbers only: ie. 7575551212";
+			}
+			break;
+	}
+	return error;
 };

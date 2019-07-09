@@ -14,11 +14,10 @@ import SubmitButton from "../FormComponents/SubmitButton";
 import Spinner from "../StyledComponents/Spinner";
 
 class ProductForm extends Component {
-    state = {
-        totalGift: 0,
-    }
-    componentDidMount() {
-
+	state = {
+		totalGift: 0,
+	};
+	componentDidMount() {
 		const fields = {
 			Zip: "",
 			Title: "",
@@ -52,7 +51,7 @@ class ProductForm extends Component {
 		this.context.initFields({
 			type: "INIT_FORM_STATE",
 			fields,
-			errors
+			errors,
 		});
 		this.context.loadLS({ type: "LOAD" });
 	}
@@ -66,8 +65,8 @@ class ProductForm extends Component {
 			// otherwise remove any stored data from local storage
 			this.context.removeOneLS("info");
 		}
-    }
-    /**
+	}
+	/**
 	 * Sets the state with new product order information from the product display
 	 * @param {Object} productInfo - Selected designation
 	 * @param {Number} productInfo.index - index of product being added or removed from cart
@@ -111,48 +110,50 @@ class ProductForm extends Component {
 		}
 		// console.log({productInfo, productsOrdered, totalProducts, newItems})
 		this.setState({ productInfo, productsOrdered, cart: { items: newItems } });
-	}
-    handleInputChange = e => {
+	};
+	handleInputChange = e => {
 		const target = e.target;
 		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
 		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name, value });
-	}
-    handleSubmit = async e => {
+	};
+	handleSubmit = async e => {
 		e.preventDefault();
 		this.context.submitProductForm();
-	}
-    render(){
-        const {
-            formTitle,
-            submitButtonText,
-            allowInternational,
-            productFormat,
-            products,
-            additionalGift,
-            getAddress,
-            getName,
+	};
+	render() {
+		const {
+			formTitle,
+			submitButtonText,
+			allowInternational,
+			productFormat,
+			products,
+			additionalGift,
+			getAddress,
+			getName,
 			getPhone,
 			getHonorific,
 			getSuffix,
 			getMiddleName,
-            getSpouseInfo,
-            getShippingAddress
-        } = this.props;
-        const productOptions = {
-            products: products ? products : [],
-            numProducts: products && products.length ? products.length : 0,
-            additionalGift,
-        }
-        const { errors, fields, initialized, submitting } = this.context;
-        const hasErrors =
+			getSpouseInfo,
+			getShippingAddress,
+		} = this.props;
+		const productOptions = {
+			products: products ? products : [],
+			numProducts: products && products.length ? products.length : 0,
+			additionalGift,
+		};
+		const { errors, fields, initialized, submitting } = this.context;
+		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
-        return (
-            <form id="react-giving-form" autoComplete="off" onSubmit={this.handleSubmit}>
-				<FormHeader className="form-title form-header">
-					{ formTitle }
-                </FormHeader>
-                {productOptions.numProducts > 0 && (
+		return (
+			<form
+				id="react-giving-form"
+				autoComplete="off"
+				onSubmit={this.handleSubmit}
+			>
+				<FormHeader className="form-title form-header">{formTitle}</FormHeader>
+				{productOptions.numProducts > 0 && (
 					<FormPanel className="form-panel">
 						<ProductLayout
 							productFormat={productFormat}
@@ -235,12 +236,12 @@ class ProductForm extends Component {
 					<FormPanel className="form-panel">
 						<Spinner />
 					</FormPanel>
-                )}
-            </form>
-        )
-    }
+				)}
+			</form>
+		);
+	}
 }
 
 ProductForm.contextType = ProductFormContext;
 
-export default ProductForm
+export default ProductForm;

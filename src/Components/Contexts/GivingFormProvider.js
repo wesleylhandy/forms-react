@@ -4,8 +4,14 @@ import { FormConfigContext } from "./FormConfigProvider";
 import { cryptLS, readLS, removeOneLS, emptyLS } from "../../helpers/ls";
 import { getErrorType } from "../../helpers/error-types";
 import { callApi } from "../../helpers/fetch-helpers";
-import { zip_regex, phone_regex, callZipCityStateService, validateInput, callAddressVerification } from "../../helpers/validators"
-import reducer from "../../helpers/reducer"
+import {
+	zip_regex,
+	phone_regex,
+	callZipCityStateService,
+	validateInput,
+	callAddressVerification,
+} from "../../helpers/validators";
+import reducer from "../../helpers/reducer";
 
 const d = new Date();
 const curMonth = "0" + (d.getMonth() + 1);
@@ -38,7 +44,7 @@ class GivingFormProvider extends Component {
 			const data = store ? store : info;
 			if (data) {
 				const { items, ...formData } = data;
-			
+
 				if (!formData) {
 					emptyLS();
 				}
@@ -49,10 +55,9 @@ class GivingFormProvider extends Component {
 				action.items = items;
 				this.setState(state => reducer(state, action));
 			}
-			return 
+			return;
 		},
 		saveLS: async (lifetime, type) => {
-
 			const {
 				Address1,
 				Address2,
@@ -69,15 +74,18 @@ class GivingFormProvider extends Component {
 				Zip,
 				phone,
 			} = this.state.fields;
-			const Phoneareacode = phone && phone.trim().match(phone_regex)
-					? phone.trim().match(phone_regex)[1]
-					: "",
-				Phoneexchange = phone && phone.trim().match(phone_regex)
-					? phone.trim().match(phone_regex)[2]
-					: "",
-				Phonenumber = phone && phone.trim().match(phone_regex)
-					? phone.trim().match(phone_regex)[3]
-					: "";
+			const Phoneareacode =
+					phone && phone.trim().match(phone_regex)
+						? phone.trim().match(phone_regex)[1]
+						: "",
+				Phoneexchange =
+					phone && phone.trim().match(phone_regex)
+						? phone.trim().match(phone_regex)[2]
+						: "",
+				Phonenumber =
+					phone && phone.trim().match(phone_regex)
+						? phone.trim().match(phone_regex)[3]
+						: "";
 			const formData = {
 				Address1,
 				Address2,
@@ -96,16 +104,15 @@ class GivingFormProvider extends Component {
 				Title,
 				Zip,
 			};
-			let monthlychecked = false
+			let monthlychecked = false;
 			if (type === "store") {
 				const items = [...this.state.cart.items];
-				formData.items = items
-				const pledgeFound = items.findIndex(el=>el && el.type == "donation")
-				monthlychecked =
-						pledgeFound > -1 ? items[pledgeFound].monthly : false;
+				formData.items = items;
+				const pledgeFound = items.findIndex(el => el && el.type == "donation");
+				monthlychecked = pledgeFound > -1 ? items[pledgeFound].monthly : false;
 			}
 			cryptLS({ formData }, lifetime, type);
-			return monthlychecked
+			return monthlychecked;
 		},
 		removeOneLS: type => {
 			removeOneLS(type);
@@ -122,9 +129,13 @@ class GivingFormProvider extends Component {
 						const oldCity = this.state.fields[
 							name == "ShipToZip" ? "ShipToCity" : "City"
 						].toUpperCase();
-						const response = await callZipCityStateService(name, value, oldCity);
-						if ( response.action ) {
-							this.setState(state => reducer(state, response.action))
+						const response = await callZipCityStateService(
+							name,
+							value,
+							oldCity
+						);
+						if (response.action) {
+							this.setState(state => reducer(state, response.action));
 						}
 						action.error = response.error;
 					} catch (err) {
@@ -133,8 +144,16 @@ class GivingFormProvider extends Component {
 					}
 				}
 			} else {
-				const { getHonorific, allowInternational } = this.context
-				action.error = await validateInput(false, name, value, true, getHonorific, allowInternational, this.state.ShipToYes);
+				const { getHonorific, allowInternational } = this.context;
+				action.error = await validateInput(
+					false,
+					name,
+					value,
+					true,
+					getHonorific,
+					allowInternational,
+					this.state.ShipToYes
+				);
 			}
 			this.setState(state => reducer(state, action));
 		},
@@ -163,10 +182,14 @@ class GivingFormProvider extends Component {
 						let oldCity, response;
 						try {
 							oldCity = this.state.fields.City.toUpperCase();
-							response = await callZipCityStateService("Zip", this.state.fields.Zip, oldCity);
+							response = await callZipCityStateService(
+								"Zip",
+								this.state.fields.Zip,
+								oldCity
+							);
 
-							if ( response.action ) {
-								this.setState(state => reducer(state, response.action))
+							if (response.action) {
+								this.setState(state => reducer(state, response.action));
 							}
 							const zipError = response.error;
 							let addressError, shipZipError, shipAddressError;
@@ -195,10 +218,10 @@ class GivingFormProvider extends Component {
 										this.state.fields.ShipToZip,
 										oldCity
 									);
-									if ( response.action ) {
-										this.setState(state => reducer(state, response.action))
+									if (response.action) {
+										this.setState(state => reducer(state, response.action));
 									}
-									shipZipError = response.error
+									shipZipError = response.error;
 								} catch (err) {
 									console.log("CSZValidationError__SHIPPING");
 									console.error({ err });
@@ -274,8 +297,16 @@ class GivingFormProvider extends Component {
 						let error;
 						const name = fieldNames[i];
 						if (!name.includes("Zip")) {
-							const { getHonorific, allowInternational } = this.context
-							error = validateInput(true, name, fields[name], true, getHonorific, allowInternational, this.state.ShipToYes);
+							const { getHonorific, allowInternational } = this.context;
+							error = validateInput(
+								true,
+								name,
+								fields[name],
+								true,
+								getHonorific,
+								allowInternational,
+								this.state.ShipToYes
+							);
 							if (error) {
 								isValidForm = false;
 								action.fields.push({ name, value: fields[name], error });
@@ -342,7 +373,9 @@ class GivingFormProvider extends Component {
 					//process cart
 					let TransactionType = "Product";
 					const items = [...this.state.cart.items];
-					const pledgeFound = items.findIndex(el=>el && el.type == "donation")
+					const pledgeFound = items.findIndex(
+						el => el && el.type == "donation"
+					);
 					const isMonthly =
 						pledgeFound > -1 ? items[pledgeFound].monthly : false;
 					const DonationType = isMonthly ? "CR" : "CC";
@@ -457,36 +490,42 @@ class GivingFormProvider extends Component {
 						});
 						const DonorID = msg.split(";")[0].split(" - ")[1];
 						const confirmUrl = msg.split(" is ")[1];
-						const bodyFormData = new FormData()
+						const bodyFormData = new FormData();
 						bodyFormData.append("DonorID", DonorID);
-						const confirmationData = []
-						let formAction
+						const confirmationData = [];
+						let formAction;
 						try {
 							const html = await callApi(confirmUrl, {
 								method: "POST",
-								body: new URLSearchParams(bodyFormData)
-							})
+								body: new URLSearchParams(bodyFormData),
+							});
 							const parser = new DOMParser();
 							const doc = parser.parseFromString(html, "text/html");
-							const form = doc.querySelector('form')
-							formAction = form ? form.action : '';
-							const inputs = doc.querySelectorAll('input[type="hidden"]')
-							inputs.forEach(input=> confirmationData.push({name: input.name, value: input.value}))
+							const form = doc.querySelector("form");
+							formAction = form ? form.action : "";
+							const inputs = doc.querySelectorAll('input[type="hidden"]');
+							inputs.forEach(input =>
+								confirmationData.push({ name: input.name, value: input.value })
+							);
 						} catch (err) {
-							console.error("GetConfirmationPageError")
-							console.error({err})
+							console.error("GetConfirmationPageError");
+							console.error({ err });
 						}
 						return this.setState(state =>
-							reducer(state, {
-								type: "SUBMIT_FORM",
-								DonorID,
-								formAction,
-								confirmationData
-							}, () => {
-								this.context.submitForm({
-									type: "SUBMIT_FORM"
-								})
-							})
+							reducer(
+								state,
+								{
+									type: "SUBMIT_FORM",
+									DonorID,
+									formAction,
+									confirmationData,
+								},
+								() => {
+									this.context.submitForm({
+										type: "SUBMIT_FORM",
+									});
+								}
+							)
 						);
 					} catch (err) {
 						console.error(err.message);
@@ -518,10 +557,19 @@ class GivingFormProvider extends Component {
 		removeFromCart: action => this.setState(state => reducer(state, action)),
 		updateGivingType: action => this.setState(state => reducer(state, action)),
 		getGlobals: async () => {
-			const isSecure = window.location.protocol == "https:"
-			const url = !isSecure ? 'http://securegiving.cbn.local/UI/globals/form-config.json' : 'https://securegiving.cbn.com/UI/globals/form-config.json'
+			const isSecure = window.location.protocol == "https:";
+			const url = !isSecure
+				? "http://securegiving.cbn.local/UI/globals/form-config.json"
+				: "https://securegiving.cbn.com/UI/globals/form-config.json";
 			try {
-				const {devServicesUri,preProdServicesUri,prodServicesUri,devReceiptUri,preProdReceiptUri,prodReceiptUri} = await callApi(url)
+				const {
+					devServicesUri,
+					preProdServicesUri,
+					prodServicesUri,
+					devReceiptUri,
+					preProdReceiptUri,
+					prodReceiptUri,
+				} = await callApi(url);
 				const action = {
 					type: "GLOBAL_URIS",
 					msgUris: [
@@ -530,22 +578,30 @@ class GivingFormProvider extends Component {
 						prodServicesUri,
 						devReceiptUri,
 						preProdReceiptUri,
-						prodReceiptUri
-					]
-				}
-				this.setState(state =>reducer(state, action));
-				return true
+						prodReceiptUri,
+					],
+				};
+				this.setState(state => reducer(state, action));
+				return true;
 			} catch (err) {
-				console.error({err});
-				throw new Error(err)
+				console.error({ err });
+				throw new Error(err);
 			}
 		},
-		setConfirmed: action => this.setState(state=> reducer(state, action), () => {
-			this.context.setConfirmed(action)
-		}),
-		goBack: action => this.setState(state=> reducer(state, action), () => {
-			this.context.goBack(action)
-		})
+		setConfirmed: action =>
+			this.setState(
+				state => reducer(state, action),
+				() => {
+					this.context.setConfirmed(action);
+				}
+			),
+		goBack: action =>
+			this.setState(
+				state => reducer(state, action),
+				() => {
+					this.context.goBack(action);
+				}
+			),
 	};
 	validateGift = () => {
 		const items = [...this.state.cart.items];
@@ -572,7 +628,9 @@ class GivingFormProvider extends Component {
 			props: { children },
 		} = this;
 		return (
-			<GivingFormContext.Provider value={state}>{children}</GivingFormContext.Provider>
+			<GivingFormContext.Provider value={state}>
+				{children}
+			</GivingFormContext.Provider>
 		);
 	}
 }

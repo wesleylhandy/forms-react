@@ -16,7 +16,7 @@ const InputGroup = ({
 	validation,
 	handleInputChange,
 	textareaSize,
-	allowInternational
+	allowInternational,
 }) => {
 	return (
 		<FormGroup
@@ -27,7 +27,11 @@ const InputGroup = ({
 			<label htmlFor={id}>
 				{label}
 				<span>{required ? "*" : ""}</span>
-				{ allowInternational ? <small style={{fontSize: "10px"}}>(Outside U.S. use &ldquo;NA&rdquo;}</small> : null }
+				{allowInternational ? (
+					<small style={{ fontSize: "10px" }}>
+						(Outside U.S. use &ldquo;NA&rdquo;}
+					</small>
+				) : null}
 			</label>
 			<input
 				className={error ? "error" : ""}

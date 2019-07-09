@@ -19,7 +19,8 @@ const FormHeader = styled.h3`
 		margin: 30px auto;
 		line-height: 1.33;
 	}
-	&.askarray__header, &.form-header__payment {
+	&.askarray__header,
+	&.form-header__payment {
 		margin-bottom: 19px;
 		text-transform: uppercase;
 	}

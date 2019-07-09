@@ -1,15 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, Suspense, lazy } from "react";
 
 import { FormConfigContext } from "../Contexts/FormConfigProvider";
 import GivingFormProvider from "../Contexts/GivingFormProvider";
 import ProductFormProvider from "../Contexts/ProductFormProvider";
 import SignUpFormProvider from "../Contexts/SignUpFormProvider";
-import GivingForm from "./GivingForm";
-import PaymentForm from './PaymentForm'
-import ProductForm from "./ProductForm";
-import SignUpForm from "./SignUpForm";
-import GivingSuccessMessage from "../SuccessPages/GivingSuccessMessage"
-import SignUpSuccessMessage from '../SuccessPages/SignUpSuccessMessage'
+const GivingForm = lazy(() => import("./GivingForm"));
+const PaymentForm = lazy(() => import("./PaymentForm"));
+const ProductForm = lazy(() => import("./ProductForm"));
+const SignUpForm = lazy(() => import("./SignUpForm"));
+const GivingSuccessMessage = lazy(() =>
+	import("../SuccessPages/GivingSuccessMessage")
+);
+const SignUpSuccessMessage = lazy(() =>
+	import("../SuccessPages/SignUpSuccessMessage")
+);
+import Spinner from "../StyledComponents/Spinner";
 
 const FormRouter = props => {
 	const { formConfig, submitted, confirmed } = useContext(FormConfigContext);
@@ -18,25 +23,36 @@ const FormRouter = props => {
 		case "giving":
 			return (
 				<GivingFormProvider>
-					<GivingForm {...props} {...formConfig} submitted={submitted}/>
-					<PaymentForm submitted={submitted}/>
-					<GivingSuccessMessage confirmed={confirmed} successMessage={formConfig.successMessage}/>
+					<Suspense fallback={<Spinner />}>
+						<GivingForm {...props} {...formConfig} submitted={submitted} />
+						<PaymentForm submitted={submitted} />
+						<GivingSuccessMessage
+							confirmed={confirmed}
+							successMessage={formConfig.successMessage}
+						/>
+					</Suspense>
 				</GivingFormProvider>
 			);
 			break;
 		case "product":
 			return (
 				<ProductFormProvider>
-					<ProductForm {...props} {...formConfig} />
-					
+					<Suspense fallback={<Spinner />}>
+						<ProductForm {...props} {...formConfig} />
+					</Suspense>
 				</ProductFormProvider>
 			);
 			break;
 		case "signup":
 			return (
 				<SignUpFormProvider>
-					<SignUpForm {...props} {...formConfig} />
-					<SignUpSuccessMessage submitted={submitted} successMessage={formConfig.successMessage}/>
+					<Suspense fallback={<Spinner />}>
+						<SignUpForm {...props} {...formConfig} />
+						<SignUpSuccessMessage
+							submitted={submitted}
+							successMessage={formConfig.successMessage}
+						/>
+					</Suspense>
 				</SignUpFormProvider>
 			);
 			break;

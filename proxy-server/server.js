@@ -226,45 +226,56 @@ router.post("/signup", (req, res) => {
 	}
 	console.log({ CBN_HTTP_X_FORWARDED_FOR });
 	const mode = data.mode;
-	const contactAPI = [...data.contactAPI]
+	const contactAPI = [...data.contactAPI];
 	const endpoints = {
-		"feedback": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}feedback.aspx`,
-		"activity": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}activity.aspx`,
-		"newsletters": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}newsletters.aspx`,
-	}
-	let responses = []
-	const cheerio = require('cheerio')
-	contactAPI.forEach(async ({type, call, headers})=>{
+		feedback: `${
+			mode == "production"
+				? "https://services.cbn.com/contacts/api/"
+				: "http://services.cbn.local/contacts/api/"
+		}feedback.aspx`,
+		activity: `${
+			mode == "production"
+				? "https://services.cbn.com/contacts/api/"
+				: "http://services.cbn.local/contacts/api/"
+		}activity.aspx`,
+		newsletters: `${
+			mode == "production"
+				? "https://services.cbn.com/contacts/api/"
+				: "http://services.cbn.local/contacts/api/"
+		}newsletters.aspx`,
+	};
+	let responses = [];
+	const cheerio = require("cheerio");
+	contactAPI.forEach(async ({ type, call, headers }) => {
 		if (call) {
-			const endpoint = endpoints[type]
+			const endpoint = endpoints[type];
 			headers.ApiKey = ApiKey;
-			headers.CBN_HTTP_X_FORWARDED_FOR = CBN_HTTP_X_FORWARDED_FOR
+			headers.CBN_HTTP_X_FORWARDED_FOR = CBN_HTTP_X_FORWARDED_FOR;
 			try {
 				const msg = await callApi(endpoint, {
 					method: "GET",
-					headers
-				})
-				const $ = cheerio.load(msg, {xmlMode: true})
-				if ($('returnCode').text() == "SUCCESS") {
-					responses.push(msg)
+					headers,
+				});
+				const $ = cheerio.load(msg, { xmlMode: true });
+				if ($("returnCode").text() == "SUCCESS") {
+					responses.push(msg);
 				} else {
 					const error = {
-						body: $('returnCode').text(),
-						status: 400
-					}
-					throw new Error(error)
+						body: $("returnCode").text(),
+						status: 400,
+					};
+					throw new Error(error);
 				}
-			} catch(err) {
+			} catch (err) {
 				console.error({ BeforeResSentErr: JSON.stringify(err, null, 2) });
 				res.statusCode = error.status;
 				return res.send(error.body);
 			}
 		}
-	})
+	});
 
 	// need to parse XML responses
-	res.send(responses)
-
+	res.send(responses);
 });
 
 router.get("/product", (req, res) => {
@@ -283,7 +294,6 @@ router.post("/product", (req, res) => {
 	}
 	console.log("________ NEW POST TO PRODUCT API __________");
 	console.log({ reqHeaders: req.headers });
-
 });
 
 async function callApi(uri, options = {}) {

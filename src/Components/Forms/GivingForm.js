@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { GivingFormContext } from "../Contexts/GivingFormProvider";
 
-import withErrorBoundary from "../withErrorBoundary"
+import withErrorBoundary from "../withErrorBoundary";
 
 import FormPanel from "../FormComponents/StyledComponents/FormPanel";
 import FieldSet from "../FormComponents/StyledComponents/FieldSet";
@@ -18,14 +18,16 @@ import SubmitButton from "../FormComponents/SubmitButton";
 import Spinner from "../StyledComponents/Spinner";
 
 class GivingForm extends Component {
-	hasMonthlyAmounts = this.props.monthlyAmounts && this.props.monthlyAmounts.length;
-	hasSingleAmounts = this.props.singleAmounts && this.props.singleAmounts.length;
+	hasMonthlyAmounts =
+		this.props.monthlyAmounts && this.props.monthlyAmounts.length;
+	hasSingleAmounts =
+		this.props.singleAmounts && this.props.singleAmounts.length;
 	state = {
 		monthlyChecked:
 			this.props.defaultOption == "monthly" ||
 			(this.hasMonthlyAmounts && !this.hasSingleAmounts),
 		totalGift: 0,
-	}
+	};
 
 	componentDidMount() {
 		if (!this.context.initialized) {
@@ -67,15 +69,15 @@ class GivingForm extends Component {
 			this.context.initFields({
 				type: "INIT_FORM_STATE",
 				fields,
-				errors
+				errors,
 			});
 		}
 		try {
 			const monthlyChecked = this.context.loadLS({ type: "LOAD" });
-			this.setState({ monthlyChecked })
+			this.setState({ monthlyChecked });
 		} catch (err) {
-			console.error(err.message)
-			console.error(err.stack)
+			console.error(err.message);
+			console.error(err.stack);
 		}
 	}
 
@@ -104,19 +106,19 @@ class GivingForm extends Component {
 				source: "radioClick",
 			})
 		);
-	}
+	};
 
 	handleInputChange = e => {
 		const target = e.target;
 		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
 		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name, value });
-	}
+	};
 
 	handleSubmit = async e => {
 		e.preventDefault();
 		this.context.submitGivingForm();
-	}
+	};
 	/**
 	 * Sets the state with new product order information from the product display
 	 * @param {Object} productInfo - Selected designation
@@ -161,15 +163,15 @@ class GivingForm extends Component {
 		}
 		// console.log({productInfo, productsOrdered, totalProducts, newItems})
 		this.setState({ productInfo, productsOrdered, cart: { items: newItems } });
-	}
+	};
 
 	addToCart = item => {
 		this.context.addToCart({ type: "ADD_TO_CART", item });
-	}
+	};
 
 	removeFromCart = itemType => {
 		this.context.removeFromCart({ type: "REMOVE_TO_CART", itemType });
-	}
+	};
 
 	/**
 	 * Sets the state with new designation information from the designation select dropdown
@@ -187,7 +189,7 @@ class GivingForm extends Component {
 			: `SG${detailName}`;
 		// console.log({designationInfo})
 		this.setState({ designationSelected: true, designationInfo });
-	}
+	};
 
 	render() {
 		const {
@@ -241,10 +243,12 @@ class GivingForm extends Component {
 		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
 		return !submitted ? (
-			<form id="react-giving-form" autoComplete="off" onSubmit={this.handleSubmit} >
-				<FormHeader className="form-title form-header">
-					{ formTitle }
-				</FormHeader>
+			<form
+				id="react-giving-form"
+				autoComplete="off"
+				onSubmit={this.handleSubmit}
+			>
+				<FormHeader className="form-title form-header">{formTitle}</FormHeader>
 				{showGivingArray && (
 					<FormPanel className="form-panel">
 						<GivingLayout

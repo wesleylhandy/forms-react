@@ -4,13 +4,18 @@ import { FormConfigContext } from "./FormConfigProvider";
 import { cryptLS, readLS, removeOneLS, emptyLS } from "../../helpers/ls";
 import { getErrorType } from "../../helpers/error-types";
 import { callApi } from "../../helpers/fetch-helpers";
-import { zip_regex, callZipCityStateService, validateInput, callAddressVerification } from "../../helpers/validators"
-import reducer from "../../helpers/reducer"
+import {
+	zip_regex,
+	callZipCityStateService,
+	validateInput,
+	callAddressVerification,
+} from "../../helpers/validators";
+import reducer from "../../helpers/reducer";
 
 export const ProductFormContext = React.createContext();
 
 class ProductFormProvider extends Component {
-    state = {
+	state = {
 		cart: {
 			items: [],
 		},
@@ -98,9 +103,13 @@ class ProductFormProvider extends Component {
 						const oldCity = this.state.fields[
 							name == "ShipToZip" ? "ShipToCity" : "City"
 						].toUpperCase();
-						const response = await callZipCityStateService(name, value, oldCity);
-						if ( response.action ) {
-							this.setState(state => reducer(state, response.action))
+						const response = await callZipCityStateService(
+							name,
+							value,
+							oldCity
+						);
+						if (response.action) {
+							this.setState(state => reducer(state, response.action));
 						}
 						action.error = response.error;
 					} catch (err) {
@@ -109,26 +118,32 @@ class ProductFormProvider extends Component {
 					}
 				}
 			} else {
-				action.error = await validateInput(false, name, value, this.context.allowInternational, this.state.ShipToYes);
+				action.error = await validateInput(
+					false,
+					name,
+					value,
+					this.context.allowInternational,
+					this.state.ShipToYes
+				);
 			}
 			this.setState(state => reducer(state, action));
-        },
-        submitProductForm: async action => {
+		},
+		submitProductForm: async action => {
 			this.setState(
 				state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
-				async () => {
-
-                }
-            )
-        }
-    }
-    render() {
+				async () => {}
+			);
+		},
+	};
+	render() {
 		const {
 			state,
 			props: { children },
 		} = this;
 		return (
-			<ProductFormContext.Provider value={state}>{children}</ProductFormContext.Provider>
+			<ProductFormContext.Provider value={state}>
+				{children}
+			</ProductFormContext.Provider>
 		);
 	}
 }

@@ -15,7 +15,7 @@ const productRootEntry = document.getElementById("product-form-root");
 if (givingRootEntry) {
 	ReactDOM.render(
 		<FormConfigProvider>
-			<App rootEntry={givingRootEntry} formType="giving"/>
+			<App rootEntry={givingRootEntry} formType="giving" />
 		</FormConfigProvider>,
 		givingRootEntry
 	);
@@ -24,7 +24,7 @@ if (givingRootEntry) {
 if (signupRootEntry) {
 	ReactDOM.render(
 		<FormConfigProvider>
-			<App rootEntry={signupRootEntry} formType="signup"/>
+			<App rootEntry={signupRootEntry} formType="signup" />
 		</FormConfigProvider>,
 		signupRootEntry
 	);
@@ -33,7 +33,7 @@ if (signupRootEntry) {
 if (productRootEntry) {
 	ReactDOM.render(
 		<FormConfigProvider>
-			<App rootEntry={productRootEntry} formType="product"/>
+			<App rootEntry={productRootEntry} formType="product" />
 		</FormConfigProvider>,
 		productRootEntry
 	);

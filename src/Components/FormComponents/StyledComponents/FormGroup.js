@@ -6,7 +6,8 @@ const FormGroup = styled.div`
 	margin-bottom: calc(19px * 0.7);
 	margin-top: calc(19px * 0.7);
 	flex: 1 1 auto;
-	&.form-group--Title, &.form-group--Suffix {
+	&.form-group--Title,
+	&.form-group--Suffix {
 		width: 120px;
 		flex: 0 0 120px;
 		box-sizing: border-box;
@@ -113,7 +114,7 @@ const FormGroup = styled.div`
 			width: 100%;
 			margin-left: 0;
 		}
-		&.form-group--Firstname{
+		&.form-group--Firstname {
 			flex-basis: calc(100% - 130px);
 		}
 	}
@@ -129,9 +130,10 @@ const FormGroup = styled.div`
 			max-width: 100%;
 			width: 100%;
 		}
-		&.form-group--Firstname, &.form-group--Lastname {
+		&.form-group--Firstname,
+		&.form-group--Lastname {
 			width: 100%;
-			flex-basis:auto;
+			flex-basis: auto;
 		}
 	}
 	@media screen and (max-width: 365px) {
@@ -143,4 +145,4 @@ const FormGroup = styled.div`
 	}
 `;
 
-export default FormGroup
+export default FormGroup;

@@ -20,7 +20,10 @@ const RadioButton = styled.div`
 		font-size: calc(19px * 0.7);
 		font-weight: 600;
 	}
-	input[type="radio"] + label.Visa, input[type="radio"] + label.MasterCard, input[type="radio"] + label.AmericanExpress, input[type="radio"] + label.Discover {
+	input[type="radio"] + label.Visa,
+	input[type="radio"] + label.MasterCard,
+	input[type="radio"] + label.AmericanExpress,
+	input[type="radio"] + label.Discover {
 		box-sizing: border-box;
 		font-size: 40px;
 		font-weight: 600;
@@ -31,13 +34,13 @@ const RadioButton = styled.div`
 		color: #172274;
 	}
 	input[type="radio"] + label.MasterCard {
-		color: #EA001B;
+		color: #ea001b;
 	}
 	input[type="radio"] + label.AmericanExpress {
-		color: #2E78BF;
+		color: #2e78bf;
 	}
 	input[type="radio"] + label.Discover {
-		color: #F58220;
+		color: #f58220;
 	}
 	input[type="radio"] + label:before {
 		content: "";

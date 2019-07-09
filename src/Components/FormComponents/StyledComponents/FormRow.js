@@ -91,12 +91,14 @@ const FormRow = styled.div`
 		span + span {
 			margin-left: 4px;
 		}
-		span>a {
+		span > a {
 			color: #999;
 			cursor: pointer;
 			transition: color 200ms ease-in-out;
 		}
-		span>a:hover, a:active, a:focus {
+		span > a:hover,
+		a:active,
+		a:focus {
 			color: #333;
 		}
 	}

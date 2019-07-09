@@ -6,19 +6,24 @@ import { getErrorType } from "../../helpers/error-types";
 import { callApi } from "../../helpers/fetch-helpers";
 import { log } from "util";
 import { phone_regex } from "../../helpers/validators";
-import { zip_regex, callZipCityStateService, validateInput, callAddressVerification } from "../../helpers/validators"
-import reducer from "../../helpers/reducer"
+import {
+	zip_regex,
+	callZipCityStateService,
+	validateInput,
+	callAddressVerification,
+} from "../../helpers/validators";
+import reducer from "../../helpers/reducer";
 
 export const SignUpFormContext = React.createContext();
 
 class SignUpFormProvider extends Component {
-    state = {
-        fields: {},
-        errors: {},
-        initialized: false,
-        submitting: false,
-        initFields: action => this.setState(state => reducer(state, action)),
-        updateField: action => this.setState(state => reducer(state, action)),
+	state = {
+		fields: {},
+		errors: {},
+		initialized: false,
+		submitting: false,
+		initFields: action => this.setState(state => reducer(state, action)),
+		updateField: action => this.setState(state => reducer(state, action)),
 		validateAndUpdateField: async action => {
 			const { name, value } = action;
 			const isZip = name.includes("Zip") && value.length >= 5;
@@ -30,9 +35,13 @@ class SignUpFormProvider extends Component {
 						const oldCity = this.state.fields[
 							name == "ShipToZip" ? "ShipToCity" : "City"
 						].toUpperCase();
-						const response = await callZipCityStateService(name, value, oldCity);
-						if ( response.action ) {
-							this.setState(state => reducer(state, response.action))
+						const response = await callZipCityStateService(
+							name,
+							value,
+							oldCity
+						);
+						if (response.action) {
+							this.setState(state => reducer(state, response.action));
 						}
 						action.error = response.error;
 					} catch (err) {
@@ -41,12 +50,20 @@ class SignUpFormProvider extends Component {
 					}
 				}
 			} else {
-                const { getAddress, getHonorific, allowInternational } = this.context
-				action.error = await validateInput(false, name, value, getAddress, getHonorific, allowInternational, this.state.ShipToYes);
+				const { getAddress, getHonorific, allowInternational } = this.context;
+				action.error = await validateInput(
+					false,
+					name,
+					value,
+					getAddress,
+					getHonorific,
+					allowInternational,
+					this.state.ShipToYes
+				);
 			}
 			this.setState(state => reducer(state, action));
-        },
-        submitSignUpForm: async action => {
+		},
+		submitSignUpForm: async action => {
 			this.setState(
 				state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
 				async () => {
@@ -55,10 +72,14 @@ class SignUpFormProvider extends Component {
 						let oldCity, response;
 						try {
 							oldCity = this.state.fields.City.toUpperCase();
-							response = await callZipCityStateService("Zip", this.state.fields.Zip, oldCity);
+							response = await callZipCityStateService(
+								"Zip",
+								this.state.fields.Zip,
+								oldCity
+							);
 
-							if ( response.action ) {
-								this.setState(state => reducer(state, response.action))
+							if (response.action) {
+								this.setState(state => reducer(state, response.action));
 							}
 							const zipError = response.error;
 							let addressError;
@@ -76,7 +97,7 @@ class SignUpFormProvider extends Component {
 									console.error({ err });
 								}
 							}
-							if ( addressError || zipError ) {
+							if (addressError || zipError) {
 								isValidForm = false;
 								let action = {
 									type: "UPDATE_FIELDS",
@@ -113,8 +134,20 @@ class SignUpFormProvider extends Component {
 						let error;
 						const name = fieldNames[i];
 						if (!name.includes("Zip")) {
-                            const { getAddress, getHonorific, allowInternational } = this.context
-							error = validateInput(true, name, fields[name], getAddress, getHonorific, allowInternational, false);
+							const {
+								getAddress,
+								getHonorific,
+								allowInternational,
+							} = this.context;
+							error = validateInput(
+								true,
+								name,
+								fields[name],
+								getAddress,
+								getHonorific,
+								allowInternational,
+								false
+							);
 							if (error) {
 								isValidForm = false;
 								action.fields.push({ name, value: fields[name], error });
@@ -128,8 +161,8 @@ class SignUpFormProvider extends Component {
 								this.setState(state => reducer(state, action));
 							}
 						);
-                    }
-                    const {
+					}
+					const {
 						Emailaddress,
 						Firstname,
 						Middlename,
@@ -140,34 +173,42 @@ class SignUpFormProvider extends Component {
 						phone,
 					} = fields;
 
-                    const { mode, proxy } = this.context.formConfig
-                    const contactAPI = [...this.context.formConfig.contactAPI]
-                    const motivation =  window.cbn_obj && cbn_obj.motivation ? cbn_obj.motivation : '041148';
+					const { mode, proxy } = this.context.formConfig;
+					const contactAPI = [...this.context.formConfig.contactAPI];
+					const motivation =
+						window.cbn_obj && cbn_obj.motivation
+							? cbn_obj.motivation
+							: "041148";
 
-                    for (let i = 0; i < contactAPI.length; i++) {
-                        if (contactAPI[i].type = "feedback") {
-                            contactAPI[i].headers.EmailAddress = Emailaddress;
-                            contactAPI[i].headers.FirstName = Firstname;
-                            contactAPI[i].headers.LastName = Lastname;
-                            contactAPI[i].headers.FormUrl = window.location.origin + window.location.pathname + window.location.search;
-                        } else if (contactAPI[i].type = "activity") {
-                            contactAPI[i].headers.Location = window.location.origin + window.location.pathname
-                            contactAPI[i].headers.Campaign = contactAPI[i].headers.Campaign || motivation;
-                            contactAPI[i].headers.EmailAddress = Emailaddress;
-                            contactAPI[i].headers.FirstName = Firstname;
-                            contactAPI[i].headers.LastName = Lastname;
-                            contactAPI[i].headers.PhoneNumber = phone;
-                        } else if (contactAPI[i].type = "newsletter") {
-                            contactAPI[i].headers.EmailAddress = Emailaddress;
-                            contactAPI[i].headers.FirstName = Firstname;
-                            contactAPI[i].headers.LastName = Lastname;
-                        }
-                    }
-                    const data = {
-                        mode,
-                        contactAPI
-                    }
-                    try {
+					for (let i = 0; i < contactAPI.length; i++) {
+						if ((contactAPI[i].type = "feedback")) {
+							contactAPI[i].headers.EmailAddress = Emailaddress;
+							contactAPI[i].headers.FirstName = Firstname;
+							contactAPI[i].headers.LastName = Lastname;
+							contactAPI[i].headers.FormUrl =
+								window.location.origin +
+								window.location.pathname +
+								window.location.search;
+						} else if ((contactAPI[i].type = "activity")) {
+							contactAPI[i].headers.Location =
+								window.location.origin + window.location.pathname;
+							contactAPI[i].headers.Campaign =
+								contactAPI[i].headers.Campaign || motivation;
+							contactAPI[i].headers.EmailAddress = Emailaddress;
+							contactAPI[i].headers.FirstName = Firstname;
+							contactAPI[i].headers.LastName = Lastname;
+							contactAPI[i].headers.PhoneNumber = phone;
+						} else if ((contactAPI[i].type = "newsletter")) {
+							contactAPI[i].headers.EmailAddress = Emailaddress;
+							contactAPI[i].headers.FirstName = Firstname;
+							contactAPI[i].headers.LastName = Lastname;
+						}
+					}
+					const data = {
+						mode,
+						contactAPI,
+					};
+					try {
 						const msg = await callApi(proxy, {
 							method: "POST",
 							mode: "cors",
@@ -175,35 +216,38 @@ class SignUpFormProvider extends Component {
 								"Content-Type": "application/json; charset=utf-8",
 							},
 							body: JSON.stringify(data),
-                        });
-                        console.log({msg})
-                        return this.setState(state =>
-							reducer(state, {
-								type: "SUBMIT_FORM",
-							}), () => {
+						});
+						console.log({ msg });
+						return this.setState(
+							state =>
+								reducer(state, {
+									type: "SUBMIT_FORM",
+								}),
+							() => {
 								this.context.submitForm({
 									type: "SUBMIT_FORM",
-								})
+								});
 							}
 						);
-                    } catch (err) {
-                        console.log({err})
+					} catch (err) {
+						console.log({ err });
 						return this.setState(state =>
 							reducer(state, { type: "TOGGLE_SUBMITTING" })
 						);
 					}
-
-                }
-            )
-        }
-    }
-    render() {
+				}
+			);
+		},
+	};
+	render() {
 		const {
 			state,
 			props: { children },
 		} = this;
 		return (
-			<SignUpFormContext.Provider value={state}>{children}</SignUpFormContext.Provider>
+			<SignUpFormContext.Provider value={state}>
+				{children}
+			</SignUpFormContext.Provider>
 		);
 	}
 }

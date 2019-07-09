@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const SignUpLayout = props => {
-    return null
-}
+	return null;
+};
 
-export default SignUpLayout
+export default SignUpLayout;

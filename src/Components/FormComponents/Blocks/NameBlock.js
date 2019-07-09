@@ -102,14 +102,13 @@ function NameBlock({
 			<FieldSet>
 				<legend>{`${type} Block`}</legend>
 				<FormRow className="name-row">
-					{
-						getHonorific && 
-							<TitleDropdown
-								value={fields.Title}
-								error={errors.Title}
-								handleInputChange={handleInputChange}
-							/>
-					}
+					{getHonorific && (
+						<TitleDropdown
+							value={fields.Title}
+							error={errors.Title}
+							handleInputChange={handleInputChange}
+						/>
+					)}
 					<NameInput
 						type={"First"}
 						required={true}
@@ -139,14 +138,13 @@ function NameBlock({
 			<FieldSet>
 				<legend>{`${type} Block`}</legend>
 				<FormRow className="name-row">
-					{
-						getHonorific && 
-							<TitleDropdown
-								value={fields.Title}
-								error={errors.Title}
-								handleInputChange={handleInputChange}
-							/>
-					}
+					{getHonorific && (
+						<TitleDropdown
+							value={fields.Title}
+							error={errors.Title}
+							handleInputChange={handleInputChange}
+						/>
+					)}
 					<NameInput
 						type={"First"}
 						required={true}
