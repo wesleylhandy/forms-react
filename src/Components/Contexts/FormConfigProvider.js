@@ -37,13 +37,14 @@ class FormConfigProvider extends Component {
 					? rootEntry.dataset.environment.toLowerCase()
 					: null;
 				const formName = rootEntry.dataset.formName;
-				const proxyUri = rootEntry.dataset.rest;
+				let proxyUri = rootEntry.dataset.rest;
 				const isDrupal = generator && generator.includes("drupal");
 				if (isDrupal) {
 					initialState = rootEntry.dataset.initialState;
 				} else {
+					proxyUri = `${process.env.DEV_SERVER_IP}:${process.env.DEV_SERVER_PORT}`
 					initialState = await callApi(
-						"http://10.100.43.42:8080/config/form-config.json",
+						`${proxyUri}/config/form-config.json`,
 						{ method: "GET" }
 					);
 				}
@@ -65,8 +66,8 @@ class FormConfigProvider extends Component {
 						}
 					}
 				}
-
 				if (Object.keys(formConfig).length) {
+					formConfig.proxy = isDrupal ? proxyUri : `${proxyUri}/${formType}`
 					this.setState(state =>
 						reducer(state, {
 							type: "INIT_FORM_STATE",

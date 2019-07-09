@@ -59,7 +59,7 @@
             "ContactSource": "700Club Donor",
             "ActivityName": "700Club_Donation_Activity",
             "SectionName": "700Club",
-            "proxy": "http://10.100.43.42:8080/api",
+            "proxy": "",
             "successMessage":"<h1>Thank You</h1>"
         }, {
             "mode": "development",
@@ -73,7 +73,7 @@
             "getSpouseInfo": false,
             "getAddress":false,
             "allowInternational": false,
-            "proxy": "http://10.100.43.42:8080/signup",
+            "proxy": "",
             "contactAPI": [
                 {
                     "call": false,
@@ -144,7 +144,7 @@
                 "DetailCprojMail": "043259",
                 "DetailName": "SGOrphansPromise"
             },
-            "proxy": "http://10.100.43.42:8080/product",
+            "proxy": "",
             "successMessage":""
         }
     ]

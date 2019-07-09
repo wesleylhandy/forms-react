@@ -23,7 +23,7 @@ app.use(cors());
 app.set("view engine", "hbs");
 
 // Specify the port.
-var port = process.env.PORT || 8080;
+var port = process.env.DEV_SERVER_PORT || 8080;
 //support gzip
 app.use(compression());
 
@@ -108,7 +108,7 @@ router.get("/config/:filename", (req, res) => {
 });
 
 router.get("/globals", (req, res) => {
-	const api = process.env.franco;
+	const api = process.env.GLOBAL_JSON_URL;
 	fetch(api)
 		.then(response => {
 			if (response.status >= 200 && response.status < 300) {
@@ -145,12 +145,12 @@ router.get("/globals", (req, res) => {
 		});
 });
 
-router.get("/api", (req, res) => {
+router.get("/giving", (req, res) => {
 	res.statusCode = 403;
 	res.json({ Error: "Not for Snooping Eyes" });
 });
 
-router.post("/api", (req, res) => {
+router.post("/giving", (req, res) => {
 	const data = { ...req.body };
 	if (!data) {
 		res.statusCode = 400;
@@ -163,7 +163,7 @@ router.post("/api", (req, res) => {
 	console.log({ reqHeaders: req.headers });
 
 	let ClientIP;
-	data.APIAccessID = process.env.alpha;
+	data.APIAccessID = process.env.GIVING_SERVICES_API_KEY;
 	if (
 		req.headers["x-forwarded-for"] &&
 		req.headers["x-forwarded-for"].split(",")[0]
@@ -179,7 +179,7 @@ router.post("/api", (req, res) => {
 	console.log(JSON.stringify(data, null, 5));
 	const mode = data.mode;
 	delete data.mode;
-	const api = process.env.epsilon;
+	const api = process.env.GIVING_SERVICES_DEV_API;
 	console.log({ api });
 	callApi(api, {
 		method: "POST",
@@ -213,7 +213,7 @@ router.post("/signup", (req, res) => {
 	console.log("________ NEW POST TO SIGNUP API __________");
 	console.log({ reqHeaders: req.headers });
 	let CBN_HTTP_X_FORWARDED_FOR;
-	const ApiKey = process.env.gamma;
+	const ApiKey = process.env.CONTACT_API_KEY;
 	if (
 		req.headers["x-forwarded-for"] &&
 		req.headers["x-forwarded-for"].split(",")[0]
