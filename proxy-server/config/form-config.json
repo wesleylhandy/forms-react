@@ -9,7 +9,7 @@
             "getHonorific": true,
             "getMiddleName": false,
             "getSuffix": false,
-            "getSpouseInfo": true,
+            "getSpouseInfo": false,
             "getShippingAddress": true,
             "allowInternational": true,
             "getPhone": true,
@@ -110,7 +110,7 @@
                     }
                 }
             ],
-            "successMessage":""
+            "successMessage":"<h1>Thank You</h1>"
         }, {
             "mode": "development",
             "formType": "product",

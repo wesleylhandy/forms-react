@@ -10,7 +10,7 @@ import FormPanel from "../FormComponents/StyledComponents/FormPanel";
 import FormLine from "../FormComponents/StyledComponents/FormLine";
 import FormHeader from "../FormComponents/StyledComponents/FormHeader";
 import ProductSummary from "../FormComponents/StyledComponents/ProductSummary";
-import RadioButton from "../FormComponents/StyledComponents/RadioButton";
+import CCButton from "../FormComponents/StyledComponents/CCButton";
 import HiddenForm from "../FormComponents/StyledComponents/HiddenForm";
 import InputGroup from "../FormComponents/InputGroup";
 import SelectGroup from "../FormComponents/SelectGroup";
@@ -129,7 +129,7 @@ class PaymentForm extends Component {
         num = "00" + num
         const {cardType, visible, Icon} = this.getCardType(num)
         return (             
-                <RadioButton key={`cc-btn-${num}`} id={`${cardType}-group`} className="radio-group">
+                <CCButton key={`cc-btn-${num}`} id={`${cardType}-group`} className="radio-group">
 					<input 
 						name="creditcardoption" 
 						id={num} 
@@ -139,18 +139,15 @@ class PaymentForm extends Component {
 						hidden={true}
 					/>
                     <label htmlFor={num} aria-label={visible} className={cardType}><Icon/></label>
-                </RadioButton>
+                </CCButton>
         )
     }
 	renderCardInputs = (checked) => {
         const cardInputs = [1, 2, 3, 4].map(num=> this.renderCCInput(num, checked))
 		return (
-			<FieldSet>
-				<legend>Select Credit Card Type</legend>
-				<FormRow className="cc-type-container">
-					{ cardInputs }
-				</FormRow>
-			</FieldSet>
+			<FormRow className="cc-type-container">
+				{ cardInputs }
+			</FormRow>
 		)
 	}
 	
@@ -362,11 +359,12 @@ class PaymentForm extends Component {
 					<FieldSet>
 						<legend>Credit Card Information</legend>
 						<div className="form-subheader">Card Type*</div>
-						<FormRow className="cc-type-row">
+						<FieldSet>
+							<legend>Select Credit Card Type</legend>
 							{
 								this.renderCardInputs(ccChecked)
 							}
-						</FormRow>
+						</FieldSet>
 						<FormRow>
 							<FormLine/>
 						</FormRow>

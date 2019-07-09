@@ -63,10 +63,10 @@ class SignUpForm extends Component {
 			getMiddleName,
 			getSpouseInfo
 		} = this.props;
-        const { errors, fields, initialized, submitting } = this.context;
+        const { errors, fields, initialized, submitting, submitted } = this.context;
         const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
-        return (
+        return !submitted ? (
             <form id="react-signup-form" autoComplete="off" onSubmit={this.handleSubmit}>
                 <FormHeader className="form-title form-header">
                     { formTitle }
@@ -121,7 +121,7 @@ class SignUpForm extends Component {
                     )
                 }
             </form>
-        )
+        ) : null
     }
 }
 

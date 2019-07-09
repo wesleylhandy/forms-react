@@ -233,6 +233,7 @@ router.post("/signup", (req, res) => {
 		"newsletters": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}newsletters.aspx`,
 	}
 	let responses = []
+	const cheerio = require('cheerio')
 	contactAPI.forEach(async ({type, call, headers})=>{
 		if (call) {
 			const endpoint = endpoints[type]
@@ -243,8 +244,16 @@ router.post("/signup", (req, res) => {
 					method: "GET",
 					headers
 				})
-				console.log(msg)
-				responses.push(msg)
+				const $ = cheerio.load(msg, {xmlMode: true})
+				if ($('returnCode').text() == "SUCCESS") {
+					responses.push(msg)
+				} else {
+					const error = {
+						body: $('returnCode').text(),
+						status: 400
+					}
+					throw new Error(error)
+				}
 			} catch(err) {
 				console.error({ BeforeResSentErr: JSON.stringify(err, null, 2) });
 				res.statusCode = error.status;

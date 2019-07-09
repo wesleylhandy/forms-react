@@ -9,6 +9,7 @@ import PaymentForm from './PaymentForm'
 import ProductForm from "./ProductForm";
 import SignUpForm from "./SignUpForm";
 import GivingSuccessMessage from "../SuccessPages/GivingSuccessMessage"
+import SignUpSuccessMessage from '../SuccessPages/SignUpSuccessMessage'
 
 const FormRouter = props => {
 	const { formConfig, submitted, confirmed } = useContext(FormConfigContext);
@@ -35,6 +36,7 @@ const FormRouter = props => {
 			return (
 				<SignUpFormProvider>
 					<SignUpForm {...props} {...formConfig} />
+					<SignUpSuccessMessage submitted={submitted} successMessage={formConfig.successMessage}/>
 				</SignUpFormProvider>
 			);
 			break;

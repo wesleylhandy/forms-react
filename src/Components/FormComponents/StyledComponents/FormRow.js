@@ -82,6 +82,9 @@ const FormRow = styled.div`
 			overflow: hidden;
 		}
 	}
+	&.cc-type-container {
+		padding-top: 15px;
+	}
 	&.go-back-row {
 		justify-content: center;
 		margin: 30px auto;

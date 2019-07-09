@@ -13,6 +13,7 @@ const SubmitButton = ({
 	return (
 		<SubmitButtonGroup className="submit-row">
 			<input
+				className="submit-btn"
 				type="submit"
 				id="submit"
 				onClick={handleSubmit}
