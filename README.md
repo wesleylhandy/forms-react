@@ -335,3 +335,17 @@ contactAPI.forEach(async ({type, call, headers})=>{
 })
 res.send(responses)
 ```
+
+### Emails
+
+The Giving and Product Forms will require a unique url for serving html emails that will be sent to donors upon successful transactions. This endpoint should accept a `GET` request with the following parameters:
+
+ - `form_name`
+
+    To uniquely identify the form. This should be the same `formName` passed into the Form configuration `JSON`.
+
+ - `type`
+
+    Either `Monthly`, `Single` or `Product`. Note the capitalization, since the API will be sending these values to get the emails.
+
+Within each email, certain server variables are available, such as `#FirstName#`. Contact Shanthi Catlin for a complete list of variables. Donation Summaries will be appended to the end of each email, so no closing `</body>` tag is necessary.

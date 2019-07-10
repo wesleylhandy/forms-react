@@ -42,11 +42,10 @@ class FormConfigProvider extends Component {
 				if (isDrupal) {
 					initialState = rootEntry.dataset.initialState;
 				} else {
-					proxyUri = `${process.env.DEV_SERVER_IP}:${process.env.DEV_SERVER_PORT}`
-					initialState = await callApi(
-						`${proxyUri}/config/form-config.json`,
-						{ method: "GET" }
-					);
+					proxyUri = `${process.env.DEV_SERVER_IP}:${process.env.DEV_SERVER_PORT}`;
+					initialState = await callApi(`${proxyUri}/config/form-config.json`, {
+						method: "GET",
+					});
 				}
 
 				const { configurations } = initialState;
@@ -67,7 +66,7 @@ class FormConfigProvider extends Component {
 					}
 				}
 				if (Object.keys(formConfig).length) {
-					formConfig.proxy = isDrupal ? proxyUri : `${proxyUri}/${formType}`
+					formConfig.proxy = isDrupal ? proxyUri : `${proxyUri}/${formType}`;
 					this.setState(state =>
 						reducer(state, {
 							type: "INIT_FORM_STATE",
