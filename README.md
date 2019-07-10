@@ -151,7 +151,7 @@ Then, within `Components`, there are multiples files and directories. I only lis
 
 The other folders are self explanatory. Though note there are two `StyledComponents` directories, one with the `Components` folder, the other within the `FormComponents` folder. They are simply `UI` related components and include only style related logic, if any.
 
-## Builds and Production
+## Building For Production
 
 To create a new build, be sure all tests are passing, be sure to have tested the output in the browser, then run:
 
@@ -161,13 +161,164 @@ yarn build
 
 This will run `prettier` on all `.js` and `.css` files. Then run tests. After the tests, the build will commence, and post build the primary filename in the `./dist` folder will be changed from `index.js` to `form.js`. Push new builds to `VBMDEAPP7112/Sites/pre.vb.cbn.local/noindex/forms/react-drupal/`.
 
+### Project Setup
+
+The current build of the project will be live at http://www.cbn.com/noindex/forms/react-drupal/form.js. This file can be imported as a `<script>` into any html page. The application will look for three different `<div>`s within the html to render the various forms:
+
+```html
+<div
+    id="<form-type>-root"
+    data-environment="Drupal"
+    data-form-name="<some-unique-identifier-related-to-a-campaign>"
+    data-rest=""
+    data-initial-state="{}"
+></div>
+```
+
+ - There can be one such `div` for each `form-type` with an id of either `giving-form-root`, `signup-form-root`, or `product-form-root`. 
+
+ - This particular form is assuming a `Drupal` `environment` value, though it can be extended as necessary. 
+
+ - The `form-name` should be some string uniquely related to this form, such as `CBNCleanWaterProjects`, or `CBNWellsSponsorship`. I find it best practice to either `camelCase` or `snake_case` the value of the `form-name`, ie. no spaces, since this may be a data-key used later by the proxy to serve email data.
+
+ - The `rest` value should be the location of the proxy api where the form will try to submit itself securely to the various apis, such as "/some/path/to/proxy.php". This way, none of the API keys will be exposed.
+
+ - The `initial-state` should be a `JSON`-encoded string. That is, with appropriate double-quotes around keys and values, fully escaped with backslashes: `{\"key\":\"value\"}`. The state will vary from form to form. Below are two example configurations (unescaped):
+
+**GIVING FORM**
+
+*Note: Product Form will look very similar once it the feature is completed.*
+
+```json
+{
+    "mode": "development",
+    "formType": "giving",
+    "formTitle": "Please Give Generously Towards This Vital Cause",
+    "submitButtonText": "Continue to Payment",
+    "givingFormat": "buttons",
+    "getHonorific": true,
+    "getMiddleName": false,
+    "getSuffix": false,
+    "getSpouseInfo": false,
+    "getShippingAddress": true,
+    "allowInternational": true,
+    "getPhone": true,
+    "numProducts": 0,
+    "products": [],
+    "numDesignations": 0,
+    "designations": [],
+    "subscriptions": [{
+        "value": "Superbook",
+        "key": "NewsletterSubs"
+    }, {
+        "value": "Welcome",
+        "key": "NewsletterUnSubs"
+    }, {
+        "value": "CBN",
+        "key": "MarketingUnSubs"
+    }],
+    "additionalGift": {
+        "display": false,
+        "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
+        "DetailDescription": "Superbook Donation",
+        "DetailCprojCredit": "043258",
+        "DetailCprojMail": "043259",
+        "DetailName": "SGSuperbook"
+    },
+    "showGivingArray": true,
+    "monthlyOption": true,
+    "singleOption": true,
+    "monthlyAmounts": [3, 7, 15, 30, 50],
+    "singleAmounts": [25, 50, 100, 250, 300],
+    "defaultOption": "single",
+    "defaultAmount": 50,
+    "addGivingDescription": false,
+    "monthlyPledgeData": {
+        "DetailCprojCredit": "043250",
+        "DetailCprojMail": "043251",
+        "DetailName": "MPSuperbook",
+        "DetailDescription": "Superbook Pledge"
+    },
+    "singlePledgeData": {
+        "DetailCprojCredit": "043250",
+        "DetailCprojMail": "043251",
+        "DetailName": "SGSuperbook",
+        "DetailDescription": "Superbook Donation"
+    },
+    "AddContactYN": "Y",
+    "ContactSource": "Superbook General Donor",
+    "ActivityName": "Giving - Superbook - <ThisFormName>",
+    "SectionName": "Superbook",
+    "proxy": "USED_IN_LOCAL_DEVELOPMENT",
+    "successMessage":"<h1>Thank You</h1>"
+  }
+```
+
+**SIGNUP FORM**
+
+```json
+{
+    "mode": "development",
+    "formType": "signup",
+    "formTitle": "Download Your Free Resource Today",
+    "submitButtonText": "Submit",
+    "getName": true,
+    "getHonorific": false,
+    "getMiddleName": false,
+    "getSuffix": false,
+    "getSpouseInfo": false,
+    "getAddress":false,
+    "allowInternational": false,
+    "proxy": "USED_IN_LOCAL_DEVELOPMENT",
+    "contactAPI": [
+        {
+            "call": false,
+            "type": "newsletters",
+            "headers": {
+                "SubscriptionCode": "israel",
+                "Subscribe": true,
+                "UnsubscribeMarketingForNewContacts": true,
+                "InceptionSource": "Subscribe - Israel Cause Page - Israel Newsletter",
+                "ActivityCode": "Subscribe - Israel Cause Page - Israel Newsletter"
+            }
+        }, {
+            "call": true,
+            "type": "feedback",
+            "headers": {
+                "FeedbackType": "Item Request",
+                "Topic": "Islam Booklet",
+                "FormUrl": "",
+                "InceptionSource": "Request Resource - Islam Booklet - Download",
+                "ActivityCode": "Request Resource - Islam Booklet - Download",
+                "Message": "--empty--"
+            }
+        }, {
+            "call": false,
+            "type": "activity",
+            "headers": {
+                "Activity": "Feedback - Sign Up - Protect The Unborn Petition",
+                "Topic": "Islam Booklet Download",
+                "MarketingSubscribes": "CBN",
+                "Campaign":"",
+                "Location":"",
+                "UpdateExisting":true,
+                "InceptionSource": "Feedback - Sign Up - Protect The Unborn Petition"
+            }
+        }
+    ],
+    "successMessage":"<h1>Thank You</h1>"
+}
+```
+
 ### Production Proxy Server Needed
 
 The Client is expecting to Receive RESTful responses from the proxy.
 
-Here is how I handled it via `Node` and `Express`, so you can create a like service using the language/framework of your particular environment.
+Here an example of how I handled it via `Node` and `Express`, so you can create a like service using the language/framework of your particular environment.
 
-#### Giving API
+**GIVING API PROXY**
+
+##### Node/Express Example
 
 1. I destructure the body of the request to the proxy into an object literal `const data = { ...req.body };`
 
@@ -274,7 +425,102 @@ callApi(api, {
 
 *NOTE*: The `msg` sent back within `.then` is a single string. The Form is expecting to receive this string.
 
-#### Contacts API
+##### Wordpress / PHP Proxy Example
+
+Below is an example function in Wordpress for proxying the Giving Form. Wordpress provides a request object `WP_REST_Request` that allows you to pull the body sent encoded as `application/json` into a PHP `array`, as well as a response object `WP_REST_Response` that takes in an `array` and converts into an `application/json` encoded string. Wordpress also provides access to an internal DB where configuration data is stored.
+
+```php
+public function proxy_data( \WP_REST_Request $request ) {
+  // data is the request body
+  $data = $request->get_json_params();
+  // campaign is a key embedded into the request url as a unique identifier
+  $campaign = ( string ) $request['campaign'];
+  if ( is_null($data) || is_null($campaign)) {
+      $response = new \WP_REST_Response( array( 'message' => "Bad Request - Your request is missing parameters. Please verify and resubmit.",
+      "origin" => "Bad Request from App to Proxy" ) );
+      $response->set_status( 400 );
+      return $response;
+  } else {
+      // get the api key
+      try {
+          $table_name = $this->api_table;
+          $api_key = $this->db->get_var( "SELECT api_key FROM $table_name LIMIT 1" ); 
+          $data['APIAccessID'] = $api_key ? $api_key : '';
+      } catch (Exception $err) {
+          $response = $this->generate_error_response("", "DB Error - $err", 400, array( "data" => $api_key ) );
+          return $response;
+      }
+      // get the IP address and determine which version of API to call - dev or prod
+      try {
+          $data['ClientIP'] = preg_replace( '/[^0-9a-f.:, ]/', '', $_SERVER['REMOTE_ADDR'] );
+          $isLocal = preg_match( '/(cbn\.local)/', $data['UrlReferer'] ) == 1;
+          $url_local = "http://securegiving.cbn.local/api/contribution";
+          $url_secure = "https://securegiving.cbn.com/api/contribution";
+          $url = ( $isLocal  ) ? $url_local : $url_secure;
+          if ( isset( $data['mode'] ) ){
+              unset( $data['mode'] );
+          }
+      } catch (Exception $err) {
+          $response = $this->generate_error_response("", "Unknown Api Access Error - $err", 400, array( "data" => $data ) );
+          return $response;
+      }
+      // Make Post request to Giving Services
+      $proxy_response = wp_remote_post( $url, array(
+          'method' => 'POST',
+          'timeout' => 15,
+          'headers' => array(                                                                          
+              'Content-Type' => 'application/json',
+              'Accept' => 'application/json'
+          ),
+          'body' => json_encode( $data )
+      ));
+      // Parse response from Giving Services API and send REST response
+      if ($proxy_response) {
+          try {
+              $proxy_response_code = wp_remote_retrieve_response_code( $proxy_response );
+              $proxy_response_body = wp_remote_retrieve_body( $proxy_response );
+              // $proxy_response_message = wp_remote_retrieve_message ( $proxy_response );
+              $proxy_response_headers = wp_remote_retrieve_headers( $proxy_response );
+          } catch (Exception $err) {
+              $response = $this->generate_error_response($url, "Unknown Api Access Error - $err", 400, array( "UrlReferer" => $data['UrlReferer'] ) );
+              return $response;
+          }
+          if ( $proxy_response_code >= 200 and $proxy_response_code < 300 ) {
+              $response = new \WP_REST_Response( $proxy_response_body );
+              $response->set_status( 201 );
+              return $response;
+          } else {
+              $error = $proxy_response_body ? $proxy_response_body : "Proxy Error";
+              $proxy_response_code = $proxy_response_code ? $proxy_response_code : 500;
+              $response = $this->generate_error_response(
+                  $url, 
+                  $error, 
+                  $proxy_response_code, 
+                  array( 
+                      "UrlReferer" => $data['UrlReferer'], 
+                      "RemoteHeaders" => $proxy_response_headers, 
+                      "RemoteBody" => $proxy_response_body, 
+                      "RemoteResponse" => json_encode( $proxy_response ) ) 
+                  );
+              return $response;
+          }
+      } else {
+          $response = $this->generate_error_response($url, "API did not return a response", 400, array( "UrlReferer" => $data['UrlReferer'] ) );
+          return $response;
+      }
+  }
+}
+// Error Response Boilerplate referenced above
+public function generate_error_response($url, $error, $proxy_response_code, $additional_content) {
+  error_log("$proxy_response_code - $error");
+  $response_array = array_merge( array( "message" => $error, "origin" => "$url - $proxy_response_code - $error" ), $additional_content );
+  $response = new \WP_REST_Response( $response_array );
+  $response->set_status($proxy_response_code);
+  return $response;
+}
+```
+
+**CONTACTS API PROXY**
 
 1. I destructure the body of the request into an object literal `const data = { ...req.body };`
 
@@ -336,7 +582,7 @@ contactAPI.forEach(async ({type, call, headers})=>{
 res.send(responses)
 ```
 
-### Emails
+### Email Server Also Needed
 
 The Giving and Product Forms will require a unique url for serving html emails that will be sent to donors upon successful transactions. This endpoint should accept a `GET` request with the following parameters:
 
@@ -349,3 +595,67 @@ The Giving and Product Forms will require a unique url for serving html emails t
     Either `Monthly`, `Single` or `Product`. Note the capitalization, since the API will be sending these values to get the emails.
 
 Within each email, certain server variables are available, such as `#FirstName#`. Contact Shanthi Catlin for a complete list of variables. Donation Summaries will be appended to the end of each email, so no closing `</body>` tag is necessary.
+
+##### Wordpress / PHP example
+
+```php
+public function proxy_email( \WP_REST_Request $request ) {
+    // This proxy uses the URL to pass the necessary parameters for handling the request
+    $parameters = $request->get_query_params();
+    $campaign = ( string ) $request['campaign'];
+    // type will either be "Monthly", "Single", or "Product"
+    $type = strtolower($parameters['type']);
+    $completed = FALSE;
+    $error = FALSE;
+    // All email config are stored in WPDB
+    $table_name = $this->config_table;
+    $existing = $this->db->get_var( $this->db->prepare(
+        "SELECT form_name
+        FROM $table_name 
+        WHERE form_name = %s",
+        $campaign
+    ) );
+    if ($existing == $campaign) {
+        $completed = $this->db->get_row( $this->db->prepare(
+            "SELECT email_setup
+            FROM $table_name 
+            WHERE form_name = %s",
+            $campaign
+        ), ARRAY_A );
+        if ( $completed === FALSE) {
+            $error = "INVALID QUERY";
+        } else {
+            $form_segments = ( $completed != NULL ) ? $completed['email_setup'] : NULL;
+            if ( $form_segments === NULL ) {
+                $error = "No email configuration saved.";
+            } else {
+                $form_segments = json_decode($form_segments, TRUE);
+            }
+        }
+    } else {
+        $error = "No such form with the name of $campaign has been created.";
+    }
+    if ( !$error ) {
+        $header = $form_segments['header'];
+        $body = $form_segments[$type];
+        $html_email = $header . $body;
+    } else {
+        $default_header = include $this->plugin_path . 'templates/email-template-header.php';
+        $defatul_body = include $this->plugin_path . 'templates/email-template-body.php';
+        $html_email = $default_header . $defatul_body;
+    }
+    
+    header( 'Content-Type: text/html; charset=UTF-8' );
+
+    echo $html_email;
+    exit();
+}
+```
+
+##### An Example Default Email in PHP
+
+```php
+<?php
+
+return "<body><table width='553' border='0' align='center' cellpadding='0' cellspacing='5'><tr><td height='43' align='left' valign='top'><img src='http://www.cbn.com/images/CBN-header-email.gif' alt='CBN.com' width='553' height='41' /></td></tr><tr><td align='left' valign='top'><p>Dear #FirstName#,</p><p>Thank you for giving to CBN. It is with the help of friends like you that CBN is able to take  the Gospel to the nations - and people are hearing a message of hope in Jesus  Christ.&nbsp; Every day, through <em>The 700 Club</em>,  CBN News, and other CBN programs, the truth of God's Word is being broadcast to  precious people through satellite, terrestrial television, and cable, as well  as the Internet.</p><p>Thank you for your  help in making all of this possible. May God richly bless you for your  faithfulness to Him.</p><p>In Christ,<br /><img src='http://www.cbn.com/images/PRobertson_signature.jpg' alt='Signature' width='124' height='49' /><br />Pat Robertson<br /></p><p><a href='http://www1.cbn.com/cbn-partners'>Find out more about CBN Ministries</a></p><hr />";
+```
