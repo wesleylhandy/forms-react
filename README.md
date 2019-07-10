@@ -8,55 +8,55 @@ This project is being designed for use by the Digital Media Group at CBN, Inc. O
 
 1. Clone Repo
 
-    ```bash
-    git clone https://wlhcbn@bitbucket.org/wlhcbn/react-form-drupal.git
-    ```
+```bash
+git clone https://wlhcbn@bitbucket.org/wlhcbn/react-form-drupal.git
+```
 
 2. Install Dependencies - with preference to [`Yarn`](https://yarnpkg.com/en/) over NPM
 
-    ```bash
-    yarn
-    # or yarn install, or if you must, npm install
-    ```
+```bash
+yarn
+# or yarn install, or if you must, npm install
+```
 
 3. Set up Environment Variables
 
-    ```bash
-    cd react-form-drupal
-    touch .env
-    ```
+```bash
+cd react-form-drupal
+touch .env
+```
 
-    You will need the following variables defined:
+You will need the following variables defined:
 
-    ```
-    CONTACT_API_KEY=
-    DEV_SERVER_IP=
-    DEV_SERVER_PORT=8080
-    GIVING_SERVICES_API_KEY=
-    GIVING_SERVICES_DEV_API="http://givingservices.cbn.local/api/contribution"
-    GLOBAL_JSON_URL="http://securegiving.cbn.local/ui/globals/form-config.json"
-    ```
+```
+CONTACT_API_KEY=
+DEV_SERVER_IP=
+DEV_SERVER_PORT=8080
+GIVING_SERVICES_API_KEY=
+GIVING_SERVICES_DEV_API="http://givingservices.cbn.local/api/contribution"
+GLOBAL_JSON_URL="http://securegiving.cbn.local/ui/globals/form-config.json"
+```
 
-    You need to know the network IP address for your development machine. And by default, the development proxy server will run on port 8080.
+You need to know the network IP address for your development machine. And by default, the development proxy server will run on port 8080.
 
-    Obtain the Contact API Key from the documentation for the Contacts API or contact Mike Rose.
+Obtain the Contact API Key from the documentation for the Contacts API or contact Mike Rose.
 
-    Obtain the Giving Services API Key from Shanthi Catlin. One API Key is issues per domain. The domain will refer to the URL Referer of the page calling the dev proxy server. By default, `Parcel` serves the client on port 1234. So an example domain would be `http://<yourdevnetworkip>:1234/index.html`. A new API Key must be established for each production domain. Moreover, for each new page that hosts a giving form, the individual page must be registered under that API Key.
+Obtain the Giving Services API Key from Shanthi Catlin. One API Key is issues per domain. The domain will refer to the URL Referer of the page calling the dev proxy server. By default, `Parcel` serves the client on port 1234. So an example domain would be `http://<yourdevnetworkip>:1234/index.html`. A new API Key must be established for each production domain. Moreover, for each new page that hosts a giving form, the individual page must be registered under that API Key.
 
 
 4. Run Development Server, need two open Terminal windows:
 
-    In terminal one, to start development server:
+In terminal one, to start development server:
 
-    ```bash
-    yarn start:proxy
-    ```
+```bash
+yarn start:proxy
+```
 
-    In terminal two, start the client development server:
+In terminal two, start the client development server:
 
-    ```bash
-    yarn start
-    ```
+```bash
+yarn start
+```
 
 5. Open your browser to view the site on `http://<yourdevnetworkip>:1234/index.html`. 
 
@@ -175,104 +175,104 @@ Here is how I handled it via `Node` and `Express`, so you can create a like serv
 
 3. I then grab the ClientIP from the request:
 
-    ```javascript
-    let ClientIP
-    if (
-      req.headers["x-forwarded-for"] &&
-      req.headers["x-forwarded-for"].split(",")[0]
-    ) {
-      ClientIP = req.headers["x-forwarded-for"].split(",")[0];
-    }
-    if (!ClientIP && req.connection.remoteAddress) {
-      const parsed = ipaddr.process(req.connection.remoteAddress);
-      ClientIP = parsed.toString();
-    }
-    data.ClientIP = ClientIP;
-    ```
+```javascript
+let ClientIP
+if (
+  req.headers["x-forwarded-for"] &&
+  req.headers["x-forwarded-for"].split(",")[0]
+) {
+  ClientIP = req.headers["x-forwarded-for"].split(",")[0];
+}
+if (!ClientIP && req.connection.remoteAddress) {
+  const parsed = ipaddr.process(req.connection.remoteAddress);
+  ClientIP = parsed.toString();
+}
+data.ClientIP = ClientIP;
+```
 
 4. I then get the `mode` variable (“local”, “development”, or “production”), can be used to call either dev or prod version of API
 
-    ```javascript
-    const mode = data.mode;
-    delete data.mode;
-    const apiUrl = mode == "production" ? process.env.GIVING_SERVICES_PROD_API : process.env.GIVING_SERVICES_DEV_API;
-    ```
+```javascript
+const mode = data.mode;
+delete data.mode;
+const apiUrl = mode == "production" ? process.env.GIVING_SERVICES_PROD_API : process.env.GIVING_SERVICES_DEV_API;
+```
 
 5. call api, using `fetch`, which I import into Node via `node-fetch`. I also have some helper functions for handling the response
 
-    *Helper Function*
+*Helper Function*
 
-    ```javascript
-    // main function, asychronously calls the api, loadData will be called which will separate errors from data
-    async function callApi(uri, options = {}) {
-      let data;
-      try {
-        data = await loadData(uri, options);
-        return data;
-      } catch ({ body, status }) {
-        console.log({ body, status });
-        const error = new Error(body);
-        error.status = status;
-        error.body = body;
-        console.error({ callApiFetchErr: error });
-        throw error;
-      }
-    }
+```javascript
+// main function, asychronously calls the api, loadData will be called which will separate errors from data
+async function callApi(uri, options = {}) {
+	let data;
+	try {
+		data = await loadData(uri, options);
+		return data;
+	} catch ({ body, status }) {
+		console.log({ body, status });
+		const error = new Error(body);
+		error.status = status;
+		error.body = body;
+		console.error({ callApiFetchErr: error });
+		throw error;
+	}
+}
 
-    // makes the actual fetch call, looks at headers and status to parse response appropriately
-    // fetch doesn't catch errors, so you have to force a promise rejection
-    async function loadData(uri, options = {}) {
-      let response = await fetch(uri, options);
-      const contentType = response.headers.get("content-type");
-      const { status } = response;
-      console.log({ status, contentType });
-      if (status >= 200 && status < 300) {
-        if (contentType && contentType.includes("application/json")) {
-          return response.json();
-        } else {
-          return response.text();
-        }
-      } else {
-        return getErrorBody(response, contentType).then(body => {
-          return Promise.reject({
-            body,
-            status,
-          });
-        });
-      }
-    }
+// makes the actual fetch call, looks at headers and status to parse response appropriately
+// fetch doesn't catch errors, so you have to force a promise rejection
+async function loadData(uri, options = {}) {
+	let response = await fetch(uri, options);
+	const contentType = response.headers.get("content-type");
+	const { status } = response;
+	console.log({ status, contentType });
+	if (status >= 200 && status < 300) {
+		if (contentType && contentType.includes("application/json")) {
+			return response.json();
+		} else {
+			return response.text();
+		}
+	} else {
+		return getErrorBody(response, contentType).then(body => {
+			return Promise.reject({
+				body,
+				status,
+			});
+		});
+	}
+}
 
-    // return a consistent error message regardless of content type
-    async function getErrorBody(response, contentType = "text") {
-      let body;
-      if (contentType.includes("application/json")) {
-        body = await response.json();
-      } else {
-        body = await response.text();
-      }
-      return body;
-    }
-    ```
+// return a consistent error message regardless of content type
+async function getErrorBody(response, contentType = "text") {
+	let body;
+	if (contentType.includes("application/json")) {
+		body = await response.json();
+	} else {
+		body = await response.text();
+	}
+	return body;
+}
+```
 
-    *Calling the API*
+*Calling the API*
 
-    ```javascript
-    callApi(api, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(data),
-    })
-    .then(msg => res.send(msg))
-    .catch(error => {
-      console.log({ BeforeResSentErr: JSON.stringify(error, null, 2) });
-      res.statusCode = error.status;
-      res.send(error.body);
-    });
-    ```
+```javascript
+callApi(api, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json; charset=utf-8",
+  },
+  body: JSON.stringify(data),
+})
+.then(msg => res.send(msg))
+.catch(error => {
+  console.log({ BeforeResSentErr: JSON.stringify(error, null, 2) });
+  res.statusCode = error.status;
+  res.send(error.body);
+});
+```
 
-    *NOTE*: The `msg` sent back within `.then` is a single string. The Form is expecting to receive this string.
+*NOTE*: The `msg` sent back within `.then` is a single string. The Form is expecting to receive this string.
 
 #### Contacts API
 
@@ -286,55 +286,55 @@ Here is how I handled it via `Node` and `Express`, so you can create a like serv
 
 5. Get the mode for determining the endpoint as either prod or dev:
 
-    ```javascript
-    const mode = data.mode;
-    const endpoints = {
-      "feedback": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}feedback.aspx`,
-      "activity": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}activity.aspx`,
-      "newsletters": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}newsletters.aspx`,
-    }
-    ```
+```javascript
+const mode = data.mode;
+const endpoints = {
+  "feedback": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}feedback.aspx`,
+  "activity": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}activity.aspx`,
+  "newsletters": `${mode == "production" ? "https://services.cbn.com/contacts/api/" : "http://services.cbn.local/contacts/api/"}newsletters.aspx`,
+}
+```
 
 6. Loop through API calls and get responses (which will be XML and need to be parsed). `callAPI` is the same function, with it's helpers, described previously.
 
-    ```javascript
-    let responses = []
-    contactAPI.forEach(async ({type, call, headers})=>{
-      // call is setup in the config, whether or not to call this particular API or not
-      if (call) { 
-        // Contact API calls append all the appropriate data as headers, 
-        // I pass data to this api via the headers object on each contactAPI 
-        // and then append the key and forwarded for value
-        const endpoint = endpoints[type]
-        headers.ApiKey = ApiKey;
-        headers.CBN_HTTP_X_FORWARDED_FOR = CBN_HTTP_X_FORWARDED_FOR
-        try {
-          const msg = await callApi(endpoint, {
-            method: "GET",
-            headers
-          })
-          // use cheerio to parse xml in node
-          const $ = cheerio.load(msg, { xmlMode: true });
-          const msg = $("returnCode").text()
-          if ( msg == "SUCCESS") {
-            responses.push(msg);
-          } else {
-            const error = {
-              body: msg,
-              status: 400,
-            };
-            // cause try to catch via Error
-            throw new Error(error);
-          }
-        } catch(err) {
-          console.error({ BeforeResSentErr: JSON.stringify(err, null, 2) });
-          res.statusCode = error.status;
-          return res.send(error.body);
-        }
+```javascript
+let responses = []
+contactAPI.forEach(async ({type, call, headers})=>{
+  // call is setup in the config, whether or not to call this particular API or not
+  if (call) { 
+    // Contact API calls append all the appropriate data as headers, 
+    // I pass data to this api via the headers object on each contactAPI 
+    // and then append the key and forwarded for value
+    const endpoint = endpoints[type]
+    headers.ApiKey = ApiKey;
+    headers.CBN_HTTP_X_FORWARDED_FOR = CBN_HTTP_X_FORWARDED_FOR
+    try {
+      const msg = await callApi(endpoint, {
+        method: "GET",
+        headers
+      })
+      // use cheerio to parse xml in node
+      const $ = cheerio.load(msg, { xmlMode: true });
+      const msg = $("returnCode").text()
+      if ( msg == "SUCCESS") {
+        responses.push(msg);
+      } else {
+        const error = {
+          body: msg,
+          status: 400,
+        };
+        // cause try to catch via Error
+        throw new Error(error);
       }
-    })
-    res.send(responses)
-    ```
+    } catch(err) {
+      console.error({ BeforeResSentErr: JSON.stringify(err, null, 2) });
+      res.statusCode = error.status;
+      return res.send(error.body);
+    }
+  }
+})
+res.send(responses)
+```
 
 ### Emails
 
