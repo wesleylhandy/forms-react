@@ -24,6 +24,25 @@ const FormGroup = styled.div`
 	&.form-group--Email {
 		width: 50%;
 	}
+	&.form-group--cvnCode {
+		width: 80px;
+		flex: 0 0 80px;
+		box-sizing: border-box;
+		margin-right: 10px;
+	}
+	&.form-group--cvnCode + div.cvn-code-info {
+		display: block;
+		align-self: center;
+	}
+	&.form-group--cvnCode + div.cvn-code-info>a {
+		color: #444;
+		transition: color 200ms ease-in-out;
+	}
+	&.form-group--cvnCode + div.cvn-code-info>a:hover,
+	&.form-group--cvnCode + div.cvn-code-info>a:active,
+	&.form-group--cvnCode + div.cvn-code-info>a:focus {
+		color: #747474;
+	}
 	label {
 		box-sizing: border-box;
 		color: #333;

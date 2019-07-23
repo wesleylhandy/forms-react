@@ -4,6 +4,7 @@ import { FormConfigContext } from "../Contexts/FormConfigProvider";
 import GivingFormProvider from "../Contexts/GivingFormProvider";
 import ProductFormProvider from "../Contexts/ProductFormProvider";
 import SignUpFormProvider from "../Contexts/SignUpFormProvider";
+import ErrorBoundary from '../ErrorBoundary';
 const GivingForm = lazy(() => import("./GivingForm"));
 const PaymentForm = lazy(() => import("./PaymentForm"));
 const ProductForm = lazy(() => import("./ProductForm"));
@@ -24,12 +25,18 @@ const FormRouter = props => {
 			return (
 				<GivingFormProvider>
 					<Suspense fallback={<Spinner />}>
-						<GivingForm {...props} {...formConfig} submitted={submitted} />
-						<PaymentForm submitted={submitted} />
-						<GivingSuccessMessage
-							confirmed={confirmed}
-							successMessage={formConfig.successMessage}
-						/>
+						<ErrorBoundary>
+							<GivingForm {...props} {...formConfig} submitted={submitted} />
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<PaymentForm submitted={submitted} />
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<GivingSuccessMessage
+								confirmed={confirmed}
+								successMessage={formConfig.successMessage}
+							/>
+						</ErrorBoundary>
 					</Suspense>
 				</GivingFormProvider>
 			);
@@ -38,7 +45,9 @@ const FormRouter = props => {
 			return (
 				<ProductFormProvider>
 					<Suspense fallback={<Spinner />}>
-						<ProductForm {...props} {...formConfig} />
+						<ErrorBoundary>
+							<ProductForm {...props} {...formConfig} />
+						</ErrorBoundary>
 					</Suspense>
 				</ProductFormProvider>
 			);
@@ -47,17 +56,28 @@ const FormRouter = props => {
 			return (
 				<SignUpFormProvider>
 					<Suspense fallback={<Spinner />}>
-						<SignUpForm {...props} {...formConfig} />
-						<SignUpSuccessMessage
-							submitted={submitted}
-							successMessage={formConfig.successMessage}
-						/>
+						<ErrorBoundary>
+							<SignUpForm {...props} {...formConfig} />
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<SignUpSuccessMessage
+								submitted={submitted}
+								successMessage={formConfig.successMessage}
+							/>
+						</ErrorBoundary>
 					</Suspense>
 				</SignUpFormProvider>
 			);
 			break;
 		default:
+			console.error("Form Configuration Error")
 			console.error({ formType, formConfig, props });
+			try {
+				window.omTrackDebug(window.location.href + " - React Giving Form", JSON.stringify({formType, formConfig, props})) 
+			} catch (err) {
+				console.error("Error Tracking Error")
+				console.error(err)
+			}
 			alert(
 				"There was an internal error loading this form. Please check back later or call us at 1-800-759-0700"
 			);

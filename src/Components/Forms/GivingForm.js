@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import { GivingFormContext } from "../Contexts/GivingFormProvider";
 
-import withErrorBoundary from "../withErrorBoundary";
-
 import FormPanel from "../FormComponents/StyledComponents/FormPanel";
 import FieldSet from "../FormComponents/StyledComponents/FieldSet";
 import FormHeader from "../FormComponents/StyledComponents/FormHeader";
@@ -365,4 +363,4 @@ class GivingForm extends Component {
 
 GivingForm.contextType = GivingFormContext;
 
-export default withErrorBoundary(GivingForm);
+export default GivingForm;

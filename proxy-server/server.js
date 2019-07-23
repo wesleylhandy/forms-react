@@ -251,6 +251,7 @@ router.post("/signup", (req, res) => {
 			const endpoint = endpoints[type];
 			headers.ApiKey = ApiKey;
 			headers.CBN_HTTP_X_FORWARDED_FOR = CBN_HTTP_X_FORWARDED_FOR;
+			console.log({headers})
 			try {
 				const msg = await callApi(endpoint, {
 					method: "GET",

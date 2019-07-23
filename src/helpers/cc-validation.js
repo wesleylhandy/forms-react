@@ -87,6 +87,11 @@ export const validateInput = (name, value) => {
 				error = "Please select a valid expiration date.";
 			}
 			break;
+		case "cvnCode":
+			if (/(\D)/.test(value)) {
+				error = "Invalid Entry."
+			}
+			break;
 	}
 	return { ccChecked: null, error };
 };
@@ -160,9 +165,10 @@ const IsValidCreditCardType = (cardNum, cardType) => {
  * @param {String} curccType - 001, 002, 003, or 004 for Visa, MC, Amex, & Disc, respectively
  * @param {String} curccExpYear - 4 digit expiration date
  * @param {String} curccExpMonth - 2 digit expiration month
+ * @param {String} curcvnCode - 3 or 4 digit cvv code
  * @returns {Object} - {passes: Boolean, errors: Array[{type: String, error: String}]}
  */
-const validateCCInfo = (curccnum, curccType, curccExpYear, curccExpMonth) => {
+const validateCCInfo = (curccnum, curccType, curccExpYear, curccExpMonth, curcvnCode) => {
 	var passes = true,
 		errors = [];
 	if (!checkExpDate(curccExpYear, curccExpMonth)) {
@@ -188,6 +194,14 @@ const validateCCInfo = (curccnum, curccType, curccExpYear, curccExpMonth) => {
 				"Check that the card type matches the number and that all digits are entered.",
 		});
 	}
+	if (!checkCVNCode(curccType, curcvnCode)) {
+		passes = false;
+		errors.push({
+			type: "cvnCode",
+			error:
+				"Invalid Code.",
+		});
+	}
 
 	return { passes: passes, errors: errors };
 };
@@ -198,15 +212,16 @@ const validateCCInfo = (curccnum, curccType, curccExpYear, curccExpMonth) => {
  * @param {String} ccNum - 13 to 16 digit credit card number
  * @param {String} ccExpMonth - 2 digit month of expiration
  * @param {String} ccExpYear - 4 digit year of expiration
+ * @param {String} cvnCode - 3 or 4 digit cvv code
  * @returns {Object} - {passes: Boolean, *errors: Array[{type: String, error: String}], *ccCardType: String, *ccNum: String, *ccExpDate: String, *transactionType: String, *signatureDis: Boolean}
  */
-export const checkValues = (ccCardType, ccNum, ccExpMonth, ccExpYear) => {
+export const checkValues = (ccCardType, ccNum, ccExpMonth, ccExpYear, cvnCode) => {
 	const ccExpDate = ccExpMonth + "-" + ccExpYear;
 	// initialize variables
 	let transactionType = null,
 		signatureDis = false;
 
-	const isValid = validateCCInfo(ccNum, ccCardType, ccExpYear, ccExpMonth);
+	const isValid = validateCCInfo(ccNum, ccCardType, ccExpYear, ccExpMonth, cvnCode);
 	if (isValid.passes == true) {
 		if (ccCardType == "004") {
 			// The script calling this function will only update the signature if transactionType has a value. It is null by default
@@ -218,6 +233,7 @@ export const checkValues = (ccCardType, ccNum, ccExpMonth, ccExpYear) => {
 			ccCardType: ccCardType,
 			ccNum: ccNum,
 			ccExpDate: ccExpDate,
+			ccCvn: cvnCode,
 			transactionType: transactionType,
 			signatureDis: signatureDis,
 		};
@@ -225,3 +241,13 @@ export const checkValues = (ccCardType, ccNum, ccExpMonth, ccExpYear) => {
 		return isValid;
 	}
 };
+
+/**
+ * Validates CVNCodeVal
+ * @param {String} cardType - 001, 002, 003, or 004 for Visa, MC, Amex, & Disc, respectively
+ * @param {String} cvnCode - 3 or 4 digit
+ * @returns {Boolean}
+ */
+function checkCVNCode(cardType, cvnCode) {
+    return /^\d{3,4}$/.test(cvnCode) && ( ( cardType === "004" && cvnCode.length == 4 ) || (cardType !== "004" && cvnCode.length == 3) );
+}

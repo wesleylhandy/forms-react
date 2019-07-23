@@ -2,8 +2,6 @@ import React, { Component, Fragment } from "react";
 
 import { GivingFormContext } from "../Contexts/GivingFormProvider";
 
-import withErrorBoundary from "../withErrorBoundary";
-
 import FieldSet from "../FormComponents/StyledComponents/FieldSet";
 import FormRow from "../FormComponents/StyledComponents/FormRow";
 import FormPanel from "../FormComponents/StyledComponents/FormPanel";
@@ -31,16 +29,19 @@ const curMonth = "0" + (d.getMonth() + 1);
 const curYear = d.getFullYear();
 
 class PaymentForm extends Component {
+	formRef = React.createRef()
 	state = {
 		fields: {
 			ExpiresMonth: curMonth.slice(-2),
 			ExpiresYear: curYear,
 			ccNumber: "",
+			cvnCode: ""
 		},
 		errors: {
 			ExpiresMonth: null,
 			ExpiresYear: null,
 			ccNumber: null,
+			cvnCode: null,
 		},
 		ccChecked: null,
 		submitting: false,
@@ -56,6 +57,21 @@ class PaymentForm extends Component {
 			console.error({ err });
 		}
 	}
+	getSnapshotBeforeUpdate() {
+		const form = this.formRef.current;
+		const { submitted, confirmed } = this.context
+		if (!form && submitted && !confirmed) {
+			return true
+		}
+		return null
+	}
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if (!!snapshot) {
+			const target = this.formRef.current;
+			const top = offsetTop(target);
+			scrollToPoint(top);
+		}
+	}
 	componentWillUnmount() {
 		window.removeEventListener("message", this.handleMessage);
 	}
@@ -63,9 +79,10 @@ class PaymentForm extends Component {
 		// console.log({e})
 		const { type, tracking_vars } =
 			e.data && typeof e.data == "string" ? JSON.parse(e.data) : {};
-		if (!type || type !== "render receipt") {
-			return;
-		}
+		const types = [ "form error", "render receipt" ]
+		if (!types.includes(type)) {
+            return;
+        } 
 		const { origin } = e;
 		const isOrigin = this.context.msgUris.includes(origin);
 		if (!isOrigin) {
@@ -78,6 +95,11 @@ class PaymentForm extends Component {
 					type: "CONFIRMED",
 					trackingVars: tracking_vars,
 				});
+				break;
+			case "form error" :
+				const errors = [...this.state.errors]
+				errors["ccNumber"] = "Please verify your Payment Information and Try Again"
+				this.setState({ submitting: false, errors });
 				break;
 		}
 		return;
@@ -245,21 +267,23 @@ class PaymentForm extends Component {
 				return false;
 			}, 15000);
 
-			const { ccNumber, ExpiresYear, ExpiresMonth } = this.state.fields;
+			const { ccNumber, ExpiresYear, ExpiresMonth, cvnCode } = this.state.fields;
 			const ccChecked = this.state.ccChecked;
 			const isValid = checkValues(
 				ccChecked,
 				ccNumber,
 				ExpiresMonth,
-				ExpiresYear
+				ExpiresYear,
+				cvnCode
 			);
 			if (isValid.passes) {
-				const { ccCardType, ccNum, ccExpDate, transactionType } = isValid;
+				const { ccCardType, ccNum, ccExpDate, transactionType, ccCvn } = isValid;
 				document.querySelector('input[name="card_type"]').value = ccCardType;
 				document.querySelector('input[name="card_number"]').value = ccNum;
 				document.querySelector(
 					'input[name="card_expiry_date"]'
 				).value = ccExpDate;
+				document.querySelector('input[name="card_cvn"]').value = ccCvn
 				if (isValid.transactionType) {
 					document.querySelector(
 						'input[name="transaction_type"]'
@@ -316,18 +340,6 @@ class PaymentForm extends Component {
 	handleGoBackClick = e => {
 		e.preventDefault();
 		this.context.goBack({ type: "GO_BACK" });
-	};
-
-	componentDidCatch(error, info) {
-		console.error({ error, info });
-	}
-
-	scrollToTop = e => {
-		// scroll to top of form
-		const target = document.getElementById("react-giving-form");
-		const top = offsetTop(target);
-		// console.log({top})
-		scrollToPoint(top);
 	};
 
 	render() {
@@ -389,7 +401,7 @@ class PaymentForm extends Component {
 		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
 		return submitted && !confirmed ? (
-			<FormPanel onLoad={this.scrollToTop}>
+			<FormPanel ref={this.formRef}>
 				<form id="react-cc-form" onSubmit={this.assignValues}>
 					<div className="mboxDefault">
 						<FormHeader className="form-header__payment">
@@ -453,15 +465,39 @@ class PaymentForm extends Component {
 								handleInputChange={this.handleInputChange}
 							/>
 						</FormRow>
+						<FormRow className="cc-cvn-row">
+							<InputGroup
+								specialStyle="form-group--cvnCode"
+								type="text"
+								id="cvnCode"
+								label="CVV Code"
+								required={true}
+								maxLength={4}
+								placeholder="cvv"
+								value={fields.cvnCode}
+								handleInputChange={this.handleInputChange}
+								error={errors.cvnCode}
+								validation="\d*"
+							/>
+							<div className="cvn-code-info">
+								<a href="https://www.cbn.com/CVVNumber/CVV.html" target="_blank">What is my <span style={{letterSpacing:"1px"}}>CVV</span> Code?</a>
+							</div>
+						</FormRow>
 					</FieldSet>
+					<FormRow>
+						<FormLine />
+					</FormRow>
 					{this.renderProductSummary()}
+					<FormRow>
+						<FormLine />
+				</FormRow>
 					<FieldSet>
 						<legend>Form Submit Block</legend>
 						<SubmitButton
 							hasErrors={hasErrors}
 							handleSubmit={this.assignValues}
 							submitting={submitting}
-							value="Finish Donation &#10142;"
+							value="Finish Donation"
 						/>
 					</FieldSet>
 					<FormRow className="go-back-row">
@@ -496,4 +532,4 @@ class PaymentForm extends Component {
 
 PaymentForm.contextType = GivingFormContext;
 
-export default withErrorBoundary(PaymentForm);
+export default PaymentForm;

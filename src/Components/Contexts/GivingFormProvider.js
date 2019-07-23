@@ -521,6 +521,15 @@ class GivingFormProvider extends Component {
 									confirmationData,
 								},
 								() => {
+									try {
+										const url = window.location.origin + window.location.pathname
+                						const sDynamicPageUrl = url + ( url.charAt(url.length - 1) == "/" ? "payment" : "/payment" )
+										const sDynamicPageTitle = document.title + " > Payment"
+										window.omTrackDynamicCBNPage(sDynamicPageUrl, sDynamicPageTitle)
+									} catch (err) {
+										console.error("Call Submission Tracking Error")
+										console.error(err)
+									}
 									this.context.submitForm({
 										type: "SUBMIT_FORM",
 									});
@@ -592,6 +601,15 @@ class GivingFormProvider extends Component {
 			this.setState(
 				state => reducer(state, action),
 				() => {
+					try {
+						const url = window.location.origin + window.location.pathname
+                		const sDynamicPageUrl = url + ( url.charAt(url.length - 1) == "/" ? "thankyou" : "/thankyou" )
+						const sDynamicPageTitle = document.title + " > Confirm Credit Card"
+						window.omTrackDynamicCBNPage(sDynamicPageUrl, sDynamicPageTitle)
+					} catch (err) {
+						console.error("Call Submission Tracking Error")
+						console.error(err)
+					}
 					this.context.setConfirmed(action);
 				}
 			),
