@@ -70,6 +70,8 @@ function AddressBlock({
 							value={fields.State}
 							error={errors.State}
 							handleInputChange={handleInputChange}
+							required={fields.Country == "United States"}
+							disabled={fields.Country != "United States"}
 							options={[
 								<option key="state-base-0" value="" disabled="disabled">
 									State* &#9663;
@@ -87,7 +89,8 @@ function AddressBlock({
 							label="Zip"
 							placeholder="Zip*"
 							maxLength={fields.Country != "United States" ? 25 : 5}
-							required={true}
+							required={fields.Country == "United States"}
+							disabled={fields.Country != "United States"}
 							value={fields.Zip}
 							handleInputChange={handleInputChange}
 							error={errors.Zip}

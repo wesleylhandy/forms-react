@@ -46,7 +46,7 @@ class GivingForm extends Component {
 				Address2: "",
 				City: "",
 				State: "",
-				Country: this.props.allowInternational ? "" : "United States",
+				Country: "United States",
 				Emailaddress: "",
 				phone: "",
 				savePersonalInfo: true,

@@ -6,6 +6,7 @@ const AskArrayBtn = styled.div`
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
+	position: relative;
 	&.askbutton {
 		box-sizing: border-box;
 		height: 65px;
@@ -69,6 +70,14 @@ const AskArrayBtn = styled.div`
 		background-color: #333;
 		color: #fff;
 		border-color: #999;
+	}
+	div.club-level {
+		position: absolute;
+		font-weight: bold;
+		color: #DDB007;
+		text-align: center;
+		width: 100%;
+		margin-top: 8px;
 	}
 `;
 

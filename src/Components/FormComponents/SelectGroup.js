@@ -10,6 +10,7 @@ const SelectGroup = ({
 	value,
 	handleInputChange,
 	options,
+	disabled
 }) => {
 	return (
 		<FormGroup
@@ -24,6 +25,7 @@ const SelectGroup = ({
 				className={error ? "error" : ""}
 				id={id}
 				name={id}
+				disabled={disabled}
 				required={required}
 				value={value}
 				onChange={handleInputChange}

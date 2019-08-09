@@ -36419,7 +36419,7 @@ function (_Component) {
         var _getConfiguration = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
         _regenerator.default.mark(function _callee(_ref) {
-          var rootEntry, formType, initialState, generator, formName, proxyUri, isDrupal, _initialState, configurations, formConfig;
+          var rootEntry, formType, initialState, generator, formName, proxyUri, isLocal, isDrupal, isWordpress, _initialState, configurations, formConfig;
 
           return _regenerator.default.wrap(function _callee$(_context) {
             while (1) {
@@ -36430,28 +36430,30 @@ function (_Component) {
                   generator = rootEntry.dataset.environment ? rootEntry.dataset.environment.toLowerCase() : null;
                   formName = rootEntry.dataset.formName;
                   proxyUri = rootEntry.dataset.rest;
+                  isLocal = generator && generator.includes("local");
                   isDrupal = generator && generator.includes("drupal");
+                  isWordpress = generator && generator.includes("wordpress");
 
                   if (!isDrupal) {
-                    _context.next = 10;
+                    _context.next = 12;
                     break;
                   }
 
                   initialState = rootEntry.dataset.initialState;
-                  _context.next = 14;
+                  _context.next = 16;
                   break;
 
-                case 10:
-                  proxyUri = "".concat("http://10.100.43.42", ":").concat("8080");
-                  _context.next = 13;
+                case 12:
+                  proxyUri = "http://".concat("10.100.43.21", ":").concat("8080");
+                  _context.next = 15;
                   return (0, _fetchHelpers.callApi)("".concat(proxyUri, "/config/form-config.json"), {
                     method: "GET"
                   });
 
-                case 13:
+                case 15:
                   initialState = _context.sent;
 
-                case 14:
+                case 16:
                   _initialState = initialState, configurations = _initialState.configurations;
                   formConfig = Array.isArray(configurations) ? configurations.filter(function (config) {
                     return config.formType == formType;
@@ -36468,7 +36470,7 @@ function (_Component) {
                   }
 
                   if (!Object.keys(formConfig).length) {
-                    _context.next = 22;
+                    _context.next = 24;
                     break;
                   }
 
@@ -36482,18 +36484,18 @@ function (_Component) {
                     });
                   });
 
-                  _context.next = 23;
+                  _context.next = 25;
                   break;
 
-                case 22:
+                case 24:
                   throw new Error("Unable to Load Configuration for ".concat(formType));
 
-                case 23:
-                  _context.next = 28;
+                case 25:
+                  _context.next = 30;
                   break;
 
-                case 25:
-                  _context.prev = 25;
+                case 27:
+                  _context.prev = 27;
                   _context.t0 = _context["catch"](1);
 
                   _this.setState(function (state) {
@@ -36506,12 +36508,12 @@ function (_Component) {
                     alert("There was an internal error loading this form. Please check back later or call us at 1-800-759-0700");
                   });
 
-                case 28:
+                case 30:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[1, 25]]);
+          }, _callee, null, [[1, 27]]);
         }));
 
         function getConfiguration(_x) {
@@ -40918,9 +40920,17 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
   return a;
 };
 
+var clubGivingRootEntry = document.getElementById("club-form-root");
 var givingRootEntry = document.getElementById("giving-form-root");
 var signupRootEntry = document.getElementById("signup-form-root");
 var productRootEntry = document.getElementById("product-form-root");
+
+if (clubGivingRootEntry) {
+  ReactDOM.render((0, _core.jsx)(_FormConfigProvider.default, null, (0, _core.jsx)(_App.default, {
+    rootEntry: clubGivingRootEntry,
+    formType: "club"
+  })), clubGivingRootEntry);
+}
 
 if (givingRootEntry) {
   ReactDOM.render((0, _core.jsx)(_FormConfigProvider.default, null, (0, _core.jsx)(_App.default, {
@@ -40952,6 +40962,7 @@ if (productRootEntry) {
     return;
   }
 
+  reactHotLoader.register(clubGivingRootEntry, "clubGivingRootEntry", "/Users/wehand/Code/react-form-drupal/src/index.js");
   reactHotLoader.register(givingRootEntry, "givingRootEntry", "/Users/wehand/Code/react-form-drupal/src/index.js");
   reactHotLoader.register(signupRootEntry, "signupRootEntry", "/Users/wehand/Code/react-form-drupal/src/index.js");
   reactHotLoader.register(productRootEntry, "productRootEntry", "/Users/wehand/Code/react-form-drupal/src/index.js");
@@ -41217,7 +41228,7 @@ var FormGroup = (0, _styledBase.default)("div", {
   return {
     minHeight: props.minHeight
   };
-}, "}input::placeholder,select::placeholder,textarea::placeholder{font-weight:600;color:#747474;}input:active,input:hover,input:focus,select:active,select:hover,select:focus,textarea:active,textarea:hover,textarea:focus{border:1px solid #777777;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px #747474;background-color:#fff;outline:none;}select:invalid{color:#747474;}input:disabled,select:disabled,textarea:disabled{background:#ededed;}input.error,select.error,textarea.error{box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px crimson;}@media screen and (max-width:613px){&.form-group--Lastname{flex-basis:calc(100% - 130px);margin-left:0;}&.form-group--Middlename{width:100%;margin-left:0;}&.form-group--Firstname{flex-basis:calc(100% - 130px);}}@media screen and (max-width:500px){&.form-group--Phone,&.form-group--Email{width:100%;}}@media screen and (max-width:414px){&.form-group--State,&.form-group--City{max-width:100%;width:100%;}&.form-group--Firstname,&.form-group--Lastname{width:100%;flex-basis:auto;}}@media screen and (max-width:365px){&.form-group--Zip,&.form-group--Country{max-width:100%;width:100%;}}" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Hcm91cC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHNEIiLCJmaWxlIjoiRm9ybUdyb3VwLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEZvcm1Hcm91cCA9IHN0eWxlZC5kaXZgXG5cdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0bWFyZ2luLWJvdHRvbTogY2FsYygxOXB4ICogMC43KTtcblx0bWFyZ2luLXRvcDogY2FsYygxOXB4ICogMC43KTtcblx0ZmxleDogMSAxIGF1dG87XG5cdCYuZm9ybS1ncm91cC0tVGl0bGUsXG5cdCYuZm9ybS1ncm91cC0tU3VmZml4IHtcblx0XHR3aWR0aDogMTIwcHg7XG5cdFx0ZmxleDogMCAwIDEyMHB4O1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1GaXJzdG5hbWUsXG5cdCYuZm9ybS1ncm91cC0tTGFzdG5hbWUge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1TdGF0ZSxcblx0Ji5mb3JtLWdyb3VwLS1Db3VudHJ5IHtcblx0XHRtYXgtd2lkdGg6IDUwJTtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLVBob25lLFxuXHQmLmZvcm0tZ3JvdXAtLUVtYWlsIHtcblx0XHR3aWR0aDogNTAlO1xuXHR9XG5cdCYuZm9ybS1ncm91cC0tY3ZuQ29kZSB7XG5cdFx0d2lkdGg6IDgwcHg7XG5cdFx0ZmxleDogMCAwIDgwcHg7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRtYXJnaW4tcmlnaHQ6IDEwcHg7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1jdm5Db2RlICsgZGl2LmN2bi1jb2RlLWluZm8ge1xuXHRcdGRpc3BsYXk6IGJsb2NrO1xuXHRcdGFsaWduLXNlbGY6IGNlbnRlcjtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLWN2bkNvZGUgKyBkaXYuY3ZuLWNvZGUtaW5mbz5hIHtcblx0XHRjb2xvcjogIzQ0NDtcblx0XHR0cmFuc2l0aW9uOiBjb2xvciAyMDBtcyBlYXNlLWluLW91dDtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLWN2bkNvZGUgKyBkaXYuY3ZuLWNvZGUtaW5mbz5hOmhvdmVyLFxuXHQmLmZvcm0tZ3JvdXAtLWN2bkNvZGUgKyBkaXYuY3ZuLWNvZGUtaW5mbz5hOmFjdGl2ZSxcblx0Ji5mb3JtLWdyb3VwLS1jdm5Db2RlICsgZGl2LmN2bi1jb2RlLWluZm8+YTpmb2N1cyB7XG5cdFx0Y29sb3I6ICM3NDc0NzQ7XG5cdH1cblx0bGFiZWwge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Y29sb3I6ICMzMzM7XG5cdFx0Zm9udC1zaXplOiBjYWxjKDE5cHggKiAwLjcpO1xuXHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0bWFyZ2luLWJvdHRvbTogMDtcblx0XHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdFx0b3BhY2l0eTogMDtcblx0XHRib3R0b206IGNhbGMoMTAwJSAtIDJweCk7XG5cdFx0bGVmdDogMTBweDtcblx0XHR0cmFuc2l0aW9uOiBvcGFjaXR5IDE1MG1zIGVhc2UtaW4tb3V0O1xuXHR9XG5cdGxhYmVsIHNwYW4ge1xuXHRcdGNvbG9yOiBjcmltc29uO1xuXHR9XG5cdCY6aG92ZXIgbGFiZWwsXG5cdCY6YWN0aXZlIGxhYmVsLFxuXHQmOmZvY3VzIGxhYmVsIHtcblx0XHRvcGFjaXR5OiAxO1xuXHR9XG5cdGlucHV0LFxuXHRzZWxlY3QsXG5cdHRleHRhcmVhIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGNvbG9yOiAjMzMzO1xuXHRcdGZvbnQtc2l6ZTogMTlweDtcblx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdGhlaWdodDogNDRweDtcblx0XHRkaXNwbGF5OiBibG9jaztcblx0XHR3aWR0aDogMTAwJTtcblx0XHRtYXJnaW4tdG9wOiA1cHg7XG5cdFx0cGFkZGluZzogMCAxMHB4O1xuXHRcdGxpbmUtaGVpZ2h0OiA0NHB4ICFpbXBvcnRhbnQ7XG5cdFx0YmFja2dyb3VuZDogbm9uZTtcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZjBmMGYwO1xuXHRcdGJvcmRlcjogMXB4IHNvbGlkICNjY2M7XG5cdFx0Ym9yZGVyLXJhZGl1czogMDtcblx0XHRib3gtc2hhZG93OiBpbnNldCAwIDFweCAxcHggcmdiYSgwLCAwLCAwLCAwLjA3NSk7XG5cdFx0dHJhbnNpdGlvbjogYm9yZGVyLWNvbG9yIGVhc2UtaW4tb3V0IDAuMTVzLCBib3gtc2hhZG93IGVhc2UtaW4tb3V0IDAuMTVzO1xuXHRcdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0XHRtYXJnaW4tYm90dG9tOiAwO1xuXHR9XG5cdHRleHRhcmVhIHtcblx0XHRoZWlnaHQ6IGF1dG87XG5cdFx0JHtwcm9wcyA9PiAoe1xuXHRcdFx0bWluSGVpZ2h0OiBwcm9wcy5taW5IZWlnaHQsXG5cdFx0fSl9XG5cdH1cblx0aW5wdXQ6OnBsYWNlaG9sZGVyLFxuXHRzZWxlY3Q6OnBsYWNlaG9sZGVyLFxuXHR0ZXh0YXJlYTo6cGxhY2Vob2xkZXIge1xuXHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0Y29sb3I6ICM3NDc0NzQ7XG5cdH1cblx0aW5wdXQ6YWN0aXZlLFxuXHRpbnB1dDpob3Zlcixcblx0aW5wdXQ6Zm9jdXMsXG5cdHNlbGVjdDphY3RpdmUsXG5cdHNlbGVjdDpob3Zlcixcblx0c2VsZWN0OmZvY3VzLFxuXHR0ZXh0YXJlYTphY3RpdmUsXG5cdHRleHRhcmVhOmhvdmVyLFxuXHR0ZXh0YXJlYTpmb2N1cyB7XG5cdFx0Ym9yZGVyOiAxcHggc29saWQgIzc3Nzc3Nztcblx0XHRib3gtc2hhZG93OiBpbnNldCAwIDFweCAxcHggcmdiYSgwLCAwLCAwLCAwLjA3NSksIDAgMCA4cHggIzc0NzQ3NDtcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmO1xuXHRcdG91dGxpbmU6IG5vbmU7XG5cdH1cblx0c2VsZWN0OmludmFsaWQge1xuXHRcdGNvbG9yOiAjNzQ3NDc0O1xuXHR9XG5cdGlucHV0OmRpc2FibGVkLFxuXHRzZWxlY3Q6ZGlzYWJsZWQsXG5cdHRleHRhcmVhOmRpc2FibGVkIHtcblx0XHRiYWNrZ3JvdW5kOiAjZWRlZGVkO1xuXHR9XG5cdGlucHV0LmVycm9yLFxuXHRzZWxlY3QuZXJyb3IsXG5cdHRleHRhcmVhLmVycm9yIHtcblx0XHRib3gtc2hhZG93OiBpbnNldCAwIDFweCAxcHggcmdiYSgwLCAwLCAwLCAwLjA3NSksIDAgMCA4cHggY3JpbXNvbjtcblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MTNweCkge1xuXHRcdCYuZm9ybS1ncm91cC0tTGFzdG5hbWUge1xuXHRcdFx0ZmxleC1iYXNpczogY2FsYygxMDAlIC0gMTMwcHgpO1xuXHRcdFx0bWFyZ2luLWxlZnQ6IDA7XG5cdFx0fVxuXHRcdCYuZm9ybS1ncm91cC0tTWlkZGxlbmFtZSB7XG5cdFx0XHR3aWR0aDogMTAwJTtcblx0XHRcdG1hcmdpbi1sZWZ0OiAwO1xuXHRcdH1cblx0XHQmLmZvcm0tZ3JvdXAtLUZpcnN0bmFtZSB7XG5cdFx0XHRmbGV4LWJhc2lzOiBjYWxjKDEwMCUgLSAxMzBweCk7XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDUwMHB4KSB7XG5cdFx0Ji5mb3JtLWdyb3VwLS1QaG9uZSxcblx0XHQmLmZvcm0tZ3JvdXAtLUVtYWlsIHtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA0MTRweCkge1xuXHRcdCYuZm9ybS1ncm91cC0tU3RhdGUsXG5cdFx0Ji5mb3JtLWdyb3VwLS1DaXR5IHtcblx0XHRcdG1heC13aWR0aDogMTAwJTtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdH1cblx0XHQmLmZvcm0tZ3JvdXAtLUZpcnN0bmFtZSxcblx0XHQmLmZvcm0tZ3JvdXAtLUxhc3RuYW1lIHtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdFx0ZmxleC1iYXNpczogYXV0bztcblx0XHR9XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogMzY1cHgpIHtcblx0XHQmLmZvcm0tZ3JvdXAtLVppcCxcblx0XHQmLmZvcm0tZ3JvdXAtLUNvdW50cnkge1xuXHRcdFx0bWF4LXdpZHRoOiAxMDAlO1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0fVxuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBGb3JtR3JvdXA7XG4iXX0= */"));
+}, "}input::placeholder,select::placeholder,textarea::placeholder{font-weight:600;color:#747474;}input:active,input:hover,input:focus,select:active,select:hover,select:focus,textarea:active,textarea:hover,textarea:focus{border:1px solid #777777;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px #747474;background-color:#fff;outline:none;}select:invalid{color:#747474;}input:disabled,select:disabled,textarea:disabled{background:#919191;cursor:not-allowed;}input.error,select.error,textarea.error{box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px crimson;}@media screen and (max-width:613px){&.form-group--Lastname{flex-basis:calc(100% - 130px);margin-left:0;}&.form-group--Middlename{width:100%;margin-left:0;}&.form-group--Firstname{flex-basis:calc(100% - 130px);}}@media screen and (max-width:500px){&.form-group--Phone,&.form-group--Email{width:100%;}}@media screen and (max-width:414px){&.form-group--State,&.form-group--City{max-width:100%;width:100%;}&.form-group--Firstname,&.form-group--Lastname{width:100%;flex-basis:auto;}}@media screen and (max-width:365px){&.form-group--Zip,&.form-group--Country{max-width:100%;width:100%;}}" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Hcm91cC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHNEIiLCJmaWxlIjoiRm9ybUdyb3VwLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEZvcm1Hcm91cCA9IHN0eWxlZC5kaXZgXG5cdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0bWFyZ2luLWJvdHRvbTogY2FsYygxOXB4ICogMC43KTtcblx0bWFyZ2luLXRvcDogY2FsYygxOXB4ICogMC43KTtcblx0ZmxleDogMSAxIGF1dG87XG5cdCYuZm9ybS1ncm91cC0tVGl0bGUsXG5cdCYuZm9ybS1ncm91cC0tU3VmZml4IHtcblx0XHR3aWR0aDogMTIwcHg7XG5cdFx0ZmxleDogMCAwIDEyMHB4O1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1GaXJzdG5hbWUsXG5cdCYuZm9ybS1ncm91cC0tTGFzdG5hbWUge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1TdGF0ZSxcblx0Ji5mb3JtLWdyb3VwLS1Db3VudHJ5IHtcblx0XHRtYXgtd2lkdGg6IDUwJTtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLVBob25lLFxuXHQmLmZvcm0tZ3JvdXAtLUVtYWlsIHtcblx0XHR3aWR0aDogNTAlO1xuXHR9XG5cdCYuZm9ybS1ncm91cC0tY3ZuQ29kZSB7XG5cdFx0d2lkdGg6IDgwcHg7XG5cdFx0ZmxleDogMCAwIDgwcHg7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRtYXJnaW4tcmlnaHQ6IDEwcHg7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1jdm5Db2RlICsgZGl2LmN2bi1jb2RlLWluZm8ge1xuXHRcdGRpc3BsYXk6IGJsb2NrO1xuXHRcdGFsaWduLXNlbGY6IGNlbnRlcjtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLWN2bkNvZGUgKyBkaXYuY3ZuLWNvZGUtaW5mbz5hIHtcblx0XHRjb2xvcjogIzQ0NDtcblx0XHR0cmFuc2l0aW9uOiBjb2xvciAyMDBtcyBlYXNlLWluLW91dDtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLWN2bkNvZGUgKyBkaXYuY3ZuLWNvZGUtaW5mbz5hOmhvdmVyLFxuXHQmLmZvcm0tZ3JvdXAtLWN2bkNvZGUgKyBkaXYuY3ZuLWNvZGUtaW5mbz5hOmFjdGl2ZSxcblx0Ji5mb3JtLWdyb3VwLS1jdm5Db2RlICsgZGl2LmN2bi1jb2RlLWluZm8+YTpmb2N1cyB7XG5cdFx0Y29sb3I6ICM3NDc0NzQ7XG5cdH1cblx0bGFiZWwge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Y29sb3I6ICMzMzM7XG5cdFx0Zm9udC1zaXplOiBjYWxjKDE5cHggKiAwLjcpO1xuXHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0bWFyZ2luLWJvdHRvbTogMDtcblx0XHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdFx0b3BhY2l0eTogMDtcblx0XHRib3R0b206IGNhbGMoMTAwJSAtIDJweCk7XG5cdFx0bGVmdDogMTBweDtcblx0XHR0cmFuc2l0aW9uOiBvcGFjaXR5IDE1MG1zIGVhc2UtaW4tb3V0O1xuXHR9XG5cdGxhYmVsIHNwYW4ge1xuXHRcdGNvbG9yOiBjcmltc29uO1xuXHR9XG5cdCY6aG92ZXIgbGFiZWwsXG5cdCY6YWN0aXZlIGxhYmVsLFxuXHQmOmZvY3VzIGxhYmVsIHtcblx0XHRvcGFjaXR5OiAxO1xuXHR9XG5cdGlucHV0LFxuXHRzZWxlY3QsXG5cdHRleHRhcmVhIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGNvbG9yOiAjMzMzO1xuXHRcdGZvbnQtc2l6ZTogMTlweDtcblx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdGhlaWdodDogNDRweDtcblx0XHRkaXNwbGF5OiBibG9jaztcblx0XHR3aWR0aDogMTAwJTtcblx0XHRtYXJnaW4tdG9wOiA1cHg7XG5cdFx0cGFkZGluZzogMCAxMHB4O1xuXHRcdGxpbmUtaGVpZ2h0OiA0NHB4ICFpbXBvcnRhbnQ7XG5cdFx0YmFja2dyb3VuZDogbm9uZTtcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZjBmMGYwO1xuXHRcdGJvcmRlcjogMXB4IHNvbGlkICNjY2M7XG5cdFx0Ym9yZGVyLXJhZGl1czogMDtcblx0XHRib3gtc2hhZG93OiBpbnNldCAwIDFweCAxcHggcmdiYSgwLCAwLCAwLCAwLjA3NSk7XG5cdFx0dHJhbnNpdGlvbjogYm9yZGVyLWNvbG9yIGVhc2UtaW4tb3V0IDAuMTVzLCBib3gtc2hhZG93IGVhc2UtaW4tb3V0IDAuMTVzO1xuXHRcdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0XHRtYXJnaW4tYm90dG9tOiAwO1xuXHR9XG5cdHRleHRhcmVhIHtcblx0XHRoZWlnaHQ6IGF1dG87XG5cdFx0JHtwcm9wcyA9PiAoe1xuXHRcdFx0bWluSGVpZ2h0OiBwcm9wcy5taW5IZWlnaHQsXG5cdFx0fSl9XG5cdH1cblx0aW5wdXQ6OnBsYWNlaG9sZGVyLFxuXHRzZWxlY3Q6OnBsYWNlaG9sZGVyLFxuXHR0ZXh0YXJlYTo6cGxhY2Vob2xkZXIge1xuXHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0Y29sb3I6ICM3NDc0NzQ7XG5cdH1cblx0aW5wdXQ6YWN0aXZlLFxuXHRpbnB1dDpob3Zlcixcblx0aW5wdXQ6Zm9jdXMsXG5cdHNlbGVjdDphY3RpdmUsXG5cdHNlbGVjdDpob3Zlcixcblx0c2VsZWN0OmZvY3VzLFxuXHR0ZXh0YXJlYTphY3RpdmUsXG5cdHRleHRhcmVhOmhvdmVyLFxuXHR0ZXh0YXJlYTpmb2N1cyB7XG5cdFx0Ym9yZGVyOiAxcHggc29saWQgIzc3Nzc3Nztcblx0XHRib3gtc2hhZG93OiBpbnNldCAwIDFweCAxcHggcmdiYSgwLCAwLCAwLCAwLjA3NSksIDAgMCA4cHggIzc0NzQ3NDtcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmO1xuXHRcdG91dGxpbmU6IG5vbmU7XG5cdH1cblx0c2VsZWN0OmludmFsaWQge1xuXHRcdGNvbG9yOiAjNzQ3NDc0O1xuXHR9XG5cdGlucHV0OmRpc2FibGVkLFxuXHRzZWxlY3Q6ZGlzYWJsZWQsXG5cdHRleHRhcmVhOmRpc2FibGVkIHtcblx0XHRiYWNrZ3JvdW5kOiAjOTE5MTkxO1xuXHRcdGN1cnNvcjogbm90LWFsbG93ZWQ7XG5cdH1cblx0aW5wdXQuZXJyb3IsXG5cdHNlbGVjdC5lcnJvcixcblx0dGV4dGFyZWEuZXJyb3Ige1xuXHRcdGJveC1zaGFkb3c6IGluc2V0IDAgMXB4IDFweCByZ2JhKDAsIDAsIDAsIDAuMDc1KSwgMCAwIDhweCBjcmltc29uO1xuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYxM3B4KSB7XG5cdFx0Ji5mb3JtLWdyb3VwLS1MYXN0bmFtZSB7XG5cdFx0XHRmbGV4LWJhc2lzOiBjYWxjKDEwMCUgLSAxMzBweCk7XG5cdFx0XHRtYXJnaW4tbGVmdDogMDtcblx0XHR9XG5cdFx0Ji5mb3JtLWdyb3VwLS1NaWRkbGVuYW1lIHtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdFx0bWFyZ2luLWxlZnQ6IDA7XG5cdFx0fVxuXHRcdCYuZm9ybS1ncm91cC0tRmlyc3RuYW1lIHtcblx0XHRcdGZsZXgtYmFzaXM6IGNhbGMoMTAwJSAtIDEzMHB4KTtcblx0XHR9XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNTAwcHgpIHtcblx0XHQmLmZvcm0tZ3JvdXAtLVBob25lLFxuXHRcdCYuZm9ybS1ncm91cC0tRW1haWwge1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDQxNHB4KSB7XG5cdFx0Ji5mb3JtLWdyb3VwLS1TdGF0ZSxcblx0XHQmLmZvcm0tZ3JvdXAtLUNpdHkge1xuXHRcdFx0bWF4LXdpZHRoOiAxMDAlO1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0fVxuXHRcdCYuZm9ybS1ncm91cC0tRmlyc3RuYW1lLFxuXHRcdCYuZm9ybS1ncm91cC0tTGFzdG5hbWUge1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0XHRmbGV4LWJhc2lzOiBhdXRvO1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiAzNjVweCkge1xuXHRcdCYuZm9ybS1ncm91cC0tWmlwLFxuXHRcdCYuZm9ybS1ncm91cC0tQ291bnRyeSB7XG5cdFx0XHRtYXgtd2lkdGg6IDEwMCU7XG5cdFx0XHR3aWR0aDogMTAwJTtcblx0XHR9XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1Hcm91cDtcbiJdfQ== */"));
 var _default = FormGroup;
 var _default2 = _default;
 exports.default = _default2;
@@ -41423,7 +41434,8 @@ var SelectGroup = function SelectGroup(_ref) {
       error = _ref.error,
       value = _ref.value,
       handleInputChange = _ref.handleInputChange,
-      options = _ref.options;
+      options = _ref.options,
+      disabled = _ref.disabled;
   return (0, _core.jsx)(_FormGroup.default, {
     id: "form-field-".concat(id),
     className: "input-group ".concat(specialStyle ? specialStyle : "")
@@ -41433,6 +41445,7 @@ var SelectGroup = function SelectGroup(_ref) {
     className: error ? "error" : "",
     id: id,
     name: id,
+    disabled: disabled,
     required: required,
     value: value,
     onChange: handleInputChange,
@@ -42374,6 +42387,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _core = require("@emotion/core");
 
 var _react = _interopRequireWildcard(require("react"));
@@ -42390,9 +42405,9 @@ var _renderStateOptions = _interopRequireDefault(require("../../../helpers/rende
 
 var _dropdowns = require("../../../config/dropdowns.json");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (function () {
   var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
@@ -42404,6 +42419,8 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
 };
 
 function AddressBlock(_ref) {
+  var _EmotionJSX;
+
   var fields = _ref.fields,
       errors = _ref.errors,
       handleInputChange = _ref.handleInputChange,
@@ -42452,19 +42469,18 @@ function AddressBlock(_ref) {
     value: fields.City,
     handleInputChange: handleInputChange,
     error: errors.City
-  }), (0, _core.jsx)(_SelectGroup.default, {
+  }), (0, _core.jsx)(_SelectGroup.default, (_EmotionJSX = {
     id: "State",
     specialStyle: "form-group--State",
     required: true,
     value: fields.State,
     error: errors.State,
-    handleInputChange: handleInputChange,
-    options: [(0, _core.jsx)("option", {
-      key: "state-base-0",
-      value: "",
-      disabled: "disabled"
-    }, "State* \u25BF"), (0, _renderStateOptions.default)(allowInternational)]
-  })), (0, _core.jsx)(_FormRow.default, {
+    handleInputChange: handleInputChange
+  }, (0, _defineProperty2.default)(_EmotionJSX, "required", fields.Country == "United States"), (0, _defineProperty2.default)(_EmotionJSX, "disabled", fields.Country != "United States"), (0, _defineProperty2.default)(_EmotionJSX, "options", [(0, _core.jsx)("option", {
+    key: "state-base-0",
+    value: "",
+    disabled: "disabled"
+  }, "State* \u25BF"), (0, _renderStateOptions.default)(allowInternational)]), _EmotionJSX))), (0, _core.jsx)(_FormRow.default, {
     className: "zip-country-row"
   }, (0, _core.jsx)(_InputGroup.default, {
     type: "text",
@@ -42473,7 +42489,8 @@ function AddressBlock(_ref) {
     label: "Zip",
     placeholder: "Zip*",
     maxLength: fields.Country != "United States" ? 25 : 5,
-    required: true,
+    required: fields.Country == "United States",
+    disabled: fields.Country != "United States",
     value: fields.Zip,
     handleInputChange: handleInputChange,
     error: errors.Zip,
@@ -42546,7 +42563,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../StyledComponents/FormRow":"src/Components/FormComponents/StyledComponents/FormRow.js","../StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../InputGroup":"src/Components/FormComponents/InputGroup.js","../SelectGroup":"src/Components/FormComponents/SelectGroup.js","../../../helpers/renderStateOptions":"src/helpers/renderStateOptions.js","../../../config/dropdowns.json":"src/config/dropdowns.json"}],"src/Components/FormComponents/StyledComponents/CheckboxGroup.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../StyledComponents/FormRow":"src/Components/FormComponents/StyledComponents/FormRow.js","../StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../InputGroup":"src/Components/FormComponents/InputGroup.js","../SelectGroup":"src/Components/FormComponents/SelectGroup.js","../../../helpers/renderStateOptions":"src/helpers/renderStateOptions.js","../../../config/dropdowns.json":"src/config/dropdowns.json"}],"src/Components/FormComponents/StyledComponents/CheckboxGroup.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42772,7 +42789,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50163" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51982" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

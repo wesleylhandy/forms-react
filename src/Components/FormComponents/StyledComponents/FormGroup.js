@@ -117,7 +117,8 @@ const FormGroup = styled.div`
 	input:disabled,
 	select:disabled,
 	textarea:disabled {
-		background: #ededed;
+		background: #919191;
+		cursor: not-allowed;
 	}
 	input.error,
 	select.error,

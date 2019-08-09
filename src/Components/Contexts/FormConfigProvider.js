@@ -4,10 +4,10 @@ import { callApi } from "../../helpers/fetch-helpers";
 export const FormConfigContext = React.createContext();
 
 const reducer = (state, action) => {
-	const { type, status, formConfig } = action;
+	const { type, status, formConfig, cssConfig } = action;
 	switch (type) {
 		case "INIT_FORM_STATE":
-			return { ...state, status, formConfig };
+			return { ...state, status, formConfig, cssConfig };
 			break;
 		case "LOAD_ERROR":
 			return { ...state, status };
@@ -28,21 +28,30 @@ class FormConfigProvider extends Component {
 	state = {
 		status: "initial",
 		formConfig: {},
+		cssConfig: {},
 		submitted: false,
 		confirmed: false,
 		getConfiguration: async ({ rootEntry, formType }) => {
-			let initialState;
+			let initialState = {}, cssConfig = {}, formConfig = {};
 			try {
 				const generator = rootEntry.dataset.environment
 					? rootEntry.dataset.environment.toLowerCase()
 					: null;
 				const formName = rootEntry.dataset.formName;
 				let proxyUri = rootEntry.dataset.rest;
+				const isLocal = generator && generator.includes("local");
 				const isDrupal = generator && generator.includes("drupal");
+				const isWordpress = generator && generator.includes("wordpress");
 				if (isDrupal) {
 					initialState = rootEntry.dataset.initialState;
+				} else if (isWordpress) {
+					[cssConfig, initialState] = await Promise.all([
+						callApi(cssConfigUrl, {method: 'GET'}),
+						callApi(formConfigUrl, {method: 'GET'})
+					])
+					proxyUri = `${proxyUri}cbngiving/v1/${formName}`
 				} else {
-					proxyUri = `${process.env.DEV_SERVER_IP}:${process.env.DEV_SERVER_PORT}`;
+					proxyUri = `http://${process.env.DEV_SERVER_IP}:${process.env.DEV_SERVER_PORT}`;
 					initialState = await callApi(`${proxyUri}/config/form-config.json`, {
 						method: "GET",
 					});
@@ -50,9 +59,9 @@ class FormConfigProvider extends Component {
 
 				const { configurations } = initialState;
 
-				const formConfig = Array.isArray(configurations)
+				formConfig = Array.isArray(configurations)
 					? configurations.filter(config => config.formType == formType)[0]
-					: {};
+					: initialState;
 
 				if (formConfig.mode === "production") {
 					if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
@@ -66,11 +75,12 @@ class FormConfigProvider extends Component {
 					}
 				}
 				if (Object.keys(formConfig).length) {
-					formConfig.proxy = isDrupal ? proxyUri : `${proxyUri}/${formType}`;
+					formConfig.proxy = isLocal ? `${proxyUri}/${formType}` : proxyUri;
 					this.setState(state =>
 						reducer(state, {
 							type: "INIT_FORM_STATE",
 							formConfig,
+							cssConfig,
 							status: "loaded",
 						})
 					);

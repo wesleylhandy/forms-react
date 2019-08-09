@@ -249,5 +249,5 @@ export const checkValues = (ccCardType, ccNum, ccExpMonth, ccExpYear, cvnCode) =
  * @returns {Boolean}
  */
 function checkCVNCode(cardType, cvnCode) {
-    return /^\d{3,4}$/.test(cvnCode) && ( ( cardType === "004" && cvnCode.length == 4 ) || (cardType !== "004" && cvnCode.length == 3) );
+    return /^\d{3,4}$/.test(cvnCode) && ( ( cardType === "003" && cvnCode.length == 4 ) || (cardType !== "003" && cvnCode.length == 3) );
 }
