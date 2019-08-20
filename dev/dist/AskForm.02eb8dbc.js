@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/Components/Forms/SignUpForm.js":[function(require,module,exports) {
+})({"src/Components/Forms/AskForm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -125,39 +125,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
-var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
-var _core = require("@emotion/core");
-
 var _react = _interopRequireWildcard(require("react"));
 
-var _SignUpFormProvider = require("../Contexts/SignUpFormProvider");
-
-var _FormPanel = _interopRequireDefault(require("../FormComponents/StyledComponents/FormPanel"));
-
-var _FieldSet = _interopRequireDefault(require("../FormComponents/StyledComponents/FieldSet"));
-
-var _FormHeader = _interopRequireDefault(require("../FormComponents/StyledComponents/FormHeader"));
-
-var _NameBlock = _interopRequireDefault(require("../FormComponents/Blocks/NameBlock"));
-
-var _AddressBlock = _interopRequireDefault(require("../FormComponents/Blocks/AddressBlock"));
-
-var _SubmitButton = _interopRequireDefault(require("../FormComponents/SubmitButton"));
-
-var _Spinner = _interopRequireDefault(require("../StyledComponents/Spinner"));
+var _GivingFormProvider = require("../Contexts/GivingFormProvider");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -172,162 +152,26 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
   return a;
 };
 
-var SignUpForm =
+var AskForm =
 /*#__PURE__*/
 function (_Component) {
-  (0, _inherits2.default)(SignUpForm, _Component);
+  (0, _inherits2.default)(AskForm, _Component);
 
-  function SignUpForm() {
-    var _getPrototypeOf2;
-
-    var _this;
-
-    (0, _classCallCheck2.default)(this, SignUpForm);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(SignUpForm)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    _this.handleInputChange = function (e) {
-      var target = e.target;
-      var value = target.type === "checkbox" ? target.checked : target.value;
-      var name = target.name;
-
-      _this.context.validateAndUpdateField({
-        type: "UPDATE_FIELD",
-        name: name,
-        value: value
-      });
-    };
-
-    _this.handleSubmit =
-    /*#__PURE__*/
-    function () {
-      var _ref = (0, _asyncToGenerator2.default)(
-      /*#__PURE__*/
-      _regenerator.default.mark(function _callee(e) {
-        return _regenerator.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                e.preventDefault();
-
-                _this.context.submitSignUpForm();
-
-              case 2:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      return function (_x) {
-        return _ref.apply(this, arguments);
-      };
-    }();
-
-    return _this;
+  function AskForm() {
+    (0, _classCallCheck2.default)(this, AskForm);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(AskForm).apply(this, arguments));
   }
 
-  (0, _createClass2.default)(SignUpForm, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var fields = {
-        Title: "",
-        Firstname: "",
-        Middlename: "",
-        Lastname: "",
-        Suffix: "",
-        Spousename: "",
-        Emailaddress: "",
-        phone: "",
-        savePersonalInfo: true
-      };
-
-      if (this.context.getAddress) {
-        fields.Address1 = "";
-        fields.Address2 = "";
-        fields.City = "";
-        fields.State = "";
-        fields.Country = this.props.allowInternational ? "" : "United States";
-      }
-
-      var errors = {};
-
-      for (var field in fields) {
-        errors[field] = "";
-      }
-
-      this.context.initFields({
-        type: "INIT_FORM_STATE",
-        fields: fields,
-        errors: errors
-      });
-    }
-  }, {
+  (0, _createClass2.default)(AskForm, [{
     key: "render",
     value: function render() {
-      var _this$props = this.props,
-          formTitle = _this$props.formTitle,
-          submitButtonText = _this$props.submitButtonText,
-          allowInternational = _this$props.allowInternational,
-          getAddress = _this$props.getAddress,
-          getName = _this$props.getName,
-          getPhone = _this$props.getPhone,
-          getHonorific = _this$props.getHonorific,
-          getSuffix = _this$props.getSuffix,
-          getMiddleName = _this$props.getMiddleName,
-          getSpouseInfo = _this$props.getSpouseInfo;
       var _this$context = this.context,
           errors = _this$context.errors,
           fields = _this$context.fields,
           initialized = _this$context.initialized,
           submitting = _this$context.submitting,
           submitted = _this$context.submitted;
-      var hasErrors = Object.values(errors).filter(function (val) {
-        return val && val.length > 0;
-      }).length > 0;
-      return !submitted ? (0, _core.jsx)("form", {
-        id: "react-signup-form",
-        autoComplete: "off",
-        onSubmit: this.handleSubmit
-      }, (0, _core.jsx)(_FormHeader.default, {
-        className: "form-title form-header"
-      }, formTitle), initialized ? (0, _core.jsx)(_FormPanel.default, {
-        className: "form-panel"
-      }, (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Name and Address Block"), (0, _core.jsx)(_FormPanel.default, {
-        className: "name-address__info"
-      }, (0, _core.jsx)(_FormHeader.default, {
-        className: "form-header"
-      }), getName && (0, _core.jsx)(_NameBlock.default, {
-        fields: fields,
-        errors: errors,
-        getHonorific: getHonorific,
-        getMiddleName: getMiddleName,
-        getSuffix: getSuffix,
-        getSpouseInfo: getSpouseInfo,
-        handleInputChange: this.handleInputChange,
-        type: "Name"
-      }), (0, _core.jsx)(_AddressBlock.default, {
-        fields: fields,
-        errors: errors,
-        handleInputChange: this.handleInputChange,
-        getPhone: getPhone,
-        getAddress: getAddress,
-        allowInternational: allowInternational,
-        type: "Billing"
-      }))), (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Form Submit Block"), (0, _core.jsx)(_SubmitButton.default, {
-        hasErrors: hasErrors,
-        error: errors.amount,
-        handleSubmit: this.handleSubmit,
-        submitting: submitting,
-        value: submitButtonText
-      }))) : (0, _core.jsx)(_FormPanel.default, {
-        className: "form-panel"
-      }, (0, _core.jsx)(_Spinner.default, null))) : null;
+      return null;
     }
   }, {
     key: "__reactstandin__regenerateByEval",
@@ -337,11 +181,11 @@ function (_Component) {
       this[key] = eval(code);
     }
   }]);
-  return SignUpForm;
+  return AskForm;
 }(_react.Component);
 
-SignUpForm.contextType = _SignUpFormProvider.SignUpFormContext;
-var _default = SignUpForm;
+AskForm.contextType = _GivingFormProvider.GivingFormContext;
+var _default = AskForm;
 var _default2 = _default;
 exports.default = _default2;
 ;
@@ -353,8 +197,8 @@ exports.default = _default2;
     return;
   }
 
-  reactHotLoader.register(SignUpForm, "SignUpForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/SignUpForm.js");
-  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/SignUpForm.js");
+  reactHotLoader.register(AskForm, "AskForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/AskForm.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/AskForm.js");
 })();
 
 ;
@@ -363,7 +207,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Blocks/NameBlock":"src/Components/FormComponents/Blocks/NameBlock.js","../FormComponents/Blocks/AddressBlock":"src/Components/FormComponents/Blocks/AddressBlock.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -567,4 +411,4 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/SignUpForm.098c53d9.js.map
+//# sourceMappingURL=/AskForm.02eb8dbc.js.map

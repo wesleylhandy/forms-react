@@ -2,6 +2,69 @@
     "configurations": [
         {
             "mode": "development",
+            "formType": "club",
+            "formTitle": "Your generous gifts allow CBN to fullfill the great commission through mass media evangelism and humanitarian aid.",
+            "submitButtonText": "Continue to Payment",
+            "continueButtonText": "Send Payment",
+            "givingFormat": "buttons",
+            "getHonorific": true,
+            "getMiddleName": false,
+            "getSuffix": false,
+            "getSpouseInfo": false,
+            "getShippingAddress": false,
+            "allowInternational": true,
+            "getPhone": true,
+            "numProducts": 0,
+            "products": [],
+            "numDesignations": 14,
+            "designations": [],
+            "subscriptions": [],
+            "additionalGift": {
+                "display": false,
+                "additionalGiftMessage": "",
+                "DetailDescription": "",
+                "DetailCprojCredit": "",
+                "DetailCprojMail": "",
+                "DetailName": ""
+            },
+            "showGivingArray": true,
+            "monthlyOption": true,
+            "singleOption": true,
+            "monthlyAmounts": [20, 40, 84, 209, 417],
+            "monthlyDescriptions": ["700 Club", "700 Club Gold", "1000 Club", "2500 Club", "Founder&rsquo;s Club"],
+            "singleAmounts": [20, 40, 84, 209, 417],
+            "defaultOption": "monthly",
+            "defaultAmount": 40,
+            "addGivingDescription": false,
+            "monthlyPledgeData": {
+                "DetailCprojCredit": "",
+                "DetailCprojMail": "",
+                "DetailName": "",
+                "DetailDescription": ""
+            },
+            "singlePledgeData": {
+                "DetailCprojCredit": "",
+                "DetailCprojMail": "",
+                "DetailName": "",
+                "DetailDescription": ""
+            },
+            "premiumData": {
+                "premiumImgUrl": "",
+                "premiumDescriptions": [
+                    "The exclusive DVD, <em>The Plan: Eight Keys to Understanding God&rsquo;s Will for Your Life</em>, by Pat Robertson.",
+                    "Faith-building teachings each month.",
+                    "Access to the CBN Partner Video Library with 1500+ videos, including Bible-based teachings from Pat and Gordon, faith-based movies, and Superbook for children."
+                ]
+            },
+            "AddContactYN": "Y",
+            "ContactSource": "700Club Donor",
+            "ActivityName": "700Club_Donation_Activity",
+            "SectionName": "700Club",
+            "proxy": "",
+            "successMessage":"<h1>Thank You</h1>"
+        },
+        {
+            "mode": "development",
             "formType": "giving",
             "formTitle": "Please Give Generously Towards This Vital Cause",
             "submitButtonText": "Continue to Payment",

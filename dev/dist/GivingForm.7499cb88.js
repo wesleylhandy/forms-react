@@ -754,12 +754,12 @@ var AskArrayBtn = (0, _styledBase.default)("div", {
   target: "e27bfrr0",
   label: "AskArrayBtn"
 })("development" === "production" ? {
-  name: "1gz4n2u",
-  styles: "display:flex;flex-direction:row;justify-content:center;align-items:center;&.askbutton{box-sizing:border-box;height:65px;width:calc(100% / 3);}&.askbutton__tabs{height:80px;box-sizing:border-box;flex:1;flex-basis:calc((100% / 3) - 10px);margin:2.5px;}div{display:flex;flex-direction:row;justify-content:center;align-items:center;}div.askbutton__amt{flex:0 0 auto;background-color:#fff;border-radius:4px;border:2px solid #333;box-sizing:border-box;color:#333;cursor:pointer;-webkit-flex-basis:calc(19px * 4.55);-ms-flex-preferred-size:calc(19px * 4.55);flex-basis:calc(19px * 4.55);font-weight:600;font-size:calc(19px * 1.4);height:calc(19px * 2.5);text-align:center;-webkit-transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;}div.askbutton__amt--tabs{background-color:#fff;border:1px solid #333;border-radius:4px;box-sizing:border-box;color:#333;cursor:pointer;width:100%;font-weight:600;font-size:calc(19px * 1.4);height:80px;text-align:center;transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;}&:focus div,&:hover div,&:active div,div:hover,div:focus,div:active,&.selected div{background-color:#333;color:#fff;border-color:#999;}"
+  name: "1xti1ii",
+  styles: "display:flex;flex-direction:row;justify-content:center;align-items:center;position:relative;&.askbutton{box-sizing:border-box;height:65px;width:calc(100% / 3);}&.askbutton__tabs{height:80px;box-sizing:border-box;flex:1;flex-basis:calc((100% / 3) - 10px);margin:2.5px;}div{display:flex;flex-direction:row;justify-content:center;align-items:center;}div.askbutton__amt{flex:0 0 auto;background-color:#fff;border-radius:4px;border:2px solid #333;box-sizing:border-box;color:#333;cursor:pointer;-webkit-flex-basis:calc(19px * 4.55);-ms-flex-preferred-size:calc(19px * 4.55);flex-basis:calc(19px * 4.55);font-weight:600;font-size:calc(19px * 1.4);height:calc(19px * 2.5);text-align:center;-webkit-transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;}div.askbutton__amt--tabs{background-color:#fff;border:1px solid #333;border-radius:4px;box-sizing:border-box;color:#333;cursor:pointer;width:100%;font-weight:600;font-size:calc(19px * 1.4);height:80px;text-align:center;transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;}&:focus div,&:hover div,&:active div,div:hover,div:focus,div:active,&.selected div{background-color:#333;color:#fff;border-color:#999;}div.club-level{position:absolute;font-weight:bold;color:#DDB007;text-align:center;width:100%;margin-top:8px;}"
 } : {
-  name: "1gz4n2u",
-  styles: "display:flex;flex-direction:row;justify-content:center;align-items:center;&.askbutton{box-sizing:border-box;height:65px;width:calc(100% / 3);}&.askbutton__tabs{height:80px;box-sizing:border-box;flex:1;flex-basis:calc((100% / 3) - 10px);margin:2.5px;}div{display:flex;flex-direction:row;justify-content:center;align-items:center;}div.askbutton__amt{flex:0 0 auto;background-color:#fff;border-radius:4px;border:2px solid #333;box-sizing:border-box;color:#333;cursor:pointer;-webkit-flex-basis:calc(19px * 4.55);-ms-flex-preferred-size:calc(19px * 4.55);flex-basis:calc(19px * 4.55);font-weight:600;font-size:calc(19px * 1.4);height:calc(19px * 2.5);text-align:center;-webkit-transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;}div.askbutton__amt--tabs{background-color:#fff;border:1px solid #333;border-radius:4px;box-sizing:border-box;color:#333;cursor:pointer;width:100%;font-weight:600;font-size:calc(19px * 1.4);height:80px;text-align:center;transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;}&:focus div,&:hover div,&:active div,div:hover,div:focus,div:active,&.selected div{background-color:#333;color:#fff;border-color:#999;}",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkFza0FycmF5QnRuLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUc4QiIsImZpbGUiOiJBc2tBcnJheUJ0bi5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBBc2tBcnJheUJ0biA9IHN0eWxlZC5kaXZgXG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHQmLmFza2J1dHRvbiB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRoZWlnaHQ6IDY1cHg7XG5cdFx0d2lkdGg6IGNhbGMoMTAwJSAvIDMpO1xuXHR9XG5cdCYuYXNrYnV0dG9uX190YWJzIHtcblx0XHRoZWlnaHQ6IDgwcHg7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRmbGV4OiAxO1xuXHRcdGZsZXgtYmFzaXM6IGNhbGMoKDEwMCUgLyAzKSAtIDEwcHgpO1xuXHRcdG1hcmdpbjogMi41cHg7XG5cdH1cblx0ZGl2IHtcblx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdFx0anVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG5cdFx0YWxpZ24taXRlbXM6IGNlbnRlcjtcblx0fVxuXHRkaXYuYXNrYnV0dG9uX19hbXQge1xuXHRcdGZsZXg6IDAgMCBhdXRvO1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICNmZmY7XG5cdFx0Ym9yZGVyLXJhZGl1czogNHB4O1xuXHRcdGJvcmRlcjogMnB4IHNvbGlkICMzMzM7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRjb2xvcjogIzMzMztcblx0XHRjdXJzb3I6IHBvaW50ZXI7XG5cdFx0LXdlYmtpdC1mbGV4LWJhc2lzOiBjYWxjKDE5cHggKiA0LjU1KTtcblx0XHQtbXMtZmxleC1wcmVmZXJyZWQtc2l6ZTogY2FsYygxOXB4ICogNC41NSk7XG5cdFx0ZmxleC1iYXNpczogY2FsYygxOXB4ICogNC41NSk7XG5cdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRmb250LXNpemU6IGNhbGMoMTlweCAqIDEuNCk7XG5cdFx0aGVpZ2h0OiBjYWxjKDE5cHggKiAyLjUpO1xuXHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHQtd2Via2l0LXRyYW5zaXRpb246IGJvcmRlci1jb2xvciAyMDBtcyBlYXNlLWluLW91dCwgY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQsXG5cdFx0XHRiYWNrZ3JvdW5kLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHRcdHRyYW5zaXRpb246IGJvcmRlci1jb2xvciAyMDBtcyBlYXNlLWluLW91dCwgY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQsXG5cdFx0XHRiYWNrZ3JvdW5kLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHR9XG5cdGRpdi5hc2tidXR0b25fX2FtdC0tdGFicyB7XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogI2ZmZjtcblx0XHRib3JkZXI6IDFweCBzb2xpZCAjMzMzO1xuXHRcdGJvcmRlci1yYWRpdXM6IDRweDtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGNvbG9yOiAjMzMzO1xuXHRcdGN1cnNvcjogcG9pbnRlcjtcblx0XHR3aWR0aDogMTAwJTtcblx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdGZvbnQtc2l6ZTogY2FsYygxOXB4ICogMS40KTtcblx0XHRoZWlnaHQ6IDgwcHg7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdHRyYW5zaXRpb246IGJvcmRlci1jb2xvciAyMDBtcyBlYXNlLWluLW91dCwgY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQsXG5cdFx0XHRiYWNrZ3JvdW5kLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHR9XG5cdCY6Zm9jdXMgZGl2LFxuXHQmOmhvdmVyIGRpdixcblx0JjphY3RpdmUgZGl2LFxuXHRkaXY6aG92ZXIsXG5cdGRpdjpmb2N1cyxcblx0ZGl2OmFjdGl2ZSxcblx0Ji5zZWxlY3RlZCBkaXYge1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICMzMzM7XG5cdFx0Y29sb3I6ICNmZmY7XG5cdFx0Ym9yZGVyLWNvbG9yOiAjOTk5O1xuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBBc2tBcnJheUJ0bjtcbiJdfQ== */"
+  name: "1xti1ii",
+  styles: "display:flex;flex-direction:row;justify-content:center;align-items:center;position:relative;&.askbutton{box-sizing:border-box;height:65px;width:calc(100% / 3);}&.askbutton__tabs{height:80px;box-sizing:border-box;flex:1;flex-basis:calc((100% / 3) - 10px);margin:2.5px;}div{display:flex;flex-direction:row;justify-content:center;align-items:center;}div.askbutton__amt{flex:0 0 auto;background-color:#fff;border-radius:4px;border:2px solid #333;box-sizing:border-box;color:#333;cursor:pointer;-webkit-flex-basis:calc(19px * 4.55);-ms-flex-preferred-size:calc(19px * 4.55);flex-basis:calc(19px * 4.55);font-weight:600;font-size:calc(19px * 1.4);height:calc(19px * 2.5);text-align:center;-webkit-transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;}div.askbutton__amt--tabs{background-color:#fff;border:1px solid #333;border-radius:4px;box-sizing:border-box;color:#333;cursor:pointer;width:100%;font-weight:600;font-size:calc(19px * 1.4);height:80px;text-align:center;transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;}&:focus div,&:hover div,&:active div,div:hover,div:focus,div:active,&.selected div{background-color:#333;color:#fff;border-color:#999;}div.club-level{position:absolute;font-weight:bold;color:#DDB007;text-align:center;width:100%;margin-top:8px;}",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkFza0FycmF5QnRuLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUc4QiIsImZpbGUiOiJBc2tBcnJheUJ0bi5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBBc2tBcnJheUJ0biA9IHN0eWxlZC5kaXZgXG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHRwb3NpdGlvbjogcmVsYXRpdmU7XG5cdCYuYXNrYnV0dG9uIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGhlaWdodDogNjVweDtcblx0XHR3aWR0aDogY2FsYygxMDAlIC8gMyk7XG5cdH1cblx0Ji5hc2tidXR0b25fX3RhYnMge1xuXHRcdGhlaWdodDogODBweDtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGZsZXg6IDE7XG5cdFx0ZmxleC1iYXNpczogY2FsYygoMTAwJSAvIDMpIC0gMTBweCk7XG5cdFx0bWFyZ2luOiAyLjVweDtcblx0fVxuXHRkaXYge1xuXHRcdGRpc3BsYXk6IGZsZXg7XG5cdFx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0XHRqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcblx0XHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHR9XG5cdGRpdi5hc2tidXR0b25fX2FtdCB7XG5cdFx0ZmxleDogMCAwIGF1dG87XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogI2ZmZjtcblx0XHRib3JkZXItcmFkaXVzOiA0cHg7XG5cdFx0Ym9yZGVyOiAycHggc29saWQgIzMzMztcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGNvbG9yOiAjMzMzO1xuXHRcdGN1cnNvcjogcG9pbnRlcjtcblx0XHQtd2Via2l0LWZsZXgtYmFzaXM6IGNhbGMoMTlweCAqIDQuNTUpO1xuXHRcdC1tcy1mbGV4LXByZWZlcnJlZC1zaXplOiBjYWxjKDE5cHggKiA0LjU1KTtcblx0XHRmbGV4LWJhc2lzOiBjYWxjKDE5cHggKiA0LjU1KTtcblx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdGZvbnQtc2l6ZTogY2FsYygxOXB4ICogMS40KTtcblx0XHRoZWlnaHQ6IGNhbGMoMTlweCAqIDIuNSk7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdC13ZWJraXQtdHJhbnNpdGlvbjogYm9yZGVyLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0LCBjb2xvciAyMDBtcyBlYXNlLWluLW91dCxcblx0XHRcdGJhY2tncm91bmQtY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdFx0dHJhbnNpdGlvbjogYm9yZGVyLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0LCBjb2xvciAyMDBtcyBlYXNlLWluLW91dCxcblx0XHRcdGJhY2tncm91bmQtY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdH1cblx0ZGl2LmFza2J1dHRvbl9fYW10LS10YWJzIHtcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmO1xuXHRcdGJvcmRlcjogMXB4IHNvbGlkICMzMzM7XG5cdFx0Ym9yZGVyLXJhZGl1czogNHB4O1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Y29sb3I6ICMzMzM7XG5cdFx0Y3Vyc29yOiBwb2ludGVyO1xuXHRcdHdpZHRoOiAxMDAlO1xuXHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0Zm9udC1zaXplOiBjYWxjKDE5cHggKiAxLjQpO1xuXHRcdGhlaWdodDogODBweDtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0dHJhbnNpdGlvbjogYm9yZGVyLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0LCBjb2xvciAyMDBtcyBlYXNlLWluLW91dCxcblx0XHRcdGJhY2tncm91bmQtY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdH1cblx0Jjpmb2N1cyBkaXYsXG5cdCY6aG92ZXIgZGl2LFxuXHQmOmFjdGl2ZSBkaXYsXG5cdGRpdjpob3Zlcixcblx0ZGl2OmZvY3VzLFxuXHRkaXY6YWN0aXZlLFxuXHQmLnNlbGVjdGVkIGRpdiB7XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogIzMzMztcblx0XHRjb2xvcjogI2ZmZjtcblx0XHRib3JkZXItY29sb3I6ICM5OTk7XG5cdH1cblx0ZGl2LmNsdWItbGV2ZWwge1xuXHRcdHBvc2l0aW9uOiBhYnNvbHV0ZTtcblx0XHRmb250LXdlaWdodDogYm9sZDtcblx0XHRjb2xvcjogI0REQjAwNztcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0bWFyZ2luLXRvcDogOHB4O1xuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBBc2tBcnJheUJ0bjtcbiJdfQ== */"
 });
 var _default = AskArrayBtn;
 var _default2 = _default;
@@ -1291,156 +1291,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/assertThisInitialized":"node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../Blocks/MonthlyRadioBlock":"src/Components/FormComponents/Blocks/MonthlyRadioBlock.js","../Blocks/MonthlyTabBlock":"src/Components/FormComponents/Blocks/MonthlyTabBlock.js","../Blocks/CCInfoBlock":"src/Components/FormComponents/Blocks/CCInfoBlock.js","../StyledComponents/Divider":"src/Components/FormComponents/StyledComponents/Divider.js","../StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../StyledComponents/AskArray":"src/Components/FormComponents/StyledComponents/AskArray.js","../StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../StyledComponents/AskArrayBtn":"src/Components/FormComponents/StyledComponents/AskArrayBtn.js","../StyledComponents/OtherGiftAmountGroup":"src/Components/FormComponents/StyledComponents/OtherGiftAmountGroup.js","../StyledComponents/AmountError":"src/Components/FormComponents/StyledComponents/AmountError.js"}],"src/Components/FormComponents/Blocks/DesignationBlock.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-// class DesignationBlock
-//  extends Component {
-//     constructor(props) {
-//         super(props)
-//         this.state = {
-//             numDesignations: props.designationOptions.numDesignations,
-//             designations: [...props.designationOptions.designations],
-//             fields: {
-//                 values: {}
-//             },
-//             expanded: false,
-//             selectedIndex: 0,
-//             initialUpdate: false,
-//             hydrated: false
-//         }
-//         this.handleDropDownClick=this.handleDropDownClick.bind(this)
-//         this.createMarkup=this.createMarkup.bind(this)
-//         this.expandSelection= this.expandSelection.bind(this)
-//     }
-//     componentWillReceiveProps(nextProps) {
-//         if (nextProps.initialUpdate && !this.state.initialUpdate) {
-//             return this.setState({numDesignations: nextProps.designationOptions.numDesignations, designations: [...nextProps.designationOptions.designations], initialUpdate: true})
-//         }
-//         const { designationInfo, hydratedDesignation, hydrated } = nextProps;
-//         // console.log({designationInfo, hydratedDesignation})
-//         if (hydratedDesignation && !hydrated && !this.state.hydrated) {
-//             const selectedIndex = this.state.designations.findIndex(designation=> designation.DetailDescription == designationInfo.DetailDescription)
-//             // console.log(selectedIndex)
-//             return this.setState({selectedIndex, hydrated: true})
-//         }
-//     }
-//     handleDropDownClick(e) {
-//         const selectedIndex = parseInt(e.target.dataset.id);
-//         const {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail} = this.state.designations[selectedIndex]
-//         this.props.updateDonation({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail});
-//         this.setState({expanded: false, selectedIndex})
-//     }
-//     createMarkup(text) {
-//         return { __html: text }
-//     }
-//     expandSelection(){
-//         this.setState({expanded: true, selectedIndex: null})
-//     }
-//     renderDesignationCards(selectedIndex) {
-//         if (selectedIndex >= 0) {
-//             return this.state.designations.map((designation, i)=>{
-//                 return (
-//                     <div key={`designation-${i}`} styleName={selectedIndex === i ? "styles.designation-card styles.selected flex.flex flex.flex-row flex.flex-between flex.flex-axes-center" : "styles.designation-card flex.flex flex.flex-row flex.flex-between flex.flex-axes-center"} onClick={this.expandSelection}>
-//                         <div styleName={designation.imgSrc ? "styles.designation-card__image" : "styles.hidden"} onClick={this.expandSelection}>
-//                             <img styleName="styles.img-responsive" src={designation.imgSrc}/>
-//                         </div>
-//                         <div styleName="styles.designation-card__body flex.flex flex.flex-column flex.flex-start" onClick={this.expandSelection}>
-//                             <div styleName="styles.designation-card__body--title" onClick={this.expandSelection}>{designation.designationTitle}</div>
-//                             <div styleName="styles.designation-card__body--description" dangerouslySetInnerHTML={this.createMarkup(designation.designationDescription)} onClick={this.expandSelection}></div>
-//                         </div>
-//                         <div styleName="styles.dropDownArrow" onClick={this.expandSelection}>&#9663;</div>
-//                     </div>
-//                 )
-//             })
-//         }
-//         return null
-//     }
-//     renderExpandedCards(expanded) {
-//         if (expanded){
-//             const designations = this.state.designations.map((designation, i)=>{
-//                 return (
-//                     <div key={`designationDropdown-${i}`} data-id={i} styleName="styles.designation-card__dropdown flex.flex flex.flex-row flex.flex-between flex.flex-axes-center" onClick={this.handleDropDownClick}>
-//                         <div styleName={designation.imgSrc ? "styles.designation-card__image" : "styles.hidden"} data-id={i}>
-//                             <img styleName="styles.img-responsive" src={designation.imgSrc}/>
-//                         </div>
-//                         <div styleName="styles.designation-card__body flex.flex flex.flex-column flex.flex-start" data-id={i}>
-//                             <div styleName="styles.designation-card__body--title" data-id={i}>{designation.designationTitle}</div>
-//                             <div styleName="styles.designation-card__body--description" dangerouslySetInnerHTML={this.createMarkup(designation.designationDescription)} data-id={i}></div>
-//                         </div>
-//                         <div data-id={i} styleName="styles.dropDownArrow" onClick={this.handleDropDownClick}>+</div>
-//                     </div>
-//                 )
-//             })
-//             return (
-//                 <div styleName="styles.select-designation__dropdown flex.flex flex.flex-row flex.flex-axes-center flex.flex-wrap">
-//                     { designations }
-//                 </div>
-//             )
-//         }
-//         return null
-//     }
-//     render() {
-//         if (this.state.numDesignations == 0) return null
-//         else {
-//             const {selectedIndex, expanded} = this.state
-//             return (
-//                 <div styleName="styles.designations-display">
-//                     <h3 styleName="styles.designations__header">I Want to Support</h3>
-//                     <div styleName="styles.select-designation flex.flex flex.flex-row flex.flex-axes-center">
-//                         { this.renderDesignationCards(selectedIndex)}
-//                     </div>
-//                     {this.renderExpandedCards(expanded)}
-//                 </div>
-//             )
-//         }
-//     }
-// }
-var DesignationBlock = function DesignationBlock() {
-  return null;
-};
-
-var _default = DesignationBlock;
-var _default2 = _default;
-exports.default = _default2;
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(DesignationBlock, "DesignationBlock", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/DesignationBlock.js");
-  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/DesignationBlock.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/Forms/GivingForm.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/assertThisInitialized":"node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../Blocks/MonthlyRadioBlock":"src/Components/FormComponents/Blocks/MonthlyRadioBlock.js","../Blocks/MonthlyTabBlock":"src/Components/FormComponents/Blocks/MonthlyTabBlock.js","../Blocks/CCInfoBlock":"src/Components/FormComponents/Blocks/CCInfoBlock.js","../StyledComponents/Divider":"src/Components/FormComponents/StyledComponents/Divider.js","../StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../StyledComponents/AskArray":"src/Components/FormComponents/StyledComponents/AskArray.js","../StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../StyledComponents/AskArrayBtn":"src/Components/FormComponents/StyledComponents/AskArrayBtn.js","../StyledComponents/OtherGiftAmountGroup":"src/Components/FormComponents/StyledComponents/OtherGiftAmountGroup.js","../StyledComponents/AmountError":"src/Components/FormComponents/StyledComponents/AmountError.js"}],"src/Components/Forms/GivingForm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1971,7 +1822,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51982" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59533" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

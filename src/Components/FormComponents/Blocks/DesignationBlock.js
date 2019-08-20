@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+import FormHeader from '../StyledComponents/FormHeader'
+import { Designation, DesignationContainer, DesignationListContainer } from "../StyledComponents/Designation";
+
 // class DesignationBlock
 //  extends Component {
 //     constructor(props) {
@@ -110,6 +113,66 @@ import React, { Component } from "react";
 //         }
 //     }
 // }
-const DesignationBlock = () => null;
+
+const designations = [
+    {
+        title: "Where Most Needed",
+        img: "https://source.unsplash.com/100x100/?humanitarian",
+        description: "Make the biggest impact by meeting the immediate missions of the ministry."
+    },{
+        title: "CBN International Media Evangelism",
+        img: "https://source.unsplash.com/100x100/?humanitarian",
+        description: "CBN produces international TV shows and websites in multiple languages, ministering to millions, presenting the Gospel and providing."
+    },{
+        title: "Operation Blessing Humanitarian Aid",
+        img: "https://source.unsplash.com/100x100/?humanitarian",
+        description: "CBN&rsquo;s Operation Blessing is dedicated to demonstrating God&rsquo;s love by alleviating human need and suffering around the world."
+    },{
+        title: "Superbook Animated Bible Series",
+        img: "https://source.unsplash.com/100x100/?humanitarian",
+        description: "CBN is dedicated to bringing the Word of God and the message of salvation to children throughout the world through Superbook."
+    },{
+        title: "Orphan&rsquo;s Promise",
+        img: "https://source.unsplash.com/100x100/?humanitarian",
+        description: "CBN is committed to promoting the well-being of orphans and vulnerable children around the world by providing food, shelter, medical help."
+    },{
+        title: "CBN Israel",
+        img: "https://source.unsplash.com/100x100/?humanitarian",
+        description: "Your generosity allows us to care for Holocaust survivors in need, help struggling families and single mothers, see new thriving."
+    },
+]
+
+const DesignationBlock = () => (
+    <DesignationContainer className="designation-container">
+        <FormHeader>Designate Gift</FormHeader>
+        <Designation className="designation display">
+            <div className="designation__image">
+                <img className="img-responsive" src={designations[0].img}/>
+            </div>
+            <div className="designation__body">
+                <h4 className="designation__title" dangerouslySetInnerHTML={{__html: designations[0].title}}></h4>
+                <div className="designation__description" dangerouslySetInnerHTML={{__html: designations[0].description}}></div>
+            </div>
+            <div className="designation--arrow"></div>
+        </Designation>
+        <DesignationListContainer className="designation--list-container">
+                {
+                    designations.map(({img, title, description}, idx) =>(
+                        <Designation key={`designation-${idx}`} className="designation">
+                            <div className="designation__image">
+                                <img className="img-responsive" src={img}/>
+                            </div>
+                            <div className="designation__body">
+                                <h4 className="designation__title" dangerouslySetInnerHTML={{__html: title}}></h4>
+                                <div className="designation__description" dangerouslySetInnerHTML={{__html: description}}></div>
+                            </div>
+                            <div className="designation--arrow"></div>
+                        </Designation>
+                    ))
+                }
+        </DesignationListContainer>
+        
+    </DesignationContainer>
+);
 
 export default DesignationBlock;

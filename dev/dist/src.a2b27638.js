@@ -35544,7 +35544,59 @@ try {
 },{}],"node_modules/@babel/runtime/regenerator/index.js":[function(require,module,exports) {
 module.exports = require("regenerator-runtime");
 
-},{"regenerator-runtime":"node_modules/regenerator-runtime/runtime.js"}],"node_modules/@babel/runtime/helpers/asyncToGenerator.js":[function(require,module,exports) {
+},{"regenerator-runtime":"node_modules/regenerator-runtime/runtime.js"}],"node_modules/@babel/runtime/helpers/arrayWithHoles.js":[function(require,module,exports) {
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+module.exports = _arrayWithHoles;
+},{}],"node_modules/@babel/runtime/helpers/iterableToArrayLimit.js":[function(require,module,exports) {
+function _iterableToArrayLimit(arr, i) {
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+module.exports = _iterableToArrayLimit;
+},{}],"node_modules/@babel/runtime/helpers/nonIterableRest.js":[function(require,module,exports) {
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+}
+
+module.exports = _nonIterableRest;
+},{}],"node_modules/@babel/runtime/helpers/slicedToArray.js":[function(require,module,exports) {
+var arrayWithHoles = require("./arrayWithHoles");
+
+var iterableToArrayLimit = require("./iterableToArrayLimit");
+
+var nonIterableRest = require("./nonIterableRest");
+
+function _slicedToArray(arr, i) {
+  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
+}
+
+module.exports = _slicedToArray;
+},{"./arrayWithHoles":"node_modules/@babel/runtime/helpers/arrayWithHoles.js","./iterableToArrayLimit":"node_modules/@babel/runtime/helpers/iterableToArrayLimit.js","./nonIterableRest":"node_modules/@babel/runtime/helpers/nonIterableRest.js"}],"node_modules/@babel/runtime/helpers/asyncToGenerator.js":[function(require,module,exports) {
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
   try {
     var info = gen[key](arg);
@@ -36315,6 +36367,8 @@ exports.default = exports.FormConfigContext = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -36355,13 +36409,15 @@ exports.FormConfigContext = FormConfigContext;
 var reducer = function reducer(state, action) {
   var type = action.type,
       status = action.status,
-      formConfig = action.formConfig;
+      formConfig = action.formConfig,
+      cssConfig = action.cssConfig;
 
   switch (type) {
     case "INIT_FORM_STATE":
       return (0, _objectSpread2.default)({}, state, {
         status: status,
-        formConfig: formConfig
+        formConfig: formConfig,
+        cssConfig: cssConfig
       });
       break;
 
@@ -36413,20 +36469,22 @@ function (_Component) {
     _this.state = {
       status: "initial",
       formConfig: {},
+      cssConfig: {},
       submitted: false,
       confirmed: false,
       getConfiguration: function () {
         var _getConfiguration = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
         _regenerator.default.mark(function _callee(_ref) {
-          var rootEntry, formType, initialState, generator, formName, proxyUri, isLocal, isDrupal, isWordpress, _initialState, configurations, formConfig;
+          var rootEntry, formType, initialState, cssConfig, formConfig, generator, formName, proxyUri, isLocal, isDrupal, isWordpress, _ref2, _ref3, _initialState, configurations;
 
           return _regenerator.default.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
                   rootEntry = _ref.rootEntry, formType = _ref.formType;
-                  _context.prev = 1;
+                  initialState = {}, cssConfig = {}, formConfig = {};
+                  _context.prev = 2;
                   generator = rootEntry.dataset.environment ? rootEntry.dataset.environment.toLowerCase() : null;
                   formName = rootEntry.dataset.formName;
                   proxyUri = rootEntry.dataset.rest;
@@ -36435,29 +36493,51 @@ function (_Component) {
                   isWordpress = generator && generator.includes("wordpress");
 
                   if (!isDrupal) {
-                    _context.next = 12;
+                    _context.next = 13;
                     break;
                   }
 
                   initialState = rootEntry.dataset.initialState;
-                  _context.next = 16;
+                  _context.next = 27;
                   break;
 
-                case 12:
-                  proxyUri = "http://".concat("10.100.43.21", ":").concat("8080");
-                  _context.next = 15;
+                case 13:
+                  if (!isWordpress) {
+                    _context.next = 23;
+                    break;
+                  }
+
+                  _context.next = 16;
+                  return Promise.all([(0, _fetchHelpers.callApi)(cssConfigUrl, {
+                    method: 'GET'
+                  }), (0, _fetchHelpers.callApi)(formConfigUrl, {
+                    method: 'GET'
+                  })]);
+
+                case 16:
+                  _ref2 = _context.sent;
+                  _ref3 = (0, _slicedToArray2.default)(_ref2, 2);
+                  cssConfig = _ref3[0];
+                  initialState = _ref3[1];
+                  proxyUri = "".concat(proxyUri, "cbngiving/v1/").concat(formName);
+                  _context.next = 27;
+                  break;
+
+                case 23:
+                  proxyUri = "http://".concat("10.100.43.32", ":").concat("8080");
+                  _context.next = 26;
                   return (0, _fetchHelpers.callApi)("".concat(proxyUri, "/config/form-config.json"), {
                     method: "GET"
                   });
 
-                case 15:
+                case 26:
                   initialState = _context.sent;
 
-                case 16:
+                case 27:
                   _initialState = initialState, configurations = _initialState.configurations;
                   formConfig = Array.isArray(configurations) ? configurations.filter(function (config) {
                     return config.formType == formType;
-                  })[0] : {};
+                  })[0] : initialState;
 
                   if (formConfig.mode === "production") {
                     if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
@@ -36470,33 +36550,34 @@ function (_Component) {
                   }
 
                   if (!Object.keys(formConfig).length) {
-                    _context.next = 24;
+                    _context.next = 35;
                     break;
                   }
 
-                  formConfig.proxy = isDrupal ? proxyUri : "".concat(proxyUri, "/").concat(formType);
+                  formConfig.proxy = isLocal ? "".concat(proxyUri, "/").concat(formType) : proxyUri;
 
                   _this.setState(function (state) {
                     return reducer(state, {
                       type: "INIT_FORM_STATE",
                       formConfig: formConfig,
+                      cssConfig: cssConfig,
                       status: "loaded"
                     });
                   });
 
-                  _context.next = 25;
+                  _context.next = 36;
                   break;
 
-                case 24:
+                case 35:
                   throw new Error("Unable to Load Configuration for ".concat(formType));
 
-                case 25:
-                  _context.next = 30;
+                case 36:
+                  _context.next = 41;
                   break;
 
-                case 27:
-                  _context.prev = 27;
-                  _context.t0 = _context["catch"](1);
+                case 38:
+                  _context.prev = 38;
+                  _context.t0 = _context["catch"](2);
 
                   _this.setState(function (state) {
                     return reducer(state, {
@@ -36508,12 +36589,12 @@ function (_Component) {
                     alert("There was an internal error loading this form. Please check back later or call us at 1-800-759-0700");
                   });
 
-                case 30:
+                case 41:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[1, 27]]);
+          }, _callee, null, [[2, 38]]);
         }));
 
         function getConfiguration(_x) {
@@ -36585,7 +36666,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"node_modules/@babel/runtime/helpers/extends.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/slicedToArray":"node_modules/@babel/runtime/helpers/slicedToArray.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../helpers/fetch-helpers":"src/helpers/fetch-helpers.js"}],"node_modules/@babel/runtime/helpers/extends.js":[function(require,module,exports) {
 function _extends() {
   module.exports = _extends = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -40600,6 +40681,12 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
 var GivingForm = (0, _react.lazy)(function () {
   return require("_bundle_loader")(require.resolve("./GivingForm"));
 });
+var AskForm = (0, _react.lazy)(function () {
+  return require("_bundle_loader")(require.resolve("./AskForm"));
+});
+var ConfirmationForm = (0, _react.lazy)(function () {
+  return require("_bundle_loader")(require.resolve("./ConfirmationForm"));
+});
 var PaymentForm = (0, _react.lazy)(function () {
   return require("_bundle_loader")(require.resolve("./PaymentForm"));
 });
@@ -40625,6 +40712,19 @@ var FormRouter = function FormRouter(props) {
   var formType = formConfig.formType;
 
   switch (formType) {
+    case "club":
+      return (0, _core.jsx)(_GivingFormProvider.default, null, (0, _core.jsx)(_react.Suspense, {
+        fallback: (0, _core.jsx)(_Spinner.default, null)
+      }, (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(AskForm, (0, _extends2.default)({}, props, formConfig, {
+        submitted: submitted
+      }))), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(ConfirmationForm, {
+        submitted: submitted
+      })), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(GivingSuccessMessage, {
+        confirmed: confirmed,
+        successMessage: formConfig.successMessage
+      }))));
+      break;
+
     case "giving":
       return (0, _core.jsx)(_GivingFormProvider.default, null, (0, _core.jsx)(_react.Suspense, {
         fallback: (0, _core.jsx)(_Spinner.default, null)
@@ -40693,6 +40793,8 @@ exports.default = _default2;
   }
 
   reactHotLoader.register(GivingForm, "GivingForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
+  reactHotLoader.register(AskForm, "AskForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
+  reactHotLoader.register(ConfirmationForm, "ConfirmationForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
   reactHotLoader.register(PaymentForm, "PaymentForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
   reactHotLoader.register(ProductForm, "ProductForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
   reactHotLoader.register(SignUpForm, "SignUpForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
@@ -40708,7 +40810,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/extends":"node_modules/@babel/runtime/helpers/extends.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../Contexts/ProductFormProvider":"src/Components/Contexts/ProductFormProvider.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","../ErrorBoundary":"src/Components/ErrorBoundary.js","_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","./GivingForm":[["GivingForm.7499cb88.js","src/Components/Forms/GivingForm.js"],"GivingForm.7499cb88.js.map","src/Components/Forms/GivingForm.js"],"./PaymentForm":[["PaymentForm.d4fb0b2e.js","src/Components/Forms/PaymentForm.js"],"PaymentForm.d4fb0b2e.js.map","src/Components/Forms/PaymentForm.js"],"./ProductForm":[["ProductForm.eb9cea15.js","src/Components/Forms/ProductForm.js"],"ProductForm.eb9cea15.js.map","src/Components/Forms/ProductForm.js"],"./SignUpForm":[["SignUpForm.098c53d9.js","src/Components/Forms/SignUpForm.js"],"SignUpForm.098c53d9.js.map","src/Components/Forms/SignUpForm.js"],"../SuccessPages/GivingSuccessMessage":[["GivingSuccessMessage.2b757bea.js","src/Components/SuccessPages/GivingSuccessMessage.js"],"GivingSuccessMessage.2b757bea.js.map","src/Components/SuccessPages/GivingSuccessMessage.js"],"../SuccessPages/SignUpSuccessMessage":[["SignUpSuccessMessage.2aa52e8d.js","src/Components/SuccessPages/SignUpSuccessMessage.js"],"SignUpSuccessMessage.2aa52e8d.js.map","src/Components/SuccessPages/SignUpSuccessMessage.js"],"../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"src/Components/StyledComponents/FormWrapper.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/extends":"node_modules/@babel/runtime/helpers/extends.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../Contexts/ProductFormProvider":"src/Components/Contexts/ProductFormProvider.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","../ErrorBoundary":"src/Components/ErrorBoundary.js","_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","./GivingForm":[["GivingForm.7499cb88.js","src/Components/Forms/GivingForm.js"],"GivingForm.7499cb88.js.map","src/Components/Forms/GivingForm.js"],"./AskForm":[["AskForm.02eb8dbc.js","src/Components/Forms/AskForm.js"],"AskForm.02eb8dbc.js.map","src/Components/Forms/AskForm.js"],"./ConfirmationForm":[["ConfirmationForm.4ca5b1aa.js","src/Components/Forms/ConfirmationForm.js"],"ConfirmationForm.4ca5b1aa.js.map","src/Components/Forms/ConfirmationForm.js"],"./PaymentForm":[["PaymentForm.d4fb0b2e.js","src/Components/Forms/PaymentForm.js"],"PaymentForm.d4fb0b2e.js.map","src/Components/Forms/PaymentForm.js"],"./ProductForm":[["ProductForm.eb9cea15.js","src/Components/Forms/ProductForm.js"],"ProductForm.eb9cea15.js.map","src/Components/Forms/ProductForm.js"],"./SignUpForm":[["SignUpForm.098c53d9.js","src/Components/Forms/SignUpForm.js"],"SignUpForm.098c53d9.js.map","src/Components/Forms/SignUpForm.js"],"../SuccessPages/GivingSuccessMessage":[["GivingSuccessMessage.2b757bea.js","src/Components/SuccessPages/GivingSuccessMessage.js"],"GivingSuccessMessage.2b757bea.js.map","src/Components/SuccessPages/GivingSuccessMessage.js"],"../SuccessPages/SignUpSuccessMessage":[["SignUpSuccessMessage.2aa52e8d.js","src/Components/SuccessPages/SignUpSuccessMessage.js"],"SignUpSuccessMessage.2aa52e8d.js.map","src/Components/SuccessPages/SignUpSuccessMessage.js"],"../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"src/Components/StyledComponents/FormWrapper.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40974,7 +41076,378 @@ if (productRootEntry) {
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","./vendors":"src/vendors.js","core-js/stable":"node_modules/core-js/stable/index.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./Components/App":"src/Components/App.js","./Components/Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js"}],"src/Components/FormComponents/StyledComponents/FieldSet.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","./vendors":"src/vendors.js","core-js/stable":"node_modules/core-js/stable/index.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./Components/App":"src/Components/App.js","./Components/Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js"}],"src/Components/FormComponents/StyledComponents/FormHeader.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var FormHeader = (0, _styledBase.default)("h3", {
+  target: "e1hytkas0",
+  label: "FormHeader"
+})("development" === "production" ? {
+  name: "nak8xa",
+  styles: "box-sizing:border-box;color:#333;text-align:center;font-size:19px;font-weight:600;line-height:calc(19px * 1.15);margin-bottom:5px;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;&.form-title{font-size:36px;margin:30px auto;line-height:1.33;}&.askarray__header,&.form-header__payment{margin-bottom:19px;text-transform:uppercase;}&.form-header--small{font-size:24px;}"
+} : {
+  name: "nak8xa",
+  styles: "box-sizing:border-box;color:#333;text-align:center;font-size:19px;font-weight:600;line-height:calc(19px * 1.15);margin-bottom:5px;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;&.form-title{font-size:36px;margin:30px auto;line-height:1.33;}&.askarray__header,&.form-header__payment{margin-bottom:19px;text-transform:uppercase;}&.form-header--small{font-size:24px;}",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1IZWFkZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRzRCIiwiZmlsZSI6IkZvcm1IZWFkZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgRm9ybUhlYWRlciA9IHN0eWxlZC5oM2Bcblx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0Y29sb3I6ICMzMzM7XG5cdHRleHQtYWxpZ246IGNlbnRlcjtcblx0Zm9udC1zaXplOiAxOXB4O1xuXHRmb250LXdlaWdodDogNjAwO1xuXHRsaW5lLWhlaWdodDogY2FsYygxOXB4ICogMS4xNSk7XG5cdG1hcmdpbi1ib3R0b206IDVweDtcblx0LXdlYmtpdC1tYXJnaW4tYmVmb3JlOiAwO1xuXHQtd2Via2l0LW1hcmdpbi1hZnRlcjogMDtcblx0LXdlYmtpdC1wYWRkaW5nLWJlZm9yZTogMDtcblx0LXdlYmtpdC1wYWRkaW5nLXN0YXJ0OiAwO1xuXHQtd2Via2l0LXBhZGRpbmctYWZ0ZXI6IDA7XG5cdCYuZm9ybS10aXRsZSB7XG5cdFx0Zm9udC1zaXplOiAzNnB4O1xuXHRcdG1hcmdpbjogMzBweCBhdXRvO1xuXHRcdGxpbmUtaGVpZ2h0OiAxLjMzO1xuXHR9XG5cdCYuYXNrYXJyYXlfX2hlYWRlcixcblx0Ji5mb3JtLWhlYWRlcl9fcGF5bWVudCB7XG5cdFx0bWFyZ2luLWJvdHRvbTogMTlweDtcblx0XHR0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlO1xuXHR9XG5cdCYuZm9ybS1oZWFkZXItLXNtYWxsIHtcblx0XHRmb250LXNpemU6IDI0cHg7XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1IZWFkZXI7XG4iXX0= */"
+});
+var _default = FormHeader;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(FormHeader, "FormHeader", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormHeader.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormHeader.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/FormComponents/StyledComponents/Designation.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DesignationListContainer = exports.Designation = exports.DesignationContainer = void 0;
+
+var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var DesignationContainer = (0, _styledBase.default)("div", {
+  target: "ef5pvgw0",
+  label: "DesignationContainer"
+})("development" === "production" ? {
+  name: "5stq8j",
+  styles: "margin:20px auto;position:relative;z-index:1;"
+} : {
+  name: "5stq8j",
+  styles: "margin:20px auto;position:relative;z-index:1;",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkRlc2lnbmF0aW9uLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUc4QyIsImZpbGUiOiJEZXNpZ25hdGlvbi5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5leHBvcnQgY29uc3QgRGVzaWduYXRpb25Db250YWluZXIgPSBzdHlsZWQuZGl2YFxuICAgIG1hcmdpbjogMjBweCBhdXRvO1xuICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICB6LWluZGV4OiAxO1xuYFxuXG5leHBvcnQgY29uc3QgRGVzaWduYXRpb24gPSBzdHlsZWQuZGl2YFxuICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGJhY2tncm91bmQ6IHdoaXRlO1xuICAgIG1hcmdpbjogMCBhdXRvO1xuICAgIG1heC13aWR0aDogNDgzcHg7XG4gICAgcGFkZGluZzogMThweDtcbiAgICB3aWR0aDogMTAwJTtcbiAgICAuZGVzaWduYXRpb25fX2ltYWdlIHtcbiAgICAgICAgd2lkdGg6IDg0cHg7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IDUwJTtcbiAgICAgICAganVzdGlmeS1zZWxmOiBmbGV4LXN0YXJ0O1xuICAgICAgICBvdmVyZmxvdzpoaWRkZW47XG4gICAgICAgIG1hcmdpbi1yaWdodDogMTBweDtcbiAgICAgICAgaW1nLmltZy1yZXNwb25zaXZlIHtcbiAgICAgICAgICAgIGRpc3BsYXk6IGJsb2NrO1xuICAgICAgICAgICAgbWF4LXdpZHRoOiAxMDAlO1xuICAgICAgICB9XG4gICAgfVxuICAgIC5kZXNpZ25hdGlvbl9fYm9keSB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICAgICAgYWxpZ24taXRlbXM6IGxlZnQ7XG4gICAgICAgIGZsZXgtYmFzaXM6IDEgMCAyNzRweDtcbiAgICAgICAgaDQuZGVzaWduYXRpb25fX3RpdGxlIHtcbiAgICAgICAgICAgIG1hcmdpbjogMDtcbiAgICAgICAgICAgIGNvbG9yOiAjMTgxODE4O1xuICAgICAgICAgICAgZm9udC1zaXplOiAxN3B4O1xuICAgICAgICAgICAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gICAgICAgICAgICBsaW5lLWhlaWdodDogMS4yMzU7XG4gICAgICAgIH1cbiAgICAgICAgLmRlc2lnbmF0aW9uX19kZXNjcmlwdGlvbiB7XG4gICAgICAgICAgICBmb250LXNpemU6IDE0cHg7XG4gICAgICAgICAgICBsaW5lLWhlaWdodDogMS4yMTQ7XG4gICAgICAgIH1cbiAgICB9XG4gICAgLmRlc2lnbmF0aW9uLS1hcnJvdyB7XG4gICAgICAgIGp1c3RpZnktc2VsZjogZmxleC1lbmQ7XG4gICAgICAgIHdpZHRoOiAyNnB4O1xuICAgICAgICBmbGV4OiAwIDAgMjZweDtcbiAgICAgICAgbWFyZ2luLWxlZnQ6IDEwcHg7XG4gICAgfVxuICAgICYuZGlzcGxheSB7XG4gICAgICAgIGJhY2tncm91bmQtY29sb3I6ICNGNUY3Rjg7XG4gICAgICAgIGJvcmRlcjogMXB4IHNvbGlkICNCNEIyQjI7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IDNweDtcbiAgICAgICAgbWF4LXdpZHRoOiA0MDdweDtcbiAgICAgICAgcGFkZGluZzogOHB4IDE1cHg7XG4gICAgICAgIC5kZXNpZ25hdGlvbl9faW1hZ2Uge1xuICAgICAgICAgICAgd2lkdGg6IDYwcHg7XG4gICAgICAgIH1cbiAgICAgICAgLmRlc2lnbmF0aW9uX19ib2R5IHtcbiAgICAgICAgICAgIGg0LmRlc2lnbmF0aW9uX190aXRsZSB7XG4gICAgICAgICAgICAgICAgZm9udC1zaXplOiAxNXB4O1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgLmRlc2lnbmF0aW9uX19kZXNjcmlwdGlvbiB7XG4gICAgICAgICAgICAgICAgbGluZS1oZWlnaHQ6IDE1cHg7XG4gICAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICB9XG4gICAgJisuZGVzaWduYXRpb24ge1xuICAgICAgICBib3JkZXItdG9wOiAxcHggc29saWQgIzk3OTc5NztcbiAgICB9XG5gXG5cbmV4cG9ydCBjb25zdCBEZXNpZ25hdGlvbkxpc3RDb250YWluZXIgPSBzdHlsZWQuZGl2YFxuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICB6LWluZGV4OiAxMDtcbiAgICB3aWR0aDogNDgzcHg7XG4gICAgbGVmdDogNTAlO1xuICAgIG1hcmdpbi10b3A6IDMwcHg7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGVYKC01MCUpO1xuICAgIG92ZXJmbG93LXg6IGhpZGRlbjtcbiAgICBvdmVyZmxvdy15OiBzY3JvbGw7XG4gICAgaGVpZ2h0OiA0ODBweDtcbiAgICBib3JkZXI6IDFweCBzb2xpZCAjOTc5Nzk3O1xuICAgIGJhY2tncm91bmQtY29sb3I6ICNGNUY3Rjg7XG4gICAgYm94LXNoYWRvdzogMCAxcHggNnB4IDAgcmdiYSgwLDAsMCwwLjE3KTtcbiAgICAmOjphZnRlciB7XG4gICAgICAgIGNvbnRlbnQ6IFwiXCI7XG4gICAgICAgIGRpc3BsYXk6IGJsb2NrO1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICAgIHRvcDogLTMwcHg7XG4gICAgICAgIGxlZnQ6IDUwJTtcbiAgICAgICAgYm9yZGVyLXRvcDogMTVweCBzb2xpZCB0cmFuc3BhcmVudDtcbiAgICAgICAgYm9yZGVyLWxlZnQ6IDEwcHggc29saWQgdHJhbnNwYXJlbnQ7XG4gICAgICAgIGJvcmRlci1yaWdodDogMTBweCBzb2xpZCB0cmFuc3BhcmVudDtcbiAgICAgICAgYm9yZGVyLWJvdHRvbTogMTVweCBzb2xpZCAjRjVGN0Y4ICFpbXBvcnRhbnQ7XG4gICAgfVxuYFxuIl19 */"
+});
+exports.DesignationContainer = DesignationContainer;
+var Designation = (0, _styledBase.default)("div", {
+  target: "ef5pvgw1",
+  label: "Designation"
+})("development" === "production" ? {
+  name: "1hjoemc",
+  styles: "box-sizing:border-box;cursor:pointer;display:flex;flex-direction:row;align-items:center;background:white;margin:0 auto;max-width:483px;padding:18px;width:100%;.designation__image{width:84px;border-radius:50%;justify-self:flex-start;overflow:hidden;margin-right:10px;img.img-responsive{display:block;max-width:100%;}}.designation__body{display:flex;flex-direction:column;justify-content:flex-start;align-items:left;flex-basis:1 0 274px;h4.designation__title{margin:0;color:#181818;font-size:17px;font-weight:bold;line-height:1.235;}.designation__description{font-size:14px;line-height:1.214;}}.designation--arrow{justify-self:flex-end;width:26px;flex:0 0 26px;margin-left:10px;}&.display{background-color:#F5F7F8;border:1px solid #B4B2B2;border-radius:3px;max-width:407px;padding:8px 15px;.designation__image{width:60px;}.designation__body{h4.designation__title{font-size:15px;}.designation__description{line-height:15px;}}}&+.designation{border-top:1px solid #979797;}"
+} : {
+  name: "1hjoemc",
+  styles: "box-sizing:border-box;cursor:pointer;display:flex;flex-direction:row;align-items:center;background:white;margin:0 auto;max-width:483px;padding:18px;width:100%;.designation__image{width:84px;border-radius:50%;justify-self:flex-start;overflow:hidden;margin-right:10px;img.img-responsive{display:block;max-width:100%;}}.designation__body{display:flex;flex-direction:column;justify-content:flex-start;align-items:left;flex-basis:1 0 274px;h4.designation__title{margin:0;color:#181818;font-size:17px;font-weight:bold;line-height:1.235;}.designation__description{font-size:14px;line-height:1.214;}}.designation--arrow{justify-self:flex-end;width:26px;flex:0 0 26px;margin-left:10px;}&.display{background-color:#F5F7F8;border:1px solid #B4B2B2;border-radius:3px;max-width:407px;padding:8px 15px;.designation__image{width:60px;}.designation__body{h4.designation__title{font-size:15px;}.designation__description{line-height:15px;}}}&+.designation{border-top:1px solid #979797;}",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkRlc2lnbmF0aW9uLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQVNxQyIsImZpbGUiOiJEZXNpZ25hdGlvbi5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5leHBvcnQgY29uc3QgRGVzaWduYXRpb25Db250YWluZXIgPSBzdHlsZWQuZGl2YFxuICAgIG1hcmdpbjogMjBweCBhdXRvO1xuICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICB6LWluZGV4OiAxO1xuYFxuXG5leHBvcnQgY29uc3QgRGVzaWduYXRpb24gPSBzdHlsZWQuZGl2YFxuICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgIGJhY2tncm91bmQ6IHdoaXRlO1xuICAgIG1hcmdpbjogMCBhdXRvO1xuICAgIG1heC13aWR0aDogNDgzcHg7XG4gICAgcGFkZGluZzogMThweDtcbiAgICB3aWR0aDogMTAwJTtcbiAgICAuZGVzaWduYXRpb25fX2ltYWdlIHtcbiAgICAgICAgd2lkdGg6IDg0cHg7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IDUwJTtcbiAgICAgICAganVzdGlmeS1zZWxmOiBmbGV4LXN0YXJ0O1xuICAgICAgICBvdmVyZmxvdzpoaWRkZW47XG4gICAgICAgIG1hcmdpbi1yaWdodDogMTBweDtcbiAgICAgICAgaW1nLmltZy1yZXNwb25zaXZlIHtcbiAgICAgICAgICAgIGRpc3BsYXk6IGJsb2NrO1xuICAgICAgICAgICAgbWF4LXdpZHRoOiAxMDAlO1xuICAgICAgICB9XG4gICAgfVxuICAgIC5kZXNpZ25hdGlvbl9fYm9keSB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgICAgIGp1c3RpZnktY29udGVudDogZmxleC1zdGFydDtcbiAgICAgICAgYWxpZ24taXRlbXM6IGxlZnQ7XG4gICAgICAgIGZsZXgtYmFzaXM6IDEgMCAyNzRweDtcbiAgICAgICAgaDQuZGVzaWduYXRpb25fX3RpdGxlIHtcbiAgICAgICAgICAgIG1hcmdpbjogMDtcbiAgICAgICAgICAgIGNvbG9yOiAjMTgxODE4O1xuICAgICAgICAgICAgZm9udC1zaXplOiAxN3B4O1xuICAgICAgICAgICAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gICAgICAgICAgICBsaW5lLWhlaWdodDogMS4yMzU7XG4gICAgICAgIH1cbiAgICAgICAgLmRlc2lnbmF0aW9uX19kZXNjcmlwdGlvbiB7XG4gICAgICAgICAgICBmb250LXNpemU6IDE0cHg7XG4gICAgICAgICAgICBsaW5lLWhlaWdodDogMS4yMTQ7XG4gICAgICAgIH1cbiAgICB9XG4gICAgLmRlc2lnbmF0aW9uLS1hcnJvdyB7XG4gICAgICAgIGp1c3RpZnktc2VsZjogZmxleC1lbmQ7XG4gICAgICAgIHdpZHRoOiAyNnB4O1xuICAgICAgICBmbGV4OiAwIDAgMjZweDtcbiAgICAgICAgbWFyZ2luLWxlZnQ6IDEwcHg7XG4gICAgfVxuICAgICYuZGlzcGxheSB7XG4gICAgICAgIGJhY2tncm91bmQtY29sb3I6ICNGNUY3Rjg7XG4gICAgICAgIGJvcmRlcjogMXB4IHNvbGlkICNCNEIyQjI7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IDNweDtcbiAgICAgICAgbWF4LXdpZHRoOiA0MDdweDtcbiAgICAgICAgcGFkZGluZzogOHB4IDE1cHg7XG4gICAgICAgIC5kZXNpZ25hdGlvbl9faW1hZ2Uge1xuICAgICAgICAgICAgd2lkdGg6IDYwcHg7XG4gICAgICAgIH1cbiAgICAgICAgLmRlc2lnbmF0aW9uX19ib2R5IHtcbiAgICAgICAgICAgIGg0LmRlc2lnbmF0aW9uX190aXRsZSB7XG4gICAgICAgICAgICAgICAgZm9udC1zaXplOiAxNXB4O1xuICAgICAgICAgICAgfVxuICAgICAgICAgICAgLmRlc2lnbmF0aW9uX19kZXNjcmlwdGlvbiB7XG4gICAgICAgICAgICAgICAgbGluZS1oZWlnaHQ6IDE1cHg7XG4gICAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICB9XG4gICAgJisuZGVzaWduYXRpb24ge1xuICAgICAgICBib3JkZXItdG9wOiAxcHggc29saWQgIzk3OTc5NztcbiAgICB9XG5gXG5cbmV4cG9ydCBjb25zdCBEZXNpZ25hdGlvbkxpc3RDb250YWluZXIgPSBzdHlsZWQuZGl2YFxuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICB6LWluZGV4OiAxMDtcbiAgICB3aWR0aDogNDgzcHg7XG4gICAgbGVmdDogNTAlO1xuICAgIG1hcmdpbi10b3A6IDMwcHg7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGVYKC01MCUpO1xuICAgIG92ZXJmbG93LXg6IGhpZGRlbjtcbiAgICBvdmVyZmxvdy15OiBzY3JvbGw7XG4gICAgaGVpZ2h0OiA0ODBweDtcbiAgICBib3JkZXI6IDFweCBzb2xpZCAjOTc5Nzk3O1xuICAgIGJhY2tncm91bmQtY29sb3I6ICNGNUY3Rjg7XG4gICAgYm94LXNoYWRvdzogMCAxcHggNnB4IDAgcmdiYSgwLDAsMCwwLjE3KTtcbiAgICAmOjphZnRlciB7XG4gICAgICAgIGNvbnRlbnQ6IFwiXCI7XG4gICAgICAgIGRpc3BsYXk6IGJsb2NrO1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICAgIHRvcDogLTMwcHg7XG4gICAgICAgIGxlZnQ6IDUwJTtcbiAgICAgICAgYm9yZGVyLXRvcDogMTVweCBzb2xpZCB0cmFuc3BhcmVudDtcbiAgICAgICAgYm9yZGVyLWxlZnQ6IDEwcHggc29saWQgdHJhbnNwYXJlbnQ7XG4gICAgICAgIGJvcmRlci1yaWdodDogMTBweCBzb2xpZCB0cmFuc3BhcmVudDtcbiAgICAgICAgYm9yZGVyLWJvdHRvbTogMTVweCBzb2xpZCAjRjVGN0Y4ICFpbXBvcnRhbnQ7XG4gICAgfVxuYFxuIl19 */"
+});
+exports.Designation = Designation;
+var DesignationListContainer = (0, _styledBase.default)("div", {
+  target: "ef5pvgw2",
+  label: "DesignationListContainer"
+})("development" === "production" ? {
+  name: "fd4vaq",
+  styles: "position:absolute;z-index:10;width:483px;left:50%;margin-top:30px;transform:translateX(-50%);overflow-x:hidden;overflow-y:scroll;height:480px;border:1px solid #979797;background-color:#F5F7F8;box-shadow:0 1px 6px 0 rgba(0,0,0,0.17);&::after{content:\"\";display:block;position:absolute;top:-30px;left:50%;border-top:15px solid transparent;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:15px solid #F5F7F8 !important;}"
+} : {
+  name: "fd4vaq",
+  styles: "position:absolute;z-index:10;width:483px;left:50%;margin-top:30px;transform:translateX(-50%);overflow-x:hidden;overflow-y:scroll;height:480px;border:1px solid #979797;background-color:#F5F7F8;box-shadow:0 1px 6px 0 rgba(0,0,0,0.17);&::after{content:\"\";display:block;position:absolute;top:-30px;left:50%;border-top:15px solid transparent;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:15px solid #F5F7F8 !important;}",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkRlc2lnbmF0aW9uLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQThFa0QiLCJmaWxlIjoiRGVzaWduYXRpb24uanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuZXhwb3J0IGNvbnN0IERlc2lnbmF0aW9uQ29udGFpbmVyID0gc3R5bGVkLmRpdmBcbiAgICBtYXJnaW46IDIwcHggYXV0bztcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XG4gICAgei1pbmRleDogMTtcbmBcblxuZXhwb3J0IGNvbnN0IERlc2lnbmF0aW9uID0gc3R5bGVkLmRpdmBcbiAgICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBiYWNrZ3JvdW5kOiB3aGl0ZTtcbiAgICBtYXJnaW46IDAgYXV0bztcbiAgICBtYXgtd2lkdGg6IDQ4M3B4O1xuICAgIHBhZGRpbmc6IDE4cHg7XG4gICAgd2lkdGg6IDEwMCU7XG4gICAgLmRlc2lnbmF0aW9uX19pbWFnZSB7XG4gICAgICAgIHdpZHRoOiA4NHB4O1xuICAgICAgICBib3JkZXItcmFkaXVzOiA1MCU7XG4gICAgICAgIGp1c3RpZnktc2VsZjogZmxleC1zdGFydDtcbiAgICAgICAgb3ZlcmZsb3c6aGlkZGVuO1xuICAgICAgICBtYXJnaW4tcmlnaHQ6IDEwcHg7XG4gICAgICAgIGltZy5pbWctcmVzcG9uc2l2ZSB7XG4gICAgICAgICAgICBkaXNwbGF5OiBibG9jaztcbiAgICAgICAgICAgIG1heC13aWR0aDogMTAwJTtcbiAgICAgICAgfVxuICAgIH1cbiAgICAuZGVzaWduYXRpb25fX2JvZHkge1xuICAgICAgICBkaXNwbGF5OiBmbGV4O1xuICAgICAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBsZWZ0O1xuICAgICAgICBmbGV4LWJhc2lzOiAxIDAgMjc0cHg7XG4gICAgICAgIGg0LmRlc2lnbmF0aW9uX190aXRsZSB7XG4gICAgICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgICAgICBjb2xvcjogIzE4MTgxODtcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMTdweDtcbiAgICAgICAgICAgIGZvbnQtd2VpZ2h0OiBib2xkO1xuICAgICAgICAgICAgbGluZS1oZWlnaHQ6IDEuMjM1O1xuICAgICAgICB9XG4gICAgICAgIC5kZXNpZ25hdGlvbl9fZGVzY3JpcHRpb24ge1xuICAgICAgICAgICAgZm9udC1zaXplOiAxNHB4O1xuICAgICAgICAgICAgbGluZS1oZWlnaHQ6IDEuMjE0O1xuICAgICAgICB9XG4gICAgfVxuICAgIC5kZXNpZ25hdGlvbi0tYXJyb3cge1xuICAgICAgICBqdXN0aWZ5LXNlbGY6IGZsZXgtZW5kO1xuICAgICAgICB3aWR0aDogMjZweDtcbiAgICAgICAgZmxleDogMCAwIDI2cHg7XG4gICAgICAgIG1hcmdpbi1sZWZ0OiAxMHB4O1xuICAgIH1cbiAgICAmLmRpc3BsYXkge1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjRjVGN0Y4O1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCAjQjRCMkIyO1xuICAgICAgICBib3JkZXItcmFkaXVzOiAzcHg7XG4gICAgICAgIG1heC13aWR0aDogNDA3cHg7XG4gICAgICAgIHBhZGRpbmc6IDhweCAxNXB4O1xuICAgICAgICAuZGVzaWduYXRpb25fX2ltYWdlIHtcbiAgICAgICAgICAgIHdpZHRoOiA2MHB4O1xuICAgICAgICB9XG4gICAgICAgIC5kZXNpZ25hdGlvbl9fYm9keSB7XG4gICAgICAgICAgICBoNC5kZXNpZ25hdGlvbl9fdGl0bGUge1xuICAgICAgICAgICAgICAgIGZvbnQtc2l6ZTogMTVweDtcbiAgICAgICAgICAgIH1cbiAgICAgICAgICAgIC5kZXNpZ25hdGlvbl9fZGVzY3JpcHRpb24ge1xuICAgICAgICAgICAgICAgIGxpbmUtaGVpZ2h0OiAxNXB4O1xuICAgICAgICAgICAgfVxuICAgICAgICB9XG4gICAgfVxuICAgICYrLmRlc2lnbmF0aW9uIHtcbiAgICAgICAgYm9yZGVyLXRvcDogMXB4IHNvbGlkICM5Nzk3OTc7XG4gICAgfVxuYFxuXG5leHBvcnQgY29uc3QgRGVzaWduYXRpb25MaXN0Q29udGFpbmVyID0gc3R5bGVkLmRpdmBcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgei1pbmRleDogMTA7XG4gICAgd2lkdGg6IDQ4M3B4O1xuICAgIGxlZnQ6IDUwJTtcbiAgICBtYXJnaW4tdG9wOiAzMHB4O1xuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWCgtNTAlKTtcbiAgICBvdmVyZmxvdy14OiBoaWRkZW47XG4gICAgb3ZlcmZsb3cteTogc2Nyb2xsO1xuICAgIGhlaWdodDogNDgwcHg7XG4gICAgYm9yZGVyOiAxcHggc29saWQgIzk3OTc5NztcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjRjVGN0Y4O1xuICAgIGJveC1zaGFkb3c6IDAgMXB4IDZweCAwIHJnYmEoMCwwLDAsMC4xNyk7XG4gICAgJjo6YWZ0ZXIge1xuICAgICAgICBjb250ZW50OiBcIlwiO1xuICAgICAgICBkaXNwbGF5OiBibG9jaztcbiAgICAgICAgcG9zaXRpb246IGFic29sdXRlO1xuICAgICAgICB0b3A6IC0zMHB4O1xuICAgICAgICBsZWZ0OiA1MCU7XG4gICAgICAgIGJvcmRlci10b3A6IDE1cHggc29saWQgdHJhbnNwYXJlbnQ7XG4gICAgICAgIGJvcmRlci1sZWZ0OiAxMHB4IHNvbGlkIHRyYW5zcGFyZW50O1xuICAgICAgICBib3JkZXItcmlnaHQ6IDEwcHggc29saWQgdHJhbnNwYXJlbnQ7XG4gICAgICAgIGJvcmRlci1ib3R0b206IDE1cHggc29saWQgI0Y1RjdGOCAhaW1wb3J0YW50O1xuICAgIH1cbmBcbiJdfQ== */"
+});
+exports.DesignationListContainer = DesignationListContainer;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(DesignationContainer, "DesignationContainer", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Designation.js");
+  reactHotLoader.register(Designation, "Designation", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Designation.js");
+  reactHotLoader.register(DesignationListContainer, "DesignationListContainer", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Designation.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/FormComponents/Blocks/DesignationBlock.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _FormHeader = _interopRequireDefault(require("../StyledComponents/FormHeader"));
+
+var _Designation = require("../StyledComponents/Designation");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+// class DesignationBlock
+//  extends Component {
+//     constructor(props) {
+//         super(props)
+//         this.state = {
+//             numDesignations: props.designationOptions.numDesignations,
+//             designations: [...props.designationOptions.designations],
+//             fields: {
+//                 values: {}
+//             },
+//             expanded: false,
+//             selectedIndex: 0,
+//             initialUpdate: false,
+//             hydrated: false
+//         }
+//         this.handleDropDownClick=this.handleDropDownClick.bind(this)
+//         this.createMarkup=this.createMarkup.bind(this)
+//         this.expandSelection= this.expandSelection.bind(this)
+//     }
+//     componentWillReceiveProps(nextProps) {
+//         if (nextProps.initialUpdate && !this.state.initialUpdate) {
+//             return this.setState({numDesignations: nextProps.designationOptions.numDesignations, designations: [...nextProps.designationOptions.designations], initialUpdate: true})
+//         }
+//         const { designationInfo, hydratedDesignation, hydrated } = nextProps;
+//         // console.log({designationInfo, hydratedDesignation})
+//         if (hydratedDesignation && !hydrated && !this.state.hydrated) {
+//             const selectedIndex = this.state.designations.findIndex(designation=> designation.DetailDescription == designationInfo.DetailDescription)
+//             // console.log(selectedIndex)
+//             return this.setState({selectedIndex, hydrated: true})
+//         }
+//     }
+//     handleDropDownClick(e) {
+//         const selectedIndex = parseInt(e.target.dataset.id);
+//         const {DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail} = this.state.designations[selectedIndex]
+//         this.props.updateDonation({DetailName, DetailDescription, DetailCprojCredit, DetailCprojMail});
+//         this.setState({expanded: false, selectedIndex})
+//     }
+//     createMarkup(text) {
+//         return { __html: text }
+//     }
+//     expandSelection(){
+//         this.setState({expanded: true, selectedIndex: null})
+//     }
+//     renderDesignationCards(selectedIndex) {
+//         if (selectedIndex >= 0) {
+//             return this.state.designations.map((designation, i)=>{
+//                 return (
+//                     <div key={`designation-${i}`} styleName={selectedIndex === i ? "styles.designation-card styles.selected flex.flex flex.flex-row flex.flex-between flex.flex-axes-center" : "styles.designation-card flex.flex flex.flex-row flex.flex-between flex.flex-axes-center"} onClick={this.expandSelection}>
+//                         <div styleName={designation.imgSrc ? "styles.designation-card__image" : "styles.hidden"} onClick={this.expandSelection}>
+//                             <img styleName="styles.img-responsive" src={designation.imgSrc}/>
+//                         </div>
+//                         <div styleName="styles.designation-card__body flex.flex flex.flex-column flex.flex-start" onClick={this.expandSelection}>
+//                             <div styleName="styles.designation-card__body--title" onClick={this.expandSelection}>{designation.designationTitle}</div>
+//                             <div styleName="styles.designation-card__body--description" dangerouslySetInnerHTML={this.createMarkup(designation.designationDescription)} onClick={this.expandSelection}></div>
+//                         </div>
+//                         <div styleName="styles.dropDownArrow" onClick={this.expandSelection}>&#9663;</div>
+//                     </div>
+//                 )
+//             })
+//         }
+//         return null
+//     }
+//     renderExpandedCards(expanded) {
+//         if (expanded){
+//             const designations = this.state.designations.map((designation, i)=>{
+//                 return (
+//                     <div key={`designationDropdown-${i}`} data-id={i} styleName="styles.designation-card__dropdown flex.flex flex.flex-row flex.flex-between flex.flex-axes-center" onClick={this.handleDropDownClick}>
+//                         <div styleName={designation.imgSrc ? "styles.designation-card__image" : "styles.hidden"} data-id={i}>
+//                             <img styleName="styles.img-responsive" src={designation.imgSrc}/>
+//                         </div>
+//                         <div styleName="styles.designation-card__body flex.flex flex.flex-column flex.flex-start" data-id={i}>
+//                             <div styleName="styles.designation-card__body--title" data-id={i}>{designation.designationTitle}</div>
+//                             <div styleName="styles.designation-card__body--description" dangerouslySetInnerHTML={this.createMarkup(designation.designationDescription)} data-id={i}></div>
+//                         </div>
+//                         <div data-id={i} styleName="styles.dropDownArrow" onClick={this.handleDropDownClick}>+</div>
+//                     </div>
+//                 )
+//             })
+//             return (
+//                 <div styleName="styles.select-designation__dropdown flex.flex flex.flex-row flex.flex-axes-center flex.flex-wrap">
+//                     { designations }
+//                 </div>
+//             )
+//         }
+//         return null
+//     }
+//     render() {
+//         if (this.state.numDesignations == 0) return null
+//         else {
+//             const {selectedIndex, expanded} = this.state
+//             return (
+//                 <div styleName="styles.designations-display">
+//                     <h3 styleName="styles.designations__header">I Want to Support</h3>
+//                     <div styleName="styles.select-designation flex.flex flex.flex-row flex.flex-axes-center">
+//                         { this.renderDesignationCards(selectedIndex)}
+//                     </div>
+//                     {this.renderExpandedCards(expanded)}
+//                 </div>
+//             )
+//         }
+//     }
+// }
+var designations = [{
+  title: "Where Most Needed",
+  img: "https://source.unsplash.com/100x100/?humanitarian",
+  description: "Make the biggest impact by meeting the immediate missions of the ministry."
+}, {
+  title: "CBN International Media Evangelism",
+  img: "https://source.unsplash.com/100x100/?humanitarian",
+  description: "CBN produces international TV shows and websites in multiple languages, ministering to millions, presenting the Gospel and providing."
+}, {
+  title: "Operation Blessing Humanitarian Aid",
+  img: "https://source.unsplash.com/100x100/?humanitarian",
+  description: "CBN&rsquo;s Operation Blessing is dedicated to demonstrating God&rsquo;s love by alleviating human need and suffering around the world."
+}, {
+  title: "Superbook Animated Bible Series",
+  img: "https://source.unsplash.com/100x100/?humanitarian",
+  description: "CBN is dedicated to bringing the Word of God and the message of salvation to children throughout the world through Superbook."
+}, {
+  title: "Orphan&rsquo;s Promise",
+  img: "https://source.unsplash.com/100x100/?humanitarian",
+  description: "CBN is committed to promoting the well-being of orphans and vulnerable children around the world by providing food, shelter, medical help."
+}, {
+  title: "CBN Israel",
+  img: "https://source.unsplash.com/100x100/?humanitarian",
+  description: "Your generosity allows us to care for Holocaust survivors in need, help struggling families and single mothers, see new thriving."
+}];
+
+var DesignationBlock = function DesignationBlock() {
+  return (0, _core.jsx)(_Designation.DesignationContainer, {
+    className: "designation-container"
+  }, (0, _core.jsx)(_FormHeader.default, null, "Designate Gift"), (0, _core.jsx)(_Designation.Designation, {
+    className: "designation display"
+  }, (0, _core.jsx)("div", {
+    className: "designation__image"
+  }, (0, _core.jsx)("img", {
+    className: "img-responsive",
+    src: designations[0].img
+  })), (0, _core.jsx)("div", {
+    className: "designation__body"
+  }, (0, _core.jsx)("h4", {
+    className: "designation__title",
+    dangerouslySetInnerHTML: {
+      __html: designations[0].title
+    }
+  }), (0, _core.jsx)("div", {
+    className: "designation__description",
+    dangerouslySetInnerHTML: {
+      __html: designations[0].description
+    }
+  })), (0, _core.jsx)("div", {
+    className: "designation--arrow"
+  })), (0, _core.jsx)(_Designation.DesignationListContainer, {
+    className: "designation--list-container"
+  }, designations.map(function (_ref, idx) {
+    var img = _ref.img,
+        title = _ref.title,
+        description = _ref.description;
+    return (0, _core.jsx)(_Designation.Designation, {
+      key: "designation-".concat(idx),
+      className: "designation"
+    }, (0, _core.jsx)("div", {
+      className: "designation__image"
+    }, (0, _core.jsx)("img", {
+      className: "img-responsive",
+      src: img
+    })), (0, _core.jsx)("div", {
+      className: "designation__body"
+    }, (0, _core.jsx)("h4", {
+      className: "designation__title",
+      dangerouslySetInnerHTML: {
+        __html: title
+      }
+    }), (0, _core.jsx)("div", {
+      className: "designation__description",
+      dangerouslySetInnerHTML: {
+        __html: description
+      }
+    })), (0, _core.jsx)("div", {
+      className: "designation--arrow"
+    }));
+  })));
+};
+
+var _default = DesignationBlock;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(designations, "designations", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/DesignationBlock.js");
+  reactHotLoader.register(DesignationBlock, "DesignationBlock", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/DesignationBlock.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/DesignationBlock.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../StyledComponents/Designation":"src/Components/FormComponents/StyledComponents/Designation.js"}],"src/Components/FormComponents/StyledComponents/FieldSet.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41134,62 +41607,6 @@ exports.default = _default2;
 
   reactHotLoader.register(FormPanel, "FormPanel", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormPanel.js");
   reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormPanel.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/FormComponents/StyledComponents/FormHeader.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var FormHeader = (0, _styledBase.default)("h3", {
-  target: "e1hytkas0",
-  label: "FormHeader"
-})("development" === "production" ? {
-  name: "nak8xa",
-  styles: "box-sizing:border-box;color:#333;text-align:center;font-size:19px;font-weight:600;line-height:calc(19px * 1.15);margin-bottom:5px;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;&.form-title{font-size:36px;margin:30px auto;line-height:1.33;}&.askarray__header,&.form-header__payment{margin-bottom:19px;text-transform:uppercase;}&.form-header--small{font-size:24px;}"
-} : {
-  name: "nak8xa",
-  styles: "box-sizing:border-box;color:#333;text-align:center;font-size:19px;font-weight:600;line-height:calc(19px * 1.15);margin-bottom:5px;-webkit-margin-before:0;-webkit-margin-after:0;-webkit-padding-before:0;-webkit-padding-start:0;-webkit-padding-after:0;&.form-title{font-size:36px;margin:30px auto;line-height:1.33;}&.askarray__header,&.form-header__payment{margin-bottom:19px;text-transform:uppercase;}&.form-header--small{font-size:24px;}",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1IZWFkZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRzRCIiwiZmlsZSI6IkZvcm1IZWFkZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgRm9ybUhlYWRlciA9IHN0eWxlZC5oM2Bcblx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0Y29sb3I6ICMzMzM7XG5cdHRleHQtYWxpZ246IGNlbnRlcjtcblx0Zm9udC1zaXplOiAxOXB4O1xuXHRmb250LXdlaWdodDogNjAwO1xuXHRsaW5lLWhlaWdodDogY2FsYygxOXB4ICogMS4xNSk7XG5cdG1hcmdpbi1ib3R0b206IDVweDtcblx0LXdlYmtpdC1tYXJnaW4tYmVmb3JlOiAwO1xuXHQtd2Via2l0LW1hcmdpbi1hZnRlcjogMDtcblx0LXdlYmtpdC1wYWRkaW5nLWJlZm9yZTogMDtcblx0LXdlYmtpdC1wYWRkaW5nLXN0YXJ0OiAwO1xuXHQtd2Via2l0LXBhZGRpbmctYWZ0ZXI6IDA7XG5cdCYuZm9ybS10aXRsZSB7XG5cdFx0Zm9udC1zaXplOiAzNnB4O1xuXHRcdG1hcmdpbjogMzBweCBhdXRvO1xuXHRcdGxpbmUtaGVpZ2h0OiAxLjMzO1xuXHR9XG5cdCYuYXNrYXJyYXlfX2hlYWRlcixcblx0Ji5mb3JtLWhlYWRlcl9fcGF5bWVudCB7XG5cdFx0bWFyZ2luLWJvdHRvbTogMTlweDtcblx0XHR0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlO1xuXHR9XG5cdCYuZm9ybS1oZWFkZXItLXNtYWxsIHtcblx0XHRmb250LXNpemU6IDI0cHg7XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1IZWFkZXI7XG4iXX0= */"
-});
-var _default = FormHeader;
-var _default2 = _default;
-exports.default = _default2;
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(FormHeader, "FormHeader", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormHeader.js");
-  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormHeader.js");
 })();
 
 ;
@@ -42789,7 +43206,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51982" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59533" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

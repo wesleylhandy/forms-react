@@ -6,6 +6,8 @@ import ProductFormProvider from "../Contexts/ProductFormProvider";
 import SignUpFormProvider from "../Contexts/SignUpFormProvider";
 import ErrorBoundary from '../ErrorBoundary';
 const GivingForm = lazy(() => import("./GivingForm"));
+const AskForm = lazy(() => import("./AskForm"));
+const ConfirmationForm = lazy(() => import("./ConfirmationForm"));
 const PaymentForm = lazy(() => import("./PaymentForm"));
 const ProductForm = lazy(() => import("./ProductForm"));
 const SignUpForm = lazy(() => import("./SignUpForm"));
@@ -21,6 +23,26 @@ const FormRouter = props => {
 	const { formConfig, submitted, confirmed } = useContext(FormConfigContext);
 	const { formType } = formConfig;
 	switch (formType) {
+		case "club":
+			return (
+				<GivingFormProvider>
+					<Suspense fallback={<Spinner />}>
+						<ErrorBoundary>
+							<AskForm {...props} {...formConfig} submitted={submitted} />
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<ConfirmationForm submitted={submitted} />
+						</ErrorBoundary>
+						<ErrorBoundary>
+							<GivingSuccessMessage
+								confirmed={confirmed}
+								successMessage={formConfig.successMessage}
+							/>
+						</ErrorBoundary>
+					</Suspense>
+				</GivingFormProvider>
+			)
+			break;
 		case "giving":
 			return (
 				<GivingFormProvider>
