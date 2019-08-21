@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
+import "../Animations/askarray.css"
+
 import { GivingFormContext } from "../../Contexts/GivingFormProvider";
-import MonthlyRadioBlock from "../Blocks/MonthlyRadioBlock";
-import MonthlyTabBlock from "../Blocks/MonthlyTabBlock";
-import CCInfoBlock from "../Blocks/CCInfoBlock";
-import Divider from "../StyledComponents/Divider";
+
+import MonthlyClubTabBlock from "../Blocks/MonthlyClubTabBlock";
 import FieldSet from "../StyledComponents/FieldSet";
-import AskArray from "../StyledComponents/AskArray";
-import FormHeader from "../StyledComponents/FormHeader";
-import AskArrayBtn from "../StyledComponents/AskArrayBtn";
-import OtherGiftAmountGroup from "../StyledComponents/OtherGiftAmountGroup";
+import ClubAskArray from "../StyledComponents/ClubAskArray";
+import ClubAskArrayBtn from "../StyledComponents/ClubAskArrayBtn";
+import ClubOtherGiftAmountGroup from "../StyledComponents/ClubOtherGiftAmountGroup";
 import AmountError from "../StyledComponents/AmountError";
 
 function getIndex(arr, amount) {
@@ -75,22 +76,33 @@ class ClubLayout extends Component {
 
 	renderArray(amounts, selectedIndex, type) {
 		return amounts.map((amount, i) => (
-			<AskArrayBtn
-				key={`array${i}`}
-				className={`askbutton${type == "tabs" ? "__tabs" : ""} ${
-					selectedIndex == i ? "selected" : ""
-				}`}
-				onClick={() => this.addToCart(amount, i)}
+			<CSSTransition
+				in={true}
+				key={`array-${this.props.monthlyChecked ? "monthly" : "single"}-${i}`}
+				timeout={400}
+				classNames="askarray-item"
+				unmountOnExit
+				appear
 			>
-				<div className={`askbutton__amt${type == "tabs" ? "--tabs" : ""}`}>
-					${amount}
-				</div>
-                {
-                    this.props.monthlyChecked && (
-                        <div className="club-level">{partnerLevels[amount]}</div>
-                    )
-                }
-			</AskArrayBtn>
+				<ClubAskArrayBtn
+					className={`askbutton--club ${
+						selectedIndex == i ? "selected" : ""
+					}`}
+					onClick={() => this.addToCart(amount, i)}
+				>
+					<div className="askbutton__amt">
+						${amount}
+					</div>
+					<CSSTransition
+						in={this.props.monthlyChecked}
+						timeout={400}
+						classNames="askarray-item--level"
+						unmountOnExit
+					>
+						<div className="club-level">{partnerLevels[amount]}</div>
+					</CSSTransition>
+				</ClubAskArrayBtn>
+			</CSSTransition>
 		));
 	}
 
@@ -242,113 +254,52 @@ class ClubLayout extends Component {
 							? monthlyAmounts[selectedIndex]
 							: singleAmounts[selectedIndex]) + "-key";
 		}
-		// console.log({amount, otherAmount, selectedIndex, key})
-		return givingFormat === "buttons" ? (
+		const amounts = monthlyChecked ? monthlyAmounts : singleAmounts
+		return (
 			<FieldSet>
 				<legend>Giving Amounts and Giving Options</legend>
-				<FormHeader className="askarray__header">
-					Select A {monthlyChecked ? "Monthly" : "Single"} Donation Amount
-				</FormHeader>
-				<AskArray id="AskArray" className="askarray">
-					{monthlyOption && monthlyChecked
-						? this.renderArray(monthlyAmounts, selectedIndex, givingFormat)
-						: null}
-					{singleOption && !monthlyChecked
-						? this.renderArray(singleAmounts, selectedIndex, givingFormat)
-                        : null}
-                    <OtherGiftAmountGroup id="OtherGiftAmount" className="askarray--other">
-                        <div
-                            id="OtherAmount"
-                            className={`askarray__form-group--other ${
-                                selectedIndex == 99 ? "styles.selected" : ""
-                            }`}
-                        >
-                            <label
-                                className="form-group__other-input--label"
-                                htmlFor="other-amt-input"
-                            >
-                                Other Amount
-                            </label>
-                            <input
-                                key={key}
-                                ref={this.otherAmountField}
-                                className="form-group__other-input"
-                                name="other-amt-input"
-                                onChange={this.handleOtherAmt}
-                                value={otherAmount == 0 ? "" : otherAmount}
-                                onFocus={this.handleFocus}
-                            />
-                            <div className="other-amt-error">{otherAmountError}</div>
-                        </div>
-                    </OtherGiftAmountGroup>
-				</AskArray>
-				
-				<AmountError className="amount-error">{amountError}</AmountError>
-
-				{monthlyOption && singleOption && (
-					<MonthlyRadioBlock
-						Monthlypledgeday={Monthlypledgeday}
-						monthlyChecked={monthlyChecked}
-						handleInputChange={handleInputChange}
-						handleRadioClick={handleRadioClick}
-					/>
-				)}
-			</FieldSet>
-		) : (
-			<FieldSet>
-				<legend>Giving Amounts and Giving Options</legend>
-				<FormHeader className="askarray__header">
-					Select A {monthlyChecked ? "Monthly" : "Single"} Donation Amount
-				</FormHeader>
-				{monthlyOption && singleOption && (
-					<MonthlyTabBlock
+				<MonthlyClubTabBlock
 						monthlyChecked={monthlyChecked}
 						handleTabClick={handleRadioClick}
 					/>
-				)}
-				<AskArray id="AskArray" className="askarray__tabs">
-					{monthlyOption && monthlyChecked
-						? this.renderArray(monthlyAmounts, selectedIndex, givingFormat)
-						: null}
-					{singleOption && !monthlyChecked
-						? this.renderArray(singleAmounts, selectedIndex, givingFormat)
-						: null}
-				</AskArray>
-				<OtherGiftAmountGroup
-					id="OtherGiftAmount"
-					className="askarray__tabs--other"
-				>
-					<div
-						id="OtherAmount"
-						className={`askarray__form-group--tabs ${
-							selectedIndex == 99 ? " styles.selected" : ""
-						}`}
-					>
-						<label
-							className="form-group-tabs__other-input--label"
-							htmlFor="other-amt-input"
-						>
-							Or specify amount
-						</label>
-						<div className="askarray__form-group-tabs-flex-container">
-							<div className="form-group-tabs--dollar">$</div>
-							<input
-								key={key}
-								ref={this.otherAmountField}
-								className="form-group-tabs__other-input"
-								name="other-amt-input"
-								onChange={this.handleOtherAmt}
-								value={otherAmount == 0 ? "" : otherAmount}
-								onFocus={this.handleFocus}
-							/>
-							<div className="other-amt-error">{otherAmountError}</div>
-						</div>
-					</div>
-				</OtherGiftAmountGroup>
-				{monthlyChecked && <CCInfoBlock Monthlypledgeday={Monthlypledgeday} />}
+				<ClubAskArray id="AskArray" className="askarray--club">
+					<TransitionGroup className="askarray--club-list" component={null} enter={true} exit={false}>
+						{
+							this.renderArray(amounts, selectedIndex, 'buttons')
+						}
+						<ClubOtherGiftAmountGroup key="othergiftamount" id="OtherGiftAmount" className="askarray--other">
+							<div
+								id="OtherAmount"
+								className={`askarray__form-group--other ${
+									selectedIndex == 99 ? "selected" : ""
+								}`}
+							>
+								<label
+									className="form-group__other-input--label"
+									htmlFor="other-amt-input"
+								>
+									Other Amount
+								</label>
+								<input
+									key={key}
+									ref={this.otherAmountField}
+									className="form-group__other-input"
+									name="other-amt-input"
+									onChange={this.handleOtherAmt}
+									value={otherAmount == 0 ? "" : otherAmount}
+									onFocus={this.handleFocus}
+								/>
+								<div className="other-amt-error">{otherAmountError}</div>
+							</div>
+						</ClubOtherGiftAmountGroup>
+					</TransitionGroup>
+					
+				
+				</ClubAskArray>
+		
 				<AmountError className="amount-error">{amountError}</AmountError>
 			</FieldSet>
-		);
+		) 
 	}
 }
 

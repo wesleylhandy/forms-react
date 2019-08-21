@@ -125,6 +125,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -135,13 +139,15 @@ var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
-var _core = require("@emotion/core");
-
 var _react = _interopRequireWildcard(require("react"));
+
+var _reactTransitionGroup = require("react-transition-group");
 
 var _GivingFormProvider = require("../Contexts/GivingFormProvider");
 
 var _DesignationBlock = _interopRequireDefault(require("../FormComponents/Blocks/DesignationBlock"));
+
+require("../FormComponents/Animations/designations.css");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -167,6 +173,43 @@ function (_Component) {
   }
 
   (0, _createClass2.default)(ConfirmationForm, [{
+    key: "componentWillUnmount",
+    value: function () {
+      var _componentWillUnmount = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee() {
+        var savePersonalInfo, days, lifetime;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // if user has selected to save personal info,
+                savePersonalInfo = this.context.fields.savePersonalInfo;
+
+                if (savePersonalInfo) {
+                  days = 30;
+                  lifetime = days * 24 * 60 * 60 * 1000;
+                  this.context.saveLS(lifetime, "info");
+                } else {
+                  // otherwise remove any stored data from local storage
+                  this.context.removeOneLS("info");
+                }
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function componentWillUnmount() {
+        return _componentWillUnmount.apply(this, arguments);
+      }
+
+      return componentWillUnmount;
+    }()
+  }, {
     key: "render",
     value: function render() {
       var _this$context = this.context,
@@ -175,7 +218,14 @@ function (_Component) {
           initialized = _this$context.initialized,
           submitting = _this$context.submitting,
           submitted = _this$context.submitted;
-      return (0, _core.jsx)(_DesignationBlock.default, null);
+      var _this$props = this.props,
+          allowInternational = _this$props.allowInternational,
+          getPhone = _this$props.getPhone,
+          getHonorific = _this$props.getHonorific,
+          getSuffix = _this$props.getSuffix,
+          getMiddleName = _this$props.getMiddleName,
+          getSpouseInfo = _this$props.getSpouseInfo;
+      return null;
     }
   }, {
     key: "__reactstandin__regenerateByEval",
@@ -211,7 +261,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../FormComponents/Blocks/DesignationBlock":"src/Components/FormComponents/Blocks/DesignationBlock.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","react-transition-group":"node_modules/react-transition-group/esm/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../FormComponents/Blocks/DesignationBlock":"src/Components/FormComponents/Blocks/DesignationBlock.js","../FormComponents/Animations/designations.css":"src/Components/FormComponents/Animations/designations.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -239,7 +289,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59533" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51042" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

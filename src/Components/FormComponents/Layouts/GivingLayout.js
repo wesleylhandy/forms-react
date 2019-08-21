@@ -248,7 +248,7 @@ class GivingLayout extends Component {
 					<div
 						id="OtherAmount"
 						className={`askarray__form-group--other ${
-							selectedIndex == 99 ? "styles.selected" : ""
+							selectedIndex == 99 ? "selected" : ""
 						}`}
 					>
 						<label

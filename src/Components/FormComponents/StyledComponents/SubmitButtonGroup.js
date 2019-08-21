@@ -7,9 +7,9 @@ const SubmitButtonControl = styled.div`
 	width: 100%;
 	input[type="submit"] {
 		appearance: none;
-		background: #333;
+		background: ${props => props.backgroundColor};
 		box-sizing: border-box;
-		color: #fff;
+		color: ${props => props.color};
 		cursor: pointer;
 		display: block;
 		border: 2px solid transparent;
@@ -27,9 +27,9 @@ const SubmitButtonControl = styled.div`
 	input[type="submit"]:hover,
 	input[type="submit"]:active,
 	input[type="submit"]:focus {
-		background-color: #fff;
-		color: #333;
-		border-color: #333;
+		background-color: ${props => props.color};
+		color: ${props => props.backgroundColor};
+		border-color: ${props => props.backgroundColor};
 		cursor: pointer;
 	}
 	input[type="submit"]:disabled {
@@ -45,8 +45,8 @@ const SubmitButtonControl = styled.div`
 	}
 `;
 
-const SubmitButtonGroup = ({ children, style = {} }) => (
-	<SubmitButtonControl style={style}>{children}</SubmitButtonControl>
+const SubmitButtonGroup = ({ children, style={}, color="#fff", backgroundColor="#333" }) => (
+	<SubmitButtonControl style={style} color={color} backgroundColor={backgroundColor}>{children}</SubmitButtonControl>
 );
 
 export default SubmitButtonGroup;

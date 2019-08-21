@@ -68,6 +68,7 @@ class GivingForm extends Component {
 				type: "INIT_FORM_STATE",
 				fields,
 				errors,
+				allowMonthlyDesignations: this.props.allowMonthlyDesignations
 			});
 		}
 		try {
@@ -171,24 +172,6 @@ class GivingForm extends Component {
 		this.context.removeFromCart({ type: "REMOVE_TO_CART", itemType });
 	};
 
-	/**
-	 * Sets the state with new designation information from the designation select dropdown
-	 * @param {Object} designationInfo - Selected designation
-	 * @param {String} designationInfo.DetailName
-	 * @param {String} designationInfo.DetailDescription
-	 * @param {String} designationInfo.DetailCprojCredit
-	 * @param {String} designationInfo.DetailCprojMail
-	 */
-	updateDonation = designationInfo => {
-		const { monthlyChecked } = this.state;
-		const detailName = designationInfo.DetailName;
-		designationInfo.DetailName = monthlyChecked
-			? `MP${detailName}`
-			: `SG${detailName}`;
-		// console.log({designationInfo})
-		this.setState({ designationSelected: true, designationInfo });
-	};
-
 	render() {
 		const {
 			formTitle,
@@ -229,11 +212,6 @@ class GivingForm extends Component {
 				products: products ? products : [],
 				numProducts: products && products.length ? products.length : 0,
 				additionalGift,
-			},
-			designationOptions = {
-				designations: designations ? designations : [],
-				numDesignations:
-					designations && designations.length ? designations.length : 0,
 			};
 		const { monthlyChecked } = this.state;
 		const { errors, fields, initialized, submitting, submitted } = this.context;
@@ -263,12 +241,10 @@ class GivingForm extends Component {
 						/>
 					</FormPanel>
 				)}
-				{designationOptions.numDesignations > 0 && (
+				{designations && designations.length > 0 && (
 					<FormPanel className="form-panel">
 						<DesignationBlock
-							designationOptions={DesignationOptions}
-							updateDonation={this.updateDonation}
-							designationInfo={designationInfo}
+							designations={designations}
 						/>
 					</FormPanel>
 				)}

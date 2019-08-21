@@ -1,5 +1,7 @@
 const reducer = (state, action) => {
-	const {
+	const { 
+		allowMonthlyDesignations,
+		designatedIndex,
 		formData,
 		name,
 		value,
@@ -24,6 +26,7 @@ const reducer = (state, action) => {
 				initialized: true,
 				fields: action.fields,
 				errors: action.errors,
+				allowMonthlyDesignations
 			};
 			break;
 		case "LOAD":
@@ -103,22 +106,21 @@ const reducer = (state, action) => {
 				givingInfo.isMonthly = typeId !== "singlegift";
 				givingInfo.source = "radioClick";
 			}
+
+			return { ...state, cart: { items }, givingInfo };
+		case "UPDATE_DESIGNATION":
 			designationInfo = { ...state.designationInfo };
-			if (designationInfo && designationInfo.DetailName) {
-				const detailName = designationInfo.DetailName;
-				const prefix = detailName.slice(0, 2);
-				if (prefix == "MP" || prefix == "SG") {
-					const originalDetailName = detailName.slice(2);
-					designationInfo.DetailName =
-						id == "singlegift"
-							? `SG${originalDetailName}`
-							: `MP${originalDetailName}`;
-				} else {
-					designationInfo.DetailName =
-						id == "singlegift" ? `SG${detailName}` : `MP${detailName}`;
+			const { DetailCprojCredit, DetailCprojMail, DetailDescription, DetailName } = action.designationInfo
+			return {
+				...state,
+				designatedIndex,
+				designationInfo: {
+					DetailCprojCredit,
+					DetailCprojMail,
+					DetailDescription,
+					DetailName
 				}
 			}
-			return { ...state, cart: { items }, givingInfo, designationInfo };
 		case "SUBMIT_FORM":
 			return {
 				...state,

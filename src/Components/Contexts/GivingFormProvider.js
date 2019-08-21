@@ -27,6 +27,8 @@ class GivingFormProvider extends Component {
 		givingInfo: {},
 		productInfo: [],
 		designationInfo: {},
+		designatedIndex: 0,
+		allowMonthlyDesignations: false,
 		initialized: false,
 		submitting: false,
 		fields: {},
@@ -408,8 +410,12 @@ class GivingFormProvider extends Component {
 								},
 								index
 							) => {
-								if (index === pledgeFound && this.state.designationSelected) {
-									DetailName = this.state.designationInfo.DetailName;
+								if (
+									index === pledgeFound && 
+									Object.keys(this.state.designationInfo).length && 
+									!(isMonthly && !this.state.allowMonthlyDesignations)
+								) {
+									DetailName = (isMonthly ? "MP": "SG") + this.state.designationInfo.DetailName;
 									DetailDescription = this.state.designationInfo
 										.DetailDescription;
 									DetailCprojCredit = this.state.designationInfo
@@ -565,6 +571,7 @@ class GivingFormProvider extends Component {
 		addToCart: action => this.setState(state => reducer(state, action)),
 		removeFromCart: action => this.setState(state => reducer(state, action)),
 		updateGivingType: action => this.setState(state => reducer(state, action)),
+		updateDesignation: action => this.setState(state => reducer(state, action)),
 		getGlobals: async () => {
 			const isSecure = window.location.protocol == "https:";
 			const url = !isSecure

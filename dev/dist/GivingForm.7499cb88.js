@@ -539,60 +539,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./StyledComponents/TabGroup":"src/Components/FormComponents/StyledComponents/TabGroup.js"}],"src/Components/FormComponents/StyledComponents/Divider.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var Divider = (0, _styledBase.default)("div", {
-  target: "e1hm1ozp0",
-  label: "Divider"
-})("background:color;", function (props) {
-  return {
-    color: props.color
-  };
-}, " flex:0 0 5px;" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkRpdmlkZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRzBCIiwiZmlsZSI6IkRpdmlkZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgRGl2aWRlciA9IHN0eWxlZC5kaXZgXG5cdGJhY2tncm91bmQ6IGNvbG9yO1xuXHQke3Byb3BzID0+ICh7XG5cdFx0Y29sb3I6IHByb3BzLmNvbG9yLFxuXHR9KX1cblx0ZmxleDogMCAwIDVweDtcbmA7XG5cbmV4cG9ydCBkZWZhdWx0IERpdmlkZXI7XG4iXX0= */"));
-var _default = Divider;
-var _default2 = _default;
-exports.default = _default2;
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(Divider, "Divider", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Divider.js");
-  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Divider.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/FormComponents/Blocks/MonthlyTabBlock.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./StyledComponents/TabGroup":"src/Components/FormComponents/StyledComponents/TabGroup.js"}],"src/Components/FormComponents/Blocks/MonthlyTabBlock.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -831,63 +778,6 @@ exports.default = _default2;
 
   reactHotLoader.register(OtherGiftAmountGroup, "OtherGiftAmountGroup", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/OtherGiftAmountGroup.js");
   reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/OtherGiftAmountGroup.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/FormComponents/StyledComponents/AmountError.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.AmountError = void 0;
-
-var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var AmountError = (0, _styledBase.default)("div", {
-  target: "e16mrpwz0",
-  label: "AmountError"
-})("development" === "production" ? {
-  name: "181ye5m",
-  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;left:50%;transform:translateX(-50%);bottom:auto;top:30px;font-weight:800;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;"
-} : {
-  name: "181ye5m",
-  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;left:50%;transform:translateX(-50%);bottom:auto;top:30px;font-weight:800;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkFtb3VudEVycm9yLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdxQyIsImZpbGUiOiJBbW91bnRFcnJvci5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5leHBvcnQgY29uc3QgQW1vdW50RXJyb3IgPSBzdHlsZWQuZGl2YFxuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdGNvbG9yOiBjcmltc29uO1xuXHR3aWR0aDogYXV0bztcblx0bGVmdDogNTAlO1xuXHR0cmFuc2Zvcm06IHRyYW5zbGF0ZVgoLTUwJSk7XG5cdGJvdHRvbTogYXV0bztcblx0dG9wOiAzMHB4O1xuXHRmb250LXdlaWdodDogODAwO1xuXHRmb250LXNpemU6IGNhbGMoMTlweCAqIDAuNSk7XG5cdG9wYWNpdHk6IDE7XG5cdG92ZXJmbG93OiBoaWRkZW47XG5cdG1heC13aWR0aDogMTAwJTtcblx0d2hpdGUtc3BhY2U6IG5vd3JhcDtcbmA7XG5cbmV4cG9ydCBkZWZhdWx0IEFtb3VudEVycm9yO1xuIl19 */"
-});
-exports.AmountError = AmountError;
-var _default = AmountError;
-var _default2 = _default;
-exports.default = _default2;
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(AmountError, "AmountError", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/AmountError.js");
-  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/AmountError.js");
 })();
 
 ;
@@ -1198,7 +1088,7 @@ function (_Component) {
         className: "askarray--other"
       }, (0, _core.jsx)("div", {
         id: "OtherAmount",
-        className: "askarray__form-group--other ".concat(selectedIndex == 99 ? "styles.selected" : "")
+        className: "askarray__form-group--other ".concat(selectedIndex == 99 ? "selected" : "")
       }, (0, _core.jsx)("label", {
         className: "form-group__other-input--label",
         htmlFor: "other-amt-input"
@@ -1511,17 +1401,6 @@ function (_Component) {
       });
     };
 
-    _this.updateDonation = function (designationInfo) {
-      var monthlyChecked = _this.state.monthlyChecked;
-      var detailName = designationInfo.DetailName;
-      designationInfo.DetailName = monthlyChecked ? "MP".concat(detailName) : "SG".concat(detailName); // console.log({designationInfo})
-
-      _this.setState({
-        designationSelected: true,
-        designationInfo: designationInfo
-      });
-    };
-
     return _this;
   }
 
@@ -1570,7 +1449,8 @@ function (_Component) {
         this.context.initFields({
           type: "INIT_FORM_STATE",
           fields: fields,
-          errors: errors
+          errors: errors,
+          allowMonthlyDesignations: this.props.allowMonthlyDesignations
         });
       }
 
@@ -1663,10 +1543,6 @@ function (_Component) {
         products: products ? products : [],
         numProducts: products && products.length ? products.length : 0,
         additionalGift: additionalGift
-      },
-          designationOptions = {
-        designations: designations ? designations : [],
-        numDesignations: designations && designations.length ? designations.length : 0
       };
       var monthlyChecked = this.state.monthlyChecked;
       var _this$context = this.context,
@@ -1698,12 +1574,10 @@ function (_Component) {
         Monthlypledgeday: fields.Monthlypledgeday,
         monthlyOption: monthlyOption,
         singleOption: singleOption
-      })), designationOptions.numDesignations > 0 && (0, _core.jsx)(_FormPanel.default, {
+      })), designations && designations.length > 0 && (0, _core.jsx)(_FormPanel.default, {
         className: "form-panel"
       }, (0, _core.jsx)(_DesignationBlock.default, {
-        designationOptions: DesignationOptions,
-        updateDonation: this.updateDonation,
-        designationInfo: designationInfo
+        designations: designations
       })), productOptions.numProducts > 0 && (0, _core.jsx)(_FormPanel.default, {
         className: "form-panel"
       }, (0, _core.jsx)(_ProductLayout.default, {
@@ -1822,7 +1696,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59533" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51042" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

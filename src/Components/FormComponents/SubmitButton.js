@@ -9,9 +9,11 @@ const SubmitButton = ({
 	handleSubmit,
 	submitting,
 	value,
+	color,
+	backgroundColor
 }) => {
 	return (
-		<SubmitButtonGroup className="submit-row">
+		<SubmitButtonGroup className="submit-row" color={color} backgroundColor={backgroundColor}>
 			<input
 				className="submit-btn"
 				type="submit"

@@ -21,7 +21,15 @@ import Spinner from "../StyledComponents/Spinner";
 
 const FormRouter = props => {
 	const { formConfig, submitted, confirmed } = useContext(FormConfigContext);
-	const { formType } = formConfig;
+	const { 
+		formType, 
+		allowInternational,
+		getPhone,
+		getHonorific,
+		getSuffix,
+		getMiddleName,
+		getSpouseInfo, 
+	} = formConfig;
 	switch (formType) {
 		case "club":
 			return (
@@ -31,7 +39,14 @@ const FormRouter = props => {
 							<AskForm {...props} {...formConfig} submitted={submitted} />
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<ConfirmationForm submitted={submitted} />
+							<ConfirmationForm 
+								allowInternational={allowInternational}
+								getPhone={getPhone}
+								getHonorific={getHonorific}
+								getSuffix={getSuffix}
+								getMiddleName={getMiddleName}
+								getSpouseInfo={getSpouseInfo}
+								submitted={submitted} />
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<GivingSuccessMessage
