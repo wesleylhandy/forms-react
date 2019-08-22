@@ -218,7 +218,87 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js"}],"src/Components/Forms/ConfirmationForm.js":[function(require,module,exports) {
+},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js"}],"src/Components/FormComponents/StyledComponents/LockSymbol.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var LockSymbol = function LockSymbol() {
+  return (0, _core.jsx)("svg", {
+    width: "16px",
+    height: "21px",
+    viewBox: "0 0 16 21",
+    version: "1.1",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, (0, _core.jsx)("title", null, "baseline-lock-24px"), (0, _core.jsx)("desc", null, "Created with Sketch."), (0, _core.jsx)("g", {
+    id: "Welcome",
+    stroke: "none",
+    strokeWidth: "1",
+    fill: "none",
+    fillRule: "evenodd"
+  }, (0, _core.jsx)("g", {
+    id: "Payment-Page-(2-Step)-Form-Field-Inputs",
+    transform: "translate(-482.000000, -531.000000)"
+  }, (0, _core.jsx)("g", {
+    id: "Payment-Info",
+    transform: "translate(478.000000, 490.000000)"
+  }, (0, _core.jsx)("g", {
+    id: "Credit-Cards",
+    transform: "translate(0.000000, 40.000000)"
+  }, (0, _core.jsx)("g", {
+    id: "baseline-lock-24px"
+  }, (0, _core.jsx)("polygon", {
+    id: "Path",
+    points: "0 0 24 0 24 24 0 24"
+  }), (0, _core.jsx)("path", {
+    d: "M18,8 L17,8 L17,6 C17,3.24 14.76,1 12,1 C9.24,1 7,3.24 7,6 L7,8 L6,8 C4.9,8 4,8.9 4,10 L4,20 C4,21.1 4.9,22 6,22 L18,22 C19.1,22 20,21.1 20,20 L20,10 C20,8.9 19.1,8 18,8 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z M15.1,8 L8.9,8 L8.9,6 C8.9,4.29 10.29,2.9 12,2.9 C13.71,2.9 15.1,4.29 15.1,6 L15.1,8 Z",
+    id: "Shape",
+    fill: "#9EA0A1",
+    "fill-rule": "nonzero"
+  })))))));
+};
+
+var _default = LockSymbol;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(LockSymbol, "LockSymbol", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/LockSymbol.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/LockSymbol.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/Forms/ConfirmationForm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -240,6 +320,8 @@ var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
+var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
+
 var _core = require("@emotion/core");
 
 var _react = _interopRequireWildcard(require("react"));
@@ -254,6 +336,10 @@ require("../FormComponents/Animations/designations.css");
 
 var _SummaryBlock = _interopRequireDefault(require("../FormComponents/Blocks/SummaryBlock"));
 
+var _FormHeader = _interopRequireDefault(require("../FormComponents/StyledComponents/FormHeader"));
+
+var _LockSymbol = _interopRequireDefault(require("../FormComponents/StyledComponents/LockSymbol"));
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -266,6 +352,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
   return a;
 };
+
+var SafetyDisclaimer = (0, _styledBase.default)("div", {
+  target: "e156bhub0",
+  label: "SafetyDisclaimer"
+})("development" === "production" ? {
+  name: "1v1syns",
+  styles: "display:flex;flex-direction:row;justify-content:center;align-items:center;font-size:16px;line-height:20px;margin:20px 0;svg{margin-top:-10px;margin-right:10px;}"
+} : {
+  name: "1v1syns",
+  styles: "display:flex;flex-direction:row;justify-content:center;align-items:center;font-size:16px;line-height:20px;margin:20px 0;svg{margin-top:-10px;margin-right:10px;}",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNvbmZpcm1hdGlvbkZvcm0uanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBY21DIiwiZmlsZSI6IkNvbmZpcm1hdGlvbkZvcm0uanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgQ29tcG9uZW50IH0gZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gJ0BlbW90aW9uL3N0eWxlZCc7XG5cbmltcG9ydCB7IENTU1RyYW5zaXRpb24gfSBmcm9tICdyZWFjdC10cmFuc2l0aW9uLWdyb3VwJztcblxuaW1wb3J0IHsgR2l2aW5nRm9ybUNvbnRleHQgfSBmcm9tIFwiLi4vQ29udGV4dHMvR2l2aW5nRm9ybVByb3ZpZGVyXCI7XG5cbmltcG9ydCBGb3JtV3JhcHBlciBmcm9tICcuLi9TdHlsZWRDb21wb25lbnRzL0Zvcm1XcmFwcGVyJ1xuXG5pbXBvcnQgXCIuLi9Gb3JtQ29tcG9uZW50cy9BbmltYXRpb25zL2Rlc2lnbmF0aW9ucy5jc3NcIlxuaW1wb3J0IFN1bW1hcnlCbG9jayBmcm9tIFwiLi4vRm9ybUNvbXBvbmVudHMvQmxvY2tzL1N1bW1hcnlCbG9ja1wiO1xuaW1wb3J0IEZvcm1IZWFkZXIgZnJvbSBcIi4uL0Zvcm1Db21wb25lbnRzL1N0eWxlZENvbXBvbmVudHMvRm9ybUhlYWRlclwiO1xuaW1wb3J0IExvY2tTeW1ib2wgZnJvbSBcIi4uL0Zvcm1Db21wb25lbnRzL1N0eWxlZENvbXBvbmVudHMvTG9ja1N5bWJvbFwiO1xuXG5jb25zdCBTYWZldHlEaXNjbGFpbWVyID0gc3R5bGVkLmRpdmBcbiAgICBkaXNwbGF5OiBmbGV4O1xuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBmb250LXNpemU6IDE2cHg7XG4gICAgbGluZS1oZWlnaHQ6IDIwcHg7XG4gICAgbWFyZ2luOiAyMHB4IDA7XG4gICAgc3ZnIHtcbiAgICAgICAgbWFyZ2luLXRvcDogLTEwcHg7XG4gICAgICAgIG1hcmdpbi1yaWdodDogMTBweDtcbiAgICB9XG5gXG5cbmNsYXNzIENvbmZpcm1hdGlvbkZvcm0gZXh0ZW5kcyBDb21wb25lbnQge1xuICAgIGFzeW5jIGNvbXBvbmVudFdpbGxVbm1vdW50KCkge1xuXHRcdC8vIGlmIHVzZXIgaGFzIHNlbGVjdGVkIHRvIHNhdmUgcGVyc29uYWwgaW5mbyxcblx0XHRjb25zdCB7IHNhdmVQZXJzb25hbEluZm8gfSA9IHRoaXMuY29udGV4dC5maWVsZHM7XG5cdFx0aWYgKHNhdmVQZXJzb25hbEluZm8pIHtcblx0XHRcdGNvbnN0IGRheXMgPSAzMDtcblx0XHRcdGNvbnN0IGxpZmV0aW1lID0gZGF5cyAqIDI0ICogNjAgKiA2MCAqIDEwMDA7XG5cdFx0XHR0aGlzLmNvbnRleHQuc2F2ZUxTKGxpZmV0aW1lLCBcImluZm9cIik7XG5cdFx0fSBlbHNlIHtcblx0XHRcdC8vIG90aGVyd2lzZSByZW1vdmUgYW55IHN0b3JlZCBkYXRhIGZyb20gbG9jYWwgc3RvcmFnZVxuXHRcdFx0dGhpcy5jb250ZXh0LnJlbW92ZU9uZUxTKFwiaW5mb1wiKTtcblx0XHR9XG4gICAgfVxuICAgIHJlbmRlcigpIHtcbiAgICAgICAgY29uc3QgeyBlcnJvcnMsIGZpZWxkcywgaW5pdGlhbGl6ZWQsIHN1Ym1pdHRpbmcsIHN1Ym1pdHRlZCB9ID0gdGhpcy5jb250ZXh0O1xuICAgICAgICBjb25zdCB7IFxuICAgICAgICAgICAgYWxsb3dJbnRlcm5hdGlvbmFsLFxuICAgICAgICAgICAgZ2V0UGhvbmUsXG4gICAgICAgICAgICBnZXRIb25vcmlmaWMsXG4gICAgICAgICAgICBnZXRTdWZmaXgsXG4gICAgICAgICAgICBnZXRNaWRkbGVOYW1lLFxuICAgICAgICAgICAgZ2V0U3BvdXNlSW5mbywgIFxuICAgICAgICB9ID0gdGhpcy5wcm9wc1xuICAgICAgICByZXR1cm4gc3VibWl0dGVkICYmIChcbiAgICAgICAgICAgIDxGb3JtV3JhcHBlciBzdHlsZT17e21heFdpZHRoOiBcIjgxOHB4XCIsIG1hcmdpbjogXCIwIGF1dG9cIn19PlxuICAgICAgICAgICAgICAgIDxTdW1tYXJ5QmxvY2sgd2l0aENvbnRhaW5lcj17dHJ1ZX0vPlxuICAgICAgICAgICAgICAgIDxGb3JtSGVhZGVyIHN0eWxlPXt7Zm9udFNpemU6IFwiMjhweFwiLCBmb250V2VpZ2h0OiBcImJvbGRcIiwgbGV0dGVyU3BhY2luZzpcIjAuNTNweFwiLGNvbG9yOlwiIzFjMWMxY1wiLCBwYWRkaW5nVG9wOiBcIjMwcHhcIn19PlBheW1lbnQgSW5mb3JtYXRpb248L0Zvcm1IZWFkZXI+XG4gICAgICAgICAgICAgICAgICAgIDxTYWZldHlEaXNjbGFpbWVyIGNsYXNzTmFtZT1cInNhZmV0eS1kaXNjbGFpbWVyXCI+PExvY2tTeW1ib2wvPiA8c3BhbiBzdHlsZT17e2NvbG9yOiBcIiM1NDU4NURcIn19PlRoaXMgaXMgYSBzZWN1cmUgMjU2LWJpdCBTU0wgZW5jcnlwdGVkIHBheW1lbnQuIFlvdSZyc3F1bztyZSBzYWZlLjwvc3Bhbj48L1NhZmV0eURpc2NsYWltZXI+XG4gICAgICAgICAgICAgICAgPFN1bW1hcnlCbG9jayB3aXRoQ29udGFpbmVyPXtmYWxzZX0vPlxuICAgICAgICAgICAgPC9Gb3JtV3JhcHBlcj5cbiAgICAgICAgKVxuICAgIH1cbn1cblxuQ29uZmlybWF0aW9uRm9ybS5jb250ZXh0VHlwZSA9IEdpdmluZ0Zvcm1Db250ZXh0O1xuXG5leHBvcnQgZGVmYXVsdCBDb25maXJtYXRpb25Gb3JtOyJdfQ== */"
+});
 
 var ConfirmationForm =
 /*#__PURE__*/
@@ -337,7 +435,21 @@ function (_Component) {
         }
       }, (0, _core.jsx)(_SummaryBlock.default, {
         withContainer: true
-      }), (0, _core.jsx)(_SummaryBlock.default, {
+      }), (0, _core.jsx)(_FormHeader.default, {
+        style: {
+          fontSize: "28px",
+          fontWeight: "bold",
+          letterSpacing: "0.53px",
+          color: "#1c1c1c",
+          paddingTop: "30px"
+        }
+      }, "Payment Information"), (0, _core.jsx)(SafetyDisclaimer, {
+        className: "safety-disclaimer"
+      }, (0, _core.jsx)(_LockSymbol.default, null), " ", (0, _core.jsx)("span", {
+        style: {
+          color: "#54585D"
+        }
+      }, "This is a secure 256-bit SSL encrypted payment. You\u2019re safe.")), (0, _core.jsx)(_SummaryBlock.default, {
         withContainer: false
       }));
     }
@@ -365,6 +477,7 @@ exports.default = _default2;
     return;
   }
 
+  reactHotLoader.register(SafetyDisclaimer, "SafetyDisclaimer", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js");
   reactHotLoader.register(ConfirmationForm, "ConfirmationForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js");
   reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js");
 })();
@@ -375,7 +488,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","react-transition-group":"node_modules/react-transition-group/esm/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../StyledComponents/FormWrapper":"src/Components/StyledComponents/FormWrapper.js","../FormComponents/Animations/designations.css":"src/Components/FormComponents/Animations/designations.css","../FormComponents/Blocks/SummaryBlock":"src/Components/FormComponents/Blocks/SummaryBlock.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","react-transition-group":"node_modules/react-transition-group/esm/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../StyledComponents/FormWrapper":"src/Components/StyledComponents/FormWrapper.js","../FormComponents/Animations/designations.css":"src/Components/FormComponents/Animations/designations.css","../FormComponents/Blocks/SummaryBlock":"src/Components/FormComponents/Blocks/SummaryBlock.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/StyledComponents/LockSymbol":"src/Components/FormComponents/StyledComponents/LockSymbol.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -403,7 +516,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53502" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50249" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
