@@ -117,7 +117,108 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/Components/Forms/ConfirmationForm.js":[function(require,module,exports) {
+})({"src/Components/FormComponents/Blocks/SummaryBlock.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
+
+var _core = require("@emotion/core");
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _GivingFormProvider = require("../../Contexts/GivingFormProvider");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var BlockContainer = (0, _styledBase.default)("div", {
+  target: "e13c5opw0",
+  label: "BlockContainer"
+})("development" === "production" ? {
+  name: "4jxjp4",
+  styles: "display:flex;justify-content:center;align-items:center;&.column{width:calc(100%-20px);height:100px;max-width:360px;margin:30px auto;border:1px solid #DEDEDE;border-radius:3px;background-color:#F5F7F8;box-shadow:0 0 4px 0 rgba(0,0,0,0.11);flex-direction:column;.amount-block{margin-bottom:10px;}}&.row{flex-direction:row;margin:20px auto;text-align:center;.amount-block{margin-right:10px;}.amount-block,.amount-block>span{font-weight:bold;}}a{color:#009BDF;cursor:pointer;text-decoration:none;text-align:center;&:hover,&:active,&:focus{text-decoration:underline;color:#0069AD;}}"
+} : {
+  name: "4jxjp4",
+  styles: "display:flex;justify-content:center;align-items:center;&.column{width:calc(100%-20px);height:100px;max-width:360px;margin:30px auto;border:1px solid #DEDEDE;border-radius:3px;background-color:#F5F7F8;box-shadow:0 0 4px 0 rgba(0,0,0,0.11);flex-direction:column;.amount-block{margin-bottom:10px;}}&.row{flex-direction:row;margin:20px auto;text-align:center;.amount-block{margin-right:10px;}.amount-block,.amount-block>span{font-weight:bold;}}a{color:#009BDF;cursor:pointer;text-decoration:none;text-align:center;&:hover,&:active,&:focus{text-decoration:underline;color:#0069AD;}}",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlN1bW1hcnlCbG9jay5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFLaUMiLCJmaWxlIjoiU3VtbWFyeUJsb2NrLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IHVzZUNvbnRleHQgfSBmcm9tICdyZWFjdCdcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiXG5cbmltcG9ydCB7IEdpdmluZ0Zvcm1Db250ZXh0IH0gZnJvbSBcIi4uLy4uL0NvbnRleHRzL0dpdmluZ0Zvcm1Qcm92aWRlclwiO1xuXG5jb25zdCBCbG9ja0NvbnRhaW5lciA9IHN0eWxlZC5kaXZgXG4gICAgZGlzcGxheTogZmxleDtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgICYuY29sdW1uIHtcbiAgICAgICAgd2lkdGg6IGNhbGMoMTAwJS0yMHB4KTtcbiAgICAgICAgaGVpZ2h0OiAxMDBweDtcbiAgICAgICAgbWF4LXdpZHRoOiAzNjBweDtcbiAgICAgICAgbWFyZ2luOiAzMHB4IGF1dG87XG4gICAgICAgIGJvcmRlcjogMXB4IHNvbGlkICNERURFREU7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IDNweDtcbiAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogI0Y1RjdGODtcbiAgICAgICAgYm94LXNoYWRvdzogMCAwIDRweCAwIHJnYmEoMCwwLDAsMC4xMSk7XG4gICAgICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gICAgICAgIC5hbW91bnQtYmxvY2sge1xuICAgICAgICAgICAgbWFyZ2luLWJvdHRvbTogMTBweDtcbiAgICAgICAgfVxuICAgIH1cbiAgICAmLnJvdyB7XG4gICAgICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XG4gICAgICAgIG1hcmdpbjogMjBweCBhdXRvO1xuICAgICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gICAgICAgIC5hbW91bnQtYmxvY2sge1xuICAgICAgICAgICAgbWFyZ2luLXJpZ2h0OiAxMHB4O1xuICAgICAgICB9XG4gICAgICAgIC5hbW91bnQtYmxvY2ssIC5hbW91bnQtYmxvY2s+c3BhbiB7XG4gICAgICAgICAgICBmb250LXdlaWdodDogYm9sZDtcbiAgICAgICAgfVxuICAgIH1cbiAgICBhIHtcbiAgICAgICAgY29sb3I6ICMwMDlCREY7XG4gICAgICAgIGN1cnNvcjpwb2ludGVyO1xuICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG4gICAgICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICAgICAgJjpob3ZlciwgJjphY3RpdmUsICY6Zm9jdXMge1xuICAgICAgICAgICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7XG4gICAgICAgICAgICBjb2xvcjogIzAwNjlBRDtcbiAgICAgICAgfVxuICAgIH1cbmBcblxuY29uc3QgU3VtbWFyeUJsb2NrID0gKHt3aXRoQ29udGFpbmVyfSkgPT4ge1xuICAgIGNvbnN0IHsgZ2V0U3VtbWFyeSwgZ29CYWNrIH0gPSB1c2VDb250ZXh0KEdpdmluZ0Zvcm1Db250ZXh0KVxuICAgIGNvbnN0IHthbW91bnQsIGlzTW9udGhseSwgZGVzaWduYXRpb259ID0gZ2V0U3VtbWFyeSgpO1xuICAgIGNvbnN0IGR1cmF0aW9uID0gaXNNb250aGx5ID8gXCJcXC8gTW9udGggUGFydG5lcnNoaXBcIiA6IGRlc2lnbmF0aW9uO1xuXG4gICAgY29uc3QgaGFuZGxlR29CYWNrQ2xpY2sgPSBlID0+IHtcbiAgICAgICAgZS5wcmV2ZW50RGVmYXVsdCgpO1xuICAgICAgICBnb0JhY2soeyB0eXBlOiBcIkdPX0JBQ0tcIiB9KVxuICAgIH1cbiAgICByZXR1cm4gKFxuICAgICAgICA8QmxvY2tDb250YWluZXIgY2xhc3NOYW1lPXt3aXRoQ29udGFpbmVyID8gXCJjb2x1bW5cIiA6IFwicm93XCJ9PlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhbW91bnQtYmxvY2tcIj4ke2Ftb3VudH0gPHNwYW4gZGFuZ2Vyb3VzbHlTZXRJbm5lckhUTUw9e3tfX2h0bWw6IGR1cmF0aW9ufX0+PC9zcGFuPjwvZGl2PlxuICAgICAgICAgICAgPGEgY2xhc3NOYW1lPVwiZ28tYmFjay1idG5cIiBvbkNsaWNrPXtoYW5kbGVHb0JhY2tDbGlja30+RWRpdDwvYT5cbiAgICAgICAgPC9CbG9ja0NvbnRhaW5lcj5cbiAgICApXG59XG5cbmV4cG9ydCBkZWZhdWx0IFN1bW1hcnlCbG9jazsiXX0= */"
+});
+
+var SummaryBlock = function SummaryBlock(_ref) {
+  var withContainer = _ref.withContainer;
+
+  var _useContext = (0, _react.useContext)(_GivingFormProvider.GivingFormContext),
+      getSummary = _useContext.getSummary,
+      goBack = _useContext.goBack;
+
+  var _getSummary = getSummary(),
+      amount = _getSummary.amount,
+      isMonthly = _getSummary.isMonthly,
+      designation = _getSummary.designation;
+
+  var duration = isMonthly ? "\/ Month Partnership" : designation;
+
+  var handleGoBackClick = function handleGoBackClick(e) {
+    e.preventDefault();
+    goBack({
+      type: "GO_BACK"
+    });
+  };
+
+  return (0, _core.jsx)(BlockContainer, {
+    className: withContainer ? "column" : "row"
+  }, (0, _core.jsx)("div", {
+    className: "amount-block"
+  }, "$", amount, " ", (0, _core.jsx)("span", {
+    dangerouslySetInnerHTML: {
+      __html: duration
+    }
+  })), (0, _core.jsx)("a", {
+    className: "go-back-btn",
+    onClick: handleGoBackClick
+  }, "Edit"));
+};
+
+__signature__(SummaryBlock, "useContext{{ getSummary, goBack }}");
+
+var _default = SummaryBlock;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(BlockContainer, "BlockContainer", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/SummaryBlock.js");
+  reactHotLoader.register(SummaryBlock, "SummaryBlock", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/SummaryBlock.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/SummaryBlock.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js"}],"src/Components/Forms/ConfirmationForm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -139,15 +240,19 @@ var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
+var _core = require("@emotion/core");
+
 var _react = _interopRequireWildcard(require("react"));
 
 var _reactTransitionGroup = require("react-transition-group");
 
 var _GivingFormProvider = require("../Contexts/GivingFormProvider");
 
-var _DesignationBlock = _interopRequireDefault(require("../FormComponents/Blocks/DesignationBlock"));
+var _FormWrapper = _interopRequireDefault(require("../StyledComponents/FormWrapper"));
 
 require("../FormComponents/Animations/designations.css");
+
+var _SummaryBlock = _interopRequireDefault(require("../FormComponents/Blocks/SummaryBlock"));
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -225,7 +330,16 @@ function (_Component) {
           getSuffix = _this$props.getSuffix,
           getMiddleName = _this$props.getMiddleName,
           getSpouseInfo = _this$props.getSpouseInfo;
-      return null;
+      return submitted && (0, _core.jsx)(_FormWrapper.default, {
+        style: {
+          maxWidth: "818px",
+          margin: "0 auto"
+        }
+      }, (0, _core.jsx)(_SummaryBlock.default, {
+        withContainer: true
+      }), (0, _core.jsx)(_SummaryBlock.default, {
+        withContainer: false
+      }));
     }
   }, {
     key: "__reactstandin__regenerateByEval",
@@ -261,7 +375,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","react-transition-group":"node_modules/react-transition-group/esm/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../FormComponents/Blocks/DesignationBlock":"src/Components/FormComponents/Blocks/DesignationBlock.js","../FormComponents/Animations/designations.css":"src/Components/FormComponents/Animations/designations.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","react-transition-group":"node_modules/react-transition-group/esm/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../StyledComponents/FormWrapper":"src/Components/StyledComponents/FormWrapper.js","../FormComponents/Animations/designations.css":"src/Components/FormComponents/Animations/designations.css","../FormComponents/Blocks/SummaryBlock":"src/Components/FormComponents/Blocks/SummaryBlock.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -289,7 +403,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51042" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53502" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

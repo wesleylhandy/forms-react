@@ -12,6 +12,10 @@ function ClubTab({ id, name, checked, handleTabClick, label }) {
 				type="checkbox"
 				checked={checked}
 				onChange={handleTabClick}
+				role="tab"
+				aria-selected={checked}
+				aria-controls=""
+				tabIndex={checked ? 0 : -1}
 			/>
 			<label htmlFor={`${id}gift`}>{label}</label>
 		</ClubTabGroup>

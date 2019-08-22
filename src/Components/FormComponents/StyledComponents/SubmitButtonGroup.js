@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-const SubmitButtonControl = styled.div`
+const SubmitButtonGroup = styled.div`
 	box-sizing: border-box;
 	position: relative;
 	width: 100%;
@@ -13,7 +13,7 @@ const SubmitButtonControl = styled.div`
 		cursor: pointer;
 		display: block;
 		border: 2px solid transparent;
-		border-radius: 0;
+		border-radius: ${props => props.borderRadius};
 		display: block;
 		font-weight: 600;
 		font-size: calc(19px * 1.1);
@@ -27,9 +27,9 @@ const SubmitButtonControl = styled.div`
 	input[type="submit"]:hover,
 	input[type="submit"]:active,
 	input[type="submit"]:focus {
-		background-color: ${props => props.color};
-		color: ${props => props.backgroundColor};
-		border-color: ${props => props.backgroundColor};
+		background-color: ${props => props.hoverBackgroundColor};
+		color: ${props => props.hoverColor};
+		border-color: ${props => props.hoverBorderColor};
 		cursor: pointer;
 	}
 	input[type="submit"]:disabled {
@@ -44,9 +44,5 @@ const SubmitButtonControl = styled.div`
 		}
 	}
 `;
-
-const SubmitButtonGroup = ({ children, style={}, color="#fff", backgroundColor="#333" }) => (
-	<SubmitButtonControl style={style} color={color} backgroundColor={backgroundColor}>{children}</SubmitButtonControl>
-);
 
 export default SubmitButtonGroup;

@@ -159,6 +159,8 @@ var _SubmitButton = _interopRequireDefault(require("../FormComponents/SubmitButt
 
 var _Spinner = _interopRequireDefault(require("../StyledComponents/Spinner"));
 
+var _FormWrapper = _interopRequireDefault(require("../StyledComponents/FormWrapper"));
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -290,7 +292,7 @@ function (_Component) {
       var hasErrors = Object.values(errors).filter(function (val) {
         return val && val.length > 0;
       }).length > 0;
-      return !submitted ? (0, _core.jsx)("form", {
+      return !submitted ? (0, _core.jsx)(_FormWrapper.default, null, (0, _core.jsx)("form", {
         id: "react-signup-form",
         autoComplete: "off",
         onSubmit: this.handleSubmit
@@ -327,7 +329,7 @@ function (_Component) {
         value: submitButtonText
       }))) : (0, _core.jsx)(_FormPanel.default, {
         className: "form-panel"
-      }, (0, _core.jsx)(_Spinner.default, null))) : null;
+      }, (0, _core.jsx)(_Spinner.default, null)))) : null;
     }
   }, {
     key: "__reactstandin__regenerateByEval",
@@ -363,7 +365,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Blocks/NameBlock":"src/Components/FormComponents/Blocks/NameBlock.js","../FormComponents/Blocks/AddressBlock":"src/Components/FormComponents/Blocks/AddressBlock.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Blocks/NameBlock":"src/Components/FormComponents/Blocks/NameBlock.js","../FormComponents/Blocks/AddressBlock":"src/Components/FormComponents/Blocks/AddressBlock.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js","../StyledComponents/FormWrapper":"src/Components/StyledComponents/FormWrapper.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -391,7 +393,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51042" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53502" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

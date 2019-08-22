@@ -568,6 +568,22 @@ class GivingFormProvider extends Component {
 				}
 			);
 		},
+		submitAskForm:action => {
+			const isValidGift = this.validateGift();
+			action.isValid = isValidGift;
+			this.setState(state => reducer(state, action),
+				() => {
+					this.setState(state =>
+						reducer(state, {
+							type: "UPDATE_FIELD",
+							name: "amount",
+							value: "",
+							error: "Please make a valid donation",
+						})
+					);
+				}
+			);
+		},
 		addToCart: action => this.setState(state => reducer(state, action)),
 		removeFromCart: action => this.setState(state => reducer(state, action)),
 		updateGivingType: action => this.setState(state => reducer(state, action)),
@@ -627,6 +643,17 @@ class GivingFormProvider extends Component {
 					this.context.goBack(action);
 				}
 			),
+		getSummary: () => {
+			const items = [...this.state.cart.items];
+			const pledgeFound = items.findIndex(
+				el => el && el.type == "donation"
+			);
+			const isMonthly = pledgeFound > -1 ? items[pledgeFound].monthly : false;
+			const amount = pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
+			const designation = Object.keys(this.state.designationInfo).length && 
+			!(isMonthly && !this.state.allowMonthlyDesignations) ? this.state.designationInfo.DetailName : "Where Most Needed";
+			return { amount, isMonthly, designation }
+		}
 	};
 	validateGift = () => {
 		const items = [...this.state.cart.items];

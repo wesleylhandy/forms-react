@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FormConfigContext } from "./Contexts/FormConfigProvider";
 import FormRouter from "./Forms/FormRouter";
 
-import FormWrapper from "./StyledComponents/FormWrapper";
+import Wrapper from "./StyledComponents/Wrapper";
 import Spinner from "./StyledComponents/Spinner";
 
 function handleUnload(e) {
@@ -28,9 +28,9 @@ class App extends Component {
 			window.removeEventListener("beforeunload", handleUnload);
 		}
 		return (
-			<FormWrapper className="form-wrapper" id="react-form-top">
+			<Wrapper className="wrapper">
 				{status !== "loaded" ? <Spinner /> : <FormRouter />}
-			</FormWrapper>
+			</Wrapper>
 		);
 	}
 }

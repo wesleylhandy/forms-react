@@ -21,8 +21,20 @@ const ClubAskArrayBtn = styled.div`
     }
     &.askbutton--club {
         box-sizing: border-box;
-        flex: 0 0 calc(19px * 4.55);;
-        margin: 0 2.5px;
+        flex: 0 0 95px;
+		margin: 0 2.5px;
+		@media screen and (max-width: 535px) {
+			flex-basis: 70px;
+		}
+		@media screen and (max-width: 395px) {
+			flex-basis: 60px;
+		}
+		@media screen and (max-width: 360px) {
+			flex-basis: 55px;
+		}
+		@media screen and (max-width: 336px) {
+			flex-basis: 52px;
+		}
     }
 	div {
 		display: flex;
@@ -31,7 +43,6 @@ const ClubAskArrayBtn = styled.div`
 		align-items: center;
 	}
 	div.askbutton__amt {
-		flex: 0 0 auto;
 		background-color: #fff;
 		border-radius: 4px;
 		border: 2px solid #009bdf;
@@ -40,7 +51,6 @@ const ClubAskArrayBtn = styled.div`
 		cursor: pointer;
 		-webkit-flex-basis: calc(19px * 4.55);
 		-ms-flex-preferred-size: calc(19px * 4.55);
-		flex-basis: calc(19px * 4.55);
 		font-weight: 600;
 		font-size: calc(19px * 1.4);
 		height: calc(19px * 2.5);
@@ -49,6 +59,9 @@ const ClubAskArrayBtn = styled.div`
 			background-color 200ms ease-in-out;
 		transition: border-color 200ms ease-in-out, color 200ms ease-in-out,
 			background-color 200ms ease-in-out;
+		@media screen and (max-width: 395px) {
+			font-size: 19px;
+		}
 	}
 	div.askbutton__amt--tabs {
 		background-color: #fff;
@@ -85,7 +98,11 @@ const ClubAskArrayBtn = styled.div`
 		width: 110%;
         left: 50%;
         top: 100%;
-        transform: translateX(-50%);
+		transform: translateX(-50%);
+		@media screen and (max-width: 395px) {
+			width: 100%;
+			font-size: 12px;
+		}
 	}
 `;
 

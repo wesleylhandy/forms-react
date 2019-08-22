@@ -13,7 +13,7 @@ import HiddenForm from "../FormComponents/StyledComponents/HiddenForm";
 import InputGroup from "../FormComponents/InputGroup";
 import SelectGroup from "../FormComponents/SelectGroup";
 import SubmitButton from "../FormComponents/SubmitButton";
-
+import FormWrapper from '../StyledComponents/FormWrapper'
 import {
 	FaCcAmex,
 	FaCcDiscover,
@@ -401,131 +401,133 @@ class PaymentForm extends Component {
 		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
 		return submitted && !confirmed ? (
-			<FormPanel ref={this.formRef}>
-				<form id="react-cc-form" onSubmit={this.assignValues}>
-					<div className="mboxDefault">
-						<FormHeader className="form-header__payment">
-							Almost Done!
-						</FormHeader>
-						<FormLine />
-						<FormHeader className="form-header--small">
-							Enter Payment Information and click <br />"
-							<strong>Finish Donation</strong>" below.
-						</FormHeader>
-					</div>
-					<FormRow>
-						<FormLine />
-					</FormRow>
-					<FieldSet>
-						<legend>Credit Card Information</legend>
-						<div className="form-subheader">Card Type*</div>
+			<FormWrapper style={{maxWidth: "818px", margin: "0 auto"}}>
+				<FormPanel ref={this.formRef}>
+					<form id="react-cc-form" onSubmit={this.assignValues}>
+						<div className="mboxDefault">
+							<FormHeader className="form-header__payment">
+								Almost Done!
+							</FormHeader>
+							<FormLine />
+							<FormHeader className="form-header--small">
+								Enter Payment Information and click <br />"
+								<strong>Finish Donation</strong>" below.
+							</FormHeader>
+						</div>
+						<FormRow>
+							<FormLine />
+						</FormRow>
 						<FieldSet>
-							<legend>Select Credit Card Type</legend>
-							{this.renderCardInputs(ccChecked)}
+							<legend>Credit Card Information</legend>
+							<div className="form-subheader">Card Type*</div>
+							<FieldSet>
+								<legend>Select Credit Card Type</legend>
+								{this.renderCardInputs(ccChecked)}
+							</FieldSet>
+							<FormRow>
+								<FormLine />
+							</FormRow>
+							<div className="form-subheader">Card Info*</div>
+
+							<FormRow className="cc-num-row">
+								<InputGroup
+									specialStyle="form-group--ccNumber"
+									type="text"
+									id="ccNumber"
+									label="Number"
+									required={true}
+									maxLength={16}
+									placeholder="#### #### #### #### ####"
+									value={fields.ccNumber}
+									handleInputChange={this.handleInputChange}
+									error={errors.ccNumber}
+									validation="\d*"
+								/>
+							</FormRow>
+							<FormRow className="cc-exp-row">
+								<SelectGroup
+									id="ExpiresMonth"
+									specialStyle="form-group--expMonth"
+									label="Month"
+									required={true}
+									value={fields.ExpiresMonth}
+									error={errors.ExpiresMonth}
+									options={months}
+									handleInputChange={this.handleInputChange}
+								/>
+								<SelectGroup
+									id="ExpiresYear"
+									specialStyle="form-group--expYear"
+									label="Year"
+									required={true}
+									value={fields.ExpiresYear}
+									error={errors.ExpiresYear}
+									options={years}
+									handleInputChange={this.handleInputChange}
+								/>
+							</FormRow>
+							<FormRow className="cc-cvn-row">
+								<InputGroup
+									specialStyle="form-group--cvnCode"
+									type="text"
+									id="cvnCode"
+									label="CVV Code"
+									required={true}
+									maxLength={4}
+									placeholder="cvv"
+									value={fields.cvnCode}
+									handleInputChange={this.handleInputChange}
+									error={errors.cvnCode}
+									validation="\d*"
+								/>
+								<div className="cvn-code-info">
+									<a href="https://www.cbn.com/CVVNumber/CVV.html" target="_blank">What is my <span style={{letterSpacing:"1px"}}>CVV</span> Code?</a>
+								</div>
+							</FormRow>
 						</FieldSet>
 						<FormRow>
 							<FormLine />
 						</FormRow>
-						<div className="form-subheader">Card Info*</div>
-
-						<FormRow className="cc-num-row">
-							<InputGroup
-								specialStyle="form-group--ccNumber"
-								type="text"
-								id="ccNumber"
-								label="Number"
-								required={true}
-								maxLength={16}
-								placeholder="#### #### #### #### ####"
-								value={fields.ccNumber}
-								handleInputChange={this.handleInputChange}
-								error={errors.ccNumber}
-								validation="\d*"
-							/>
-						</FormRow>
-						<FormRow className="cc-exp-row">
-							<SelectGroup
-								id="ExpiresMonth"
-								specialStyle="form-group--expMonth"
-								label="Month"
-								required={true}
-								value={fields.ExpiresMonth}
-								error={errors.ExpiresMonth}
-								options={months}
-								handleInputChange={this.handleInputChange}
-							/>
-							<SelectGroup
-								id="ExpiresYear"
-								specialStyle="form-group--expYear"
-								label="Year"
-								required={true}
-								value={fields.ExpiresYear}
-								error={errors.ExpiresYear}
-								options={years}
-								handleInputChange={this.handleInputChange}
-							/>
-						</FormRow>
-						<FormRow className="cc-cvn-row">
-							<InputGroup
-								specialStyle="form-group--cvnCode"
-								type="text"
-								id="cvnCode"
-								label="CVV Code"
-								required={true}
-								maxLength={4}
-								placeholder="cvv"
-								value={fields.cvnCode}
-								handleInputChange={this.handleInputChange}
-								error={errors.cvnCode}
-								validation="\d*"
-							/>
-							<div className="cvn-code-info">
-								<a href="https://www.cbn.com/CVVNumber/CVV.html" target="_blank">What is my <span style={{letterSpacing:"1px"}}>CVV</span> Code?</a>
-							</div>
-						</FormRow>
-					</FieldSet>
-					<FormRow>
-						<FormLine />
+						{this.renderProductSummary()}
+						<FormRow>
+							<FormLine />
 					</FormRow>
-					{this.renderProductSummary()}
-					<FormRow>
-						<FormLine />
-				</FormRow>
-					<FieldSet>
-						<legend>Form Submit Block</legend>
-						<SubmitButton
-							hasErrors={hasErrors}
-							handleSubmit={this.assignValues}
-							submitting={submitting}
-							value="Finish Donation"
-						/>
-					</FieldSet>
-					<FormRow className="go-back-row">
-						<span>Click the &ldquo;Finish Donation&rdquo; button above or</span>
-						<span>
-							<a onClick={this.handleGoBackClick}>go back</a> to the previous
-							page to make changes.
-						</span>
-					</FormRow>
-				</form>
-				<HiddenForm
-					id="hiddenform"
-					className="hidden-form"
-					action={formAction}
-					method="POST"
-					target="paymentprocess"
-				>
-					{formInputs}
-				</HiddenForm>
-				{dataInputs}
-				<iframe
-					className="hidden"
-					name="paymentprocess"
-					width="0"
-					height="0"
-					style={{ visibility: "none", border: "none" }}
-				></iframe>
-			</FormPanel>
+						<FieldSet>
+							<legend>Form Submit Block</legend>
+							<SubmitButton
+								hasErrors={hasErrors}
+								handleSubmit={this.assignValues}
+								submitting={submitting}
+								value="Finish Donation"
+							/>
+						</FieldSet>
+						<FormRow className="go-back-row">
+							<span>Click the &ldquo;Finish Donation&rdquo; button above or</span>
+							<span>
+								<a onClick={this.handleGoBackClick}>go back</a> to the previous
+								page to make changes.
+							</span>
+						</FormRow>
+					</form>
+					<HiddenForm
+						id="hiddenform"
+						className="hidden-form"
+						action={formAction}
+						method="POST"
+						target="paymentprocess"
+					>
+						{formInputs}
+					</HiddenForm>
+					{dataInputs}
+					<iframe
+						className="hidden"
+						name="paymentprocess"
+						width="0"
+						height="0"
+						style={{ visibility: "none", border: "none" }}
+					></iframe>
+				</FormPanel>
+			</FormWrapper>
 		) : null;
 	}
 }

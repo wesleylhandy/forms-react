@@ -262,7 +262,7 @@ class ClubLayout extends Component {
 						monthlyChecked={monthlyChecked}
 						handleTabClick={handleRadioClick}
 					/>
-				<ClubAskArray id="AskArray" className="askarray--club">
+				<ClubAskArray id="AskArray" className="askarray--club" role="tabpanel" tabIndex="0" aria-labelledby={monthlyChecked ? "monthlygift" : "singlegift"}>
 					<TransitionGroup className="askarray--club-list" component={null} enter={true} exit={false}>
 						{
 							this.renderArray(amounts, selectedIndex, 'buttons')

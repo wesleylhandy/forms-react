@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { CSSTransition } from 'react-transition-group';
 
 import { GivingFormContext } from "../Contexts/GivingFormProvider";
-
+import FormWrapper from '../StyledComponents/FormWrapper'
 import ClubLayout from "../FormComponents/Layouts/ClubLayout"
 import PartnershipBlock from "../FormComponents/Blocks/PartnershipBlock"
 import DesignationBlock from "../FormComponents/Blocks/DesignationBlock"
 import FormPanel from "../FormComponents/StyledComponents/FormPanel";
 import FieldSet from "../FormComponents/StyledComponents/FieldSet";
 import FormHeader from "../FormComponents/StyledComponents/FormHeader";
+import Seals from "../FormComponents/Seals"
 import SubmitButton from "../FormComponents/SubmitButton";
 import "../FormComponents/Animations/designations.css"
+import OtherGivingBlock from "../FormComponents/Blocks/OtherGivingBlock";
 
 class AskForm extends Component {
     state = {
@@ -84,7 +86,7 @@ class AskForm extends Component {
 
 	handleSubmit = async e => {
 		e.preventDefault();
-		this.context.submitAskForm();
+		this.context.submitAskForm({type: "SUBMIT_ASK_FORM"});
     };
     addToCart = item => {
 		this.context.addToCart({ type: "ADD_TO_CART", item });
@@ -127,56 +129,68 @@ class AskForm extends Component {
         const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
         return !submitted ? (
-			<form
-				id="react-club-form"
-				autoComplete="off"
-				onSubmit={this.handleSubmit}
-			>
-				<FormHeader className="form-title form-header">{formTitle}</FormHeader>
-                <PartnershipBlock premiumData={premiumData}></PartnershipBlock>
-                {showGivingArray && (
-					<FormPanel className="form-panel">
-						<ClubLayout
-							defaultAmount={defaultAmount}
-							defaultOption={defaultOption}
-							givingOptions={givingOptions}
-							handleRadioClick={this.handleRadioClick}
-							amountError={errors.amount}
-							monthlyChecked={monthlyChecked}
-							Monthlypledgeday={fields.Monthlypledgeday}
-							monthlyOption={monthlyOption}
-							singleOption={singleOption}
-						/>
-					</FormPanel>
-                )}
-                <FormPanel className="form-panel" style={{marginBottom: "30px"}}>
-                    <CSSTransition
-                        in={designations && designations.length && !monthlyChecked}
-                        timeout={400}
-                        classNames="designation-container"
-                        unmountOnExit
-                        appear
-                    >
-                        <DesignationBlock
-                            designations={designations}
-                        />
-                    </CSSTransition>
-                </FormPanel>
-                <FormPanel className="form-panel">
-                    <FieldSet>
-                        <legend>Form Submit Block</legend>
-                        <SubmitButton
-                            hasErrors={hasErrors}
-                            error={errors.amount}
-                            handleSubmit={this.handleSubmit}
-                            submitting={submitting}
-                            value={submitButtonText}
-                            color="#fff"
-                            backgroundColor="#009BDF"
-                        />
-                    </FieldSet>
-                </FormPanel>
-            </form>
+			<>
+				<FormWrapper style={{maxWidth: "818px", margin: "0 auto"}}>
+					<form
+						id="react-club-form"
+						autoComplete="off"
+						onSubmit={this.handleSubmit}
+						style={{backgroundColor: "white"}}
+					>
+						<FormHeader className="form-title form-header" style={{fontSize: "19px", marginTop: "0"}}>{formTitle}</FormHeader>
+						<PartnershipBlock premiumData={premiumData} monthlyChecked={monthlyChecked}></PartnershipBlock>
+						{showGivingArray && (
+							<FormPanel className="form-panel">
+								<ClubLayout
+									defaultAmount={defaultAmount}
+									defaultOption={defaultOption}
+									givingOptions={givingOptions}
+									handleRadioClick={this.handleRadioClick}
+									amountError={errors.amount}
+									monthlyChecked={monthlyChecked}
+									Monthlypledgeday={fields.Monthlypledgeday}
+									monthlyOption={monthlyOption}
+									singleOption={singleOption}
+								/>
+							</FormPanel>
+						)}
+						<FormPanel className="form-panel" style={{marginBottom: "30px"}}>
+							<CSSTransition
+								in={designations && designations.length && !monthlyChecked}
+								timeout={400}
+								classNames="designation-container"
+								unmountOnExit
+								appear
+							>
+								<DesignationBlock
+									designations={designations}
+								/>
+							</CSSTransition>
+						</FormPanel>
+						<FormPanel className="form-panel">
+							<FieldSet>
+								<legend>Form Submit Block</legend>
+								<SubmitButton
+									hasErrors={hasErrors}
+									error={errors.amount}
+									handleSubmit={this.handleSubmit}
+									submitting={submitting}
+									value={submitButtonText}
+									color="#fff"
+									backgroundColor="#009BDF"
+									hoverBackgroundColor="#fff"
+									hoverColor="#009bdf"
+									hoverBorderColor="#009bdf"
+									borderRadius="3px"
+									styles={{input: {boxShadow: "0 2px 0 0 #0081BA"}}}
+								/>
+							</FieldSet>
+						</FormPanel>
+					</form>
+				</FormWrapper>
+				<Seals/>
+				<OtherGivingBlock/>
+			</>
         ) : null;
     }
 }

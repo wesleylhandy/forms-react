@@ -1,4 +1,5 @@
 import React, { useContext, Suspense, lazy } from "react";
+import { Global, css } from '@emotion/core';
 
 import { FormConfigContext } from "../Contexts/FormConfigProvider";
 import GivingFormProvider from "../Contexts/GivingFormProvider";
@@ -35,6 +36,17 @@ const FormRouter = props => {
 			return (
 				<GivingFormProvider>
 					<Suspense fallback={<Spinner />}>
+						<Global styles={
+							css` * {
+									font-family: 'Proxima Nova', Arial, sans-serif; 
+									font-size: 19px; 
+									font-weight: 400; 
+									font-style: normal}
+								 .wrapper {
+									background-color: #ECEFF1; 
+									padding: 35px 0 !important;
+								 }`
+						}/>
 						<ErrorBoundary>
 							<AskForm {...props} {...formConfig} submitted={submitted} />
 						</ErrorBoundary>

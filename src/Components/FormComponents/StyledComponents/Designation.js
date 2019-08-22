@@ -6,7 +6,7 @@ export const DesignationContainer = styled.div`
     z-index: 1;
 `
 
-export const Designation = styled.div`
+export const Designation = styled.li`
     box-sizing: border-box;
     cursor: pointer;
     display: flex;
@@ -149,20 +149,25 @@ export const DesignationListContainer = styled.div`
     @media screen and (max-width: 585px) {
         top: 0;
         left: 0;
-        width: 100%;
+        bottom:0;
+        right: 0;
+        min-height: 100%;
         height: 100vh;
+        max-width: 100%;
+        width: 100vw;
         border: none;
         box-shadow: none;
         transform: none;
         position:fixed;
         margin-top: 0;
+        background-color: #F5F7F8;
         &::after, &::before {
             display: none;
         }
     }
 `
 
-export const DesignationList = styled.div`
+export const DesignationList = styled.ul`
     overflow-x: hidden;
     overflow-y: scroll;
     background-color: #F5F7F8;
@@ -171,6 +176,10 @@ export const DesignationList = styled.div`
     left: 0;
     bottom: 0;
     right: 0;
+    list-style: none;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0;
     @media screen and (max-width: 585px) {
         top: 37px;
     }

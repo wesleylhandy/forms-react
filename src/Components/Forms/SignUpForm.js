@@ -9,7 +9,7 @@ import NameBlock from "../FormComponents/Blocks/NameBlock";
 import AddressBlock from "../FormComponents/Blocks/AddressBlock";
 import SubmitButton from "../FormComponents/SubmitButton";
 import Spinner from "../StyledComponents/Spinner";
-
+import FormWrapper from "../StyledComponents/FormWrapper"
 class SignUpForm extends Component {
 	componentDidMount() {
 		const fields = {
@@ -67,58 +67,60 @@ class SignUpForm extends Component {
 		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
 		return !submitted ? (
-			<form
-				id="react-signup-form"
-				autoComplete="off"
-				onSubmit={this.handleSubmit}
-			>
-				<FormHeader className="form-title form-header">{formTitle}</FormHeader>
-				{initialized ? (
-					<FormPanel className="form-panel">
-						<FieldSet>
-							<legend>Name and Address Block</legend>
-							<FormPanel className="name-address__info">
-								<FormHeader className="form-header"></FormHeader>
-								{getName && (
-									<NameBlock
+			<FormWrapper>
+				<form
+					id="react-signup-form"
+					autoComplete="off"
+					onSubmit={this.handleSubmit}
+				>
+					<FormHeader className="form-title form-header">{formTitle}</FormHeader>
+					{initialized ? (
+						<FormPanel className="form-panel">
+							<FieldSet>
+								<legend>Name and Address Block</legend>
+								<FormPanel className="name-address__info">
+									<FormHeader className="form-header"></FormHeader>
+									{getName && (
+										<NameBlock
+											fields={fields}
+											errors={errors}
+											getHonorific={getHonorific}
+											getMiddleName={getMiddleName}
+											getSuffix={getSuffix}
+											getSpouseInfo={getSpouseInfo}
+											handleInputChange={this.handleInputChange}
+											type="Name"
+										/>
+									)}
+									<AddressBlock
 										fields={fields}
 										errors={errors}
-										getHonorific={getHonorific}
-										getMiddleName={getMiddleName}
-										getSuffix={getSuffix}
-										getSpouseInfo={getSpouseInfo}
 										handleInputChange={this.handleInputChange}
-										type="Name"
+										getPhone={getPhone}
+										getAddress={getAddress}
+										allowInternational={allowInternational}
+										type="Billing"
 									/>
-								)}
-								<AddressBlock
-									fields={fields}
-									errors={errors}
-									handleInputChange={this.handleInputChange}
-									getPhone={getPhone}
-									getAddress={getAddress}
-									allowInternational={allowInternational}
-									type="Billing"
+								</FormPanel>
+							</FieldSet>
+							<FieldSet>
+								<legend>Form Submit Block</legend>
+								<SubmitButton
+									hasErrors={hasErrors}
+									error={errors.amount}
+									handleSubmit={this.handleSubmit}
+									submitting={submitting}
+									value={submitButtonText}
 								/>
-							</FormPanel>
-						</FieldSet>
-						<FieldSet>
-							<legend>Form Submit Block</legend>
-							<SubmitButton
-								hasErrors={hasErrors}
-								error={errors.amount}
-								handleSubmit={this.handleSubmit}
-								submitting={submitting}
-								value={submitButtonText}
-							/>
-						</FieldSet>
-					</FormPanel>
-				) : (
-					<FormPanel className="form-panel">
-						<Spinner />
-					</FormPanel>
-				)}
-			</form>
+							</FieldSet>
+						</FormPanel>
+					) : (
+						<FormPanel className="form-panel">
+							<Spinner />
+						</FormPanel>
+					)}
+				</form>
+			</FormWrapper>
 		) : null;
 	}
 }

@@ -130,6 +130,11 @@ const reducer = (state, action) => {
 				formAction,
 				confirmationData,
 			};
+		case "SUBMIT_ASK_FORM" :
+			return {
+				...state,
+				submitted: action.isValid
+			};
 		case "GLOBAL_URIS":
 			return {
 				...state,

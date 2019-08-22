@@ -12,6 +12,7 @@ import AddressBlock from "../FormComponents/Blocks/AddressBlock";
 import FormOptionsBlock from "../FormComponents/Blocks/FormOptionsBlock";
 import SubmitButton from "../FormComponents/SubmitButton";
 import Spinner from "../StyledComponents/Spinner";
+import FormWrapper from "../StyledComponents/FormWrapper";
 
 class ProductForm extends Component {
 	state = {
@@ -147,97 +148,99 @@ class ProductForm extends Component {
 		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
 		return (
-			<form
-				id="react-giving-form"
-				autoComplete="off"
-				onSubmit={this.handleSubmit}
-			>
-				<FormHeader className="form-title form-header">{formTitle}</FormHeader>
-				{productOptions.numProducts > 0 && (
-					<FormPanel className="form-panel">
-						<ProductLayout
-							productFormat={productFormat}
-							productOptions={productOptions}
-							updateProducts={this.updateProducts}
-						/>
-					</FormPanel>
-				)}
-				{initialized ? (
-					<FormPanel className="form-panel">
-						<FieldSet>
-							<legend>Name and Billing Address Block</legend>
-							<FormPanel className="name-address__info">
-								<FormHeader className="form-header">
-									Please Enter Your Billing Information
-								</FormHeader>
-								<NameBlock
-									fields={fields}
-									errors={errors}
-									getHonorific={getHonorific}
-									getMiddleName={getMiddleName}
-									getSuffix={getSuffix}
-									getSpouseInfo={getSpouseInfo}
-									handleInputChange={this.handleInputChange}
-									type="Name"
-								/>
-								<AddressBlock
-									fields={fields}
-									errors={errors}
-									handleInputChange={this.handleInputChange}
-									getAddress={true}
-									getPhone={getPhone}
-									allowInternational={allowInternational}
-									type="Billing"
-								/>
-							</FormPanel>
-						</FieldSet>
-						{getShippingAddress && (
+			<FormWrapper>
+				<form
+					id="react-giving-form"
+					autoComplete="off"
+					onSubmit={this.handleSubmit}
+				>
+					<FormHeader className="form-title form-header">{formTitle}</FormHeader>
+					{productOptions.numProducts > 0 && (
+						<FormPanel className="form-panel">
+							<ProductLayout
+								productFormat={productFormat}
+								productOptions={productOptions}
+								updateProducts={this.updateProducts}
+							/>
+						</FormPanel>
+					)}
+					{initialized ? (
+						<FormPanel className="form-panel">
 							<FieldSet>
-								<legend>Shipping Address Block</legend>
-								<FormPanel className="shipping-address__container">
-									<FormOptionsBlock
-										id="ShipToYes"
-										checked={fields.ShipToYes}
+								<legend>Name and Billing Address Block</legend>
+								<FormPanel className="name-address__info">
+									<FormHeader className="form-header">
+										Please Enter Your Billing Information
+									</FormHeader>
+									<NameBlock
+										fields={fields}
+										errors={errors}
+										getHonorific={getHonorific}
+										getMiddleName={getMiddleName}
+										getSuffix={getSuffix}
+										getSpouseInfo={getSpouseInfo}
 										handleInputChange={this.handleInputChange}
-										label="&nbsp;My shipping address is different than my billing address."
+										type="Name"
 									/>
-									{fields.ShipToYes && (
-										<ShippingAddressBlock
-											fields={fields}
-											errors={errors}
-											handleInputChange={this.handleInputChange}
-											allowInternational={allowInternational}
-										/>
-									)}
+									<AddressBlock
+										fields={fields}
+										errors={errors}
+										handleInputChange={this.handleInputChange}
+										getAddress={true}
+										getPhone={getPhone}
+										allowInternational={allowInternational}
+										type="Billing"
+									/>
 								</FormPanel>
 							</FieldSet>
-						)}
-						<FieldSet>
-							<legend>Save Personal Info Block</legend>
-							<FormOptionsBlock
-								id="savePersonalInfo"
-								checked={fields.savePersonalInfo}
-								handleInputChange={this.handleInputChange}
-								label="&nbsp;Remember my name and address next time"
-							/>
-						</FieldSet>
-						<FieldSet>
-							<legend>Form Submit Block</legend>
-							<SubmitButton
-								hasErrors={hasErrors}
-								error={errors.amount}
-								handleSubmit={this.handleSubmit}
-								submitting={submitting}
-								value={submitButtonText}
-							/>
-						</FieldSet>
-					</FormPanel>
-				) : (
-					<FormPanel className="form-panel">
-						<Spinner />
-					</FormPanel>
-				)}
-			</form>
+							{getShippingAddress && (
+								<FieldSet>
+									<legend>Shipping Address Block</legend>
+									<FormPanel className="shipping-address__container">
+										<FormOptionsBlock
+											id="ShipToYes"
+											checked={fields.ShipToYes}
+											handleInputChange={this.handleInputChange}
+											label="&nbsp;My shipping address is different than my billing address."
+										/>
+										{fields.ShipToYes && (
+											<ShippingAddressBlock
+												fields={fields}
+												errors={errors}
+												handleInputChange={this.handleInputChange}
+												allowInternational={allowInternational}
+											/>
+										)}
+									</FormPanel>
+								</FieldSet>
+							)}
+							<FieldSet>
+								<legend>Save Personal Info Block</legend>
+								<FormOptionsBlock
+									id="savePersonalInfo"
+									checked={fields.savePersonalInfo}
+									handleInputChange={this.handleInputChange}
+									label="&nbsp;Remember my name and address next time"
+								/>
+							</FieldSet>
+							<FieldSet>
+								<legend>Form Submit Block</legend>
+								<SubmitButton
+									hasErrors={hasErrors}
+									error={errors.amount}
+									handleSubmit={this.handleSubmit}
+									submitting={submitting}
+									value={submitButtonText}
+								/>
+							</FieldSet>
+						</FormPanel>
+					) : (
+						<FormPanel className="form-panel">
+							<Spinner />
+						</FormPanel>
+					)}
+				</form>
+			</FormWrapper>
 		);
 	}
 }

@@ -3,9 +3,10 @@ import { CSSTransition } from 'react-transition-group';
 
 import { GivingFormContext } from "../Contexts/GivingFormProvider";
 
-import DesignationBlock from "../FormComponents/Blocks/DesignationBlock"
+import FormWrapper from '../StyledComponents/FormWrapper'
 
 import "../FormComponents/Animations/designations.css"
+import SummaryBlock from "../FormComponents/Blocks/SummaryBlock";
 
 class ConfirmationForm extends Component {
     async componentWillUnmount() {
@@ -30,8 +31,11 @@ class ConfirmationForm extends Component {
             getMiddleName,
             getSpouseInfo,  
         } = this.props
-        return (
-            null
+        return submitted && (
+            <FormWrapper style={{maxWidth: "818px", margin: "0 auto"}}>
+                <SummaryBlock withContainer={true}/>
+                <SummaryBlock withContainer={false}/>
+            </FormWrapper>
         )
     }
 }

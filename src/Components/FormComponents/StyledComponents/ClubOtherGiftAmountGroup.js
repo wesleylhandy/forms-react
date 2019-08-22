@@ -11,6 +11,12 @@ const ClubOtherGiftAmountGroup = styled.div`
 		box-sizing: border-box;
 		flex: 0 0 150px;
 		margin: 0 2.5px;
+		@media screen and (max-width: 692px) {
+			margin: 0 auto;
+			margin-top: 40px;
+			flex-basis: 160px;
+			justify-self: center;
+		}
 	}
 	div {
 		display: flex;

@@ -99,11 +99,17 @@
                 "DetailDescription": ""
             },
             "premiumData": {
-                "premiumImgUrl": "",
+                "premiumTitle":"The Plan: Eight Keys to Understanding God's Will For Your Life",
+                "premiumImgUrl": "https://source.unsplash.com/200x200/?prayer",
                 "premiumDescriptions": [
                     "The exclusive DVD, <em>The Plan: Eight Keys to Understanding God&rsquo;s Will for Your Life</em>, by Pat Robertson.",
                     "Faith-building teachings each month.",
                     "Access to the CBN Partner Video Library with 1500+ videos, including Bible-based teachings from Pat and Gordon, faith-based movies, and Superbook for children."
+                ],
+                "shortDescriptions": [
+                    "Exclusive Premiums & Monthly Teachings",
+                    "Prayer",
+                    "Full Access to the CBN Family Video Library"
                 ]
             },
             "AddContactYN": "Y",

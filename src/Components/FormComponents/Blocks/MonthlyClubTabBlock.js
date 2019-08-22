@@ -11,11 +11,11 @@ function MonthlyTabGroup({ monthlyChecked, handleTabClick }) {
 	return (
 		<FieldSet className="monthly-giving-info">
 			<legend>Select Monthly or One-Time Gift</legend>
-			<FormRow className="monthly-tab">
+			<FormRow className="monthly-tab" role="tablist" aria-label="Giving Tabs">
 				<ClubTab
 					id="monthly"
 					name="monthly-toggle"
-					label="Monthly Partnership"
+					label="Monthly Partner"
 					checked={monthly}
 					handleTabClick={handleTabClick}
 				/>

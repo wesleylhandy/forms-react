@@ -28287,6 +28287,8 @@ var _SelectGroup = _interopRequireDefault(require("../FormComponents/SelectGroup
 
 var _SubmitButton = _interopRequireDefault(require("../FormComponents/SubmitButton"));
 
+var _FormWrapper = _interopRequireDefault(require("../StyledComponents/FormWrapper"));
+
 var _fa = require("react-icons/fa");
 
 var _scrollToPoint = require("../../helpers/scrollToPoint");
@@ -28780,7 +28782,12 @@ function (_Component) {
       var hasErrors = Object.values(errors).filter(function (val) {
         return val && val.length > 0;
       }).length > 0;
-      return submitted && !confirmed ? (0, _core.jsx)(_FormPanel.default, {
+      return submitted && !confirmed ? (0, _core.jsx)(_FormWrapper.default, {
+        style: {
+          maxWidth: "818px",
+          margin: "0 auto"
+        }
+      }, (0, _core.jsx)(_FormPanel.default, {
         ref: this.formRef
       }, (0, _core.jsx)("form", {
         id: "react-cc-form",
@@ -28876,7 +28883,7 @@ function (_Component) {
           visibility: "none",
           border: "none"
         }
-      })) : null;
+      }))) : null;
     }
   }, {
     key: "__reactstandin__regenerateByEval",
@@ -28915,7 +28922,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormRow":"src/Components/FormComponents/StyledComponents/FormRow.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FormLine":"src/Components/FormComponents/StyledComponents/FormLine.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/StyledComponents/ProductSummary":"src/Components/FormComponents/StyledComponents/ProductSummary.js","../FormComponents/StyledComponents/CCButton":"src/Components/FormComponents/StyledComponents/CCButton.js","../FormComponents/StyledComponents/HiddenForm":"src/Components/FormComponents/StyledComponents/HiddenForm.js","../FormComponents/InputGroup":"src/Components/FormComponents/InputGroup.js","../FormComponents/SelectGroup":"src/Components/FormComponents/SelectGroup.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","react-icons/fa":"node_modules/react-icons/fa/index.esm.js","../../helpers/scrollToPoint":"src/helpers/scrollToPoint.js","../../helpers/cc-validation":"src/helpers/cc-validation.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/objectSpread":"node_modules/@babel/runtime/helpers/objectSpread.js","@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormRow":"src/Components/FormComponents/StyledComponents/FormRow.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FormLine":"src/Components/FormComponents/StyledComponents/FormLine.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/StyledComponents/ProductSummary":"src/Components/FormComponents/StyledComponents/ProductSummary.js","../FormComponents/StyledComponents/CCButton":"src/Components/FormComponents/StyledComponents/CCButton.js","../FormComponents/StyledComponents/HiddenForm":"src/Components/FormComponents/StyledComponents/HiddenForm.js","../FormComponents/InputGroup":"src/Components/FormComponents/InputGroup.js","../FormComponents/SelectGroup":"src/Components/FormComponents/SelectGroup.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../StyledComponents/FormWrapper":"src/Components/StyledComponents/FormWrapper.js","react-icons/fa":"node_modules/react-icons/fa/index.esm.js","../../helpers/scrollToPoint":"src/helpers/scrollToPoint.js","../../helpers/cc-validation":"src/helpers/cc-validation.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -28943,7 +28950,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51042" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53502" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
