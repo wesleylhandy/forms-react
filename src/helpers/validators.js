@@ -1,4 +1,5 @@
 import { callApi } from "./fetch-helpers";
+import { validateCCInput } from "./cc-validation"
 
 export const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 export const phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/;
@@ -122,6 +123,12 @@ export const validateInput = (
 ) => {
 	let error = "";
 	switch (name) {
+		case "ccNumber":
+		case "ExpiresMonth":
+		case "ExpiresYear":
+		case "cvnCode":
+			let res = validateCCInput(name, value)
+			error = res.error;
 		case "Title":
 			if (!value && submitting && getHonorific) {
 				error = "Required";

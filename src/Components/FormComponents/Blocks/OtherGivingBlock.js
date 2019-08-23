@@ -107,7 +107,7 @@ const OtherGivingBlock = () => (
                 <h4 className="card__title">Give By Phone</h4>
                 <div className="card__body">
                     <div className="phone"><a href="tel:18007007000">1-800-700-7000</a></div>
-                    <div className="phone--info"></div>
+                    <div className="phone--info">Donate by phone or get assistance with your donation.</div>
                 </div>
             </Card>
             <Card className="card">

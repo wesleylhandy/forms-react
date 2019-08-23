@@ -48,7 +48,7 @@ const FormRouter = props => {
 								 }`
 						}/>
 						<ErrorBoundary>
-							<AskForm {...props} {...formConfig} submitted={submitted} />
+							<AskForm {...props} {...formConfig} />
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<ConfirmationForm 

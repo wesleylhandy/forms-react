@@ -3,7 +3,7 @@ import { GivingFormContext } from "../../Contexts/GivingFormProvider";
 
 import FormHeader from '../StyledComponents/FormHeader'
 import { Designation, DesignationContainer, DesignationListContainer, DesignationList, DesignationCheck } from "../StyledComponents/Designation";
-import DropArrow from "../StyledComponents/DropArrow";
+import DropArrow from "../SVG/DropArrow";
 
 import { MdClose, MdCheck } from 'react-icons/md'
 

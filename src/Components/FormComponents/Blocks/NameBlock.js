@@ -12,7 +12,7 @@ function TitleDropdown({ value, error, handleInputChange }) {
 			<option
 				key={`title-${ind}`}
 				value={el}
-				dangerouslySetInnerHTML={{ __html: ind === 0 ? "Title* &#9663;" : el }}
+				dangerouslySetInnerHTML={{ __html: ind === 0 ? "Title* &#9660;" : el }}
 				disabled={ind === 0 ? "disabled" : ""}
 				hidden={ind === 0 ? "hidden" : ""}
 			></option>
@@ -21,6 +21,7 @@ function TitleDropdown({ value, error, handleInputChange }) {
 	return (
 		<SelectGroup
 			id="Title"
+			label="Title"
 			specialStyle="form-group--Title"
 			required={true}
 			value={value}

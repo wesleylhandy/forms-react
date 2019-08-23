@@ -8,7 +8,7 @@ const FormWrapper = styled.main`
 	border-radius: 10px;
 	color: #333;
 	max-width: 768px;
-	padding: 20px;
+	padding: 30px;
 	width: 100%;
 	@media screen and (max-width: 493px) {
 		padding: 20px 10px;

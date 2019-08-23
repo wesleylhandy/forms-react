@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, memo, useMemo, useState } from 'react'
 import styled from "@emotion/styled"
-
+import { LiveMessage } from 'react-aria-live'
 import { GivingFormContext } from "../../Contexts/GivingFormProvider";
 
 const BlockContainer = styled.div`
@@ -11,7 +11,8 @@ const BlockContainer = styled.div`
         width: calc(100%-20px);
         height: 100px;
         max-width: 360px;
-        margin: 30px auto;
+        margin: 0 auto;
+        margin-bottom: 30px;
         border: 1px solid #DEDEDE;
         border-radius: 3px;
         background-color: #F5F7F8;
@@ -45,20 +46,23 @@ const BlockContainer = styled.div`
 `
 
 const SummaryBlock = ({withContainer}) => {
-    const { getSummary, goBack } = useContext(GivingFormContext)
-    const {amount, isMonthly, designation} = getSummary();
+    const { getSummary, getSelection } = useContext(GivingFormContext)
+    const {amount, isMonthly, designation} = useMemo(() => getSummary(), []);
     const duration = isMonthly ? "\/ Month Partnership" : designation;
+    const [a11yMessage, setA11yMessage] = useState("");
 
     const handleGoBackClick = e => {
         e.preventDefault();
-        goBack({ type: "GO_BACK" })
+        setA11yMessage("You Pressed the Edit Button and Now the Previous Page for Selecting Your Donation Amount has loaded in place of the Credit Card Form.")
+        getSelection({ type: "GO_BACK" })
     }
     return (
         <BlockContainer className={withContainer ? "column" : "row"}>
+            <LiveMessage message={a11yMessage} aria-live="polite"/>
             <div className="amount-block">${amount} <span dangerouslySetInnerHTML={{__html: duration}}></span></div>
             <a className="go-back-btn" onClick={handleGoBackClick}>Edit</a>
         </BlockContainer>
     )
 }
 
-export default SummaryBlock;
+export default memo(SummaryBlock);

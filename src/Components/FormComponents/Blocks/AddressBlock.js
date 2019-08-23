@@ -16,6 +16,7 @@ function AddressBlock({
 	getPhone,
 	allowInternational,
 	type,
+	hideAddressTwo
 }) {
 	return (
 		<FieldSet className="address-block">
@@ -36,20 +37,24 @@ function AddressBlock({
 							error={errors.Address1}
 						/>
 					</FormRow>
-					<FormRow className="address2-row">
-						<InputGroup
-							type="text"
-							id="Address2"
-							specialStyle="form-group--Address2"
-							label="Address2"
-							placeholder="Address Line 2"
-							maxLength="31"
-							required={false}
-							value={fields.Address2}
-							handleInputChange={handleInputChange}
-							error={errors.Address2}
-						/>
-					</FormRow>
+					{
+						!hideAddressTwo && (
+						<FormRow className="address2-row">
+							<InputGroup
+								type="text"
+								id="Address2"
+								specialStyle="form-group--Address2"
+								label="Address2"
+								placeholder="Address Line 2"
+								maxLength="31"
+								required={false}
+								value={fields.Address2}
+								handleInputChange={handleInputChange}
+								error={errors.Address2}
+							/>
+						</FormRow>
+						)
+					}
 					<FormRow className="city-state-row">
 						<InputGroup
 							type="text"
@@ -65,16 +70,17 @@ function AddressBlock({
 						/>
 						<SelectGroup
 							id="State"
+							label="State"
 							specialStyle="form-group--State"
 							required={true}
-							value={fields.State}
+							value={fields.Country == "United States" ? fields.State : "00"}
 							error={errors.State}
 							handleInputChange={handleInputChange}
 							required={fields.Country == "United States"}
 							disabled={fields.Country != "United States"}
 							options={[
 								<option key="state-base-0" value="" disabled="disabled">
-									State* &#9663;
+									State* &#9660;
 								</option>,
 								getStateOptions(allowInternational),
 							]}
@@ -91,7 +97,7 @@ function AddressBlock({
 							maxLength={fields.Country != "United States" ? 25 : 5}
 							required={fields.Country == "United States"}
 							disabled={fields.Country != "United States"}
-							value={fields.Zip}
+							value={fields.Country == "United States" ? fields.Zip : "NA"}
 							handleInputChange={handleInputChange}
 							error={errors.Zip}
 							allowInternational={allowInternational}
@@ -101,6 +107,7 @@ function AddressBlock({
 						{allowInternational && (
 							<SelectGroup
 								id="Country"
+								label="Country"
 								specialStyle="form-group--Country"
 								required={true}
 								value={fields.Country}
@@ -108,7 +115,7 @@ function AddressBlock({
 								handleInputChange={handleInputChange}
 								options={[
 									<option key="country-base-0" value="" disabled="disabled">
-										Country* &#9663;
+										Country* &#9660;
 									</option>,
 									countries.map((country, i) => (
 										<option key={`country-${i}`} value={country}>
@@ -144,6 +151,7 @@ function AddressBlock({
 						maxLength="24"
 						required={false}
 						value={fields.phone}
+						disabled={fields.Country != "United States"}
 						handleInputChange={handleInputChange}
 						error={errors.phone}
 						validation="\d*"

@@ -61,7 +61,7 @@ class ClubLayout extends Component {
 			const items = [...cart.items];
 			const pledgeFound = items.findIndex(el => el && el.type == "donation");
 			const monthly = pledgeFound > -1 ? items[pledgeFound].monthly : false;
-			amt = items[pledgeFound].PledgeAmount;
+			amt = pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
 			arr = monthly ? monthlyAmounts : singleAmounts;
 		}
 		if (amt > 0 && arr.length) {
@@ -209,15 +209,10 @@ class ClubLayout extends Component {
 
 	render() {
 		let {
-			givingFormat,
 			amountError,
 			monthlyChecked,
-			Monthlypledgeday,
-			handleInputChange,
 			handleRadioClick,
 			givingOptions: {
-				singleOption,
-				monthlyOption,
 				monthlyAmounts,
 				singleAmounts,
 			},
@@ -226,7 +221,6 @@ class ClubLayout extends Component {
 			otherAmount,
 			otherAmountError,
 			selectedIndex,
-			prevIndex,
 		} = this.state;
 		let {
 			givingInfo: { amount, isMonthly },
@@ -293,10 +287,7 @@ class ClubLayout extends Component {
 							</div>
 						</ClubOtherGiftAmountGroup>
 					</TransitionGroup>
-					
-				
 				</ClubAskArray>
-		
 				<AmountError className="amount-error">{amountError}</AmountError>
 			</FieldSet>
 		) 

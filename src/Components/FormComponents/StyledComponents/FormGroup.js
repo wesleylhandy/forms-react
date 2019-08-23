@@ -28,7 +28,6 @@ const FormGroup = styled.div`
 		width: 80px;
 		flex: 0 0 80px;
 		box-sizing: border-box;
-		margin-right: 10px;
 	}
 	&.form-group--cvnCode + div.cvn-code-info {
 		display: block;
@@ -113,12 +112,14 @@ const FormGroup = styled.div`
 	}
 	select:invalid {
 		color: #747474;
+		appearance: none;
 	}
 	input:disabled,
 	select:disabled,
 	textarea:disabled {
 		background: #919191;
 		cursor: not-allowed;
+		appearance: none;
 	}
 	input.error,
 	select.error,

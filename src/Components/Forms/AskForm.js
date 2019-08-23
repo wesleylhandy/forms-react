@@ -16,53 +16,9 @@ import OtherGivingBlock from "../FormComponents/Blocks/OtherGivingBlock";
 
 class AskForm extends Component {
     state = {
-        monthlyChecked: false
+        monthlyChecked: this.props.defaultOption == "monthly"
     }
-    componentDidMount() {
-		if (!this.context.initialized) {
-			const getDay = () => {
-				let date = new Date().getDate();
-				return date >= 2 && date <= 28 ? date : 2;
-			};
-			const fields = {
-				Zip: "",
-				Monthlypledgeday: getDay(),
-				Title: "",
-				Firstname: "",
-				Middlename: "",
-				Lastname: "",
-				Suffix: "",
-				Spousename: "",
-				Address1: "",
-				Address2: "",
-				City: "",
-				State: "",
-				Country: "United States",
-				Emailaddress: "",
-				phone: "",
-				savePersonalInfo: true,
-			};
-			const errors = {};
-			for (let field in fields) {
-				errors[field] = "";
-			}
-			errors.amount = "";
-			this.context.initFields({
-				type: "INIT_FORM_STATE",
-				fields,
-				errors,
-				allowMonthlyDesignations: this.props.allowMonthlyDesignations
-			});
-		}
-		try {
-			const monthlyChecked = this.context.loadLS({ type: "LOAD" });
-			this.setState({ monthlyChecked });
-		} catch (err) {
-			console.error(err.message);
-			console.error(err.stack);
-        }
-    }
-    
+   
     handleRadioClick = e => {
 		const id = e.target.id;
 		const { singlePledgeData, monthlyPledgeData } = this.props;
@@ -125,14 +81,14 @@ class AskForm extends Component {
             singlePledgeData,
         }
         const { monthlyChecked } = this.state;
-        const { errors, fields, submitting, submitted } = this.context;
+        const { errors, fields, submitting, selected } = this.context;
         const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
-        return !submitted ? (
+        return !selected ? (
 			<>
 				<FormWrapper style={{maxWidth: "818px", margin: "0 auto"}}>
 					<form
-						id="react-club-form"
+						id="react-club-ask-form"
 						autoComplete="off"
 						onSubmit={this.handleSubmit}
 						style={{backgroundColor: "white"}}

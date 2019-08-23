@@ -65,6 +65,7 @@ const reducer = (state, action) => {
 				errors.amount = "";
 			} else {
 				items.push(item);
+				errors.amount = item.type == "donation" && item.PledgeAmount > 0 ? "" : "Please make a valid donation";
 			}
 			return { ...state, cart: { items }, errors, givingInfo: {} };
 			break;
@@ -110,7 +111,7 @@ const reducer = (state, action) => {
 			return { ...state, cart: { items }, givingInfo };
 		case "UPDATE_DESIGNATION":
 			designationInfo = { ...state.designationInfo };
-			const { DetailCprojCredit, DetailCprojMail, DetailDescription, DetailName } = action.designationInfo
+			const { DetailCprojCredit, DetailCprojMail, DetailDescription, DetailName, title } = action.designationInfo
 			return {
 				...state,
 				designatedIndex,
@@ -118,7 +119,8 @@ const reducer = (state, action) => {
 					DetailCprojCredit,
 					DetailCprojMail,
 					DetailDescription,
-					DetailName
+					DetailName,
+					title
 				}
 			}
 		case "SUBMIT_FORM":
@@ -133,7 +135,7 @@ const reducer = (state, action) => {
 		case "SUBMIT_ASK_FORM" :
 			return {
 				...state,
-				submitted: action.isValid
+				selected: action.isValid
 			};
 		case "GLOBAL_URIS":
 			return {
@@ -161,6 +163,7 @@ const reducer = (state, action) => {
 				submitted: false,
 				submitting: false,
 				confirmed: false,
+				selected: false
 			};
 		default:
 			return { ...state };

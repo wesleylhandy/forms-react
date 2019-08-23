@@ -32,9 +32,9 @@ const SealsBlock =  styled.section`
     }
 `
 
-function Seals() {
+function Seals({style = {}}) {
     return (
-        <SealsBlock id="seals">
+        <SealsBlock id="seals" style={style}>
             <div id="DigiCertClickID_RXDQXROF" data-language="en" className="seals__seal">
                 <a className="seals__seal--link" href="https://www.digicert.com/ev-multi-domain-ssl.htm"></a>
             </div>

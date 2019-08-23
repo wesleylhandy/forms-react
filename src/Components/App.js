@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { FormConfigContext } from "./Contexts/FormConfigProvider";
 import FormRouter from "./Forms/FormRouter";
+import { LiveAnnouncer } from 'react-aria-live';
 
 import Wrapper from "./StyledComponents/Wrapper";
 import Spinner from "./StyledComponents/Spinner";
@@ -28,9 +29,11 @@ class App extends Component {
 			window.removeEventListener("beforeunload", handleUnload);
 		}
 		return (
-			<Wrapper className="wrapper">
-				{status !== "loaded" ? <Spinner /> : <FormRouter />}
-			</Wrapper>
+			<LiveAnnouncer>
+				<Wrapper className="wrapper">
+					{status !== "loaded" ? <Spinner /> : <FormRouter />}
+				</Wrapper>
+			</LiveAnnouncer>
 		);
 	}
 }

@@ -47,7 +47,7 @@ const checkDigits = cardNumber => {
 	return returnvalue == 0;
 };
 
-export const validateInput = (name, value) => {
+export const validateCCInput = (name, value) => {
 	let error = "";
 	switch (name) {
 		case "ccNumber":

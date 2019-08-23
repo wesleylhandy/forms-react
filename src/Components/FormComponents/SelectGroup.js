@@ -10,7 +10,8 @@ const SelectGroup = ({
 	value,
 	handleInputChange,
 	options,
-	disabled
+	disabled,
+	label
 }) => {
 	return (
 		<FormGroup
@@ -18,7 +19,7 @@ const SelectGroup = ({
 			className={`input-group ${specialStyle ? specialStyle : ""}`}
 		>
 			<label htmlFor={id}>
-				{id}
+				{label}
 				<span>{required ? "*" : ""}</span>
 			</label>
 			<select

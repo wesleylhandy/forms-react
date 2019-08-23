@@ -34,6 +34,7 @@ class GivingFormProvider extends Component {
 		fields: {},
 		errors: {},
 		submitted: false,
+		selected: false,
 		DonorID: "",
 		formAction: "",
 		confirmationData: [],
@@ -159,25 +160,27 @@ class GivingFormProvider extends Component {
 			}
 			this.setState(state => reducer(state, action));
 		},
-		submitGivingForm: async action => {
+		submitGivingForm: async type => {
 			this.setState(
 				state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
 				async () => {
-					const isValidGift = this.validateGift();
-					if (!isValidGift) {
-						return this.setState(
-							state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
-							() => {
-								this.setState(state =>
-									reducer(state, {
-										type: "UPDATE_FIELD",
-										name: "amount",
-										value: "",
-										error: "Please make a valid donation",
-									})
-								);
-							}
-						);
+					if (type !== "confirmation") {
+						const isValidGift = this.validateGift();
+						if (!isValidGift) {
+							return this.setState(
+								state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+								() => {
+									this.setState(state =>
+										reducer(state, {
+											type: "UPDATE_FIELD",
+											name: "amount",
+											value: "",
+											error: "Please make a valid donation",
+										})
+									);
+								}
+							);
+						}
 					}
 					let isValidForm = true;
 					if (this.state.fields.Country == "United States") {
@@ -527,18 +530,20 @@ class GivingFormProvider extends Component {
 									confirmationData,
 								},
 								() => {
-									try {
-										const url = window.location.origin + window.location.pathname
-                						const sDynamicPageUrl = url + ( url.charAt(url.length - 1) == "/" ? "payment" : "/payment" )
-										const sDynamicPageTitle = document.title + " > Payment"
-										window.omTrackDynamicCBNPage(sDynamicPageUrl, sDynamicPageTitle)
-									} catch (err) {
-										console.error("Call Submission Tracking Error")
-										console.error(err)
+									if (type !== "confirmation") {
+										try {
+											const url = window.location.origin + window.location.pathname
+											const sDynamicPageUrl = url + ( url.charAt(url.length - 1) == "/" ? "payment" : "/payment" )
+											const sDynamicPageTitle = document.title + " > Payment"
+											window.omTrackDynamicCBNPage(sDynamicPageUrl, sDynamicPageTitle)
+										} catch (err) {
+											console.error("Call Submission Tracking Error")
+											console.error(err)
+										}
+										this.context.submitForm({
+											type: "SUBMIT_FORM",
+										});
 									}
-									this.context.submitForm({
-										type: "SUBMIT_FORM",
-									});
 								}
 							)
 						);
@@ -568,21 +573,36 @@ class GivingFormProvider extends Component {
 				}
 			);
 		},
-		submitAskForm:action => {
-			const isValidGift = this.validateGift();
-			action.isValid = isValidGift;
-			this.setState(state => reducer(state, action),
-				() => {
-					this.setState(state =>
-						reducer(state, {
-							type: "UPDATE_FIELD",
-							name: "amount",
-							value: "",
-							error: "Please make a valid donation",
-						})
-					);
-				}
-			);
+		submitAskForm: action => {
+			this.setState(state => reducer(state, { type: "TOGGLE_SUBMITTING" }), () => {
+				const isValidGift = this.validateGift();
+				action.isValid = isValidGift;
+				this.setState(state => reducer(state, action),
+					() => {
+						if (!isValidGift) {
+							this.setState(state =>
+								reducer(state, {
+									type: "UPDATE_FIELD",
+									name: "amount",
+									value: "",
+									error: "Please make a valid donation",
+								})
+							);
+						} else {
+							try {
+								const url = window.location.origin + window.location.pathname
+								const sDynamicPageUrl = url + ( url.charAt(url.length - 1) == "/" ? "payment" : "/payment" )
+								const sDynamicPageTitle = document.title + " > Choose Donation"
+								window.omTrackDynamicCBNPage(sDynamicPageUrl, sDynamicPageTitle)
+							} catch (err) {
+								console.error("Call Submission Tracking Error")
+								console.error(err)
+							}
+						}
+						this.setState(state =>reducer(state, { type: "TOGGLE_SUBMITTING" }))
+					}
+				);
+			})
 		},
 		addToCart: action => this.setState(state => reducer(state, action)),
 		removeFromCart: action => this.setState(state => reducer(state, action)),
@@ -636,6 +656,7 @@ class GivingFormProvider extends Component {
 					this.context.setConfirmed(action);
 				}
 			),
+		getSelection: action => this.setState(state => reducer(state, action)),
 		goBack: action =>
 			this.setState(
 				state => reducer(state, action),
@@ -651,7 +672,7 @@ class GivingFormProvider extends Component {
 			const isMonthly = pledgeFound > -1 ? items[pledgeFound].monthly : false;
 			const amount = pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
 			const designation = Object.keys(this.state.designationInfo).length && 
-			!(isMonthly && !this.state.allowMonthlyDesignations) ? this.state.designationInfo.DetailName : "Where Most Needed";
+			!(isMonthly && !this.state.allowMonthlyDesignations) ? this.state.designationInfo.title : "Where Most Needed";
 			return { amount, isMonthly, designation }
 		}
 	};
