@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import { FormConfigContext } from "../Contexts/FormConfigProvider";
 
 import SubmitButtonGroup from "./StyledComponents/SubmitButtonGroup";
 import FormError from "./StyledComponents/FormError";
@@ -9,26 +11,34 @@ const SubmitButton = ({
 	handleSubmit,
 	submitting,
 	value,
-	color,
-	backgroundColor,
-	hoverBackgroundColor,
-	hoverColor,
-	hoverBorderColor,
-	borderRadius,
 	styles
 }) => {
-	const group = styles && styles.hasOwnProperty("group") ? styles.group : {};
-	const input = styles && styles.hasOwnProperty("input") ? styles.input : {};
+	const { getCssConfig } = useContext(FormConfigContext) 
+	const {	
+		submitBtnColor = "#fff",
+		submitBtnBackgroundColor = "#333",
+		submitBtnBorderColor = "transparent",
+		submitBtnBorderRadius = "0",
+		submitBtnHoverBackgroundColor = "#fff",
+		submitBtnHoverColor = "#333",
+		submitBtnHoverBorderColor = "#333",
+		submitBtnBoxShadow = "none"
+	} = getCssConfig("submitBtn")
+	const {
+		errorColor = "crimson"
+	} = getCssConfig("error")
+
 	return (
 		<SubmitButtonGroup 
 			className="submit-row" 
-			color={color} 
-			backgroundColor={backgroundColor}
-			hoverBackgroundColor={hoverBackgroundColor}
-			hoverColor={hoverColor}
-			hoverBorderColor={hoverBorderColor}
-			borderRadius={borderRadius}
-			style={group}
+			submitBtnColor={submitBtnColor} 
+			submitBtnBackgroundColor={submitBtnBackgroundColor}
+			submitBtnBorderColor={submitBtnBorderColor}
+			submitBtnBorderRadius={submitBtnBorderRadius}
+			submitBtnHoverBackgroundColor={submitBtnHoverBackgroundColor}
+			submitBtnHoverColor={submitBtnHoverColor}
+			submitBtnHoverBorderColor={submitBtnHoverBorderColor}	
+			submitBtnBoxShadow = { submitBtnBoxShadow }	
 		>
 			<input
 				className="submit-btn"
@@ -37,9 +47,8 @@ const SubmitButton = ({
 				onClick={handleSubmit}
 				disabled={submitting}
 				value={submitting ? "Please Wait..." : value}
-				style={input}
 			/>
-			<FormError>
+			<FormError color={errorColor}>
 				{hasErrors && error
 					? error
 					: hasErrors

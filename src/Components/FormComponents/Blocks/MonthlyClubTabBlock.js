@@ -8,6 +8,7 @@ import FormRow from "../StyledComponents/FormRow";
 function MonthlyTabGroup({ monthlyChecked, handleTabClick }) {
 	let monthly = monthlyChecked;
 	let single = !monthlyChecked;
+
 	return (
 		<FieldSet className="monthly-giving-info">
 			<legend>Select Monthly or One-Time Gift</legend>

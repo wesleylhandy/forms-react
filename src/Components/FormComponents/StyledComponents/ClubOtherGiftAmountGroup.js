@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useContext} from "react";
 import styled from "@emotion/styled";
 
-const ClubOtherGiftAmountGroup = styled.div`
+import { FormConfigContext } from "../../Contexts/FormConfigProvider";
+
+const ClubOtherGiftAmountStyle = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -11,7 +13,7 @@ const ClubOtherGiftAmountGroup = styled.div`
 		box-sizing: border-box;
 		flex: 0 0 150px;
 		margin: 0 2.5px;
-		@media screen and (max-width: 692px) {
+		@media screen and (max-width: 716px) {
 			margin: 0 auto;
 			margin-top: 40px;
 			flex-basis: 160px;
@@ -31,7 +33,7 @@ const ClubOtherGiftAmountGroup = styled.div`
 		label {
 			font-size: calc(19px * 0.7);
 			font-weight: 600;
-			color: #009bdf;
+			color: ${props => props.arrayColor};
 			box-sizing: border-box;
 			position: absolute;
 			left: 50%;
@@ -46,17 +48,17 @@ const ClubOtherGiftAmountGroup = styled.div`
 			position: relative;
 			appearance: none;
 			background: none;
-			background-color: #f0f0f0;
+			background-color: ${props => props.arrayBackgroundColor};
 			height: calc(19px * 2.5);
 			width: 100%;
 			-webkit-transition: border-color 200ms ease-in-out,
 				color 200ms ease-in-out, background-color 200ms ease-in-out;
 			transition: border-color 200ms ease-in-out, color 200ms ease-in-out,
 				background-color 200ms ease-in-out;
-			border: 2px solid #009bdf;
-			border-radius: 4px;
+			border: 2px solid ${props => props.arrayBorderColor};
+			border-radius: ${props => props.arrayBorderRadius};
 			box-sizing: border-box;
-			color: #009bdf;
+			color: ${props => props.arrayColor};
 			font-size: calc(19px * 1.4);
 			text-align: center;
 			font-weight: 600;
@@ -66,112 +68,71 @@ const ClubOtherGiftAmountGroup = styled.div`
 		input:hover,
 		input:active,
 		input:focus {
-			border: 2px solid #009bdf;
-			background-color: #fff;
+			border: 2px solid ${props => props.arrayHoverBorderColor};
+			background-color: ${props => props.arrayHoverBackgroundColor};
+			color: ${props => props.arrayHoverColor};
 			box-sizing: border-box;
 			outline: none;
         }
         &.selected input {
-            background: #009bdf;
-            color: #fff;
+			border: 2px solid ${props => props.arrayHoverBorderColor};
+			background-color: ${props => props.arrayHoverBackgroundColor};
+			color: ${props => props.arrayHoverColor};
         }
 		div.other-amt-error {
 			box-sizing: border-box;
 			position: absolute;
-			color: crimson;
+			color: ${props => props.errorColor};
 			width: auto;
-			font-weight: 800;
-			font-size: calc(19px * 0.5);
+			font-weight: 600;
+			font-size: 16px;
 			opacity: 1;
 			overflow: hidden;
 			max-width: 100%;
 			white-space: nowrap;
-			bottom: auto;
-			top: 19px;
+			bottom: -36px;
 			left: 50%;
 			transform: translateX(-50%);
 		}
 	}
-	div.askarray__form-group--tabs {
-		justify-content: space-between;
-		label {
-			position: relative;
-			left: auto !important;
-			top: auto !important;
-			transform: none !important;
-			font-size: 19px;
-			color: #009bdf;
-			line-height: 80px !important;
-			margin-bottom: 0;
-		}
-		div.askarray__form-group-tabs-flex-container {
-			display: flex;
-			position: relative;
-			flex-direction: row;
-			justify-content: center;
-			align-items: center;
-			div.form-group-tabs--dollar {
-				box-sizing: border-box;
-				color: #009bdf;
-				margin: 0 5px;
-				font-weight: 600;
-				font-size: 19px;
-			}
-			input {
-				position: relative;
-				appearance: none;
-				height: calc(19px * 2.5);
-				width: 100%;
-				-webkit-transition: border-color 200ms ease-in-out,
-					color 200ms ease-in-out, background-color 200ms ease-in-out;
-				transition: border-color 200ms ease-in-out, color 200ms ease-in-out,
-					background-color 200ms ease-in-out;
-				border: 1px solid #009bdf;
-				border-radius: 4px;
-				box-sizing: border-box;
-				color: #009bdf;
-				font-size: calc(19px * 1.4);
-				text-align: center;
-				font-weight: 600;
-				max-width: 220px;
-				white-space: nowrap;
-			}
-			input:hover,
-			input:active,
-			input:focus {
-				border: 1px solid #009bdf;
-				background-color: #fff;
-				box-sizing: border-box;
-				outline: none;
-			}
-			div.other-amt-error {
-				box-sizing: border-box;
-				position: absolute;
-				color: crimson;
-				width: auto;
-				font-weight: 800;
-				font-size: calc(19px * 0.5);
-				opacity: 1;
-				overflow: hidden;
-				max-width: 100%;
-				white-space: nowrap;
-				bottom: auto;
-				top: 100%;
-				left: 50%;
-				transform: translateX(-50%);
-			}
-		}
-		@media screen and (max-width: 450px) {
-			label {
-				font-size: 15px;
-			}
-			div input {
-				max-width: 160px;
-			}
-		}
-	}
+	
 	div.selected {
 	}
 `;
+
+const ClubOtherGiftAmountGroup = ({ children, style = {} }) => {
+	const { getCssConfig} = useContext(FormConfigContext)
+	const { 
+		arrayColor = "#fff",
+		arrayBackgroundColor = "#1775BC",
+		arrayBorderColor = "transparent",
+		arrayBorderRadius = "5px",
+		arrayHoverColor = "#1775BC",
+		arrayHoverBackgroundColor = "#fff",
+		arrayHoverBorderColor = "#1775BC",
+		arrayDescriptorColor = "#DDB007",
+	} = getCssConfig("array")
+	const {
+		errorColor = "crimson"
+	} = getCssConfig("error")
+	return (
+		<ClubOtherGiftAmountStyle 
+			id="OtherGiftAmount" 
+			className="askarray--other"
+			style={style}
+			arrayColor={arrayColor}
+			arrayBackgroundColor={arrayBackgroundColor}
+			arrayBorderColor={arrayBorderColor}
+			arrayBorderRadius={arrayBorderRadius}
+			arrayHoverColor={arrayHoverColor}
+			arrayHoverBackgroundColor={arrayHoverBackgroundColor}
+			arrayHoverBorderColor={arrayHoverBorderColor}
+			arrayDescriptorColor={arrayDescriptorColor}
+			errorColor={errorColor}
+		>
+			{children}
+		</ClubOtherGiftAmountStyle>
+	)
+};
 
 export default ClubOtherGiftAmountGroup;

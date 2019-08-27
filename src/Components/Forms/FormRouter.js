@@ -18,10 +18,13 @@ const GivingSuccessMessage = lazy(() =>
 const SignUpSuccessMessage = lazy(() =>
 	import("../SuccessPages/SignUpSuccessMessage")
 );
+const ClubSuccessMessage = lazy(() =>
+	import("../SuccessPages/ClubSuccessMessage")
+);
 import Spinner from "../StyledComponents/Spinner";
 
 const FormRouter = props => {
-	const { formConfig, submitted, confirmed } = useContext(FormConfigContext);
+	const { formConfig, submitted, confirmed, getCssConfig } = useContext(FormConfigContext);
 	const { 
 		formType, 
 		allowInternational,
@@ -31,24 +34,56 @@ const FormRouter = props => {
 		getMiddleName,
 		getSpouseInfo, 
 	} = formConfig;
+
+	const {
+		formExternalFont = "none",
+		formFontFamily = "Arial, sans-serif",
+		formFontStyle = "normal",
+        formFontWeight = "400",
+		formFontSize = "19px",
+		formBackgroundColor = "#fff",
+		formBorderColor = "transparent",
+		formBorderRadius = "0",
+		formBorderWidth = "2px",
+		formBoxShadow = "0 0 7px 0 rgba(0,0,0,0.07)",
+		formMaxWidth = "768px",
+		formPadding = "0",
+		formMargin = "0",
+		formColor = "#333",
+	} = getCssConfig("form")
 	switch (formType) {
 		case "club":
 			return (
 				<GivingFormProvider>
 					<Suspense fallback={<Spinner />}>
 						<Global styles={
-							css` * {
-									font-family: 'Proxima Nova', Arial, sans-serif; 
-									font-size: 19px; 
-									font-weight: 400; 
-									font-style: normal}
+							css` 
+								${formExternalFont ? `@import url("${formExternalFont}");` : ''}
+								* {
+									font-family: ${formFontFamily}; 
+									font-size: ${formFontSize}; 
+									font-weight: ${formFontWeight}; 
+									font-style: ${formFontStyle};
+								}
 								 .wrapper {
 									background-color: #ECEFF1; 
 									padding: 35px 0 !important;
 								 }`
 						}/>
 						<ErrorBoundary>
-							<AskForm {...props} {...formConfig} />
+							<AskForm 
+								{...props} 
+								{...formConfig} 
+								formBackgroundColor={formBackgroundColor}
+								formBorderColor={formBorderColor}
+								formBorderRadius={formBorderRadius}
+								formBorderWidth={formBorderWidth}
+								formBoxShadow={formBoxShadow}
+								formMaxWidth={formMaxWidth}
+								formPadding={formPadding}
+								formMargin={formMargin}
+								formColor={formColor}
+							/>
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<ConfirmationForm 
@@ -58,12 +93,31 @@ const FormRouter = props => {
 								getSuffix={getSuffix}
 								getMiddleName={getMiddleName}
 								getSpouseInfo={getSpouseInfo}
-								submitted={submitted} />
+								submitted={submitted} 
+								formBackgroundColor={formBackgroundColor}
+								formBorderColor={formBorderColor}
+								formBorderRadius={formBorderRadius}
+								formBorderWidth={formBorderWidth}
+								formBoxShadow={formBoxShadow}
+								formMaxWidth={formMaxWidth}
+								formPadding={formPadding}
+								formMargin={formMargin}
+								formColor={formColor}
+							/>
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<GivingSuccessMessage
+							<ClubSuccessMessage
 								confirmed={confirmed}
 								successMessage={formConfig.successMessage}
+								formBackgroundColor={formBackgroundColor}
+								formBorderColor={formBorderColor}
+								formBorderRadius={formBorderRadius}
+								formBorderWidth={formBorderWidth}
+								formBoxShadow={formBoxShadow}
+								formMaxWidth={formMaxWidth}
+								formPadding={formPadding}
+								formMargin={formMargin}
+								formColor={formColor}
 							/>
 						</ErrorBoundary>
 					</Suspense>
@@ -75,15 +129,48 @@ const FormRouter = props => {
 				<GivingFormProvider>
 					<Suspense fallback={<Spinner />}>
 						<ErrorBoundary>
-							<GivingForm {...props} {...formConfig} submitted={submitted} />
+							<GivingForm 
+								{...props} 
+								{...formConfig} 
+								submitted={submitted} 
+								formBackgroundColor={formBackgroundColor}
+								formBorderColor={formBorderColor}
+								formBorderRadius={formBorderRadius}
+								formBorderWidth={formBorderWidth}
+								formBoxShadow={formBoxShadow}
+								formMaxWidth={formMaxWidth}
+								formPadding={formPadding}
+								formMargin={formMargin}
+								formColor={formColor}
+							/>
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<PaymentForm submitted={submitted} />
+							<PaymentForm 
+								submitted={submitted}
+								formBackgroundColor={formBackgroundColor}
+								formBorderColor={formBorderColor}
+								formBorderRadius={formBorderRadius}
+								formBorderWidth={formBorderWidth}
+								formBoxShadow={formBoxShadow}
+								formMaxWidth={formMaxWidth}
+								formPadding={formPadding}
+								formMargin={formMargin}
+								formColor={formColor}
+							/>
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<GivingSuccessMessage
 								confirmed={confirmed}
 								successMessage={formConfig.successMessage}
+								formBackgroundColor={formBackgroundColor}
+								formBorderColor={formBorderColor}
+								formBorderRadius={formBorderRadius}
+								formBorderWidth={formBorderWidth}
+								formBoxShadow={formBoxShadow}
+								formMaxWidth={formMaxWidth}
+								formPadding={formPadding}
+								formMargin={formMargin}
+								formColor={formColor}
 							/>
 						</ErrorBoundary>
 					</Suspense>
@@ -95,7 +182,19 @@ const FormRouter = props => {
 				<ProductFormProvider>
 					<Suspense fallback={<Spinner />}>
 						<ErrorBoundary>
-							<ProductForm {...props} {...formConfig} />
+							<ProductForm 
+								{...props} 
+								{...formConfig} 
+								formBackgroundColor={formBackgroundColor}
+								formBorderColor={formBorderColor}
+								formBorderRadius={formBorderRadius}
+								formBorderWidth={formBorderWidth}
+								formBoxShadow={formBoxShadow}
+								formMaxWidth={formMaxWidth}
+								formPadding={formPadding}
+								formMargin={formMargin}
+								formColor={formColor}
+							/>
 						</ErrorBoundary>
 					</Suspense>
 				</ProductFormProvider>
@@ -106,12 +205,33 @@ const FormRouter = props => {
 				<SignUpFormProvider>
 					<Suspense fallback={<Spinner />}>
 						<ErrorBoundary>
-							<SignUpForm {...props} {...formConfig} />
+							<SignUpForm 
+								{...props} 
+								{...formConfig} 
+								formBackgroundColor={formBackgroundColor}
+								formBorderColor={formBorderColor}
+								formBorderRadius={formBorderRadius}
+								formBorderWidth={formBorderWidth}
+								formBoxShadow={formBoxShadow}
+								formMaxWidth={formMaxWidth}
+								formPadding={formPadding}
+								formMargin={formMargin}
+								formColor={formColor}	
+						/>
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<SignUpSuccessMessage
 								submitted={submitted}
 								successMessage={formConfig.successMessage}
+								formBackgroundColor={formBackgroundColor}
+								formBorderColor={formBorderColor}
+								formBorderRadius={formBorderRadius}
+								formBorderWidth={formBorderWidth}
+								formBoxShadow={formBoxShadow}
+								formMaxWidth={formMaxWidth}
+								formPadding={formPadding}
+								formMargin={formMargin}
+								formColor={formColor}
 							/>
 						</ErrorBoundary>
 					</Suspense>

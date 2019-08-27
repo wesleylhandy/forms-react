@@ -7,13 +7,13 @@ const SubmitButtonGroup = styled.div`
 	width: 100%;
 	input[type="submit"] {
 		appearance: none;
-		background: ${props => props.backgroundColor};
+		background: ${props => props.submitBtnBackgroundColor};
 		box-sizing: border-box;
-		color: ${props => props.color};
+		color: ${props => props.submitBtnColor};
 		cursor: pointer;
 		display: block;
-		border: 2px solid transparent;
-		border-radius: ${props => props.borderRadius};
+		border: 2px solid ${props => props.submitBtnBorderColor};
+		border-radius: ${props => props.submitBtnBorderRadius};
 		display: block;
 		font-weight: 600;
 		font-size: calc(19px * 1.1);
@@ -21,15 +21,16 @@ const SubmitButtonGroup = styled.div`
 		margin: 19px auto;
 		width: 300px;
 		height: calc(19px * 2.3);
+		box-shadow: ${props => props.submitBtnBoxShadow};
 		transition: background-color 200ms ease-in-out, color 200ms ease-in-out,
 			border-color 200ms ease-in-out;
 	}
 	input[type="submit"]:hover,
 	input[type="submit"]:active,
 	input[type="submit"]:focus {
-		background-color: ${props => props.hoverBackgroundColor};
-		color: ${props => props.hoverColor};
-		border-color: ${props => props.hoverBorderColor};
+		background-color: ${props => props.submitBtnHoverBackgroundColor};
+		color: ${props => props.submitBtnHoverColor};
+		border-color: ${props => props.submitBtnHoverBorderColor};
 		cursor: pointer;
 	}
 	input[type="submit"]:disabled {

@@ -7,18 +7,6 @@ const ClubAskArrayBtn = styled.div`
 	justify-content: center;
 	align-items: center;
 	position: relative;
-	&.askbutton {
-		box-sizing: border-box;
-		height: 65px;
-		width: calc(100% / 3);
-	}
-	&.askbutton__tabs {
-		height: 80px;
-		box-sizing: border-box;
-		flex: 1;
-		flex-basis: calc((100% / 3) - 10px);
-		margin: 2.5px;
-    }
     &.askbutton--club {
         box-sizing: border-box;
         flex: 0 0 95px;
@@ -43,11 +31,11 @@ const ClubAskArrayBtn = styled.div`
 		align-items: center;
 	}
 	div.askbutton__amt {
-		background-color: #fff;
-		border-radius: 4px;
-		border: 2px solid #009bdf;
+		background-color: ${props => props.arrayBackgroundColor};
+		border-radius: ${props => props.arrayBorderRadius};
+		border: 2px solid ${props => props.arrayBorderColor};
 		box-sizing: border-box;
-		color: #009bdf;
+		color: ${props => props.arrayColor};
 		cursor: pointer;
 		-webkit-flex-basis: calc(19px * 4.55);
 		-ms-flex-preferred-size: calc(19px * 4.55);
@@ -63,21 +51,6 @@ const ClubAskArrayBtn = styled.div`
 			font-size: 19px;
 		}
 	}
-	div.askbutton__amt--tabs {
-		background-color: #fff;
-		border: 1px solid #333;
-		border-radius: 4px;
-		box-sizing: border-box;
-		color: #333;
-		cursor: pointer;
-		width: 100%;
-		font-weight: 600;
-		font-size: calc(19px * 1.4);
-		height: 80px;
-		text-align: center;
-		transition: border-color 200ms ease-in-out, color 200ms ease-in-out,
-			background-color 200ms ease-in-out;
-	}
 	&:focus div:not(.club-level),
 	&:hover div:not(.club-level),
 	&:active div:not(.club-level),
@@ -85,15 +58,15 @@ const ClubAskArrayBtn = styled.div`
 	div:not(.club-level):focus,
 	div:not(.club-level):active,
 	&.selected div:not(.club-level) {
-		background-color: #009bdf;
-		color: #fff;
-		border-color: #009bdf;
+		background-color: ${props => props.arrayHoverBackgroundColor};
+		color: ${props => props.arrayHoverColor};
+		border-color: ${props => props.arrayHoverBorderColor};
 	}
 	div.club-level {
 		position: absolute;
         font-weight: bold;
         font-size: 14px;
-		color: #DDB007;
+		color: ${props => props.arrayDescriptorColor};
 		text-align: center;
 		width: 110%;
         left: 50%;

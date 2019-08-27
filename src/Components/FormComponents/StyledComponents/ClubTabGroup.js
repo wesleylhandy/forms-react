@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+
+
 const ClubTabGroup = styled.div`
 	&.tab-group {
 		box-sizing: border-box;
@@ -29,25 +31,25 @@ const ClubTabGroup = styled.div`
 		cursor: pointer;
 		width: 100%;
 		text-align: center;
-		background: #fff;
-		border-radius: 4px;
-		border: 2px solid #009bdf;
+		background-color: ${props=>props.toggleBackgroundColor};
+		border-radius: ${props=>props.toggleBorderRadius};
+		border: 2px solid ${props=>props.toggleBorderColor};
 		margin-bottom: 0;
-		color: #009bdf;
+		color: ${props=>props.toggleColor};
 		transition: color 200ms ease-in-out, background-color 200ms ease-in-out,
             border-color 200ms ease-in-out;
         position: relative;
 	}
 	input[type="checkbox"].tab-group__input:checked + label,
 	input[type="checkbox"].tab-group__input + label:hover {
-		color: #fff;
-		background-color: #009bdf;
-		border-color: #009bdf;
+		color: ${props=>props.toggleHoverColor};
+		background-color: ${props=>props.toggleHoverBackgroundColor};
+		border-color: ${props=>props.toggleHoverBorderColor};
     }
     input[type="checkbox"].tab-group__input:checked + label::after {
         content: "";
         display: block;
-        border-top: 10px solid #009bdf;
+        border-top: 10px solid ${props=>props.toggleBorderColor};
         border-left: 15px solid transparent;
         border-right: 15px solid transparent;
         position: absolute;

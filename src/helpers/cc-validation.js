@@ -10,7 +10,7 @@ const checkExpDate = (expYear, expMonth) => {
 	const curmonth = curdate.getMonth() + 1;
 	const monthVal = parseInt(expMonth, 10);
 	const yearVal = parseInt(expYear, 10);
-
+	// console.log({expYear, expMonth})
 	if (isNaN(monthVal) || isNaN(yearVal)) {
 		return false;
 	}
@@ -47,48 +47,52 @@ const checkDigits = cardNumber => {
 	return returnvalue == 0;
 };
 
-export const validateCCInput = (name, value) => {
+export const validateCCInput = (name, value, ccNumber, ccMonth, ccYear) => {
 	let error = "";
+	let cardType = "";
+	if (ccNumber) {
+		switch (parseInt(ccNumber.slice(0, 1))) {
+			case 4:
+				cardType = "001";
+				break;
+			case 5:
+				cardType = "002";
+				break;
+			case 3:
+				cardType = "003";
+				break;
+			case 6:
+				cardType = "004";
+				break;
+		}
+	}
 	switch (name) {
 		case "ccNumber":
+			
 			if (value.length > 16) {
 				error = "Maximum digits allowed is reached";
 			} else if (!/^[0-9]*$/.test(value)) {
 				error = "Card Number must contain only numerical digits";
-			} else if (value.length > 15 && !checkDigits(value)) {
+			} else if (!checkDigits(value) || !IsValidCreditCardType(value, cardType)) {
 				error = "Please enter a valid Credit Card number";
 			}
 			if (!error && value.length) {
-				let num = "";
-				switch (parseInt(value.slice(0, 1))) {
-					case 4:
-						num = "001";
-						break;
-					case 5:
-						num = "002";
-						break;
-					case 3:
-						num = "003";
-						break;
-					case 6:
-						num = "004";
-						break;
-				}
-				return { ccChecked: num, error: null };
+				
+				return { ccChecked: cardType, error: null };
 			}
 			break;
 		case "ExpiresMonth":
-			if (!checkExpDate(this.state.fields.ExpiresYear, value)) {
-				error = "Please select a valid expiration date.";
+			if (!checkExpDate(ccYear, value)) {
+				error = "Check expiration.";
 			}
 			break;
 		case "ExpiresYear":
-			if (!checkExpDate(value, this.state.fields.ExpiresMonth)) {
-				error = "Please select a valid expiration date.";
+			if (!checkExpDate(value, ccMonth)) {
+				error = "Check expiration.";
 			}
 			break;
 		case "cvnCode":
-			if (/(\D)/.test(value)) {
+			if (!checkCVNCode(cardType, value)) {
 				error = "Invalid Entry."
 			}
 			break;

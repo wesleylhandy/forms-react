@@ -4,10 +4,10 @@ import styled from "@emotion/styled";
 const FormError = styled.div`
 	box-sizing: border-box;
 	position: absolute;
-	color: crimson;
+	color: ${props=> props.color};
 	width: auto;
-	font-weight: 700;
-	font-size: calc(19px * 0.5);
+	font-weight: 600;
+	font-size: 16px;
 	opacity: 1;
 	overflow: hidden;
 	max-width: 100%;

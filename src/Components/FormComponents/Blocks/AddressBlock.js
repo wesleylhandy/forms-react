@@ -12,6 +12,7 @@ function AddressBlock({
 	fields,
 	errors,
 	handleInputChange,
+	handleBlur,
 	getAddress,
 	getPhone,
 	allowInternational,
@@ -34,6 +35,7 @@ function AddressBlock({
 							required={true}
 							value={fields.Address1}
 							handleInputChange={handleInputChange}
+							handleBlur={handleBlur}
 							error={errors.Address1}
 						/>
 					</FormRow>
@@ -50,6 +52,7 @@ function AddressBlock({
 								required={false}
 								value={fields.Address2}
 								handleInputChange={handleInputChange}
+								handleBlur={handleBlur}
 								error={errors.Address2}
 							/>
 						</FormRow>
@@ -66,6 +69,7 @@ function AddressBlock({
 							required={true}
 							value={fields.City}
 							handleInputChange={handleInputChange}
+							handleBlur={handleBlur}
 							error={errors.City}
 						/>
 						<SelectGroup
@@ -76,6 +80,7 @@ function AddressBlock({
 							value={fields.Country == "United States" ? fields.State : "00"}
 							error={errors.State}
 							handleInputChange={handleInputChange}
+							handleBlur={handleBlur}
 							required={fields.Country == "United States"}
 							disabled={fields.Country != "United States"}
 							options={[
@@ -99,6 +104,7 @@ function AddressBlock({
 							disabled={fields.Country != "United States"}
 							value={fields.Country == "United States" ? fields.Zip : "NA"}
 							handleInputChange={handleInputChange}
+							handleBlur={handleBlur}
 							error={errors.Zip}
 							allowInternational={allowInternational}
 							validation={fields.Country != "United States" ? "*" : "d*"}
@@ -113,6 +119,7 @@ function AddressBlock({
 								value={fields.Country}
 								error={errors.Country}
 								handleInputChange={handleInputChange}
+								handleBlur={handleBlur}
 								options={[
 									<option key="country-base-0" value="" disabled="disabled">
 										Country* &#9660;
@@ -139,6 +146,7 @@ function AddressBlock({
 					required={true}
 					value={fields.Emailaddress}
 					handleInputChange={handleInputChange}
+					handleBlur={handleBlur}
 					error={errors.Emailaddress}
 				/>
 				{getPhone && (
@@ -153,6 +161,7 @@ function AddressBlock({
 						value={fields.phone}
 						disabled={fields.Country != "United States"}
 						handleInputChange={handleInputChange}
+						handleBlur={handleBlur}
 						error={errors.phone}
 						validation="\d*"
 					/>

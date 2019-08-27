@@ -4,17 +4,16 @@ import styled from "@emotion/styled";
 export const InputError = styled.div`
 	box-sizing: border-box;
 	position: absolute;
-	color: crimson;
+	color: ${props => props.inputErrorColor || "crimson"};
 	width: auto;
 	line-height: unset;
-	left: 7px;
+	left: 12px;
 	bottom: auto;
-	top: 52px;
-	font-weight: 700;
-	font-size: calc(19px * 0.5);
+	top: 47px;
+	font-weight: 600;
+	font-size: 16px;
 	opacity: 1;
 	overflow: hidden;
-	max-width: 100%;
 	white-space: nowrap;
 `;
 

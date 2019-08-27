@@ -150,7 +150,7 @@ router.get("/giving", (req, res) => {
 	res.json({ Error: "Not for Snooping Eyes" });
 });
 
-router.post("/giving", (req, res) => {
+const processGift = (req, res) => {
 	const data = { ...req.body };
 	if (!data) {
 		res.statusCode = 400;
@@ -194,7 +194,10 @@ router.post("/giving", (req, res) => {
 			res.statusCode = error.status;
 			res.send(error.body);
 		});
-});
+};
+
+router.post("/giving", processGift);
+router.post('/club', processGift);
 
 router.get("/signup", (req, res) => {
 	res.statusCode = 403;

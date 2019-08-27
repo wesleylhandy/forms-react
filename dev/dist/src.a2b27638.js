@@ -34706,7 +34706,13 @@ require("_bundle_loader")(require.resolve("@emotion/core"));
 require("_bundle_loader")(require.resolve("prop-types"));
 
 require("_bundle_loader")(require.resolve("secure-ls"));
-},{"_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","core-js/stable":[["stable.7461f3b3.js","node_modules/core-js/stable/index.js"],"stable.7461f3b3.js.map","node_modules/core-js/stable/index.js"],"react":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/react/index.js"],"react-dom":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/react-dom/index.js"],"typography":[["dist.a16385fa.js","node_modules/typography/dist/index.js"],"dist.a16385fa.js.map","node_modules/typography/dist/index.js"],"react-typography":[["dist.c0d38775.js","node_modules/react-typography/dist/index.js"],"dist.c0d38775.js.map","node_modules/react-typography/dist/index.js"],"@emotion/styled":[["styled.browser.esm.1eb75cdb.js","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"styled.browser.esm.1eb75cdb.js.map","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"@emotion/core":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/@emotion/core/dist/core.browser.esm.js"],"prop-types":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/prop-types/index.js"],"secure-ls":[["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],"secure-ls.0cd04304.js.map","node_modules/secure-ls/dist/secure-ls.js"]}],"node_modules/@babel/runtime/helpers/classCallCheck.js":[function(require,module,exports) {
+
+require("_bundle_loader")(require.resolve("react-aria-live"));
+
+require("_bundle_loader")(require.resolve("react-icons"));
+
+require("_bundle_loader")(require.resolve("whatwg-fetch"));
+},{"_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","core-js/stable":[["stable.7461f3b3.js","node_modules/core-js/stable/index.js"],"stable.7461f3b3.js.map","node_modules/core-js/stable/index.js"],"react":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/react/index.js"],"react-dom":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/react-dom/index.js"],"typography":[["dist.a16385fa.js","node_modules/typography/dist/index.js"],"dist.a16385fa.js.map","node_modules/typography/dist/index.js"],"react-typography":[["dist.c0d38775.js","node_modules/react-typography/dist/index.js"],"dist.c0d38775.js.map","node_modules/react-typography/dist/index.js"],"@emotion/styled":[["styled.browser.esm.1eb75cdb.js","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"styled.browser.esm.1eb75cdb.js.map","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"@emotion/core":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/@emotion/core/dist/core.browser.esm.js"],"prop-types":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","node_modules/prop-types/index.js"],"secure-ls":[["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],"secure-ls.0cd04304.js.map","node_modules/secure-ls/dist/secure-ls.js"],"react-aria-live":[["es.d5457454.js","node_modules/react-aria-live/es/index.js"],"es.d5457454.js.map","node_modules/react-aria-live/es/index.js"],"react-icons":[["esm.02dd6686.js","node_modules/react-icons/lib/esm/index.js"],"esm.02dd6686.js.map","node_modules/react-icons/lib/esm/index.js"],"whatwg-fetch":[["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],"fetch.6e6c81fd.js.map","node_modules/whatwg-fetch/fetch.js"]}],"node_modules/@babel/runtime/helpers/classCallCheck.js":[function(require,module,exports) {
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -35674,475 +35680,7 @@ function _objectSpread(target) {
 }
 
 module.exports = _objectSpread;
-},{"./defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js"}],"node_modules/whatwg-fetch/fetch.js":[function(require,module,exports) {
-(function(self) {
-  'use strict';
-
-  if (self.fetch) {
-    return
-  }
-
-  var support = {
-    searchParams: 'URLSearchParams' in self,
-    iterable: 'Symbol' in self && 'iterator' in Symbol,
-    blob: 'FileReader' in self && 'Blob' in self && (function() {
-      try {
-        new Blob()
-        return true
-      } catch(e) {
-        return false
-      }
-    })(),
-    formData: 'FormData' in self,
-    arrayBuffer: 'ArrayBuffer' in self
-  }
-
-  if (support.arrayBuffer) {
-    var viewClasses = [
-      '[object Int8Array]',
-      '[object Uint8Array]',
-      '[object Uint8ClampedArray]',
-      '[object Int16Array]',
-      '[object Uint16Array]',
-      '[object Int32Array]',
-      '[object Uint32Array]',
-      '[object Float32Array]',
-      '[object Float64Array]'
-    ]
-
-    var isDataView = function(obj) {
-      return obj && DataView.prototype.isPrototypeOf(obj)
-    }
-
-    var isArrayBufferView = ArrayBuffer.isView || function(obj) {
-      return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1
-    }
-  }
-
-  function normalizeName(name) {
-    if (typeof name !== 'string') {
-      name = String(name)
-    }
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
-      throw new TypeError('Invalid character in header field name')
-    }
-    return name.toLowerCase()
-  }
-
-  function normalizeValue(value) {
-    if (typeof value !== 'string') {
-      value = String(value)
-    }
-    return value
-  }
-
-  // Build a destructive iterator for the value list
-  function iteratorFor(items) {
-    var iterator = {
-      next: function() {
-        var value = items.shift()
-        return {done: value === undefined, value: value}
-      }
-    }
-
-    if (support.iterable) {
-      iterator[Symbol.iterator] = function() {
-        return iterator
-      }
-    }
-
-    return iterator
-  }
-
-  function Headers(headers) {
-    this.map = {}
-
-    if (headers instanceof Headers) {
-      headers.forEach(function(value, name) {
-        this.append(name, value)
-      }, this)
-    } else if (Array.isArray(headers)) {
-      headers.forEach(function(header) {
-        this.append(header[0], header[1])
-      }, this)
-    } else if (headers) {
-      Object.getOwnPropertyNames(headers).forEach(function(name) {
-        this.append(name, headers[name])
-      }, this)
-    }
-  }
-
-  Headers.prototype.append = function(name, value) {
-    name = normalizeName(name)
-    value = normalizeValue(value)
-    var oldValue = this.map[name]
-    this.map[name] = oldValue ? oldValue+','+value : value
-  }
-
-  Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)]
-  }
-
-  Headers.prototype.get = function(name) {
-    name = normalizeName(name)
-    return this.has(name) ? this.map[name] : null
-  }
-
-  Headers.prototype.has = function(name) {
-    return this.map.hasOwnProperty(normalizeName(name))
-  }
-
-  Headers.prototype.set = function(name, value) {
-    this.map[normalizeName(name)] = normalizeValue(value)
-  }
-
-  Headers.prototype.forEach = function(callback, thisArg) {
-    for (var name in this.map) {
-      if (this.map.hasOwnProperty(name)) {
-        callback.call(thisArg, this.map[name], name, this)
-      }
-    }
-  }
-
-  Headers.prototype.keys = function() {
-    var items = []
-    this.forEach(function(value, name) { items.push(name) })
-    return iteratorFor(items)
-  }
-
-  Headers.prototype.values = function() {
-    var items = []
-    this.forEach(function(value) { items.push(value) })
-    return iteratorFor(items)
-  }
-
-  Headers.prototype.entries = function() {
-    var items = []
-    this.forEach(function(value, name) { items.push([name, value]) })
-    return iteratorFor(items)
-  }
-
-  if (support.iterable) {
-    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
-  }
-
-  function consumed(body) {
-    if (body.bodyUsed) {
-      return Promise.reject(new TypeError('Already read'))
-    }
-    body.bodyUsed = true
-  }
-
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result)
-      }
-      reader.onerror = function() {
-        reject(reader.error)
-      }
-    })
-  }
-
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader()
-    var promise = fileReaderReady(reader)
-    reader.readAsArrayBuffer(blob)
-    return promise
-  }
-
-  function readBlobAsText(blob) {
-    var reader = new FileReader()
-    var promise = fileReaderReady(reader)
-    reader.readAsText(blob)
-    return promise
-  }
-
-  function readArrayBufferAsText(buf) {
-    var view = new Uint8Array(buf)
-    var chars = new Array(view.length)
-
-    for (var i = 0; i < view.length; i++) {
-      chars[i] = String.fromCharCode(view[i])
-    }
-    return chars.join('')
-  }
-
-  function bufferClone(buf) {
-    if (buf.slice) {
-      return buf.slice(0)
-    } else {
-      var view = new Uint8Array(buf.byteLength)
-      view.set(new Uint8Array(buf))
-      return view.buffer
-    }
-  }
-
-  function Body() {
-    this.bodyUsed = false
-
-    this._initBody = function(body) {
-      this._bodyInit = body
-      if (!body) {
-        this._bodyText = ''
-      } else if (typeof body === 'string') {
-        this._bodyText = body
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body
-      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-        this._bodyText = body.toString()
-      } else if (support.arrayBuffer && support.blob && isDataView(body)) {
-        this._bodyArrayBuffer = bufferClone(body.buffer)
-        // IE 10-11 can't handle a DataView body.
-        this._bodyInit = new Blob([this._bodyArrayBuffer])
-      } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
-        this._bodyArrayBuffer = bufferClone(body)
-      } else {
-        throw new Error('unsupported BodyInit type')
-      }
-
-      if (!this.headers.get('content-type')) {
-        if (typeof body === 'string') {
-          this.headers.set('content-type', 'text/plain;charset=UTF-8')
-        } else if (this._bodyBlob && this._bodyBlob.type) {
-          this.headers.set('content-type', this._bodyBlob.type)
-        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
-        }
-      }
-    }
-
-    if (support.blob) {
-      this.blob = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return Promise.resolve(this._bodyBlob)
-        } else if (this._bodyArrayBuffer) {
-          return Promise.resolve(new Blob([this._bodyArrayBuffer]))
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as blob')
-        } else {
-          return Promise.resolve(new Blob([this._bodyText]))
-        }
-      }
-
-      this.arrayBuffer = function() {
-        if (this._bodyArrayBuffer) {
-          return consumed(this) || Promise.resolve(this._bodyArrayBuffer)
-        } else {
-          return this.blob().then(readBlobAsArrayBuffer)
-        }
-      }
-    }
-
-    this.text = function() {
-      var rejected = consumed(this)
-      if (rejected) {
-        return rejected
-      }
-
-      if (this._bodyBlob) {
-        return readBlobAsText(this._bodyBlob)
-      } else if (this._bodyArrayBuffer) {
-        return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer))
-      } else if (this._bodyFormData) {
-        throw new Error('could not read FormData body as text')
-      } else {
-        return Promise.resolve(this._bodyText)
-      }
-    }
-
-    if (support.formData) {
-      this.formData = function() {
-        return this.text().then(decode)
-      }
-    }
-
-    this.json = function() {
-      return this.text().then(JSON.parse)
-    }
-
-    return this
-  }
-
-  // HTTP methods whose capitalization should be normalized
-  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
-
-  function normalizeMethod(method) {
-    var upcased = method.toUpperCase()
-    return (methods.indexOf(upcased) > -1) ? upcased : method
-  }
-
-  function Request(input, options) {
-    options = options || {}
-    var body = options.body
-
-    if (input instanceof Request) {
-      if (input.bodyUsed) {
-        throw new TypeError('Already read')
-      }
-      this.url = input.url
-      this.credentials = input.credentials
-      if (!options.headers) {
-        this.headers = new Headers(input.headers)
-      }
-      this.method = input.method
-      this.mode = input.mode
-      if (!body && input._bodyInit != null) {
-        body = input._bodyInit
-        input.bodyUsed = true
-      }
-    } else {
-      this.url = String(input)
-    }
-
-    this.credentials = options.credentials || this.credentials || 'omit'
-    if (options.headers || !this.headers) {
-      this.headers = new Headers(options.headers)
-    }
-    this.method = normalizeMethod(options.method || this.method || 'GET')
-    this.mode = options.mode || this.mode || null
-    this.referrer = null
-
-    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
-      throw new TypeError('Body not allowed for GET or HEAD requests')
-    }
-    this._initBody(body)
-  }
-
-  Request.prototype.clone = function() {
-    return new Request(this, { body: this._bodyInit })
-  }
-
-  function decode(body) {
-    var form = new FormData()
-    body.trim().split('&').forEach(function(bytes) {
-      if (bytes) {
-        var split = bytes.split('=')
-        var name = split.shift().replace(/\+/g, ' ')
-        var value = split.join('=').replace(/\+/g, ' ')
-        form.append(decodeURIComponent(name), decodeURIComponent(value))
-      }
-    })
-    return form
-  }
-
-  function parseHeaders(rawHeaders) {
-    var headers = new Headers()
-    // Replace instances of \r\n and \n followed by at least one space or horizontal tab with a space
-    // https://tools.ietf.org/html/rfc7230#section-3.2
-    var preProcessedHeaders = rawHeaders.replace(/\r?\n[\t ]+/g, ' ')
-    preProcessedHeaders.split(/\r?\n/).forEach(function(line) {
-      var parts = line.split(':')
-      var key = parts.shift().trim()
-      if (key) {
-        var value = parts.join(':').trim()
-        headers.append(key, value)
-      }
-    })
-    return headers
-  }
-
-  Body.call(Request.prototype)
-
-  function Response(bodyInit, options) {
-    if (!options) {
-      options = {}
-    }
-
-    this.type = 'default'
-    this.status = options.status === undefined ? 200 : options.status
-    this.ok = this.status >= 200 && this.status < 300
-    this.statusText = 'statusText' in options ? options.statusText : 'OK'
-    this.headers = new Headers(options.headers)
-    this.url = options.url || ''
-    this._initBody(bodyInit)
-  }
-
-  Body.call(Response.prototype)
-
-  Response.prototype.clone = function() {
-    return new Response(this._bodyInit, {
-      status: this.status,
-      statusText: this.statusText,
-      headers: new Headers(this.headers),
-      url: this.url
-    })
-  }
-
-  Response.error = function() {
-    var response = new Response(null, {status: 0, statusText: ''})
-    response.type = 'error'
-    return response
-  }
-
-  var redirectStatuses = [301, 302, 303, 307, 308]
-
-  Response.redirect = function(url, status) {
-    if (redirectStatuses.indexOf(status) === -1) {
-      throw new RangeError('Invalid status code')
-    }
-
-    return new Response(null, {status: status, headers: {location: url}})
-  }
-
-  self.Headers = Headers
-  self.Request = Request
-  self.Response = Response
-
-  self.fetch = function(input, init) {
-    return new Promise(function(resolve, reject) {
-      var request = new Request(input, init)
-      var xhr = new XMLHttpRequest()
-
-      xhr.onload = function() {
-        var options = {
-          status: xhr.status,
-          statusText: xhr.statusText,
-          headers: parseHeaders(xhr.getAllResponseHeaders() || '')
-        }
-        options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL')
-        var body = 'response' in xhr ? xhr.response : xhr.responseText
-        resolve(new Response(body, options))
-      }
-
-      xhr.onerror = function() {
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.ontimeout = function() {
-        reject(new TypeError('Network request failed'))
-      }
-
-      xhr.open(request.method, request.url, true)
-
-      if (request.credentials === 'include') {
-        xhr.withCredentials = true
-      } else if (request.credentials === 'omit') {
-        xhr.withCredentials = false
-      }
-
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob'
-      }
-
-      request.headers.forEach(function(value, name) {
-        xhr.setRequestHeader(name, value)
-      })
-
-      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
-    })
-  }
-  self.fetch.polyfill = true
-})(typeof self !== 'undefined' ? self : this);
-
-},{}],"src/helpers/fetch-helpers.js":[function(require,module,exports) {
+},{"./defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js"}],"src/helpers/fetch-helpers.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36444,6 +35982,11 @@ var reducer = function reducer(state, action) {
         confirmed: true
       });
 
+    case "SET_CSS_CONFIG":
+      return (0, _objectSpread2.default)({}, state, {
+        cssConfig: action.values
+      });
+
     default:
       return (0, _objectSpread2.default)({}, state);
   }
@@ -36476,14 +36019,14 @@ function (_Component) {
         var _getConfiguration = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
         _regenerator.default.mark(function _callee(_ref) {
-          var rootEntry, formType, initialState, cssConfig, formConfig, generator, formName, proxyUri, isLocal, isDrupal, isWordpress, _ref2, _ref3, _initialState, configurations;
+          var rootEntry, formType, initialState, initialStyle, cssConfig, formConfig, generator, formName, proxyUri, isLocal, isDrupal, isWordpress, _ref2, _ref3, _ref4, _ref5, configurations;
 
           return _regenerator.default.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
                   rootEntry = _ref.rootEntry, formType = _ref.formType;
-                  initialState = {}, cssConfig = {}, formConfig = {};
+                  initialState = {}, initialStyle = {}, cssConfig = {}, formConfig = {};
                   _context.prev = 2;
                   generator = rootEntry.dataset.environment ? rootEntry.dataset.environment.toLowerCase() : null;
                   formName = rootEntry.dataset.formName;
@@ -36498,7 +36041,7 @@ function (_Component) {
                   }
 
                   initialState = rootEntry.dataset.initialState;
-                  _context.next = 27;
+                  _context.next = 30;
                   break;
 
                 case 13:
@@ -36520,37 +36063,46 @@ function (_Component) {
                   cssConfig = _ref3[0];
                   initialState = _ref3[1];
                   proxyUri = "".concat(proxyUri, "cbngiving/v1/").concat(formName);
-                  _context.next = 27;
+                  _context.next = 30;
                   break;
 
                 case 23:
                   proxyUri = "http://".concat("10.100.43.32", ":").concat("8080");
                   _context.next = 26;
-                  return (0, _fetchHelpers.callApi)("".concat(proxyUri, "/config/form-config.json"), {
+                  return Promise.all([(0, _fetchHelpers.callApi)("".concat(proxyUri, "/config/form-config.json"), {
                     method: "GET"
-                  });
+                  }), (0, _fetchHelpers.callApi)("".concat(proxyUri, "/config/css-config.json"), {
+                    method: "GET"
+                  })]);
 
                 case 26:
-                  initialState = _context.sent;
+                  _ref4 = _context.sent;
+                  _ref5 = (0, _slicedToArray2.default)(_ref4, 2);
+                  initialState = _ref5[0];
+                  initialStyle = _ref5[1];
 
-                case 27:
-                  _initialState = initialState, configurations = _initialState.configurations;
+                case 30:
+                  configurations = initialState.configurations;
                   formConfig = Array.isArray(configurations) ? configurations.filter(function (config) {
                     return config.formType == formType;
                   })[0] : initialState;
+                  configurations = initialStyle.configurations;
+                  cssConfig = Array.isArray(configurations) ? configurations.filter(function (config) {
+                    return config.formType == formType;
+                  })[0].cssConfig : initialStyle;
 
                   if (formConfig.mode === "production") {
                     if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
                       window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
 
-                      if (Object.keys(window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers).length) {
-                        window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers = {};
+                      if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers instanceof Map && window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers.size || Object.keys(window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers).length) {
+                        window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers = {};
                       }
                     }
                   }
 
                   if (!Object.keys(formConfig).length) {
-                    _context.next = 35;
+                    _context.next = 40;
                     break;
                   }
 
@@ -36565,18 +36117,18 @@ function (_Component) {
                     });
                   });
 
-                  _context.next = 36;
-                  break;
-
-                case 35:
-                  throw new Error("Unable to Load Configuration for ".concat(formType));
-
-                case 36:
                   _context.next = 41;
                   break;
 
-                case 38:
-                  _context.prev = 38;
+                case 40:
+                  throw new Error("Unable to Load Configuration for ".concat(formType));
+
+                case 41:
+                  _context.next = 46;
+                  break;
+
+                case 43:
+                  _context.prev = 43;
                   _context.t0 = _context["catch"](2);
 
                   _this.setState(function (state) {
@@ -36589,12 +36141,12 @@ function (_Component) {
                     alert("There was an internal error loading this form. Please check back later or call us at 1-800-759-0700");
                   });
 
-                case 41:
+                case 46:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[2, 38]]);
+          }, _callee, null, [[2, 43]]);
         }));
 
         function getConfiguration(_x) {
@@ -36614,6 +36166,25 @@ function (_Component) {
         });
       },
       goBack: function goBack(action) {
+        return _this.setState(function (state) {
+          return reducer(state, action);
+        });
+      },
+      getCssConfig: function getCssConfig(type) {
+        var config = Object.entries(_this.state.cssConfig).reduce(function (obj, _ref6) {
+          var _ref7 = (0, _slicedToArray2.default)(_ref6, 2),
+              key = _ref7[0],
+              value = _ref7[1];
+
+          if (key.includes(type)) {
+            obj[key] = value;
+          }
+
+          return obj;
+        }, {});
+        return config;
+      },
+      setCssConfig: function setCssConfig(action) {
         return _this.setState(function (state) {
           return reducer(state, action);
         });
@@ -36951,8 +36522,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.checkValues = exports.validateCCInput = void 0;
 
-var _this = void 0;
-
 (function () {
   var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
   enterModule && enterModule(module);
@@ -36973,7 +36542,7 @@ var checkExpDate = function checkExpDate(expYear, expMonth) {
   var curyear = curdate.getFullYear();
   var curmonth = curdate.getMonth() + 1;
   var monthVal = parseInt(expMonth, 10);
-  var yearVal = parseInt(expYear, 10);
+  var yearVal = parseInt(expYear, 10); // console.log({expYear, expMonth})
 
   if (isNaN(monthVal) || isNaN(yearVal)) {
     return false;
@@ -37017,8 +36586,29 @@ var checkDigits = function checkDigits(cardNumber) {
   return returnvalue == 0;
 };
 
-var validateCCInput = function validateCCInput(name, value) {
+var validateCCInput = function validateCCInput(name, value, ccNumber, ccMonth, ccYear) {
   var error = "";
+  var cardType = "";
+
+  if (ccNumber) {
+    switch (parseInt(ccNumber.slice(0, 1))) {
+      case 4:
+        cardType = "001";
+        break;
+
+      case 5:
+        cardType = "002";
+        break;
+
+      case 3:
+        cardType = "003";
+        break;
+
+      case 6:
+        cardType = "004";
+        break;
+    }
+  }
 
   switch (name) {
     case "ccNumber":
@@ -37026,33 +36616,13 @@ var validateCCInput = function validateCCInput(name, value) {
         error = "Maximum digits allowed is reached";
       } else if (!/^[0-9]*$/.test(value)) {
         error = "Card Number must contain only numerical digits";
-      } else if (value.length > 15 && !checkDigits(value)) {
+      } else if (!checkDigits(value) || !IsValidCreditCardType(value, cardType)) {
         error = "Please enter a valid Credit Card number";
       }
 
       if (!error && value.length) {
-        var num = "";
-
-        switch (parseInt(value.slice(0, 1))) {
-          case 4:
-            num = "001";
-            break;
-
-          case 5:
-            num = "002";
-            break;
-
-          case 3:
-            num = "003";
-            break;
-
-          case 6:
-            num = "004";
-            break;
-        }
-
         return {
-          ccChecked: num,
+          ccChecked: cardType,
           error: null
         };
       }
@@ -37060,21 +36630,21 @@ var validateCCInput = function validateCCInput(name, value) {
       break;
 
     case "ExpiresMonth":
-      if (!checkExpDate(_this.state.fields.ExpiresYear, value)) {
-        error = "Please select a valid expiration date.";
+      if (!checkExpDate(ccYear, value)) {
+        error = "Check expiration.";
       }
 
       break;
 
     case "ExpiresYear":
-      if (!checkExpDate(value, _this.state.fields.ExpiresMonth)) {
-        error = "Please select a valid expiration date.";
+      if (!checkExpDate(value, ccMonth)) {
+        error = "Check expiration.";
       }
 
       break;
 
     case "cvnCode":
-      if (/(\D)/.test(value)) {
+      if (!checkCVNCode(cardType, value)) {
         error = "Invalid Entry.";
       }
 
@@ -37355,7 +36925,7 @@ function () {
         switch (_context.prev = _context.next) {
           case 0:
             if (!value) {
-              _context.next = 26;
+              _context.next = 27;
               break;
             }
 
@@ -37367,9 +36937,9 @@ function () {
 
           case 6:
             result = _context.sent;
-            _JSON$parse = JSON.parse(result), city = _JSON$parse.city, state = _JSON$parse.state, zip = _JSON$parse.zip, returnCode = _JSON$parse.returnCode, returnMessage = _JSON$parse.returnMessage; // console.log({ city, state, zip, returnCode, returnMessage })
+            _JSON$parse = JSON.parse(result), city = _JSON$parse.city, state = _JSON$parse.state, zip = _JSON$parse.zip, returnCode = _JSON$parse.returnCode, returnMessage = _JSON$parse.returnMessage;
 
-            if (!(returnCode == 1)) {
+            if (!(returnCode === 1)) {
               _context.next = 17;
               break;
             }
@@ -37408,40 +36978,53 @@ function () {
             });
 
           case 17:
+            console.error({
+              city: city,
+              state: state,
+              zip: zip,
+              returnCode: returnCode,
+              returnMessage: returnMessage
+            });
             return _context.abrupt("return", {
-              action: "",
-              error: returnMessage
+              action: {
+                type: "UPDATE_FIELD",
+                name: name,
+                value: value,
+                error: returnMessage
+              }
             });
 
-          case 18:
-            _context.next = 24;
+          case 19:
+            _context.next = 25;
             break;
 
-          case 20:
-            _context.prev = 20;
+          case 21:
+            _context.prev = 21;
             _context.t0 = _context["catch"](3);
             console.error(_context.t0);
             throw new Error(_context.t0);
 
-          case 24:
-            _context.next = 28;
+          case 25:
+            _context.next = 29;
             break;
 
-          case 26:
+          case 27:
             console.error({
               err: "No Value Passed to Validator"
             });
             return _context.abrupt("return", {
-              action: "",
+              action: "UPDATE_FIELD",
+              name: name,
+              value: value,
               error: "No Value Passed to Validator"
             });
 
-          case 28:
+          case 29:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 20]]);
+    }, _callee, null, [[3, 21]]);
   }));
 
   return function callZipCityStateService(_x, _x2, _x3) {
@@ -37528,13 +37111,16 @@ function () {
  * @param {Boolean} [getHonorific] - Boolean to determine if a field is required
  * @param {Boolean} [allowInternational] - Boolean only necessary for Country Validation
  * @param {Boolean} [ShipToYes] - Boolean for validating Shipping Address
+ * @param {String} [ccNumber]
+ * @param {String} [ccMonth]
+ * @param {String} [ccYear]
  * @returns {String} - an empty String if no errors, else a string with a single error message
  */
 
 
 exports.callAddressVerification = callAddressVerification;
 
-var validateInput = function validateInput(submitting, name, value, getAddress, getHonorific, allowInternational, ShipToYes) {
+var validateInput = function validateInput(submitting, name, value, getAddress, getHonorific, allowInternational, ShipToYes, ccNumber, ccMonth, ccYear) {
   var error = "";
 
   switch (name) {
@@ -37542,8 +37128,9 @@ var validateInput = function validateInput(submitting, name, value, getAddress, 
     case "ExpiresMonth":
     case "ExpiresYear":
     case "cvnCode":
-      var res = (0, _ccValidation.validateCCInput)(name, value);
+      var res = (0, _ccValidation.validateCCInput)(name, value, ccNumber, ccMonth, ccYear);
       error = res.error;
+      break;
 
     case "Title":
       if (!value && submitting && getHonorific) {
@@ -37910,6 +37497,12 @@ var reducer = function reducer(state, action) {
         selected: false
       });
 
+    case "UPDATE_CC_ERRORS":
+      errors = (0, _objectSpread2.default)({}, state.errors);
+      return (0, _objectSpread2.default)({}, state, {
+        errors: (0, _objectSpread2.default)({}, errors, action.errors)
+      });
+
     default:
       return (0, _objectSpread2.default)({}, state);
       break;
@@ -38141,80 +37734,114 @@ function (_Component) {
       validateAndUpdateField: function () {
         var _validateAndUpdateField = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee2(action) {
-          var name, value, isZip, oldCity, response, _this$context, getHonorific, allowInternational;
+        _regenerator.default.mark(function _callee3(action) {
+          var name, value, isZip, _this$context, getHonorific, allowInternational;
 
-          return _regenerator.default.wrap(function _callee2$(_context2) {
+          return _regenerator.default.wrap(function _callee3$(_context3) {
             while (1) {
-              switch (_context2.prev = _context2.next) {
+              switch (_context3.prev = _context3.next) {
                 case 0:
                   name = action.name, value = action.value;
-                  isZip = name.includes("Zip") && value.length >= 5;
+                  isZip = name.includes("Zip");
 
                   if (!isZip) {
-                    _context2.next = 22;
+                    _context3.next = 6;
                     break;
                   }
 
-                  if (_validators.zip_regex.test(value)) {
-                    _context2.next = 7;
-                    break;
-                  }
-
-                  action.error = "Invalid Postal Code";
-                  _context2.next = 20;
-                  break;
-
-                case 7:
-                  _context2.prev = 7;
-                  oldCity = _this.state.fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
-                  _context2.next = 11;
-                  return (0, _validators.callZipCityStateService)(name, value, oldCity);
-
-                case 11:
-                  response = _context2.sent;
-
-                  if (response.action) {
-                    _this.setState(function (state) {
-                      return (0, _reducer.default)(state, response.action);
+                  _this.setState(function (state) {
+                    return (0, _reducer.default)(state, {
+                      type: "TOGGLE_SUBMITTING"
                     });
-                  }
+                  },
+                  /*#__PURE__*/
+                  (0, _asyncToGenerator2.default)(
+                  /*#__PURE__*/
+                  _regenerator.default.mark(function _callee2() {
+                    var oldCity, response;
+                    return _regenerator.default.wrap(function _callee2$(_context2) {
+                      while (1) {
+                        switch (_context2.prev = _context2.next) {
+                          case 0:
+                            if (_validators.zip_regex.test(value)) {
+                              _context2.next = 4;
+                              break;
+                            }
 
-                  action.error = response.error;
-                  _context2.next = 20;
+                            action.error = "Invalid Postal Code";
+                            _context2.next = 18;
+                            break;
+
+                          case 4:
+                            _context2.prev = 4;
+                            oldCity = _this.state.fields[name == "ShipToZip" ? "ShipToCity" : "City"].toUpperCase();
+                            _context2.next = 8;
+                            return (0, _validators.callZipCityStateService)(name, value, oldCity);
+
+                          case 8:
+                            response = _context2.sent;
+
+                            if (response.action) {
+                              // console.log({action: response.action})
+                              _this.setState(function (state) {
+                                return (0, _reducer.default)(state, response.action);
+                              }, function () {
+                                _this.setState(function (state) {
+                                  return (0, _reducer.default)(state, {
+                                    type: "TOGGLE_SUBMITTING"
+                                  });
+                                });
+                              });
+                            }
+
+                            action.error = response.error;
+                            _context2.next = 18;
+                            break;
+
+                          case 13:
+                            _context2.prev = 13;
+                            _context2.t0 = _context2["catch"](4);
+                            console.error("CallZipCityStateServiceError");
+                            console.error({
+                              err: _context2.t0
+                            });
+
+                            _this.setState(function (state) {
+                              return (0, _reducer.default)(state, {
+                                type: "TOGGLE_SUBMITTING"
+                              });
+                            });
+
+                          case 18:
+                          case "end":
+                            return _context2.stop();
+                        }
+                      }
+                    }, _callee2, null, [[4, 13]]);
+                  })));
+
+                  _context3.next = 10;
                   break;
 
-                case 16:
-                  _context2.prev = 16;
-                  _context2.t0 = _context2["catch"](7);
-                  console.error("CallZipCityStateServiceError");
-                  console.error({
-                    err: _context2.t0
-                  });
-
-                case 20:
-                  _context2.next = 26;
-                  break;
-
-                case 22:
+                case 6:
                   _this$context = _this.context, getHonorific = _this$context.getHonorific, allowInternational = _this$context.allowInternational;
-                  _context2.next = 25;
-                  return (0, _validators.validateInput)(false, name, value, true, getHonorific, allowInternational, _this.state.ShipToYes);
+                  _context3.next = 9;
+                  return (0, _validators.validateInput)(false, name, value, true, getHonorific, allowInternational, _this.state.fields.ShipToYes, _this.state.fields.ccNumber, _this.state.fields.ExpiresMonth, _this.state.fields.ExpiresYear);
 
-                case 25:
-                  action.error = _context2.sent;
+                case 9:
+                  action.error = _context3.sent;
 
-                case 26:
+                case 10:
                   _this.setState(function (state) {
                     return (0, _reducer.default)(state, action);
                   });
 
-                case 27:
+                case 11:
                 case "end":
-                  return _context2.stop();
+                  return _context3.stop();
               }
             }
-          }, _callee2, null, [[7, 16]]);
+          }, _callee3);
         }));
 
         function validateAndUpdateField(_x3) {
@@ -38226,10 +37853,10 @@ function (_Component) {
       submitGivingForm: function () {
         var _submitGivingForm = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee4(type) {
-          return _regenerator.default.wrap(function _callee4$(_context4) {
+        _regenerator.default.mark(function _callee5(type) {
+          return _regenerator.default.wrap(function _callee5$(_context5) {
             while (1) {
-              switch (_context4.prev = _context4.next) {
+              switch (_context5.prev = _context5.next) {
                 case 0:
                   _this.setState(function (state) {
                     return (0, _reducer.default)(state, {
@@ -38239,26 +37866,26 @@ function (_Component) {
                   /*#__PURE__*/
                   (0, _asyncToGenerator2.default)(
                   /*#__PURE__*/
-                  _regenerator.default.mark(function _callee3() {
-                    var isValidGift, isValidForm, oldCity, response, zipError, addressError, shipZipError, shipAddressError, _action, fields, fieldNames, i, error, name, _this$context2, getHonorific, allowInternational, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$context$formCon, mode, _this$context$formCon2, EmailSubjectLine, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, items, pledgeFound, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, DonorID, confirmUrl, bodyFormData, confirmationData, formAction, html, parser, doc, form, inputs, message, _getErrorType, breaking, _name;
+                  _regenerator.default.mark(function _callee4() {
+                    var isValidGift, isValidForm, action, oldCity, response, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, _this$context2, getHonorific, allowInternational, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$context$formCon, mode, _this$context$formCon2, EmailSubjectLine, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, items, pledgeFound, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, DonorID, confirmUrl, bodyFormData, confirmationData, formAction, html, parser, doc, form, inputs, message, _getErrorType, breaking, _name;
 
-                    return _regenerator.default.wrap(function _callee3$(_context3) {
+                    return _regenerator.default.wrap(function _callee4$(_context4) {
                       while (1) {
-                        switch (_context3.prev = _context3.next) {
+                        switch (_context4.prev = _context4.next) {
                           case 0:
                             if (!(type !== "confirmation")) {
-                              _context3.next = 4;
+                              _context4.next = 4;
                               break;
                             }
 
                             isValidGift = _this.validateGift();
 
                             if (isValidGift) {
-                              _context3.next = 4;
+                              _context4.next = 4;
                               break;
                             }
 
-                            return _context3.abrupt("return", _this.setState(function (state) {
+                            return _context4.abrupt("return", _this.setState(function (state) {
                               return (0, _reducer.default)(state, {
                                 type: "TOGGLE_SUBMITTING"
                               });
@@ -38274,20 +37901,20 @@ function (_Component) {
                             }));
 
                           case 4:
-                            isValidForm = true;
+                            isValidForm = true, action = {};
 
                             if (!(_this.state.fields.Country == "United States")) {
-                              _context3.next = 56;
+                              _context4.next = 58;
                               break;
                             }
 
-                            _context3.prev = 6;
+                            _context4.prev = 6;
                             oldCity = _this.state.fields.City.toUpperCase();
-                            _context3.next = 10;
+                            _context4.next = 10;
                             return (0, _validators.callZipCityStateService)("Zip", _this.state.fields.Zip, oldCity);
 
                           case 10:
-                            response = _context3.sent;
+                            response = _context4.sent;
 
                             if (response.action) {
                               _this.setState(function (state) {
@@ -38298,40 +37925,40 @@ function (_Component) {
                             zipError = response.error;
 
                             if (zipError) {
-                              _context3.next = 24;
+                              _context4.next = 24;
                               break;
                             }
 
-                            _context3.prev = 14;
-                            _context3.next = 17;
+                            _context4.prev = 14;
+                            _context4.next = 17;
                             return (0, _validators.callAddressVerification)(_this.state.fields["Address1"], _this.state.fields["Address2"], _this.state.fields["City"], _this.state.fields["State"], _this.state.fields["Zip"]);
 
                           case 17:
-                            addressError = _context3.sent;
-                            _context3.next = 24;
+                            addressError = _context4.sent;
+                            _context4.next = 24;
                             break;
 
                           case 20:
-                            _context3.prev = 20;
-                            _context3.t0 = _context3["catch"](14);
+                            _context4.prev = 20;
+                            _context4.t0 = _context4["catch"](14);
                             console.log("AddressVerificationError");
                             console.error({
-                              err: _context3.t0
+                              err: _context4.t0
                             });
 
                           case 24:
                             if (!(_this.state.fields["ShipToZip"] && _this.state.fields.ShipToYes)) {
-                              _context3.next = 38;
+                              _context4.next = 38;
                               break;
                             }
 
-                            _context3.prev = 25;
+                            _context4.prev = 25;
                             oldCity = _this.state.fields.ShipToCity.toUpperCase();
-                            _context3.next = 29;
+                            _context4.next = 29;
                             return (0, _validators.callZipCityStateService)("ShipToZip", _this.state.fields.ShipToZip, oldCity);
 
                           case 29:
-                            response = _context3.sent;
+                            response = _context4.sent;
 
                             if (response.action) {
                               _this.setState(function (state) {
@@ -38340,50 +37967,50 @@ function (_Component) {
                             }
 
                             shipZipError = response.error;
-                            _context3.next = 38;
+                            _context4.next = 38;
                             break;
 
                           case 34:
-                            _context3.prev = 34;
-                            _context3.t1 = _context3["catch"](25);
+                            _context4.prev = 34;
+                            _context4.t1 = _context4["catch"](25);
                             console.log("CSZValidationError__SHIPPING");
                             console.error({
-                              err: _context3.t1
+                              err: _context4.t1
                             });
 
                           case 38:
                             if (!(!shipZipError && _this.state.fields.ShipToYes)) {
-                              _context3.next = 49;
+                              _context4.next = 49;
                               break;
                             }
 
-                            _context3.prev = 39;
-                            _context3.next = 42;
+                            _context4.prev = 39;
+                            _context4.next = 42;
                             return (0, _validators.callAddressVerification)(_this.state.fields["ShipToAddress1"], _this.state.fields["ShipToAddress2"], _this.state.fields["ShipToCity"], _this.state.fields["ShipToState"], _this.state.fields["ShipToZip"]);
 
                           case 42:
-                            shipAddressError = _context3.sent;
-                            _context3.next = 49;
+                            shipAddressError = _context4.sent;
+                            _context4.next = 49;
                             break;
 
                           case 45:
-                            _context3.prev = 45;
-                            _context3.t2 = _context3["catch"](39);
+                            _context4.prev = 45;
+                            _context4.t2 = _context4["catch"](39);
                             console.log("AddressVerificationError__SHIPPING");
                             console.error({
-                              err: _context3.t2
+                              err: _context4.t2
                             });
 
                           case 49:
                             if (addressError || shipAddressError || zipError || shipZipError) {
                               isValidForm = false;
-                              _action = {
+                              action = {
                                 type: "UPDATE_FIELDS",
                                 fields: []
                               };
 
                               if (addressError) {
-                                _action.fields.push({
+                                action.fields.push({
                                   name: "Address1",
                                   value: _this.state.fields.Address1,
                                   error: addressError
@@ -38391,7 +38018,7 @@ function (_Component) {
                               }
 
                               if (shipAddressError) {
-                                _action.fields.push({
+                                action.fields.push({
                                   name: "ShipToAddress1",
                                   value: _this.state.fields.ShipToAddress1,
                                   error: shipAddressError
@@ -38399,7 +38026,7 @@ function (_Component) {
                               }
 
                               if (zipError) {
-                                _action.fields.push({
+                                action.fields.push({
                                   name: "Zip",
                                   value: _this.state.fields.Zip,
                                   error: zipError
@@ -38407,7 +38034,7 @@ function (_Component) {
                               }
 
                               if (shipZipError) {
-                                _action.fields.push({
+                                action.fields.push({
                                   name: "ShipToZip",
                                   value: _this.state.fields.ShipToZip,
                                   error: shipZipError
@@ -38415,22 +38042,46 @@ function (_Component) {
                               }
 
                               _this.setState(function (state) {
-                                return (0, _reducer.default)(state, _action);
+                                return (0, _reducer.default)(state, action);
                               });
                             }
 
-                            _context3.next = 56;
+                            _context4.next = 56;
                             break;
 
                           case 52:
-                            _context3.prev = 52;
-                            _context3.t3 = _context3["catch"](6);
+                            _context4.prev = 52;
+                            _context4.t3 = _context4["catch"](6);
                             console.log("CSZValidationError");
                             console.error({
-                              err: _context3.t3
+                              err: _context4.t3
                             });
 
                           case 56:
+                            _context4.next = 60;
+                            break;
+
+                          case 58:
+                            action = {
+                              type: "UPDATE_FIELDS",
+                              action: {
+                                fields: [{
+                                  name: "Zip",
+                                  value: "NA",
+                                  error: ''
+                                }, {
+                                  name: "State",
+                                  value: "00",
+                                  error: ''
+                                }]
+                              }
+                            };
+
+                            _this.setState(function (state) {
+                              return (0, _reducer.default)(state, action);
+                            });
+
+                          case 60:
                             fields = _this.state.fields;
                             fieldNames = Object.keys(fields);
                             action = {
@@ -38444,7 +38095,7 @@ function (_Component) {
 
                               if (!name.includes("Zip")) {
                                 _this$context2 = _this.context, getHonorific = _this$context2.getHonorific, allowInternational = _this$context2.allowInternational;
-                                error = (0, _validators.validateInput)(true, name, fields[name], true, getHonorific, allowInternational, _this.state.ShipToYes);
+                                error = (0, _validators.validateInput)(true, name, fields[name], true, getHonorific, allowInternational, _this.state.fields.ShipToYes, _this.state.ccNumber, _this.state.fields.ExpiresMonth, _this.state.fields.ExpiresYear);
 
                                 if (error) {
                                   isValidForm = false;
@@ -38458,11 +38109,11 @@ function (_Component) {
                             }
 
                             if (isValidForm) {
-                              _context3.next = 62;
+                              _context4.next = 66;
                               break;
                             }
 
-                            return _context3.abrupt("return", _this.setState(function (state) {
+                            return _context4.abrupt("return", _this.setState(function (state) {
                               return (0, _reducer.default)(state, {
                                 type: "TOGGLE_SUBMITTING"
                               });
@@ -38472,7 +38123,7 @@ function (_Component) {
                               });
                             }));
 
-                          case 62:
+                          case 66:
                             Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
                             _this$context$formCon = _this.context.formConfig, mode = _this$context$formCon.mode, _this$context$formCon2 = _this$context$formCon.EmailSubjectLine, EmailSubjectLine = _this$context$formCon2 === void 0 ? "Thank You for Your Contribution" : _this$context$formCon2, subscriptions = _this$context$formCon.subscriptions, AddContactYN = _this$context$formCon.AddContactYN, ActivityName = _this$context$formCon.ActivityName, ContactSource = _this$context$formCon.ContactSource, SectionName = _this$context$formCon.SectionName, proxy = _this$context$formCon.proxy;
                             ClientBrowser = window && window.navigator ? window.navigator.userAgent : "";
@@ -38503,12 +38154,12 @@ function (_Component) {
                             ShipTo = ShipToYes === true ? "Yes" : "No";
 
                             multipleDonations = function multipleDonations() {
-                              return items.map(function (_ref2, index) {
-                                var DetailName = _ref2.DetailName,
-                                    DetailDescription = _ref2.DetailDescription,
-                                    DetailCprojCredit = _ref2.DetailCprojCredit,
-                                    DetailCprojMail = _ref2.DetailCprojMail,
-                                    PledgeAmount = _ref2.PledgeAmount;
+                              return items.map(function (_ref3, index) {
+                                var DetailName = _ref3.DetailName,
+                                    DetailDescription = _ref3.DetailDescription,
+                                    DetailCprojCredit = _ref3.DetailCprojCredit,
+                                    DetailCprojMail = _ref3.DetailCprojMail,
+                                    PledgeAmount = _ref3.PledgeAmount;
 
                                 if (index === pledgeFound && Object.keys(_this.state.designationInfo).length && !(isMonthly && !_this.state.allowMonthlyDesignations)) {
                                   DetailName = (isMonthly ? "MP" : "SG") + _this.state.designationInfo.DetailName;
@@ -38579,8 +38230,8 @@ function (_Component) {
                               });
                             }
 
-                            _context3.prev = 84;
-                            _context3.next = 87;
+                            _context4.prev = 88;
+                            _context4.next = 91;
                             return (0, _fetchHelpers.callApi)(proxy, {
                               method: "POST",
                               mode: "cors",
@@ -38590,22 +38241,22 @@ function (_Component) {
                               body: JSON.stringify(data)
                             });
 
-                          case 87:
-                            msg = _context3.sent;
+                          case 91:
+                            msg = _context4.sent;
                             DonorID = msg.split(";")[0].split(" - ")[1];
                             confirmUrl = msg.split(" is ")[1];
                             bodyFormData = new FormData();
                             bodyFormData.append("DonorID", DonorID);
                             confirmationData = [];
-                            _context3.prev = 93;
-                            _context3.next = 96;
+                            _context4.prev = 97;
+                            _context4.next = 100;
                             return (0, _fetchHelpers.callApi)(confirmUrl, {
                               method: "POST",
                               body: new URLSearchParams(bodyFormData)
                             });
 
-                          case 96:
-                            html = _context3.sent;
+                          case 100:
+                            html = _context4.sent;
                             parser = new DOMParser();
                             doc = parser.parseFromString(html, "text/html");
                             form = doc.querySelector("form");
@@ -38617,19 +38268,19 @@ function (_Component) {
                                 value: input.value
                               });
                             });
-                            _context3.next = 109;
+                            _context4.next = 113;
                             break;
 
-                          case 105:
-                            _context3.prev = 105;
-                            _context3.t4 = _context3["catch"](93);
+                          case 109:
+                            _context4.prev = 109;
+                            _context4.t4 = _context4["catch"](97);
                             console.error("GetConfirmationPageError");
                             console.error({
-                              err: _context3.t4
+                              err: _context4.t4
                             });
 
-                          case 109:
-                            return _context3.abrupt("return", _this.setState(function (state) {
+                          case 113:
+                            return _context4.abrupt("return", _this.setState(function (state) {
                               return (0, _reducer.default)(state, {
                                 type: "SUBMIT_FORM",
                                 DonorID: DonorID,
@@ -38654,11 +38305,11 @@ function (_Component) {
                               });
                             }));
 
-                          case 112:
-                            _context3.prev = 112;
-                            _context3.t5 = _context3["catch"](84);
-                            console.error(_context3.t5.message);
-                            message = _context3.t5.message;
+                          case 116:
+                            _context4.prev = 116;
+                            _context4.t5 = _context4["catch"](88);
+                            console.error(_context4.t5.message);
+                            message = _context4.t5.message;
                             _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
 
                             if (breaking) {
@@ -38674,26 +38325,26 @@ function (_Component) {
                               });
                             }
 
-                            return _context3.abrupt("return", _this.setState(function (state) {
+                            return _context4.abrupt("return", _this.setState(function (state) {
                               return (0, _reducer.default)(state, {
                                 type: "TOGGLE_SUBMITTING"
                               });
                             }));
 
-                          case 119:
+                          case 123:
                           case "end":
-                            return _context3.stop();
+                            return _context4.stop();
                         }
                       }
-                    }, _callee3, null, [[6, 52], [14, 20], [25, 34], [39, 45], [84, 112], [93, 105]]);
+                    }, _callee4, null, [[6, 52], [14, 20], [25, 34], [39, 45], [88, 116], [97, 109]]);
                   })));
 
                 case 1:
                 case "end":
-                  return _context4.stop();
+                  return _context5.stop();
               }
             }
-          }, _callee4);
+          }, _callee5);
         }));
 
         function submitGivingForm(_x4) {
@@ -38767,52 +38418,52 @@ function (_Component) {
       getGlobals: function () {
         var _getGlobals = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee5() {
-          var isSecure, url, _ref3, devServicesUri, preProdServicesUri, prodServicesUri, devReceiptUri, preProdReceiptUri, prodReceiptUri, _action2;
+        _regenerator.default.mark(function _callee6() {
+          var isSecure, url, _ref4, devServicesUri, preProdServicesUri, prodServicesUri, devReceiptUri, preProdReceiptUri, prodReceiptUri, action;
 
-          return _regenerator.default.wrap(function _callee5$(_context5) {
+          return _regenerator.default.wrap(function _callee6$(_context6) {
             while (1) {
-              switch (_context5.prev = _context5.next) {
+              switch (_context6.prev = _context6.next) {
                 case 0:
                   isSecure = window.location.protocol == "https:";
                   url = !isSecure ? "http://securegiving.cbn.local/UI/globals/form-config.json" : "https://securegiving.cbn.com/UI/globals/form-config.json";
-                  _context5.prev = 2;
-                  _context5.next = 5;
+                  _context6.prev = 2;
+                  _context6.next = 5;
                   return (0, _fetchHelpers.callApi)(url);
 
                 case 5:
-                  _ref3 = _context5.sent;
-                  devServicesUri = _ref3.devServicesUri;
-                  preProdServicesUri = _ref3.preProdServicesUri;
-                  prodServicesUri = _ref3.prodServicesUri;
-                  devReceiptUri = _ref3.devReceiptUri;
-                  preProdReceiptUri = _ref3.preProdReceiptUri;
-                  prodReceiptUri = _ref3.prodReceiptUri;
-                  _action2 = {
+                  _ref4 = _context6.sent;
+                  devServicesUri = _ref4.devServicesUri;
+                  preProdServicesUri = _ref4.preProdServicesUri;
+                  prodServicesUri = _ref4.prodServicesUri;
+                  devReceiptUri = _ref4.devReceiptUri;
+                  preProdReceiptUri = _ref4.preProdReceiptUri;
+                  prodReceiptUri = _ref4.prodReceiptUri;
+                  action = {
                     type: "GLOBAL_URIS",
                     msgUris: [devServicesUri, preProdServicesUri, prodServicesUri, devReceiptUri, preProdReceiptUri, prodReceiptUri]
                   };
 
                   _this.setState(function (state) {
-                    return (0, _reducer.default)(state, _action2);
+                    return (0, _reducer.default)(state, action);
                   });
 
-                  return _context5.abrupt("return", true);
+                  return _context6.abrupt("return", true);
 
                 case 17:
-                  _context5.prev = 17;
-                  _context5.t0 = _context5["catch"](2);
+                  _context6.prev = 17;
+                  _context6.t0 = _context6["catch"](2);
                   console.error({
-                    err: _context5.t0
+                    err: _context6.t0
                   });
-                  throw new Error(_context5.t0);
+                  throw new Error(_context6.t0);
 
                 case 21:
                 case "end":
-                  return _context5.stop();
+                  return _context6.stop();
               }
             }
-          }, _callee5, null, [[2, 17]]);
+          }, _callee6, null, [[2, 17]]);
         }));
 
         function getGlobals() {
@@ -38863,6 +38514,11 @@ function (_Component) {
           isMonthly: isMonthly,
           designation: designation
         };
+      },
+      handleCCErrors: function handleCCErrors(action) {
+        return _this.setState(function (state) {
+          return (0, _reducer.default)(state, action);
+        });
       }
     };
 
@@ -41154,21 +40810,16 @@ var GivingSuccessMessage = (0, _react.lazy)(function () {
 var SignUpSuccessMessage = (0, _react.lazy)(function () {
   return require("_bundle_loader")(require.resolve("../SuccessPages/SignUpSuccessMessage"));
 });
-
-var _ref = "development" === "production" ? {
-  name: "1dca30w-FormRouter",
-  styles: "*{font-family:'Proxima Nova',Arial,sans-serif;font-size:19px;font-weight:400;font-style:normal}.wrapper{background-color:#ECEFF1;padding:35px 0 !important;}label:FormRouter;"
-} : {
-  name: "1dca30w-FormRouter",
-  styles: "*{font-family:'Proxima Nova',Arial,sans-serif;font-size:19px;font-weight:400;font-style:normal}.wrapper{background-color:#ECEFF1;padding:35px 0 !important;}label:FormRouter;",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Sb3V0ZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBdUNVIiwiZmlsZSI6IkZvcm1Sb3V0ZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgdXNlQ29udGV4dCwgU3VzcGVuc2UsIGxhenkgfSBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCB7IEdsb2JhbCwgY3NzIH0gZnJvbSAnQGVtb3Rpb24vY29yZSc7XG5cbmltcG9ydCB7IEZvcm1Db25maWdDb250ZXh0IH0gZnJvbSBcIi4uL0NvbnRleHRzL0Zvcm1Db25maWdQcm92aWRlclwiO1xuaW1wb3J0IEdpdmluZ0Zvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvR2l2aW5nRm9ybVByb3ZpZGVyXCI7XG5pbXBvcnQgUHJvZHVjdEZvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvUHJvZHVjdEZvcm1Qcm92aWRlclwiO1xuaW1wb3J0IFNpZ25VcEZvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvU2lnblVwRm9ybVByb3ZpZGVyXCI7XG5pbXBvcnQgRXJyb3JCb3VuZGFyeSBmcm9tICcuLi9FcnJvckJvdW5kYXJ5JztcbmNvbnN0IEdpdmluZ0Zvcm0gPSBsYXp5KCgpID0+IGltcG9ydChcIi4vR2l2aW5nRm9ybVwiKSk7XG5jb25zdCBBc2tGb3JtID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuL0Fza0Zvcm1cIikpO1xuY29uc3QgQ29uZmlybWF0aW9uRm9ybSA9IGxhenkoKCkgPT4gaW1wb3J0KFwiLi9Db25maXJtYXRpb25Gb3JtXCIpKTtcbmNvbnN0IFBheW1lbnRGb3JtID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuL1BheW1lbnRGb3JtXCIpKTtcbmNvbnN0IFByb2R1Y3RGb3JtID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuL1Byb2R1Y3RGb3JtXCIpKTtcbmNvbnN0IFNpZ25VcEZvcm0gPSBsYXp5KCgpID0+IGltcG9ydChcIi4vU2lnblVwRm9ybVwiKSk7XG5jb25zdCBHaXZpbmdTdWNjZXNzTWVzc2FnZSA9IGxhenkoKCkgPT5cblx0aW1wb3J0KFwiLi4vU3VjY2Vzc1BhZ2VzL0dpdmluZ1N1Y2Nlc3NNZXNzYWdlXCIpXG4pO1xuY29uc3QgU2lnblVwU3VjY2Vzc01lc3NhZ2UgPSBsYXp5KCgpID0+XG5cdGltcG9ydChcIi4uL1N1Y2Nlc3NQYWdlcy9TaWduVXBTdWNjZXNzTWVzc2FnZVwiKVxuKTtcbmltcG9ydCBTcGlubmVyIGZyb20gXCIuLi9TdHlsZWRDb21wb25lbnRzL1NwaW5uZXJcIjtcblxuY29uc3QgRm9ybVJvdXRlciA9IHByb3BzID0+IHtcblx0Y29uc3QgeyBmb3JtQ29uZmlnLCBzdWJtaXR0ZWQsIGNvbmZpcm1lZCB9ID0gdXNlQ29udGV4dChGb3JtQ29uZmlnQ29udGV4dCk7XG5cdGNvbnN0IHsgXG5cdFx0Zm9ybVR5cGUsIFxuXHRcdGFsbG93SW50ZXJuYXRpb25hbCxcblx0XHRnZXRQaG9uZSxcblx0XHRnZXRIb25vcmlmaWMsXG5cdFx0Z2V0U3VmZml4LFxuXHRcdGdldE1pZGRsZU5hbWUsXG5cdFx0Z2V0U3BvdXNlSW5mbywgXG5cdH0gPSBmb3JtQ29uZmlnO1xuXHRzd2l0Y2ggKGZvcm1UeXBlKSB7XG5cdFx0Y2FzZSBcImNsdWJcIjpcblx0XHRcdHJldHVybiAoXG5cdFx0XHRcdDxHaXZpbmdGb3JtUHJvdmlkZXI+XG5cdFx0XHRcdFx0PFN1c3BlbnNlIGZhbGxiYWNrPXs8U3Bpbm5lciAvPn0+XG5cdFx0XHRcdFx0XHQ8R2xvYmFsIHN0eWxlcz17XG5cdFx0XHRcdFx0XHRcdGNzc2AgKiB7XG5cdFx0XHRcdFx0XHRcdFx0XHRmb250LWZhbWlseTogJ1Byb3hpbWEgTm92YScsIEFyaWFsLCBzYW5zLXNlcmlmOyBcblx0XHRcdFx0XHRcdFx0XHRcdGZvbnQtc2l6ZTogMTlweDsgXG5cdFx0XHRcdFx0XHRcdFx0XHRmb250LXdlaWdodDogNDAwOyBcblx0XHRcdFx0XHRcdFx0XHRcdGZvbnQtc3R5bGU6IG5vcm1hbH1cblx0XHRcdFx0XHRcdFx0XHQgLndyYXBwZXIge1xuXHRcdFx0XHRcdFx0XHRcdFx0YmFja2dyb3VuZC1jb2xvcjogI0VDRUZGMTsgXG5cdFx0XHRcdFx0XHRcdFx0XHRwYWRkaW5nOiAzNXB4IDAgIWltcG9ydGFudDtcblx0XHRcdFx0XHRcdFx0XHQgfWBcblx0XHRcdFx0XHRcdH0vPlxuXHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdDxBc2tGb3JtIHsuLi5wcm9wc30gey4uLmZvcm1Db25maWd9IC8+XG5cdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHQ8RXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0PENvbmZpcm1hdGlvbkZvcm0gXG5cdFx0XHRcdFx0XHRcdFx0YWxsb3dJbnRlcm5hdGlvbmFsPXthbGxvd0ludGVybmF0aW9uYWx9XG5cdFx0XHRcdFx0XHRcdFx0Z2V0UGhvbmU9e2dldFBob25lfVxuXHRcdFx0XHRcdFx0XHRcdGdldEhvbm9yaWZpYz17Z2V0SG9ub3JpZmljfVxuXHRcdFx0XHRcdFx0XHRcdGdldFN1ZmZpeD17Z2V0U3VmZml4fVxuXHRcdFx0XHRcdFx0XHRcdGdldE1pZGRsZU5hbWU9e2dldE1pZGRsZU5hbWV9XG5cdFx0XHRcdFx0XHRcdFx0Z2V0U3BvdXNlSW5mbz17Z2V0U3BvdXNlSW5mb31cblx0XHRcdFx0XHRcdFx0XHRzdWJtaXR0ZWQ9e3N1Ym1pdHRlZH0gLz5cblx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8R2l2aW5nU3VjY2Vzc01lc3NhZ2Vcblx0XHRcdFx0XHRcdFx0XHRjb25maXJtZWQ9e2NvbmZpcm1lZH1cblx0XHRcdFx0XHRcdFx0XHRzdWNjZXNzTWVzc2FnZT17Zm9ybUNvbmZpZy5zdWNjZXNzTWVzc2FnZX1cblx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHQ8L1N1c3BlbnNlPlxuXHRcdFx0XHQ8L0dpdmluZ0Zvcm1Qcm92aWRlcj5cblx0XHRcdClcblx0XHRcdGJyZWFrO1xuXHRcdGNhc2UgXCJnaXZpbmdcIjpcblx0XHRcdHJldHVybiAoXG5cdFx0XHRcdDxHaXZpbmdGb3JtUHJvdmlkZXI+XG5cdFx0XHRcdFx0PFN1c3BlbnNlIGZhbGxiYWNrPXs8U3Bpbm5lciAvPn0+XG5cdFx0XHRcdFx0XHQ8RXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0PEdpdmluZ0Zvcm0gey4uLnByb3BzfSB7Li4uZm9ybUNvbmZpZ30gc3VibWl0dGVkPXtzdWJtaXR0ZWR9IC8+XG5cdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHQ8RXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0PFBheW1lbnRGb3JtIHN1Ym1pdHRlZD17c3VibWl0dGVkfSAvPlxuXHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdDxHaXZpbmdTdWNjZXNzTWVzc2FnZVxuXHRcdFx0XHRcdFx0XHRcdGNvbmZpcm1lZD17Y29uZmlybWVkfVxuXHRcdFx0XHRcdFx0XHRcdHN1Y2Nlc3NNZXNzYWdlPXtmb3JtQ29uZmlnLnN1Y2Nlc3NNZXNzYWdlfVxuXHRcdFx0XHRcdFx0XHQvPlxuXHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdDwvU3VzcGVuc2U+XG5cdFx0XHRcdDwvR2l2aW5nRm9ybVByb3ZpZGVyPlxuXHRcdFx0KTtcblx0XHRcdGJyZWFrO1xuXHRcdGNhc2UgXCJwcm9kdWN0XCI6XG5cdFx0XHRyZXR1cm4gKFxuXHRcdFx0XHQ8UHJvZHVjdEZvcm1Qcm92aWRlcj5cblx0XHRcdFx0XHQ8U3VzcGVuc2UgZmFsbGJhY2s9ezxTcGlubmVyIC8+fT5cblx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8UHJvZHVjdEZvcm0gey4uLnByb3BzfSB7Li4uZm9ybUNvbmZpZ30gLz5cblx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHQ8L1N1c3BlbnNlPlxuXHRcdFx0XHQ8L1Byb2R1Y3RGb3JtUHJvdmlkZXI+XG5cdFx0XHQpO1xuXHRcdFx0YnJlYWs7XG5cdFx0Y2FzZSBcInNpZ251cFwiOlxuXHRcdFx0cmV0dXJuIChcblx0XHRcdFx0PFNpZ25VcEZvcm1Qcm92aWRlcj5cblx0XHRcdFx0XHQ8U3VzcGVuc2UgZmFsbGJhY2s9ezxTcGlubmVyIC8+fT5cblx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8U2lnblVwRm9ybSB7Li4ucHJvcHN9IHsuLi5mb3JtQ29uZmlnfSAvPlxuXHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdDxTaWduVXBTdWNjZXNzTWVzc2FnZVxuXHRcdFx0XHRcdFx0XHRcdHN1Ym1pdHRlZD17c3VibWl0dGVkfVxuXHRcdFx0XHRcdFx0XHRcdHN1Y2Nlc3NNZXNzYWdlPXtmb3JtQ29uZmlnLnN1Y2Nlc3NNZXNzYWdlfVxuXHRcdFx0XHRcdFx0XHQvPlxuXHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdDwvU3VzcGVuc2U+XG5cdFx0XHRcdDwvU2lnblVwRm9ybVByb3ZpZGVyPlxuXHRcdFx0KTtcblx0XHRcdGJyZWFrO1xuXHRcdGRlZmF1bHQ6XG5cdFx0XHRjb25zb2xlLmVycm9yKFwiRm9ybSBDb25maWd1cmF0aW9uIEVycm9yXCIpXG5cdFx0XHRjb25zb2xlLmVycm9yKHsgZm9ybVR5cGUsIGZvcm1Db25maWcsIHByb3BzIH0pO1xuXHRcdFx0dHJ5IHtcblx0XHRcdFx0d2luZG93Lm9tVHJhY2tEZWJ1Zyh3aW5kb3cubG9jYXRpb24uaHJlZiArIFwiIC0gUmVhY3QgR2l2aW5nIEZvcm1cIiwgSlNPTi5zdHJpbmdpZnkoe2Zvcm1UeXBlLCBmb3JtQ29uZmlnLCBwcm9wc30pKSBcblx0XHRcdH0gY2F0Y2ggKGVycikge1xuXHRcdFx0XHRjb25zb2xlLmVycm9yKFwiRXJyb3IgVHJhY2tpbmcgRXJyb3JcIilcblx0XHRcdFx0Y29uc29sZS5lcnJvcihlcnIpXG5cdFx0XHR9XG5cdFx0XHRhbGVydChcblx0XHRcdFx0XCJUaGVyZSB3YXMgYW4gaW50ZXJuYWwgZXJyb3IgbG9hZGluZyB0aGlzIGZvcm0uIFBsZWFzZSBjaGVjayBiYWNrIGxhdGVyIG9yIGNhbGwgdXMgYXQgMS04MDAtNzU5LTA3MDBcIlxuXHRcdFx0KTtcblx0XHRcdHJldHVybiBudWxsO1xuXHRcdFx0YnJlYWs7XG5cdH1cbn07XG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1Sb3V0ZXI7XG4iXX0= */"
-};
+var ClubSuccessMessage = (0, _react.lazy)(function () {
+  return require("_bundle_loader")(require.resolve("../SuccessPages/ClubSuccessMessage"));
+});
 
 var FormRouter = function FormRouter(props) {
   var _useContext = (0, _react.useContext)(_FormConfigProvider.FormConfigContext),
       formConfig = _useContext.formConfig,
       submitted = _useContext.submitted,
-      confirmed = _useContext.confirmed;
+      confirmed = _useContext.confirmed,
+      getCssConfig = _useContext.getCssConfig;
 
   var formType = formConfig.formType,
       allowInternational = formConfig.allowInternational,
@@ -41178,23 +40829,83 @@ var FormRouter = function FormRouter(props) {
       getMiddleName = formConfig.getMiddleName,
       getSpouseInfo = formConfig.getSpouseInfo;
 
+  var _getCssConfig = getCssConfig("form"),
+      _getCssConfig$formExt = _getCssConfig.formExternalFont,
+      formExternalFont = _getCssConfig$formExt === void 0 ? "none" : _getCssConfig$formExt,
+      _getCssConfig$formFon = _getCssConfig.formFontFamily,
+      formFontFamily = _getCssConfig$formFon === void 0 ? "Arial, sans-serif" : _getCssConfig$formFon,
+      _getCssConfig$formFon2 = _getCssConfig.formFontStyle,
+      formFontStyle = _getCssConfig$formFon2 === void 0 ? "normal" : _getCssConfig$formFon2,
+      _getCssConfig$formFon3 = _getCssConfig.formFontWeight,
+      formFontWeight = _getCssConfig$formFon3 === void 0 ? "400" : _getCssConfig$formFon3,
+      _getCssConfig$formFon4 = _getCssConfig.formFontSize,
+      formFontSize = _getCssConfig$formFon4 === void 0 ? "19px" : _getCssConfig$formFon4,
+      _getCssConfig$formBac = _getCssConfig.formBackgroundColor,
+      formBackgroundColor = _getCssConfig$formBac === void 0 ? "#fff" : _getCssConfig$formBac,
+      _getCssConfig$formBor = _getCssConfig.formBorderColor,
+      formBorderColor = _getCssConfig$formBor === void 0 ? "transparent" : _getCssConfig$formBor,
+      _getCssConfig$formBor2 = _getCssConfig.formBorderRadius,
+      formBorderRadius = _getCssConfig$formBor2 === void 0 ? "0" : _getCssConfig$formBor2,
+      _getCssConfig$formBor3 = _getCssConfig.formBorderWidth,
+      formBorderWidth = _getCssConfig$formBor3 === void 0 ? "2px" : _getCssConfig$formBor3,
+      _getCssConfig$formBox = _getCssConfig.formBoxShadow,
+      formBoxShadow = _getCssConfig$formBox === void 0 ? "0 0 7px 0 rgba(0,0,0,0.07)" : _getCssConfig$formBox,
+      _getCssConfig$formMax = _getCssConfig.formMaxWidth,
+      formMaxWidth = _getCssConfig$formMax === void 0 ? "768px" : _getCssConfig$formMax,
+      _getCssConfig$formPad = _getCssConfig.formPadding,
+      formPadding = _getCssConfig$formPad === void 0 ? "0" : _getCssConfig$formPad,
+      _getCssConfig$formMar = _getCssConfig.formMargin,
+      formMargin = _getCssConfig$formMar === void 0 ? "0" : _getCssConfig$formMar,
+      _getCssConfig$formCol = _getCssConfig.formColor,
+      formColor = _getCssConfig$formCol === void 0 ? "#333" : _getCssConfig$formCol;
+
   switch (formType) {
     case "club":
       return (0, _core.jsx)(_GivingFormProvider.default, null, (0, _core.jsx)(_react.Suspense, {
         fallback: (0, _core.jsx)(_Spinner.default, null)
       }, (0, _core.jsx)(_core.Global, {
-        styles: _ref
-      }), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(AskForm, (0, _extends2.default)({}, props, formConfig))), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(ConfirmationForm, {
+        styles:
+        /*#__PURE__*/
+        (0, _core.css)(formExternalFont ? "@import url(\"".concat(formExternalFont, "\");") : '', " *{font-family:", formFontFamily, ";font-size:", formFontSize, ";font-weight:", formFontWeight, ";font-style:", formFontStyle, ";}.wrapper{background-color:#ECEFF1;padding:35px 0 !important;}label:FormRouter;" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Sb3V0ZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBMkRVIiwiZmlsZSI6IkZvcm1Sb3V0ZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgdXNlQ29udGV4dCwgU3VzcGVuc2UsIGxhenkgfSBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCB7IEdsb2JhbCwgY3NzIH0gZnJvbSAnQGVtb3Rpb24vY29yZSc7XG5cbmltcG9ydCB7IEZvcm1Db25maWdDb250ZXh0IH0gZnJvbSBcIi4uL0NvbnRleHRzL0Zvcm1Db25maWdQcm92aWRlclwiO1xuaW1wb3J0IEdpdmluZ0Zvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvR2l2aW5nRm9ybVByb3ZpZGVyXCI7XG5pbXBvcnQgUHJvZHVjdEZvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvUHJvZHVjdEZvcm1Qcm92aWRlclwiO1xuaW1wb3J0IFNpZ25VcEZvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvU2lnblVwRm9ybVByb3ZpZGVyXCI7XG5pbXBvcnQgRXJyb3JCb3VuZGFyeSBmcm9tICcuLi9FcnJvckJvdW5kYXJ5JztcbmNvbnN0IEdpdmluZ0Zvcm0gPSBsYXp5KCgpID0+IGltcG9ydChcIi4vR2l2aW5nRm9ybVwiKSk7XG5jb25zdCBBc2tGb3JtID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuL0Fza0Zvcm1cIikpO1xuY29uc3QgQ29uZmlybWF0aW9uRm9ybSA9IGxhenkoKCkgPT4gaW1wb3J0KFwiLi9Db25maXJtYXRpb25Gb3JtXCIpKTtcbmNvbnN0IFBheW1lbnRGb3JtID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuL1BheW1lbnRGb3JtXCIpKTtcbmNvbnN0IFByb2R1Y3RGb3JtID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuL1Byb2R1Y3RGb3JtXCIpKTtcbmNvbnN0IFNpZ25VcEZvcm0gPSBsYXp5KCgpID0+IGltcG9ydChcIi4vU2lnblVwRm9ybVwiKSk7XG5jb25zdCBHaXZpbmdTdWNjZXNzTWVzc2FnZSA9IGxhenkoKCkgPT5cblx0aW1wb3J0KFwiLi4vU3VjY2Vzc1BhZ2VzL0dpdmluZ1N1Y2Nlc3NNZXNzYWdlXCIpXG4pO1xuY29uc3QgU2lnblVwU3VjY2Vzc01lc3NhZ2UgPSBsYXp5KCgpID0+XG5cdGltcG9ydChcIi4uL1N1Y2Nlc3NQYWdlcy9TaWduVXBTdWNjZXNzTWVzc2FnZVwiKVxuKTtcbmNvbnN0IENsdWJTdWNjZXNzTWVzc2FnZSA9IGxhenkoKCkgPT5cblx0aW1wb3J0KFwiLi4vU3VjY2Vzc1BhZ2VzL0NsdWJTdWNjZXNzTWVzc2FnZVwiKVxuKTtcbmltcG9ydCBTcGlubmVyIGZyb20gXCIuLi9TdHlsZWRDb21wb25lbnRzL1NwaW5uZXJcIjtcblxuY29uc3QgRm9ybVJvdXRlciA9IHByb3BzID0+IHtcblx0Y29uc3QgeyBmb3JtQ29uZmlnLCBzdWJtaXR0ZWQsIGNvbmZpcm1lZCwgZ2V0Q3NzQ29uZmlnIH0gPSB1c2VDb250ZXh0KEZvcm1Db25maWdDb250ZXh0KTtcblx0Y29uc3QgeyBcblx0XHRmb3JtVHlwZSwgXG5cdFx0YWxsb3dJbnRlcm5hdGlvbmFsLFxuXHRcdGdldFBob25lLFxuXHRcdGdldEhvbm9yaWZpYyxcblx0XHRnZXRTdWZmaXgsXG5cdFx0Z2V0TWlkZGxlTmFtZSxcblx0XHRnZXRTcG91c2VJbmZvLCBcblx0fSA9IGZvcm1Db25maWc7XG5cblx0Y29uc3Qge1xuXHRcdGZvcm1FeHRlcm5hbEZvbnQgPSBcIm5vbmVcIixcblx0XHRmb3JtRm9udEZhbWlseSA9IFwiQXJpYWwsIHNhbnMtc2VyaWZcIixcblx0XHRmb3JtRm9udFN0eWxlID0gXCJub3JtYWxcIixcbiAgICAgICAgZm9ybUZvbnRXZWlnaHQgPSBcIjQwMFwiLFxuXHRcdGZvcm1Gb250U2l6ZSA9IFwiMTlweFwiLFxuXHRcdGZvcm1CYWNrZ3JvdW5kQ29sb3IgPSBcIiNmZmZcIixcblx0XHRmb3JtQm9yZGVyQ29sb3IgPSBcInRyYW5zcGFyZW50XCIsXG5cdFx0Zm9ybUJvcmRlclJhZGl1cyA9IFwiMFwiLFxuXHRcdGZvcm1Cb3JkZXJXaWR0aCA9IFwiMnB4XCIsXG5cdFx0Zm9ybUJveFNoYWRvdyA9IFwiMCAwIDdweCAwIHJnYmEoMCwwLDAsMC4wNylcIixcblx0XHRmb3JtTWF4V2lkdGggPSBcIjc2OHB4XCIsXG5cdFx0Zm9ybVBhZGRpbmcgPSBcIjBcIixcblx0XHRmb3JtTWFyZ2luID0gXCIwXCIsXG5cdFx0Zm9ybUNvbG9yID0gXCIjMzMzXCIsXG5cdH0gPSBnZXRDc3NDb25maWcoXCJmb3JtXCIpXG5cdHN3aXRjaCAoZm9ybVR5cGUpIHtcblx0XHRjYXNlIFwiY2x1YlwiOlxuXHRcdFx0cmV0dXJuIChcblx0XHRcdFx0PEdpdmluZ0Zvcm1Qcm92aWRlcj5cblx0XHRcdFx0XHQ8U3VzcGVuc2UgZmFsbGJhY2s9ezxTcGlubmVyIC8+fT5cblx0XHRcdFx0XHRcdDxHbG9iYWwgc3R5bGVzPXtcblx0XHRcdFx0XHRcdFx0Y3NzYCBcblx0XHRcdFx0XHRcdFx0XHQke2Zvcm1FeHRlcm5hbEZvbnQgPyBgQGltcG9ydCB1cmwoXCIke2Zvcm1FeHRlcm5hbEZvbnR9XCIpO2AgOiAnJ31cblx0XHRcdFx0XHRcdFx0XHQqIHtcblx0XHRcdFx0XHRcdFx0XHRcdGZvbnQtZmFtaWx5OiAke2Zvcm1Gb250RmFtaWx5fTsgXG5cdFx0XHRcdFx0XHRcdFx0XHRmb250LXNpemU6ICR7Zm9ybUZvbnRTaXplfTsgXG5cdFx0XHRcdFx0XHRcdFx0XHRmb250LXdlaWdodDogJHtmb3JtRm9udFdlaWdodH07IFxuXHRcdFx0XHRcdFx0XHRcdFx0Zm9udC1zdHlsZTogJHtmb3JtRm9udFN0eWxlfTtcblx0XHRcdFx0XHRcdFx0XHR9XG5cdFx0XHRcdFx0XHRcdFx0IC53cmFwcGVyIHtcblx0XHRcdFx0XHRcdFx0XHRcdGJhY2tncm91bmQtY29sb3I6ICNFQ0VGRjE7IFxuXHRcdFx0XHRcdFx0XHRcdFx0cGFkZGluZzogMzVweCAwICFpbXBvcnRhbnQ7XG5cdFx0XHRcdFx0XHRcdFx0IH1gXG5cdFx0XHRcdFx0XHR9Lz5cblx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8QXNrRm9ybSBcblx0XHRcdFx0XHRcdFx0XHR7Li4ucHJvcHN9IFxuXHRcdFx0XHRcdFx0XHRcdHsuLi5mb3JtQ29uZmlnfSBcblx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8Q29uZmlybWF0aW9uRm9ybSBcblx0XHRcdFx0XHRcdFx0XHRhbGxvd0ludGVybmF0aW9uYWw9e2FsbG93SW50ZXJuYXRpb25hbH1cblx0XHRcdFx0XHRcdFx0XHRnZXRQaG9uZT17Z2V0UGhvbmV9XG5cdFx0XHRcdFx0XHRcdFx0Z2V0SG9ub3JpZmljPXtnZXRIb25vcmlmaWN9XG5cdFx0XHRcdFx0XHRcdFx0Z2V0U3VmZml4PXtnZXRTdWZmaXh9XG5cdFx0XHRcdFx0XHRcdFx0Z2V0TWlkZGxlTmFtZT17Z2V0TWlkZGxlTmFtZX1cblx0XHRcdFx0XHRcdFx0XHRnZXRTcG91c2VJbmZvPXtnZXRTcG91c2VJbmZvfVxuXHRcdFx0XHRcdFx0XHRcdHN1Ym1pdHRlZD17c3VibWl0dGVkfSBcblx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8Q2x1YlN1Y2Nlc3NNZXNzYWdlXG5cdFx0XHRcdFx0XHRcdFx0Y29uZmlybWVkPXtjb25maXJtZWR9XG5cdFx0XHRcdFx0XHRcdFx0c3VjY2Vzc01lc3NhZ2U9e2Zvcm1Db25maWcuc3VjY2Vzc01lc3NhZ2V9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJhY2tncm91bmRDb2xvcj17Zm9ybUJhY2tncm91bmRDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyQ29sb3I9e2Zvcm1Cb3JkZXJDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyUmFkaXVzPXtmb3JtQm9yZGVyUmFkaXVzfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJXaWR0aD17Zm9ybUJvcmRlcldpZHRofVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3hTaGFkb3c9e2Zvcm1Cb3hTaGFkb3d9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1heFdpZHRoPXtmb3JtTWF4V2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybVBhZGRpbmc9e2Zvcm1QYWRkaW5nfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1NYXJnaW49e2Zvcm1NYXJnaW59XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUNvbG9yPXtmb3JtQ29sb3J9XG5cdFx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0PC9TdXNwZW5zZT5cblx0XHRcdFx0PC9HaXZpbmdGb3JtUHJvdmlkZXI+XG5cdFx0XHQpXG5cdFx0XHRicmVhaztcblx0XHRjYXNlIFwiZ2l2aW5nXCI6XG5cdFx0XHRyZXR1cm4gKFxuXHRcdFx0XHQ8R2l2aW5nRm9ybVByb3ZpZGVyPlxuXHRcdFx0XHRcdDxTdXNwZW5zZSBmYWxsYmFjaz17PFNwaW5uZXIgLz59PlxuXHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdDxHaXZpbmdGb3JtIFxuXHRcdFx0XHRcdFx0XHRcdHsuLi5wcm9wc30gXG5cdFx0XHRcdFx0XHRcdFx0ey4uLmZvcm1Db25maWd9IFxuXHRcdFx0XHRcdFx0XHRcdHN1Ym1pdHRlZD17c3VibWl0dGVkfSBcblx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8UGF5bWVudEZvcm0gXG5cdFx0XHRcdFx0XHRcdFx0c3VibWl0dGVkPXtzdWJtaXR0ZWR9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJhY2tncm91bmRDb2xvcj17Zm9ybUJhY2tncm91bmRDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyQ29sb3I9e2Zvcm1Cb3JkZXJDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyUmFkaXVzPXtmb3JtQm9yZGVyUmFkaXVzfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJXaWR0aD17Zm9ybUJvcmRlcldpZHRofVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3hTaGFkb3c9e2Zvcm1Cb3hTaGFkb3d9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1heFdpZHRoPXtmb3JtTWF4V2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybVBhZGRpbmc9e2Zvcm1QYWRkaW5nfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1NYXJnaW49e2Zvcm1NYXJnaW59XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUNvbG9yPXtmb3JtQ29sb3J9XG5cdFx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHQ8RXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0PEdpdmluZ1N1Y2Nlc3NNZXNzYWdlXG5cdFx0XHRcdFx0XHRcdFx0Y29uZmlybWVkPXtjb25maXJtZWR9XG5cdFx0XHRcdFx0XHRcdFx0c3VjY2Vzc01lc3NhZ2U9e2Zvcm1Db25maWcuc3VjY2Vzc01lc3NhZ2V9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJhY2tncm91bmRDb2xvcj17Zm9ybUJhY2tncm91bmRDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyQ29sb3I9e2Zvcm1Cb3JkZXJDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyUmFkaXVzPXtmb3JtQm9yZGVyUmFkaXVzfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJXaWR0aD17Zm9ybUJvcmRlcldpZHRofVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3hTaGFkb3c9e2Zvcm1Cb3hTaGFkb3d9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1heFdpZHRoPXtmb3JtTWF4V2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybVBhZGRpbmc9e2Zvcm1QYWRkaW5nfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1NYXJnaW49e2Zvcm1NYXJnaW59XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUNvbG9yPXtmb3JtQ29sb3J9XG5cdFx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0PC9TdXNwZW5zZT5cblx0XHRcdFx0PC9HaXZpbmdGb3JtUHJvdmlkZXI+XG5cdFx0XHQpO1xuXHRcdFx0YnJlYWs7XG5cdFx0Y2FzZSBcInByb2R1Y3RcIjpcblx0XHRcdHJldHVybiAoXG5cdFx0XHRcdDxQcm9kdWN0Rm9ybVByb3ZpZGVyPlxuXHRcdFx0XHRcdDxTdXNwZW5zZSBmYWxsYmFjaz17PFNwaW5uZXIgLz59PlxuXHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdDxQcm9kdWN0Rm9ybSBcblx0XHRcdFx0XHRcdFx0XHR7Li4ucHJvcHN9IFxuXHRcdFx0XHRcdFx0XHRcdHsuLi5mb3JtQ29uZmlnfSBcblx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHQ8L1N1c3BlbnNlPlxuXHRcdFx0XHQ8L1Byb2R1Y3RGb3JtUHJvdmlkZXI+XG5cdFx0XHQpO1xuXHRcdFx0YnJlYWs7XG5cdFx0Y2FzZSBcInNpZ251cFwiOlxuXHRcdFx0cmV0dXJuIChcblx0XHRcdFx0PFNpZ25VcEZvcm1Qcm92aWRlcj5cblx0XHRcdFx0XHQ8U3VzcGVuc2UgZmFsbGJhY2s9ezxTcGlubmVyIC8+fT5cblx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8U2lnblVwRm9ybSBcblx0XHRcdFx0XHRcdFx0XHR7Li4ucHJvcHN9IFxuXHRcdFx0XHRcdFx0XHRcdHsuLi5mb3JtQ29uZmlnfSBcblx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cdFxuXHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8U2lnblVwU3VjY2Vzc01lc3NhZ2Vcblx0XHRcdFx0XHRcdFx0XHRzdWJtaXR0ZWQ9e3N1Ym1pdHRlZH1cblx0XHRcdFx0XHRcdFx0XHRzdWNjZXNzTWVzc2FnZT17Zm9ybUNvbmZpZy5zdWNjZXNzTWVzc2FnZX1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHQ8L1N1c3BlbnNlPlxuXHRcdFx0XHQ8L1NpZ25VcEZvcm1Qcm92aWRlcj5cblx0XHRcdCk7XG5cdFx0XHRicmVhaztcblx0XHRkZWZhdWx0OlxuXHRcdFx0Y29uc29sZS5lcnJvcihcIkZvcm0gQ29uZmlndXJhdGlvbiBFcnJvclwiKVxuXHRcdFx0Y29uc29sZS5lcnJvcih7IGZvcm1UeXBlLCBmb3JtQ29uZmlnLCBwcm9wcyB9KTtcblx0XHRcdHRyeSB7XG5cdFx0XHRcdHdpbmRvdy5vbVRyYWNrRGVidWcod2luZG93LmxvY2F0aW9uLmhyZWYgKyBcIiAtIFJlYWN0IEdpdmluZyBGb3JtXCIsIEpTT04uc3RyaW5naWZ5KHtmb3JtVHlwZSwgZm9ybUNvbmZpZywgcHJvcHN9KSkgXG5cdFx0XHR9IGNhdGNoIChlcnIpIHtcblx0XHRcdFx0Y29uc29sZS5lcnJvcihcIkVycm9yIFRyYWNraW5nIEVycm9yXCIpXG5cdFx0XHRcdGNvbnNvbGUuZXJyb3IoZXJyKVxuXHRcdFx0fVxuXHRcdFx0YWxlcnQoXG5cdFx0XHRcdFwiVGhlcmUgd2FzIGFuIGludGVybmFsIGVycm9yIGxvYWRpbmcgdGhpcyBmb3JtLiBQbGVhc2UgY2hlY2sgYmFjayBsYXRlciBvciBjYWxsIHVzIGF0IDEtODAwLTc1OS0wNzAwXCJcblx0XHRcdCk7XG5cdFx0XHRyZXR1cm4gbnVsbDtcblx0XHRcdGJyZWFrO1xuXHR9XG59O1xuXG5leHBvcnQgZGVmYXVsdCBGb3JtUm91dGVyO1xuIl19 */"))
+      }), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(AskForm, (0, _extends2.default)({}, props, formConfig, {
+        formBackgroundColor: formBackgroundColor,
+        formBorderColor: formBorderColor,
+        formBorderRadius: formBorderRadius,
+        formBorderWidth: formBorderWidth,
+        formBoxShadow: formBoxShadow,
+        formMaxWidth: formMaxWidth,
+        formPadding: formPadding,
+        formMargin: formMargin,
+        formColor: formColor
+      }))), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(ConfirmationForm, {
         allowInternational: allowInternational,
         getPhone: getPhone,
         getHonorific: getHonorific,
         getSuffix: getSuffix,
         getMiddleName: getMiddleName,
         getSpouseInfo: getSpouseInfo,
-        submitted: submitted
-      })), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(GivingSuccessMessage, {
+        submitted: submitted,
+        formBackgroundColor: formBackgroundColor,
+        formBorderColor: formBorderColor,
+        formBorderRadius: formBorderRadius,
+        formBorderWidth: formBorderWidth,
+        formBoxShadow: formBoxShadow,
+        formMaxWidth: formMaxWidth,
+        formPadding: formPadding,
+        formMargin: formMargin,
+        formColor: formColor
+      })), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(ClubSuccessMessage, {
         confirmed: confirmed,
-        successMessage: formConfig.successMessage
+        successMessage: formConfig.successMessage,
+        formBackgroundColor: formBackgroundColor,
+        formBorderColor: formBorderColor,
+        formBorderRadius: formBorderRadius,
+        formBorderWidth: formBorderWidth,
+        formBoxShadow: formBoxShadow,
+        formMaxWidth: formMaxWidth,
+        formPadding: formPadding,
+        formMargin: formMargin,
+        formColor: formColor
       }))));
       break;
 
@@ -41202,27 +40913,83 @@ var FormRouter = function FormRouter(props) {
       return (0, _core.jsx)(_GivingFormProvider.default, null, (0, _core.jsx)(_react.Suspense, {
         fallback: (0, _core.jsx)(_Spinner.default, null)
       }, (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(GivingForm, (0, _extends2.default)({}, props, formConfig, {
-        submitted: submitted
+        submitted: submitted,
+        formBackgroundColor: formBackgroundColor,
+        formBorderColor: formBorderColor,
+        formBorderRadius: formBorderRadius,
+        formBorderWidth: formBorderWidth,
+        formBoxShadow: formBoxShadow,
+        formMaxWidth: formMaxWidth,
+        formPadding: formPadding,
+        formMargin: formMargin,
+        formColor: formColor
       }))), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(PaymentForm, {
-        submitted: submitted
+        submitted: submitted,
+        formBackgroundColor: formBackgroundColor,
+        formBorderColor: formBorderColor,
+        formBorderRadius: formBorderRadius,
+        formBorderWidth: formBorderWidth,
+        formBoxShadow: formBoxShadow,
+        formMaxWidth: formMaxWidth,
+        formPadding: formPadding,
+        formMargin: formMargin,
+        formColor: formColor
       })), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(GivingSuccessMessage, {
         confirmed: confirmed,
-        successMessage: formConfig.successMessage
+        successMessage: formConfig.successMessage,
+        formBackgroundColor: formBackgroundColor,
+        formBorderColor: formBorderColor,
+        formBorderRadius: formBorderRadius,
+        formBorderWidth: formBorderWidth,
+        formBoxShadow: formBoxShadow,
+        formMaxWidth: formMaxWidth,
+        formPadding: formPadding,
+        formMargin: formMargin,
+        formColor: formColor
       }))));
       break;
 
     case "product":
       return (0, _core.jsx)(_ProductFormProvider.default, null, (0, _core.jsx)(_react.Suspense, {
         fallback: (0, _core.jsx)(_Spinner.default, null)
-      }, (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(ProductForm, (0, _extends2.default)({}, props, formConfig)))));
+      }, (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(ProductForm, (0, _extends2.default)({}, props, formConfig, {
+        formBackgroundColor: formBackgroundColor,
+        formBorderColor: formBorderColor,
+        formBorderRadius: formBorderRadius,
+        formBorderWidth: formBorderWidth,
+        formBoxShadow: formBoxShadow,
+        formMaxWidth: formMaxWidth,
+        formPadding: formPadding,
+        formMargin: formMargin,
+        formColor: formColor
+      })))));
       break;
 
     case "signup":
       return (0, _core.jsx)(_SignUpFormProvider.default, null, (0, _core.jsx)(_react.Suspense, {
         fallback: (0, _core.jsx)(_Spinner.default, null)
-      }, (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(SignUpForm, (0, _extends2.default)({}, props, formConfig))), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(SignUpSuccessMessage, {
+      }, (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(SignUpForm, (0, _extends2.default)({}, props, formConfig, {
+        formBackgroundColor: formBackgroundColor,
+        formBorderColor: formBorderColor,
+        formBorderRadius: formBorderRadius,
+        formBorderWidth: formBorderWidth,
+        formBoxShadow: formBoxShadow,
+        formMaxWidth: formMaxWidth,
+        formPadding: formPadding,
+        formMargin: formMargin,
+        formColor: formColor
+      }))), (0, _core.jsx)(_ErrorBoundary.default, null, (0, _core.jsx)(SignUpSuccessMessage, {
         submitted: submitted,
-        successMessage: formConfig.successMessage
+        successMessage: formConfig.successMessage,
+        formBackgroundColor: formBackgroundColor,
+        formBorderColor: formBorderColor,
+        formBorderRadius: formBorderRadius,
+        formBorderWidth: formBorderWidth,
+        formBoxShadow: formBoxShadow,
+        formMaxWidth: formMaxWidth,
+        formPadding: formPadding,
+        formMargin: formMargin,
+        formColor: formColor
       }))));
       break;
 
@@ -41251,7 +41018,7 @@ var FormRouter = function FormRouter(props) {
   }
 };
 
-__signature__(FormRouter, "useContext{{ formConfig, submitted, confirmed }}");
+__signature__(FormRouter, "useContext{{ formConfig, submitted, confirmed, getCssConfig }}");
 
 var _default = FormRouter;
 var _default2 = _default;
@@ -41273,6 +41040,7 @@ exports.default = _default2;
   reactHotLoader.register(SignUpForm, "SignUpForm", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
   reactHotLoader.register(GivingSuccessMessage, "GivingSuccessMessage", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
   reactHotLoader.register(SignUpSuccessMessage, "SignUpSuccessMessage", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
+  reactHotLoader.register(ClubSuccessMessage, "ClubSuccessMessage", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
   reactHotLoader.register(FormRouter, "FormRouter", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
   reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js");
 })();
@@ -41283,627 +41051,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/helpers/extends":"node_modules/@babel/runtime/helpers/extends.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../Contexts/ProductFormProvider":"src/Components/Contexts/ProductFormProvider.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","../ErrorBoundary":"src/Components/ErrorBoundary.js","_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","./GivingForm":[["GivingForm.7499cb88.js","src/Components/Forms/GivingForm.js"],"GivingForm.7499cb88.js.map","src/Components/Forms/GivingForm.js"],"./AskForm":[["AskForm.02eb8dbc.js","src/Components/Forms/AskForm.js"],"AskForm.02eb8dbc.js.map","AskForm.02eb8dbc.css","src/Components/Forms/AskForm.js"],"./ConfirmationForm":[["ConfirmationForm.4ca5b1aa.js","src/Components/Forms/ConfirmationForm.js"],"ConfirmationForm.4ca5b1aa.js.map","src/Components/Forms/ConfirmationForm.js"],"./PaymentForm":[["PaymentForm.d4fb0b2e.js","src/Components/Forms/PaymentForm.js"],"PaymentForm.d4fb0b2e.js.map","src/Components/Forms/PaymentForm.js"],"./ProductForm":[["ProductForm.eb9cea15.js","src/Components/Forms/ProductForm.js"],"ProductForm.eb9cea15.js.map","src/Components/Forms/ProductForm.js"],"./SignUpForm":[["SignUpForm.098c53d9.js","src/Components/Forms/SignUpForm.js"],"SignUpForm.098c53d9.js.map","src/Components/Forms/SignUpForm.js"],"../SuccessPages/GivingSuccessMessage":[["GivingSuccessMessage.2b757bea.js","src/Components/SuccessPages/GivingSuccessMessage.js"],"GivingSuccessMessage.2b757bea.js.map","src/Components/SuccessPages/GivingSuccessMessage.js"],"../SuccessPages/SignUpSuccessMessage":[["SignUpSuccessMessage.2aa52e8d.js","src/Components/SuccessPages/SignUpSuccessMessage.js"],"SignUpSuccessMessage.2aa52e8d.js.map","src/Components/SuccessPages/SignUpSuccessMessage.js"],"../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"node_modules/react-aria-live/es/modules/MessageBlock.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var offScreenStyle = {
-  border: 0,
-  clip: 'rect(0 0 0 0)',
-  height: '1px',
-  margin: '-1px',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap',
-  padding: 0,
-  width: '1px',
-  position: 'absolute'
-};
-
-var MessageBlock = function MessageBlock(_ref) {
-  var message = _ref.message,
-      ariaLive = _ref['aria-live'];
-  return _react.default.createElement('div', {
-    style: offScreenStyle,
-    role: 'log',
-    'aria-live': ariaLive
-  }, message ? message : '');
-};
-
-MessageBlock.propTypes = "development" !== "production" ? {
-  message: _propTypes.default.string.isRequired,
-  'aria-live': _propTypes.default.string.isRequired
-} : {};
-var _default = MessageBlock;
-exports.default = _default;
-},{"prop-types":"node_modules/prop-types/index.js","react":"node_modules/react/index.js"}],"node_modules/react-aria-live/es/modules/Announcer.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _MessageBlock = _interopRequireDefault(require("./MessageBlock"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-function _possibleConstructorReturn(self, call) {
-  if (!self) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return call && (typeof call === "object" || typeof call === "function") ? call : self;
-}
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-}
-
-var Announcer = function (_Component) {
-  _inherits(Announcer, _Component);
-
-  function Announcer() {
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, Announcer);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.state = {
-      assertiveMessage1: '',
-      assertiveMessage2: '',
-      politeMessage1: '',
-      politeMessage2: '',
-      oldPolitemessage: '',
-      oldPoliteMessageId: '',
-      oldAssertiveMessage: '',
-      oldAssertiveMessageId: '',
-      setAlternatePolite: false,
-      setAlternateAssertive: false
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  Announcer.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, state) {
-    var oldPolitemessage = state.oldPolitemessage,
-        oldPoliteMessageId = state.oldPoliteMessageId,
-        oldAssertiveMessage = state.oldAssertiveMessage,
-        oldAssertiveMessageId = state.oldAssertiveMessageId;
-    var politeMessage = nextProps.politeMessage,
-        politeMessageId = nextProps.politeMessageId,
-        assertiveMessage = nextProps.assertiveMessage,
-        assertiveMessageId = nextProps.assertiveMessageId;
-
-    if (oldPolitemessage !== politeMessage || oldPoliteMessageId !== politeMessageId) {
-      return {
-        politeMessage1: state.setAlternatePolite ? '' : politeMessage,
-        politeMessage2: state.setAlternatePolite ? politeMessage : '',
-        oldPolitemessage: politeMessage,
-        oldPoliteMessageId: politeMessageId,
-        setAlternatePolite: !state.setAlternatePolite
-      };
-    }
-
-    if (oldAssertiveMessage !== assertiveMessage || oldAssertiveMessageId !== assertiveMessageId) {
-      return {
-        assertiveMessage1: state.setAlternateAssertive ? '' : assertiveMessage,
-        assertiveMessage2: state.setAlternateAssertive ? assertiveMessage : '',
-        oldAssertiveMessage: assertiveMessage,
-        oldAssertiveMessageId: assertiveMessageId,
-        setAlternateAssertive: !state.setAlternateAssertive
-      };
-    }
-
-    return null;
-  };
-
-  Announcer.prototype.render = function render() {
-    var _state = this.state,
-        assertiveMessage1 = _state.assertiveMessage1,
-        assertiveMessage2 = _state.assertiveMessage2,
-        politeMessage1 = _state.politeMessage1,
-        politeMessage2 = _state.politeMessage2;
-    return _react.default.createElement('div', null, _react.default.createElement(_MessageBlock.default, {
-      'aria-live': 'assertive',
-      message: assertiveMessage1
-    }), _react.default.createElement(_MessageBlock.default, {
-      'aria-live': 'assertive',
-      message: assertiveMessage2
-    }), _react.default.createElement(_MessageBlock.default, {
-      'aria-live': 'polite',
-      message: politeMessage1
-    }), _react.default.createElement(_MessageBlock.default, {
-      'aria-live': 'polite',
-      message: politeMessage2
-    }));
-  };
-
-  return Announcer;
-}(_react.Component);
-
-Announcer.propTypes = "development" !== "production" ? {
-  politeMessage: _propTypes.default.string,
-  assertiveMessage: _propTypes.default.string
-} : {};
-var _default = Announcer;
-exports.default = _default;
-},{"prop-types":"node_modules/prop-types/index.js","react":"node_modules/react/index.js","./MessageBlock":"node_modules/react-aria-live/es/modules/MessageBlock.js"}],"node_modules/react-aria-live/es/modules/AnnouncerContext.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var AnnouncerContext = _react.default.createContext({
-  announceAssertive: logContextWarning,
-  announcePolite: logContextWarning
-});
-
-function logContextWarning() {
-  console.warn('Announcement failed, LiveAnnouncer context is missing');
-}
-
-var _default = AnnouncerContext;
-exports.default = _default;
-},{"react":"node_modules/react/index.js"}],"node_modules/react-aria-live/es/modules/LiveAnnouncer.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _Announcer = _interopRequireDefault(require("./Announcer"));
-
-var _AnnouncerContext = _interopRequireDefault(require("./AnnouncerContext"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-function _possibleConstructorReturn(self, call) {
-  if (!self) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return call && (typeof call === "object" || typeof call === "function") ? call : self;
-}
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-}
-
-var LiveAnnouncer = function (_Component) {
-  _inherits(LiveAnnouncer, _Component);
-
-  function LiveAnnouncer(props) {
-    _classCallCheck(this, LiveAnnouncer);
-
-    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
-
-    _this.announcePolite = function (message, id) {
-      _this.setState({
-        announcePoliteMessage: message,
-        politeMessageId: id ? id : ''
-      });
-    };
-
-    _this.announceAssertive = function (message, id) {
-      _this.setState({
-        announceAssertiveMessage: message,
-        assertiveMessageId: id ? id : ''
-      });
-    };
-
-    _this.state = {
-      announcePoliteMessage: '',
-      politeMessageId: '',
-      announceAssertiveMessage: '',
-      assertiveMessageId: '',
-      updateFunctions: {
-        announcePolite: _this.announcePolite,
-        announceAssertive: _this.announceAssertive
-      }
-    };
-    return _this;
-  }
-
-  LiveAnnouncer.prototype.render = function render() {
-    var _state = this.state,
-        announcePoliteMessage = _state.announcePoliteMessage,
-        politeMessageId = _state.politeMessageId,
-        announceAssertiveMessage = _state.announceAssertiveMessage,
-        assertiveMessageId = _state.assertiveMessageId,
-        updateFunctions = _state.updateFunctions;
-    return _react.default.createElement(_AnnouncerContext.default.Provider, {
-      value: updateFunctions
-    }, this.props.children, _react.default.createElement(_Announcer.default, {
-      assertiveMessage: announceAssertiveMessage,
-      assertiveMessageId: assertiveMessageId,
-      politeMessage: announcePoliteMessage,
-      politeMessageId: politeMessageId
-    }));
-  };
-
-  return LiveAnnouncer;
-}(_react.Component);
-
-var _default = LiveAnnouncer;
-exports.default = _default;
-},{"react":"node_modules/react/index.js","./Announcer":"node_modules/react-aria-live/es/modules/Announcer.js","./AnnouncerContext":"node_modules/react-aria-live/es/modules/AnnouncerContext.js"}],"node_modules/uuid/lib/rng-browser.js":[function(require,module,exports) {
-// Unique ID creation requires a high quality random # generator.  In the
-// browser this is a little complicated due to unknown quality of Math.random()
-// and inconsistent support for the `crypto` API.  We do the best we can via
-// feature-detection
-
-// getRandomValues needs to be invoked in a context where "this" is a Crypto
-// implementation. Also, find the complete implementation of crypto on IE11.
-var getRandomValues = (typeof(crypto) != 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto)) ||
-                      (typeof(msCrypto) != 'undefined' && typeof window.msCrypto.getRandomValues == 'function' && msCrypto.getRandomValues.bind(msCrypto));
-
-if (getRandomValues) {
-  // WHATWG crypto RNG - http://wiki.whatwg.org/wiki/Crypto
-  var rnds8 = new Uint8Array(16); // eslint-disable-line no-undef
-
-  module.exports = function whatwgRNG() {
-    getRandomValues(rnds8);
-    return rnds8;
-  };
-} else {
-  // Math.random()-based (RNG)
-  //
-  // If all else fails, use Math.random().  It's fast, but is of unspecified
-  // quality.
-  var rnds = new Array(16);
-
-  module.exports = function mathRNG() {
-    for (var i = 0, r; i < 16; i++) {
-      if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
-      rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
-    }
-
-    return rnds;
-  };
-}
-
-},{}],"node_modules/uuid/lib/bytesToUuid.js":[function(require,module,exports) {
-/**
- * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */
-var byteToHex = [];
-for (var i = 0; i < 256; ++i) {
-  byteToHex[i] = (i + 0x100).toString(16).substr(1);
-}
-
-function bytesToUuid(buf, offset) {
-  var i = offset || 0;
-  var bth = byteToHex;
-  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
-  return ([bth[buf[i++]], bth[buf[i++]], 
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]], '-',
-	bth[buf[i++]], bth[buf[i++]],
-	bth[buf[i++]], bth[buf[i++]],
-	bth[buf[i++]], bth[buf[i++]]]).join('');
-}
-
-module.exports = bytesToUuid;
-
-},{}],"node_modules/uuid/v4.js":[function(require,module,exports) {
-var rng = require('./lib/rng');
-var bytesToUuid = require('./lib/bytesToUuid');
-
-function v4(options, buf, offset) {
-  var i = buf && offset || 0;
-
-  if (typeof(options) == 'string') {
-    buf = options === 'binary' ? new Array(16) : null;
-    options = null;
-  }
-  options = options || {};
-
-  var rnds = options.random || (options.rng || rng)();
-
-  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-  rnds[6] = (rnds[6] & 0x0f) | 0x40;
-  rnds[8] = (rnds[8] & 0x3f) | 0x80;
-
-  // Copy bytes to buffer, if provided
-  if (buf) {
-    for (var ii = 0; ii < 16; ++ii) {
-      buf[i + ii] = rnds[ii];
-    }
-  }
-
-  return buf || bytesToUuid(rnds);
-}
-
-module.exports = v4;
-
-},{"./lib/rng":"node_modules/uuid/lib/rng-browser.js","./lib/bytesToUuid":"node_modules/uuid/lib/bytesToUuid.js"}],"node_modules/react-aria-live/es/modules/AnnouncerMessage.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _react = require("react");
-
-var _v = _interopRequireDefault(require("uuid/v4"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-function _possibleConstructorReturn(self, call) {
-  if (!self) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return call && (typeof call === "object" || typeof call === "function") ? call : self;
-}
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-}
-
-var AnnouncerMessage = function (_Component) {
-  _inherits(AnnouncerMessage, _Component);
-
-  function AnnouncerMessage() {
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, AnnouncerMessage);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.announce = function () {
-      var _this$props = _this.props,
-          message = _this$props.message,
-          ariaLive = _this$props['aria-live'],
-          announceAssertive = _this$props.announceAssertive,
-          announcePolite = _this$props.announcePolite;
-
-      if (ariaLive === 'assertive') {
-        announceAssertive(message || '', (0, _v.default)());
-      }
-
-      if (ariaLive === 'polite') {
-        announcePolite(message || '', (0, _v.default)());
-      }
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  AnnouncerMessage.prototype.componentDidMount = function componentDidMount() {
-    this.announce();
-  };
-
-  AnnouncerMessage.prototype.componentDidUpdate = function componentDidUpdate(prevProps) {
-    var message = this.props.message;
-
-    if (message !== prevProps.message) {
-      this.announce();
-    }
-  };
-
-  AnnouncerMessage.prototype.componentWillUnmount = function componentWillUnmount() {
-    var _props = this.props,
-        clearOnUnmount = _props.clearOnUnmount,
-        announceAssertive = _props.announceAssertive,
-        announcePolite = _props.announcePolite;
-
-    if (clearOnUnmount === true || clearOnUnmount === 'true') {
-      announceAssertive('');
-      announcePolite('');
-    }
-  };
-
-  AnnouncerMessage.prototype.render = function render() {
-    return null;
-  };
-
-  return AnnouncerMessage;
-}(_react.Component);
-
-AnnouncerMessage.propTypes = "development" !== "production" ? {
-  message: _propTypes.default.string.isRequired,
-  'aria-live': _propTypes.default.string.isRequired,
-  clearOnUnmount: _propTypes.default.oneOfType([_propTypes.default.bool, _propTypes.default.oneOf(['true', 'false'])]),
-  announceAssertive: _propTypes.default.func,
-  announcePolite: _propTypes.default.func
-} : {};
-var _default = AnnouncerMessage;
-exports.default = _default;
-},{"prop-types":"node_modules/prop-types/index.js","react":"node_modules/react/index.js","uuid/v4":"node_modules/uuid/v4.js"}],"node_modules/react-aria-live/es/modules/LiveMessage.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _AnnouncerContext = _interopRequireDefault(require("./AnnouncerContext"));
-
-var _AnnouncerMessage = _interopRequireDefault(require("./AnnouncerMessage"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _extends = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
-var LiveMessage = function LiveMessage(props) {
-  return _react.default.createElement(_AnnouncerContext.default.Consumer, null, function (contextProps) {
-    return _react.default.createElement(_AnnouncerMessage.default, _extends({}, contextProps, props));
-  });
-};
-
-LiveMessage.propTypes = "development" !== "production" ? {
-  message: _propTypes.default.string.isRequired,
-  'aria-live': _propTypes.default.string.isRequired,
-  clearOnUnmount: _propTypes.default.oneOfType([_propTypes.default.bool, _propTypes.default.oneOf(['true', 'false'])])
-} : {};
-var _default = LiveMessage;
-exports.default = _default;
-},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js","./AnnouncerContext":"node_modules/react-aria-live/es/modules/AnnouncerContext.js","./AnnouncerMessage":"node_modules/react-aria-live/es/modules/AnnouncerMessage.js"}],"node_modules/react-aria-live/es/modules/LiveMessenger.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _AnnouncerContext = _interopRequireDefault(require("./AnnouncerContext"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var LiveMessenger = function LiveMessenger(_ref) {
-  var children = _ref.children;
-  return _react.default.createElement(_AnnouncerContext.default.Consumer, null, function (contextProps) {
-    return children(contextProps);
-  });
-};
-
-LiveMessenger.propTypes = "development" !== "production" ? {
-  children: _propTypes.default.func.isRequired
-} : {};
-var _default = LiveMessenger;
-exports.default = _default;
-},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js","./AnnouncerContext":"node_modules/react-aria-live/es/modules/AnnouncerContext.js"}],"node_modules/react-aria-live/es/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "LiveAnnouncer", {
-  enumerable: true,
-  get: function () {
-    return _LiveAnnouncer2.default;
-  }
-});
-Object.defineProperty(exports, "LiveMessage", {
-  enumerable: true,
-  get: function () {
-    return _LiveMessage2.default;
-  }
-});
-Object.defineProperty(exports, "LiveMessenger", {
-  enumerable: true,
-  get: function () {
-    return _LiveMessenger2.default;
-  }
-});
-
-var _LiveAnnouncer2 = _interopRequireDefault(require("./modules/LiveAnnouncer"));
-
-var _LiveMessage2 = _interopRequireDefault(require("./modules/LiveMessage"));
-
-var _LiveMessenger2 = _interopRequireDefault(require("./modules/LiveMessenger"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./modules/LiveAnnouncer":"node_modules/react-aria-live/es/modules/LiveAnnouncer.js","./modules/LiveMessage":"node_modules/react-aria-live/es/modules/LiveMessage.js","./modules/LiveMessenger":"node_modules/react-aria-live/es/modules/LiveMessenger.js"}],"src/Components/StyledComponents/Wrapper.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/extends":"node_modules/@babel/runtime/helpers/extends.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../Contexts/ProductFormProvider":"src/Components/Contexts/ProductFormProvider.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","../ErrorBoundary":"src/Components/ErrorBoundary.js","_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","./GivingForm":[["GivingForm.7499cb88.js","src/Components/Forms/GivingForm.js"],"GivingForm.7499cb88.js.map","src/Components/Forms/GivingForm.js"],"./AskForm":[["AskForm.02eb8dbc.js","src/Components/Forms/AskForm.js"],"AskForm.02eb8dbc.js.map","AskForm.02eb8dbc.css","src/Components/Forms/AskForm.js"],"./ConfirmationForm":[["ConfirmationForm.4ca5b1aa.js","src/Components/Forms/ConfirmationForm.js"],"ConfirmationForm.4ca5b1aa.js.map","src/Components/Forms/ConfirmationForm.js"],"./PaymentForm":[["PaymentForm.d4fb0b2e.js","src/Components/Forms/PaymentForm.js"],"PaymentForm.d4fb0b2e.js.map","src/Components/Forms/PaymentForm.js"],"./ProductForm":[["ProductForm.eb9cea15.js","src/Components/Forms/ProductForm.js"],"ProductForm.eb9cea15.js.map","src/Components/Forms/ProductForm.js"],"./SignUpForm":[["SignUpForm.098c53d9.js","src/Components/Forms/SignUpForm.js"],"SignUpForm.098c53d9.js.map","src/Components/Forms/SignUpForm.js"],"../SuccessPages/GivingSuccessMessage":[["GivingSuccessMessage.2b757bea.js","src/Components/SuccessPages/GivingSuccessMessage.js"],"GivingSuccessMessage.2b757bea.js.map","src/Components/SuccessPages/GivingSuccessMessage.js"],"../SuccessPages/SignUpSuccessMessage":[["SignUpSuccessMessage.2aa52e8d.js","src/Components/SuccessPages/SignUpSuccessMessage.js"],"SignUpSuccessMessage.2aa52e8d.js.map","src/Components/SuccessPages/SignUpSuccessMessage.js"],"../SuccessPages/ClubSuccessMessage":[["ClubSuccessMessage.0af04581.js","src/Components/SuccessPages/ClubSuccessMessage.js"],"ClubSuccessMessage.0af04581.js.map","src/Components/SuccessPages/ClubSuccessMessage.js"],"../StyledComponents/Spinner":"src/Components/StyledComponents/Spinner.js"}],"src/Components/StyledComponents/Wrapper.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42196,14 +41344,23 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
 var FormWrapper = (0, _styledBase.default)("main", {
   target: "e4d8g8r0",
   label: "FormWrapper"
-})("development" === "production" ? {
-  name: "14kgu6t",
-  styles: "background:#fff;box-sizing:border-box;border:0 solid #333;border-radius:10px;color:#333;max-width:768px;padding:30px;width:100%;@media screen and (max-width:493px){padding:20px 10px;}"
-} : {
-  name: "14kgu6t",
-  styles: "background:#fff;box-sizing:border-box;border:0 solid #333;border-radius:10px;color:#333;max-width:768px;padding:30px;width:100%;@media screen and (max-width:493px){padding:20px 10px;}",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1XcmFwcGVyLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUcrQiIsImZpbGUiOiJGb3JtV3JhcHBlci5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBGb3JtV3JhcHBlciA9IHN0eWxlZC5tYWluYFxuXHRiYWNrZ3JvdW5kOiAjZmZmO1xuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRib3JkZXI6IDAgc29saWQgIzMzMztcblx0Ym9yZGVyLXJhZGl1czogMTBweDtcblx0Y29sb3I6ICMzMzM7XG5cdG1heC13aWR0aDogNzY4cHg7XG5cdHBhZGRpbmc6IDMwcHg7XG5cdHdpZHRoOiAxMDAlO1xuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA0OTNweCkge1xuXHRcdHBhZGRpbmc6IDIwcHggMTBweDtcblx0fVxuYDtcblxuZXhwb3J0IGRlZmF1bHQgRm9ybVdyYXBwZXI7XG4iXX0= */"
-});
+})("background:", function (props) {
+  return props.formBackgroundColor;
+}, ";box-sizing:border-box;border:", function (props) {
+  return props.formBorderWidth;
+}, " solid ", function (props) {
+  return props.formBorderColor;
+}, ";border-radius:", function (props) {
+  return props.formBorderRadius;
+}, ";color:", function (props) {
+  return props.formColor;
+}, ";max-width:", function (props) {
+  return props.formMaxWidth;
+}, ";padding:", function (props) {
+  return props.formPadding;
+}, ";margin:", function (props) {
+  return props.formMargin;
+}, ";width:100%;@media screen and (max-width:493px){padding:20px 10px;}" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1XcmFwcGVyLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUcrQiIsImZpbGUiOiJGb3JtV3JhcHBlci5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBGb3JtV3JhcHBlciA9IHN0eWxlZC5tYWluYFxuXHRiYWNrZ3JvdW5kOiAke3Byb3BzID0+IHByb3BzLmZvcm1CYWNrZ3JvdW5kQ29sb3J9O1xuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRib3JkZXI6ICR7cHJvcHMgPT4gcHJvcHMuZm9ybUJvcmRlcldpZHRofSBzb2xpZCAke3Byb3BzID0+IHByb3BzLmZvcm1Cb3JkZXJDb2xvcn07XG5cdGJvcmRlci1yYWRpdXM6ICR7cHJvcHMgPT4gcHJvcHMuZm9ybUJvcmRlclJhZGl1c307XG5cdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmZvcm1Db2xvcn07XG5cdG1heC13aWR0aDogJHtwcm9wcyA9PiBwcm9wcy5mb3JtTWF4V2lkdGh9O1xuXHRwYWRkaW5nOiAke3Byb3BzID0+IHByb3BzLmZvcm1QYWRkaW5nfTtcblx0bWFyZ2luOiAke3Byb3BzID0+IHByb3BzLmZvcm1NYXJnaW59O1xuXHR3aWR0aDogMTAwJTtcblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNDkzcHgpIHtcblx0XHRwYWRkaW5nOiAyMHB4IDEwcHg7XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1XcmFwcGVyO1xuIl19 */"));
 var _default = FormWrapper;
 var _default2 = _default;
 exports.default = _default2;
@@ -42418,12 +41575,12 @@ var AmountError = (0, _styledBase.default)("div", {
   target: "e16mrpwz0",
   label: "AmountError"
 })("development" === "production" ? {
-  name: "1l2j7a8",
-  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;left:50%;transform:translateX(-50%);bottom:10px;font-weight:800;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;"
+  name: "1be5tm8",
+  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;left:50%;transform:translateX(-50%);bottom:0;font-weight:800;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;"
 } : {
-  name: "1l2j7a8",
-  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;left:50%;transform:translateX(-50%);bottom:10px;font-weight:800;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkFtb3VudEVycm9yLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdxQyIsImZpbGUiOiJBbW91bnRFcnJvci5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5leHBvcnQgY29uc3QgQW1vdW50RXJyb3IgPSBzdHlsZWQuZGl2YFxuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdGNvbG9yOiBjcmltc29uO1xuXHR3aWR0aDogYXV0bztcblx0bGVmdDogNTAlO1xuXHR0cmFuc2Zvcm06IHRyYW5zbGF0ZVgoLTUwJSk7XG5cdGJvdHRvbTogMTBweDtcblx0Zm9udC13ZWlnaHQ6IDgwMDtcblx0Zm9udC1zaXplOiBjYWxjKDE5cHggKiAwLjUpO1xuXHRvcGFjaXR5OiAxO1xuXHRvdmVyZmxvdzogaGlkZGVuO1xuXHRtYXgtd2lkdGg6IDEwMCU7XG5cdHdoaXRlLXNwYWNlOiBub3dyYXA7XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBBbW91bnRFcnJvcjtcbiJdfQ== */"
+  name: "1be5tm8",
+  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;left:50%;transform:translateX(-50%);bottom:0;font-weight:800;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkFtb3VudEVycm9yLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdxQyIsImZpbGUiOiJBbW91bnRFcnJvci5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5leHBvcnQgY29uc3QgQW1vdW50RXJyb3IgPSBzdHlsZWQuZGl2YFxuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdGNvbG9yOiBjcmltc29uO1xuXHR3aWR0aDogYXV0bztcblx0bGVmdDogNTAlO1xuXHR0cmFuc2Zvcm06IHRyYW5zbGF0ZVgoLTUwJSk7XG5cdGJvdHRvbTogMDtcblx0Zm9udC13ZWlnaHQ6IDgwMDtcblx0Zm9udC1zaXplOiBjYWxjKDE5cHggKiAwLjUpO1xuXHRvcGFjaXR5OiAxO1xuXHRvdmVyZmxvdzogaGlkZGVuO1xuXHRtYXgtd2lkdGg6IDEwMCU7XG5cdHdoaXRlLXNwYWNlOiBub3dyYXA7XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBBbW91bnRFcnJvcjtcbiJdfQ== */"
 });
 exports.AmountError = AmountError;
 var _default = AmountError;
@@ -42688,218 +41845,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"node_modules/react-icons/lib/esm/iconsManifest.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.IconsManifest = void 0;
-const IconsManifest = [{
-  "id": "fa",
-  "name": "Font Awesome",
-  "projectUrl": "https://fontawesome.com/",
-  "license": "CC BY 4.0 License",
-  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
-}, {
-  "id": "io",
-  "name": "Ionicons",
-  "projectUrl": "https://ionicons.com/",
-  "license": "MIT",
-  "licenseUrl": "https://github.com/ionic-team/ionicons/blob/master/LICENSE"
-}, {
-  "id": "md",
-  "name": "Material Design icons",
-  "projectUrl": "http://google.github.io/material-design-icons/",
-  "license": "Apache License Version 2.0",
-  "licenseUrl": "https://github.com/google/material-design-icons/blob/master/LICENSE"
-}, {
-  "id": "ti",
-  "name": "Typicons",
-  "projectUrl": "http://s-ings.com/typicons/",
-  "license": "CC BY-SA 3.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
-}, {
-  "id": "go",
-  "name": "Github Octicons icons",
-  "projectUrl": "https://octicons.github.com/",
-  "license": "MIT",
-  "licenseUrl": "https://github.com/primer/octicons/blob/master/LICENSE"
-}, {
-  "id": "fi",
-  "name": "Feather",
-  "projectUrl": "https://feathericons.com/",
-  "license": "MIT",
-  "licenseUrl": "https://github.com/feathericons/feather/blob/master/LICENSE"
-}, {
-  "id": "gi",
-  "name": "Game Icons",
-  "projectUrl": "https://game-icons.net/",
-  "license": "CC BY 3.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/3.0/"
-}, {
-  "id": "wi",
-  "name": "Weather Icons",
-  "projectUrl": "https://erikflowers.github.io/weather-icons/",
-  "license": "SIL OFL 1.1",
-  "licenseUrl": "http://scripts.sil.org/OFL"
-}, {
-  "id": "di",
-  "name": "Devicons",
-  "projectUrl": "https://vorillaz.github.io/devicons/",
-  "license": "MIT",
-  "licenseUrl": "https://opensource.org/licenses/MIT"
-}];
-exports.IconsManifest = IconsManifest;
-},{}],"node_modules/react-icons/lib/esm/iconContext.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.IconContext = exports.DefaultContext = void 0;
-
-var React = _interopRequireWildcard(require("react"));
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-var DefaultContext = {
-  color: undefined,
-  size: undefined,
-  className: undefined,
-  style: undefined,
-  attr: undefined
-};
-exports.DefaultContext = DefaultContext;
-var IconContext = React.createContext && React.createContext(DefaultContext);
-exports.IconContext = IconContext;
-},{"react":"node_modules/react/index.js"}],"node_modules/react-icons/lib/esm/iconBase.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.GenIcon = GenIcon;
-exports.IconBase = IconBase;
-
-var React = _interopRequireWildcard(require("react"));
-
-var _iconContext = require("./iconContext");
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-var __assign = void 0 && (void 0).__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-
-var __rest = void 0 && (void 0).__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
-  return t;
-};
-
-function Tree2Element(tree) {
-  return tree && tree.map(function (node, i) {
-    return React.createElement(node.tag, __assign({
-      key: i
-    }, node.attr), Tree2Element(node.child));
-  });
-}
-
-function GenIcon(data) {
-  return function (props) {
-    return React.createElement(IconBase, __assign({
-      attr: __assign({}, data.attr)
-    }, props), Tree2Element(data.child));
-  };
-}
-
-function IconBase(props) {
-  var elem = function (conf) {
-    var computedSize = props.size || conf.size || "1em";
-    var className;
-    if (conf.className) className = conf.className;
-    if (props.className) className = (className ? className + ' ' : '') + props.className;
-
-    var attr = props.attr,
-        title = props.title,
-        svgProps = __rest(props, ["attr", "title"]);
-
-    return React.createElement("svg", __assign({
-      stroke: "currentColor",
-      fill: "currentColor",
-      strokeWidth: "0"
-    }, conf.attr, attr, svgProps, {
-      className: className,
-      style: __assign({
-        color: props.color || conf.color
-      }, conf.style, props.style),
-      height: computedSize,
-      width: computedSize,
-      xmlns: "http://www.w3.org/2000/svg"
-    }), title && React.createElement("title", null, title), props.children);
-  };
-
-  return _iconContext.IconContext !== undefined ? React.createElement(_iconContext.IconContext.Consumer, null, function (conf) {
-    return elem(conf);
-  }) : elem(_iconContext.DefaultContext);
-}
-},{"react":"node_modules/react/index.js","./iconContext":"node_modules/react-icons/lib/esm/iconContext.js"}],"node_modules/react-icons/lib/esm/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _iconsManifest = require("./iconsManifest");
-
-Object.keys(_iconsManifest).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _iconsManifest[key];
-    }
-  });
-});
-
-var _iconBase = require("./iconBase");
-
-Object.keys(_iconBase).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _iconBase[key];
-    }
-  });
-});
-
-var _iconContext = require("./iconContext");
-
-Object.keys(_iconContext).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _iconContext[key];
-    }
-  });
-});
-},{"./iconsManifest":"node_modules/react-icons/lib/esm/iconsManifest.js","./iconBase":"node_modules/react-icons/lib/esm/iconBase.js","./iconContext":"node_modules/react-icons/lib/esm/iconContext.js"}],"node_modules/react-icons/md/index.esm.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"node_modules/react-icons/md/index.esm.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -60905,18 +59851,22 @@ var SubmitButtonGroup = (0, _styledBase.default)("div", {
   target: "e1r4k38k0",
   label: "SubmitButtonGroup"
 })("box-sizing:border-box;position:relative;width:100%;input[type=\"submit\"]{appearance:none;background:", function (props) {
-  return props.backgroundColor;
+  return props.submitBtnBackgroundColor;
 }, ";box-sizing:border-box;color:", function (props) {
-  return props.color;
-}, ";cursor:pointer;display:block;border:2px solid transparent;border-radius:", function (props) {
-  return props.borderRadius;
-}, ";display:block;font-weight:600;font-size:calc(19px * 1.1);padding:0 20px;margin:19px auto;width:300px;height:calc(19px * 2.3);transition:background-color 200ms ease-in-out,color 200ms ease-in-out,border-color 200ms ease-in-out;}input[type=\"submit\"]:hover,input[type=\"submit\"]:active,input[type=\"submit\"]:focus{background-color:", function (props) {
-  return props.hoverBackgroundColor;
+  return props.submitBtnColor;
+}, ";cursor:pointer;display:block;border:2px solid ", function (props) {
+  return props.submitBtnBorderColor;
+}, ";border-radius:", function (props) {
+  return props.submitBtnBorderRadius;
+}, ";display:block;font-weight:600;font-size:calc(19px * 1.1);padding:0 20px;margin:19px auto;width:300px;height:calc(19px * 2.3);box-shadow:", function (props) {
+  return props.submitBtnBoxShadow;
+}, ";transition:background-color 200ms ease-in-out,color 200ms ease-in-out,border-color 200ms ease-in-out;}input[type=\"submit\"]:hover,input[type=\"submit\"]:active,input[type=\"submit\"]:focus{background-color:", function (props) {
+  return props.submitBtnHoverBackgroundColor;
 }, ";color:", function (props) {
-  return props.hoverColor;
+  return props.submitBtnHoverColor;
 }, ";border-color:", function (props) {
-  return props.hoverBorderColor;
-}, ";cursor:pointer;}input[type=\"submit\"]:disabled{cursor:wait;background:#747474;color:#f0f0f0;}@media screen and (max-width:365px){input[type=\"submit\"]{max-width:270px;text-align:center;}}" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlN1Ym1pdEJ1dHRvbkdyb3VwLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdvQyIsImZpbGUiOiJTdWJtaXRCdXR0b25Hcm91cC5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBTdWJtaXRCdXR0b25Hcm91cCA9IHN0eWxlZC5kaXZgXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0d2lkdGg6IDEwMCU7XG5cdGlucHV0W3R5cGU9XCJzdWJtaXRcIl0ge1xuXHRcdGFwcGVhcmFuY2U6IG5vbmU7XG5cdFx0YmFja2dyb3VuZDogJHtwcm9wcyA9PiBwcm9wcy5iYWNrZ3JvdW5kQ29sb3J9O1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Y29sb3I6ICR7cHJvcHMgPT4gcHJvcHMuY29sb3J9O1xuXHRcdGN1cnNvcjogcG9pbnRlcjtcblx0XHRkaXNwbGF5OiBibG9jaztcblx0XHRib3JkZXI6IDJweCBzb2xpZCB0cmFuc3BhcmVudDtcblx0XHRib3JkZXItcmFkaXVzOiAke3Byb3BzID0+IHByb3BzLmJvcmRlclJhZGl1c307XG5cdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRmb250LXNpemU6IGNhbGMoMTlweCAqIDEuMSk7XG5cdFx0cGFkZGluZzogMCAyMHB4O1xuXHRcdG1hcmdpbjogMTlweCBhdXRvO1xuXHRcdHdpZHRoOiAzMDBweDtcblx0XHRoZWlnaHQ6IGNhbGMoMTlweCAqIDIuMyk7XG5cdFx0dHJhbnNpdGlvbjogYmFja2dyb3VuZC1jb2xvciAyMDBtcyBlYXNlLWluLW91dCwgY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQsXG5cdFx0XHRib3JkZXItY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdH1cblx0aW5wdXRbdHlwZT1cInN1Ym1pdFwiXTpob3Zlcixcblx0aW5wdXRbdHlwZT1cInN1Ym1pdFwiXTphY3RpdmUsXG5cdGlucHV0W3R5cGU9XCJzdWJtaXRcIl06Zm9jdXMge1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICR7cHJvcHMgPT4gcHJvcHMuaG92ZXJCYWNrZ3JvdW5kQ29sb3J9O1xuXHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmhvdmVyQ29sb3J9O1xuXHRcdGJvcmRlci1jb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5ob3ZlckJvcmRlckNvbG9yfTtcblx0XHRjdXJzb3I6IHBvaW50ZXI7XG5cdH1cblx0aW5wdXRbdHlwZT1cInN1Ym1pdFwiXTpkaXNhYmxlZCB7XG5cdFx0Y3Vyc29yOiB3YWl0O1xuXHRcdGJhY2tncm91bmQ6ICM3NDc0NzQ7XG5cdFx0Y29sb3I6ICNmMGYwZjA7XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogMzY1cHgpIHtcblx0XHRpbnB1dFt0eXBlPVwic3VibWl0XCJdIHtcblx0XHRcdG1heC13aWR0aDogMjcwcHg7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0fVxuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBTdWJtaXRCdXR0b25Hcm91cDtcbiJdfQ== */"));
+  return props.submitBtnHoverBorderColor;
+}, ";cursor:pointer;}input[type=\"submit\"]:disabled{cursor:wait;background:#747474;color:#f0f0f0;}@media screen and (max-width:365px){input[type=\"submit\"]{max-width:270px;text-align:center;}}" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlN1Ym1pdEJ1dHRvbkdyb3VwLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdvQyIsImZpbGUiOiJTdWJtaXRCdXR0b25Hcm91cC5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBTdWJtaXRCdXR0b25Hcm91cCA9IHN0eWxlZC5kaXZgXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0d2lkdGg6IDEwMCU7XG5cdGlucHV0W3R5cGU9XCJzdWJtaXRcIl0ge1xuXHRcdGFwcGVhcmFuY2U6IG5vbmU7XG5cdFx0YmFja2dyb3VuZDogJHtwcm9wcyA9PiBwcm9wcy5zdWJtaXRCdG5CYWNrZ3JvdW5kQ29sb3J9O1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Y29sb3I6ICR7cHJvcHMgPT4gcHJvcHMuc3VibWl0QnRuQ29sb3J9O1xuXHRcdGN1cnNvcjogcG9pbnRlcjtcblx0XHRkaXNwbGF5OiBibG9jaztcblx0XHRib3JkZXI6IDJweCBzb2xpZCAke3Byb3BzID0+IHByb3BzLnN1Ym1pdEJ0bkJvcmRlckNvbG9yfTtcblx0XHRib3JkZXItcmFkaXVzOiAke3Byb3BzID0+IHByb3BzLnN1Ym1pdEJ0bkJvcmRlclJhZGl1c307XG5cdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRmb250LXNpemU6IGNhbGMoMTlweCAqIDEuMSk7XG5cdFx0cGFkZGluZzogMCAyMHB4O1xuXHRcdG1hcmdpbjogMTlweCBhdXRvO1xuXHRcdHdpZHRoOiAzMDBweDtcblx0XHRoZWlnaHQ6IGNhbGMoMTlweCAqIDIuMyk7XG5cdFx0Ym94LXNoYWRvdzogJHtwcm9wcyA9PiBwcm9wcy5zdWJtaXRCdG5Cb3hTaGFkb3d9O1xuXHRcdHRyYW5zaXRpb246IGJhY2tncm91bmQtY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQsIGNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0LFxuXHRcdFx0Ym9yZGVyLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHR9XG5cdGlucHV0W3R5cGU9XCJzdWJtaXRcIl06aG92ZXIsXG5cdGlucHV0W3R5cGU9XCJzdWJtaXRcIl06YWN0aXZlLFxuXHRpbnB1dFt0eXBlPVwic3VibWl0XCJdOmZvY3VzIHtcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAke3Byb3BzID0+IHByb3BzLnN1Ym1pdEJ0bkhvdmVyQmFja2dyb3VuZENvbG9yfTtcblx0XHRjb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5zdWJtaXRCdG5Ib3ZlckNvbG9yfTtcblx0XHRib3JkZXItY29sb3I6ICR7cHJvcHMgPT4gcHJvcHMuc3VibWl0QnRuSG92ZXJCb3JkZXJDb2xvcn07XG5cdFx0Y3Vyc29yOiBwb2ludGVyO1xuXHR9XG5cdGlucHV0W3R5cGU9XCJzdWJtaXRcIl06ZGlzYWJsZWQge1xuXHRcdGN1cnNvcjogd2FpdDtcblx0XHRiYWNrZ3JvdW5kOiAjNzQ3NDc0O1xuXHRcdGNvbG9yOiAjZjBmMGYwO1xuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDM2NXB4KSB7XG5cdFx0aW5wdXRbdHlwZT1cInN1Ym1pdFwiXSB7XG5cdFx0XHRtYXgtd2lkdGg6IDI3MHB4O1xuXHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdH1cblx0fVxuYDtcblxuZXhwb3J0IGRlZmF1bHQgU3VibWl0QnV0dG9uR3JvdXA7XG4iXX0= */"));
 var _default = SubmitButtonGroup;
 var _default2 = _default;
 exports.default = _default2;
@@ -60965,14 +59915,9 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
 var FormError = (0, _styledBase.default)("div", {
   target: "e1c0e9150",
   label: "FormError"
-})("development" === "production" ? {
-  name: "1scvt25",
-  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;font-weight:700;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;left:50%;transform:translateX(-50%);bottom:calc(0% - 20px);"
-} : {
-  name: "1scvt25",
-  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;font-weight:700;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;left:50%;transform:translateX(-50%);bottom:calc(0% - 20px);",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1FcnJvci5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHNEIiLCJmaWxlIjoiRm9ybUVycm9yLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEZvcm1FcnJvciA9IHN0eWxlZC5kaXZgXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdHBvc2l0aW9uOiBhYnNvbHV0ZTtcblx0Y29sb3I6IGNyaW1zb247XG5cdHdpZHRoOiBhdXRvO1xuXHRmb250LXdlaWdodDogNzAwO1xuXHRmb250LXNpemU6IGNhbGMoMTlweCAqIDAuNSk7XG5cdG9wYWNpdHk6IDE7XG5cdG92ZXJmbG93OiBoaWRkZW47XG5cdG1heC13aWR0aDogMTAwJTtcblx0d2hpdGUtc3BhY2U6IG5vd3JhcDtcblx0bGVmdDogNTAlO1xuXHR0cmFuc2Zvcm06IHRyYW5zbGF0ZVgoLTUwJSk7XG5cdGJvdHRvbTogY2FsYygwJSAtIDIwcHgpO1xuYDtcblxuZXhwb3J0IGRlZmF1bHQgRm9ybUVycm9yO1xuIl19 */"
-});
+})("box-sizing:border-box;position:absolute;color:", function (props) {
+  return props.color;
+}, ";width:auto;font-weight:600;font-size:16px;opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;left:50%;transform:translateX(-50%);bottom:calc(0% - 20px);" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1FcnJvci5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHNEIiLCJmaWxlIjoiRm9ybUVycm9yLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEZvcm1FcnJvciA9IHN0eWxlZC5kaXZgXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdHBvc2l0aW9uOiBhYnNvbHV0ZTtcblx0Y29sb3I6ICR7cHJvcHM9PiBwcm9wcy5jb2xvcn07XG5cdHdpZHRoOiBhdXRvO1xuXHRmb250LXdlaWdodDogNjAwO1xuXHRmb250LXNpemU6IDE2cHg7XG5cdG9wYWNpdHk6IDE7XG5cdG92ZXJmbG93OiBoaWRkZW47XG5cdG1heC13aWR0aDogMTAwJTtcblx0d2hpdGUtc3BhY2U6IG5vd3JhcDtcblx0bGVmdDogNTAlO1xuXHR0cmFuc2Zvcm06IHRyYW5zbGF0ZVgoLTUwJSk7XG5cdGJvdHRvbTogY2FsYygwJSAtIDIwcHgpO1xuYDtcblxuZXhwb3J0IGRlZmF1bHQgRm9ybUVycm9yO1xuIl19 */"));
 var _default = FormError;
 var _default2 = _default;
 exports.default = _default2;
@@ -61005,13 +59950,17 @@ exports.default = void 0;
 
 var _core = require("@emotion/core");
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
+
+var _FormConfigProvider = require("../Contexts/FormConfigProvider");
 
 var _SubmitButtonGroup = _interopRequireDefault(require("./StyledComponents/SubmitButtonGroup"));
 
 var _FormError = _interopRequireDefault(require("./StyledComponents/FormError"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 (function () {
   var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
@@ -61028,34 +59977,56 @@ var SubmitButton = function SubmitButton(_ref) {
       handleSubmit = _ref.handleSubmit,
       submitting = _ref.submitting,
       value = _ref.value,
-      color = _ref.color,
-      backgroundColor = _ref.backgroundColor,
-      hoverBackgroundColor = _ref.hoverBackgroundColor,
-      hoverColor = _ref.hoverColor,
-      hoverBorderColor = _ref.hoverBorderColor,
-      borderRadius = _ref.borderRadius,
       styles = _ref.styles;
-  var group = styles && styles.hasOwnProperty("group") ? styles.group : {};
-  var input = styles && styles.hasOwnProperty("input") ? styles.input : {};
+
+  var _useContext = (0, _react.useContext)(_FormConfigProvider.FormConfigContext),
+      getCssConfig = _useContext.getCssConfig;
+
+  var _getCssConfig = getCssConfig("submitBtn"),
+      _getCssConfig$submitB = _getCssConfig.submitBtnColor,
+      submitBtnColor = _getCssConfig$submitB === void 0 ? "#fff" : _getCssConfig$submitB,
+      _getCssConfig$submitB2 = _getCssConfig.submitBtnBackgroundColor,
+      submitBtnBackgroundColor = _getCssConfig$submitB2 === void 0 ? "#333" : _getCssConfig$submitB2,
+      _getCssConfig$submitB3 = _getCssConfig.submitBtnBorderColor,
+      submitBtnBorderColor = _getCssConfig$submitB3 === void 0 ? "transparent" : _getCssConfig$submitB3,
+      _getCssConfig$submitB4 = _getCssConfig.submitBtnBorderRadius,
+      submitBtnBorderRadius = _getCssConfig$submitB4 === void 0 ? "0" : _getCssConfig$submitB4,
+      _getCssConfig$submitB5 = _getCssConfig.submitBtnHoverBackgroundColor,
+      submitBtnHoverBackgroundColor = _getCssConfig$submitB5 === void 0 ? "#fff" : _getCssConfig$submitB5,
+      _getCssConfig$submitB6 = _getCssConfig.submitBtnHoverColor,
+      submitBtnHoverColor = _getCssConfig$submitB6 === void 0 ? "#333" : _getCssConfig$submitB6,
+      _getCssConfig$submitB7 = _getCssConfig.submitBtnHoverBorderColor,
+      submitBtnHoverBorderColor = _getCssConfig$submitB7 === void 0 ? "#333" : _getCssConfig$submitB7,
+      _getCssConfig$submitB8 = _getCssConfig.submitBtnBoxShadow,
+      submitBtnBoxShadow = _getCssConfig$submitB8 === void 0 ? "none" : _getCssConfig$submitB8;
+
+  var _getCssConfig2 = getCssConfig("error"),
+      _getCssConfig2$errorC = _getCssConfig2.errorColor,
+      errorColor = _getCssConfig2$errorC === void 0 ? "crimson" : _getCssConfig2$errorC;
+
   return (0, _core.jsx)(_SubmitButtonGroup.default, {
     className: "submit-row",
-    color: color,
-    backgroundColor: backgroundColor,
-    hoverBackgroundColor: hoverBackgroundColor,
-    hoverColor: hoverColor,
-    hoverBorderColor: hoverBorderColor,
-    borderRadius: borderRadius,
-    style: group
+    submitBtnColor: submitBtnColor,
+    submitBtnBackgroundColor: submitBtnBackgroundColor,
+    submitBtnBorderColor: submitBtnBorderColor,
+    submitBtnBorderRadius: submitBtnBorderRadius,
+    submitBtnHoverBackgroundColor: submitBtnHoverBackgroundColor,
+    submitBtnHoverColor: submitBtnHoverColor,
+    submitBtnHoverBorderColor: submitBtnHoverBorderColor,
+    submitBtnBoxShadow: submitBtnBoxShadow
   }, (0, _core.jsx)("input", {
     className: "submit-btn",
     type: "submit",
     id: "submit",
     onClick: handleSubmit,
     disabled: submitting,
-    value: submitting ? "Please Wait..." : value,
-    style: input
-  }), (0, _core.jsx)(_FormError.default, null, hasErrors && error ? error : hasErrors ? "Please scroll up to correct errors." : ""));
+    value: submitting ? "Please Wait..." : value
+  }), (0, _core.jsx)(_FormError.default, {
+    color: errorColor
+  }, hasErrors && error ? error : hasErrors ? "Please scroll up to correct errors." : ""));
 };
+
+__signature__(SubmitButton, "useContext{{ getCssConfig }}");
 
 var _default = SubmitButton;
 var _default2 = _default;
@@ -61079,7 +60050,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./StyledComponents/SubmitButtonGroup":"src/Components/FormComponents/StyledComponents/SubmitButtonGroup.js","./StyledComponents/FormError":"src/Components/FormComponents/StyledComponents/FormError.js"}],"src/Components/FormComponents/StyledComponents/FormGroup.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","./StyledComponents/SubmitButtonGroup":"src/Components/FormComponents/StyledComponents/SubmitButtonGroup.js","./StyledComponents/FormError":"src/Components/FormComponents/StyledComponents/FormError.js"}],"src/Components/FormComponents/StyledComponents/FormGroup.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -61105,11 +60076,45 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
 var FormGroup = (0, _styledBase.default)("div", {
   target: "e1sfz71x0",
   label: "FormGroup"
-})("position:relative;margin-bottom:calc(19px * 0.7);margin-top:calc(19px * 0.7);flex:1 1 auto;&.form-group--Title,&.form-group--Suffix{width:120px;flex:0 0 120px;box-sizing:border-box;}&.form-group--Firstname,&.form-group--Lastname{box-sizing:border-box;}&.form-group--State,&.form-group--Country{max-width:50%;}&.form-group--Phone,&.form-group--Email{width:50%;}&.form-group--cvnCode{width:80px;flex:0 0 80px;box-sizing:border-box;}&.form-group--cvnCode + div.cvn-code-info{display:block;align-self:center;}&.form-group--cvnCode + div.cvn-code-info>a{color:#444;transition:color 200ms ease-in-out;}&.form-group--cvnCode + div.cvn-code-info>a:hover,&.form-group--cvnCode + div.cvn-code-info>a:active,&.form-group--cvnCode + div.cvn-code-info>a:focus{color:#747474;}label{box-sizing:border-box;color:#333;font-size:calc(19px * 0.7);font-weight:600;margin-bottom:0;position:absolute;opacity:0;bottom:calc(100% - 2px);left:10px;transition:opacity 150ms ease-in-out;}label span{color:crimson;}&:hover label,&:active label,&:focus label{opacity:1;}input,select,textarea{box-sizing:border-box;color:#333;font-size:19px;font-weight:600;height:44px;display:block;width:100%;margin-top:5px;padding:0 10px;line-height:44px !important;background:none;background-color:#f0f0f0;border:1px solid #ccc;border-radius:0;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);transition:border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;position:relative;margin-bottom:0;}textarea{height:auto;", function (props) {
+})("position:relative;margin-bottom:20px;margin-top:20px;flex:1 1 auto;&.form-group--Title,&.form-group--Suffix{width:120px;flex:0 0 120px;box-sizing:border-box;}&.form-group--Firstname,&.form-group--Lastname{box-sizing:border-box;}&.form-group--State,&.form-group--Country{max-width:50%;}&.form-group--Phone,&.form-group--Email{width:50%;}&.form-group--cvnCode{width:80px;flex:0 0 80px;box-sizing:border-box;}&.form-group--cvnCode + div.cvn-code-info{display:block;align-self:center;}&.form-group--cvnCode + div.cvn-code-info>a{color:#444;transition:color 200ms ease-in-out;}&.form-group--cvnCode + div.cvn-code-info>a:hover,&.form-group--cvnCode + div.cvn-code-info>a:active,&.form-group--cvnCode + div.cvn-code-info>a:focus{color:#747474;}label{box-sizing:border-box;color:", function (props) {
+  return props.labelColor;
+}, ";font-size:calc(19px * 0.7);font-weight:", function (props) {
+  return props.labelFontWeight;
+}, ";margin-bottom:0;position:absolute;opacity:", function (props) {
+  return props.labelOpacity;
+}, ";bottom:calc(100% - ", function (props) {
+  return props.inputHoverBoxShadow == "none" ? "6px" : "2px";
+}, ");left:10px;transition:opacity 150ms ease-in-out;text-transform:", function (props) {
+  return props.labelTextTransform;
+}, "}label span{color:crimson;}&:hover label,&:active label,&:focus label{opacity:1;}input,select,textarea{box-sizing:border-box;color:", function (props) {
+  return props.inputColor;
+}, ";font-size:19px;font-weight:600;height:44px;display:block;width:100%;margin-top:5px;padding:0 10px;line-height:44px !important;background:none;background-color:", function (props) {
+  return props.inputBackgroundColor;
+}, ";border:", function (props) {
+  return props.inputBorderWidth;
+}, " solid ", function (props) {
+  return props.inputBorderColor;
+}, ";border-radius:", function (props) {
+  return props.inputBorderRadius;
+}, ";box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);transition:border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;position:relative;margin-bottom:0;}textarea{height:auto;", function (props) {
   return {
     minHeight: props.minHeight
   };
-}, "}input::placeholder,select::placeholder,textarea::placeholder{font-weight:600;color:#747474;}input:active,input:hover,input:focus,select:active,select:hover,select:focus,textarea:active,textarea:hover,textarea:focus{border:1px solid #777777;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px #747474;background-color:#fff;outline:none;}select:invalid{color:#747474;appearance:none;}input:disabled,select:disabled,textarea:disabled{background:#919191;cursor:not-allowed;appearance:none;}input.error,select.error,textarea.error{box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px crimson;}@media screen and (max-width:613px){&.form-group--Lastname{flex-basis:calc(100% - 130px);margin-left:0;}&.form-group--Middlename{width:100%;margin-left:0;}&.form-group--Firstname{flex-basis:calc(100% - 130px);}}@media screen and (max-width:500px){&.form-group--Phone,&.form-group--Email{width:100%;}}@media screen and (max-width:414px){&.form-group--State,&.form-group--City{max-width:100%;width:100%;}&.form-group--Firstname,&.form-group--Lastname{width:100%;flex-basis:auto;}}@media screen and (max-width:365px){&.form-group--Zip,&.form-group--Country{max-width:100%;width:100%;}}" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Hcm91cC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHNEIiLCJmaWxlIjoiRm9ybUdyb3VwLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEZvcm1Hcm91cCA9IHN0eWxlZC5kaXZgXG5cdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0bWFyZ2luLWJvdHRvbTogY2FsYygxOXB4ICogMC43KTtcblx0bWFyZ2luLXRvcDogY2FsYygxOXB4ICogMC43KTtcblx0ZmxleDogMSAxIGF1dG87XG5cdCYuZm9ybS1ncm91cC0tVGl0bGUsXG5cdCYuZm9ybS1ncm91cC0tU3VmZml4IHtcblx0XHR3aWR0aDogMTIwcHg7XG5cdFx0ZmxleDogMCAwIDEyMHB4O1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1GaXJzdG5hbWUsXG5cdCYuZm9ybS1ncm91cC0tTGFzdG5hbWUge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1TdGF0ZSxcblx0Ji5mb3JtLWdyb3VwLS1Db3VudHJ5IHtcblx0XHRtYXgtd2lkdGg6IDUwJTtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLVBob25lLFxuXHQmLmZvcm0tZ3JvdXAtLUVtYWlsIHtcblx0XHR3aWR0aDogNTAlO1xuXHR9XG5cdCYuZm9ybS1ncm91cC0tY3ZuQ29kZSB7XG5cdFx0d2lkdGg6IDgwcHg7XG5cdFx0ZmxleDogMCAwIDgwcHg7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLWN2bkNvZGUgKyBkaXYuY3ZuLWNvZGUtaW5mbyB7XG5cdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0YWxpZ24tc2VsZjogY2VudGVyO1xuXHR9XG5cdCYuZm9ybS1ncm91cC0tY3ZuQ29kZSArIGRpdi5jdm4tY29kZS1pbmZvPmEge1xuXHRcdGNvbG9yOiAjNDQ0O1xuXHRcdHRyYW5zaXRpb246IGNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHR9XG5cdCYuZm9ybS1ncm91cC0tY3ZuQ29kZSArIGRpdi5jdm4tY29kZS1pbmZvPmE6aG92ZXIsXG5cdCYuZm9ybS1ncm91cC0tY3ZuQ29kZSArIGRpdi5jdm4tY29kZS1pbmZvPmE6YWN0aXZlLFxuXHQmLmZvcm0tZ3JvdXAtLWN2bkNvZGUgKyBkaXYuY3ZuLWNvZGUtaW5mbz5hOmZvY3VzIHtcblx0XHRjb2xvcjogIzc0NzQ3NDtcblx0fVxuXHRsYWJlbCB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRjb2xvcjogIzMzMztcblx0XHRmb250LXNpemU6IGNhbGMoMTlweCAqIDAuNyk7XG5cdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRtYXJnaW4tYm90dG9tOiAwO1xuXHRcdHBvc2l0aW9uOiBhYnNvbHV0ZTtcblx0XHRvcGFjaXR5OiAwO1xuXHRcdGJvdHRvbTogY2FsYygxMDAlIC0gMnB4KTtcblx0XHRsZWZ0OiAxMHB4O1xuXHRcdHRyYW5zaXRpb246IG9wYWNpdHkgMTUwbXMgZWFzZS1pbi1vdXQ7XG5cdH1cblx0bGFiZWwgc3BhbiB7XG5cdFx0Y29sb3I6IGNyaW1zb247XG5cdH1cblx0Jjpob3ZlciBsYWJlbCxcblx0JjphY3RpdmUgbGFiZWwsXG5cdCY6Zm9jdXMgbGFiZWwge1xuXHRcdG9wYWNpdHk6IDE7XG5cdH1cblx0aW5wdXQsXG5cdHNlbGVjdCxcblx0dGV4dGFyZWEge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Y29sb3I6ICMzMzM7XG5cdFx0Zm9udC1zaXplOiAxOXB4O1xuXHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0aGVpZ2h0OiA0NHB4O1xuXHRcdGRpc3BsYXk6IGJsb2NrO1xuXHRcdHdpZHRoOiAxMDAlO1xuXHRcdG1hcmdpbi10b3A6IDVweDtcblx0XHRwYWRkaW5nOiAwIDEwcHg7XG5cdFx0bGluZS1oZWlnaHQ6IDQ0cHggIWltcG9ydGFudDtcblx0XHRiYWNrZ3JvdW5kOiBub25lO1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICNmMGYwZjA7XG5cdFx0Ym9yZGVyOiAxcHggc29saWQgI2NjYztcblx0XHRib3JkZXItcmFkaXVzOiAwO1xuXHRcdGJveC1zaGFkb3c6IGluc2V0IDAgMXB4IDFweCByZ2JhKDAsIDAsIDAsIDAuMDc1KTtcblx0XHR0cmFuc2l0aW9uOiBib3JkZXItY29sb3IgZWFzZS1pbi1vdXQgMC4xNXMsIGJveC1zaGFkb3cgZWFzZS1pbi1vdXQgMC4xNXM7XG5cdFx0cG9zaXRpb246IHJlbGF0aXZlO1xuXHRcdG1hcmdpbi1ib3R0b206IDA7XG5cdH1cblx0dGV4dGFyZWEge1xuXHRcdGhlaWdodDogYXV0bztcblx0XHQke3Byb3BzID0+ICh7XG5cdFx0XHRtaW5IZWlnaHQ6IHByb3BzLm1pbkhlaWdodCxcblx0XHR9KX1cblx0fVxuXHRpbnB1dDo6cGxhY2Vob2xkZXIsXG5cdHNlbGVjdDo6cGxhY2Vob2xkZXIsXG5cdHRleHRhcmVhOjpwbGFjZWhvbGRlciB7XG5cdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRjb2xvcjogIzc0NzQ3NDtcblx0fVxuXHRpbnB1dDphY3RpdmUsXG5cdGlucHV0OmhvdmVyLFxuXHRpbnB1dDpmb2N1cyxcblx0c2VsZWN0OmFjdGl2ZSxcblx0c2VsZWN0OmhvdmVyLFxuXHRzZWxlY3Q6Zm9jdXMsXG5cdHRleHRhcmVhOmFjdGl2ZSxcblx0dGV4dGFyZWE6aG92ZXIsXG5cdHRleHRhcmVhOmZvY3VzIHtcblx0XHRib3JkZXI6IDFweCBzb2xpZCAjNzc3Nzc3O1xuXHRcdGJveC1zaGFkb3c6IGluc2V0IDAgMXB4IDFweCByZ2JhKDAsIDAsIDAsIDAuMDc1KSwgMCAwIDhweCAjNzQ3NDc0O1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICNmZmY7XG5cdFx0b3V0bGluZTogbm9uZTtcblx0fVxuXHRzZWxlY3Q6aW52YWxpZCB7XG5cdFx0Y29sb3I6ICM3NDc0NzQ7XG5cdFx0YXBwZWFyYW5jZTogbm9uZTtcblx0fVxuXHRpbnB1dDpkaXNhYmxlZCxcblx0c2VsZWN0OmRpc2FibGVkLFxuXHR0ZXh0YXJlYTpkaXNhYmxlZCB7XG5cdFx0YmFja2dyb3VuZDogIzkxOTE5MTtcblx0XHRjdXJzb3I6IG5vdC1hbGxvd2VkO1xuXHRcdGFwcGVhcmFuY2U6IG5vbmU7XG5cdH1cblx0aW5wdXQuZXJyb3IsXG5cdHNlbGVjdC5lcnJvcixcblx0dGV4dGFyZWEuZXJyb3Ige1xuXHRcdGJveC1zaGFkb3c6IGluc2V0IDAgMXB4IDFweCByZ2JhKDAsIDAsIDAsIDAuMDc1KSwgMCAwIDhweCBjcmltc29uO1xuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYxM3B4KSB7XG5cdFx0Ji5mb3JtLWdyb3VwLS1MYXN0bmFtZSB7XG5cdFx0XHRmbGV4LWJhc2lzOiBjYWxjKDEwMCUgLSAxMzBweCk7XG5cdFx0XHRtYXJnaW4tbGVmdDogMDtcblx0XHR9XG5cdFx0Ji5mb3JtLWdyb3VwLS1NaWRkbGVuYW1lIHtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdFx0bWFyZ2luLWxlZnQ6IDA7XG5cdFx0fVxuXHRcdCYuZm9ybS1ncm91cC0tRmlyc3RuYW1lIHtcblx0XHRcdGZsZXgtYmFzaXM6IGNhbGMoMTAwJSAtIDEzMHB4KTtcblx0XHR9XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNTAwcHgpIHtcblx0XHQmLmZvcm0tZ3JvdXAtLVBob25lLFxuXHRcdCYuZm9ybS1ncm91cC0tRW1haWwge1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDQxNHB4KSB7XG5cdFx0Ji5mb3JtLWdyb3VwLS1TdGF0ZSxcblx0XHQmLmZvcm0tZ3JvdXAtLUNpdHkge1xuXHRcdFx0bWF4LXdpZHRoOiAxMDAlO1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0fVxuXHRcdCYuZm9ybS1ncm91cC0tRmlyc3RuYW1lLFxuXHRcdCYuZm9ybS1ncm91cC0tTGFzdG5hbWUge1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0XHRmbGV4LWJhc2lzOiBhdXRvO1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiAzNjVweCkge1xuXHRcdCYuZm9ybS1ncm91cC0tWmlwLFxuXHRcdCYuZm9ybS1ncm91cC0tQ291bnRyeSB7XG5cdFx0XHRtYXgtd2lkdGg6IDEwMCU7XG5cdFx0XHR3aWR0aDogMTAwJTtcblx0XHR9XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1Hcm91cDtcbiJdfQ== */"));
+}, "}input::placeholder,select::placeholder,textarea::placeholder{font-weight:600;color:", function (props) {
+  return props.inputPlaceholderColor;
+}, ";}input:active,input:hover,input:focus,select:active,select:hover,select:focus,textarea:active,textarea:hover,textarea:focus{border:", function (props) {
+  return props.inputBorderWidth;
+}, " solid ", function (props) {
+  return props.inputHoverBorderColor;
+}, ";box-shadow:", function (props) {
+  return props.inputHoverBoxShadow;
+}, ";background-color:", function (props) {
+  return props.inputHoverBackgroundColor;
+}, ";outline:none;}select:invalid{color:#747474;appearance:none;}input:disabled,select:disabled,textarea:disabled{background:#919191;cursor:not-allowed;appearance:none;}input.error,select.error,textarea.error{border:", function (props) {
+  return props.inputBorderWidth;
+}, " solid ", function (props) {
+  return props.inputErrorColor;
+}, ";}@media screen and (max-width:613px){&.form-group--Lastname{flex-basis:calc(100% - 130px);margin-left:0;}&.form-group--Middlename{width:100%;margin-left:0;}&.form-group--Firstname{flex-basis:calc(100% - 130px);}}@media screen and (max-width:500px){&.form-group--Phone,&.form-group--Email{width:100%;}}@media screen and (max-width:414px){&.form-group--State,&.form-group--City{max-width:100%;width:100%;}&.form-group--Firstname,&.form-group--Lastname{width:100%;flex-basis:auto;}}@media screen and (max-width:365px){&.form-group--Zip,&.form-group--Country{max-width:100%;width:100%;}}" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Hcm91cC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHNEIiLCJmaWxlIjoiRm9ybUdyb3VwLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEZvcm1Hcm91cCA9IHN0eWxlZC5kaXZgXG5cdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0bWFyZ2luLWJvdHRvbTogMjBweDtcblx0bWFyZ2luLXRvcDogMjBweDtcblx0ZmxleDogMSAxIGF1dG87XG5cdCYuZm9ybS1ncm91cC0tVGl0bGUsXG5cdCYuZm9ybS1ncm91cC0tU3VmZml4IHtcblx0XHR3aWR0aDogMTIwcHg7XG5cdFx0ZmxleDogMCAwIDEyMHB4O1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1GaXJzdG5hbWUsXG5cdCYuZm9ybS1ncm91cC0tTGFzdG5hbWUge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cblx0Ji5mb3JtLWdyb3VwLS1TdGF0ZSxcblx0Ji5mb3JtLWdyb3VwLS1Db3VudHJ5IHtcblx0XHRtYXgtd2lkdGg6IDUwJTtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLVBob25lLFxuXHQmLmZvcm0tZ3JvdXAtLUVtYWlsIHtcblx0XHR3aWR0aDogNTAlO1xuXHR9XG5cdCYuZm9ybS1ncm91cC0tY3ZuQ29kZSB7XG5cdFx0d2lkdGg6IDgwcHg7XG5cdFx0ZmxleDogMCAwIDgwcHg7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0fVxuXHQmLmZvcm0tZ3JvdXAtLWN2bkNvZGUgKyBkaXYuY3ZuLWNvZGUtaW5mbyB7XG5cdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0YWxpZ24tc2VsZjogY2VudGVyO1xuXHR9XG5cdCYuZm9ybS1ncm91cC0tY3ZuQ29kZSArIGRpdi5jdm4tY29kZS1pbmZvPmEge1xuXHRcdGNvbG9yOiAjNDQ0O1xuXHRcdHRyYW5zaXRpb246IGNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHR9XG5cdCYuZm9ybS1ncm91cC0tY3ZuQ29kZSArIGRpdi5jdm4tY29kZS1pbmZvPmE6aG92ZXIsXG5cdCYuZm9ybS1ncm91cC0tY3ZuQ29kZSArIGRpdi5jdm4tY29kZS1pbmZvPmE6YWN0aXZlLFxuXHQmLmZvcm0tZ3JvdXAtLWN2bkNvZGUgKyBkaXYuY3ZuLWNvZGUtaW5mbz5hOmZvY3VzIHtcblx0XHRjb2xvcjogIzc0NzQ3NDtcblx0fVxuXHRsYWJlbCB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRjb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5sYWJlbENvbG9yfTtcblx0XHRmb250LXNpemU6IGNhbGMoMTlweCAqIDAuNyk7XG5cdFx0Zm9udC13ZWlnaHQ6ICR7cHJvcHMgPT4gcHJvcHMubGFiZWxGb250V2VpZ2h0fTtcblx0XHRtYXJnaW4tYm90dG9tOiAwO1xuXHRcdHBvc2l0aW9uOiBhYnNvbHV0ZTtcblx0XHRvcGFjaXR5OiAke3Byb3BzID0+IHByb3BzLmxhYmVsT3BhY2l0eX07XG5cdFx0Ym90dG9tOiBjYWxjKDEwMCUgLSAke3Byb3BzPT4gcHJvcHMuaW5wdXRIb3ZlckJveFNoYWRvdyA9PSBcIm5vbmVcIiA/IFwiNnB4XCIgOiBcIjJweFwifSk7XG5cdFx0bGVmdDogMTBweDtcblx0XHR0cmFuc2l0aW9uOiBvcGFjaXR5IDE1MG1zIGVhc2UtaW4tb3V0O1xuXHRcdHRleHQtdHJhbnNmb3JtOiAke3Byb3BzPT4gcHJvcHMubGFiZWxUZXh0VHJhbnNmb3JtfVxuXHR9XG5cdGxhYmVsIHNwYW4ge1xuXHRcdGNvbG9yOiBjcmltc29uO1xuXHR9XG5cdCY6aG92ZXIgbGFiZWwsXG5cdCY6YWN0aXZlIGxhYmVsLFxuXHQmOmZvY3VzIGxhYmVsIHtcblx0XHRvcGFjaXR5OiAxO1xuXHR9XG5cdGlucHV0LFxuXHRzZWxlY3QsXG5cdHRleHRhcmVhIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmlucHV0Q29sb3J9O1xuXHRcdGZvbnQtc2l6ZTogMTlweDtcblx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdGhlaWdodDogNDRweDtcblx0XHRkaXNwbGF5OiBibG9jaztcblx0XHR3aWR0aDogMTAwJTtcblx0XHRtYXJnaW4tdG9wOiA1cHg7XG5cdFx0cGFkZGluZzogMCAxMHB4O1xuXHRcdGxpbmUtaGVpZ2h0OiA0NHB4ICFpbXBvcnRhbnQ7XG5cdFx0YmFja2dyb3VuZDogbm9uZTtcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAke3Byb3BzID0+IHByb3BzLmlucHV0QmFja2dyb3VuZENvbG9yfTtcblx0XHRib3JkZXI6ICR7cHJvcHM9PiBwcm9wcy5pbnB1dEJvcmRlcldpZHRofSBzb2xpZCAke3Byb3BzID0+IHByb3BzLmlucHV0Qm9yZGVyQ29sb3J9O1xuXHRcdGJvcmRlci1yYWRpdXM6ICR7cHJvcHMgPT4gcHJvcHMuaW5wdXRCb3JkZXJSYWRpdXN9O1xuXHRcdGJveC1zaGFkb3c6IGluc2V0IDAgMXB4IDFweCByZ2JhKDAsIDAsIDAsIDAuMDc1KTtcblx0XHR0cmFuc2l0aW9uOiBib3JkZXItY29sb3IgZWFzZS1pbi1vdXQgMC4xNXMsIGJveC1zaGFkb3cgZWFzZS1pbi1vdXQgMC4xNXM7XG5cdFx0cG9zaXRpb246IHJlbGF0aXZlO1xuXHRcdG1hcmdpbi1ib3R0b206IDA7XG5cdH1cblx0dGV4dGFyZWEge1xuXHRcdGhlaWdodDogYXV0bztcblx0XHQke3Byb3BzID0+ICh7XG5cdFx0XHRtaW5IZWlnaHQ6IHByb3BzLm1pbkhlaWdodCxcblx0XHR9KX1cblx0fVxuXHRpbnB1dDo6cGxhY2Vob2xkZXIsXG5cdHNlbGVjdDo6cGxhY2Vob2xkZXIsXG5cdHRleHRhcmVhOjpwbGFjZWhvbGRlciB7XG5cdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRjb2xvcjogJHtwcm9wcz0+IHByb3BzLmlucHV0UGxhY2Vob2xkZXJDb2xvcn07XG5cdH1cblx0aW5wdXQ6YWN0aXZlLFxuXHRpbnB1dDpob3Zlcixcblx0aW5wdXQ6Zm9jdXMsXG5cdHNlbGVjdDphY3RpdmUsXG5cdHNlbGVjdDpob3Zlcixcblx0c2VsZWN0OmZvY3VzLFxuXHR0ZXh0YXJlYTphY3RpdmUsXG5cdHRleHRhcmVhOmhvdmVyLFxuXHR0ZXh0YXJlYTpmb2N1cyB7XG5cdFx0Ym9yZGVyOiAke3Byb3BzPT4gcHJvcHMuaW5wdXRCb3JkZXJXaWR0aH0gc29saWQgJHtwcm9wcyA9PiBwcm9wcy5pbnB1dEhvdmVyQm9yZGVyQ29sb3J9O1xuXHRcdGJveC1zaGFkb3c6ICR7cHJvcHMgPT4gcHJvcHMuaW5wdXRIb3ZlckJveFNoYWRvd307XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5pbnB1dEhvdmVyQmFja2dyb3VuZENvbG9yfTtcblx0XHRvdXRsaW5lOiBub25lO1xuXHR9XG5cdHNlbGVjdDppbnZhbGlkIHtcblx0XHRjb2xvcjogIzc0NzQ3NDtcblx0XHRhcHBlYXJhbmNlOiBub25lO1xuXHR9XG5cdGlucHV0OmRpc2FibGVkLFxuXHRzZWxlY3Q6ZGlzYWJsZWQsXG5cdHRleHRhcmVhOmRpc2FibGVkIHtcblx0XHRiYWNrZ3JvdW5kOiAjOTE5MTkxO1xuXHRcdGN1cnNvcjogbm90LWFsbG93ZWQ7XG5cdFx0YXBwZWFyYW5jZTogbm9uZTtcblx0fVxuXHRpbnB1dC5lcnJvcixcblx0c2VsZWN0LmVycm9yLFxuXHR0ZXh0YXJlYS5lcnJvciB7XG5cdFx0Ym9yZGVyOiAke3Byb3BzPT4gcHJvcHMuaW5wdXRCb3JkZXJXaWR0aH0gc29saWQgJHtwcm9wcyA9PiBwcm9wcy5pbnB1dEVycm9yQ29sb3J9O1xuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYxM3B4KSB7XG5cdFx0Ji5mb3JtLWdyb3VwLS1MYXN0bmFtZSB7XG5cdFx0XHRmbGV4LWJhc2lzOiBjYWxjKDEwMCUgLSAxMzBweCk7XG5cdFx0XHRtYXJnaW4tbGVmdDogMDtcblx0XHR9XG5cdFx0Ji5mb3JtLWdyb3VwLS1NaWRkbGVuYW1lIHtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdFx0bWFyZ2luLWxlZnQ6IDA7XG5cdFx0fVxuXHRcdCYuZm9ybS1ncm91cC0tRmlyc3RuYW1lIHtcblx0XHRcdGZsZXgtYmFzaXM6IGNhbGMoMTAwJSAtIDEzMHB4KTtcblx0XHR9XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNTAwcHgpIHtcblx0XHQmLmZvcm0tZ3JvdXAtLVBob25lLFxuXHRcdCYuZm9ybS1ncm91cC0tRW1haWwge1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDQxNHB4KSB7XG5cdFx0Ji5mb3JtLWdyb3VwLS1TdGF0ZSxcblx0XHQmLmZvcm0tZ3JvdXAtLUNpdHkge1xuXHRcdFx0bWF4LXdpZHRoOiAxMDAlO1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0fVxuXHRcdCYuZm9ybS1ncm91cC0tRmlyc3RuYW1lLFxuXHRcdCYuZm9ybS1ncm91cC0tTGFzdG5hbWUge1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0XHRmbGV4LWJhc2lzOiBhdXRvO1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiAzNjVweCkge1xuXHRcdCYuZm9ybS1ncm91cC0tWmlwLFxuXHRcdCYuZm9ybS1ncm91cC0tQ291bnRyeSB7XG5cdFx0XHRtYXgtd2lkdGg6IDEwMCU7XG5cdFx0XHR3aWR0aDogMTAwJTtcblx0XHR9XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1Hcm91cDtcbiJdfQ== */"));
 var _default = FormGroup;
 var _default2 = _default;
 exports.default = _default2;
@@ -61158,14 +60163,9 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
 var InputError = (0, _styledBase.default)("div", {
   target: "ey0dd220",
   label: "InputError"
-})("development" === "production" ? {
-  name: "h5mqqw",
-  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;line-height:unset;left:7px;bottom:auto;top:52px;font-weight:700;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;"
-} : {
-  name: "h5mqqw",
-  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;line-height:unset;left:7px;bottom:auto;top:52px;font-weight:700;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIklucHV0RXJyb3IuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBR29DIiwiZmlsZSI6IklucHV0RXJyb3IuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuZXhwb3J0IGNvbnN0IElucHV0RXJyb3IgPSBzdHlsZWQuZGl2YFxuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdGNvbG9yOiBjcmltc29uO1xuXHR3aWR0aDogYXV0bztcblx0bGluZS1oZWlnaHQ6IHVuc2V0O1xuXHRsZWZ0OiA3cHg7XG5cdGJvdHRvbTogYXV0bztcblx0dG9wOiA1MnB4O1xuXHRmb250LXdlaWdodDogNzAwO1xuXHRmb250LXNpemU6IGNhbGMoMTlweCAqIDAuNSk7XG5cdG9wYWNpdHk6IDE7XG5cdG92ZXJmbG93OiBoaWRkZW47XG5cdG1heC13aWR0aDogMTAwJTtcblx0d2hpdGUtc3BhY2U6IG5vd3JhcDtcbmA7XG5cbmV4cG9ydCBkZWZhdWx0IElucHV0RXJyb3I7XG4iXX0= */"
-});
+})("box-sizing:border-box;position:absolute;color:", function (props) {
+  return props.inputErrorColor || "crimson";
+}, ";width:auto;line-height:unset;left:12px;bottom:auto;top:47px;font-weight:600;font-size:16px;opacity:1;overflow:hidden;white-space:nowrap;" + ("development" === "production" ? "" : "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIklucHV0RXJyb3IuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBR29DIiwiZmlsZSI6IklucHV0RXJyb3IuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuZXhwb3J0IGNvbnN0IElucHV0RXJyb3IgPSBzdHlsZWQuZGl2YFxuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmlucHV0RXJyb3JDb2xvciB8fCBcImNyaW1zb25cIn07XG5cdHdpZHRoOiBhdXRvO1xuXHRsaW5lLWhlaWdodDogdW5zZXQ7XG5cdGxlZnQ6IDEycHg7XG5cdGJvdHRvbTogYXV0bztcblx0dG9wOiA0N3B4O1xuXHRmb250LXdlaWdodDogNjAwO1xuXHRmb250LXNpemU6IDE2cHg7XG5cdG9wYWNpdHk6IDE7XG5cdG92ZXJmbG93OiBoaWRkZW47XG5cdHdoaXRlLXNwYWNlOiBub3dyYXA7XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBJbnB1dEVycm9yO1xuIl19 */"));
 exports.InputError = InputError;
 var _default = InputError;
 var _default2 = _default;
@@ -61199,13 +60199,17 @@ exports.default = void 0;
 
 var _core = require("@emotion/core");
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _FormGroup = _interopRequireDefault(require("./StyledComponents/FormGroup"));
 
 var _InputError = _interopRequireDefault(require("./StyledComponents/InputError"));
 
+var _FormConfigProvider = require("../Contexts/FormConfigProvider");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 (function () {
   var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
@@ -61223,12 +60227,63 @@ var SelectGroup = function SelectGroup(_ref) {
       error = _ref.error,
       value = _ref.value,
       handleInputChange = _ref.handleInputChange,
+      handleBlur = _ref.handleBlur,
       options = _ref.options,
       disabled = _ref.disabled,
       label = _ref.label;
+
+  var _useContext = (0, _react.useContext)(_FormConfigProvider.FormConfigContext),
+      getCssConfig = _useContext.getCssConfig;
+
+  var _getCssConfig = getCssConfig("input"),
+      _getCssConfig$inputBa = _getCssConfig.inputBackgroundColor,
+      inputBackgroundColor = _getCssConfig$inputBa === void 0 ? "#f0f0f0" : _getCssConfig$inputBa,
+      _getCssConfig$inputBo = _getCssConfig.inputBorderColor,
+      inputBorderColor = _getCssConfig$inputBo === void 0 ? "#333" : _getCssConfig$inputBo,
+      _getCssConfig$inputBo2 = _getCssConfig.inputBorderRadius,
+      inputBorderRadius = _getCssConfig$inputBo2 === void 0 ? "0" : _getCssConfig$inputBo2,
+      _getCssConfig$inputBo3 = _getCssConfig.inputBorderWidth,
+      inputBorderWidth = _getCssConfig$inputBo3 === void 0 ? "1px" : _getCssConfig$inputBo3,
+      _getCssConfig$inputCo = _getCssConfig.inputColor,
+      inputColor = _getCssConfig$inputCo === void 0 ? "#333" : _getCssConfig$inputCo,
+      _getCssConfig$inputHo = _getCssConfig.inputHoverBorderColor,
+      inputHoverBorderColor = _getCssConfig$inputHo === void 0 ? "#777777" : _getCssConfig$inputHo,
+      _getCssConfig$inputHo2 = _getCssConfig.inputHoverBoxShadow,
+      inputHoverBoxShadow = _getCssConfig$inputHo2 === void 0 ? "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #747474" : _getCssConfig$inputHo2,
+      _getCssConfig$inputHo3 = _getCssConfig.inputHoverBackgroundColor,
+      inputHoverBackgroundColor = _getCssConfig$inputHo3 === void 0 ? "#fff" : _getCssConfig$inputHo3,
+      _getCssConfig$inputEr = _getCssConfig.inputErrorColor,
+      inputErrorColor = _getCssConfig$inputEr === void 0 ? "crimson" : _getCssConfig$inputEr,
+      _getCssConfig$inputPl = _getCssConfig.inputPlaceholderColor,
+      inputPlaceholderColor = _getCssConfig$inputPl === void 0 ? "#747474" : _getCssConfig$inputPl;
+
+  var _getCssConfig2 = getCssConfig("label"),
+      _getCssConfig2$labelC = _getCssConfig2.labelColor,
+      labelColor = _getCssConfig2$labelC === void 0 ? "#333" : _getCssConfig2$labelC,
+      _getCssConfig2$labelF = _getCssConfig2.labelFontWeight,
+      labelFontWeight = _getCssConfig2$labelF === void 0 ? "600" : _getCssConfig2$labelF,
+      _getCssConfig2$labelO = _getCssConfig2.labelOpacity,
+      labelOpacity = _getCssConfig2$labelO === void 0 ? "0" : _getCssConfig2$labelO,
+      _getCssConfig2$labelT = _getCssConfig2.labelTextTransform,
+      labelTextTransform = _getCssConfig2$labelT === void 0 ? "none" : _getCssConfig2$labelT;
+
   return (0, _core.jsx)(_FormGroup.default, {
     id: "form-field-".concat(id),
-    className: "input-group ".concat(specialStyle ? specialStyle : "")
+    className: "input-group ".concat(specialStyle ? specialStyle : ""),
+    inputBackgroundColor: inputBackgroundColor,
+    inputBorderColor: inputBorderColor,
+    inputBorderRadius: inputBorderRadius,
+    inputBorderWidth: inputBorderWidth,
+    inputColor: inputColor,
+    inputHoverBackgroundColor: inputHoverBackgroundColor,
+    inputHoverBorderColor: inputHoverBorderColor,
+    inputHoverBoxShadow: inputHoverBoxShadow,
+    inputErrorColor: inputErrorColor,
+    inputPlaceholderColor: inputPlaceholderColor,
+    labelColor: labelColor,
+    labelFontWeight: labelFontWeight,
+    labelOpacity: labelOpacity,
+    labelTextTransform: labelTextTransform
   }, (0, _core.jsx)("label", {
     htmlFor: id
   }, label, (0, _core.jsx)("span", null, required ? "*" : "")), (0, _core.jsx)("select", {
@@ -61239,11 +60294,15 @@ var SelectGroup = function SelectGroup(_ref) {
     required: required,
     value: value,
     onChange: handleInputChange,
+    onBlur: handleBlur,
     "aria-invalid": error ? true : false
   }, options), (0, _core.jsx)(_InputError.default, {
-    className: "input-error"
+    className: "input-error",
+    inputErrorColor: inputErrorColor
   }, error));
 };
+
+__signature__(SelectGroup, "useContext{{ getCssConfig }}");
 
 var _default = SelectGroup;
 var _default2 = _default;
@@ -61267,7 +60326,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./StyledComponents/FormGroup":"src/Components/FormComponents/StyledComponents/FormGroup.js","./StyledComponents/InputError":"src/Components/FormComponents/StyledComponents/InputError.js"}],"src/Components/FormComponents/InputGroup.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./StyledComponents/FormGroup":"src/Components/FormComponents/StyledComponents/FormGroup.js","./StyledComponents/InputError":"src/Components/FormComponents/StyledComponents/InputError.js","../Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js"}],"src/Components/FormComponents/InputGroup.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -61277,13 +60336,17 @@ exports.default = void 0;
 
 var _core = require("@emotion/core");
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _FormGroup = _interopRequireDefault(require("./StyledComponents/FormGroup"));
 
 var _InputError = _interopRequireDefault(require("./StyledComponents/InputError"));
 
+var _FormConfigProvider = require("../Contexts/FormConfigProvider");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 (function () {
   var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
@@ -61307,12 +60370,63 @@ var InputGroup = function InputGroup(_ref) {
       disabled = _ref.disabled,
       validation = _ref.validation,
       handleInputChange = _ref.handleInputChange,
+      handleBlur = _ref.handleBlur,
       textareaSize = _ref.textareaSize,
       allowInternational = _ref.allowInternational;
+
+  var _useContext = (0, _react.useContext)(_FormConfigProvider.FormConfigContext),
+      getCssConfig = _useContext.getCssConfig;
+
+  var _getCssConfig = getCssConfig("input"),
+      _getCssConfig$inputBa = _getCssConfig.inputBackgroundColor,
+      inputBackgroundColor = _getCssConfig$inputBa === void 0 ? "#f0f0f0" : _getCssConfig$inputBa,
+      _getCssConfig$inputBo = _getCssConfig.inputBorderColor,
+      inputBorderColor = _getCssConfig$inputBo === void 0 ? "#333" : _getCssConfig$inputBo,
+      _getCssConfig$inputBo2 = _getCssConfig.inputBorderRadius,
+      inputBorderRadius = _getCssConfig$inputBo2 === void 0 ? "0" : _getCssConfig$inputBo2,
+      _getCssConfig$inputBo3 = _getCssConfig.inputBorderWidth,
+      inputBorderWidth = _getCssConfig$inputBo3 === void 0 ? "1px" : _getCssConfig$inputBo3,
+      _getCssConfig$inputCo = _getCssConfig.inputColor,
+      inputColor = _getCssConfig$inputCo === void 0 ? "#333" : _getCssConfig$inputCo,
+      _getCssConfig$inputHo = _getCssConfig.inputHoverBorderColor,
+      inputHoverBorderColor = _getCssConfig$inputHo === void 0 ? "#777777" : _getCssConfig$inputHo,
+      _getCssConfig$inputHo2 = _getCssConfig.inputHoverBoxShadow,
+      inputHoverBoxShadow = _getCssConfig$inputHo2 === void 0 ? "inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #747474" : _getCssConfig$inputHo2,
+      _getCssConfig$inputHo3 = _getCssConfig.inputHoverBackgroundColor,
+      inputHoverBackgroundColor = _getCssConfig$inputHo3 === void 0 ? "#fff" : _getCssConfig$inputHo3,
+      _getCssConfig$inputEr = _getCssConfig.inputErrorColor,
+      inputErrorColor = _getCssConfig$inputEr === void 0 ? "crimson" : _getCssConfig$inputEr,
+      _getCssConfig$inputPl = _getCssConfig.inputPlaceholderColor,
+      inputPlaceholderColor = _getCssConfig$inputPl === void 0 ? "#747474" : _getCssConfig$inputPl;
+
+  var _getCssConfig2 = getCssConfig("label"),
+      _getCssConfig2$labelC = _getCssConfig2.labelColor,
+      labelColor = _getCssConfig2$labelC === void 0 ? "#333" : _getCssConfig2$labelC,
+      _getCssConfig2$labelF = _getCssConfig2.labelFontWeight,
+      labelFontWeight = _getCssConfig2$labelF === void 0 ? "600" : _getCssConfig2$labelF,
+      _getCssConfig2$labelO = _getCssConfig2.labelOpacity,
+      labelOpacity = _getCssConfig2$labelO === void 0 ? "0" : _getCssConfig2$labelO,
+      _getCssConfig2$labelT = _getCssConfig2.labelTextTransform,
+      labelTextTransform = _getCssConfig2$labelT === void 0 ? "none" : _getCssConfig2$labelT;
+
   return (0, _core.jsx)(_FormGroup.default, {
     id: "form-field-".concat(id),
     className: "input-group ".concat(specialStyle ? specialStyle : ""),
-    textareaSize: textareaSize
+    textareaSize: textareaSize,
+    inputBackgroundColor: inputBackgroundColor,
+    inputBorderColor: inputBorderColor,
+    inputBorderRadius: inputBorderRadius,
+    inputBorderWidth: inputBorderWidth,
+    inputColor: inputColor,
+    inputHoverBackgroundColor: inputHoverBackgroundColor,
+    inputHoverBorderColor: inputHoverBorderColor,
+    inputHoverBoxShadow: inputHoverBoxShadow,
+    inputErrorColor: inputErrorColor,
+    inputPlaceholderColor: inputPlaceholderColor,
+    labelColor: labelColor,
+    labelFontWeight: labelFontWeight,
+    labelOpacity: labelOpacity,
+    labelTextTransform: labelTextTransform
   }, (0, _core.jsx)("label", {
     htmlFor: id
   }, label, (0, _core.jsx)("span", null, required ? "*" : ""), allowInternational ? (0, _core.jsx)("small", {
@@ -61329,13 +60443,17 @@ var InputGroup = function InputGroup(_ref) {
     required: required,
     value: value,
     onChange: handleInputChange,
+    onBlur: handleBlur,
     "aria-invalid": error ? true : false,
     disabled: disabled,
     pattern: validation ? validation : ".*"
   }), (0, _core.jsx)(_InputError.default, {
-    className: "input-error"
+    className: "input-error",
+    inputErrorColor: inputErrorColor
   }, error));
 };
+
+__signature__(InputGroup, "useContext{{ getCssConfig }}");
 
 var _default = InputGroup;
 var _default2 = _default;
@@ -61359,7 +60477,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./StyledComponents/FormGroup":"src/Components/FormComponents/StyledComponents/FormGroup.js","./StyledComponents/InputError":"src/Components/FormComponents/StyledComponents/InputError.js"}],"src/Components/FormComponents/Blocks/NameBlock.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","./StyledComponents/FormGroup":"src/Components/FormComponents/StyledComponents/FormGroup.js","./StyledComponents/InputError":"src/Components/FormComponents/StyledComponents/InputError.js","../Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js"}],"src/Components/FormComponents/Blocks/NameBlock.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -61393,7 +60511,8 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
 function TitleDropdown(_ref) {
   var value = _ref.value,
       error = _ref.error,
-      handleInputChange = _ref.handleInputChange;
+      handleInputChange = _ref.handleInputChange,
+      handleBlur = _ref.handleBlur;
   var vals = ["", "Mr", "Ms", "Mrs", "Mr and Mrs"];
   var options = vals.map(function (el, ind) {
     return (0, _core.jsx)("option", {
@@ -61414,6 +60533,7 @@ function TitleDropdown(_ref) {
     value: value,
     error: error,
     handleInputChange: handleInputChange,
+    handleBlur: handleBlur,
     options: options
   });
 }
@@ -61432,6 +60552,7 @@ function NameInput(_ref2) {
   var type = _ref2.type,
       required = _ref2.required,
       handleInputChange = _ref2.handleInputChange,
+      handleBlur = _ref2.handleBlur,
       value = _ref2.value,
       error = _ref2.error;
   var id = "".concat(type, "name");
@@ -61448,6 +60569,7 @@ function NameInput(_ref2) {
     required: required,
     value: value,
     handleInputChange: handleInputChange,
+    handleBlur: handleBlur,
     error: error
   });
 }
@@ -61463,7 +60585,8 @@ function NameInput(_ref2) {
 function SpouseInput(_ref3) {
   var value = _ref3.value,
       error = _ref3.error,
-      handleInputChange = _ref3.handleInputChange;
+      handleInputChange = _ref3.handleInputChange,
+      handleBlur = _ref3.handleBlur;
   return (0, _core.jsx)(_FormRow.default, null, (0, _core.jsx)(_InputGroup.default, {
     type: "text",
     id: "Spousename",
@@ -61474,6 +60597,7 @@ function SpouseInput(_ref3) {
     required: false,
     value: value,
     handleInputChange: handleInputChange,
+    handleBlur: handleBlur,
     error: error
   }));
 }
@@ -61486,6 +60610,7 @@ function NameBlock(_ref4) {
       fields = _ref4.fields,
       errors = _ref4.errors,
       handleInputChange = _ref4.handleInputChange,
+      handleBlur = _ref4.handleBlur,
       type = _ref4.type;
 
   if (!getMiddleName && !getSuffix) {
@@ -61494,23 +60619,27 @@ function NameBlock(_ref4) {
     }, getHonorific && (0, _core.jsx)(TitleDropdown, {
       value: fields.Title,
       error: errors.Title,
-      handleInputChange: handleInputChange
+      handleInputChange: handleInputChange,
+      handleBlur: handleBlur
     }), (0, _core.jsx)(NameInput, {
       type: "First",
       required: true,
       handleInputChange: handleInputChange,
+      handleBlur: handleBlur,
       value: fields["Firstname"],
       error: errors["Firstname"]
     }), (0, _core.jsx)(NameInput, {
       type: "Last",
       required: true,
       handleInputChange: handleInputChange,
+      handleBlur: handleBlur,
       value: fields["Lastname"],
       error: errors["Lastname"]
     })), getSpouseInfo && (0, _core.jsx)(SpouseInput, {
       value: fields.Spousename,
       error: errors.Spousename,
-      handleInputChange: handleInputChange
+      handleInputChange: handleInputChange,
+      handleBlur: handleBlur
     }));
   } else {
     return (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "".concat(type, " Block")), (0, _core.jsx)(_FormRow.default, {
@@ -61518,17 +60647,20 @@ function NameBlock(_ref4) {
     }, getHonorific && (0, _core.jsx)(TitleDropdown, {
       value: fields.Title,
       error: errors.Title,
-      handleInputChange: handleInputChange
+      handleInputChange: handleInputChange,
+      handleBlur: handleBlur
     }), (0, _core.jsx)(NameInput, {
       type: "First",
       required: true,
       handleInputChange: handleInputChange,
+      handleBlur: handleBlur,
       value: fields["Firstname"],
       error: errors["Firstname"]
     }), getMiddleName && (0, _core.jsx)(NameInput, {
       type: "Middle",
       required: true,
       handleInputChange: handleInputChange,
+      handleBlur: handleBlur,
       value: fields["Middlename"],
       error: errors["Middlename"]
     })), (0, _core.jsx)(_FormRow.default, {
@@ -61537,6 +60669,7 @@ function NameBlock(_ref4) {
       type: "Last",
       required: true,
       handleInputChange: handleInputChange,
+      handleBlur: handleBlur,
       value: fields["Lastname"],
       error: errors["Lastname"]
     }), getSuffix && (0, _core.jsx)(_SelectGroup.default, {
@@ -61546,6 +60679,7 @@ function NameBlock(_ref4) {
       value: fields.Suffix,
       error: errors.Suffix,
       handleInputChange: handleInputChange,
+      handleBlur: handleBlur,
       options: [(0, _core.jsx)("option", {
         key: "suff-0",
         value: "",
@@ -61569,7 +60703,8 @@ function NameBlock(_ref4) {
     })), getSpouseInfo && (0, _core.jsx)(SpouseInput, {
       value: fields.Spousename,
       error: errors.Spousename,
-      handleInputChange: handleInputChange
+      handleInputChange: handleInputChange,
+      handleBlur: handleBlur
     }));
   }
 }
@@ -61732,6 +60867,7 @@ function AddressBlock(_ref) {
   var fields = _ref.fields,
       errors = _ref.errors,
       handleInputChange = _ref.handleInputChange,
+      handleBlur = _ref.handleBlur,
       getAddress = _ref.getAddress,
       getPhone = _ref.getPhone,
       allowInternational = _ref.allowInternational,
@@ -61751,6 +60887,7 @@ function AddressBlock(_ref) {
     required: true,
     value: fields.Address1,
     handleInputChange: handleInputChange,
+    handleBlur: handleBlur,
     error: errors.Address1
   })), !hideAddressTwo && (0, _core.jsx)(_FormRow.default, {
     className: "address2-row"
@@ -61764,6 +60901,7 @@ function AddressBlock(_ref) {
     required: false,
     value: fields.Address2,
     handleInputChange: handleInputChange,
+    handleBlur: handleBlur,
     error: errors.Address2
   })), (0, _core.jsx)(_FormRow.default, {
     className: "city-state-row"
@@ -61777,6 +60915,7 @@ function AddressBlock(_ref) {
     required: true,
     value: fields.City,
     handleInputChange: handleInputChange,
+    handleBlur: handleBlur,
     error: errors.City
   }), (0, _core.jsx)(_SelectGroup.default, (_EmotionJSX = {
     id: "State",
@@ -61785,7 +60924,8 @@ function AddressBlock(_ref) {
     required: true,
     value: fields.Country == "United States" ? fields.State : "00",
     error: errors.State,
-    handleInputChange: handleInputChange
+    handleInputChange: handleInputChange,
+    handleBlur: handleBlur
   }, (0, _defineProperty2.default)(_EmotionJSX, "required", fields.Country == "United States"), (0, _defineProperty2.default)(_EmotionJSX, "disabled", fields.Country != "United States"), (0, _defineProperty2.default)(_EmotionJSX, "options", [(0, _core.jsx)("option", {
     key: "state-base-0",
     value: "",
@@ -61803,6 +60943,7 @@ function AddressBlock(_ref) {
     disabled: fields.Country != "United States",
     value: fields.Country == "United States" ? fields.Zip : "NA",
     handleInputChange: handleInputChange,
+    handleBlur: handleBlur,
     error: errors.Zip,
     allowInternational: allowInternational,
     validation: fields.Country != "United States" ? "*" : "d*"
@@ -61814,6 +60955,7 @@ function AddressBlock(_ref) {
     value: fields.Country,
     error: errors.Country,
     handleInputChange: handleInputChange,
+    handleBlur: handleBlur,
     options: [(0, _core.jsx)("option", {
       key: "country-base-0",
       value: "",
@@ -61836,6 +60978,7 @@ function AddressBlock(_ref) {
     required: true,
     value: fields.Emailaddress,
     handleInputChange: handleInputChange,
+    handleBlur: handleBlur,
     error: errors.Emailaddress
   }), getPhone && (0, _core.jsx)(_InputGroup.default, {
     type: "text",
@@ -61848,6 +60991,7 @@ function AddressBlock(_ref) {
     value: fields.phone,
     disabled: fields.Country != "United States",
     handleInputChange: handleInputChange,
+    handleBlur: handleBlur,
     error: errors.phone,
     validation: "\\d*"
   })));
@@ -89958,7 +89102,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57998" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64473" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -90176,6 +89320,6 @@ module.exports = function loadCSSBundle(bundle) {
   });
 };
 },{}],0:[function(require,module,exports) {
-var b=require("node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.register("css",require("node_modules/parcel-bundler/src/builtins/loaders/browser/css-loader.js"));b.load([["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],["stable.7461f3b3.js","node_modules/core-js/stable/index.js"]]).then(function(){require("src/index.js");});
+var b=require("node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.register("css",require("node_modules/parcel-bundler/src/builtins/loaders/browser/css-loader.js"));b.load([["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],["es.d5457454.js","node_modules/react-aria-live/es/index.js"],["stable.7461f3b3.js","node_modules/core-js/stable/index.js"],["esm.02dd6686.js","node_modules/react-icons/lib/esm/index.js"]]).then(function(){require("src/index.js");});
 },{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js",0], null)
 //# sourceMappingURL=/src.a2b27638.js.map

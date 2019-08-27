@@ -67,7 +67,16 @@ class AskForm extends Component {
 			singlePledgeData,
 			defaultAmount,
             defaultOption,
-            premiumData
+			premiumData,
+			formBackgroundColor,
+			formBorderColor,
+			formBorderRadius,
+			formBorderWidth,
+			formBoxShadow,
+			formColor,
+			formMargin,
+			formMaxWidth,
+			formPadding
         } = this.props;
         const givingOptions = {
             monthlyOption,
@@ -86,7 +95,17 @@ class AskForm extends Component {
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
         return !selected ? (
 			<>
-				<FormWrapper style={{maxWidth: "818px", margin: "0 auto"}}>
+				<FormWrapper 								
+					formBackgroundColor={formBackgroundColor}
+					formBorderColor={formBorderColor}
+					formBorderRadius={formBorderRadius}
+					formBorderWidth={formBorderWidth}
+					formBoxShadow={formBoxShadow}
+					formMaxWidth={formMaxWidth}
+					formPadding={formPadding}
+					formMargin={formMargin}
+					formColor={formColor}
+				>
 					<form
 						id="react-club-ask-form"
 						autoComplete="off"
@@ -132,13 +151,6 @@ class AskForm extends Component {
 									handleSubmit={this.handleSubmit}
 									submitting={submitting}
 									value={submitButtonText}
-									color="#fff"
-									backgroundColor="#009BDF"
-									hoverBackgroundColor="#fff"
-									hoverColor="#009bdf"
-									hoverBorderColor="#009bdf"
-									borderRadius="3px"
-									styles={{input: {boxShadow: "0 2px 0 0 #0081BA"}}}
 								/>
 							</FieldSet>
 						</FormPanel>

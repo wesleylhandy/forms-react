@@ -18,52 +18,116 @@
             "designations": [
                 {
                     "title": "Where Most Needed",
-                    "img": "https://source.unsplash.com/100x100/?humanitarian",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/cbn-ministries-1.png",
                     "description": "Make the biggest impact by meeting the immediate missions of the ministry.",
-                    "DetailDescription": "",
-                    "DetailCprojMail": "",
-                    "DetailCprojCredit": "",
-                    "DetailName": ""
+                    "DetailDescription": "CBN Ministries",
+                    "DetailCprojMail": "040846",
+                    "DetailCprojCredit": "040845",
+                    "DetailName": "CBNMinistries"
                 },{
                     "title": "CBN International Media Evangelism",
-                    "img": "https://source.unsplash.com/100x100/?humanitarian",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/cbn-international-media.png",
                     "description": "CBN produces international TV shows and websites in multiple languages, ministering to millions, presenting the Gospel and providing.",
-                    "DetailDescription": "",
-                    "DetailCprojMail": "",
-                    "DetailCprojCredit": "",
-                    "DetailName": ""
+                    "DetailDescription": "CBN International -- Media Evangelism",
+                    "DetailCprojMail": "010271",
+                    "DetailCprojCredit": "010270",
+                    "DetailName": "CBNInternational"
                 },{
                     "title": "Operation Blessing Humanitarian Aid",
-                    "img": "https://source.unsplash.com/100x100/?humanitarian",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-humanitarian-aid.png",
                     "description": "CBN&rsquo;s Operation Blessing is dedicated to demonstrating God&rsquo;s love by alleviating human need and suffering around the world.",
-                    "DetailDescription": "",
-                    "DetailCprojMail": "",
-                    "DetailCprojCredit": "",
-                    "DetailName": ""
+                    "DetailDescription": "Operation Blessing",
+                    "DetailCprojMail": "045258",
+                    "DetailCprojCredit": "045257",
+                    "DetailName": "OBHumanitarian "
                 },{
                     "title": "Superbook Animated Bible Series",
-                    "img": "https://source.unsplash.com/100x100/?humanitarian",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/superbook.png",
                     "description": "CBN is dedicated to bringing the Word of God and the message of salvation to children throughout the world through Superbook.",
-                    "DetailDescription": "",
-                    "DetailCprojMail": "",
-                    "DetailCprojCredit": "",
-                    "DetailName": ""
+                    "DetailDescription": "Superbook",
+                    "DetailCprojMail": "036044",
+                    "DetailCprojCredit": "036043",
+                    "DetailName": "CBNSuperbook"
                 },{
                     "title": "Orphan&rsquo;s Promise",
-                    "img": "https://source.unsplash.com/100x100/?humanitarian",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/orphans-promise.png",
                     "description": "CBN is committed to promoting the well-being of orphans and vulnerable children around the world by providing food, shelter, medical help.",
-                    "DetailDescription": "",
-                    "DetailCprojMail": "",
-                    "DetailCprojCredit": "",
-                    "DetailName": ""
+                    "DetailDescription": "CBN's Orphan's Promise",
+                    "DetailCprojMail": "032244",
+                    "DetailCprojCredit": "032243",
+                    "DetailName": "CBNOrphanPromis"
                 },{
                     "title": "CBN Israel",
-                    "img": "https://source.unsplash.com/100x100/?humanitarian",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/cbn-israel.png",
                     "description": "Your generosity allows us to care for Holocaust survivors in need, help struggling families and single mothers, see new thriving.",
-                    "DetailDescription": "",
-                    "DetailCprojMail": "",
-                    "DetailCprojCredit": "",
-                    "DetailName": ""
+                    "DetailDescription": "CBN Israel",
+                    "DetailCprojMail": "035825",
+                    "DetailCprojCredit": "035823",
+                    "DetailName": "CBNIsrael"
+                }, {
+                    "title": "Operation Blessing Life Changing Surgeries",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-life-changing-surgeries.png",
+                    "description": "CBN&rsquo;s Operation Blessing is dedicated to demonstrating God&rsquo;s love by alleviating human need and suffering around the world.",
+                    "DetailDescription": "OB Life-Changing Surgeries",
+                    "DetailCprojMail": "045179",
+                    "DetailCprojCredit": "045178",
+                    "DetailName": "OBLifeChgSrgry"
+                }, {
+                    "title": "Operation Blessing International Humanitarian Aid",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-international-humanitarian-aid.png",
+                    "description": "CBN&rsquo;s Operation Blessing is dedicated to demonstrating God&rsquo;s love by alleviating human need and suffering around the world.",
+                    "DetailDescription": "OB International -- Humanitarian Aid",
+                    "DetailCprojMail": "045263",
+                    "DetailCprojCredit": "045259",
+                    "DetailName": "OBInternational"
+                }, {
+                    "title": "Operation Blessing Hunger Strike Force",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-hunger-strike-force.png",
+                    "description": "CBN&rsquo;s Operation Blessing is dedicated to demonstrating God&rsquo;s love by alleviating human need and suffering around the world.",
+                    "DetailDescription": "OB Hunger Strike Force",
+                    "DetailCprojMail": "045266",
+                    "DetailCprojCredit": "045262",
+                    "DetailName": "OBHungerStrike"
+                }, {
+                    "title": "Operation Blessing Disaster Relief",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-disaster-relief.png",
+                    "description": "CBN&rsquo;s Operation Blessing is dedicated to demonstrating God&rsquo;s love by alleviating human need and suffering around the world.",
+                    "DetailDescription": "OB Disaster Relief",
+                    "DetailCprojMail": "045264",
+                    "DetailCprojCredit": "045260",
+                    "DetailName": "OBDisaster"
+                }, {
+                    "title": "Operation Blessing Clean Water Projects",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-clean-water-projects.png",
+                    "description": "CBN&rsquo;s Operation Blessing is dedicated to demonstrating God&rsquo;s love by alleviating human need and suffering around the world.",
+                    "DetailDescription": "OB Clean Water Projects",
+                    "DetailCprojMail": "045265",
+                    "DetailCprojCredit": "045261",
+                    "DetailName": "OBCleanWater"
+                }, {
+                    "title": "Helping the Homefront",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/helping-home-front.png",
+                    "description": "",
+                    "DetailDescription": "Helping the Home Front",
+                    "DetailCprojMail": "038974",
+                    "DetailCprojCredit": "038973",
+                    "DetailName": "CBNMilitary"
+                }, {
+                    "title": "CBN News",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/cbn-news.png",
+                    "description": "",
+                    "DetailDescription": "CBN News",
+                    "DetailCprojMail": "041885",
+                    "DetailCprojCredit": "041885",
+                    "DetailName": "CBNNews"
+                }, {
+                    "title": "Regent University",
+                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/regent.png",
+                    "description": "",
+                    "DetailDescription": "Regent University",
+                    "DetailCprojMail": "045638",
+                    "DetailCprojCredit": "045637",
+                    "DetailName": "CBN4Regent"
                 }
             ],
             "allowMonthlyDesignations": false,
@@ -87,20 +151,20 @@
             "defaultAmount": 40,
             "addGivingDescription": true,
             "monthlyPledgeData": {
-                "DetailCprojCredit": "",
-                "DetailCprojMail": "",
-                "DetailName": "",
-                "DetailDescription": ""
+                "DetailCprojCredit": "040845",
+                "DetailCprojMail": "040846",
+                "DetailName": "CBNMinistries",
+                "DetailDescription": "CBN Ministries"
             },
             "singlePledgeData": {
-                "DetailCprojCredit": "",
-                "DetailCprojMail": "",
-                "DetailName": "",
-                "DetailDescription": ""
+                "DetailCprojCredit": "040845",
+                "DetailCprojMail": "040846",
+                "DetailName": "CBNMinistries",
+                "DetailDescription": "CBN Ministries"
             },
             "premiumData": {
                 "premiumTitle":"The Plan: Eight Keys to Understanding God's Will For Your Life",
-                "premiumImgUrl": "https://source.unsplash.com/200x200/?prayer",
+                "premiumImgUrl": "http://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/the-plan-dvd.png",
                 "premiumDescriptions": [
                     "The exclusive DVD, <em>The Plan: Eight Keys to Understanding God&rsquo;s Will for Your Life</em>, by Pat Robertson.",
                     "Faith-building teachings each month.",

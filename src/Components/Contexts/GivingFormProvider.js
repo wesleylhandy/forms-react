@@ -123,29 +123,37 @@ class GivingFormProvider extends Component {
 		updateField: action => this.setState(state => reducer(state, action)),
 		validateAndUpdateField: async action => {
 			const { name, value } = action;
-			const isZip = name.includes("Zip") && value.length >= 5;
+			const isZip = name.includes("Zip");
 			if (isZip) {
-				if (!zip_regex.test(value)) {
-					action.error = "Invalid Postal Code";
-				} else {
-					try {
-						const oldCity = this.state.fields[
-							name == "ShipToZip" ? "ShipToCity" : "City"
-						].toUpperCase();
-						const response = await callZipCityStateService(
-							name,
-							value,
-							oldCity
-						);
-						if (response.action) {
-							this.setState(state => reducer(state, response.action));
+				this.setState(
+					state => reducer(state, { type: "TOGGLE_SUBMITTING" }), async () => {
+						if (!zip_regex.test(value)) {
+							action.error = "Invalid Postal Code";
+						} else {
+							try {
+								const oldCity = this.state.fields[
+									name == "ShipToZip" ? "ShipToCity" : "City"
+								].toUpperCase();
+								const response = await callZipCityStateService(
+									name,
+									value,
+									oldCity
+								);
+								if (response.action) {
+									// console.log({action: response.action})
+									this.setState(state => reducer(state, response.action), () => {
+										this.setState(state => reducer(state, { type: "TOGGLE_SUBMITTING" }))
+									});
+								}
+								action.error = response.error;
+							} catch (err) {
+								console.error("CallZipCityStateServiceError");
+								console.error({ err });
+								this.setState(state => reducer(state, { type: "TOGGLE_SUBMITTING" }))
+							}
 						}
-						action.error = response.error;
-					} catch (err) {
-						console.error("CallZipCityStateServiceError");
-						console.error({ err });
-					}
-				}
+						
+				})
 			} else {
 				const { getHonorific, allowInternational } = this.context;
 				action.error = await validateInput(
@@ -155,7 +163,10 @@ class GivingFormProvider extends Component {
 					true,
 					getHonorific,
 					allowInternational,
-					this.state.ShipToYes
+					this.state.fields.ShipToYes,
+					this.state.fields.ccNumber,
+					this.state.fields.ExpiresMonth,
+					this.state.fields.ExpiresYear
 				);
 			}
 			this.setState(state => reducer(state, action));
@@ -182,7 +193,7 @@ class GivingFormProvider extends Component {
 							);
 						}
 					}
-					let isValidForm = true;
+					let isValidForm = true, action = {};
 					if (this.state.fields.Country == "United States") {
 						let oldCity, response;
 						try {
@@ -253,7 +264,7 @@ class GivingFormProvider extends Component {
 								shipZipError
 							) {
 								isValidForm = false;
-								let action = {
+								action = {
 									type: "UPDATE_FIELDS",
 									fields: [],
 								};
@@ -291,6 +302,22 @@ class GivingFormProvider extends Component {
 							console.log("CSZValidationError");
 							console.error({ err });
 						}
+					} else {
+						action = {
+							type: "UPDATE_FIELDS",
+							action: {
+								fields: [{
+									name: "Zip",
+									value: "NA",
+									error: ''
+								} ,  {
+									name: "State",
+									value: "00",
+									error: ''
+								}]
+							}
+						}
+						this.setState(state => reducer(state, action));
 					}
 					const { fields } = this.state;
 					const fieldNames = Object.keys(fields);
@@ -310,7 +337,10 @@ class GivingFormProvider extends Component {
 								true,
 								getHonorific,
 								allowInternational,
-								this.state.ShipToYes
+								this.state.fields.ShipToYes,
+								this.state.ccNumber,
+								this.state.fields.ExpiresMonth,
+								this.state.fields.ExpiresYear
 							);
 							if (error) {
 								isValidForm = false;
@@ -674,7 +704,8 @@ class GivingFormProvider extends Component {
 			const designation = Object.keys(this.state.designationInfo).length && 
 			!(isMonthly && !this.state.allowMonthlyDesignations) ? this.state.designationInfo.title : "Where Most Needed";
 			return { amount, isMonthly, designation }
-		}
+		},
+		handleCCErrors: action => this.setState(state => reducer(state, action)),
 	};
 	validateGift = () => {
 		const items = [...this.state.cart.items];

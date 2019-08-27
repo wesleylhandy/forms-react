@@ -5,7 +5,7 @@ import FieldSet from "../StyledComponents/FieldSet";
 import SelectGroup from "../SelectGroup";
 import InputGroup from "../InputGroup";
 
-function TitleDropdown({ value, error, handleInputChange }) {
+function TitleDropdown({ value, error, handleInputChange, handleBlur }) {
 	const vals = ["", "Mr", "Ms", "Mrs", "Mr and Mrs"];
 	const options = vals.map((el, ind) => {
 		return (
@@ -27,6 +27,7 @@ function TitleDropdown({ value, error, handleInputChange }) {
 			value={value}
 			error={error}
 			handleInputChange={handleInputChange}
+			handleBlur={handleBlur}
 			options={options}
 		/>
 	);
@@ -41,7 +42,7 @@ function TitleDropdown({ value, error, handleInputChange }) {
  * @param {String} error
  * @returns {JSX} - InputGroup with given parameters
  */
-function NameInput({ type, required, handleInputChange, value, error }) {
+function NameInput({ type, required, handleInputChange, handleBlur, value, error }) {
 	const id = `${type}name`;
 	const label = `${type} Name`;
 	const specialStyle = "form-group--" + id;
@@ -57,6 +58,7 @@ function NameInput({ type, required, handleInputChange, value, error }) {
 			required={required}
 			value={value}
 			handleInputChange={handleInputChange}
+			handleBlur={handleBlur}
 			error={error}
 		/>
 	);
@@ -69,7 +71,7 @@ function NameInput({ type, required, handleInputChange, value, error }) {
  * @param {Function} handleInputChange
  * @returns {JSX} - InputGroup with given parameters
  */
-function SpouseInput({ value, error, handleInputChange }) {
+function SpouseInput({ value, error, handleInputChange, handleBlur }) {
 	return (
 		<FormRow>
 			<InputGroup
@@ -82,6 +84,7 @@ function SpouseInput({ value, error, handleInputChange }) {
 				required={false}
 				value={value}
 				handleInputChange={handleInputChange}
+				handleBlur={handleBlur}
 				error={error}
 			/>
 		</FormRow>
@@ -96,6 +99,7 @@ function NameBlock({
 	fields,
 	errors,
 	handleInputChange,
+	handleBlur,
 	type,
 }) {
 	if (!getMiddleName && !getSuffix) {
@@ -108,12 +112,14 @@ function NameBlock({
 							value={fields.Title}
 							error={errors.Title}
 							handleInputChange={handleInputChange}
+							handleBlur={handleBlur}
 						/>
 					)}
 					<NameInput
 						type={"First"}
 						required={true}
 						handleInputChange={handleInputChange}
+						handleBlur={handleBlur}
 						value={fields["Firstname"]}
 						error={errors["Firstname"]}
 					/>
@@ -121,6 +127,7 @@ function NameBlock({
 						type={"Last"}
 						required={true}
 						handleInputChange={handleInputChange}
+						handleBlur={handleBlur}
 						value={fields["Lastname"]}
 						error={errors["Lastname"]}
 					/>
@@ -130,6 +137,7 @@ function NameBlock({
 						value={fields.Spousename}
 						error={errors.Spousename}
 						handleInputChange={handleInputChange}
+						handleBlur={handleBlur}
 					/>
 				)}
 			</FieldSet>
@@ -144,12 +152,14 @@ function NameBlock({
 							value={fields.Title}
 							error={errors.Title}
 							handleInputChange={handleInputChange}
+							handleBlur={handleBlur}
 						/>
 					)}
 					<NameInput
 						type={"First"}
 						required={true}
 						handleInputChange={handleInputChange}
+						handleBlur={handleBlur}
 						value={fields["Firstname"]}
 						error={errors["Firstname"]}
 					/>
@@ -158,6 +168,7 @@ function NameBlock({
 							type={"Middle"}
 							required={true}
 							handleInputChange={handleInputChange}
+							handleBlur={handleBlur}
 							value={fields["Middlename"]}
 							error={errors["Middlename"]}
 						/>
@@ -168,6 +179,7 @@ function NameBlock({
 						type={"Last"}
 						required={true}
 						handleInputChange={handleInputChange}
+						handleBlur={handleBlur}
 						value={fields["Lastname"]}
 						error={errors["Lastname"]}
 					/>
@@ -179,6 +191,7 @@ function NameBlock({
 							value={fields.Suffix}
 							error={errors.Suffix}
 							handleInputChange={handleInputChange}
+							handleBlur={handleBlur}
 							options={[
 								<option key="suff-0" value="" disabled="disabled">
 									Suffix* &#9663;
@@ -207,6 +220,7 @@ function NameBlock({
 						value={fields.Spousename}
 						error={errors.Spousename}
 						handleInputChange={handleInputChange}
+						handleBlur={handleBlur}
 					/>
 				)}
 			</FieldSet>

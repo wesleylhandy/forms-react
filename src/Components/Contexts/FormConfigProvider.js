@@ -19,6 +19,8 @@ const reducer = (state, action) => {
 			return { ...state, submitted: false, confirmed: false };
 		case "CONFIRMED":
 			return { ...state, confirmed: true };
+		case "SET_CSS_CONFIG":
+			return { ...state, cssConfig: action.values };
 		default:
 			return { ...state };
 	}
@@ -32,7 +34,7 @@ class FormConfigProvider extends Component {
 		submitted: false,
 		confirmed: false,
 		getConfiguration: async ({ rootEntry, formType }) => {
-			let initialState = {}, cssConfig = {}, formConfig = {};
+			let initialState = {}, initialStyle = {}, cssConfig = {}, formConfig = {};
 			try {
 				const generator = rootEntry.dataset.environment
 					? rootEntry.dataset.environment.toLowerCase()
@@ -52,28 +54,37 @@ class FormConfigProvider extends Component {
 					proxyUri = `${proxyUri}cbngiving/v1/${formName}`
 				} else {
 					proxyUri = `http://${process.env.DEV_SERVER_IP}:${process.env.DEV_SERVER_PORT}`;
-					initialState = await callApi(`${proxyUri}/config/form-config.json`, {
+					[initialState, initialStyle] = await Promise.all([callApi(`${proxyUri}/config/form-config.json`, {
 						method: "GET",
-					});
+					}), callApi(`${proxyUri}/config/css-config.json`, {
+						method: "GET",
+					})])
 				}
-
-				const { configurations } = initialState;
+				let configurations;
+				configurations = initialState.configurations
 
 				formConfig = Array.isArray(configurations)
 					? configurations.filter(config => config.formType == formType)[0]
 					: initialState;
 
+				configurations = initialStyle.configurations;
+				cssConfig = Array.isArray(configurations) ? configurations.filter(config => config.formType == formType)[0].cssConfig : initialStyle
+
 				if (formConfig.mode === "production") {
 					if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
 						window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
 						if (
-							Object.keys(window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers)
-								.length
+							(
+								window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers instanceof Map && 
+								window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers.size
+							) || 
+								Object.keys(window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers).length
 						) {
-							window.__REACT_DEVTOOLS_GLOBAL_HOOK__._renderers = {};
+							window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers = {};
 						}
 					}
 				}
+
 				if (Object.keys(formConfig).length) {
 					formConfig.proxy = isLocal ? `${proxyUri}/${formType}` : proxyUri;
 					this.setState(state =>
@@ -102,6 +113,16 @@ class FormConfigProvider extends Component {
 		submitForm: action => this.setState(state => reducer(state, action)),
 		setConfirmed: action => this.setState(state => reducer(state, action)),
 		goBack: action => this.setState(state => reducer(state, action)),
+		getCssConfig: type => {
+			const config = Object.entries(this.state.cssConfig).reduce((obj, [key, value]) => {
+				if (key.includes(type)) {
+					obj[key] = value
+				}
+				return obj
+			}, {})
+			return config
+		},
+		setCssConfig: action => this.setState(state => reducer(state, action)),
 	};
 	render() {
 		const {

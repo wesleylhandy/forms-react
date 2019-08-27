@@ -22,8 +22,8 @@ export const callZipCityStateService = async (name, value, oldCity) => {
 		try {
 			const result = await callApi(url);
 			let { city, state, zip, returnCode, returnMessage } = JSON.parse(result);
-			// console.log({ city, state, zip, returnCode, returnMessage })
-			if (returnCode == 1) {
+
+			if (returnCode === 1) {
 				// console.log(city)
 				const error = oldCity && !city.toUpperCase().includes(oldCity);
 				const newCity = error || !oldCity ? city.split(";")[0] : oldCity;
@@ -53,7 +53,8 @@ export const callZipCityStateService = async (name, value, oldCity) => {
 				console.error({ oldCity, newCity });
 				return { action, error: "" };
 			} else {
-				return { action: "", error: returnMessage };
+				console.error({ city, state, zip, returnCode, returnMessage })
+				return { action: {type: "UPDATE_FIELD", name, value, error: returnMessage }};
 			}
 		} catch (err) {
 			console.error(err);
@@ -61,7 +62,7 @@ export const callZipCityStateService = async (name, value, oldCity) => {
 		}
 	} else {
 		console.error({ err: "No Value Passed to Validator" });
-		return { action: "", error: "No Value Passed to Validator" };
+		return { action: "UPDATE_FIELD", name, value, error: "No Value Passed to Validator" };
 	}
 };
 
@@ -110,6 +111,9 @@ export const callAddressVerification = async (
  * @param {Boolean} [getHonorific] - Boolean to determine if a field is required
  * @param {Boolean} [allowInternational] - Boolean only necessary for Country Validation
  * @param {Boolean} [ShipToYes] - Boolean for validating Shipping Address
+ * @param {String} [ccNumber]
+ * @param {String} [ccMonth]
+ * @param {String} [ccYear]
  * @returns {String} - an empty String if no errors, else a string with a single error message
  */
 export const validateInput = (
@@ -119,7 +123,10 @@ export const validateInput = (
 	getAddress,
 	getHonorific,
 	allowInternational,
-	ShipToYes
+	ShipToYes,
+	ccNumber,
+	ccMonth,
+	ccYear
 ) => {
 	let error = "";
 	switch (name) {
@@ -127,8 +134,9 @@ export const validateInput = (
 		case "ExpiresMonth":
 		case "ExpiresYear":
 		case "cvnCode":
-			let res = validateCCInput(name, value)
+			let res = validateCCInput(name, value, ccNumber, ccMonth, ccYear)
 			error = res.error;
+			break;
 		case "Title":
 			if (!value && submitting && getHonorific) {
 				error = "Required";

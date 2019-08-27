@@ -2,13 +2,14 @@ import React from "react";
 import styled from "@emotion/styled";
 
 const FormWrapper = styled.main`
-	background: #fff;
+	background: ${props => props.formBackgroundColor};
 	box-sizing: border-box;
-	border: 0 solid #333;
-	border-radius: 10px;
-	color: #333;
-	max-width: 768px;
-	padding: 30px;
+	border: ${props => props.formBorderWidth} solid ${props => props.formBorderColor};
+	border-radius: ${props => props.formBorderRadius};
+	color: ${props => props.formColor};
+	max-width: ${props => props.formMaxWidth};
+	padding: ${props => props.formPadding};
+	margin: ${props => props.formMargin};
 	width: 100%;
 	@media screen and (max-width: 493px) {
 		padding: 20px 10px;

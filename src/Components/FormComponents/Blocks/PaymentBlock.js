@@ -110,7 +110,7 @@ const InfoCircle = styled.div`
     }
 `
 
-const PaymentBlock = ({fields, errors, curYear, curMonth, handleInputChange}) => {
+const PaymentBlock = ({fields, errors, curYear, curMonth, handleInputChange, handleBlur}) => {
     const years = [], months = [];
     years.push(
         <option key="exp-year-base-0" value="" disabled="disabled">
@@ -154,12 +154,13 @@ const PaymentBlock = ({fields, errors, curYear, curMonth, handleInputChange}) =>
                         specialStyle="form-group--ccNumber"
                         type="text"
                         id="ccNumber"
-                        label="CARD NUMBER"
+                        label="Card Number"
                         required={true}
                         maxLength={16}
                         placeholder="#### #### #### #### ####"
                         value={fields.ccNumber}
                         handleInputChange={handleInputChange}
+                        handleBlur={handleBlur}
                         error={errors.ccNumber}
                         validation="\d*"
                     />
@@ -168,23 +169,25 @@ const PaymentBlock = ({fields, errors, curYear, curMonth, handleInputChange}) =>
                     <SelectGroup
                         id="ExpiresMonth"
                         specialStyle="form-group--expMonth"
-                        label="MONTH"
+                        label="Month"
                         required={true}
                         value={fields.ExpiresMonth}
                         error={errors.ExpiresMonth}
                         options={months}
                         handleInputChange={handleInputChange}
+                        handleBlur={handleBlur}
                     />
                     <span>&nbsp;/&nbsp;</span>
                     <SelectGroup
                         id="ExpiresYear"
                         specialStyle="form-group--expYear"
-                        label="YEAR"
+                        label="Year"
                         required={true}
                         value={fields.ExpiresYear}
                         error={errors.ExpiresYear}
                         options={years}
                         handleInputChange={handleInputChange}
+                        handleBlur={handleBlur}
                     />
                     <InputGroup
                         specialStyle="form-group--cvnCode"
@@ -196,8 +199,9 @@ const PaymentBlock = ({fields, errors, curYear, curMonth, handleInputChange}) =>
                         placeholder="cvv"
                         value={fields.cvnCode}
                         handleInputChange={handleInputChange}
+                        handleBlur={handleBlur}
                         error={errors.cvnCode}
-                        validation="\d*"
+                        validation="\d{3,4}"
                     />
                     <InfoCircle>
                         <a href="https://www.cbn.com/CVVNumber/CVV.html" target="_blank"><FaQuestionCircle/></a>

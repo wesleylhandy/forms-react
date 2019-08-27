@@ -42,10 +42,14 @@ const d = new Date();
 const curMonth = "0" + (d.getMonth() + 1);
 const curYear = d.getFullYear();
 
+let timeout;
+
 class ConfirmationForm extends Component {
 	formRef = React.createRef()
 	state = {
-		a11yMessage: ''
+		a11yMessage: '',
+		hiddenFormSubmitted: false,
+		hiddenFormAccepted: false,
 	}
 
     componentDidMount() {
@@ -97,15 +101,101 @@ class ConfirmationForm extends Component {
 		// if user has selected to save personal info,
 	}
 	getSnapshotBeforeUpdate() {
-		const { submitted, confirmationData, formAction } = this.context
-		console.log({confirmationData, formAction})
-		if (submitted) {
+		const { submitted, confirmed, fields } = this.context
+		const { hiddenFormSubmitted } = this.state
+		// console.log({confirmationData, formAction})
+		const hasErrors = fields.errors && fields.errors.length ?
+			Object.values(fields.errors).filter(val => val && val.length > 0).length > 0 : false;
+		if (submitted && !hasErrors && !confirmed && !hiddenFormSubmitted) {
+			console.log("Snapshot")
 			return true
 		}
 		return null
 	}
 	componentDidUpdate(prevProps, prevState, snapshot) {
-		console.log({snapshot})
+		if (snapshot) {
+			const getMainURL = () => {
+				var retnURL = "";
+				var mainurlStr = document.querySelector("input[name='mainURL']").value;
+				if (mainurlStr != "" && mainurlStr != "undefined") {
+					if (mainurlStr.indexOf("?") > 0) {
+						retnURL = mainurlStr + "&error=gen";
+					} else {
+						retnURL = mainurlStr + "?error=gen";
+					}
+				}
+				return retnURL;
+			};
+
+			let redirURL = getMainURL();
+
+			if (redirURL == "" || redirURL == "undefined") {
+				redirURL = "https://www.cbn.com";
+			}
+			//set timeout if url does not respond in timely manner
+			timeout = setTimeout(function() {
+				window.location.href = redirURL;
+				return false;
+			}, 15000);
+
+			const { ccNumber, ExpiresYear, ExpiresMonth, cvnCode } = this.context.fields;
+			let ccChecked;
+			if (ccNumber) {
+				switch (parseInt(ccNumber.slice(0, 1))) {
+					case 4:
+						ccChecked = "001";
+						break;
+					case 5:
+						ccChecked = "002";
+						break;
+					case 3:
+						ccChecked = "003";
+						break;
+					case 6:
+						ccChecked = "004";
+						break;
+				}
+			}
+			const isValid = checkValues(
+				ccChecked,
+				ccNumber,
+				ExpiresMonth,
+				ExpiresYear,
+				cvnCode
+			);
+			if (isValid.passes) {
+				const { ccCardType, ccNum, ccExpDate, transactionType, ccCvn } = isValid;
+				document.querySelector('input[name="card_type"]').value = ccCardType;
+				document.querySelector('input[name="card_number"]').value = ccNum;
+				document.querySelector(
+					'input[name="card_expiry_date"]'
+				).value = ccExpDate;
+				document.querySelector('input[name="card_cvn"]').value = ccCvn
+				if (isValid.transactionType) {
+					document.querySelector(
+						'input[name="transaction_type"]'
+					).value = transactionType;
+					document.querySelector(
+						'input[name="signature"]'
+					).value = document.querySelector('input[name="signatureDis"]').value;
+				}
+				//cancel redirect
+				clearTimeout(timeout);
+
+				// bubble formaction
+				document.forms.hiddenform.submit.type = "submit";
+				document.forms.hiddenform.submit.click();
+				this.setState(state => ({hiddenFormSubmitted: true }))
+			} else {
+				// handle validation errors
+				const { errors } = isValid;
+				this.setState(state => ({hiddenFormSubmitted: true }), ()=>{
+					this.context.handleCCErrors({type: "UPDATE_CC_ERRORS", errors});
+					// cancel redirect
+					clearTimeout(timeout);
+				})
+			}
+		}
 	}
     handleMessage = e => {
 		// console.log({e})
@@ -122,16 +212,17 @@ class ConfirmationForm extends Component {
 		}
 		switch (type) {
 			case "render receipt":
-				this.setState({ submitting: false });
 				this.context.setConfirmed({
 					type: "CONFIRMED",
 					trackingVars: tracking_vars,
 				});
 				break;
 			case "form error" :
-				const errors = [...this.state.errors]
-				errors["ccNumber"] = "Please verify your Payment Information and Try Again"
-				this.setState({ submitting: false, errors });
+				const errors = [{ ccNumber: "Please verify your Payment Information and Try Again" }]
+				this.setState({ hiddenFormSubmitted: false }, () => {
+					this.context.handleCCErrors({type: "UPDATE_CC_ERRORS", errors});
+					clearTimeout(timeout);
+				});
 				break;
 		}
 		return;
@@ -140,22 +231,37 @@ class ConfirmationForm extends Component {
 		const target = e.target;
 		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
-		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name, value });
+		this.context.updateField({ type: "UPDATE_FIELD", name, value });
 	};
+	handleBlur = e => {
+		const target = e.target;
+		let value = target.type === "checkbox" ? target.checked : target.value;
+		const name = target.name;
+		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name, value });
+	}
 
 	handleSubmit = async e => {
 		e.preventDefault();
 		this.context.submitGivingForm({type: "confirmation"});
 	};
     render() {
-        const { errors, fields, initialized, submitting, selected, submitted, confirmationData, formAction } = this.context;
+        const { errors, fields, initialized, submitting, selected, submitted, confirmationData, formAction, confirmed } = this.context;
         const { 
             allowInternational,
             getPhone,
             getHonorific,
             getSuffix,
             getMiddleName,
-            getSpouseInfo,  
+			getSpouseInfo,  
+			formBackgroundColor,
+			formBorderColor,
+			formBorderRadius,
+			formBorderWidth,
+			formBoxShadow,
+			formColor,
+			formMargin,
+			formMaxWidth,
+			formPadding
 		} = this.props
 		const formInputs = [], dataInputs = [];
 		confirmationData.forEach((datum, i) => {
@@ -184,10 +290,20 @@ class ConfirmationForm extends Component {
 		})
         const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
-        return selected && (
+        return selected && !confirmed && (
             <>
 			<LiveMessage message={this.state.a11yMessage} aria-live="polite" />
-            <FormWrapper style={{maxWidth: "818px", margin: "0 auto"}}>
+            <FormWrapper 								
+					formBackgroundColor={formBackgroundColor}
+					formBorderColor={formBorderColor}
+					formBorderRadius={formBorderRadius}
+					formBorderWidth={formBorderWidth}
+					formBoxShadow={formBoxShadow}
+					formMaxWidth={formMaxWidth}
+					formPadding={formPadding}
+					formMargin={formMargin}
+					formColor={formColor}
+				>
                 <form
                     id="react-club-payment-form"
                     autoComplete="off"
@@ -203,7 +319,8 @@ class ConfirmationForm extends Component {
                                 errors={errors} 
                                 curMonth={curMonth} 
                                 curYear={curYear}
-                                handleInputChange={this.handleInputChange}
+								handleInputChange={this.handleInputChange}
+								handleBlur={this.handleBlur}
                             />
 							<FieldSet style={{minWidth: "unset", width: "calc(100% - 20px)", maxWidth: "640px", margin: "0 auto"}}>
 								<legend>Name and Billing Address Block</legend>
@@ -219,12 +336,14 @@ class ConfirmationForm extends Component {
 										getSuffix={getSuffix}
 										getSpouseInfo={getSpouseInfo}
 										handleInputChange={this.handleInputChange}
+										handleBlur={this.handleBlur}
 										type="Name"
 									/>
 									<AddressBlock
 										fields={fields}
 										errors={errors}
 										handleInputChange={this.handleInputChange}
+										handleBlur={this.handleBlur}
 										getAddress={true}
 										getPhone={getPhone}
 										allowInternational={allowInternational}
@@ -242,34 +361,10 @@ class ConfirmationForm extends Component {
 									handleSubmit={this.handleSubmit}
 									submitting={submitting || submitted}
                                     value="Send Payment"
-                                    color="#fff"
-									backgroundColor="#009BDF"
-									hoverBackgroundColor="#fff"
-									hoverColor="#009bdf"
-									hoverBorderColor="#009bdf"
-									borderRadius="3px"
-									styles={{input: {boxShadow: "0 2px 0 0 #0081BA"}}}
 								/>
                                 <Disclaimer style={{color: "#54585D"}}>CBN values and protects your personal information.</Disclaimer>
 							</FieldSet>
-							<HiddenForm
-								id="hiddenform"
-								className="hidden-form"
-								action={formAction}
-								method="POST"
-								target="paymentprocess"
-								ref={this.formRef}
-							>
-								{formInputs}
-							</HiddenForm>
-							{dataInputs}
-							<iframe
-								className="hidden"
-								name="paymentprocess"
-								width="0"
-								height="0"
-								style={{ visibility: "none", border: "none" }}
-							></iframe>
+							
 						</FormPanel>
 					) : (
 						<FormPanel className="form-panel">
@@ -277,6 +372,24 @@ class ConfirmationForm extends Component {
 						</FormPanel>
                     )}
                 </form>
+				<HiddenForm
+					id="hiddenform"
+					className="hidden-form"
+					action={formAction}
+					method="POST"
+					target="paymentprocess"
+					ref={this.formRef}
+				>
+					{formInputs}
+				</HiddenForm>
+				{dataInputs}
+				<iframe
+					className="hidden"
+					name="paymentprocess"
+					width="0"
+					height="0"
+					style={{ visibility: "none", border: "none" }}
+				></iframe>
             </FormWrapper>
             <div style={{background: "white", margin: "30px 0", padding: "30px 0"}}>
                 <Seals style={{marginTop:"0"}}/>

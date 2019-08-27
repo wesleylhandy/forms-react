@@ -3,8 +3,8 @@ import styled from "@emotion/styled";
 
 const FormGroup = styled.div`
 	position: relative;
-	margin-bottom: calc(19px * 0.7);
-	margin-top: calc(19px * 0.7);
+	margin-bottom: 20px;
+	margin-top: 20px;
 	flex: 1 1 auto;
 	&.form-group--Title,
 	&.form-group--Suffix {
@@ -44,15 +44,16 @@ const FormGroup = styled.div`
 	}
 	label {
 		box-sizing: border-box;
-		color: #333;
+		color: ${props => props.labelColor};
 		font-size: calc(19px * 0.7);
-		font-weight: 600;
+		font-weight: ${props => props.labelFontWeight};
 		margin-bottom: 0;
 		position: absolute;
-		opacity: 0;
-		bottom: calc(100% - 2px);
+		opacity: ${props => props.labelOpacity};
+		bottom: calc(100% - ${props=> props.inputHoverBoxShadow == "none" ? "6px" : "2px"});
 		left: 10px;
 		transition: opacity 150ms ease-in-out;
+		text-transform: ${props=> props.labelTextTransform}
 	}
 	label span {
 		color: crimson;
@@ -66,7 +67,7 @@ const FormGroup = styled.div`
 	select,
 	textarea {
 		box-sizing: border-box;
-		color: #333;
+		color: ${props => props.inputColor};
 		font-size: 19px;
 		font-weight: 600;
 		height: 44px;
@@ -76,9 +77,9 @@ const FormGroup = styled.div`
 		padding: 0 10px;
 		line-height: 44px !important;
 		background: none;
-		background-color: #f0f0f0;
-		border: 1px solid #ccc;
-		border-radius: 0;
+		background-color: ${props => props.inputBackgroundColor};
+		border: ${props=> props.inputBorderWidth} solid ${props => props.inputBorderColor};
+		border-radius: ${props => props.inputBorderRadius};
 		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 		transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 		position: relative;
@@ -94,7 +95,7 @@ const FormGroup = styled.div`
 	select::placeholder,
 	textarea::placeholder {
 		font-weight: 600;
-		color: #747474;
+		color: ${props=> props.inputPlaceholderColor};
 	}
 	input:active,
 	input:hover,
@@ -105,9 +106,9 @@ const FormGroup = styled.div`
 	textarea:active,
 	textarea:hover,
 	textarea:focus {
-		border: 1px solid #777777;
-		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #747474;
-		background-color: #fff;
+		border: ${props=> props.inputBorderWidth} solid ${props => props.inputHoverBorderColor};
+		box-shadow: ${props => props.inputHoverBoxShadow};
+		background-color: ${props => props.inputHoverBackgroundColor};
 		outline: none;
 	}
 	select:invalid {
@@ -124,7 +125,7 @@ const FormGroup = styled.div`
 	input.error,
 	select.error,
 	textarea.error {
-		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px crimson;
+		border: ${props=> props.inputBorderWidth} solid ${props => props.inputErrorColor};
 	}
 	@media screen and (max-width: 613px) {
 		&.form-group--Lastname {

@@ -165,6 +165,15 @@ const reducer = (state, action) => {
 				confirmed: false,
 				selected: false
 			};
+		case "UPDATE_CC_ERRORS":
+			errors = { ...state.errors }
+			return {
+				...state,
+				errors: {
+					...errors,
+					...action.errors
+				}
+			}
 		default:
 			return { ...state };
 			break;

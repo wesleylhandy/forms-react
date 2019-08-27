@@ -8,7 +8,7 @@ export const AmountError = styled.div`
 	width: auto;
 	left: 50%;
 	transform: translateX(-50%);
-	bottom: 10px;
+	bottom: 0;
 	font-weight: 800;
 	font-size: calc(19px * 0.5);
 	opacity: 1;
