@@ -328,7 +328,7 @@ class ConfirmationForm extends Component {
 			selected &&
 			!confirmed && (
 				<>
-					<HeaderBlock/>
+					<HeaderBlock />
 					<LiveMessage message={this.state.a11yMessage} aria-live="polite" />
 					<FormWrapper
 						formBackgroundColor={formBackgroundColor}
@@ -454,7 +454,7 @@ class ConfirmationForm extends Component {
 							<a href="tel:18002891777">1-800-289-1777</a>.
 						</Disclaimer>
 					</div>
-					<FooterBlock/>
+					<FooterBlock />
 				</>
 			)
 		);

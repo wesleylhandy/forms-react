@@ -16,7 +16,7 @@ const ClubSuccessMessage = ({ confirmed, successMessage }) => {
 	return (
 		confirmed && (
 			<>
-				<HeaderBlock/>
+				<HeaderBlock />
 				<LiveMessage
 					message={
 						"Your payment is being processed. A new page with a thank you message just loaded."
@@ -29,7 +29,7 @@ const ClubSuccessMessage = ({ confirmed, successMessage }) => {
 						dangerouslySetInnerHTML={createMarkup(successMessage)}
 					/>
 				</FormWrapper>
-				<FooterBlock/>
+				<FooterBlock />
 			</>
 		)
 	);

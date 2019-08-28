@@ -97,7 +97,7 @@ class AskForm extends Component {
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
 		return !selected ? (
 			<>
-				<HeaderBlock/>
+				<HeaderBlock />
 				<FormWrapper
 					formBackgroundColor={formBackgroundColor}
 					formBorderColor={formBorderColor}
@@ -167,7 +167,7 @@ class AskForm extends Component {
 				</FormWrapper>
 				<Seals />
 				<OtherGivingBlock />
-				<FooterBlock/>
+				<FooterBlock />
 			</>
 		) : null;
 	}

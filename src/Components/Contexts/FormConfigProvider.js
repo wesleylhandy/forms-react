@@ -141,7 +141,7 @@ class FormConfigProvider extends Component {
 			return config;
 		},
 		getFormConfig: key => {
-			return this.state.formConfig[key]
+			return this.state.formConfig[key];
 		},
 		setCssConfig: action => this.setState(state => reducer(state, action)),
 	};
