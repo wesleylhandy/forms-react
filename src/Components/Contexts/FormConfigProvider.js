@@ -34,7 +34,10 @@ class FormConfigProvider extends Component {
 		submitted: false,
 		confirmed: false,
 		getConfiguration: async ({ rootEntry, formType }) => {
-			let initialState = {}, initialStyle = {}, cssConfig = {}, formConfig = {};
+			let initialState = {},
+				initialStyle = {},
+				cssConfig = {},
+				formConfig = {};
 			try {
 				const generator = rootEntry.dataset.environment
 					? rootEntry.dataset.environment.toLowerCase()
@@ -46,43 +49,55 @@ class FormConfigProvider extends Component {
 				const isWordpress = generator && generator.includes("wordpress");
 				if (isDrupal) {
 					initialState = rootEntry.dataset.initialState;
+					initialStyle = rootEntry.dataset.initialStyle;
 				} else if (isWordpress) {
-					[cssConfig, initialState] = await Promise.all([
-						callApi(cssConfigUrl, {method: 'GET'}),
-						callApi(formConfigUrl, {method: 'GET'})
-					])
-					proxyUri = `${proxyUri}cbngiving/v1/${formName}`
+					[initialStyle, initialState] = await Promise.all([
+						callApi(cssConfigUrl, { method: "GET" }),
+						callApi(formConfigUrl, { method: "GET" }),
+					]);
+					proxyUri = `${proxyUri}cbngiving/v1/${formName}`;
 				} else {
 					proxyUri = `http://${process.env.DEV_SERVER_IP}:${process.env.DEV_SERVER_PORT}`;
-					[initialState, initialStyle] = await Promise.all([callApi(`${proxyUri}/config/form-config.json`, {
-						method: "GET",
-					}), callApi(`${proxyUri}/config/css-config.json`, {
-						method: "GET",
-					})])
+					[initialState, initialStyle] = await Promise.all([
+						callApi(`${proxyUri}/config/form-config.json`, {
+							method: "GET",
+						}),
+						callApi(`${proxyUri}/config/css-config.json`, {
+							method: "GET",
+						}),
+					]);
 				}
 				let configurations;
-				configurations = initialState.configurations
+				configurations = initialState.configurations;
 
 				formConfig = Array.isArray(configurations)
 					? configurations.filter(config => config.formType == formType)[0]
 					: initialState;
 
 				configurations = initialStyle.configurations;
-				cssConfig = Array.isArray(configurations) ? configurations.filter(config => config.formType == formType)[0].cssConfig : initialStyle
+				cssConfig = Array.isArray(configurations)
+					? configurations.filter(config => config.formType == formType)[0]
+							.cssConfig
+					: initialStyle;
 
-				if (formConfig.mode === "production") {
-					if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
-						window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
-						if (
-							(
-								window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers instanceof Map && 
-								window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers.size
-							) || 
-								Object.keys(window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers).length
-						) {
-							window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers = {};
+				try {
+					if (formConfig.mode === "production") {
+						if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+							window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
+							if (
+								(window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers instanceof
+									Map &&
+									window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers.size) ||
+								Object.keys(window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers)
+									.length
+							) {
+								window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers = {};
+							}
 						}
 					}
+				} catch (err) {
+					console.error("Unable to Disable React Dev Tools");
+					console.error(err);
 				}
 
 				if (Object.keys(formConfig).length) {
@@ -114,13 +129,19 @@ class FormConfigProvider extends Component {
 		setConfirmed: action => this.setState(state => reducer(state, action)),
 		goBack: action => this.setState(state => reducer(state, action)),
 		getCssConfig: type => {
-			const config = Object.entries(this.state.cssConfig).reduce((obj, [key, value]) => {
-				if (key.includes(type)) {
-					obj[key] = value
-				}
-				return obj
-			}, {})
-			return config
+			const config = Object.entries(this.state.cssConfig).reduce(
+				(obj, [key, value]) => {
+					if (key.includes(type)) {
+						obj[key] = value;
+					}
+					return obj;
+				},
+				{}
+			);
+			return config;
+		},
+		getFormConfig: key => {
+			return this.state.formConfig[key]
 		},
 		setCssConfig: action => this.setState(state => reducer(state, action)),
 	};

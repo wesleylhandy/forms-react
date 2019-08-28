@@ -154,7 +154,9 @@ class ProductForm extends Component {
 					autoComplete="off"
 					onSubmit={this.handleSubmit}
 				>
-					<FormHeader className="form-title form-header">{formTitle}</FormHeader>
+					<FormHeader className="form-title form-header">
+						{formTitle}
+					</FormHeader>
 					{productOptions.numProducts > 0 && (
 						<FormPanel className="form-panel">
 							<ProductLayout

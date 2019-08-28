@@ -1,12 +1,12 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 
 import { FormConfigContext } from "../Contexts/FormConfigProvider";
 
 import ClubTabGroup from "./StyledComponents/ClubTabGroup";
 
 function ClubTab({ id, name, checked, handleTabClick, label }) {
-	const { getCssConfig } = useContext(FormConfigContext)
-	const { 
+	const { getCssConfig } = useContext(FormConfigContext);
+	const {
 		toggleColor = "#fff",
 		toggleBackgroundColor = "#1775BC",
 		toggleBorderColor = "transparent",
@@ -14,10 +14,10 @@ function ClubTab({ id, name, checked, handleTabClick, label }) {
 		toggleHoverColor = "#1775BC",
 		toggleHoverBackgroundColor = "#fff",
 		toggleHoverBorderColor = "#1775BC",
-	} = getCssConfig("toggle")
+	} = getCssConfig("toggle");
 	return (
-		<ClubTabGroup 
-			id={`${id}-group`} 
+		<ClubTabGroup
+			id={`${id}-group`}
 			className="tab-group"
 			toggleColor={toggleColor}
 			toggleBackgroundColor={toggleBackgroundColor}
@@ -38,7 +38,6 @@ function ClubTab({ id, name, checked, handleTabClick, label }) {
 				aria-selected={checked}
 				aria-controls=""
 				tabIndex={checked ? 0 : -1}
-
 			/>
 			<label htmlFor={`${id}gift`}>{label}</label>
 		</ClubTabGroup>

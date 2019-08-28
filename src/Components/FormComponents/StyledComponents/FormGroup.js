@@ -33,13 +33,13 @@ const FormGroup = styled.div`
 		display: block;
 		align-self: center;
 	}
-	&.form-group--cvnCode + div.cvn-code-info>a {
+	&.form-group--cvnCode + div.cvn-code-info > a {
 		color: #444;
 		transition: color 200ms ease-in-out;
 	}
-	&.form-group--cvnCode + div.cvn-code-info>a:hover,
-	&.form-group--cvnCode + div.cvn-code-info>a:active,
-	&.form-group--cvnCode + div.cvn-code-info>a:focus {
+	&.form-group--cvnCode + div.cvn-code-info > a:hover,
+	&.form-group--cvnCode + div.cvn-code-info > a:active,
+	&.form-group--cvnCode + div.cvn-code-info > a:focus {
 		color: #747474;
 	}
 	label {
@@ -50,10 +50,12 @@ const FormGroup = styled.div`
 		margin-bottom: 0;
 		position: absolute;
 		opacity: ${props => props.labelOpacity};
-		bottom: calc(100% - ${props=> props.inputHoverBoxShadow == "none" ? "6px" : "2px"});
+		bottom: calc(
+			100% - ${props => (props.inputHoverBoxShadow == "none" ? "6px" : "2px")}
+		);
 		left: 10px;
 		transition: opacity 150ms ease-in-out;
-		text-transform: ${props=> props.labelTextTransform}
+		text-transform: ${props => props.labelTextTransform};
 	}
 	label span {
 		color: crimson;
@@ -78,7 +80,8 @@ const FormGroup = styled.div`
 		line-height: 44px !important;
 		background: none;
 		background-color: ${props => props.inputBackgroundColor};
-		border: ${props=> props.inputBorderWidth} solid ${props => props.inputBorderColor};
+		border: ${props => props.inputBorderWidth} solid
+			${props => props.inputBorderColor};
 		border-radius: ${props => props.inputBorderRadius};
 		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 		transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
@@ -95,7 +98,7 @@ const FormGroup = styled.div`
 	select::placeholder,
 	textarea::placeholder {
 		font-weight: 600;
-		color: ${props=> props.inputPlaceholderColor};
+		color: ${props => props.inputPlaceholderColor};
 	}
 	input:active,
 	input:hover,
@@ -106,7 +109,8 @@ const FormGroup = styled.div`
 	textarea:active,
 	textarea:hover,
 	textarea:focus {
-		border: ${props=> props.inputBorderWidth} solid ${props => props.inputHoverBorderColor};
+		border: ${props => props.inputBorderWidth} solid
+			${props => props.inputHoverBorderColor};
 		box-shadow: ${props => props.inputHoverBoxShadow};
 		background-color: ${props => props.inputHoverBackgroundColor};
 		outline: none;
@@ -125,7 +129,8 @@ const FormGroup = styled.div`
 	input.error,
 	select.error,
 	textarea.error {
-		border: ${props=> props.inputBorderWidth} solid ${props => props.inputErrorColor};
+		border: ${props => props.inputBorderWidth} solid
+			${props => props.inputErrorColor};
 	}
 	@media screen and (max-width: 613px) {
 		&.form-group--Lastname {

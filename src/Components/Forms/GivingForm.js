@@ -14,7 +14,7 @@ import AddressBlock from "../FormComponents/Blocks/AddressBlock";
 import FormOptionsBlock from "../FormComponents/Blocks/FormOptionsBlock";
 import SubmitButton from "../FormComponents/SubmitButton";
 import Spinner from "../StyledComponents/Spinner";
-import FormWrapper from '../StyledComponents/FormWrapper'
+import FormWrapper from "../StyledComponents/FormWrapper";
 
 class GivingForm extends Component {
 	hasMonthlyAmounts =
@@ -69,7 +69,7 @@ class GivingForm extends Component {
 				type: "INIT_FORM_STATE",
 				fields,
 				errors,
-				allowMonthlyDesignations: this.props.allowMonthlyDesignations
+				allowMonthlyDesignations: this.props.allowMonthlyDesignations,
 			});
 		}
 		try {
@@ -226,7 +226,9 @@ class GivingForm extends Component {
 					autoComplete="off"
 					onSubmit={this.handleSubmit}
 				>
-					<FormHeader className="form-title form-header">{formTitle}</FormHeader>
+					<FormHeader className="form-title form-header">
+						{formTitle}
+					</FormHeader>
 					{showGivingArray && (
 						<FormPanel className="form-panel">
 							<GivingLayout
@@ -245,9 +247,7 @@ class GivingForm extends Component {
 					)}
 					{designations && designations.length > 0 && (
 						<FormPanel className="form-panel">
-							<DesignationBlock
-								designations={designations}
-							/>
+							<DesignationBlock designations={designations} />
 						</FormPanel>
 					)}
 					{productOptions.numProducts > 0 && (

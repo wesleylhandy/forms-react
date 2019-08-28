@@ -13,7 +13,7 @@ import HiddenForm from "../FormComponents/StyledComponents/HiddenForm";
 import InputGroup from "../FormComponents/InputGroup";
 import SelectGroup from "../FormComponents/SelectGroup";
 import SubmitButton from "../FormComponents/SubmitButton";
-import FormWrapper from '../StyledComponents/FormWrapper'
+import FormWrapper from "../StyledComponents/FormWrapper";
 import {
 	FaCcAmex,
 	FaCcDiscover,
@@ -29,13 +29,13 @@ const curMonth = "0" + (d.getMonth() + 1);
 const curYear = d.getFullYear();
 
 class PaymentForm extends Component {
-	formRef = React.createRef()
+	formRef = React.createRef();
 	state = {
 		fields: {
 			ExpiresMonth: curMonth.slice(-2),
 			ExpiresYear: curYear,
 			ccNumber: "",
-			cvnCode: ""
+			cvnCode: "",
 		},
 		errors: {
 			ExpiresMonth: null,
@@ -59,11 +59,11 @@ class PaymentForm extends Component {
 	}
 	getSnapshotBeforeUpdate() {
 		const form = this.formRef.current;
-		const { submitted, confirmed } = this.context
+		const { submitted, confirmed } = this.context;
 		if (!form && submitted && !confirmed) {
-			return true
+			return true;
 		}
-		return null
+		return null;
 	}
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if (!!snapshot) {
@@ -79,10 +79,10 @@ class PaymentForm extends Component {
 		// console.log({e})
 		const { type, tracking_vars } =
 			e.data && typeof e.data == "string" ? JSON.parse(e.data) : {};
-		const types = [ "form error", "render receipt" ]
+		const types = ["form error", "render receipt"];
 		if (!types.includes(type)) {
-            return;
-        } 
+			return;
+		}
 		const { origin } = e;
 		const isOrigin = this.context.msgUris.includes(origin);
 		if (!isOrigin) {
@@ -96,9 +96,10 @@ class PaymentForm extends Component {
 					trackingVars: tracking_vars,
 				});
 				break;
-			case "form error" :
-				const errors = [...this.state.errors]
-				errors["ccNumber"] = "Please verify your Payment Information and Try Again"
+			case "form error":
+				const errors = [...this.state.errors];
+				errors["ccNumber"] =
+					"Please verify your Payment Information and Try Again";
 				this.setState({ submitting: false, errors });
 				break;
 		}
@@ -267,7 +268,12 @@ class PaymentForm extends Component {
 				return false;
 			}, 15000);
 
-			const { ccNumber, ExpiresYear, ExpiresMonth, cvnCode } = this.state.fields;
+			const {
+				ccNumber,
+				ExpiresYear,
+				ExpiresMonth,
+				cvnCode,
+			} = this.state.fields;
 			const ccChecked = this.state.ccChecked;
 			const isValid = checkValues(
 				ccChecked,
@@ -277,13 +283,19 @@ class PaymentForm extends Component {
 				cvnCode
 			);
 			if (isValid.passes) {
-				const { ccCardType, ccNum, ccExpDate, transactionType, ccCvn } = isValid;
+				const {
+					ccCardType,
+					ccNum,
+					ccExpDate,
+					transactionType,
+					ccCvn,
+				} = isValid;
 				document.querySelector('input[name="card_type"]').value = ccCardType;
 				document.querySelector('input[name="card_number"]').value = ccNum;
 				document.querySelector(
 					'input[name="card_expiry_date"]'
 				).value = ccExpDate;
-				document.querySelector('input[name="card_cvn"]').value = ccCvn
+				document.querySelector('input[name="card_cvn"]').value = ccCvn;
 				if (isValid.transactionType) {
 					document.querySelector(
 						'input[name="transaction_type"]'
@@ -401,7 +413,7 @@ class PaymentForm extends Component {
 		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
 		return submitted && !confirmed ? (
-			<FormWrapper style={{maxWidth: "818px", margin: "0 auto"}}>
+			<FormWrapper style={{ maxWidth: "818px", margin: "0 auto" }}>
 				<FormPanel ref={this.formRef}>
 					<form id="react-cc-form" onSubmit={this.assignValues}>
 						<div className="mboxDefault">
@@ -481,7 +493,13 @@ class PaymentForm extends Component {
 									validation="\d*"
 								/>
 								<div className="cvn-code-info">
-									<a href="https://www.cbn.com/CVVNumber/CVV.html" target="_blank">What is my <span style={{letterSpacing:"1px"}}>CVV</span> Code?</a>
+									<a
+										href="https://www.cbn.com/CVVNumber/CVV.html"
+										target="_blank"
+									>
+										What is my <span style={{ letterSpacing: "1px" }}>CVV</span>{" "}
+										Code?
+									</a>
 								</div>
 							</FormRow>
 						</FieldSet>
@@ -491,7 +509,7 @@ class PaymentForm extends Component {
 						{this.renderProductSummary()}
 						<FormRow>
 							<FormLine />
-					</FormRow>
+						</FormRow>
 						<FieldSet>
 							<legend>Form Submit Block</legend>
 							<SubmitButton
@@ -502,7 +520,9 @@ class PaymentForm extends Component {
 							/>
 						</FieldSet>
 						<FormRow className="go-back-row">
-							<span>Click the &ldquo;Finish Donation&rdquo; button above or</span>
+							<span>
+								Click the &ldquo;Finish Donation&rdquo; button above or
+							</span>
 							<span>
 								<a onClick={this.handleGoBackClick}>go back</a> to the previous
 								page to make changes.

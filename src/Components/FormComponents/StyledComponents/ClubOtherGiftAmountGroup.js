@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import styled from "@emotion/styled";
 
 import { FormConfigContext } from "../../Contexts/FormConfigProvider";
@@ -73,12 +73,12 @@ const ClubOtherGiftAmountStyle = styled.div`
 			color: ${props => props.arrayHoverColor};
 			box-sizing: border-box;
 			outline: none;
-        }
-        &.selected input {
+		}
+		&.selected input {
 			border: 2px solid ${props => props.arrayHoverBorderColor};
 			background-color: ${props => props.arrayHoverBackgroundColor};
 			color: ${props => props.arrayHoverColor};
-        }
+		}
 		div.other-amt-error {
 			box-sizing: border-box;
 			position: absolute;
@@ -95,14 +95,14 @@ const ClubOtherGiftAmountStyle = styled.div`
 			transform: translateX(-50%);
 		}
 	}
-	
+
 	div.selected {
 	}
 `;
 
 const ClubOtherGiftAmountGroup = ({ children, style = {} }) => {
-	const { getCssConfig} = useContext(FormConfigContext)
-	const { 
+	const { getCssConfig } = useContext(FormConfigContext);
+	const {
 		arrayColor = "#fff",
 		arrayBackgroundColor = "#1775BC",
 		arrayBorderColor = "transparent",
@@ -111,13 +111,11 @@ const ClubOtherGiftAmountGroup = ({ children, style = {} }) => {
 		arrayHoverBackgroundColor = "#fff",
 		arrayHoverBorderColor = "#1775BC",
 		arrayDescriptorColor = "#DDB007",
-	} = getCssConfig("array")
-	const {
-		errorColor = "crimson"
-	} = getCssConfig("error")
+	} = getCssConfig("array");
+	const { errorColor = "crimson" } = getCssConfig("error");
 	return (
-		<ClubOtherGiftAmountStyle 
-			id="OtherGiftAmount" 
+		<ClubOtherGiftAmountStyle
+			id="OtherGiftAmount"
 			className="askarray--other"
 			style={style}
 			arrayColor={arrayColor}
@@ -132,7 +130,7 @@ const ClubOtherGiftAmountGroup = ({ children, style = {} }) => {
 		>
 			{children}
 		</ClubOtherGiftAmountStyle>
-	)
+	);
 };
 
 export default ClubOtherGiftAmountGroup;

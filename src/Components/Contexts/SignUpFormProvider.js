@@ -225,13 +225,20 @@ class SignUpFormProvider extends Component {
 								}),
 							() => {
 								try {
-									const url = window.location.origin + window.location.pathname
-                					const sDynamicPageUrl = url + ( url.charAt(url.length - 1) == "/" ? "thankyou" : "/thankyou" )
-									const sDynamicPageTitle = document.title + " > Submit"
-									window.omTrackDynamicCBNPage(sDynamicPageUrl, sDynamicPageTitle)
+									const url = window.location.origin + window.location.pathname;
+									const sDynamicPageUrl =
+										url +
+										(url.charAt(url.length - 1) == "/"
+											? "thankyou"
+											: "/thankyou");
+									const sDynamicPageTitle = document.title + " > Submit";
+									window.omTrackDynamicCBNPage(
+										sDynamicPageUrl,
+										sDynamicPageTitle
+									);
 								} catch (err) {
-									console.error("Call Submission Tracking Error")
-									console.error(err)
+									console.error("Call Submission Tracking Error");
+									console.error(err);
 								}
 								this.context.submitForm({
 									type: "SUBMIT_FORM",

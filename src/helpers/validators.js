@@ -1,5 +1,5 @@
 import { callApi } from "./fetch-helpers";
-import { validateCCInput } from "./cc-validation"
+import { validateCCInput } from "./cc-validation";
 
 export const email_regex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 export const phone_regex = /1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})/;
@@ -53,8 +53,10 @@ export const callZipCityStateService = async (name, value, oldCity) => {
 				console.error({ oldCity, newCity });
 				return { action, error: "" };
 			} else {
-				console.error({ city, state, zip, returnCode, returnMessage })
-				return { action: {type: "UPDATE_FIELD", name, value, error: returnMessage }};
+				console.error({ city, state, zip, returnCode, returnMessage });
+				return {
+					action: { type: "UPDATE_FIELD", name, value, error: returnMessage },
+				};
 			}
 		} catch (err) {
 			console.error(err);
@@ -62,7 +64,12 @@ export const callZipCityStateService = async (name, value, oldCity) => {
 		}
 	} else {
 		console.error({ err: "No Value Passed to Validator" });
-		return { action: "UPDATE_FIELD", name, value, error: "No Value Passed to Validator" };
+		return {
+			action: "UPDATE_FIELD",
+			name,
+			value,
+			error: "No Value Passed to Validator",
+		};
 	}
 };
 
@@ -134,7 +141,7 @@ export const validateInput = (
 		case "ExpiresMonth":
 		case "ExpiresYear":
 		case "cvnCode":
-			let res = validateCCInput(name, value, ccNumber, ccMonth, ccYear)
+			let res = validateCCInput(name, value, ccNumber, ccMonth, ccYear);
 			error = res.error;
 			break;
 		case "Title":

@@ -1,11 +1,11 @@
 import React, { useContext, Suspense, lazy } from "react";
-import { Global, css } from '@emotion/core';
+import { Global, css } from "@emotion/core";
 
 import { FormConfigContext } from "../Contexts/FormConfigProvider";
 import GivingFormProvider from "../Contexts/GivingFormProvider";
 import ProductFormProvider from "../Contexts/ProductFormProvider";
 import SignUpFormProvider from "../Contexts/SignUpFormProvider";
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from "../ErrorBoundary";
 const GivingForm = lazy(() => import("./GivingForm"));
 const AskForm = lazy(() => import("./AskForm"));
 const ConfirmationForm = lazy(() => import("./ConfirmationForm"));
@@ -24,22 +24,24 @@ const ClubSuccessMessage = lazy(() =>
 import Spinner from "../StyledComponents/Spinner";
 
 const FormRouter = props => {
-	const { formConfig, submitted, confirmed, getCssConfig } = useContext(FormConfigContext);
-	const { 
-		formType, 
+	const { formConfig, submitted, confirmed, getCssConfig } = useContext(
+		FormConfigContext
+	);
+	const {
+		formType,
 		allowInternational,
 		getPhone,
 		getHonorific,
 		getSuffix,
 		getMiddleName,
-		getSpouseInfo, 
+		getSpouseInfo,
 	} = formConfig;
 
 	const {
 		formExternalFont = "none",
 		formFontFamily = "Arial, sans-serif",
 		formFontStyle = "normal",
-        formFontWeight = "400",
+		formFontWeight = "400",
 		formFontSize = "19px",
 		formBackgroundColor = "#fff",
 		formBorderColor = "transparent",
@@ -50,30 +52,30 @@ const FormRouter = props => {
 		formPadding = "0",
 		formMargin = "0",
 		formColor = "#333",
-	} = getCssConfig("form")
+	} = getCssConfig("form");
 	switch (formType) {
 		case "club":
 			return (
 				<GivingFormProvider>
 					<Suspense fallback={<Spinner />}>
-						<Global styles={
-							css` 
-								${formExternalFont ? `@import url("${formExternalFont}");` : ''}
+						<Global
+							styles={css`
+								${formExternalFont ? `@import url("${formExternalFont}");` : ""}
 								* {
-									font-family: ${formFontFamily}; 
-									font-size: ${formFontSize}; 
-									font-weight: ${formFontWeight}; 
+									font-family: ${formFontFamily};
+									font-size: ${formFontSize};
+									font-weight: ${formFontWeight};
 									font-style: ${formFontStyle};
 								}
-								 .wrapper {
-									background-color: #ECEFF1; 
-									padding: 35px 0 !important;
-								 }`
-						}/>
+								.wrapper {
+									background-color: #eceff1;
+								}
+							`}
+						/>
 						<ErrorBoundary>
-							<AskForm 
-								{...props} 
-								{...formConfig} 
+							<AskForm
+								{...props}
+								{...formConfig}
 								formBackgroundColor={formBackgroundColor}
 								formBorderColor={formBorderColor}
 								formBorderRadius={formBorderRadius}
@@ -86,14 +88,14 @@ const FormRouter = props => {
 							/>
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<ConfirmationForm 
+							<ConfirmationForm
 								allowInternational={allowInternational}
 								getPhone={getPhone}
 								getHonorific={getHonorific}
 								getSuffix={getSuffix}
 								getMiddleName={getMiddleName}
 								getSpouseInfo={getSpouseInfo}
-								submitted={submitted} 
+								submitted={submitted}
 								formBackgroundColor={formBackgroundColor}
 								formBorderColor={formBorderColor}
 								formBorderRadius={formBorderRadius}
@@ -122,17 +124,17 @@ const FormRouter = props => {
 						</ErrorBoundary>
 					</Suspense>
 				</GivingFormProvider>
-			)
+			);
 			break;
 		case "giving":
 			return (
 				<GivingFormProvider>
 					<Suspense fallback={<Spinner />}>
 						<ErrorBoundary>
-							<GivingForm 
-								{...props} 
-								{...formConfig} 
-								submitted={submitted} 
+							<GivingForm
+								{...props}
+								{...formConfig}
+								submitted={submitted}
 								formBackgroundColor={formBackgroundColor}
 								formBorderColor={formBorderColor}
 								formBorderRadius={formBorderRadius}
@@ -145,7 +147,7 @@ const FormRouter = props => {
 							/>
 						</ErrorBoundary>
 						<ErrorBoundary>
-							<PaymentForm 
+							<PaymentForm
 								submitted={submitted}
 								formBackgroundColor={formBackgroundColor}
 								formBorderColor={formBorderColor}
@@ -182,9 +184,9 @@ const FormRouter = props => {
 				<ProductFormProvider>
 					<Suspense fallback={<Spinner />}>
 						<ErrorBoundary>
-							<ProductForm 
-								{...props} 
-								{...formConfig} 
+							<ProductForm
+								{...props}
+								{...formConfig}
 								formBackgroundColor={formBackgroundColor}
 								formBorderColor={formBorderColor}
 								formBorderRadius={formBorderRadius}
@@ -205,9 +207,9 @@ const FormRouter = props => {
 				<SignUpFormProvider>
 					<Suspense fallback={<Spinner />}>
 						<ErrorBoundary>
-							<SignUpForm 
-								{...props} 
-								{...formConfig} 
+							<SignUpForm
+								{...props}
+								{...formConfig}
 								formBackgroundColor={formBackgroundColor}
 								formBorderColor={formBorderColor}
 								formBorderRadius={formBorderRadius}
@@ -216,8 +218,8 @@ const FormRouter = props => {
 								formMaxWidth={formMaxWidth}
 								formPadding={formPadding}
 								formMargin={formMargin}
-								formColor={formColor}	
-						/>
+								formColor={formColor}
+							/>
 						</ErrorBoundary>
 						<ErrorBoundary>
 							<SignUpSuccessMessage
@@ -239,13 +241,16 @@ const FormRouter = props => {
 			);
 			break;
 		default:
-			console.error("Form Configuration Error")
+			console.error("Form Configuration Error");
 			console.error({ formType, formConfig, props });
 			try {
-				window.omTrackDebug(window.location.href + " - React Giving Form", JSON.stringify({formType, formConfig, props})) 
+				window.omTrackDebug(
+					window.location.href + " - React Giving Form",
+					JSON.stringify({ formType, formConfig, props })
+				);
 			} catch (err) {
-				console.error("Error Tracking Error")
-				console.error(err)
+				console.error("Error Tracking Error");
+				console.error(err);
 			}
 			alert(
 				"There was an internal error loading this form. Please check back later or call us at 1-800-759-0700"

@@ -4,7 +4,8 @@ import styled from "@emotion/styled";
 const FormWrapper = styled.main`
 	background: ${props => props.formBackgroundColor};
 	box-sizing: border-box;
-	border: ${props => props.formBorderWidth} solid ${props => props.formBorderColor};
+	border: ${props => props.formBorderWidth} solid
+		${props => props.formBorderColor};
 	border-radius: ${props => props.formBorderRadius};
 	color: ${props => props.formColor};
 	max-width: ${props => props.formMaxWidth};

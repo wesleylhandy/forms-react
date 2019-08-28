@@ -17,7 +17,7 @@ function AddressBlock({
 	getPhone,
 	allowInternational,
 	type,
-	hideAddressTwo
+	hideAddressTwo,
 }) {
 	return (
 		<FieldSet className="address-block">
@@ -39,8 +39,7 @@ function AddressBlock({
 							error={errors.Address1}
 						/>
 					</FormRow>
-					{
-						!hideAddressTwo && (
+					{!hideAddressTwo && (
 						<FormRow className="address2-row">
 							<InputGroup
 								type="text"
@@ -56,8 +55,7 @@ function AddressBlock({
 								error={errors.Address2}
 							/>
 						</FormRow>
-						)
-					}
+					)}
 					<FormRow className="city-state-row">
 						<InputGroup
 							type="text"

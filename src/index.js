@@ -16,10 +16,10 @@ const productRootEntry = document.getElementById("product-form-root");
 if (clubGivingRootEntry) {
 	ReactDOM.render(
 		<FormConfigProvider>
-			<App rootEntry={clubGivingRootEntry} formType="club"/>
+			<App rootEntry={clubGivingRootEntry} formType="club" />
 		</FormConfigProvider>,
 		clubGivingRootEntry
-	)
+	);
 }
 
 if (givingRootEntry) {

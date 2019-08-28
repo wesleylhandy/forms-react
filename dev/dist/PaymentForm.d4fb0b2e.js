@@ -1119,7 +1119,7 @@ function (_Component) {
         style: {
           letterSpacing: "1px"
         }
-      }, "CVV"), " Code?")))), (0, _core.jsx)(_FormRow.default, null, (0, _core.jsx)(_FormLine.default, null)), this.renderProductSummary(), (0, _core.jsx)(_FormRow.default, null, (0, _core.jsx)(_FormLine.default, null)), (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Form Submit Block"), (0, _core.jsx)(_SubmitButton.default, {
+      }, "CVV"), " ", "Code?")))), (0, _core.jsx)(_FormRow.default, null, (0, _core.jsx)(_FormLine.default, null)), this.renderProductSummary(), (0, _core.jsx)(_FormRow.default, null, (0, _core.jsx)(_FormLine.default, null)), (0, _core.jsx)(_FieldSet.default, null, (0, _core.jsx)("legend", null, "Form Submit Block"), (0, _core.jsx)(_SubmitButton.default, {
         hasErrors: hasErrors,
         handleSubmit: this.assignValues,
         submitting: submitting,
@@ -1210,7 +1210,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64473" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59581" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

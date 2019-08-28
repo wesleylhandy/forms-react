@@ -11,10 +11,10 @@ const SubmitButton = ({
 	handleSubmit,
 	submitting,
 	value,
-	styles
+	styles,
 }) => {
-	const { getCssConfig } = useContext(FormConfigContext) 
-	const {	
+	const { getCssConfig } = useContext(FormConfigContext);
+	const {
 		submitBtnColor = "#fff",
 		submitBtnBackgroundColor = "#333",
 		submitBtnBorderColor = "transparent",
@@ -22,23 +22,21 @@ const SubmitButton = ({
 		submitBtnHoverBackgroundColor = "#fff",
 		submitBtnHoverColor = "#333",
 		submitBtnHoverBorderColor = "#333",
-		submitBtnBoxShadow = "none"
-	} = getCssConfig("submitBtn")
-	const {
-		errorColor = "crimson"
-	} = getCssConfig("error")
+		submitBtnBoxShadow = "none",
+	} = getCssConfig("submitBtn");
+	const { errorColor = "crimson" } = getCssConfig("error");
 
 	return (
-		<SubmitButtonGroup 
-			className="submit-row" 
-			submitBtnColor={submitBtnColor} 
+		<SubmitButtonGroup
+			className="submit-row"
+			submitBtnColor={submitBtnColor}
 			submitBtnBackgroundColor={submitBtnBackgroundColor}
 			submitBtnBorderColor={submitBtnBorderColor}
 			submitBtnBorderRadius={submitBtnBorderRadius}
 			submitBtnHoverBackgroundColor={submitBtnHoverBackgroundColor}
 			submitBtnHoverColor={submitBtnHoverColor}
-			submitBtnHoverBorderColor={submitBtnHoverBorderColor}	
-			submitBtnBoxShadow = { submitBtnBoxShadow }	
+			submitBtnHoverBorderColor={submitBtnHoverBorderColor}
+			submitBtnBoxShadow={submitBtnBoxShadow}
 		>
 			<input
 				className="submit-btn"

@@ -137,6 +137,10 @@ var _FormWrapper = _interopRequireDefault(require("../StyledComponents/FormWrapp
 
 var _FormPanel = _interopRequireDefault(require("../FormComponents/StyledComponents/FormPanel"));
 
+var _HeaderBlock = _interopRequireDefault(require("../FormComponents/Blocks/HeaderBlock"));
+
+var _FooterBlock = _interopRequireDefault(require("../FormComponents/Blocks/FooterBlock"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
@@ -163,7 +167,7 @@ var ClubSuccessMessage = function ClubSuccessMessage(_ref) {
   var _useContext = (0, _react.useContext)(_GivingFormProvider.GivingFormContext),
       trackingVars = _useContext.trackingVars;
 
-  return confirmed && (0, _core.jsx)(_react.default.Fragment, null, (0, _core.jsx)(_reactAriaLive.LiveMessage, {
+  return confirmed && (0, _core.jsx)(_react.default.Fragment, null, (0, _core.jsx)(_HeaderBlock.default, null), (0, _core.jsx)(_reactAriaLive.LiveMessage, {
     message: "Your payment is being processed. A new page with a thank you message just loaded.",
     "aria-live": "polite"
   }), (0, _core.jsx)(_FormWrapper.default, {
@@ -174,7 +178,7 @@ var ClubSuccessMessage = function ClubSuccessMessage(_ref) {
   }, (0, _core.jsx)(_FormPanel.default, {
     className: "success-message",
     dangerouslySetInnerHTML: createMarkup(successMessage)
-  })));
+  })), (0, _core.jsx)(_FooterBlock.default, null));
 };
 
 __signature__(ClubSuccessMessage, "useContext{{ trackingVars }}");
@@ -202,7 +206,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","react-aria-live":"node_modules/react-aria-live/es/index.js","../StyledComponents/FormWrapper":"src/Components/StyledComponents/FormWrapper.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","react-aria-live":"node_modules/react-aria-live/es/index.js","../StyledComponents/FormWrapper":"src/Components/StyledComponents/FormWrapper.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/Blocks/HeaderBlock":"src/Components/FormComponents/Blocks/HeaderBlock.js","../FormComponents/Blocks/FooterBlock":"src/Components/FormComponents/Blocks/FooterBlock.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -230,7 +234,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64473" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59581" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -9,7 +9,7 @@ import NameBlock from "../FormComponents/Blocks/NameBlock";
 import AddressBlock from "../FormComponents/Blocks/AddressBlock";
 import SubmitButton from "../FormComponents/SubmitButton";
 import Spinner from "../StyledComponents/Spinner";
-import FormWrapper from "../StyledComponents/FormWrapper"
+import FormWrapper from "../StyledComponents/FormWrapper";
 class SignUpForm extends Component {
 	componentDidMount() {
 		const fields = {
@@ -73,7 +73,9 @@ class SignUpForm extends Component {
 					autoComplete="off"
 					onSubmit={this.handleSubmit}
 				>
-					<FormHeader className="form-title form-header">{formTitle}</FormHeader>
+					<FormHeader className="form-title form-header">
+						{formTitle}
+					</FormHeader>
 					{initialized ? (
 						<FormPanel className="form-panel">
 							<FieldSet>

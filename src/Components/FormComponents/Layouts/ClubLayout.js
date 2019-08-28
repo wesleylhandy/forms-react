@@ -1,16 +1,15 @@
 import React, { Component, useContext, memo } from "react";
 
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import "../Animations/askarray.css"
+import "../Animations/askarray.css";
 
 import { GivingFormContext } from "../../Contexts/GivingFormProvider";
-
 
 import MonthlyClubTabBlock from "../Blocks/MonthlyClubTabBlock";
 import FieldSet from "../StyledComponents/FieldSet";
 import ClubAskArray from "../StyledComponents/ClubAskArray";
-import GivingArray from "../Blocks/GivingArrayBlock.js"
+import GivingArray from "../Blocks/GivingArrayBlock.js";
 import ClubOtherGiftAmountGroup from "../StyledComponents/ClubOtherGiftAmountGroup";
 import AmountError from "../StyledComponents/AmountError";
 
@@ -19,7 +18,6 @@ function getIndex(arr, amount) {
 }
 
 class ClubLayout extends Component {
-
 	otherAmountField = React.createRef();
 	state = {
 		prevIndex: null,
@@ -60,8 +58,6 @@ class ClubLayout extends Component {
 			}
 		}
 	}
-
-	
 
 	/**
 	 * Changes state on the arry to visibly display selected amount and adds donation amount to the cart
@@ -111,7 +107,7 @@ class ClubLayout extends Component {
 				}
 			}
 		);
-	}
+	};
 
 	handleFocus = e => {
 		this.setState(
@@ -130,7 +126,7 @@ class ClubLayout extends Component {
 				this.otherAmountField.current.focus();
 			}
 		);
-	}
+	};
 
 	handleOtherAmt = e => {
 		const { selectedIndex } = this.state;
@@ -162,23 +158,16 @@ class ClubLayout extends Component {
 				prevIndex: selectedIndex,
 			});
 		}
-	}
+	};
 
 	render() {
 		let {
 			amountError,
 			monthlyChecked,
 			handleRadioClick,
-			givingOptions: {
-				monthlyAmounts,
-				singleAmounts,
-			},
+			givingOptions: { monthlyAmounts, singleAmounts },
 		} = this.props;
-		let {
-			otherAmount,
-			otherAmountError,
-			selectedIndex,
-		} = this.state;
+		let { otherAmount, otherAmountError, selectedIndex } = this.state;
 		let {
 			givingInfo: { amount, isMonthly },
 		} = this.context;
@@ -205,16 +194,27 @@ class ClubLayout extends Component {
 							? monthlyAmounts[selectedIndex]
 							: singleAmounts[selectedIndex]) + "-key";
 		}
-		const amounts = monthlyChecked ? monthlyAmounts : singleAmounts
+		const amounts = monthlyChecked ? monthlyAmounts : singleAmounts;
 		return (
 			<FieldSet>
 				<legend>Giving Amounts and Giving Options</legend>
 				<MonthlyClubTabBlock
-						monthlyChecked={monthlyChecked}
-						handleTabClick={handleRadioClick}
-					/>
-				<ClubAskArray id="AskArray" className="askarray--club" role="tabpanel" tabIndex="0" aria-labelledby={monthlyChecked ? "monthlygift" : "singlegift"}>
-					<TransitionGroup className="askarray--club-list" component={null} enter={true} exit={false}>
+					monthlyChecked={monthlyChecked}
+					handleTabClick={handleRadioClick}
+				/>
+				<ClubAskArray
+					id="AskArray"
+					className="askarray--club"
+					role="tabpanel"
+					tabIndex="0"
+					aria-labelledby={monthlyChecked ? "monthlygift" : "singlegift"}
+				>
+					<TransitionGroup
+						className="askarray--club-list"
+						component={null}
+						enter={true}
+						exit={false}
+					>
 						<GivingArray
 							amounts={amounts}
 							selectedIndex={selectedIndex}
@@ -251,7 +251,7 @@ class ClubLayout extends Component {
 				</ClubAskArray>
 				<AmountError className="amount-error">{amountError}</AmountError>
 			</FieldSet>
-		) 
+		);
 	}
 }
 

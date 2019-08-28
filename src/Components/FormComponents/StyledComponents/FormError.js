@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 const FormError = styled.div`
 	box-sizing: border-box;
 	position: absolute;
-	color: ${props=> props.color};
+	color: ${props => props.color};
 	width: auto;
 	font-weight: 600;
 	font-size: 16px;

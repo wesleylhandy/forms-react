@@ -1,5 +1,5 @@
 const reducer = (state, action) => {
-	const { 
+	const {
 		allowMonthlyDesignations,
 		designatedIndex,
 		formData,
@@ -26,7 +26,7 @@ const reducer = (state, action) => {
 				initialized: true,
 				fields: action.fields,
 				errors: action.errors,
-				allowMonthlyDesignations
+				allowMonthlyDesignations,
 			};
 			break;
 		case "LOAD":
@@ -65,7 +65,10 @@ const reducer = (state, action) => {
 				errors.amount = "";
 			} else {
 				items.push(item);
-				errors.amount = item.type == "donation" && item.PledgeAmount > 0 ? "" : "Please make a valid donation";
+				errors.amount =
+					item.type == "donation" && item.PledgeAmount > 0
+						? ""
+						: "Please make a valid donation";
 			}
 			return { ...state, cart: { items }, errors, givingInfo: {} };
 			break;
@@ -111,7 +114,13 @@ const reducer = (state, action) => {
 			return { ...state, cart: { items }, givingInfo };
 		case "UPDATE_DESIGNATION":
 			designationInfo = { ...state.designationInfo };
-			const { DetailCprojCredit, DetailCprojMail, DetailDescription, DetailName, title } = action.designationInfo
+			const {
+				DetailCprojCredit,
+				DetailCprojMail,
+				DetailDescription,
+				DetailName,
+				title,
+			} = action.designationInfo;
 			return {
 				...state,
 				designatedIndex,
@@ -120,9 +129,9 @@ const reducer = (state, action) => {
 					DetailCprojMail,
 					DetailDescription,
 					DetailName,
-					title
-				}
-			}
+					title,
+				},
+			};
 		case "SUBMIT_FORM":
 			return {
 				...state,
@@ -132,10 +141,10 @@ const reducer = (state, action) => {
 				formAction,
 				confirmationData,
 			};
-		case "SUBMIT_ASK_FORM" :
+		case "SUBMIT_ASK_FORM":
 			return {
 				...state,
-				selected: action.isValid
+				selected: action.isValid,
 			};
 		case "GLOBAL_URIS":
 			return {
@@ -163,17 +172,17 @@ const reducer = (state, action) => {
 				submitted: false,
 				submitting: false,
 				confirmed: false,
-				selected: false
+				selected: false,
 			};
 		case "UPDATE_CC_ERRORS":
-			errors = { ...state.errors }
+			errors = { ...state.errors };
 			return {
 				...state,
 				errors: {
 					...errors,
-					...action.errors
-				}
-			}
+					...action.errors,
+				},
+			};
 		default:
 			return { ...state };
 			break;

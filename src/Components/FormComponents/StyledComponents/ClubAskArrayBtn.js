@@ -7,9 +7,9 @@ const ClubAskArrayBtn = styled.div`
 	justify-content: center;
 	align-items: center;
 	position: relative;
-    &.askbutton--club {
-        box-sizing: border-box;
-        flex: 0 0 95px;
+	&.askbutton--club {
+		box-sizing: border-box;
+		flex: 0 0 95px;
 		margin: 0 2.5px;
 		@media screen and (max-width: 535px) {
 			flex-basis: 70px;
@@ -23,7 +23,7 @@ const ClubAskArrayBtn = styled.div`
 		@media screen and (max-width: 336px) {
 			flex-basis: 52px;
 		}
-    }
+	}
 	div {
 		display: flex;
 		flex-direction: row;
@@ -64,13 +64,13 @@ const ClubAskArrayBtn = styled.div`
 	}
 	div.club-level {
 		position: absolute;
-        font-weight: bold;
-        font-size: 14px;
+		font-weight: bold;
+		font-size: 14px;
 		color: ${props => props.arrayDescriptorColor};
 		text-align: center;
 		width: 110%;
-        left: 50%;
-        top: 100%;
+		left: 50%;
+		top: 100%;
 		transform: translateX(-50%);
 		@media screen and (max-width: 395px) {
 			width: 100%;

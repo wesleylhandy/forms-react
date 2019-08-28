@@ -197,7 +197,7 @@ const processGift = (req, res) => {
 };
 
 router.post("/giving", processGift);
-router.post('/club', processGift);
+router.post("/club", processGift);
 
 router.get("/signup", (req, res) => {
 	res.statusCode = 403;
@@ -254,7 +254,7 @@ router.post("/signup", (req, res) => {
 			const endpoint = endpoints[type];
 			headers.ApiKey = ApiKey;
 			headers.CBN_HTTP_X_FORWARDED_FOR = CBN_HTTP_X_FORWARDED_FOR;
-			console.log({headers})
+			console.log({ headers });
 			try {
 				const msg = await callApi(endpoint, {
 					method: "GET",

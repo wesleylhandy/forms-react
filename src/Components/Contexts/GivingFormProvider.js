@@ -126,7 +126,8 @@ class GivingFormProvider extends Component {
 			const isZip = name.includes("Zip");
 			if (isZip) {
 				this.setState(
-					state => reducer(state, { type: "TOGGLE_SUBMITTING" }), async () => {
+					state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+					async () => {
 						if (!zip_regex.test(value)) {
 							action.error = "Invalid Postal Code";
 						} else {
@@ -141,19 +142,26 @@ class GivingFormProvider extends Component {
 								);
 								if (response.action) {
 									// console.log({action: response.action})
-									this.setState(state => reducer(state, response.action), () => {
-										this.setState(state => reducer(state, { type: "TOGGLE_SUBMITTING" }))
-									});
+									this.setState(
+										state => reducer(state, response.action),
+										() => {
+											this.setState(state =>
+												reducer(state, { type: "TOGGLE_SUBMITTING" })
+											);
+										}
+									);
 								}
 								action.error = response.error;
 							} catch (err) {
 								console.error("CallZipCityStateServiceError");
 								console.error({ err });
-								this.setState(state => reducer(state, { type: "TOGGLE_SUBMITTING" }))
+								this.setState(state =>
+									reducer(state, { type: "TOGGLE_SUBMITTING" })
+								);
 							}
 						}
-						
-				})
+					}
+				);
 			} else {
 				const { getHonorific, allowInternational } = this.context;
 				action.error = await validateInput(
@@ -193,7 +201,8 @@ class GivingFormProvider extends Component {
 							);
 						}
 					}
-					let isValidForm = true, action = {};
+					let isValidForm = true,
+						action = {};
 					if (this.state.fields.Country == "United States") {
 						let oldCity, response;
 						try {
@@ -306,17 +315,20 @@ class GivingFormProvider extends Component {
 						action = {
 							type: "UPDATE_FIELDS",
 							action: {
-								fields: [{
-									name: "Zip",
-									value: "NA",
-									error: ''
-								} ,  {
-									name: "State",
-									value: "00",
-									error: ''
-								}]
-							}
-						}
+								fields: [
+									{
+										name: "Zip",
+										value: "NA",
+										error: "",
+									},
+									{
+										name: "State",
+										value: "00",
+										error: "",
+									},
+								],
+							},
+						};
 						this.setState(state => reducer(state, action));
 					}
 					const { fields } = this.state;
@@ -444,11 +456,13 @@ class GivingFormProvider extends Component {
 								index
 							) => {
 								if (
-									index === pledgeFound && 
-									Object.keys(this.state.designationInfo).length && 
+									index === pledgeFound &&
+									Object.keys(this.state.designationInfo).length &&
 									!(isMonthly && !this.state.allowMonthlyDesignations)
 								) {
-									DetailName = (isMonthly ? "MP": "SG") + this.state.designationInfo.DetailName;
+									DetailName =
+										(isMonthly ? "MP" : "SG") +
+										this.state.designationInfo.DetailName;
 									DetailDescription = this.state.designationInfo
 										.DetailDescription;
 									DetailCprojCredit = this.state.designationInfo
@@ -562,13 +576,21 @@ class GivingFormProvider extends Component {
 								() => {
 									if (type !== "confirmation") {
 										try {
-											const url = window.location.origin + window.location.pathname
-											const sDynamicPageUrl = url + ( url.charAt(url.length - 1) == "/" ? "payment" : "/payment" )
-											const sDynamicPageTitle = document.title + " > Payment"
-											window.omTrackDynamicCBNPage(sDynamicPageUrl, sDynamicPageTitle)
+											const url =
+												window.location.origin + window.location.pathname;
+											const sDynamicPageUrl =
+												url +
+												(url.charAt(url.length - 1) == "/"
+													? "payment"
+													: "/payment");
+											const sDynamicPageTitle = document.title + " > Payment";
+											window.omTrackDynamicCBNPage(
+												sDynamicPageUrl,
+												sDynamicPageTitle
+											);
 										} catch (err) {
-											console.error("Call Submission Tracking Error")
-											console.error(err)
+											console.error("Call Submission Tracking Error");
+											console.error(err);
 										}
 										this.context.submitForm({
 											type: "SUBMIT_FORM",
@@ -604,35 +626,49 @@ class GivingFormProvider extends Component {
 			);
 		},
 		submitAskForm: action => {
-			this.setState(state => reducer(state, { type: "TOGGLE_SUBMITTING" }), () => {
-				const isValidGift = this.validateGift();
-				action.isValid = isValidGift;
-				this.setState(state => reducer(state, action),
-					() => {
-						if (!isValidGift) {
-							this.setState(state =>
-								reducer(state, {
-									type: "UPDATE_FIELD",
-									name: "amount",
-									value: "",
-									error: "Please make a valid donation",
-								})
-							);
-						} else {
-							try {
-								const url = window.location.origin + window.location.pathname
-								const sDynamicPageUrl = url + ( url.charAt(url.length - 1) == "/" ? "payment" : "/payment" )
-								const sDynamicPageTitle = document.title + " > Choose Donation"
-								window.omTrackDynamicCBNPage(sDynamicPageUrl, sDynamicPageTitle)
-							} catch (err) {
-								console.error("Call Submission Tracking Error")
-								console.error(err)
+			this.setState(
+				state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+				() => {
+					const isValidGift = this.validateGift();
+					action.isValid = isValidGift;
+					this.setState(
+						state => reducer(state, action),
+						() => {
+							if (!isValidGift) {
+								this.setState(state =>
+									reducer(state, {
+										type: "UPDATE_FIELD",
+										name: "amount",
+										value: "",
+										error: "Please make a valid donation",
+									})
+								);
+							} else {
+								try {
+									const url = window.location.origin + window.location.pathname;
+									const sDynamicPageUrl =
+										url +
+										(url.charAt(url.length - 1) == "/"
+											? "payment"
+											: "/payment");
+									const sDynamicPageTitle =
+										document.title + " > Choose Donation";
+									window.omTrackDynamicCBNPage(
+										sDynamicPageUrl,
+										sDynamicPageTitle
+									);
+								} catch (err) {
+									console.error("Call Submission Tracking Error");
+									console.error(err);
+								}
 							}
+							this.setState(state =>
+								reducer(state, { type: "TOGGLE_SUBMITTING" })
+							);
 						}
-						this.setState(state =>reducer(state, { type: "TOGGLE_SUBMITTING" }))
-					}
-				);
-			})
+					);
+				}
+			);
 		},
 		addToCart: action => this.setState(state => reducer(state, action)),
 		removeFromCart: action => this.setState(state => reducer(state, action)),
@@ -675,13 +711,15 @@ class GivingFormProvider extends Component {
 				state => reducer(state, action),
 				() => {
 					try {
-						const url = window.location.origin + window.location.pathname
-                		const sDynamicPageUrl = url + ( url.charAt(url.length - 1) == "/" ? "thankyou" : "/thankyou" )
-						const sDynamicPageTitle = document.title + " > Confirm Credit Card"
-						window.omTrackDynamicCBNPage(sDynamicPageUrl, sDynamicPageTitle)
+						const url = window.location.origin + window.location.pathname;
+						const sDynamicPageUrl =
+							url +
+							(url.charAt(url.length - 1) == "/" ? "thankyou" : "/thankyou");
+						const sDynamicPageTitle = document.title + " > Confirm Credit Card";
+						window.omTrackDynamicCBNPage(sDynamicPageUrl, sDynamicPageTitle);
 					} catch (err) {
-						console.error("Call Submission Tracking Error")
-						console.error(err)
+						console.error("Call Submission Tracking Error");
+						console.error(err);
 					}
 					this.context.setConfirmed(action);
 				}
@@ -696,14 +734,15 @@ class GivingFormProvider extends Component {
 			),
 		getSummary: () => {
 			const items = [...this.state.cart.items];
-			const pledgeFound = items.findIndex(
-				el => el && el.type == "donation"
-			);
+			const pledgeFound = items.findIndex(el => el && el.type == "donation");
 			const isMonthly = pledgeFound > -1 ? items[pledgeFound].monthly : false;
 			const amount = pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
-			const designation = Object.keys(this.state.designationInfo).length && 
-			!(isMonthly && !this.state.allowMonthlyDesignations) ? this.state.designationInfo.title : "Where Most Needed";
-			return { amount, isMonthly, designation }
+			const designation =
+				Object.keys(this.state.designationInfo).length &&
+				!(isMonthly && !this.state.allowMonthlyDesignations)
+					? this.state.designationInfo.title
+					: "Where Most Needed";
+			return { amount, isMonthly, designation };
 		},
 		handleCCErrors: action => this.setState(state => reducer(state, action)),
 	};

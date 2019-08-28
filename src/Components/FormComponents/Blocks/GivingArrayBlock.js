@@ -1,21 +1,27 @@
 import React, { useContext, memo } from "react";
 import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 import ClubAskArrayBtn from "../StyledComponents/ClubAskArrayBtn";
-import { CSSTransition } from 'react-transition-group';
+import { CSSTransition } from "react-transition-group";
 
-import "../Animations/askarray.css"
+import "../Animations/askarray.css";
 
 const partnerLevels = {
-    "20": "700 Club",
-    "40": "700 Club Gold",
-    "84": "1000 Club",
-    "209": "2500 Club",
-    "417": "Founder's Club"
-}
+	"20": "700 Club",
+	"40": "700 Club Gold",
+	"84": "1000 Club",
+	"209": "2500 Club",
+	"417": "Founder's Club",
+};
 
-const GivingArray = ({amounts, selectedIndex, format, monthlyChecked, addToCart}) => {
-	const { getCssConfig } = useContext(FormConfigContext)
-	const { 
+const GivingArray = ({
+	amounts,
+	selectedIndex,
+	format,
+	monthlyChecked,
+	addToCart,
+}) => {
+	const { getCssConfig } = useContext(FormConfigContext);
+	const {
 		arrayColor = "#fff",
 		arrayBackgroundColor = "#1775BC",
 		arrayBorderColor = "transparent",
@@ -24,7 +30,7 @@ const GivingArray = ({amounts, selectedIndex, format, monthlyChecked, addToCart}
 		arrayHoverBackgroundColor = "#fff",
 		arrayHoverBorderColor = "#1775BC",
 		arrayDescriptorColor = "#DDB007",
-	} = getCssConfig("array")
+	} = getCssConfig("array");
 	return amounts.map((amount, i) => (
 		<CSSTransition
 			in={true}
@@ -35,9 +41,7 @@ const GivingArray = ({amounts, selectedIndex, format, monthlyChecked, addToCart}
 			appear
 		>
 			<ClubAskArrayBtn
-				className={`askbutton--club ${
-					selectedIndex == i ? "selected" : ""
-				}`}
+				className={`askbutton--club ${selectedIndex == i ? "selected" : ""}`}
 				onClick={() => addToCart(amount, i)}
 				arrayColor={arrayColor}
 				arrayBackgroundColor={arrayBackgroundColor}
@@ -48,9 +52,7 @@ const GivingArray = ({amounts, selectedIndex, format, monthlyChecked, addToCart}
 				arrayHoverBorderColor={arrayHoverBorderColor}
 				arrayDescriptorColor={arrayDescriptorColor}
 			>
-				<div className="askbutton__amt">
-					${amount}
-				</div>
+				<div className="askbutton__amt">${amount}</div>
 				<CSSTransition
 					in={monthlyChecked}
 					timeout={400}
@@ -62,6 +64,6 @@ const GivingArray = ({amounts, selectedIndex, format, monthlyChecked, addToCart}
 			</ClubAskArrayBtn>
 		</CSSTransition>
 	));
-}
+};
 
 export default memo(GivingArray);

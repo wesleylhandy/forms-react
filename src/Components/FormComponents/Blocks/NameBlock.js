@@ -42,7 +42,14 @@ function TitleDropdown({ value, error, handleInputChange, handleBlur }) {
  * @param {String} error
  * @returns {JSX} - InputGroup with given parameters
  */
-function NameInput({ type, required, handleInputChange, handleBlur, value, error }) {
+function NameInput({
+	type,
+	required,
+	handleInputChange,
+	handleBlur,
+	value,
+	error,
+}) {
 	const id = `${type}name`;
 	const label = `${type} Name`;
 	const specialStyle = "form-group--" + id;

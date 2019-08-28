@@ -74,7 +74,7 @@ const AskArrayBtn = styled.div`
 	div.club-level {
 		position: absolute;
 		font-weight: bold;
-		color: #DDB007;
+		color: #ddb007;
 		text-align: center;
 		width: 100%;
 		margin-top: 8px;
