@@ -186,7 +186,13 @@
             "ActivityName": "700Club_Donation_Activity",
             "SectionName": "700Club",
             "proxy": "",
-            "successMessage":"<h1>Thank You</h1>"
+            "successMessage": {
+                "monthly": "<div>Dear #FirstName#,</div><div>Thank you for your choosing to make a monthly gift to the ministry of CBN.</div><div>With just one simple decision, you have made the choice to change lives! It is through you, and others like you, that we are able to help hurting people all over the world.</div><div>Thank you for having a generous heart and a spirit full of compassion. You are making such a huge difference in the lives of so many people in desperate need. May God bless you.",
+                "single": "<div>Dear #FirstName#,</div><div>Thank you for your gift to #Designation#.</div><div>Today is a great day to change a life! And that is exactly what you are doing when you give to CBN&mdash;you broadcast the Gospel to the lost, bring food to the hungry, provide shelter for the homeless, deliver medicine to the sick, and care for people in desperate need of assistance. Thank you for having a generous heart and helping those who are suffering. Your love and compassion are greatly appreciated.</div>",
+                "image":"https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/Pat_SI.jpg",
+                "signature": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/PatSig.gif",
+                "postScript": "<div>P.S. You will receive an email confirmation of your donation followed by a donation receipt. In the meantime, if we can be of service to you, please send a message to <a href='mailto:partners@cbn.com'>partners@cbn.com</a> or call <a href='tel:18007007000'>1-800-700-7000</a>. God bless you.</div><div><a href='http://www1.cbn.com/cbn-partners'>Find out more about CBN Ministries</a></div>"
+            }
         },
         {
             "mode": "development",

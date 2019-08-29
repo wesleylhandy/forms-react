@@ -54,7 +54,11 @@
                 "arrayHoverColor":"#fff",
                 "arrayHoverBackgroundColor": "#009bdf",
                 "arrayHoverBorderColor":"#009bdf",
-                "arrayDescriptorColor": "#DDB007"
+                "arrayDescriptorColor": "#DDB007",
+                "linkColor": "#009BDf",
+                "linkHoverColor":"#0069ad",
+                "linkTextDecoration":"none",
+                "linkHoverTextDecoration":"underline"
             }
         }, {
             "formType": "giving",
