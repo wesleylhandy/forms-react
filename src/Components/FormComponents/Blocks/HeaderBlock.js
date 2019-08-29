@@ -82,7 +82,7 @@ const Nav = styled.nav`
 	}
 `;
 
-const HeaderBlock = ({successTitle, successDescription}) => {
+const HeaderBlock = ({ successTitle, successDescription }) => {
 	const { getCssConfig, getFormConfig } = useContext(FormConfigContext);
 	const { formMaxWidth } = useMemo(() => getCssConfig("form"), []);
 	const { background, title, description } = useMemo(
@@ -105,7 +105,9 @@ const HeaderBlock = ({successTitle, successDescription}) => {
 			</Nav>
 			<div className="header-container">
 				<h2 className="header-title">{successTitle ? successTitle : title}</h2>
-				<p className="header-description">{successDescription ? successDescription : description}</p>
+				<p className="header-description">
+					{successDescription ? successDescription : description}
+				</p>
 			</div>
 		</Header>
 	);

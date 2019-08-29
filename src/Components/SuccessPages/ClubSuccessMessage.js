@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, memo } from "react";
-import styled from "@emotion/styled"
+import styled from "@emotion/styled";
 import { GivingFormContext } from "../Contexts/GivingFormProvider";
 import { FormConfigContext } from "../Contexts/FormConfigProvider";
 import { LiveMessage } from "react-aria-live";
@@ -18,7 +18,7 @@ const ThankYouMessage = styled.div`
 	div + div {
 		margin-top: 20px;
 	}
-`
+`;
 
 const SignatureBlock = styled.div`
 	display: flex;
@@ -48,7 +48,7 @@ const SignatureBlock = styled.div`
 		div {
 			font-size: 19px;
 			line-height: 23px;
-			&>em {
+			& > em {
 				font-style: italic;
 			}
 			.img-responsive {
@@ -56,10 +56,8 @@ const SignatureBlock = styled.div`
 				height: 60px;
 			}
 		}
-
 	}
-
-`
+`;
 
 const PostScript = styled.div`
 	div {
@@ -67,40 +65,51 @@ const PostScript = styled.div`
 		line-height: 23px;
 		a {
 			font-weight: bold;
-			color: ${props=> props.linkColor};
-			textDecoration: ${props => props.linkTextDecoration};
+			color: ${props => props.linkColor};
+			textdecoration: ${props => props.linkTextDecoration};
 			transition: color 200ms ease-in-out;
-			&:hover, &:active, &:focus {
-				color: ${props=> props.linkHoverColor};
-				text-decoration: ${props=> props.linkHoverTextDecoration};
+			&:hover,
+			&:active,
+			&:focus {
+				color: ${props => props.linkHoverColor};
+				text-decoration: ${props => props.linkHoverTextDecoration};
 			}
 		}
 	}
 	div + div {
 		margin-top: 20px;
 	}
-`
+`;
 
-const ClubSuccessMessage = ({ confirmed, successMessage: { monthly, single, image, signature, postScript } }) => {
-	const { trackingVars = [], fields: { Firstname }, designationInfo: { title } } = useContext(GivingFormContext);
+const ClubSuccessMessage = ({
+	confirmed,
+	successMessage: { monthly, single, image, signature, postScript },
+}) => {
+	const {
+		trackingVars = [],
+		fields: { Firstname },
+		designationInfo: { title },
+	} = useContext(GivingFormContext);
 	const { getCssConfig, getFormConfig } = useContext(FormConfigContext);
 	const trackingObj = trackingVars.reduce((obj, variable) => {
 		for (let key in variable) {
 			obj[key] = variable[key];
 		}
-		return obj
+		return obj;
 	}, {});
 	const isMonthly = trackingObj["om_sMonthlyPledge"] === "Y";
 	let message = isMonthly ? monthly : single;
-	message = message.replace("#FirstName#", Firstname).replace("#Designation#", title);
+	message = message
+		.replace("#FirstName#", Firstname)
+		.replace("#Designation#", title);
 	const sectionTitle = isMonthly ? "Free Gifts To You" : "";
-	const { 
-		linkColor = "#009BDf", 
-		linkHoverColor = "#0069ad", 
-		linkTextDecoration = "none", 
-		linkHoverTextDecoration = "underline"
-	} = useMemo(()=> getCssConfig("link"), []);
-	const { 
+	const {
+		linkColor = "#009BDf",
+		linkHoverColor = "#0069ad",
+		linkTextDecoration = "none",
+		linkHoverTextDecoration = "underline",
+	} = useMemo(() => getCssConfig("link"), []);
+	const {
 		formBackgroundColor,
 		formBorderColor,
 		formBorderRadius,
@@ -109,20 +118,23 @@ const ClubSuccessMessage = ({ confirmed, successMessage: { monthly, single, imag
 		formColor,
 		formMargin,
 		formMaxWidth,
-		formPadding, 
-	} = useMemo(()=> getCssConfig("form"), []);
-	const { premiumTitle } = useMemo(()=>getFormConfig("premiumData"), []);
+		formPadding,
+	} = useMemo(() => getCssConfig("form"), []);
+	const { premiumTitle } = useMemo(() => getFormConfig("premiumData"), []);
 	return (
 		confirmed && (
 			<>
-				<HeaderBlock successTitle="All Done" successDescription="Thank You For Your Contribution."/>
+				<HeaderBlock
+					successTitle="All Done"
+					successDescription="Thank You For Your Contribution."
+				/>
 				<LiveMessage
 					message={
 						"Your payment has being processed. A new page with a thank you message just loaded."
 					}
 					aria-live="polite"
 				/>
-				<FormWrapper 
+				<FormWrapper
 					formBackgroundColor={formBackgroundColor}
 					formBorderColor={formBorderColor}
 					formBorderRadius={formBorderRadius}
@@ -132,25 +144,34 @@ const ClubSuccessMessage = ({ confirmed, successMessage: { monthly, single, imag
 					formPadding={formPadding}
 					formMargin={formMargin}
 					formColor={formColor}
-					style={{marginBottom: "30px"}}
+					style={{ marginBottom: "30px" }}
 				>
-					<FormPanel
-						className="success-message"
-					>
-						<ThankYouMessage className="thank-you" dangerouslySetInnerHTML={{__html: message}}/>
+					<FormPanel className="success-message">
+						<ThankYouMessage
+							className="thank-you"
+							dangerouslySetInnerHTML={{ __html: message }}
+						/>
 						<SignatureBlock>
 							<div className="signature-img">
-								<img className="img-responsive" src={image} alt="Pat Robertson"/>
+								<img
+									className="img-responsive"
+									src={image}
+									alt="Pat Robertson"
+								/>
 							</div>
 							<div className="signature-block">
 								<div>Yours in Christ,</div>
-								<div><em>Pat Robertson</em></div>
-								<div><img className="img-responsive" src={signature} alt="Pat"/></div>
+								<div>
+									<em>Pat Robertson</em>
+								</div>
+								<div>
+									<img className="img-responsive" src={signature} alt="Pat" />
+								</div>
 							</div>
 						</SignatureBlock>
-						<PostScript 
-							className="thank-you" 
-							dangerouslySetInnerHTML={{__html: postScript}}
+						<PostScript
+							className="thank-you"
+							dangerouslySetInnerHTML={{ __html: postScript }}
 							linkColor={linkColor}
 							linkHoverColor={linkHoverColor}
 							linkTextDecoration={linkTextDecoration}
@@ -158,9 +179,9 @@ const ClubSuccessMessage = ({ confirmed, successMessage: { monthly, single, imag
 						/>
 					</FormPanel>
 				</FormWrapper>
-				<SuccessCardBlock 
-					maxWidth={formMaxWidth} 
-					premiumTitle={premiumTitle} 
+				<SuccessCardBlock
+					maxWidth={formMaxWidth}
+					premiumTitle={premiumTitle}
 					sectionTitle={sectionTitle}
 					linkColor={linkColor}
 					linkHoverColor={linkHoverColor}

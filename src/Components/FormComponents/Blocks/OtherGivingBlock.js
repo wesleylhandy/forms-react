@@ -1,15 +1,15 @@
 import React, { useContext, useMemo, memo } from "react";
 import { FormConfigContext } from "../../Contexts/FormConfigProvider";
-import { Card, CardSection, CardContainer } from "../StyledComponents/Card"
+import { Card, CardSection, CardContainer } from "../StyledComponents/Card";
 
 const OtherGivingBlock = () => {
 	const { getCssConfig } = useContext(FormConfigContext);
-	const { 
-		linkColor = "#009BDf", 
-		linkHoverColor = "#0069ad", 
-		linkTextDecoration = "none", 
-		linkHoverTextDecoration = "underline"
-	} = useMemo(()=> getCssConfig("link"), []);
+	const {
+		linkColor = "#009BDf",
+		linkHoverColor = "#0069ad",
+		linkTextDecoration = "none",
+		linkHoverTextDecoration = "underline",
+	} = useMemo(() => getCssConfig("link"), []);
 	return (
 		<CardSection>
 			<CardContainer>
@@ -24,7 +24,7 @@ const OtherGivingBlock = () => {
 						</div>
 					</div>
 				</Card>
-				<Card 
+				<Card
 					className="card"
 					linkColor={linkColor}
 					linkHoverColor={linkHoverColor}
@@ -41,14 +41,16 @@ const OtherGivingBlock = () => {
 							by printing and mailing to:
 						</div>
 						<div className="cbn-address">
-							<div className="cbn-address--street">977 Centerville Turnpike,</div>
+							<div className="cbn-address--street">
+								977 Centerville Turnpike,
+							</div>
 							<div className="cbn-address--city-state-zip">
 								Virginia Beach, VA 23463
 							</div>
 						</div>
 					</div>
 				</Card>
-				<Card 
+				<Card
 					className="card"
 					linkColor={linkColor}
 					linkHoverColor={linkHoverColor}
@@ -95,6 +97,6 @@ const OtherGivingBlock = () => {
 			</CardContainer>
 		</CardSection>
 	);
-}
+};
 
 export default memo(OtherGivingBlock);

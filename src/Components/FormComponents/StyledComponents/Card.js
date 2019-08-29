@@ -5,14 +5,14 @@ export const CardSection = styled.section`
 	background: white;
 	margin: 0 auto;
 	padding: 60px 0;
-    width: 100%;
-    h3 {
-        font-weight: bold;
-        font-size: 22px;
-        margin: 0;
-        padding: 0 0 20px 0;
-        text-align: center;
-    }
+	width: 100%;
+	h3 {
+		font-weight: bold;
+		font-size: 22px;
+		margin: 0;
+		padding: 0 0 20px 0;
+		text-align: center;
+	}
 	@media screen and (max-width: 623px) {
 		background: #eceff1;
 	}
@@ -20,7 +20,7 @@ export const CardSection = styled.section`
 
 export const CardContainer = styled.div`
 	width: calc(100% - 20px);
-	max-width: ${props=> props.maxWidth ? props.maxWidth : "1200px"};
+	max-width: ${props => (props.maxWidth ? props.maxWidth : "1200px")};
 	margin: 0 auto;
 	display: flex;
 	flex-direction: row;
@@ -64,12 +64,12 @@ export const Card = styled.div`
 		.mail-in-form,
 		.cbn-address,
 		.giving-links,
-        .phone--info, 
-        .gift-info {
-            text-align: center;
-            em {
-                font-style: italic;
-            }
+		.phone--info,
+		.gift-info {
+			text-align: center;
+			em {
+				font-style: italic;
+			}
 			@media screen and (max-width: 739px) {
 				font-size: 16px;
 				a,
@@ -98,15 +98,15 @@ export const Card = styled.div`
 		}
 	}
 	a {
-		color: ${props=>props.linkColor};
-		text-decoration: ${props=>props.linkTextDecoration};
-        text-align: center;
-        transition: color 200ms ease-in-out;
+		color: ${props => props.linkColor};
+		text-decoration: ${props => props.linkTextDecoration};
+		text-align: center;
+		transition: color 200ms ease-in-out;
 		&:hover,
 		&:active,
 		&:focus {
-			text-decoration: ${props=>props.linkHoverTextDecoration};
-			color: ${props=>props.linkHoverColor};
+			text-decoration: ${props => props.linkHoverTextDecoration};
+			color: ${props => props.linkHoverColor};
 		}
 	}
 	@media screen and (max-width: 623px) {
