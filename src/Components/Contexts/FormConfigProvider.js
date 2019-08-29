@@ -51,6 +51,8 @@ class FormConfigProvider extends Component {
 					initialState = rootEntry.dataset.initialState;
 					initialStyle = rootEntry.dataset.initialStyle;
 				} else if (isWordpress) {
+					const cssConfigUrl = `${proxyUri}cbngiving/v1/${formName}?type=css_setup`;
+					const formConfigUrl = `${proxyUri}cbngiving/v1/${formName}?type=form_setup`;
 					[initialStyle, initialState] = await Promise.all([
 						callApi(cssConfigUrl, { method: "GET" }),
 						callApi(formConfigUrl, { method: "GET" }),

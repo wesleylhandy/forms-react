@@ -53,6 +53,7 @@ const ClubTabGroup = styled.div`
 		position: absolute;
 		left: 50%;
 		transform: translateX(-50%);
+		box-sizing: content-box;
 	}
 `;
 

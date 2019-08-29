@@ -20,7 +20,7 @@ parcelRequire = (function(e) {
 		u
 	);
 })(function(require) {
-	function e(dest, source) {
+	function d(dest, source) {
 		Object.keys(source).forEach(function(key) {
 			if (key === "default" || key === "__esModule") {
 				return;
@@ -34,7 +34,7 @@ parcelRequire = (function(e) {
 		});
 		return dest;
 	}
-	var b = {};
+	var a = {};
 	var h = {};
 	const k = [
 		{
@@ -103,22 +103,22 @@ parcelRequire = (function(e) {
 		},
 	];
 	h.IconsManifest = k;
-	var a = {};
-	var f = {};
+	var b = {};
+	var e = {};
 	require("1n8/");
-	var d = {
+	var f = {
 		color: void 0,
 		size: void 0,
 		className: void 0,
 		style: void 0,
 		attr: void 0,
 	};
-	f.DefaultContext = d;
-	var g = require("1n8/").createContext && require("1n8/").createContext(d);
-	f.IconContext = g;
+	e.DefaultContext = f;
+	var g = require("1n8/").createContext && require("1n8/").createContext(f);
+	e.IconContext = g;
 	require("1n8/");
 	var c =
-			(a && a.__assign) ||
+			(b && b.__assign) ||
 			function() {
 				return (c =
 					Object.assign ||
@@ -130,7 +130,7 @@ parcelRequire = (function(e) {
 					}).apply(this, arguments);
 			},
 		l =
-			(a && a.__rest) ||
+			(b && b.__rest) ||
 			function(t, e) {
 				var r = {};
 				for (var o in t)
@@ -197,17 +197,17 @@ parcelRequire = (function(e) {
 			? require("1n8/").createElement(g.Consumer, null, function(t) {
 					return e(t);
 			  })
-			: e(d);
+			: e(f);
 	}
-	(a.GenIcon = m), (a.IconBase = j);
-	e(b, h), e(b, a), e(b, f);
+	(b.GenIcon = m), (b.IconBase = j);
+	d(a, h), d(a, b), d(a, e);
 	if (typeof exports === "object" && typeof module !== "undefined") {
-		module.exports = b;
+		module.exports = a;
 	} else if (typeof define === "function" && define.amd) {
 		define(function() {
-			return b;
+			return a;
 		});
 	}
-	b.__esModule = true;
-	return { SrMW: b };
+	a.__esModule = true;
+	return { SrMW: a };
 });

@@ -1,8 +1,6 @@
 import React, { useContext, memo, useMemo } from "react";
 import styled from "@emotion/styled";
 
-import { MdCopyright } from "react-icons/md";
-
 import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 
 const Footer = styled.footer`
@@ -57,10 +55,10 @@ const FooterBlock = () => {
 	const { formMaxWidth } = useMemo(() => getCssConfig("form"), []);
 	const year = useMemo(() => new Date().getFullYear(), []);
 	return (
-		<Footer>
+		<Footer className="footer">
 			<div className="container">
 				<div className="cbn-info">
-					<MdCopyright />
+					&copy;
 					<span className="year">{year}</span>The Christian Broadcasting
 					Network, Inc., A Non-profit 501 (c)(3) Charitable Organization
 				</div>

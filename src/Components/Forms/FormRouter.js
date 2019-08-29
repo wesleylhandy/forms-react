@@ -66,6 +66,8 @@ const FormRouter = props => {
 									font-size: ${formFontSize};
 									font-weight: ${formFontWeight};
 									font-style: ${formFontStyle};
+									line-height: unset;
+									box-sizing: unset;
 								}
 								.wrapper {
 									background-color: #eceff1;

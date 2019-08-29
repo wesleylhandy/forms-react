@@ -7,6 +7,7 @@ const FormRow = styled.div`
 	flex-direction: row;
 	justify-content: space-between;
 	width: 100%;
+	height: auto;
 	&.submit-row {
 		position: relative;
 	}

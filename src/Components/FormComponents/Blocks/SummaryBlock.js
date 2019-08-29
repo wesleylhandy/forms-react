@@ -19,6 +19,9 @@ const BlockContainer = styled.div`
 		box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.11);
 		flex-direction: column;
 		.amount-block {
+			font-size: 19px;
+			line-height: 23px;
+			text-align: center;
 			margin-bottom: 10px;
 		}
 	}

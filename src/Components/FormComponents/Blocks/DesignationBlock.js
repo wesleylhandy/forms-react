@@ -10,8 +10,7 @@ import {
 	DesignationCheck,
 } from "../StyledComponents/Designation";
 import DropArrow from "../SVG/DropArrow";
-
-import { MdClose, MdCheck } from "react-icons/md";
+import CheckMark from "../SVG/CheckMark";
 
 const DesignationBlock = ({ designations }) => {
 	const [isOpen, toggleOpen] = useState(false);
@@ -80,7 +79,7 @@ const DesignationBlock = ({ designations }) => {
 				hidden={!isOpen}
 			>
 				<div className="designation-list--close">
-					<MdClose onClick={() => toggleOpen(!isOpen)} />
+					<CheckMark fillColor="#009BDF" onClick={() => toggleOpen(!isOpen)} />
 				</div>
 				<DesignationList
 					ref={listRef}
@@ -119,7 +118,9 @@ const DesignationBlock = ({ designations }) => {
 								selected={idx === designatedIndex}
 								hover={idx === hovering}
 							>
-								<MdCheck />
+								<CheckMark
+									fillColor={idx === designatedIndex ? "#009BDF" : "#979797"}
+								/>
 							</DesignationCheck>
 						</Designation>
 					))}

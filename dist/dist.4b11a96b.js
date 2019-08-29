@@ -20,12 +20,12 @@ parcelRequire = (function(e) {
 		u
 	);
 })(function(require) {
-	var o = {},
-		j = require("1n8/"),
-		g = e(j),
-		m = require("5D9O"),
-		n = e(m);
-	function e(e) {
+	var g = {},
+		h = require("1n8/"),
+		i = d(h),
+		j = require("5D9O"),
+		k = d(j);
+	function d(e) {
 		return e && e.__esModule ? e : { default: e };
 	}
 	var a = function(e) {
@@ -41,40 +41,40 @@ parcelRequire = (function(e) {
 					);
 				})
 				.join("|"))
-				? g.default.createElement("link", {
+				? i.default.createElement("link", {
 						href: "//fonts.googleapis.com/css?family=" + r,
 						rel: "stylesheet",
 						type: "text/css",
 				  })
 				: null;
 	};
-	(a.propTypes = { typography: n.default.object.isRequired }),
+	(a.propTypes = { typography: k.default.object.isRequired }),
 		(a.displayName = "GoogleFont"),
-		(o = a);
-	var h = {},
-		i = require("1n8/"),
-		s = f(i),
-		k = require("5D9O"),
-		l = f(k);
-	function f(r) {
+		(g = a);
+	var l = {},
+		m = require("1n8/"),
+		n = e(m),
+		o = require("5D9O"),
+		p = e(o);
+	function e(r) {
 		return r && r.__esModule ? r : { default: r };
 	}
 	var b = function(r) {
-		return s.default.createElement("style", {
+		return n.default.createElement("style", {
 			id: "typography.js",
 			dangerouslySetInnerHTML: { __html: r.typography.toString() },
 		});
 	};
-	(b.propTypes = { typography: l.default.object.isRequired }),
+	(b.propTypes = { typography: p.default.object.isRequired }),
 		(b.displayName = "TypographyStyle"),
-		(h = b);
+		(l = b);
 	var c = {},
-		p = d(o),
-		q = d(h);
-	function d($) {
+		q = f(g),
+		r = f(l);
+	function f($) {
 		return $ && $.__esModule ? $ : { default: $ };
 	}
-	c = { GoogleFont: p.default, TypographyStyle: q.default };
+	c = { GoogleFont: q.default, TypographyStyle: r.default };
 	if (typeof exports === "object" && typeof module !== "undefined") {
 		module.exports = c;
 	} else if (typeof define === "function" && define.amd) {

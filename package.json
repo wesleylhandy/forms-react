@@ -9,9 +9,8 @@
         "start": "parcel index.html --out-dir dev/dist",
         "stop": "pkill SIGINT ProxyServer",
         "prebuild": "yarn prettify && yarn test",
-        "build": "parcel build src/index.js --experimental-scope-hoisting --detailed-report -d dist",
+        "build": "parcel build src/index.js --detailed-report -d dist --out-file multipleforms.js",
         "build:test": "parcel build src/index.js --detailed-report -d dist/test/v1",
-        "postbuild": "pax -rws /index/multipleforms/ dist/index* . && rm dist/index*",
         "test": "jest --verbose --passWithNoTests",
         "test:watch": "jest --verbose --watch"
     },

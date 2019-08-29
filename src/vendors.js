@@ -9,5 +9,4 @@ import("@emotion/core");
 import("prop-types");
 import("secure-ls");
 import("react-aria-live");
-import("react-icons");
 import("whatwg-fetch");

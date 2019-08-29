@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { FaQuestionCircle } from "react-icons/fa";
 
 import FormHeader from "../StyledComponents/FormHeader";
 import LockSymbol from "../SVG/LockSymbol";
+import InfoSymbol from "../SVG/InfoSymbol";
 import MasterCard from "../SVG/MasterCard";
 import Discover from "../SVG/Discover";
 import Amex from "../SVG/Amex";
@@ -103,8 +103,7 @@ const CCBlock = styled.div`
 const InfoCircle = styled.div`
 	position: absolute;
 	right: 5px;
-	top: -6px;
-	transform: scale(0.7);
+	top: 5px;
 	a {
 		cursor: pointer;
 		text-decoration: none;
@@ -239,7 +238,7 @@ const PaymentBlock = ({
 					/>
 					<InfoCircle>
 						<a href="https://www.cbn.com/CVVNumber/CVV.html" target="_blank">
-							<FaQuestionCircle />
+							<InfoSymbol />
 						</a>
 					</InfoCircle>
 				</FormRow>

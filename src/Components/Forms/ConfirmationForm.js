@@ -444,8 +444,13 @@ class ConfirmationForm extends Component {
 							style={{ visibility: "none", border: "none" }}
 						></iframe>
 					</FormWrapper>
-					<div
-						style={{ background: "white", margin: "30px 0", padding: "30px 0" }}
+					<section
+						className="seals-section"
+						style={{
+							background: "white",
+							margin: "30px 0 0 0",
+							padding: "30px 0 60px 0",
+						}}
 					>
 						<Seals style={{ marginTop: "0" }} />
 						<Disclaimer>
@@ -453,7 +458,7 @@ class ConfirmationForm extends Component {
 							to <a href="mailto:partners@cbn.org">partners@cbn.org</a> or call{" "}
 							<a href="tel:18002891777">1-800-289-1777</a>.
 						</Disclaimer>
-					</div>
+					</section>
 					<FooterBlock />
 				</>
 			)

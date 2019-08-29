@@ -6,6 +6,7 @@ const FormGroup = styled.div`
 	margin-bottom: 20px;
 	margin-top: 20px;
 	flex: 1 1 auto;
+	box-sizing: border-box;
 	&.form-group--Title,
 	&.form-group--Suffix {
 		width: 120px;

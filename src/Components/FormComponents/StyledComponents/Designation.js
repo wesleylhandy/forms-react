@@ -93,7 +93,6 @@ export const DesignationCheck = styled.div`
 	margin-left: 10px;
 	font-size: 24px;
 	border-radius: 50%;
-	background: ${props => (!props.selected ? "#979797" : "rgb(0, 156 , 222)")};
 	transition: opacity 200ms ease-in-out;
 `;
 
