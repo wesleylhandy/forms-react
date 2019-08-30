@@ -19,6 +19,7 @@
             "getShippingAddress": false,
             "allowInternational": true,
             "getPhone": true,
+            "showSeals": true,
             "products": [],
             "designations": [
                 {
@@ -182,8 +183,8 @@
                 ]
             },
             "AddContactYN": "Y",
-            "ContactSource": "700Club Donor",
-            "ActivityName": "700Club_Donation_Activity",
+            "ContactSource": "CBN",
+            "ActivityName": "Giving - 700Club - 700Club",
             "SectionName": "700Club",
             "proxy": "",
             "successMessage": {
@@ -206,6 +207,7 @@
             "getSpouseInfo": false,
             "getShippingAddress": true,
             "allowInternational": true,
+            "showSeals": false,
             "getPhone": true,
             "products": [],
             "designations": [],
@@ -317,6 +319,7 @@
             "getShippingAddress": true,
             "allowInternational": true,
             "getPhone": true,
+            "showSeals":false,
             "numProducts": 0,
             "products": [],
             "subscriptions": [{
