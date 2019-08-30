@@ -120,6 +120,7 @@ class GivingFormProvider extends Component {
 		removeOneLS: type => {
 			removeOneLS(type);
 		},
+		toggleSubmit: () => this.setState(state => reducer(state, { type: "TOGGLE_SUBMITTING" })),
 		updateField: action => this.setState(state => reducer(state, action)),
 		validateAndUpdateField: async action => {
 			const { name, value } = action;

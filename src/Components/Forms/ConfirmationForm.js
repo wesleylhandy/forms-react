@@ -132,7 +132,9 @@ class ConfirmationForm extends Component {
 			document.forms.hiddenform.submit.click();
 		} else if (snapshot && !this.state.hiddenFormSubmitted) {
 			//set timeout if url does not respond in timely manner
-			timeout = setTimeout(function() {
+			timeout = setTimeout(() => {
+				this.context.goBack({ type: "GO_BACK" });
+				console.error("Timeout Error. Your submission took longer than 15 seconds.")
 				try {
 					window.omTrackDebug(
 						window.location.href + " - React Giving Form",
@@ -145,7 +147,6 @@ class ConfirmationForm extends Component {
 				alert(
 					"There was an internal error loading this form. Please check back later or call us at 1-800-759-0700"
 				);
-				return false;
 			}, 15000);
 
 			
@@ -187,7 +188,7 @@ class ConfirmationForm extends Component {
 					ccExpDate,
 					ccCvn,
 				} = isValid;
-				this.hiddenSubmit.current.contentWindow.postMessage({ ccCardType,
+				this.hiddenSubmit.current.contentWindow.postMessage({ type: "cc-values", ccCardType,
 					ccNumber,
 				ExpiresMonth,
 				ExpiresYear,
@@ -210,13 +211,13 @@ class ConfirmationForm extends Component {
 	}
 	handleMessage = e => {
 		// console.log({e})
-		const { type, tracking_vars } =
+		const { type, tracking_vars, errors = [] } =
 			e.data && typeof e.data == "string" ? JSON.parse(e.data) : {};
-		const types = ["payment form loaded", "form error", "render receipt"];
+		const types = ["form validation error", "payment form loaded", "form error", "render receipt"];
 		if (!types.includes(type)) {
 			return;
 		}
-		const { origin, source } = e;
+		const { origin } = e;
 		const isOrigin = this.context.msgUris.includes(origin);
 		if (!isOrigin) {
 			return;
@@ -229,14 +230,15 @@ class ConfirmationForm extends Component {
 					trackingVars: tracking_vars,
 				});
 				break;
+			case "form validation error":
+				console.error({errors})
+				this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
+				clearTimeout(timeout);
+				break;
 			case "form error":
-				const errors = [
-					{ ccNumber: "Please verify your Payment Information and Try Again" },
-				];
-				this.setState({ hiddenFormSubmitted: false }, () => {
-					this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
-					clearTimeout(timeout);
-				});
+				errors.push({ccNumber: "Please verify your Payment Information and Try Again" });
+				this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
+				clearTimeout(timeout);
 				break;
 			case "payment form loaded":
 				this.setState(state => ({ hiddenFormLoaded: true }));

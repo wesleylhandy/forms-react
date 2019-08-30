@@ -37508,8 +37508,13 @@ var reducer = function reducer(state, action) {
 
     case "UPDATE_CC_ERRORS":
       errors = (0, _objectSpread2.default)({}, state.errors);
+
+      for (var i = 0; i < action.errors.length; i++) {
+        errors[action.errors[i].type] = action.errors[i].error;
+      }
+
       return (0, _objectSpread2.default)({}, state, {
-        errors: (0, _objectSpread2.default)({}, errors, action.errors)
+        errors: errors
       });
 
     default:
@@ -37734,6 +37739,13 @@ function (_Component) {
       }(),
       removeOneLS: function removeOneLS(type) {
         (0, _ls.removeOneLS)(type);
+      },
+      toggleSubmit: function toggleSubmit() {
+        return _this.setState(function (state) {
+          return (0, _reducer.default)(state, {
+            type: "TOGGLE_SUBMITTING"
+          });
+        });
       },
       updateField: function updateField(action) {
         return _this.setState(function (state) {
@@ -44590,7 +44602,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55611" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59349" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
