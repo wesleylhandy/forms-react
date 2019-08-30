@@ -37876,7 +37876,7 @@ function (_Component) {
                   (0, _asyncToGenerator2.default)(
                   /*#__PURE__*/
                   _regenerator.default.mark(function _callee4() {
-                    var isValidGift, isValidForm, action, oldCity, response, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, _this$context2, getHonorific, allowInternational, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$context$formCon, mode, _this$context$formCon2, EmailSubjectLine, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, items, pledgeFound, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, DonorID, confirmUrl, bodyFormData, confirmationData, formAction, html, parser, doc, form, inputs, message, _getErrorType, breaking, _name;
+                    var isValidGift, isValidForm, action, oldCity, response, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, _this$context2, getHonorific, allowInternational, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$context$formCon, mode, _this$context$formCon2, EmailSubjectLine, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, items, pledgeFound, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, DonorID, confirmUrl, confirmationData, message, _getErrorType, breaking, _name;
 
                     return _regenerator.default.wrap(function _callee4$(_context4) {
                       while (1) {
@@ -38254,46 +38254,33 @@ function (_Component) {
                             msg = _context4.sent;
                             DonorID = msg.split(";")[0].split(" - ")[1];
                             confirmUrl = msg.split(" is ")[1];
-                            bodyFormData = new FormData();
-                            bodyFormData.append("DonorID", DonorID);
-                            confirmationData = [];
-                            _context4.prev = 97;
-                            _context4.next = 100;
-                            return (0, _fetchHelpers.callApi)(confirmUrl, {
-                              method: "POST",
-                              body: new URLSearchParams(bodyFormData)
-                            });
+                            data.DonorID = DonorID;
+                            confirmationData = {
+                              confirmUrl: confirmUrl,
+                              data: data
+                            }; // let formAction;
+                            // try {
+                            // 	const html = await callApi(confirmUrl, {
+                            // 		method: "POST",
+                            // 		body: new URLSearchParams(bodyFormData),
+                            // 	});
+                            // 	const parser = new DOMParser();
+                            // 	const doc = parser.parseFromString(html, "text/html");
+                            // 	const form = doc.querySelector("form");
+                            // 	formAction = form ? form.action : "";
+                            // 	const inputs = doc.querySelectorAll('input[type="hidden"]');
+                            // 	inputs.forEach(input =>
+                            // 		confirmationData.push({ name: input.name, value: input.value })
+                            // 	);
+                            // } catch (err) {
+                            // 	console.error("GetConfirmationPageError");
+                            // 	console.error({ err });
+                            // }
 
-                          case 100:
-                            html = _context4.sent;
-                            parser = new DOMParser();
-                            doc = parser.parseFromString(html, "text/html");
-                            form = doc.querySelector("form");
-                            formAction = form ? form.action : "";
-                            inputs = doc.querySelectorAll('input[type="hidden"]');
-                            inputs.forEach(function (input) {
-                              return confirmationData.push({
-                                name: input.name,
-                                value: input.value
-                              });
-                            });
-                            _context4.next = 113;
-                            break;
-
-                          case 109:
-                            _context4.prev = 109;
-                            _context4.t4 = _context4["catch"](97);
-                            console.error("GetConfirmationPageError");
-                            console.error({
-                              err: _context4.t4
-                            });
-
-                          case 113:
                             return _context4.abrupt("return", _this.setState(function (state) {
                               return (0, _reducer.default)(state, {
                                 type: "SUBMIT_FORM",
                                 DonorID: DonorID,
-                                formAction: formAction,
                                 confirmationData: confirmationData
                               }, function () {
                                 if (type !== "confirmation") {
@@ -38314,11 +38301,11 @@ function (_Component) {
                               });
                             }));
 
-                          case 116:
-                            _context4.prev = 116;
-                            _context4.t5 = _context4["catch"](88);
-                            console.error(_context4.t5.message);
-                            message = _context4.t5.message;
+                          case 99:
+                            _context4.prev = 99;
+                            _context4.t4 = _context4["catch"](88);
+                            console.error(_context4.t4.message);
+                            message = _context4.t4.message;
                             _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
 
                             if (breaking) {
@@ -38340,12 +38327,12 @@ function (_Component) {
                               });
                             }));
 
-                          case 123:
+                          case 106:
                           case "end":
                             return _context4.stop();
                         }
                       }
-                    }, _callee4, null, [[6, 52], [14, 20], [25, 34], [39, 45], [88, 116], [97, 109]]);
+                    }, _callee4, null, [[6, 52], [14, 20], [25, 34], [39, 45], [88, 99]]);
                   })));
 
                 case 1:
@@ -44603,7 +44590,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64416" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55611" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

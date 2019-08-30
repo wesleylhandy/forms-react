@@ -139,7 +139,7 @@ const reducer = (state, action) => {
 				submitting: false,
 				DonorID,
 				formAction,
-				confirmationData,
+				confirmationData
 			};
 		case "SUBMIT_ASK_FORM":
 			return {

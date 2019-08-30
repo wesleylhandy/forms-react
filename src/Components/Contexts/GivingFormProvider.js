@@ -543,35 +543,33 @@ class GivingFormProvider extends Component {
 						});
 						const DonorID = msg.split(";")[0].split(" - ")[1];
 						const confirmUrl = msg.split(" is ")[1];
-						const bodyFormData = new FormData();
-						bodyFormData.append("DonorID", DonorID);
-						const confirmationData = [];
-						let formAction;
-						try {
-							const html = await callApi(confirmUrl, {
-								method: "POST",
-								body: new URLSearchParams(bodyFormData),
-							});
-							const parser = new DOMParser();
-							const doc = parser.parseFromString(html, "text/html");
-							const form = doc.querySelector("form");
-							formAction = form ? form.action : "";
-							const inputs = doc.querySelectorAll('input[type="hidden"]');
-							inputs.forEach(input =>
-								confirmationData.push({ name: input.name, value: input.value })
-							);
-						} catch (err) {
-							console.error("GetConfirmationPageError");
-							console.error({ err });
-						}
+						data.DonorID = DonorID
+						const confirmationData = { confirmUrl, data};
+						// let formAction;
+						// try {
+						// 	const html = await callApi(confirmUrl, {
+						// 		method: "POST",
+						// 		body: new URLSearchParams(bodyFormData),
+						// 	});
+						// 	const parser = new DOMParser();
+						// 	const doc = parser.parseFromString(html, "text/html");
+						// 	const form = doc.querySelector("form");
+						// 	formAction = form ? form.action : "";
+						// 	const inputs = doc.querySelectorAll('input[type="hidden"]');
+						// 	inputs.forEach(input =>
+						// 		confirmationData.push({ name: input.name, value: input.value })
+						// 	);
+						// } catch (err) {
+						// 	console.error("GetConfirmationPageError");
+						// 	console.error({ err });
+						// }
 						return this.setState(state =>
 							reducer(
 								state,
 								{
 									type: "SUBMIT_FORM",
 									DonorID,
-									formAction,
-									confirmationData,
+									confirmationData
 								},
 								() => {
 									if (type !== "confirmation") {

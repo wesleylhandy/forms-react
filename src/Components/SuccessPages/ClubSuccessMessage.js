@@ -35,7 +35,6 @@ const SignatureBlock = styled.div`
 		.img-responsive {
 			display: block;
 			height: 100%;
-			transform: translateX(-30px);
 		}
 	}
 	div.signature-block {
