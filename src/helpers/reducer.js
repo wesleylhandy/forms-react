@@ -139,7 +139,7 @@ const reducer = (state, action) => {
 				submitting: false,
 				DonorID,
 				formAction,
-				confirmationData
+				confirmationData,
 			};
 		case "SUBMIT_ASK_FORM":
 			return {
@@ -177,7 +177,7 @@ const reducer = (state, action) => {
 		case "UPDATE_CC_ERRORS":
 			errors = { ...state.errors };
 			for (let i = 0; i < action.errors.length; i++) {
-				errors[action.errors[i].type] = action.errors[i].error
+				errors[action.errors[i].type] = action.errors[i].error;
 			}
 			return {
 				...state,

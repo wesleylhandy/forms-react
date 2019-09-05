@@ -119,7 +119,13 @@ class ConfirmationForm extends Component {
 			console.log("Loading Snapshot");
 			return true;
 		}
-		if (submitted && !hasErrors && !confirmed && hiddenFormLoaded && !hiddenFormSubmitted) {
+		if (
+			submitted &&
+			!hasErrors &&
+			!confirmed &&
+			hiddenFormLoaded &&
+			!hiddenFormSubmitted
+		) {
 			console.log("Submitting Snapshot");
 			return true;
 		}
@@ -127,18 +133,22 @@ class ConfirmationForm extends Component {
 	}
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if (snapshot && !this.state.hiddenFormLoaded) {
-				// bubble formaction
+			// bubble formaction
 			document.forms.hiddenform.submit.type = "submit";
 			document.forms.hiddenform.submit.click();
 		} else if (snapshot && !this.state.hiddenFormSubmitted) {
 			//set timeout if url does not respond in timely manner
 			timeout = setTimeout(() => {
 				this.context.goBack({ type: "GO_BACK" });
-				console.error("Timeout Error. Your submission took longer than 15 seconds.")
+				console.error(
+					"Timeout Error. Your submission took longer than 15 seconds."
+				);
 				try {
 					window.omTrackDebug(
 						window.location.href + " - React Giving Form",
-						JSON.stringify({ error: "Timeout Trying to Submit Credit Card Payment" })
+						JSON.stringify({
+							error: "Timeout Trying to Submit Credit Card Payment",
+						})
 					);
 				} catch (err) {
 					console.error("Error Tracking Error");
@@ -149,7 +159,6 @@ class ConfirmationForm extends Component {
 				);
 			}, 15000);
 
-			
 			const {
 				ccNumber,
 				ExpiresYear,
@@ -182,18 +191,19 @@ class ConfirmationForm extends Component {
 				cvnCode
 			);
 			if (isValid.passes) {
-				const {
-					ccCardType,
-					ccNum,
-					ccExpDate,
-					ccCvn,
-				} = isValid;
-				this.hiddenSubmit.current.contentWindow.postMessage({ type: "cc-values", ccCardType,
-					ccNumber,
-				ExpiresMonth,
-				ExpiresYear,
-				cvnCode }, this.context.confirmationData.confirmUrl);
-				this.setState(state => ({ hiddenFormSubmitted: true }))
+				const { ccCardType, ccNum, ccExpDate, ccCvn } = isValid;
+				this.hiddenSubmit.current.contentWindow.postMessage(
+					{
+						type: "cc-values",
+						ccCardType,
+						ccNumber,
+						ExpiresMonth,
+						ExpiresYear,
+						cvnCode,
+					},
+					this.context.confirmationData.confirmUrl
+				);
+				this.setState(state => ({ hiddenFormSubmitted: true }));
 				//cancel redirect
 			} else {
 				// handle validation errors
@@ -213,7 +223,12 @@ class ConfirmationForm extends Component {
 		// console.log({e})
 		const { type, tracking_vars, errors = [] } =
 			e.data && typeof e.data == "string" ? JSON.parse(e.data) : {};
-		const types = ["form validation error", "payment form loaded", "form error", "render receipt"];
+		const types = [
+			"form validation error",
+			"payment form loaded",
+			"form error",
+			"render receipt",
+		];
 		if (!types.includes(type)) {
 			return;
 		}
@@ -231,12 +246,14 @@ class ConfirmationForm extends Component {
 				});
 				break;
 			case "form validation error":
-				console.error({errors})
+				console.error({ errors });
 				this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
 				clearTimeout(timeout);
 				break;
 			case "form error":
-				errors.push({ccNumber: "Please verify your Payment Information and Try Again" });
+				errors.push({
+					ccNumber: "Please verify your Payment Information and Try Again",
+				});
 				this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
 				clearTimeout(timeout);
 				break;
@@ -291,15 +308,15 @@ class ConfirmationForm extends Component {
 			formMaxWidth,
 			formPadding,
 		} = this.props;
-		const { data = {}, confirmUrl = ""} = confirmationData
+		const { data = {}, confirmUrl = "" } = confirmationData;
 		const keys = Object.keys(data);
 		const inputs = keys.map((k, i) => (
-		  <input
-			key={i + "-" + k}
-			name={k}
-			value={data[k] ? data[k] : ""}
-			type="hidden"
-		  />
+			<input
+				key={i + "-" + k}
+				name={k}
+				value={data[k] ? data[k] : ""}
+				type="hidden"
+			/>
 		));
 		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
@@ -413,16 +430,8 @@ class ConfirmationForm extends Component {
 							ref={this.formRef}
 						>
 							{inputs}
-							<input
-								type="hidden"
-								name="cssVars"
-								value={JSON.stringify({})}
-							/>
-							<input
-								id="submit"
-								type="submit"
-								hidden={true}
-							/>
+							<input type="hidden" name="cssVars" value={JSON.stringify({})} />
+							<input id="submit" type="submit" hidden={true} />
 						</HiddenForm>
 						<iframe
 							className="hidden"

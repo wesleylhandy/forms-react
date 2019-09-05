@@ -397,7 +397,7 @@ const gracefulShutdown = () => {
 	console.log("Received kill signal, shutting down gracefully.");
 	server.close(() => {
 		console.log("Closed out remaining connections.");
-		process.exit(1);
+		process.exit(0);
 	});
 
 	// if after

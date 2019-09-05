@@ -120,7 +120,8 @@ class GivingFormProvider extends Component {
 		removeOneLS: type => {
 			removeOneLS(type);
 		},
-		toggleSubmit: () => this.setState(state => reducer(state, { type: "TOGGLE_SUBMITTING" })),
+		toggleSubmit: () =>
+			this.setState(state => reducer(state, { type: "TOGGLE_SUBMITTING" })),
 		updateField: action => this.setState(state => reducer(state, action)),
 		validateAndUpdateField: async action => {
 			const { name, value } = action;
@@ -544,8 +545,8 @@ class GivingFormProvider extends Component {
 						});
 						const DonorID = msg.split(";")[0].split(" - ")[1];
 						const confirmUrl = msg.split(" is ")[1];
-						data.DonorID = DonorID
-						const confirmationData = { confirmUrl, data};
+						data.DonorID = DonorID;
+						const confirmationData = { confirmUrl, data };
 						// let formAction;
 						// try {
 						// 	const html = await callApi(confirmUrl, {
@@ -570,7 +571,7 @@ class GivingFormProvider extends Component {
 								{
 									type: "SUBMIT_FORM",
 									DonorID,
-									confirmationData
+									confirmationData,
 								},
 								() => {
 									if (type !== "confirmation") {
