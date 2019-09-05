@@ -56,6 +56,9 @@ const reducer = (state, action) => {
 		case "TOGGLE_SUBMITTING":
 			return { ...state, submitting: !state.submitting };
 			break;
+		case "TOGGLE_ZIP_VALIDATION":
+			return { ...state, validating: !state.validating };
+			break;
 		case "ADD_TO_CART":
 			items = [...state.cart.items];
 			errors = { ...state.errors };

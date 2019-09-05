@@ -84,17 +84,17 @@ export const validateCCInput = (name, value, ccNumber, ccMonth, ccYear) => {
 			break;
 		case "ExpiresMonth":
 			if (!checkExpDate(ccYear, value)) {
-				error = "Check expiration.";
+				error = "Expired.";
 			}
 			break;
 		case "ExpiresYear":
 			if (!checkExpDate(value, ccMonth)) {
-				error = "Check expiration.";
+				error = "Expired.";
 			}
 			break;
 		case "cvnCode":
 			if (!checkCVNCode(cardType, value)) {
-				error = "Invalid Entry.";
+				error = "Invalid.";
 			}
 			break;
 	}
@@ -186,7 +186,7 @@ const validateCCInfo = (
 		passes = false;
 		errors.push({
 			type: "ExpiresMonth",
-			error: "The expiration date entered appears to be expired.",
+			error: "Expired.",
 		});
 	}
 	if (curccnum == "" || curccType == "" || !checkDigits(curccnum)) {
@@ -201,15 +201,14 @@ const validateCCInfo = (
 		passes = false;
 		errors.push({
 			type: "ccNumber",
-			error:
-				"Check that the card type matches the number and that all digits are entered.",
+			error: "Visa, Mastercard, Discover, or American Express.",
 		});
 	}
 	if (!checkCVNCode(curccType, curcvnCode)) {
 		passes = false;
 		errors.push({
 			type: "cvnCode",
-			error: "Invalid Code.",
+			error: "Invalid.",
 		});
 	}
 

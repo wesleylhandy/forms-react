@@ -307,6 +307,7 @@ class ConfirmationForm extends Component {
 			submitted,
 			confirmationData,
 			confirmed,
+			validating,
 		} = this.context;
 		const {
 			allowInternational,
@@ -421,6 +422,7 @@ class ConfirmationForm extends Component {
 												type="Billing"
 												hideAddressTwo={true}
 												submitting={submitting || submitted}
+												validating={validating}
 											/>
 										</FormPanel>
 									</FieldSet>

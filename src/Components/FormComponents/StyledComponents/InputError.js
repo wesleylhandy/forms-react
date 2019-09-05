@@ -5,7 +5,7 @@ export const InputError = styled.div`
 	box-sizing: border-box;
 	position: absolute;
 	color: ${props => props.inputErrorColor || "crimson"};
-	width: auto;
+	width: calc(100% - 22px);
 	line-height: unset;
 	left: 12px;
 	bottom: auto;

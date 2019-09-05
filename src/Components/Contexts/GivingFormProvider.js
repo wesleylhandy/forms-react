@@ -39,6 +39,7 @@ class GivingFormProvider extends Component {
 		formAction: "",
 		confirmationData: [],
 		confirmed: false,
+		validation: false,
 		trackingVars: [],
 		initFields: action => this.setState(state => reducer(state, action)),
 		loadLS: action => {
@@ -128,7 +129,7 @@ class GivingFormProvider extends Component {
 			const isZip = name.includes("Zip");
 			if (isZip) {
 				this.setState(
-					state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+					state => reducer(state, { type: "TOGGLE_ZIP_VALIDATION" }),
 					async () => {
 						if (!zip_regex.test(value)) {
 							action.error = "Invalid Postal Code";
@@ -148,7 +149,7 @@ class GivingFormProvider extends Component {
 										state => reducer(state, response.action),
 										() => {
 											this.setState(state =>
-												reducer(state, { type: "TOGGLE_SUBMITTING" })
+												reducer(state, { type: "TOGGLE_ZIP_VALIDATION" })
 											);
 										}
 									);

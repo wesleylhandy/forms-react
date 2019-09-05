@@ -68,7 +68,7 @@ export const callZipCityStateService = async (name, value, oldCity) => {
 			action: "UPDATE_FIELD",
 			name,
 			value,
-			error: "No Value Passed to Validator",
+			error: "Required",
 		};
 	}
 };
@@ -217,8 +217,7 @@ export const validateInput = (
 			break;
 		case "phone":
 			if (value && !phone_regex.test(value)) {
-				error =
-					"Please enter a valid phone number, numbers only: ie. 7575551212";
+				error = "Numbers only: ie. 7575551212";
 			}
 			break;
 	}
