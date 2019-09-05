@@ -5,7 +5,13 @@ import FieldSet from "../StyledComponents/FieldSet";
 import SelectGroup from "../SelectGroup";
 import InputGroup from "../InputGroup";
 
-function TitleDropdown({ value, error, handleInputChange, handleBlur }) {
+function TitleDropdown({
+	value,
+	error,
+	handleInputChange,
+	handleBlur,
+	disabled,
+}) {
 	const vals = ["", "Mr", "Ms", "Mrs", "Mr and Mrs"];
 	const options = vals.map((el, ind) => {
 		return (
@@ -29,6 +35,7 @@ function TitleDropdown({ value, error, handleInputChange, handleBlur }) {
 			handleInputChange={handleInputChange}
 			handleBlur={handleBlur}
 			options={options}
+			disabled={disabled}
 		/>
 	);
 }
@@ -49,6 +56,7 @@ function NameInput({
 	handleBlur,
 	value,
 	error,
+	disabled,
 }) {
 	const id = `${type}name`;
 	const label = `${type} Name`;
@@ -67,6 +75,7 @@ function NameInput({
 			handleInputChange={handleInputChange}
 			handleBlur={handleBlur}
 			error={error}
+			disabled={disabled}
 		/>
 	);
 }
@@ -78,7 +87,13 @@ function NameInput({
  * @param {Function} handleInputChange
  * @returns {JSX} - InputGroup with given parameters
  */
-function SpouseInput({ value, error, handleInputChange, handleBlur }) {
+function SpouseInput({
+	value,
+	error,
+	handleInputChange,
+	handleBlur,
+	disabled,
+}) {
 	return (
 		<FormRow>
 			<InputGroup
@@ -93,6 +108,7 @@ function SpouseInput({ value, error, handleInputChange, handleBlur }) {
 				handleInputChange={handleInputChange}
 				handleBlur={handleBlur}
 				error={error}
+				disabled={disabled}
 			/>
 		</FormRow>
 	);
@@ -108,6 +124,7 @@ function NameBlock({
 	handleInputChange,
 	handleBlur,
 	type,
+	submitting,
 }) {
 	if (!getMiddleName && !getSuffix) {
 		return (
@@ -120,6 +137,7 @@ function NameBlock({
 							error={errors.Title}
 							handleInputChange={handleInputChange}
 							handleBlur={handleBlur}
+							disabled={submitting}
 						/>
 					)}
 					<NameInput
@@ -129,6 +147,7 @@ function NameBlock({
 						handleBlur={handleBlur}
 						value={fields["Firstname"]}
 						error={errors["Firstname"]}
+						disabled={submitting}
 					/>
 					<NameInput
 						type={"Last"}
@@ -137,6 +156,7 @@ function NameBlock({
 						handleBlur={handleBlur}
 						value={fields["Lastname"]}
 						error={errors["Lastname"]}
+						disabled={submitting}
 					/>
 				</FormRow>
 				{getSpouseInfo && (
@@ -145,6 +165,7 @@ function NameBlock({
 						error={errors.Spousename}
 						handleInputChange={handleInputChange}
 						handleBlur={handleBlur}
+						disabled={submitting}
 					/>
 				)}
 			</FieldSet>
@@ -160,6 +181,7 @@ function NameBlock({
 							error={errors.Title}
 							handleInputChange={handleInputChange}
 							handleBlur={handleBlur}
+							disabled={submitting}
 						/>
 					)}
 					<NameInput
@@ -169,6 +191,7 @@ function NameBlock({
 						handleBlur={handleBlur}
 						value={fields["Firstname"]}
 						error={errors["Firstname"]}
+						disabled={submitting}
 					/>
 					{getMiddleName && (
 						<NameInput
@@ -178,6 +201,7 @@ function NameBlock({
 							handleBlur={handleBlur}
 							value={fields["Middlename"]}
 							error={errors["Middlename"]}
+							disabled={submitting}
 						/>
 					)}
 				</FormRow>
@@ -189,6 +213,7 @@ function NameBlock({
 						handleBlur={handleBlur}
 						value={fields["Lastname"]}
 						error={errors["Lastname"]}
+						disabled={submitting}
 					/>
 					{getSuffix && (
 						<SelectGroup
@@ -199,6 +224,7 @@ function NameBlock({
 							error={errors.Suffix}
 							handleInputChange={handleInputChange}
 							handleBlur={handleBlur}
+							disabled={submitting}
 							options={[
 								<option key="suff-0" value="" disabled="disabled">
 									Suffix* &#9663;
@@ -228,6 +254,7 @@ function NameBlock({
 						error={errors.Spousename}
 						handleInputChange={handleInputChange}
 						handleBlur={handleBlur}
+						disabled={submitting}
 					/>
 				)}
 			</FieldSet>

@@ -18,6 +18,7 @@ function AddressBlock({
 	allowInternational,
 	type,
 	hideAddressTwo,
+	submitting,
 }) {
 	return (
 		<FieldSet className="address-block">
@@ -37,6 +38,7 @@ function AddressBlock({
 							handleInputChange={handleInputChange}
 							handleBlur={handleBlur}
 							error={errors.Address1}
+							disabled={submitting}
 						/>
 					</FormRow>
 					{!hideAddressTwo && (
@@ -53,6 +55,7 @@ function AddressBlock({
 								handleInputChange={handleInputChange}
 								handleBlur={handleBlur}
 								error={errors.Address2}
+								disabled={submitting}
 							/>
 						</FormRow>
 					)}
@@ -69,6 +72,7 @@ function AddressBlock({
 							handleInputChange={handleInputChange}
 							handleBlur={handleBlur}
 							error={errors.City}
+							disabled={submitting}
 						/>
 						<SelectGroup
 							id="State"
@@ -80,7 +84,7 @@ function AddressBlock({
 							handleInputChange={handleInputChange}
 							handleBlur={handleBlur}
 							required={fields.Country == "United States"}
-							disabled={fields.Country != "United States"}
+							disabled={fields.Country != "United States" || submitting}
 							options={[
 								<option key="state-base-0" value="" disabled="disabled">
 									State* &#9660;
@@ -99,7 +103,7 @@ function AddressBlock({
 							placeholder="Zip*"
 							maxLength={fields.Country != "United States" ? 25 : 5}
 							required={fields.Country == "United States"}
-							disabled={fields.Country != "United States"}
+							disabled={fields.Country != "United States" || submitting}
 							value={fields.Country == "United States" ? fields.Zip : "NA"}
 							handleInputChange={handleInputChange}
 							handleBlur={handleBlur}
@@ -118,6 +122,7 @@ function AddressBlock({
 								error={errors.Country}
 								handleInputChange={handleInputChange}
 								handleBlur={handleBlur}
+								disabled={submitting}
 								options={[
 									<option key="country-base-0" value="" disabled="disabled">
 										Country* &#9660;
@@ -146,6 +151,7 @@ function AddressBlock({
 					handleInputChange={handleInputChange}
 					handleBlur={handleBlur}
 					error={errors.Emailaddress}
+					disabled={submitting}
 				/>
 				{getPhone && (
 					<InputGroup
@@ -157,7 +163,7 @@ function AddressBlock({
 						maxLength="24"
 						required={false}
 						value={fields.phone}
-						disabled={fields.Country != "United States"}
+						disabled={fields.Country != "United States" || submitting}
 						handleInputChange={handleInputChange}
 						handleBlur={handleBlur}
 						error={errors.phone}

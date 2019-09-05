@@ -22,6 +22,7 @@ const Header = styled.header`
 		margin: 0 auto;
 		padding: 30px 10px;
 		width: 100%;
+		box-sizing: border-box;
 		h2.header-title {
 			font-size: 40px;
 			font-weight: bold;

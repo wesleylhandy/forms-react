@@ -1,4 +1,10 @@
-import React, { useContext, useMemo, memo } from "react";
+import React, {
+	useContext,
+	useState,
+	useLayoutEffect,
+	useMemo,
+	memo,
+} from "react";
 import styled from "@emotion/styled";
 import { GivingFormContext } from "../Contexts/GivingFormProvider";
 import { FormConfigContext } from "../Contexts/FormConfigProvider";
@@ -9,6 +15,7 @@ import FormPanel from "../FormComponents/StyledComponents/FormPanel";
 import HeaderBlock from "../FormComponents/Blocks/HeaderBlock";
 import FooterBlock from "../FormComponents/Blocks/FooterBlock";
 import SuccessCardBlock from "../FormComponents/Blocks/SuccessCardBlock";
+import { scrollToPoint, offsetTop } from "../../helpers/scrollToPoint";
 
 const ThankYouMessage = styled.div`
 	div {
@@ -84,6 +91,7 @@ const ClubSuccessMessage = ({
 	confirmed,
 	successMessage: { monthly, single, image, signature, postScript },
 }) => {
+	const [scrolled, setScrolled] = useState(false);
 	const {
 		trackingVars = [],
 		fields: { Firstname },
@@ -120,6 +128,16 @@ const ClubSuccessMessage = ({
 		formPadding,
 	} = useMemo(() => getCssConfig("form"), []);
 	const { premiumTitle } = useMemo(() => getFormConfig("premiumData"), []);
+	useLayoutEffect(() => {
+		if (confirmed & !scrolled) {
+			console.log("Scrolling Snapshot on Success");
+			setScrolled(true);
+			const target = document.getElementById("react-club-form-success");
+			const top = offsetTop(target);
+			scrollToPoint(top);
+		}
+	}, [confirmed, scrolled]);
+
 	return (
 		confirmed && (
 			<>
@@ -144,8 +162,9 @@ const ClubSuccessMessage = ({
 					formMargin={formMargin}
 					formColor={formColor}
 					style={{ marginBottom: "30px" }}
+					inProp={confirmed}
 				>
-					<FormPanel className="success-message">
+					<FormPanel className="success-message" id="react-club-form-success">
 						<ThankYouMessage
 							className="thank-you"
 							dangerouslySetInnerHTML={{ __html: message }}

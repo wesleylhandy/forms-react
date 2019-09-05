@@ -72,6 +72,7 @@ const ClubAskArrayBtn = styled.div`
 		left: 50%;
 		top: 100%;
 		transform: translateX(-50%);
+		line-height: 1.33;
 		@media screen and (max-width: 395px) {
 			width: 100%;
 			font-size: 12px;

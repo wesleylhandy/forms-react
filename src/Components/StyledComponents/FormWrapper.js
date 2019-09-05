@@ -1,7 +1,27 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-const FormWrapper = styled.main`
+import { Transition } from "react-transition-group";
+
+const duration = {
+	appear: 500,
+	enter: 500,
+	exit: 500,
+};
+
+const defaultStyle = {
+	transition: `opacity ${duration.appear}ms ease-in-out`,
+	opacity: 0,
+};
+
+const transitionStyles = {
+	entering: { opacity: 1 },
+	entered: { opacity: 1 },
+	exiting: { opacity: 0 },
+	exited: { opacity: 0 },
+};
+
+const Wrapper = styled.main`
 	background: ${props => props.formBackgroundColor};
 	box-sizing: border-box;
 	border: ${props => props.formBorderWidth} solid
@@ -16,5 +36,39 @@ const FormWrapper = styled.main`
 		padding: 20px 10px;
 	}
 `;
+
+const FormWrapper = ({
+	style = {},
+	formBackgroundColor,
+	formBorderWidth,
+	formBorderColor,
+	formBorderRadius,
+	formColor,
+	formMaxWidth,
+	formPadding,
+	formMargin,
+	formBoxShadow,
+	children,
+	inProp,
+}) => (
+	<Transition in={inProp} timeout={duration} mountOnEnter unmountOnExit appear>
+		{state => (
+			<Wrapper
+				style={{ ...style, ...defaultStyle, ...transitionStyles[state] }}
+				formBackgroundColor={formBackgroundColor}
+				formBorderColor={formBorderColor}
+				formBorderRadius={formBorderRadius}
+				formBorderWidth={formBorderWidth}
+				formBoxShadow={formBoxShadow}
+				formMaxWidth={formMaxWidth}
+				formPadding={formPadding}
+				formMargin={formMargin}
+				formColor={formColor}
+			>
+				{children}
+			</Wrapper>
+		)}
+	</Transition>
+);
 
 export default FormWrapper;

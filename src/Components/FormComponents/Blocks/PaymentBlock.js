@@ -118,6 +118,7 @@ const PaymentBlock = ({
 	curMonth,
 	handleInputChange,
 	handleBlur,
+	submitting,
 }) => {
 	const years = [],
 		months = [];
@@ -193,6 +194,7 @@ const PaymentBlock = ({
 						handleBlur={handleBlur}
 						error={errors.ccNumber}
 						validation="\d*"
+						disabled={submitting}
 					/>
 				</FormRow>
 				<FormRow
@@ -209,6 +211,7 @@ const PaymentBlock = ({
 						options={months}
 						handleInputChange={handleInputChange}
 						handleBlur={handleBlur}
+						disabled={submitting}
 					/>
 					<span>&nbsp;/&nbsp;</span>
 					<SelectGroup
@@ -221,6 +224,7 @@ const PaymentBlock = ({
 						options={years}
 						handleInputChange={handleInputChange}
 						handleBlur={handleBlur}
+						disabled={submitting}
 					/>
 					<InputGroup
 						specialStyle="form-group--cvnCode"
@@ -235,6 +239,7 @@ const PaymentBlock = ({
 						handleBlur={handleBlur}
 						error={errors.cvnCode}
 						validation="\d{3,4}"
+						disabled={submitting}
 					/>
 					<InfoCircle>
 						<a href="https://www.cbn.com/CVVNumber/CVV.html" target="_blank">

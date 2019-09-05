@@ -108,6 +108,7 @@ class AskForm extends Component {
 					formPadding={formPadding}
 					formMargin={formMargin}
 					formColor={formColor}
+					inProp={!selected}
 				>
 					<form
 						id="react-club-ask-form"

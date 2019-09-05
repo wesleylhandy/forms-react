@@ -51,7 +51,7 @@ const BlockContainer = styled.div`
 	}
 `;
 
-const SummaryBlock = ({ withContainer }) => {
+const SummaryBlock = ({ withContainer, submitting }) => {
 	const { getSummary, getSelection } = useContext(GivingFormContext);
 	const { amount, isMonthly, designation } = useMemo(() => getSummary(), []);
 	const duration = isMonthly ? "/ Month Partnership" : designation;
@@ -59,10 +59,12 @@ const SummaryBlock = ({ withContainer }) => {
 
 	const handleGoBackClick = e => {
 		e.preventDefault();
-		setA11yMessage(
-			"You Pressed the Edit Button and Now the Previous Page for Selecting Your Donation Amount has loaded in place of the Credit Card Form."
-		);
-		getSelection({ type: "GO_BACK" });
+		if (!submitting) {
+			setA11yMessage(
+				"You Pressed the Edit Button and Now the Previous Page for Selecting Your Donation Amount has loaded in place of the Credit Card Form."
+			);
+			getSelection({ type: "GO_BACK" });
+		}
 	};
 	return (
 		<BlockContainer className={withContainer ? "column" : "row"}>

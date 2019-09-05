@@ -15,29 +15,4 @@
 	transition: opacity 400ms ease-in;
 }
 
-.designation-container-enter,
-.designation-container-appear {
-	opacity: 0;
-	max-height: 0;
-}
-.designation-container-enter-active,
-.designation-container-appear-active {
-	opacity: 1;
-	max-height: 140px;
-	transition: all 200ms;
-}
-
-.designation-container-enter-done {
-}
-.designation-container-exit {
-	max-height: 140px;
-	opacity: 1;
-}
-.designation-container-exit-active {
-	max-height: 0;
-
-	opacity: 0;
-	transition: all 200ms;
-}
-
 /*# sourceMappingURL=/AskForm.02eb8dbc.css.map */

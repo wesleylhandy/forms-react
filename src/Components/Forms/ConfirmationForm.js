@@ -18,6 +18,7 @@ import HiddenForm from "../FormComponents/StyledComponents/HiddenForm";
 import Seals from "../FormComponents/Seals";
 import HeaderBlock from "../FormComponents/Blocks/HeaderBlock";
 import FooterBlock from "../FormComponents/Blocks/FooterBlock";
+import { scrollToPoint, offsetTop } from "../../helpers/scrollToPoint";
 
 const Disclaimer = styled.div`
 	color: #444444;
@@ -50,6 +51,7 @@ class ConfirmationForm extends Component {
 	hiddenSubmit = React.createRef();
 	formRef = React.createRef();
 	state = {
+		scrolled: false,
 		a11yMessage: "",
 		hiddenFormLoaded: false,
 		hiddenFormSubmitted: false,
@@ -107,14 +109,18 @@ class ConfirmationForm extends Component {
 		// if user has selected to save personal info,
 	}
 	getSnapshotBeforeUpdate() {
-		const { submitted, confirmed, fields } = this.context;
-		const { hiddenFormLoaded, hiddenFormSubmitted } = this.state;
+		const { submitted, confirmed, fields, selected } = this.context;
+		const { hiddenFormLoaded, hiddenFormSubmitted, scrolled } = this.state;
 		// console.log({confirmationData, formAction})
 		const hasErrors =
 			fields.errors && fields.errors.length
 				? Object.values(fields.errors).filter(val => val && val.length > 0)
 						.length > 0
 				: false;
+		if (selected & !scrolled) {
+			console.log("Scrolling Snapshot on Payment");
+			return true;
+		}
 		if (submitted && !hasErrors && !confirmed && !hiddenFormLoaded) {
 			console.log("Loading Snapshot");
 			return true;
@@ -132,7 +138,13 @@ class ConfirmationForm extends Component {
 		return null;
 	}
 	componentDidUpdate(prevProps, prevState, snapshot) {
-		if (snapshot && !this.state.hiddenFormLoaded) {
+		if (snapshot && !this.state.scrolled) {
+			this.setState({ scrolled: true }, () => {
+				const target = document.getElementById("react-club-payment-form");
+				const top = offsetTop(target);
+				scrollToPoint(top);
+			});
+		} else if (snapshot && !this.state.hiddenFormLoaded) {
 			// bubble formaction
 			document.forms.hiddenform.submit.type = "submit";
 			document.forms.hiddenform.submit.click();
@@ -219,49 +231,54 @@ class ConfirmationForm extends Component {
 			}
 		}
 	}
-	handleMessage = e => {
-		// console.log({e})
-		const { type, tracking_vars, errors = [] } =
-			e.data && typeof e.data == "string" ? JSON.parse(e.data) : {};
-		const types = [
-			"form validation error",
-			"payment form loaded",
-			"form error",
-			"render receipt",
-		];
-		if (!types.includes(type)) {
+	handleMessage = msg => {
+		try {
+			const { type, tracking_vars, errors = [] } =
+				msg.data && typeof msg.data == "string" ? JSON.parse(msg.data) : {};
+			const types = [
+				"form validation error",
+				"payment form loaded",
+				"form error",
+				"render receipt",
+			];
+			if (!types.includes(type)) {
+				return;
+			}
+			const { origin } = msg;
+			const isOrigin = this.context.msgUris.includes(origin);
+			if (!isOrigin) {
+				return;
+			}
+			switch (type) {
+				case "render receipt":
+					clearTimeout(timeout);
+					this.context.setConfirmed({
+						type: "CONFIRMED",
+						trackingVars: tracking_vars,
+					});
+					break;
+				case "form validation error":
+					console.error({ errors });
+					this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
+					clearTimeout(timeout);
+					break;
+				case "form error":
+					errors.push({
+						ccNumber: "Please verify your Payment Information and Try Again",
+					});
+					this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
+					clearTimeout(timeout);
+					break;
+				case "payment form loaded":
+					this.setState(state => ({ hiddenFormLoaded: true }));
+					break;
+			}
 			return;
+		} catch (err) {
+			console.error("PostMessage API Error");
+			console.log({ msg });
+			console.error(err);
 		}
-		const { origin } = e;
-		const isOrigin = this.context.msgUris.includes(origin);
-		if (!isOrigin) {
-			return;
-		}
-		switch (type) {
-			case "render receipt":
-				clearTimeout(timeout);
-				this.context.setConfirmed({
-					type: "CONFIRMED",
-					trackingVars: tracking_vars,
-				});
-				break;
-			case "form validation error":
-				console.error({ errors });
-				this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
-				clearTimeout(timeout);
-				break;
-			case "form error":
-				errors.push({
-					ccNumber: "Please verify your Payment Information and Try Again",
-				});
-				this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
-				clearTimeout(timeout);
-				break;
-			case "payment form loaded":
-				this.setState(state => ({ hiddenFormLoaded: true }));
-				break;
-		}
-		return;
 	};
 	handleInputChange = e => {
 		const target = e.target;
@@ -336,6 +353,7 @@ class ConfirmationForm extends Component {
 						formPadding={formPadding}
 						formMargin={formMargin}
 						formColor={formColor}
+						inProp={selected && !confirmed}
 					>
 						<form
 							id="react-club-payment-form"
@@ -345,7 +363,10 @@ class ConfirmationForm extends Component {
 						>
 							{initialized ? (
 								<FormPanel className="form-panel">
-									<SummaryBlock withContainer={true} />
+									<SummaryBlock
+										withContainer={true}
+										submitting={submitting || submitted}
+									/>
 									<PaymentBlock
 										fields={fields}
 										errors={errors}
@@ -353,6 +374,7 @@ class ConfirmationForm extends Component {
 										curYear={curYear}
 										handleInputChange={this.handleInputChange}
 										handleBlur={this.handleBlur}
+										submitting={submitting || submitted}
 									/>
 									<FieldSet
 										style={{
@@ -386,6 +408,7 @@ class ConfirmationForm extends Component {
 												handleInputChange={this.handleInputChange}
 												handleBlur={this.handleBlur}
 												type="Name"
+												submitting={submitting || submitted}
 											/>
 											<AddressBlock
 												fields={fields}
@@ -397,10 +420,14 @@ class ConfirmationForm extends Component {
 												allowInternational={allowInternational}
 												type="Billing"
 												hideAddressTwo={true}
+												submitting={submitting || submitted}
 											/>
 										</FormPanel>
 									</FieldSet>
-									<SummaryBlock withContainer={false} />
+									<SummaryBlock
+										withContainer={false}
+										submitting={submitting || submitted}
+									/>
 									<FieldSet>
 										<legend>Form Submit Block</legend>
 										<SubmitButton
