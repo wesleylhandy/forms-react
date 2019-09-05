@@ -66,6 +66,8 @@ const Nav = styled.nav`
 		}
 		span {
 			color: #ffffff;
+			flex: 1 1 135px;
+			text-align: right;
 			a {
 				font-size: 17px;
 				font-weight: 500;
@@ -78,6 +80,9 @@ const Nav = styled.nav`
 			a:focus {
 				text-decoration: underline;
 				color: #ddd;
+			}
+			@media screen and (max-width: 460px) {
+				flex-grow: 0;
 			}
 		}
 	}

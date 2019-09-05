@@ -437,7 +437,7 @@ class ConfirmationForm extends Component {
 											submitting={submitting || submitted}
 											value="Send Payment"
 										/>
-										<Disclaimer style={{ color: "#54585D" }}>
+										<Disclaimer style={{ color: "#54585D", marginTop: 50 }}>
 											CBN values and protects your personal information.
 										</Disclaimer>
 									</FieldSet>

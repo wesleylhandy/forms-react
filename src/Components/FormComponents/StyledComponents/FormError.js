@@ -14,7 +14,7 @@ const FormError = styled.div`
 	white-space: nowrap;
 	left: 50%;
 	transform: translateX(-50%);
-	bottom: calc(0% - 20px);
+	bottom: calc(0% - 25px);
 `;
 
 export default FormError;

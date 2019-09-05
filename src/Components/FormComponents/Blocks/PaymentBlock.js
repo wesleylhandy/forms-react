@@ -103,11 +103,14 @@ const CCBlock = styled.div`
 const InfoCircle = styled.div`
 	position: absolute;
 	right: 5px;
-	top: 5px;
+	top: 0;
 	a {
 		cursor: pointer;
 		text-decoration: none;
 		color: #54585d;
+	}
+	svg {
+		vertical-align: unset;
 	}
 `;
 
