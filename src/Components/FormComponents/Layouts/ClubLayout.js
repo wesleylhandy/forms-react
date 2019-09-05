@@ -240,6 +240,7 @@ class ClubLayout extends Component {
 									ref={this.otherAmountField}
 									className="form-group__other-input"
 									name="other-amt-input"
+									id="other-amt-input"
 									onChange={this.handleOtherAmt}
 									value={otherAmount == 0 ? "" : otherAmount}
 									onFocus={this.handleFocus}

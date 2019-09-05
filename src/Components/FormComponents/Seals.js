@@ -43,6 +43,7 @@ function Seals({ style = {} }) {
 				<a
 					className="seals__seal--link"
 					href="https://www.digicert.com/ev-multi-domain-ssl.htm"
+					aria-label="Digicert Seal"
 				></a>
 			</div>
 			<div id="ECFA_Logo" className="seals__seal">
@@ -50,6 +51,7 @@ function Seals({ style = {} }) {
 					className="seals__seal--link"
 					href="http://www.ecfa.org"
 					target="_blank"
+					aria-label="ECFA Seal"
 				>
 					<img
 						className="seals__seal-img"
