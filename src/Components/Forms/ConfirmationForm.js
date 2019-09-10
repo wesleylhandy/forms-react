@@ -110,13 +110,12 @@ class ConfirmationForm extends Component {
 		// if user has selected to save personal info,
 	}
 	getSnapshotBeforeUpdate() {
-		const { submitted, confirmed, fields, selected } = this.context;
+		const { submitted, confirmed, errors, selected } = this.context;
 		const { hiddenFormLoaded, hiddenFormSubmitted, scrolled } = this.state;
 		// console.log({confirmationData, formAction})
 		const hasErrors =
-			fields.errors && fields.errors.length
-				? Object.values(fields.errors).filter(val => val && val.length > 0)
-						.length > 0
+			errors && errors.length
+				? Object.values(errors).filter(val => val && val.length > 0).length > 0
 				: false;
 		if (selected & !scrolled) {
 			console.log("Scrolling Snapshot on Payment");
