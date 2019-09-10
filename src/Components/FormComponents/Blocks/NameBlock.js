@@ -1,9 +1,11 @@
-import React from "react";
+import React,  { useContext }from "react";
 
 import FormRow from "../StyledComponents/FormRow";
 import FieldSet from "../StyledComponents/FieldSet";
 import SelectGroup from "../SelectGroup";
 import InputGroup from "../InputGroup";
+
+import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 
 function TitleDropdown({
 	value,
@@ -12,13 +14,14 @@ function TitleDropdown({
 	handleBlur,
 	disabled,
 }) {
+	const { allowInputPlaceholders } = useContext(FormConfigContext);
 	const vals = ["", "Mr", "Ms", "Mrs", "Mr and Mrs"];
 	const options = vals.map((el, ind) => {
 		return (
 			<option
 				key={`title-${ind}`}
 				value={el}
-				dangerouslySetInnerHTML={{ __html: ind === 0 ? "Title* &#9660;" : el }}
+				dangerouslySetInnerHTML={{ __html: ind === 0 && allowInputPlaceholders? "Title* &#9660;" : el }}
 				disabled={ind === 0 ? "disabled" : ""}
 				hidden={ind === 0 ? "hidden" : ""}
 			></option>

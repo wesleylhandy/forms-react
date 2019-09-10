@@ -145,14 +145,14 @@ export const validateInput = (
 			error = res.error;
 			break;
 		case "Title":
-			if (!value && submitting && getHonorific) {
+			if (!value && getHonorific) {
 				error = "Required";
 			}
 			break;
 		case "State":
 		case "Address1":
 		case "City":
-			if (!value && submitting && getAddress) {
+			if (!value && getAddress) {
 				error = "Required";
 			}
 			break;
@@ -168,7 +168,7 @@ export const validateInput = (
 				error =
 					"No special characters allowed. Please call if you need assistance.";
 			}
-			if (!value && submitting) {
+			if (!value) {
 				error = "Required";
 			}
 			break;
@@ -183,7 +183,7 @@ export const validateInput = (
 				error =
 					"No special characters allowed. Please call if you need assistance.";
 			}
-			if (!value && submitting) {
+			if (!value) {
 				error = "Required";
 			}
 			break;
@@ -192,7 +192,7 @@ export const validateInput = (
 				error =
 					"No special characters allowed. Please call if you need assistance.";
 			}
-			if (!value && ShipToYes && submitting) {
+			if (!value && ShipToYes) {
 				error = "Required";
 			}
 			break;
@@ -203,7 +203,7 @@ export const validateInput = (
 			}
 			break;
 		case "Country":
-			if (!value && submitting && allowInternational) {
+			if (!value && allowInternational) {
 				error = "Required";
 			}
 			break;
@@ -211,7 +211,7 @@ export const validateInput = (
 			if (value && !email_regex.test(value)) {
 				error = "Please enter a valid email: ie. you@example.com";
 			}
-			if (!value && submitting) {
+			if (!value) {
 				error = "Required";
 			}
 			break;

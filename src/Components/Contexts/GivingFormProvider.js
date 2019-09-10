@@ -132,7 +132,10 @@ class GivingFormProvider extends Component {
 					state => reducer(state, { type: "TOGGLE_ZIP_VALIDATION" }),
 					async () => {
 						if (!zip_regex.test(value)) {
-							action.error = "Invalid Postal Code";
+							action.error = value ? "Invalid Postal Code" : "Required";
+							this.setState(state => reducer(state, action), ()=> {
+								this.setState(state => reducer(state, { type: "TOGGLE_ZIP_VALIDATION" }))
+							})
 						} else {
 							try {
 								const oldCity = this.state.fields[
@@ -154,7 +157,10 @@ class GivingFormProvider extends Component {
 										}
 									);
 								}
-								action.error = response.error;
+								if (response.error) {
+									action.error = response.error;
+									this.setState(state => reducer(state, action));
+								}
 							} catch (err) {
 								console.error("CallZipCityStateServiceError");
 								console.error({ err });
@@ -179,8 +185,9 @@ class GivingFormProvider extends Component {
 					this.state.fields.ExpiresMonth,
 					this.state.fields.ExpiresYear
 				);
+				this.setState(state => reducer(state, action));
 			}
-			this.setState(state => reducer(state, action));
+			
 		},
 		submitGivingForm: async type => {
 			this.setState(

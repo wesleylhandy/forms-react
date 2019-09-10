@@ -15,7 +15,7 @@ function getStateOptions(international) {
 				{options.map((opt, i) => {
 					return (
 						<option key={`${type.replace(" ", "")}State-${i}`} value={opt[1]}>
-							{opt[0]}
+							{opt[1]}
 						</option>
 					);
 				})}

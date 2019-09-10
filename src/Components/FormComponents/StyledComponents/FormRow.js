@@ -21,7 +21,7 @@ const FormRow = styled.div`
 	}
 	div + div {
 		box-sizing: border-box;
-		margin-left: calc(19px * 0.5);
+		margin-left: 24px;
 	}
 	&.monthly-radio {
 		box-sizing: border-box;

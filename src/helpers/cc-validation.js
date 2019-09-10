@@ -84,17 +84,17 @@ export const validateCCInput = (name, value, ccNumber, ccMonth, ccYear) => {
 			break;
 		case "ExpiresMonth":
 			if (!checkExpDate(ccYear, value)) {
-				error = "Expired.";
+				error = "Expired";
 			}
 			break;
 		case "ExpiresYear":
 			if (!checkExpDate(value, ccMonth)) {
-				error = "Expired.";
+				error = "Expired";
 			}
 			break;
 		case "cvnCode":
 			if (!checkCVNCode(cardType, value)) {
-				error = "Invalid.";
+				error = "Invalid";
 			}
 			break;
 	}

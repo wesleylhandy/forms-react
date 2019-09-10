@@ -22,7 +22,7 @@ const PremuimInfoBlock = styled.div`
 		}
 	}
 	div.premium-description {
-		max-width: 530px;
+		max-width: 575px;
 		flex: 1 0 140px;
 		ul {
 			list-style: none;
@@ -32,16 +32,26 @@ const PremuimInfoBlock = styled.div`
 				padding-inline-start: 20px;
 			}
 			li::before {
-				content: "•";
-				color: #f7b500;
+				content: "";
+				background: #f7b500;
 				display: inline-block;
-				width: 1em;
+				width: 7px;
+				height: 7px;
+				border-radius: 50%;
 				margin-left: -1em;
+				margin-right: 8px;
 			}
 			li + li {
 				margin-top: 20px;
 			}
 			li {
+				color: #181818;
+				font-size: 16px;
+				line-height: 21px;
+				em {
+					font-size: 16px;
+					font-style: italic;
+				}
 				@media screen and (max-width: 649px) {
 					font-style: italic;
 					&::before {

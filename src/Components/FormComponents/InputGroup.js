@@ -21,7 +21,7 @@ const InputGroup = ({
 	textareaSize,
 	allowInternational,
 }) => {
-	const { getCssConfig } = useContext(FormConfigContext);
+	const { getCssConfig, allowInputPlaceholders } = useContext(FormConfigContext);
 	const {
 		inputBackgroundColor = "#f0f0f0",
 		inputBorderColor = "#333",
@@ -65,7 +65,7 @@ const InputGroup = ({
 				{label}
 				<span>{required ? "*" : ""}</span>
 				{allowInternational ? (
-					<small style={{ fontSize: "10px" }}>
+					<small style={{ fontSize: "10px", marginLeft: 8 }}>
 						(Outside U.S. use &ldquo;NA&rdquo;}
 					</small>
 				) : null}
@@ -76,7 +76,7 @@ const InputGroup = ({
 				id={id}
 				maxLength={maxLength}
 				name={id}
-				placeholder={placeholder}
+				placeholder={allowInputPlaceholders ? placeholder: ''}
 				required={required}
 				value={value}
 				onChange={handleInputChange}

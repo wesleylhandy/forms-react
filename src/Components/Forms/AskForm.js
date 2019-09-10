@@ -118,7 +118,7 @@ class AskForm extends Component {
 					>
 						<FormHeader
 							className="form-title form-header"
-							style={{ fontSize: "19px", marginTop: "0" }}
+							style={{ fontSize: "19px", marginTop: "0", color: "#181818" }}
 						>
 							{formTitle}
 						</FormHeader>
@@ -141,7 +141,7 @@ class AskForm extends Component {
 								/>
 							</FormPanel>
 						)}
-						<FormPanel className="form-panel" style={{ marginBottom: "30px" }}>
+						<FormPanel className="form-panel designaton-panel">
 							<CSSTransition
 								in={designations && designations.length && !monthlyChecked}
 								timeout={400}

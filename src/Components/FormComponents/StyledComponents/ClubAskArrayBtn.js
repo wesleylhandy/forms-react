@@ -11,7 +11,7 @@ const ClubAskArrayBtn = styled.div`
 		box-sizing: border-box;
 		flex: 0 0 95px;
 		margin: 0 2.5px;
-		@media screen and (max-width: 535px) {
+		@media screen and (max-width: 559px) {
 			flex-basis: 70px;
 		}
 		@media screen and (max-width: 395px) {
@@ -33,22 +33,36 @@ const ClubAskArrayBtn = styled.div`
 	div.askbutton__amt {
 		background-color: ${props => props.arrayBackgroundColor};
 		border-radius: ${props => props.arrayBorderRadius};
-		border: 2px solid ${props => props.arrayBorderColor};
+		border: 1px solid ${props => props.arrayBorderColor};
 		box-sizing: border-box;
 		color: ${props => props.arrayColor};
 		cursor: pointer;
 		-webkit-flex-basis: calc(19px * 4.55);
 		-ms-flex-preferred-size: calc(19px * 4.55);
 		font-weight: 600;
-		font-size: calc(19px * 1.4);
-		height: calc(19px * 2.5);
+		font-size: 30px;
+		height: 50px;
 		text-align: center;
 		-webkit-transition: border-color 200ms ease-in-out, color 200ms ease-in-out,
 			background-color 200ms ease-in-out;
 		transition: border-color 200ms ease-in-out, color 200ms ease-in-out,
 			background-color 200ms ease-in-out;
+		@media screen and (max-width: 559px) {
+			font-size: 24px;
+		}
 		@media screen and (max-width: 395px) {
 			font-size: 19px;
+		}
+		.dollar-sign {
+			font-size: 21px;
+			margin-right: 1px;
+			font-weight: bold;
+			@media screen and (max-width: 559px) {
+				font-size: 18px;
+			}
+			@media screen and (max-width: 395px) {
+				font-size: 15px;
+			}
 		}
 	}
 	&:focus div:not(.club-level),
@@ -70,7 +84,7 @@ const ClubAskArrayBtn = styled.div`
 		text-align: center;
 		width: 110%;
 		left: 50%;
-		top: 100%;
+		top: calc(100% + 7px);
 		transform: translateX(-50%);
 		line-height: 1.33;
 		@media screen and (max-width: 395px) {

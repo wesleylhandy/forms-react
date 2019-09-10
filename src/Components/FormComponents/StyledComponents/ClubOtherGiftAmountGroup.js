@@ -15,7 +15,7 @@ const ClubOtherGiftAmountStyle = styled.div`
 		margin: 0 2.5px;
 		@media screen and (max-width: 716px) {
 			margin: 0 auto;
-			margin-top: 40px;
+			margin-top: 50px;
 			flex-basis: 160px;
 			justify-self: center;
 		}
@@ -44,38 +44,82 @@ const ClubOtherGiftAmountStyle = styled.div`
 	div.askarray__form-group--other {
 		justify-content: center;
 		max-width: 400px;
+		position: relative;
+		z-index: 1;
+		&:before {
+			color: ${props => props.arrayColor};
+			display: block;
+			position: absolute;
+			content: "$ Other";
+			font-size: 21px;
+			font-weight: 600;
+			z-index: 5;
+			left: 10px;
+			top: 13px;
+			width: 10px;
+			height: 30px;
+			@media screen and (max-width: 559px) {
+				top: 14px;
+				font-size: 18px;
+			}
+			@media screen and (max-width: 395px) {
+				top: 15.5px;
+				font-size: 15px;
+			}
+		}
+		&:hover:before, &.selected:before {
+			color: #fff;
+		}
+		&.selected:before {
+			content: "$";
+		}
+		label.form-group__other-input--label {
+			width: 1px;
+			height: 1px;
+			position: absolute;
+			top: -10000px;
+		}
 		input {
 			position: relative;
 			appearance: none;
 			background: none;
 			background-color: ${props => props.arrayBackgroundColor};
-			height: calc(19px * 2.5);
+			height: 50px;
 			width: 100%;
 			-webkit-transition: border-color 200ms ease-in-out,
 				color 200ms ease-in-out, background-color 200ms ease-in-out;
 			transition: border-color 200ms ease-in-out, color 200ms ease-in-out,
 				background-color 200ms ease-in-out;
-			border: 2px solid ${props => props.arrayBorderColor};
+			border: 1px solid ${props => props.arrayBorderColor};
 			border-radius: ${props => props.arrayBorderRadius};
 			box-sizing: border-box;
 			color: ${props => props.arrayColor};
-			font-size: calc(19px * 1.4);
-			text-align: center;
+			font-size: 30px;
+			text-align: left;
+			padding-left: 25px;
 			font-weight: 600;
 			max-width: 220px;
 			white-space: nowrap;
+			@media screen and (max-width: 559px) {
+				font-size: 24px;
+				padding-left: 21px;
+			}
+			@media screen and (max-width: 395px) {
+				font-size: 19px;
+				padding-left: 19px;
+			}
 		}
 		input:hover,
 		input:active,
 		input:focus {
-			border: 2px solid ${props => props.arrayHoverBorderColor};
+			border-color: ${props => props.arrayHoverBorderColor};
 			background-color: ${props => props.arrayHoverBackgroundColor};
 			color: ${props => props.arrayHoverColor};
 			box-sizing: border-box;
 			outline: none;
 		}
 		&.selected input {
-			border: 2px solid ${props => props.arrayHoverBorderColor};
+			border-color: ${props => props.arrayHoverBorderColor};
 			background-color: ${props => props.arrayHoverBackgroundColor};
 			color: ${props => props.arrayHoverColor};
 		}
@@ -90,7 +134,7 @@ const ClubOtherGiftAmountStyle = styled.div`
 			overflow: hidden;
 			max-width: 100%;
 			white-space: nowrap;
-			bottom: -36px;
+			bottom: -25px;
 			left: 50%;
 			transform: translateX(-50%);
 		}

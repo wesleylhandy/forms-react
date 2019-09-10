@@ -9,7 +9,7 @@ import { GivingFormContext } from "../../Contexts/GivingFormProvider";
 import MonthlyClubTabBlock from "../Blocks/MonthlyClubTabBlock";
 import FieldSet from "../StyledComponents/FieldSet";
 import ClubAskArray from "../StyledComponents/ClubAskArray";
-import GivingArray from "../Blocks/GivingArrayBlock.js";
+import GivingArrayBlock from "../Blocks/GivingArrayBlock.js";
 import ClubOtherGiftAmountGroup from "../StyledComponents/ClubOtherGiftAmountGroup";
 import AmountError from "../StyledComponents/AmountError";
 
@@ -172,28 +172,6 @@ class ClubLayout extends Component {
 			givingInfo: { amount, isMonthly },
 		} = this.context;
 		let key = "controlled";
-		// console.log({amount, selectedIndex})
-		if (amount) {
-			const index = isMonthly
-				? monthlyAmounts.indexOf(amount)
-				: singleAmounts.indexOf(amount);
-			selectedIndex = index > -1 ? index : 99;
-			otherAmount = amount;
-			monthlyChecked = isMonthly;
-		} else {
-			otherAmount =
-				selectedIndex == 99
-					? otherAmount
-					: monthlyChecked
-					? monthlyAmounts[selectedIndex]
-					: singleAmounts[selectedIndex];
-			key =
-				selectedIndex == 99 || selectedIndex === null
-					? key
-					: (monthlyChecked
-							? monthlyAmounts[selectedIndex]
-							: singleAmounts[selectedIndex]) + "-key";
-		}
 		const amounts = monthlyChecked ? monthlyAmounts : singleAmounts;
 		return (
 			<FieldSet>
@@ -215,7 +193,7 @@ class ClubLayout extends Component {
 						enter={true}
 						exit={false}
 					>
-						<GivingArray
+						<GivingArrayBlock
 							amounts={amounts}
 							selectedIndex={selectedIndex}
 							format="buttons"

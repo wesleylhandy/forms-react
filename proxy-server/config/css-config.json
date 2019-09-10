@@ -24,7 +24,7 @@
                 "inputBackgroundColor": "#f6f9fb",
                 "inputBorderColor": "#8a9099",
                 "inputBorderRadius": "3px",
-                "inputBorderWidth": "2px",
+                "inputBorderWidth": "1px",
                 "inputHoverBoxShadow": "none",
                 "inputColor": "#181818",
                 "inputHoverBackgroundColor": "#fff",

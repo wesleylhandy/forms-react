@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 import styled from "@emotion/styled";
 
 import FormHeader from "../StyledComponents/FormHeader";
@@ -39,8 +41,8 @@ const CCBlock = styled.div`
 	align-items: center;
 	margin: 20px auto;
 	svg {
-		height: calc(78.39px / 2);
-		width: calc(125.43px / 2);
+		height: calc(78.39px / 2.5);
+		width: calc(125.43px / 2.5);
 		.ax-1 {
 			fill: #0078a9;
 		}
@@ -123,12 +125,11 @@ const PaymentBlock = ({
 	handleBlur,
 	submitting,
 }) => {
+	const { allowInputPlaceholders } = useContext(FormConfigContext);
 	const years = [],
 		months = [];
 	years.push(
-		<option key="exp-year-base-0" value="" disabled="disabled">
-			Year* &#9660;
-		</option>
+		<option key="exp-year-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "Year* &#9660;" : ""}}/>
 	);
 	for (let y = curYear; y < curYear + 25; y++) {
 		years.push(
@@ -138,9 +139,7 @@ const PaymentBlock = ({
 		);
 	}
 	months.push(
-		<option key="exp-month-base-0" value="" disabled="disabled">
-			Month* &#9660;
-		</option>
+		<option key="exp-month-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "Month* &#9660;" : ""}}/>
 	);
 	for (let m = 1; m < 13; m++) {
 		const val = ("0" + m).slice(-2);

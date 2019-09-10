@@ -43,7 +43,7 @@ const DesignationBlock = ({ designations }) => {
 	};
 	return (
 		<DesignationContainer className="designation-container">
-			<FormHeader role="label" id="listbox-label">
+			<FormHeader role="label" id="listbox-label" style={{fontSize: 17, marginBottom: 5}}>
 				Designate Gift (optional)
 			</FormHeader>
 			<Designation

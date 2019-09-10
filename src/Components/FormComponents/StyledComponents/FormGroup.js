@@ -8,16 +8,17 @@ const FormGroup = styled.div`
 	flex: 1 1 auto;
 	box-sizing: border-box;
 	&.form-group--Title,
-	&.form-group--Suffix {
-		width: 120px;
-		flex: 0 0 120px;
+	&.form-group--Suffix,
+	&.form-group--State {
+		width: 80px;
+		flex: 0 0 80px;
 		box-sizing: border-box;
 	}
 	&.form-group--Firstname,
 	&.form-group--Lastname {
 		box-sizing: border-box;
 	}
-	&.form-group--State,
+
 	&.form-group--Country {
 		max-width: 50%;
 	}
@@ -46,20 +47,23 @@ const FormGroup = styled.div`
 	label {
 		box-sizing: border-box;
 		color: ${props => props.labelColor};
-		font-size: calc(19px * 0.7);
+		font-size: 16px;
 		font-weight: ${props => props.labelFontWeight};
 		margin-bottom: 0;
+		letter-spacing: 0.3px;
 		position: absolute;
 		opacity: ${props => props.labelOpacity};
 		bottom: calc(
-			100% - ${props => (props.inputHoverBoxShadow == "none" ? "6px" : "2px")}
+			100% - ${props => (props.inputHoverBoxShadow == "none" ? "4px" : "2px")}
 		);
-		left: 10px;
+		left: 3px;
 		transition: opacity 150ms ease-in-out;
 		text-transform: ${props => props.labelTextTransform};
 	}
 	label span {
-		color: crimson;
+		position: absolute;
+		top: -1px;
+		color:  ${props => props.labelColor};
 	}
 	&:hover label,
 	&:active label,
@@ -73,7 +77,7 @@ const FormGroup = styled.div`
 		color: ${props => props.inputColor};
 		font-size: 19px;
 		font-weight: 600;
-		height: 44px;
+		height: 45px;
 		display: block;
 		width: 100%;
 		margin-top: 5px;
@@ -88,6 +92,9 @@ const FormGroup = styled.div`
 		transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 		position: relative;
 		margin-bottom: 0;
+	}
+	select {
+		font-size: 17px;
 	}
 	textarea {
 		height: auto;
@@ -115,10 +122,6 @@ const FormGroup = styled.div`
 		box-shadow: ${props => props.inputHoverBoxShadow};
 		background-color: ${props => props.inputHoverBackgroundColor};
 		outline: none;
-	}
-	select:invalid {
-		color: #747474;
-		appearance: none;
 	}
 	input:disabled,
 	select:disabled,

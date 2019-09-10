@@ -1,4 +1,6 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
+
+import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 
 import FormRow from "../StyledComponents/FormRow";
 import FieldSet from "../StyledComponents/FieldSet";
@@ -21,6 +23,7 @@ function AddressBlock({
 	submitting,
 	validating,
 }) {
+	const { allowInputPlaceholders } = useContext(FormConfigContext);
 	return (
 		<FieldSet className="address-block">
 			<legend>{`${type} Address Block`}</legend>
@@ -89,15 +92,10 @@ function AddressBlock({
 								fields.Country != "United States" || submitting || validating
 							}
 							options={[
-								<option key="state-base-0" value="" disabled="disabled">
-									State* &#9660;
-								</option>,
+								<option key="state-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "State* &#9660;" : ""}}/>,
 								getStateOptions(allowInternational),
 							]}
 						/>
-					</FormRow>
-
-					<FormRow className="zip-country-row">
 						<InputGroup
 							type="text"
 							id="Zip"
@@ -116,6 +114,10 @@ function AddressBlock({
 							allowInternational={allowInternational}
 							validation={fields.Country != "United States" ? "*" : "d*"}
 						/>
+					</FormRow>
+
+					<FormRow className="zip-country-row">
+						
 
 						{allowInternational && (
 							<SelectGroup
@@ -129,9 +131,7 @@ function AddressBlock({
 								handleBlur={handleBlur}
 								disabled={submitting || validating}
 								options={[
-									<option key="country-base-0" value="" disabled="disabled">
-										Country* &#9660;
-									</option>,
+									<option key="country-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "Country* &#9660;" : ""}}/>,
 									countries.map((country, i) => (
 										<option key={`country-${i}`} value={country}>
 											{country}
@@ -148,7 +148,7 @@ function AddressBlock({
 					type="text"
 					id="Emailaddress"
 					specialStyle="form-group--Email"
-					label="Email Address"
+					label="Email"
 					placeholder="Email Address*"
 					maxLength="128"
 					required={true}
@@ -163,7 +163,7 @@ function AddressBlock({
 						type="text"
 						id="phone"
 						specialStyle="form-group--Phone"
-						label="Phone Number"
+						label="Phone"
 						placeholder="Phone"
 						maxLength="24"
 						required={false}

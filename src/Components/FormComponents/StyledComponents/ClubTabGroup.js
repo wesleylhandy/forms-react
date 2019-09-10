@@ -8,8 +8,6 @@ const ClubTabGroup = styled.div`
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		height: 50px;
-		line-height: 50px;
 		flex: 1 1 50%;
 		max-width: 360px;
 	}
@@ -31,12 +29,13 @@ const ClubTabGroup = styled.div`
 		text-align: center;
 		background-color: ${props => props.toggleBackgroundColor};
 		border-radius: ${props => props.toggleBorderRadius};
-		border: 2px solid ${props => props.toggleBorderColor};
+		border: 1px solid ${props => props.toggleBorderColor};
 		margin-bottom: 0;
 		color: ${props => props.toggleColor};
 		transition: color 200ms ease-in-out, background-color 200ms ease-in-out,
 			border-color 200ms ease-in-out;
 		position: relative;
+		font-weight: bold;
 	}
 	input[type="checkbox"].tab-group__input:checked + label,
 	input[type="checkbox"].tab-group__input + label:hover {

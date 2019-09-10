@@ -19,8 +19,15 @@ const FormPanel = styled.div`
 		padding: 0;
 		width: 100%;
 	}
+	&.designation-panel {
+		margin-bottom: 30px;
+	}
 	& + .form-panel {
 		margin-top: 0;
+	}
+	&:empty {
+		padding: 0;
+		margin: 0;
 	}
 `;
 

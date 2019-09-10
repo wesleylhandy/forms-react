@@ -8,19 +8,18 @@ const SubmitButtonGroup = styled.div`
 	input[type="submit"] {
 		appearance: none;
 		background: ${props => props.submitBtnBackgroundColor};
-		box-sizing: border-box;
 		color: ${props => props.submitBtnColor};
 		cursor: pointer;
 		display: block;
-		border: 2px solid ${props => props.submitBtnBorderColor};
+		border: 1px solid ${props => props.submitBtnBorderColor};
 		border-radius: ${props => props.submitBtnBorderRadius};
 		display: block;
 		font-weight: 600;
-		font-size: calc(19px * 1.1);
-		padding: 0 20px;
-		margin: 19px auto;
+		font-size: 19px;
+		height: 50px;
+		line-height: 50px;
+		margin: 30px auto;
 		width: 300px;
-		height: calc(19px * 2.3);
 		box-shadow: ${props => props.submitBtnBoxShadow};
 		transition: background-color 200ms ease-in-out, color 200ms ease-in-out,
 			border-color 200ms ease-in-out;

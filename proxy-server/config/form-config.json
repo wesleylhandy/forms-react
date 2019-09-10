@@ -18,6 +18,7 @@
             "getSpouseInfo": false,
             "getShippingAddress": false,
             "allowInternational": true,
+            "allowInputPlaceholders": false,
             "getPhone": true,
             "showSeals": true,
             "products": [],
