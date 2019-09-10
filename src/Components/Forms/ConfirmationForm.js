@@ -92,6 +92,7 @@ class ConfirmationForm extends Component {
 				errors[field] = "";
 			}
 			errors.amount = "";
+			errors.formError = "";
 			this.context.initFields({
 				type: "INIT_FORM_STATE",
 				fields,
@@ -233,7 +234,7 @@ class ConfirmationForm extends Component {
 	}
 	handleMessage = msg => {
 		try {
-			const { type, tracking_vars, errors = [] } =
+			const { type, tracking_vars, errors = [], error = "" } =
 				msg.data && typeof msg.data == "string" ? JSON.parse(msg.data) : {};
 			const types = [
 				"form validation error",
@@ -264,7 +265,8 @@ class ConfirmationForm extends Component {
 					break;
 				case "form error":
 					errors.push({
-						ccNumber: "Please verify your Payment Information and Try Again",
+						type: "formError",
+						error,
 					});
 					this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
 					clearTimeout(timeout);
@@ -434,7 +436,7 @@ class ConfirmationForm extends Component {
 										<legend>Form Submit Block</legend>
 										<SubmitButton
 											hasErrors={hasErrors}
-											error=""
+											error={errors.formError}
 											handleSubmit={this.handleSubmit}
 											submitting={submitting || submitted}
 											value="Send Payment"
