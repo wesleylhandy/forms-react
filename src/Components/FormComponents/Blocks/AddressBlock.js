@@ -1,4 +1,7 @@
 import React, { Fragment, useContext } from "react";
+import { CSSTransition } from "react-transition-group";
+
+import "../Animations/country-change.css";
 
 import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 
@@ -78,42 +81,67 @@ function AddressBlock({
 							error={errors.City}
 							disabled={submitting || validating}
 						/>
-						<SelectGroup
-							id="State"
-							label="State"
-							specialStyle="form-group--State"
-							required={true}
-							value={fields.Country == "United States" ? fields.State : "00"}
-							error={errors.State}
-							handleInputChange={handleInputChange}
-							handleBlur={handleBlur}
-							required={fields.Country == "United States"}
-							disabled={
-								fields.Country != "United States" || submitting || validating
-							}
-							options={[
-								<option key="state-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "State* &#9660;" : ""}}/>,
-								getStateOptions(allowInternational),
-							]}
-						/>
-						<InputGroup
-							type="text"
-							id="Zip"
-							specialStyle="form-group--Zip"
-							label="Zip"
-							placeholder="Zip*"
-							maxLength={fields.Country != "United States" ? 25 : 5}
-							required={fields.Country == "United States"}
-							disabled={
-								fields.Country != "United States" || submitting || validating
-							}
-							value={fields.Country == "United States" ? fields.Zip : "NA"}
-							handleInputChange={handleInputChange}
-							handleBlur={handleBlur}
-							error={errors.Zip}
-							allowInternational={allowInternational}
-							validation={fields.Country != "United States" ? "*" : "d*"}
-						/>
+						<CSSTransition
+							in={fields.Country == "United States"}
+							timeout={{
+								appear: 400,
+								enter: 400,
+								exit: 500,
+							}}
+							classNames="country-change-transition"
+							component={null}
+							unmountOnExit
+							appear
+						>
+							<SelectGroup
+								id="State"
+								label="State"
+								specialStyle="form-group--State"
+								required={true}
+								value={fields.State}
+								error={errors.State}
+								handleInputChange={handleBlur}
+								required={fields.Country == "United States"}
+								disabled={
+									submitting || validating
+								}
+								options={[
+									<option key="state-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "State* &#9660;" : ""}}/>,
+									getStateOptions(allowInternational),
+								]}
+							/>
+						</CSSTransition>
+						<CSSTransition
+							in={fields.Country == "United States"}
+							timeout={{
+								appear: 400,
+								enter: 400,
+								exit: 500,
+							}}
+							classNames="country-change-transition"
+							component={null}
+							unmountOnExit
+							appear
+						>
+							<InputGroup
+								type="text"
+								id="Zip"
+								specialStyle="form-group--Zip"
+								label="Zip"
+								placeholder="Zip*"
+								maxLength={fields.Country != "United States" ? 25 : 5}
+								required={fields.Country == "United States"}
+								disabled={
+									submitting || validating
+								}
+								value={fields.Zip}
+								handleInputChange={handleInputChange}
+								handleBlur={handleBlur}
+								error={errors.Zip}
+								allowInternational={allowInternational}
+								validation={fields.Country != "United States" ? ".*" : "d*"}
+							/>
+						</CSSTransition>
 					</FormRow>
 
 					<FormRow className="zip-country-row">
@@ -127,8 +155,7 @@ function AddressBlock({
 								required={true}
 								value={fields.Country}
 								error={errors.Country}
-								handleInputChange={handleInputChange}
-								handleBlur={handleBlur}
+								handleInputChange={handleBlur}
 								disabled={submitting || validating}
 								options={[
 									<option key="country-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "Country* &#9660;" : ""}}/>,
@@ -159,21 +186,34 @@ function AddressBlock({
 					disabled={submitting}
 				/>
 				{getPhone && (
-					<InputGroup
-						type="text"
-						id="phone"
-						specialStyle="form-group--Phone"
-						label="Phone"
-						placeholder="Phone"
-						maxLength="24"
-						required={false}
-						value={fields.phone}
-						disabled={fields.Country != "United States" || submitting}
-						handleInputChange={handleInputChange}
-						handleBlur={handleBlur}
-						error={errors.phone}
-						validation="\d*"
-					/>
+					<CSSTransition
+						in={fields.Country == "United States"}
+						timeout={{
+							appear: 400,
+							enter: 400,
+							exit: 500,
+						}}
+						classNames="country-change-transition"
+						component={null}
+						unmountOnExit
+						appear
+					>
+						<InputGroup
+							type="text"
+							id="phone"
+							specialStyle="form-group--Phone"
+							label="Phone"
+							placeholder="Phone"
+							maxLength="24"
+							required={false}
+							value={fields.phone}
+							disabled={ submitting }
+							handleInputChange={handleInputChange}
+							handleBlur={handleBlur}
+							error={errors.phone}
+							validation="\d*"
+						/>
+					</CSSTransition>
 				)}
 			</FormRow>
 		</FieldSet>

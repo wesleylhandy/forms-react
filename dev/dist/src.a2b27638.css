@@ -37,5 +37,21 @@
 	transition: all 200ms;
 }
 
+.country-change-transition-enter,
+.country-change-transition-appear {
+	opacity: 0;
+}
+.country-change-transition-enter-active,
+.country-change-transition-appear-active {
+	opacity: 1;
+	transition: all 200ms;
+}
+.country-change-transition-exit {
+	opacity: 1;
+}
+.country-change-transition-exit-active {
+	opacity: 0;
+	transition: all 200ms;
+}
 
 /*# sourceMappingURL=/src.a2b27638.css.map */

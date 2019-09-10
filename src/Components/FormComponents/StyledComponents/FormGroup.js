@@ -6,7 +6,9 @@ const FormGroup = styled.div`
 	margin-bottom: 20px;
 	margin-top: 20px;
 	flex: 1 1 auto;
+	width: 0;
 	box-sizing: border-box;
+	transition: all 1s ease-in-out;
 	&.form-group--Title,
 	&.form-group--Suffix,
 	&.form-group--State {

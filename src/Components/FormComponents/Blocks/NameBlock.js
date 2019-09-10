@@ -35,8 +35,7 @@ function TitleDropdown({
 			required={true}
 			value={value}
 			error={error}
-			handleInputChange={handleInputChange}
-			handleBlur={handleBlur}
+			handleInputChange={handleBlur}
 			options={options}
 			disabled={disabled}
 		/>

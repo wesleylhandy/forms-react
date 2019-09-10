@@ -185,7 +185,37 @@ class GivingFormProvider extends Component {
 					this.state.fields.ExpiresMonth,
 					this.state.fields.ExpiresYear
 				);
-				this.setState(state => reducer(state, action));
+				
+				this.setState(state => reducer(state, action), ()=> {
+					if (name == "Country" && value != "United States") {
+						let action = {
+							type: "UPDATE_FIELDS",
+							fields: [{
+								name: "State",
+								value: "00",
+								error: "",
+							}, {
+								name: "Phone",
+								value: "",
+								error: ""
+							}, {
+								name: "Zip",
+								value: "NA",
+								error: ""
+							}]
+						}
+						setTimeout(() => this.setState(state => reducer(state, action)), 1000);
+					}
+					if (name == "Country" && value == "United States") {
+						const { State, Zip } = this.state.fields;
+						if ( State == "00") {
+							this.setState(state => reducer(state, {type: "UPDATE_FIELD", name: "State", value: ""}))
+						}
+						if ( Zip == "NA") {
+							this.setState(state => reducer(state, {type: "UPDATE_FIELD", name: "Zip", value: ""}))
+						}
+					}
+				});
 			}
 			
 		},
