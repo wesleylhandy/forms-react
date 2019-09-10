@@ -185,6 +185,7 @@ const reducer = (state, action) => {
 			return {
 				...state,
 				submitting: false,
+				submitted: false,
 				errors,
 			};
 		default:
