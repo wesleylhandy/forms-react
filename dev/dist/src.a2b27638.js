@@ -4695,8 +4695,7 @@ styleSheet.flush()
 					var match; // https://esbench.com/bench/5b809c2cf2949800a0f61fb5
 
 					while ((match = labelPattern.exec(styles)) !== null) {
-						identifierName +=
-							"-" + match[1]; // $FlowFixMe we know it's not null
+						identifierName += "-" + match[1]; // $FlowFixMe we know it's not null
 					}
 
 					var name = (0, _hash.default)(styles) + identifierName;
