@@ -4,7 +4,7 @@ import { FormConfigContext } from "../Contexts/FormConfigProvider";
 
 import ClubTabGroup from "./StyledComponents/ClubTabGroup";
 
-function ClubTab({ id, name, checked, handleTabClick, label }) {
+const ClubTab = ({ id, name, checked, handleTabClick, label }) => {
 	const { getCssConfig } = useContext(FormConfigContext);
 	const {
 		toggleColor = "#fff",
@@ -15,6 +15,14 @@ function ClubTab({ id, name, checked, handleTabClick, label }) {
 		toggleHoverBackgroundColor = "#fff",
 		toggleHoverBorderColor = "#1775BC",
 	} = getCssConfig("toggle");
+	const handleKeyUp = e => {
+		const {keyCode} = e
+		// console.log({keyCode})
+		if (checked && (keyCode == 13 || keyCode == 32)) { // return or space
+			e.preventDefault();
+			handleTabClick({ target: { id: `${id}gift`}})
+		}
+	}
 	return (
 		<ClubTabGroup
 			id={`${id}-group`}
@@ -26,6 +34,7 @@ function ClubTab({ id, name, checked, handleTabClick, label }) {
 			toggleHoverColor={toggleHoverColor}
 			toggleHoverBackgroundColor={toggleHoverBackgroundColor}
 			toggleHoverBorderColor={toggleHoverBorderColor}
+			onKeyUp={handleKeyUp}
 		>
 			<input
 				className="tab-group__input"
@@ -34,12 +43,15 @@ function ClubTab({ id, name, checked, handleTabClick, label }) {
 				type="checkbox"
 				checked={checked}
 				onChange={handleTabClick}
+			/>
+			<label 
+				htmlFor={`${id}gift`}
 				role="tab"
 				aria-selected={checked}
-				aria-controls=""
-				tabIndex={checked ? 0 : -1}
-			/>
-			<label htmlFor={`${id}gift`}>{label}</label>
+				aria-controls={`AskArray-${id}`}
+				id={`${id}gift-label`}
+				tabIndex={checked ? "0" : "-1"}
+			>{label}</label>
 		</ClubTabGroup>
 	);
 }

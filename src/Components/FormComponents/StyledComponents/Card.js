@@ -66,6 +66,8 @@ export const Card = styled.div`
 		.giving-links,
 		.phone--info,
 		.gift-info {
+			font-size: 17px;
+			line-height: 22px;
 			text-align: center;
 			em {
 				font-style: italic;

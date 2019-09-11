@@ -22,7 +22,8 @@ class AskForm extends Component {
 	};
 
 	handleRadioClick = e => {
-		const id = e.target.id;
+		const { id } = e.target;
+		// console.log(id)
 		const { singlePledgeData, monthlyPledgeData } = this.props;
 		this.setState({ monthlyChecked: id !== "singlegift" }, () =>
 			this.context.updateGivingType({

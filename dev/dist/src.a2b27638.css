@@ -1,7 +1,9 @@
 .designation-container-enter,
 .designation-container-appear,
 .designation--list-transition-enter,
-.designation--list-transition-appear {
+.designation--list-transition-appear,
+.designation--overlay-transition-enter,
+.designation--overlay-transition-appear {
 	opacity: 0;
 	max-height: 0;
 }
@@ -13,7 +15,9 @@
 }
 
 .designation--list-transition-enter-active,
-.designation--list-transition-appear-active {
+.designation--list-transition-appear-active,
+.designation--overlay-transition-enter-active,
+.designation--overlay-transition-appear-active {
 	opacity: 1;
 	max-height: 100vh;
 	transition: all 200ms;
@@ -25,12 +29,14 @@
 	max-height: 140px;
 	opacity: 1;
 }
-.designation--list-transition-exit {
+.designation--list-transition-exit,
+.designation--overlay-transition-exit {
 	opacity: 1;
 	max-height: 100vh;
 }
 .designation-container-exit-active,
-.designation--list-transition-exit-active {
+.designation--list-transition-exit-active,
+.designation--overlay-transition-exit-active {
 	max-height: 0;
 
 	opacity: 0;

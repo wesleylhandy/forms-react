@@ -52,7 +52,14 @@ const GivingArray = ({
 				arrayHoverBorderColor={arrayHoverBorderColor}
 				arrayDescriptorColor={arrayDescriptorColor}
 			>
-				<div className="askbutton__amt"><span className="dollar-sign">$</span>{amount}</div>
+				<div 
+					className="askbutton__amt"
+					tabIndex="0" 
+					role="button"
+					aria-pressed={selectedIndex == i}
+				>
+					<span className="dollar-sign">$</span>{amount}
+				</div>
 				<CSSTransition
 					in={monthlyChecked}
 					timeout={400}

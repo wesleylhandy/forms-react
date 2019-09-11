@@ -28,14 +28,26 @@ const Header = styled.header`
 			font-weight: bold;
 			color: #ffffff;
 			text-align: center;
-			line-height: 1.5;
+			line-height: 49px;
+			margin: 0;
+			margin-block-start: 0;
+			margin-block-end: 0;
+			padding: 0;
 		}
 		p.header-description {
 			font-size: 26px;
 			font-weight: 600;
 			line-height: 32px;
-			color: #fff;
+			color: #ffffff;
 			text-align: center;
+			margin: 0;
+			margin-block-start: 0;
+			margin-block-end: 0;
+			padding: 0;
+			@media screen and (max-width: 649px) {
+				font-size: 20px;
+				line-height: 23px;
+			}
 		}
 	}
 `;

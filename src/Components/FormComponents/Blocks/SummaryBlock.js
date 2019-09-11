@@ -72,7 +72,7 @@ const SummaryBlock = ({ withContainer, submitting }) => {
 			<div className="amount-block">
 				${amount} <span dangerouslySetInnerHTML={{ __html: duration }}></span>
 			</div>
-			<a className="go-back-btn" onClick={handleGoBackClick}>
+			<a tabIndex="0" className="go-back-btn" onClick={handleGoBackClick}>
 				Edit
 			</a>
 		</BlockContainer>

@@ -174,18 +174,19 @@ class ClubLayout extends Component {
 		let key = "controlled";
 		const amounts = monthlyChecked ? monthlyAmounts : singleAmounts;
 		return (
-			<FieldSet>
+			<FieldSet id="giving-tabs">
 				<legend>Giving Amounts and Giving Options</legend>
 				<MonthlyClubTabBlock
 					monthlyChecked={monthlyChecked}
-					handleTabClick={handleRadioClick}
+					handleTabClick={handleRadioClick}			
 				/>
 				<ClubAskArray
-					id="AskArray"
+					id={`AskArray-${monthlyChecked ? "monthly" : "single"}`}
 					className="askarray--club"
 					role="tabpanel"
 					tabIndex="0"
-					aria-labelledby={monthlyChecked ? "monthlygift" : "singlegift"}
+					aria-labelledby={monthlyChecked ? "monthlygift-label" : "singlegift-label"}
+					aria-expanded={true}
 				>
 					<TransitionGroup
 						className="askarray--club-list"

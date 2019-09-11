@@ -11,6 +11,7 @@ import {
 	DesignationListContainer,
 	DesignationList,
 	DesignationCheck,
+	DesignationOverlay
 } from "../StyledComponents/Designation";
 import DropArrow from "../SVG/DropArrow";
 import CheckMark from "../SVG/CheckMark";
@@ -42,6 +43,18 @@ const DesignationBlock = ({ designations }) => {
 		setHoverIndex(idx);
 	};
 	return (
+		<>
+		<CSSTransition
+				in={isOpen}
+				timeout={{
+					appear: 400,
+					enter: 400,
+					exit: 500,
+				}}
+				classNames="designation--overlay-transition"
+		>
+			<DesignationOverlay className="designation-list--overlay" hidden={!isOpen} onClick={handleListFocus}/>
+		</CSSTransition>
 		<DesignationContainer className="designation-container">
 			<FormHeader role="label" id="listbox-label" style={{fontSize: 17, marginBottom: 5}}>
 				Designate Gift (optional)
@@ -52,6 +65,8 @@ const DesignationBlock = ({ designations }) => {
 				aria-expanded={isOpen}
 				aria-haspopup="listbox"
 				aria-labelledby="listbox-label"
+				tabIndex="0"
+				role="button"
 			>
 				<div className="designation__image">
 					<img
@@ -95,7 +110,7 @@ const DesignationBlock = ({ designations }) => {
 						className="designation-list--close"
 						onClick={() => toggleOpen(!isOpen)}
 					>
-						<CloseBtn currentColor="#333" />
+						<CloseBtn currentColor="#333"/>
 					</div>
 					<DesignationList
 						ref={listRef}
@@ -103,7 +118,7 @@ const DesignationBlock = ({ designations }) => {
 						id="listbox"
 						aria-labelledby="listbox-label"
 						aria-activedescendant={`designation-${designatedIndex}`}
-						tabIndex="-1"
+						tabIndex="0"
 					>
 						{designations.map(({ img, title, description }, idx) => (
 							<Designation
@@ -144,6 +159,7 @@ const DesignationBlock = ({ designations }) => {
 				</DesignationListContainer>
 			</CSSTransition>
 		</DesignationContainer>
+		</>
 	);
 };
 

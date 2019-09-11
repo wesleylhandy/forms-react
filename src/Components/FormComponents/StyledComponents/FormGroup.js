@@ -96,6 +96,8 @@ const FormGroup = styled.div`
 		margin-bottom: 0;
 	}
 	select {
+		background-image: linear-gradient(180deg, #FFFFFF 13%, #F0F0F0 71%);
+		box-shadow: 0 1px 4px 0 rgba(0,0,0,0.15);
 		font-size: 17px;
 	}
 	textarea {
@@ -119,11 +121,10 @@ const FormGroup = styled.div`
 	textarea:active,
 	textarea:hover,
 	textarea:focus {
-		border: ${props => props.inputBorderWidth} solid
+		border: ${props => props.inputHoverBorderWidth} solid
 			${props => props.inputHoverBorderColor};
 		box-shadow: ${props => props.inputHoverBoxShadow};
 		background-color: ${props => props.inputHoverBackgroundColor};
-		outline: none;
 	}
 	input:disabled,
 	select:disabled,
@@ -135,7 +136,7 @@ const FormGroup = styled.div`
 	input.error,
 	select.error,
 	textarea.error {
-		border: ${props => props.inputBorderWidth} solid
+		border: ${props => props.inputErrorBorderWidth} solid
 			${props => props.inputErrorColor};
 	}
 	@media screen and (max-width: 613px) {

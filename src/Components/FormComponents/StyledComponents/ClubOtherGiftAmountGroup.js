@@ -51,6 +51,7 @@ const ClubOtherGiftAmountStyle = styled.div`
 			display: block;
 			position: absolute;
 			content: "$ Other";
+			cursor:text;
 			font-size: 21px;
 			font-weight: 600;
 			z-index: 5;
@@ -67,10 +68,11 @@ const ClubOtherGiftAmountStyle = styled.div`
 				font-size: 15px;
 			}
 		}
-		&:hover:before, &.selected:before {
-			color: #fff;
+		&:hover:before {
+			content: "$";
 		}
 		&.selected:before {
+			color: ${props => props.arrayHoverColor};
 			content: "$";
 		}
 		label.form-group__other-input--label {
@@ -116,7 +118,6 @@ const ClubOtherGiftAmountStyle = styled.div`
 			background-color: ${props => props.arrayHoverBackgroundColor};
 			color: ${props => props.arrayHoverColor};
 			box-sizing: border-box;
-			outline: none;
 		}
 		&.selected input {
 			border-color: ${props => props.arrayHoverBorderColor};
