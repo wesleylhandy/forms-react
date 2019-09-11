@@ -1,5 +1,6 @@
 import React, { Fragment, useContext } from "react";
 import { CSSTransition } from "react-transition-group";
+import Media from "react-media";
 
 import "../Animations/country-change.css";
 
@@ -107,7 +108,15 @@ function AddressBlock({
 								}
 								options={[
 									<option key="state-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "State* &#9660;" : ""}}/>,
-									getStateOptions(allowInternational),
+									<Media key="media-query" query="(max-width: 613px)">
+										{matches =>
+											matches ? (
+												getStateOptions(allowInternational, 0)
+											) : (
+												getStateOptions(allowInternational, 1)
+											)
+										}
+									</Media>
 								]}
 							/>
 						</CSSTransition>
@@ -140,6 +149,7 @@ function AddressBlock({
 								error={errors.Zip}
 								allowInternational={allowInternational}
 								validation={fields.Country != "United States" ? ".*" : "d*"}
+								inputMode={fields.Country != "United States" ? "text" : "numeric"}
 							/>
 						</CSSTransition>
 					</FormRow>
@@ -184,6 +194,7 @@ function AddressBlock({
 					handleBlur={handleBlur}
 					error={errors.Emailaddress}
 					disabled={submitting}
+					inputMode="email"
 				/>
 				{getPhone && (
 					<CSSTransition
@@ -212,6 +223,7 @@ function AddressBlock({
 							handleBlur={handleBlur}
 							error={errors.phone}
 							validation="\d*"
+							inputMode="tel"
 						/>
 					</CSSTransition>
 				)}

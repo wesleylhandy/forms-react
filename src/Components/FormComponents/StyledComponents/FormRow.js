@@ -107,6 +107,9 @@ const FormRow = styled.div`
 		&.name-row {
 			flex-wrap: wrap;
 		}
+		&.city-state-row {
+			flex-wrap: wrap;
+		}
 	}
 	@media screen and (max-width: 500px) {
 		&.email-phone-row {
@@ -117,9 +120,7 @@ const FormRow = styled.div`
 		}
 	}
 	@media screen and (max-width: 414px) {
-		&.city-state-row {
-			flex-wrap: wrap;
-		}
+		
 		&.city-state-row > div + div {
 			margin-left: 0;
 		}

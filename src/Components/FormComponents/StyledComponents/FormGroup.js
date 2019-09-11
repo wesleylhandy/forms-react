@@ -22,11 +22,16 @@ const FormGroup = styled.div`
 	}
 
 	&.form-group--Country {
-		max-width: 50%;
+		max-width: 100%;
 	}
 	&.form-group--Phone,
 	&.form-group--Email {
 		width: 50%;
+	}
+	&.form-group--Zip {
+		width: 160px;
+		flex: 0 0 160px;
+		box-sizing: border-box;
 	}
 	&.form-group--cvnCode {
 		width: 80px;
@@ -151,6 +156,14 @@ const FormGroup = styled.div`
 		&.form-group--Firstname {
 			flex-basis: calc(100% - 130px);
 		}
+		&.form-group--City {
+			width:100%;
+		}
+		&.form-group--State {
+			width: 0;
+			flex: 1 1 80px;
+			margin-left: 0;
+		}
 	}
 	@media screen and (max-width: 500px) {
 		&.form-group--Phone,
@@ -160,14 +173,19 @@ const FormGroup = styled.div`
 	}
 	@media screen and (max-width: 414px) {
 		&.form-group--State,
-		&.form-group--City {
+		&.form-group--Zip {
 			max-width: 100%;
 			width: 100%;
+			flex-basis: auto;
 		}
 		&.form-group--Firstname,
 		&.form-group--Lastname {
 			width: 100%;
 			flex-basis: auto;
+		}
+		&.form-group--Title {
+			width: 130px;
+			flex-basis: 130px;
 		}
 	}
 	@media screen and (max-width: 365px) {

@@ -50,7 +50,7 @@ const ClubOtherGiftAmountStyle = styled.div`
 			color: ${props => props.arrayColor};
 			display: block;
 			position: absolute;
-			content: "$ Other";
+			${props => props.otherAmount ? "content: '$'" : "content: '$ Other'"};
 			cursor:text;
 			font-size: 21px;
 			font-weight: 600;
@@ -70,8 +70,9 @@ const ClubOtherGiftAmountStyle = styled.div`
 		}
 		&:hover:before {
 			content: "$";
+			cursor: default;
 		}
-		&.selected:before {
+		&.selected:before, &:focus-within:before, &:focus:before {
 			color: ${props => props.arrayHoverColor};
 			content: "$";
 		}
@@ -111,7 +112,6 @@ const ClubOtherGiftAmountStyle = styled.div`
 				padding-left: 19px;
 			}
 		}
-		input:hover,
 		input:active,
 		input:focus {
 			border-color: ${props => props.arrayHoverBorderColor};

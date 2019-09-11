@@ -8,14 +8,14 @@ import {
 	usTerritories,
 } from "../config/dropdowns.json";
 
-function getStateOptions(international) {
+function getStateOptions(international, displayIndex = 1) {
 	function renderOptGroup(type, options) {
 		return (
 			<optgroup key={type.replace(" ", "")} label={type}>
 				{options.map((opt, i) => {
 					return (
 						<option key={`${type.replace(" ", "")}State-${i}`} value={opt[1]}>
-							{opt[1]}
+							{opt[displayIndex]}
 						</option>
 					);
 				})}

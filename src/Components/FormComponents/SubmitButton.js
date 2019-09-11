@@ -24,7 +24,7 @@ const SubmitButton = ({
 		submitBtnHoverBorderColor = "#333",
 		submitBtnBoxShadow = "none",
 	} = getCssConfig("submitBtn");
-	const { errorColor = "crimson" } = getCssConfig("error");
+	const { formErrorColor = "crimson" } = getCssConfig("form");
 
 	return (
 		<SubmitButtonGroup
@@ -46,7 +46,7 @@ const SubmitButton = ({
 				disabled={submitting}
 				value={submitting ? "Please Wait..." : value}
 			/>
-			<FormError color={errorColor}>
+			<FormError color={formErrorColor}>
 				{hasErrors && error
 					? error
 					: hasErrors

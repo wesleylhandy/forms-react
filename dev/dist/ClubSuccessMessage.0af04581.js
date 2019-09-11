@@ -160,7 +160,11 @@ var SuccessCardBlock = function SuccessCardBlock(_ref) {
   }, "Exclusive Online Access"), (0, _core.jsx)("div", {
     className: "card__body"
   }, (0, _core.jsx)("div", {
-    className: "gift-info"
+    className: "gift-info",
+    style: {
+      marginBottom: 60,
+      padding: "0 10px"
+    }
   }, "When you join The 700 Club, you will receive an email to video stream ", (0, _core.jsx)("em", null, premiumTitle), " by Pat Robertson."))), (0, _core.jsx)(_Card.Card, {
     className: "card",
     linkColor: linkColor,
@@ -172,7 +176,11 @@ var SuccessCardBlock = function SuccessCardBlock(_ref) {
   }, "Email Updates"), (0, _core.jsx)("div", {
     className: "card__body"
   }, (0, _core.jsx)("div", {
-    className: "gift-info"
+    className: "gift-info",
+    style: {
+      marginBottom: 60,
+      padding: "0 10px"
+    }
   }, "Get the latest reports about how your donations are making an impact throughout the world and stay up-to-date with CBN.com", " ", (0, _core.jsx)("a", {
     href: ""
   }, "View Email Updates"))))));
@@ -473,7 +481,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60629" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54831" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -16,7 +16,7 @@ const SuccessCardBlock = ({
 			<Card className="card">
 				<h4 className="card__title">Exclusive Online Access</h4>
 				<div className="card__body">
-					<div className="gift-info">
+					<div className="gift-info" style={{marginBottom: 60, padding: "0 10px"}}>
 						When you join The 700 Club, you will receive an email to video
 						stream <em>{premiumTitle}</em> by Pat Robertson.
 					</div>
@@ -31,7 +31,7 @@ const SuccessCardBlock = ({
 			>
 				<h4 className="card__title">Email Updates</h4>
 				<div className="card__body">
-					<div className="gift-info">
+					<div className="gift-info" style={{marginBottom: 60, padding: "0 10px"}}>
 						Get the latest reports about how your donations are making an impact
 						throughout the world and stay up-to-date with CBN.com{" "}
 						<a href="">View Email Updates</a>

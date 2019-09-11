@@ -22,11 +22,14 @@ export const Designation = styled.li`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	background: white;
+	background: #F5F7F8;
 	margin: 0 auto;
 	max-width: 483px;
 	padding: 18px;
 	width: 100%;
+	&.selected {
+		background: #ffffff;
+	}
 	.designation__image {
 		width: 84px;
 		flex: 0 0 84px;

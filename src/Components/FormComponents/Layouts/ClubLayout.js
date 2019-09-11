@@ -117,16 +117,22 @@ class ClubLayout extends Component {
 				}
 			},
 			() => {
-				if (
-					this.state.otherAmount == 0 &&
-					(this.props.givingInfo && !this.props.givingInfo.amount)
-				) {
-					this.context.removeFromCart("donation");
+				if (this.otherAmountField.current.value == "" || this.otherAmountField.current.value == 0) {
+					this.context.removeFromCart({
+						type: "REMOVE_FROM_CART",
+						itemType: "donation",
+					});
 				}
 				this.otherAmountField.current.focus();
 			}
 		);
 	};
+
+	handleBlur = e => {
+		if (this.otherAmountField.current.value == "" || this.otherAmountField.current.value == 0) {
+			this.setState({selectedIndex: null})
+		}
+	}
 
 	handleOtherAmt = e => {
 		const { selectedIndex } = this.state;
@@ -201,7 +207,7 @@ class ClubLayout extends Component {
 							addToCart={this.addToCart}
 							monthlyChecked={monthlyChecked}
 						/>
-						<ClubOtherGiftAmountGroup key="othergiftamount">
+						<ClubOtherGiftAmountGroup key="othergiftamount" otherAmount={otherAmount > 0}>
 							<div
 								id="OtherAmount"
 								className={`askarray__form-group--other ${
@@ -223,13 +229,14 @@ class ClubLayout extends Component {
 									onChange={this.handleOtherAmt}
 									value={otherAmount == 0 ? "" : otherAmount}
 									onFocus={this.handleFocus}
+									onBlur={this.handleBlur}
+									inputMode="numeric"
 								/>
 								<div className="other-amt-error">{otherAmountError}</div>
 							</div>
 						</ClubOtherGiftAmountGroup>
 					</TransitionGroup>
 				</ClubAskArray>
-				<AmountError className="amount-error">{amountError}</AmountError>
 			</FieldSet>
 		);
 	}

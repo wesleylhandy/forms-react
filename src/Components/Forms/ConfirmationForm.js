@@ -476,7 +476,6 @@ class ConfirmationForm extends Component {
 						className="seals-section"
 						style={{
 							background: "white",
-							margin: "30px 0 0 0",
 							padding: "30px 0 60px 0",
 						}}
 					>

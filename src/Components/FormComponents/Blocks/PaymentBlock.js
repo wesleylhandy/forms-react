@@ -27,7 +27,8 @@ const SafetyDisclaimer = styled.div`
 	align-items: center;
 	font-size: 16px;
 	line-height: 20px;
-	margin: 20px 0;
+	margin: 20px auto;
+    width: calc(100% - 20px);
 	svg {
 		margin-top: -10px;
 		margin-right: 10px;
@@ -197,6 +198,7 @@ const PaymentBlock = ({
 						error={errors.ccNumber}
 						validation="\d*"
 						disabled={submitting}
+						inputMode="numeric"
 					/>
 				</FormRow>
 				<FormRow
@@ -242,6 +244,7 @@ const PaymentBlock = ({
 						error={errors.cvnCode}
 						validation="\d{3,4}"
 						disabled={submitting}
+						inputMode="numeric"
 					/>
 					<InfoCircle>
 						<a href="https://www.cbn.com/CVVNumber/CVV.html" target="_blank">

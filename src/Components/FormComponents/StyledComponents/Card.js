@@ -61,6 +61,9 @@ export const Card = styled.div`
 		flex-direction: column;
 		justify-content: space-around;
 		align-items: center;
+		@media screen and (max-width: 623px) {
+			background: #f1f4f6;
+		}
 		.mail-in-form,
 		.cbn-address,
 		.giving-links,
@@ -81,11 +84,11 @@ export const Card = styled.div`
 				}
 			}
 			@media screen and (max-width: 623px) {
-				font-size: 19px;
+				font-size: 17px;
 				a,
 				.cbn-address--street,
 				.cbn-address--city-state-zip {
-					font-size: 19px;
+					font-size: 17px;
 				}
 			}
 		}

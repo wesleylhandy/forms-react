@@ -17,6 +17,9 @@ const Header = styled.header`
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;
+	@media screen and (max-width: 623px) {
+		margin-bottom: 0;
+	}
 	div.header-container {
 		max-width: ${props => props.formMaxWidth};
 		margin: 0 auto;

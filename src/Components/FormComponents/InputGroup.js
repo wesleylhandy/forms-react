@@ -20,6 +20,7 @@ const InputGroup = ({
 	handleBlur,
 	textareaSize,
 	allowInternational,
+	inputMode = "text"
 }) => {
 	const { getCssConfig, allowInputPlaceholders } = useContext(FormConfigContext);
 	const {
@@ -88,6 +89,7 @@ const InputGroup = ({
 				aria-invalid={error ? true : false}
 				disabled={disabled}
 				pattern={validation ? validation : ".*"}
+				inputMode={inputMode}
 			/>
 			<InputError className="input-error" inputErrorColor={inputErrorColor}>
 				{error}
