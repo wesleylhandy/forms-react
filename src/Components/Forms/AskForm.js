@@ -4,7 +4,7 @@ import { CSSTransition } from "react-transition-group";
 import { GivingFormContext } from "../Contexts/GivingFormProvider";
 import FormWrapper from "../StyledComponents/FormWrapper";
 import ClubLayout from "../FormComponents/Layouts/ClubLayout";
-import PartnershipBlock from "../FormComponents/Blocks/PartnershipBlock";
+import PremiumBlock from "../FormComponents/Blocks/PremiumBlock";
 import DesignationBlock from "../FormComponents/Blocks/DesignationBlock";
 import FormPanel from "../FormComponents/StyledComponents/FormPanel";
 import FieldSet from "../FormComponents/StyledComponents/FieldSet";
@@ -123,10 +123,10 @@ class AskForm extends Component {
 						>
 							{formTitle}
 						</FormHeader>
-						<PartnershipBlock
+						<PremiumBlock
 							premiumData={premiumData}
 							monthlyChecked={monthlyChecked}
-						></PartnershipBlock>
+						></PremiumBlock>
 						{showGivingArray && (
 							<FormPanel className="form-panel">
 								<ClubLayout

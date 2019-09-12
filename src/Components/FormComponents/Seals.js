@@ -32,20 +32,37 @@ const SealsBlock = styled.section`
 	}
 `;
 
+const certs = {
+	"https://www.cbn.com": {
+		id: "DigiCertClickID_RXDQXROF",
+		href:"https://www.digicert.com/ev-multi-domain-ssl.htm" 
+	},
+	"https://impact.cbn.com": {
+		id: "DigiCertClickID_6ddxBgyB",
+		href: "https://www.digicert.com/ssl-certificate.htm"
+	}
+}
+
 function Seals({ style = {} }) {
+	const { origin} = window.location
+	const cert = certs[origin]
 	return (
 		<SealsBlock id="seals" style={style}>
-			<div
-				id="DigiCertClickID_RXDQXROF"
-				data-language="en"
-				className="seals__seal"
-			>
-				<a
-					className="seals__seal--link"
-					href="https://www.digicert.com/ev-multi-domain-ssl.htm"
-					aria-label="Digicert Seal"
-				></a>
-			</div>
+			{
+				cert && (
+					<div
+						id={cert.id}
+						data-language="en"
+						className="seals__seal"
+					>
+						<a
+							className="seals__seal--link"
+							href={cert.href}
+							aria-label="Digicert Seal"
+						>DigiCert.com</a>
+					</div>
+				)
+			}
 			<div id="ECFA_Logo" className="seals__seal">
 				<a
 					className="seals__seal--link"

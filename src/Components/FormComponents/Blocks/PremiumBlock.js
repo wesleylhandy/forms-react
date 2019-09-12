@@ -63,7 +63,7 @@ const PremuimInfoBlock = styled.div`
 	}
 `;
 
-const PartnershipBlock = ({
+const PremiumBlock = ({
 	premiumData: {
 		premiumTitle,
 		premiumImgUrl,
@@ -115,4 +115,4 @@ const PartnershipBlock = ({
 	);
 };
 
-export default PartnershipBlock;
+export default PremiumBlock;

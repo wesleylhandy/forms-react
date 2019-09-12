@@ -12,16 +12,25 @@ const ClubAskArrayBtn = styled.div`
 		flex: 0 0 95px;
 		margin: 0 2.5px;
 		@media screen and (max-width: 559px) {
+			flex-basis: 85px;
+		}
+		@media screen and (max-width: 470px) {
+			flex-basis: 80px;
+		}
+		@media screen and (max-width: 445px) {
+			flex-basis: 75px;
+		}
+		@media screen and (max-width: 420px) {
 			flex-basis: 70px;
 		}
 		@media screen and (max-width: 395px) {
+			flex-basis: 65px;
+		}
+		@media screen and (max-width: 370px) {
 			flex-basis: 60px;
 		}
-		@media screen and (max-width: 360px) {
+		@media screen and (max-width: 345px) {
 			flex-basis: 55px;
-		}
-		@media screen and (max-width: 336px) {
-			flex-basis: 52px;
 		}
 	}
 	div {

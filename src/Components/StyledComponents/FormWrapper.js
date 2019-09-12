@@ -36,6 +36,9 @@ const Wrapper = styled.main`
 	@media screen and (max-width: 493px) {
 		padding: 20px 10px;
 	}
+	@media screen and (max-width: 411px) {
+		padding: 20px 5px;
+	}
 `;
 
 const FormWrapper = ({
