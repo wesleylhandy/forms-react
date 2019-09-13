@@ -9,8 +9,7 @@ const Footer = styled.footer`
 	div.container {
 		box-sizing: border-box;
 		color: #3b3b3b;
-		font-size: 15px;
-		line-height: 18px;
+
 		max-width: ${props => props.formMaxWidth};
 		width: 100%;
 		padding: 30px 10px;
@@ -23,22 +22,32 @@ const Footer = styled.footer`
 			align-items: center;
 			flex-wrap: wrap;
 			color: #181818;
+			font-size: 15px;
+			line-height: 18px;
 		}
 		.cbn-info {
 			padding: 10px 0;
 			text-align: center;
 			.year {
+				font-size: 15px;
+				line-height: 18px;
 				margin: 0 5px;
 			}
 		}
 		.footer-links {
 			& > * {
-				margin: 5px;
+				margin: 2.5px;
+			}
+			.pipe {
+				font-size: 15px;
+				line-height: 18px;
 			}
 			a {
 				color: #181818;
 				text-decoration: none;
 				transition: color 200ms ease-in-out;
+				font-size: 15px;
+				line-height: 18px;
 			}
 			a:hover,
 			a:focus,
@@ -46,6 +55,9 @@ const Footer = styled.footer`
 				text-decoration: underline;
 				color: #484848;
 			}
+		}
+		@media screen and (max-width: 623px) {
+			background: #eceff1;
 		}
 	}
 `;

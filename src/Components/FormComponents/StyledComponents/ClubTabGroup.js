@@ -36,6 +36,9 @@ const ClubTabGroup = styled.div`
 			border-color 200ms ease-in-out;
 		position: relative;
 		font-weight: bold;
+		@media screen and (max-width: 559px) {
+			font-size: 18px;
+		}
 	}
 	input[type="checkbox"].tab-group__input:checked + label,
 	input[type="checkbox"].tab-group__input + label:hover {

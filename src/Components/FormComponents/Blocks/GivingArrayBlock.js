@@ -58,7 +58,7 @@ const GivingArray = ({
 					role="button"
 					aria-pressed={selectedIndex == i}
 				>
-					<span className="dollar-sign">$</span>{amount}
+					<span className="dollar-sign">$</span>{amount.toLocaleString(undefined, {minimumFractionDigits: 0, maximiumFractionDigits: 0, style: 'decimal'})}
 				</div>
 				<CSSTransition
 					in={monthlyChecked}

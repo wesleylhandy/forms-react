@@ -14,6 +14,9 @@ export const DesignationOverlay = styled.div`
 export const DesignationContainer = styled.div`
 	position: relative;
 	z-index: 1;
+	@media screen and (max-width: 716px) {
+		margin-top: 10px;
+	}
 `;
 
 export const Designation = styled.li`

@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 const SealsBlock = styled.section`
 	box-sizing: border-box;
-	margin: 30px auto;
+	margin: 20px auto;
 	padding: 0;
 	width: 100%;
 	max-width: 680px;

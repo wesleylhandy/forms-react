@@ -7,8 +7,21 @@ const BlockContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor:pointer;
+	a {
+		color: #009bdf;
+		cursor: pointer;
+		text-decoration: none;
+		text-align: center;
+		&:hover,
+		&:active,
+		&:focus {
+			text-decoration: underline;
+			color: #0069ad;
+		}
+	}
 	&.column {
-		width: calc(100%-20px);
+		padding: 10px;
 		height: 100px;
 		max-width: 360px;
 		margin: 0 auto;
@@ -26,6 +39,7 @@ const BlockContainer = styled.div`
 		}
 	}
 	&.row {
+		width: calc(100% - 20px);
 		flex-direction: row;
 		margin: 20px auto;
 		text-align: center;
@@ -36,17 +50,8 @@ const BlockContainer = styled.div`
 		.amount-block > span {
 			font-weight: bold;
 		}
-	}
-	a {
-		color: #009bdf;
-		cursor: pointer;
-		text-decoration: none;
-		text-align: center;
-		&:hover,
-		&:active,
-		&:focus {
-			text-decoration: underline;
-			color: #0069ad;
+		a {
+			flex: 0 0 54px;
 		}
 	}
 `;
@@ -67,10 +72,10 @@ const SummaryBlock = ({ withContainer, submitting }) => {
 		}
 	};
 	return (
-		<BlockContainer className={withContainer ? "column" : "row"}>
+		<BlockContainer className={withContainer ? "column" : "row"} onClick={handleGoBackClick}>
 			<LiveMessage message={a11yMessage} aria-live="polite" />
 			<div className="amount-block">
-				${amount} <span dangerouslySetInnerHTML={{ __html: duration }}></span>
+				{amount.toLocaleString(undefined, {minimumFractionDigits: 0, maximiumFractionDigits: 0, style: 'currency', currency: 'USD', currencyDisplay: 'symbol'})} <span dangerouslySetInnerHTML={{ __html: duration }}></span>
 			</div>
 			<a tabIndex="0" className="go-back-btn" onClick={handleGoBackClick}>
 				Edit

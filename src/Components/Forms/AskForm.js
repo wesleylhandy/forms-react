@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { CSSTransition } from "react-transition-group";
+import Media from "react-media";
 
 import { GivingFormContext } from "../Contexts/GivingFormProvider";
 import FormWrapper from "../StyledComponents/FormWrapper";
@@ -117,12 +118,18 @@ class AskForm extends Component {
 						onSubmit={this.handleSubmit}
 						style={{ backgroundColor: "white" }}
 					>
-						<FormHeader
-							className="form-title form-header"
-							style={{ fontSize: "19px", marginTop: "0", color: "#181818" }}
-						>
-							{formTitle}
-						</FormHeader>
+						<Media query="(max-width: 649px)">
+							{matches =>
+								matches ? ( null ) : (
+									<FormHeader
+										className="form-title form-header"
+										style={{ fontSize: "19px", marginTop: "0", color: "#181818" }}
+									>
+										{formTitle}
+									</FormHeader>
+								)
+							}
+						</Media>
 						<PremiumBlock
 							premiumData={premiumData}
 							monthlyChecked={monthlyChecked}

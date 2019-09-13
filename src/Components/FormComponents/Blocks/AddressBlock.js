@@ -148,7 +148,8 @@ function AddressBlock({
 								handleBlur={handleBlur}
 								error={errors.Zip}
 								allowInternational={allowInternational}
-								validation={fields.Country != "United States" ? ".*" : "d*"}
+								validation={fields.Country != "United States" ? ".*" : "[0-9]*"}
+								pattern="[0-9]*"
 								inputMode={fields.Country != "United States" ? "text" : "numeric"}
 							/>
 						</CSSTransition>
@@ -222,8 +223,9 @@ function AddressBlock({
 							handleInputChange={handleInputChange}
 							handleBlur={handleBlur}
 							error={errors.phone}
-							validation="\d*"
+							validation="[0-9]*"
 							inputMode="tel"
+							pattern="[0-9]*"
 						/>
 					</CSSTransition>
 				)}

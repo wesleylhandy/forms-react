@@ -124,6 +124,7 @@ class GivingFormProvider extends Component {
 		toggleSubmit: () =>
 			this.setState(state => reducer(state, { type: "TOGGLE_SUBMITTING" })),
 		updateField: action => this.setState(state => reducer(state, action)),
+		updateFields: action => this.setState(state => reducer(state, action)),
 		validateAndUpdateField: async action => {
 			const { name, value } = action;
 			const isZip = name.includes("Zip");

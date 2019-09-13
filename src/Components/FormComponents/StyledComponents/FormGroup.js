@@ -33,6 +33,9 @@ const FormGroup = styled.div`
 		flex: 0 0 160px;
 		box-sizing: border-box;
 	}
+	&.form-group--ccNumber > input{
+		text-align: left;
+	}
 	&.form-group--cvnCode {
 		width: 80px;
 		flex: 0 0 80px;

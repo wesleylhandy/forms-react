@@ -6,7 +6,7 @@ const Divider = styled.div`
 	${props => ({
 		color: props.color,
 	})}
-	flex: 0 0 5px;
+	flex: 0 0 18px;
 `;
 
 export default Divider;

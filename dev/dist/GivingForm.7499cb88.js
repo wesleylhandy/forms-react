@@ -786,6 +786,63 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
+},{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/FormComponents/StyledComponents/AmountError.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.AmountError = void 0;
+
+var _styledBase = _interopRequireDefault(require("@emotion/styled-base"));
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var AmountError = (0, _styledBase.default)("div", {
+  target: "e16mrpwz0",
+  label: "AmountError"
+})("development" === "production" ? {
+  name: "1be5tm8",
+  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;left:50%;transform:translateX(-50%);bottom:0;font-weight:800;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;"
+} : {
+  name: "1be5tm8",
+  styles: "box-sizing:border-box;position:absolute;color:crimson;width:auto;left:50%;transform:translateX(-50%);bottom:0;font-weight:800;font-size:calc(19px * 0.5);opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;",
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkFtb3VudEVycm9yLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdxQyIsImZpbGUiOiJBbW91bnRFcnJvci5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5leHBvcnQgY29uc3QgQW1vdW50RXJyb3IgPSBzdHlsZWQuZGl2YFxuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdGNvbG9yOiBjcmltc29uO1xuXHR3aWR0aDogYXV0bztcblx0bGVmdDogNTAlO1xuXHR0cmFuc2Zvcm06IHRyYW5zbGF0ZVgoLTUwJSk7XG5cdGJvdHRvbTogMDtcblx0Zm9udC13ZWlnaHQ6IDgwMDtcblx0Zm9udC1zaXplOiBjYWxjKDE5cHggKiAwLjUpO1xuXHRvcGFjaXR5OiAxO1xuXHRvdmVyZmxvdzogaGlkZGVuO1xuXHRtYXgtd2lkdGg6IDEwMCU7XG5cdHdoaXRlLXNwYWNlOiBub3dyYXA7XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBBbW91bnRFcnJvcjtcbiJdfQ== */"
+});
+exports.AmountError = AmountError;
+var _default = AmountError;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(AmountError, "AmountError", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/AmountError.js");
+  reactHotLoader.register(_default, "default", "/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/AmountError.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
 },{"@emotion/styled-base":"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js"}],"src/Components/FormComponents/Layouts/GivingLayout.js":[function(require,module,exports) {
 "use strict";
 
@@ -1698,7 +1755,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53925" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50717" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

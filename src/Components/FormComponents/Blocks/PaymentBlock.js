@@ -25,13 +25,26 @@ const SafetyDisclaimer = styled.div`
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	font-size: 16px;
-	line-height: 20px;
 	margin: 20px auto;
-    width: calc(100% - 20px);
-	svg {
-		margin-top: -10px;
-		margin-right: 10px;
+	width: calc(100% - 20px);
+	span {
+		font-size: 16px;
+		line-height: 20px;
+		flex: 0 1 425px;
+		text-align: center;
+	}
+	.symbol-container {
+		flex: 0 0 auto;
+		margin-right: 5px;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		svg {
+			margin-top: -10px;
+		}
+		@media screen and (max-width: 530px) {
+			display: none;
+		}
 	}
 `;
 
@@ -163,7 +176,9 @@ const PaymentBlock = ({
 				Payment Information
 			</FormHeader>
 			<SafetyDisclaimer className="safety-disclaimer">
-				<LockSymbol />{" "}
+				<div className="symbol-container">
+					<LockSymbol />
+				</div>
 				<span style={{ color: "#54585D" }}>
 					This is a secure 256-bit SSL encrypted payment. You&rsquo;re safe.
 				</span>
@@ -190,13 +205,12 @@ const PaymentBlock = ({
 						id="ccNumber"
 						label="Card Number"
 						required={true}
-						maxLength={16}
 						placeholder="#### #### #### #### ####"
-						value={fields.ccNumber}
+						value={fields.ccNumberDisplay}
 						handleInputChange={handleInputChange}
 						handleBlur={handleBlur}
 						error={errors.ccNumber}
-						validation="\d*"
+						validation="[0-9]*"
 						disabled={submitting}
 						inputMode="numeric"
 					/>
@@ -242,7 +256,7 @@ const PaymentBlock = ({
 						handleInputChange={handleInputChange}
 						handleBlur={handleBlur}
 						error={errors.cvnCode}
-						validation="\d{3,4}"
+						validation="[0-9]*"
 						disabled={submitting}
 						inputMode="numeric"
 					/>

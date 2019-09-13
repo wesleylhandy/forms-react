@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 export const CardSection = styled.section`
 	background: white;
 	margin: 0 auto;
-	padding: 60px 0;
+	padding: 30px 0;
 	width: 100%;
 	h3 {
 		font-weight: bold;

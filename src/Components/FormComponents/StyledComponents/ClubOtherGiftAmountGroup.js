@@ -13,10 +13,12 @@ const ClubOtherGiftAmountStyle = styled.div`
 		box-sizing: border-box;
 		flex: 0 0 150px;
 		margin: 0 2.5px;
+		transition: all 250ms ease-in-out;
 		@media screen and (max-width: 716px) {
 			margin: 0 auto;
-			margin-top: 50px;
-			flex-basis: 160px;
+			${props => props.isMonthly ? "margin-top: 50px;" : "margin-top: 20px;"}
+			flex: unset;
+			width: 100%;
 			justify-self: center;
 		}
 	}
@@ -46,6 +48,10 @@ const ClubOtherGiftAmountStyle = styled.div`
 		max-width: 400px;
 		position: relative;
 		z-index: 1;
+		@media screen and (max-width: 716px) {
+			width: 100%;
+			max-width: 160px;
+		}
 		&:before {
 			color: ${props => props.arrayColor};
 			display: block;
@@ -62,10 +68,6 @@ const ClubOtherGiftAmountStyle = styled.div`
 			@media screen and (max-width: 559px) {
 				top: 14px;
 				font-size: 18px;
-			}
-			@media screen and (max-width: 395px) {
-				top: 15.5px;
-				font-size: 15px;
 			}
 		}
 		&:hover:before {
@@ -105,11 +107,11 @@ const ClubOtherGiftAmountStyle = styled.div`
 			white-space: nowrap;
 			@media screen and (max-width: 559px) {
 				font-size: 24px;
-				padding-left: 21px;
+				padding-left: 22px;
 			}
 			@media screen and (max-width: 395px) {
 				font-size: 19px;
-				padding-left: 19px;
+				padding-left: 20px;
 			}
 		}
 		input:active,
@@ -127,7 +129,7 @@ const ClubOtherGiftAmountStyle = styled.div`
 		div.other-amt-error {
 			box-sizing: border-box;
 			position: absolute;
-			color: ${props => props.errorColor};
+			color: ${props => props.formErrorColor};
 			width: auto;
 			font-weight: 600;
 			font-size: 16px;
@@ -138,6 +140,10 @@ const ClubOtherGiftAmountStyle = styled.div`
 			bottom: -25px;
 			left: 50%;
 			transform: translateX(-50%);
+			@media screen and (max-width: 716px) {
+				bottom: -18px;
+				font-size: 15px;
+			}
 		}
 	}
 
@@ -145,7 +151,7 @@ const ClubOtherGiftAmountStyle = styled.div`
 	}
 `;
 
-const ClubOtherGiftAmountGroup = ({ children, style = {} }) => {
+const ClubOtherGiftAmountGroup = ({ children, style = {}, isMonthly }) => {
 	const { getCssConfig } = useContext(FormConfigContext);
 	const {
 		arrayColor = "#fff",
@@ -157,7 +163,7 @@ const ClubOtherGiftAmountGroup = ({ children, style = {} }) => {
 		arrayHoverBorderColor = "#1775BC",
 		arrayDescriptorColor = "#DDB007",
 	} = getCssConfig("array");
-	const { errorColor = "crimson" } = getCssConfig("error");
+	const { formErrorColor = "crimson" } = getCssConfig("form");
 	return (
 		<ClubOtherGiftAmountStyle
 			id="OtherGiftAmount"
@@ -171,7 +177,8 @@ const ClubOtherGiftAmountGroup = ({ children, style = {} }) => {
 			arrayHoverBackgroundColor={arrayHoverBackgroundColor}
 			arrayHoverBorderColor={arrayHoverBorderColor}
 			arrayDescriptorColor={arrayDescriptorColor}
-			errorColor={errorColor}
+			formErrorColor={formErrorColor}
+			isMonthly={isMonthly}
 		>
 			{children}
 		</ClubOtherGiftAmountStyle>

@@ -18,7 +18,8 @@ const SubmitButtonGroup = styled.div`
 		font-size: 19px;
 		height: 50px;
 		line-height: 50px;
-		margin: 30px auto;
+		margin: 20px auto;
+		margin-bottom: 10px;
 		width: 300px;
 		box-shadow: ${props => props.submitBtnBoxShadow};
 		transition: background-color 200ms ease-in-out, color 200ms ease-in-out,

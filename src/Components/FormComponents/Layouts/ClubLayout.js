@@ -1,6 +1,6 @@
-import React, { Component, useContext, memo } from "react";
+import React, { Component, } from "react";
 
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { TransitionGroup } from "react-transition-group";
 
 import "../Animations/askarray.css";
 
@@ -11,7 +11,6 @@ import FieldSet from "../StyledComponents/FieldSet";
 import ClubAskArray from "../StyledComponents/ClubAskArray";
 import GivingArrayBlock from "../Blocks/GivingArrayBlock.js";
 import ClubOtherGiftAmountGroup from "../StyledComponents/ClubOtherGiftAmountGroup";
-import AmountError from "../StyledComponents/AmountError";
 
 function getIndex(arr, amount) {
 	return arr.findIndex(amt => +amt == +amount);
@@ -23,6 +22,7 @@ class ClubLayout extends Component {
 		prevIndex: null,
 		selectedIndex: null,
 		otherAmount: 0,
+		otherAmountDisplay: "",
 		otherAmountError: "",
 	};
 
@@ -69,6 +69,7 @@ class ClubLayout extends Component {
 		this.setState(
 			{
 				otherAmount: index == 99 ? amt : 0,
+				otherAmountDisplay: index == 99 ? amt.toLocaleString(undefined, {minimumFractionDigits: 0, maximiumFractionDigits: 0, style: 'decimal'}) : "",
 				selectedIndex: index,
 				otherAmountError: index !== 99 ? "" : otherAmountError,
 				prevIndex: selectedIndex,
@@ -136,17 +137,19 @@ class ClubLayout extends Component {
 
 	handleOtherAmt = e => {
 		const { selectedIndex } = this.state;
-		const value = e.target.value.trim();
-		const isValid = /^[0-9]{1,}$/.test(value);
-		if (isValid && value > 0) {
+		let value = e.target.value.trim().replace(/[\$,]/g, "");
+		const isValid = /^\d*(\.\d*)?$/.test(value);
+		if (isValid && +value > 0) {
+			value = Math.ceil(Number.parseFloat(value))
 			this.setState(
-				{ otherAmountError: "", otherAmount: value, prevIndex: selectedIndex },
+				{ otherAmountError: "", otherAmount: +value, otherAmountDisplay: value.toLocaleString(undefined, {minimumFractionDigits: 0, maximiumFractionDigits: 0, style: 'decimal'}),  prevIndex: selectedIndex },
 				() => this.addToCart(+value, 99)
 			);
 		} else if (isValid) {
 			this.setState(
 				{
 					otherAmount: 0,
+					otherAmountDisplay: "",
 					selectedIndex: null,
 					otherAmountError: "",
 					prevIndex: selectedIndex,
@@ -160,6 +163,7 @@ class ClubLayout extends Component {
 		} else {
 			this.setState({
 				otherAmount: 0,
+				otherAmountDisplay: "",
 				otherAmountError: value !== "" ? "Numbers Only" : "",
 				prevIndex: selectedIndex,
 			});
@@ -168,15 +172,11 @@ class ClubLayout extends Component {
 
 	render() {
 		let {
-			amountError,
 			monthlyChecked,
 			handleRadioClick,
 			givingOptions: { monthlyAmounts, singleAmounts },
 		} = this.props;
-		let { otherAmount, otherAmountError, selectedIndex } = this.state;
-		let {
-			givingInfo: { amount, isMonthly },
-		} = this.context;
+		let { otherAmount, otherAmountDisplay, otherAmountError, selectedIndex } = this.state;
 		let key = "controlled";
 		const amounts = monthlyChecked ? monthlyAmounts : singleAmounts;
 		return (
@@ -207,7 +207,7 @@ class ClubLayout extends Component {
 							addToCart={this.addToCart}
 							monthlyChecked={monthlyChecked}
 						/>
-						<ClubOtherGiftAmountGroup key="othergiftamount" otherAmount={otherAmount > 0}>
+						<ClubOtherGiftAmountGroup key="othergiftamount" otherAmount={otherAmount > 0} isMonthly={monthlyChecked}>
 							<div
 								id="OtherAmount"
 								className={`askarray__form-group--other ${
@@ -227,10 +227,12 @@ class ClubLayout extends Component {
 									name="other-amt-input"
 									id="other-amt-input"
 									onChange={this.handleOtherAmt}
-									value={otherAmount == 0 ? "" : otherAmount}
+									value={otherAmountDisplay}
 									onFocus={this.handleFocus}
 									onBlur={this.handleBlur}
 									inputMode="numeric"
+									pattern="[0-9]*"
+									type="text"
 								/>
 								<div className="other-amt-error">{otherAmountError}</div>
 							</div>

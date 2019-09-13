@@ -37,6 +37,14 @@ const Disclaimer = styled.div`
 	}
 `;
 
+const SealsSection = styled.section`
+	background: white;
+	padding: 30px 0;
+	@media screen and (max-width: 623px) {
+		background: #eceff1;
+	}
+`
+
 const getDay = date => {
 	let day = date.getDate() + 2;
 	return day >= 2 && day <= 28 ? day : 2;
@@ -85,6 +93,7 @@ class ConfirmationForm extends Component {
 				ExpiresMonth: curMonth.slice(-2),
 				ExpiresYear: curYear,
 				ccNumber: "",
+				ccNumberDisplay: "",
 				cvnCode: "",
 			};
 			const errors = {};
@@ -285,12 +294,61 @@ class ConfirmationForm extends Component {
 		const target = e.target;
 		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
-		this.context.updateField({ type: "UPDATE_FIELD", name, value });
+		if (name === "ccNumber") {
+			value = value.replace(/ /g, "")
+			let ccNumberDisplay = value
+			if (ccNumberDisplay.length > 4) {
+				const digits = ccNumberDisplay.split("");
+				let firstDivision, secondDivision, thirdDivision, fourthDivision;
+				switch (digits[0]) {
+					case "3":
+						firstDivision = [...digits.slice(0,4),]
+						secondDivision = [" ", ...digits.slice(4, 10)]
+						thirdDivision = digits.length > 10 ? [" ", ...digits.slice(10, 15)] : []
+						ccNumberDisplay = [...firstDivision, ...secondDivision, ...thirdDivision].join("");
+						value = value.split("").slice(0, 15).join("");
+						break;
+					case "4":
+					case "5":
+					case "6":
+						firstDivision= [...digits.slice( 0, 4)]
+						secondDivision = [" ", ...digits.slice(4, 8)]
+						thirdDivision = digits.length > 8 ? [" ", ...digits.slice(8, 12)] : []
+						fourthDivision = digits.length > 12 ? [" ", ...digits.slice(12, 16)] : []
+						ccNumberDisplay = [...firstDivision, ...secondDivision, ...thirdDivision, ...fourthDivision].join("");
+						value = value.split("").slice(0, 16).join("");
+						break;
+					default:
+						value = value.split("").slice(0, 16).join("");
+						break;
+				}
+				
+			}
+			
+			let action = {
+				type: "UPDATE_FIELDS",
+				fields: [{
+					name,
+					value,
+					error: "",
+				}, {
+					name: "ccNumberDisplay",
+					value: ccNumberDisplay,
+					error: ""
+				}]
+			}
+			this.context.updateFields(action)
+		}  else {
+			this.context.updateField({ type: "UPDATE_FIELD", name, value });
+		}
 	};
 	handleBlur = e => {
 		const target = e.target;
 		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
+		if (name === "ccNumber") {
+			value = value.replace(/ /g, "")
+		}
 		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name, value });
 	};
 
@@ -356,6 +414,7 @@ class ConfirmationForm extends Component {
 						formMargin={formMargin}
 						formColor={formColor}
 						inProp={selected && !confirmed}
+						style={{marginBottom: 30}}
 					>
 						<form
 							id="react-club-payment-form"
@@ -387,7 +446,7 @@ class ConfirmationForm extends Component {
 										}}
 									>
 										<legend>Name and Billing Address Block</legend>
-										<FormPanel className="name-address__info">
+										<FormPanel className="name-address__info" style={{margin: "0 auto"}}>
 											<FormHeader
 												className="form-header"
 												style={{
@@ -440,7 +499,7 @@ class ConfirmationForm extends Component {
 											submitting={submitting || submitted}
 											value="Send Payment"
 										/>
-										<Disclaimer style={{ color: "#54585D", marginTop: 50 }}>
+										<Disclaimer style={{ color: "#54585D", marginTop: 40 }}>
 											CBN values and protects your personal information.
 										</Disclaimer>
 									</FieldSet>
@@ -472,20 +531,14 @@ class ConfirmationForm extends Component {
 							ref={this.hiddenSubmit}
 						></iframe>
 					</FormWrapper>
-					<section
-						className="seals-section"
-						style={{
-							background: "white",
-							padding: "30px 0 60px 0",
-						}}
-					>
+					<SealsSection className="seals-section">
 						<Seals style={{ marginTop: "0" }} />
 						<Disclaimer>
 							If you experience a problem with this transaction, send a message
 							to <a href="mailto:partners@cbn.org">partners@cbn.org</a> or call{" "}
 							<a href="tel:18002891777">1-800-289-1777</a>.
 						</Disclaimer>
-					</section>
+					</SealsSection>
 					<FooterBlock />
 				</>
 			)

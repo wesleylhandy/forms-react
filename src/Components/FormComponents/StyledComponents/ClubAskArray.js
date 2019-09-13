@@ -19,6 +19,8 @@ const ClubAskArray = styled.div`
 		outline: none;
 		@media screen and (max-width: 716px) {
 			flex-wrap: wrap;
+			margin: 20px auto;
+			margin-bottom: 10px;
 		}
 	}
 `;
