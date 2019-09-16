@@ -4,11 +4,15 @@ import "raf/polyfill";
  * @param {Number} top - pageYoffset of form
  */
 export function scrollToPoint(top = 0, parent = window, el = null) {
-	if ( parent !== window && !el) {
-		return
+	if (parent !== window && !el) {
+		return;
 	}
-	const parentHeight = parent === window ? document.documentElement.scrollHeight : parent.scrollHeight;
-	const visibleHeight = parent === window ? window.innerHeight : parent.clientHeight;
+	const parentHeight =
+		parent === window
+			? document.documentElement.scrollHeight
+			: parent.scrollHeight;
+	const visibleHeight =
+		parent === window ? window.innerHeight : parent.clientHeight;
 	let initialPoint;
 	if (parent === window) {
 		initialPoint = parent.scrollY ? parent.scrollY : parent.pageYOffset;
@@ -18,7 +22,8 @@ export function scrollToPoint(top = 0, parent = window, el = null) {
 	const scrollDown = top >= initialPoint;
 
 	if (scrollDown) {
-		top = top > parentHeight - visibleHeight ? parentHeight - visibleHeight : top;
+		top =
+			top > parentHeight - visibleHeight ? parentHeight - visibleHeight : top;
 	} else {
 		top = parentHeight <= visibleHeight ? 0 : top;
 	}
@@ -31,17 +36,17 @@ export function scrollToPoint(top = 0, parent = window, el = null) {
 		} else {
 			scroll = parent.scrollTop;
 		}
-		const speed = Math.ceil(Math.sqrt(Math.abs(top - scroll + 2)))
+		const speed = Math.ceil(Math.sqrt(Math.abs(top - scroll + 2)));
 		if (scrollDown) {
 			if (scroll >= top) {
 				window.cancelAnimationFrame(timestamp);
-				return
+				return;
 			}
 			scroll = scroll + speed > top ? top : scroll + speed;
 		} else {
 			if (scroll <= top) {
 				window.cancelAnimationFrame(timestamp);
-				return
+				return;
 			}
 			scroll = scroll - speed < top ? top : scroll - speed;
 		}
@@ -57,8 +62,8 @@ export function scrollToPoint(top = 0, parent = window, el = null) {
  * @returns {Number} - integer representing offsetTop of the element relative to the viewport
  */
 export function offsetTop(el, parent = window) {
-	if ( parent !== window && !el ) {
-		return
+	if (parent !== window && !el) {
+		return;
 	} else if (parent === window) {
 		let rect = el.getBoundingClientRect(),
 			scrollTop = parent.scrollY ? parent.scrollY : parent.pageYOffset;

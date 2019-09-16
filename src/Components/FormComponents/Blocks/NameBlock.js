@@ -1,4 +1,4 @@
-import React,  { useContext }from "react";
+import React, { useContext } from "react";
 
 import FormRow from "../StyledComponents/FormRow";
 import FieldSet from "../StyledComponents/FieldSet";
@@ -21,7 +21,9 @@ function TitleDropdown({
 			<option
 				key={`title-${ind}`}
 				value={el}
-				dangerouslySetInnerHTML={{ __html: ind === 0 && allowInputPlaceholders ? "Title* &#9660;" : el }}
+				dangerouslySetInnerHTML={{
+					__html: ind === 0 && allowInputPlaceholders ? "Title* &#9660;" : el,
+				}}
 				disabled={ind === 0 ? "disabled" : ""}
 				hidden={ind === 0 ? "hidden" : ""}
 			></option>

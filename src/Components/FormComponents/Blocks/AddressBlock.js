@@ -103,20 +103,24 @@ function AddressBlock({
 								error={errors.State}
 								handleInputChange={handleBlur}
 								required={fields.Country == "United States"}
-								disabled={
-									submitting || validating
-								}
+								disabled={submitting || validating}
 								options={[
-									<option key="state-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "State* &#9660;" : ""}} hidden/>,
+									<option
+										key="state-base-0"
+										value=""
+										disabled="disabled"
+										dangerouslySetInnerHTML={{
+											__html: allowInputPlaceholders ? "State* &#9660;" : "",
+										}}
+										hidden
+									/>,
 									<Media key="media-query" query="(max-width: 613px)">
 										{matches =>
-											matches ? (
-												getStateOptions(allowInternational, 0)
-											) : (
-												getStateOptions(allowInternational, 1)
-											)
+											matches
+												? getStateOptions(allowInternational, 0)
+												: getStateOptions(allowInternational, 1)
 										}
-									</Media>
+									</Media>,
 								]}
 							/>
 						</CSSTransition>
@@ -140,9 +144,7 @@ function AddressBlock({
 								placeholder="Zip*"
 								maxLength={fields.Country != "United States" ? 25 : 5}
 								required={fields.Country == "United States"}
-								disabled={
-									submitting || validating
-								}
+								disabled={submitting || validating}
 								value={fields.Zip}
 								handleInputChange={handleInputChange}
 								handleBlur={handleBlur}
@@ -150,14 +152,14 @@ function AddressBlock({
 								allowInternational={allowInternational}
 								validation={fields.Country != "United States" ? ".*" : "[0-9]*"}
 								pattern="[0-9]*"
-								inputMode={fields.Country != "United States" ? "text" : "numeric"}
+								inputMode={
+									fields.Country != "United States" ? "text" : "numeric"
+								}
 							/>
 						</CSSTransition>
 					</FormRow>
 
 					<FormRow className="zip-country-row">
-						
-
 						{allowInternational && (
 							<SelectGroup
 								id="Country"
@@ -169,10 +171,18 @@ function AddressBlock({
 								handleInputChange={handleBlur}
 								disabled={submitting || validating}
 								options={[
-									<option key="country-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "Country* &#9660;" : ""}} hidden/>,
+									<option
+										key="country-base-0"
+										value=""
+										disabled="disabled"
+										dangerouslySetInnerHTML={{
+											__html: allowInputPlaceholders ? "Country* &#9660;" : "",
+										}}
+										hidden
+									/>,
 									countries.map((country, i) => (
 										<option key={`country-${i}`} value={country}>
-											{ country }
+											{country}
 										</option>
 									)),
 								]}
@@ -219,7 +229,7 @@ function AddressBlock({
 							maxLength="24"
 							required={false}
 							value={fields.phoneDisplay}
-							disabled={ submitting }
+							disabled={submitting}
 							handleInputChange={handleInputChange}
 							handleBlur={handleBlur}
 							error={errors.phone}

@@ -44,7 +44,7 @@ const SealsSection = styled.section`
 	@media screen and (max-width: 623px) {
 		background: #eceff1;
 	}
-`
+`;
 
 const getDay = date => {
 	let day = date.getDate() + 2;
@@ -160,7 +160,7 @@ class ConfirmationForm extends Component {
 				scrollToPoint(top);
 			});
 		} else if (snapshot && this.state.scrolled && !this.context.selected) {
-			this.setState({scrolled: false})
+			this.setState({ scrolled: false });
 		} else if (snapshot && !this.state.hiddenFormLoaded) {
 			// bubble formaction
 			document.forms.hiddenform.submit.type = "submit";
@@ -303,9 +303,9 @@ class ConfirmationForm extends Component {
 		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
 		if (name === "ccNumber" || name === "phone") {
-			const action = formDisplayValue(name, value)
-			this.context.updateFields(action)
-		}  else {
+			const action = formDisplayValue(name, value);
+			this.context.updateFields(action);
+		} else {
 			this.context.updateField({ type: "UPDATE_FIELD", name, value });
 		}
 	};
@@ -317,9 +317,11 @@ class ConfirmationForm extends Component {
 
 	handleSubmit = async e => {
 		e.preventDefault();
-		const isValidSubmission = await this.context.submitGivingForm({ type: "confirmation" });
+		const isValidSubmission = await this.context.submitGivingForm({
+			type: "confirmation",
+		});
 		if (isValidSubmission) {
-			this.setState({scrolled: false})
+			this.setState({ scrolled: false });
 		}
 	};
 	render() {
@@ -380,7 +382,7 @@ class ConfirmationForm extends Component {
 						formMargin={formMargin}
 						formColor={formColor}
 						inProp={selected && !confirmed}
-						style={{marginBottom: 30}}
+						style={{ marginBottom: 30 }}
 					>
 						<form
 							id="react-club-payment-form"
@@ -412,7 +414,10 @@ class ConfirmationForm extends Component {
 										}}
 									>
 										<legend>Name and Billing Address Block</legend>
-										<FormPanel className="name-address__info" style={{margin: "0 auto"}}>
+										<FormPanel
+											className="name-address__info"
+											style={{ margin: "0 auto" }}
+										>
 											<FormHeader
 												className="form-header"
 												style={{

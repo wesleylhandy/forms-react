@@ -20,9 +20,11 @@ const InputGroup = ({
 	handleBlur,
 	textareaSize,
 	allowInternational,
-	inputMode = "text"
+	inputMode = "text",
 }) => {
-	const { getCssConfig, allowInputPlaceholders } = useContext(FormConfigContext);
+	const { getCssConfig, allowInputPlaceholders } = useContext(
+		FormConfigContext
+	);
 	const {
 		inputBackgroundColor = "#f0f0f0",
 		inputBorderColor = "#333",
@@ -81,7 +83,7 @@ const InputGroup = ({
 				id={id}
 				maxLength={maxLength}
 				name={id}
-				placeholder={allowInputPlaceholders ? placeholder: ''}
+				placeholder={allowInputPlaceholders ? placeholder : ""}
 				required={required}
 				value={value}
 				onChange={handleInputChange}

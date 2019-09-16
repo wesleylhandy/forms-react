@@ -90,7 +90,7 @@ const Nav = styled.nav`
 			@media screen and (max-width: 530px) {
 				margin-top: 10px;
 				.logo-1:not(.cbn-letter):not(.cbn-fire),
-				.logo-2:not(.cbn-letter):not(.cbn-fire){
+				.logo-2:not(.cbn-letter):not(.cbn-fire) {
 					display: none;
 				}
 			}

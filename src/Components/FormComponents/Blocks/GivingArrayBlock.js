@@ -52,13 +52,18 @@ const GivingArray = ({
 				arrayHoverBorderColor={arrayHoverBorderColor}
 				arrayDescriptorColor={arrayDescriptorColor}
 			>
-				<div 
+				<div
 					className="askbutton__amt"
-					tabIndex="0" 
+					tabIndex="0"
 					role="button"
 					aria-pressed={selectedIndex == i}
 				>
-					<span className="dollar-sign">$</span>{amount.toLocaleString(undefined, {minimumFractionDigits: 0, maximiumFractionDigits: 0, style: 'decimal'})}
+					<span className="dollar-sign">$</span>
+					{amount.toLocaleString(undefined, {
+						minimumFractionDigits: 0,
+						maximiumFractionDigits: 0,
+						style: "decimal",
+					})}
 				</div>
 				<CSSTransition
 					in={monthlyChecked}

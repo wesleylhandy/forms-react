@@ -7,7 +7,7 @@ const BlockContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	cursor:pointer;
+	cursor: pointer;
 	a {
 		color: #009bdf;
 		cursor: pointer;
@@ -75,7 +75,14 @@ const SummaryBlock = ({ withContainer, submitting }) => {
 		<BlockContainer className={withContainer ? "column" : "row"}>
 			<LiveMessage message={a11yMessage} aria-live="polite" />
 			<div className="amount-block">
-				{amount.toLocaleString(undefined, {minimumFractionDigits: 0, maximiumFractionDigits: 0, style: 'currency', currency: 'USD', currencyDisplay: 'symbol'})} <span dangerouslySetInnerHTML={{ __html: duration }}></span>
+				{amount.toLocaleString(undefined, {
+					minimumFractionDigits: 0,
+					maximiumFractionDigits: 0,
+					style: "currency",
+					currency: "USD",
+					currencyDisplay: "symbol",
+				})}{" "}
+				<span dangerouslySetInnerHTML={{ __html: duration }}></span>
 			</div>
 			<a tabIndex="0" className="go-back-btn" onClick={handleGoBackClick}>
 				Edit

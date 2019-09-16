@@ -22,27 +22,27 @@ class AskForm extends Component {
 	state = {
 		monthlyChecked: this.props.defaultOption == "monthly",
 		scrolled: false,
-		initialUpdate: true
+		initialUpdate: true,
 	};
 
 	getSnapshotBeforeUpdate() {
 		const { selected } = this.context;
 		const { scrolled, initialUpdate } = this.state;
 		if (selected && initialUpdate) {
-			console.log("Selection Snapshot on Ask")
-			return true
+			console.log("Selection Snapshot on Ask");
+			return true;
 		}
 		if (!selected && !scrolled && !initialUpdate) {
 			console.log("Scrolling Snapshot on Ask");
 			return true;
 		}
 
-		return null
+		return null;
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		if (snapshot && this.context.selected && this.state.initialUpdate) {
-			this.setState({initialUpdate: false})
+			this.setState({ initialUpdate: false });
 		} else if (snapshot && !this.state.scrolled && !this.context.selected) {
 			this.setState({ scrolled: true }, () => {
 				const target = document.getElementById("react-club-ask-form");
@@ -75,9 +75,11 @@ class AskForm extends Component {
 
 	handleSubmit = async e => {
 		e.preventDefault();
-		const isValidSubmission = await this.context.submitAskForm({ type: "SUBMIT_ASK_FORM" });
+		const isValidSubmission = await this.context.submitAskForm({
+			type: "SUBMIT_ASK_FORM",
+		});
 		if (isValidSubmission) {
-			this.setState({scrolled: false})
+			this.setState({ scrolled: false });
 		}
 	};
 	addToCart = item => {
@@ -151,10 +153,14 @@ class AskForm extends Component {
 					>
 						<Media query="(max-width: 649px)">
 							{matches =>
-								matches ? ( null ) : (
+								matches ? null : (
 									<FormHeader
 										className="form-title form-header"
-										style={{ fontSize: "19px", marginTop: "0", color: "#181818" }}
+										style={{
+											fontSize: "19px",
+											marginTop: "0",
+											color: "#181818",
+										}}
 									>
 										{formTitle}
 									</FormHeader>

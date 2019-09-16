@@ -16,7 +16,7 @@ const ClubOtherGiftAmountStyle = styled.div`
 		transition: all 250ms ease-in-out;
 		@media screen and (max-width: 716px) {
 			margin: 0 auto;
-			${props => props.isMonthly ? "margin-top: 50px;" : "margin-top: 20px;"}
+			${props => (props.isMonthly ? "margin-top: 50px;" : "margin-top: 20px;")}
 			flex: unset;
 			width: 100%;
 			justify-self: center;
@@ -56,8 +56,8 @@ const ClubOtherGiftAmountStyle = styled.div`
 			color: ${props => props.arrayColor};
 			display: block;
 			position: absolute;
-			${props => props.otherAmount ? "content: '$'" : "content: '$ Other'"};
-			cursor:text;
+			${props => (props.otherAmount ? "content: '$'" : "content: '$ Other'")};
+			cursor: text;
 			font-size: 21px;
 			font-weight: 600;
 			z-index: 5;
@@ -74,7 +74,9 @@ const ClubOtherGiftAmountStyle = styled.div`
 			content: "$";
 			cursor: default;
 		}
-		&.selected:before, &:focus-within:before, &:focus:before {
+		&.selected:before,
+		&:focus-within:before,
+		&:focus:before {
 			color: ${props => props.arrayHoverColor};
 			content: "$";
 		}

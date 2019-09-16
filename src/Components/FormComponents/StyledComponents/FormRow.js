@@ -120,7 +120,6 @@ const FormRow = styled.div`
 		}
 	}
 	@media screen and (max-width: 414px) {
-		
 		&.city-state-row > div + div {
 			margin-left: 0;
 		}

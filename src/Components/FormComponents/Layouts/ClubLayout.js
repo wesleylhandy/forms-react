@@ -1,4 +1,4 @@
-import React, { Component, } from "react";
+import React, { Component } from "react";
 
 import { TransitionGroup } from "react-transition-group";
 
@@ -69,7 +69,14 @@ class ClubLayout extends Component {
 		this.setState(
 			{
 				otherAmount: index == 99 ? amt : 0,
-				otherAmountDisplay: index == 99 ? amt.toLocaleString(undefined, {minimumFractionDigits: 0, maximiumFractionDigits: 0, style: 'decimal'}) : "",
+				otherAmountDisplay:
+					index == 99
+						? amt.toLocaleString(undefined, {
+								minimumFractionDigits: 0,
+								maximiumFractionDigits: 0,
+								style: "decimal",
+						  })
+						: "",
 				selectedIndex: index,
 				otherAmountError: index !== 99 ? "" : otherAmountError,
 				prevIndex: selectedIndex,
@@ -118,7 +125,10 @@ class ClubLayout extends Component {
 				}
 			},
 			() => {
-				if (this.otherAmountField.current.value == "" || this.otherAmountField.current.value == 0) {
+				if (
+					this.otherAmountField.current.value == "" ||
+					this.otherAmountField.current.value == 0
+				) {
 					this.context.removeFromCart({
 						type: "REMOVE_FROM_CART",
 						itemType: "donation",
@@ -130,19 +140,31 @@ class ClubLayout extends Component {
 	};
 
 	handleBlur = e => {
-		if (this.otherAmountField.current.value == "" || this.otherAmountField.current.value == 0) {
-			this.setState({selectedIndex: null})
+		if (
+			this.otherAmountField.current.value == "" ||
+			this.otherAmountField.current.value == 0
+		) {
+			this.setState({ selectedIndex: null });
 		}
-	}
+	};
 
 	handleOtherAmt = e => {
 		const { selectedIndex } = this.state;
 		let value = e.target.value.trim().replace(/[\$,]/g, "");
 		const isValid = /^\d*(\.\d*)?$/.test(value);
 		if (isValid && +value > 0) {
-			value = Math.ceil(Number.parseFloat(value))
+			value = Math.ceil(Number.parseFloat(value));
 			this.setState(
-				{ otherAmountError: "", otherAmount: +value, otherAmountDisplay: value.toLocaleString(undefined, {minimumFractionDigits: 0, maximiumFractionDigits: 0, style: 'decimal'}),  prevIndex: selectedIndex },
+				{
+					otherAmountError: "",
+					otherAmount: +value,
+					otherAmountDisplay: value.toLocaleString(undefined, {
+						minimumFractionDigits: 0,
+						maximiumFractionDigits: 0,
+						style: "decimal",
+					}),
+					prevIndex: selectedIndex,
+				},
 				() => this.addToCart(+value, 99)
 			);
 		} else if (isValid) {
@@ -176,7 +198,12 @@ class ClubLayout extends Component {
 			handleRadioClick,
 			givingOptions: { monthlyAmounts, singleAmounts },
 		} = this.props;
-		let { otherAmount, otherAmountDisplay, otherAmountError, selectedIndex } = this.state;
+		let {
+			otherAmount,
+			otherAmountDisplay,
+			otherAmountError,
+			selectedIndex,
+		} = this.state;
 		let key = "controlled";
 		const amounts = monthlyChecked ? monthlyAmounts : singleAmounts;
 		return (
@@ -184,14 +211,16 @@ class ClubLayout extends Component {
 				<legend>Giving Amounts and Giving Options</legend>
 				<MonthlyClubTabBlock
 					monthlyChecked={monthlyChecked}
-					handleTabClick={handleRadioClick}			
+					handleTabClick={handleRadioClick}
 				/>
 				<ClubAskArray
 					id={`AskArray-${monthlyChecked ? "monthly" : "single"}`}
 					className="askarray--club"
 					role="tabpanel"
 					tabIndex="0"
-					aria-labelledby={monthlyChecked ? "monthlygift-label" : "singlegift-label"}
+					aria-labelledby={
+						monthlyChecked ? "monthlygift-label" : "singlegift-label"
+					}
 					aria-expanded={true}
 				>
 					<TransitionGroup
@@ -207,7 +236,11 @@ class ClubLayout extends Component {
 							addToCart={this.addToCart}
 							monthlyChecked={monthlyChecked}
 						/>
-						<ClubOtherGiftAmountGroup key="othergiftamount" otherAmount={otherAmount > 0} isMonthly={monthlyChecked}>
+						<ClubOtherGiftAmountGroup
+							key="othergiftamount"
+							otherAmount={otherAmount > 0}
+							isMonthly={monthlyChecked}
+						>
 							<div
 								id="OtherAmount"
 								className={`askarray__form-group--other ${

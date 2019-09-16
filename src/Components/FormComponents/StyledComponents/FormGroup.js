@@ -33,7 +33,7 @@ const FormGroup = styled.div`
 		flex: 0 0 160px;
 		box-sizing: border-box;
 	}
-	&.form-group--ccNumber > input{
+	&.form-group--ccNumber > input {
 		text-align: left;
 	}
 	&.form-group--cvnCode {
@@ -73,7 +73,7 @@ const FormGroup = styled.div`
 	label span {
 		position: absolute;
 		top: -1px;
-		color:  ${props => props.labelColor};
+		color: ${props => props.labelColor};
 	}
 	&:hover label,
 	&:active label,
@@ -105,12 +105,12 @@ const FormGroup = styled.div`
 	}
 	select {
 		background-color: transparent;
-		background-image: linear-gradient(180deg, #FFFFFF 13%, #F0F0F0 71%);
+		background-image: linear-gradient(180deg, #ffffff 13%, #f0f0f0 71%);
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-position: right top;
 		background-attachment: scroll;
-		box-shadow: 0 1px 4px 0 rgba(0,0,0,0.15);
+		box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15);
 		font-size: 17px;
 		-webkit-appearance: menulist;
 	}
@@ -165,7 +165,7 @@ const FormGroup = styled.div`
 			flex-basis: calc(100% - 130px);
 		}
 		&.form-group--City {
-			width:100%;
+			width: 100%;
 		}
 		&.form-group--State {
 			width: 0;

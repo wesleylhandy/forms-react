@@ -143,7 +143,14 @@ const PaymentBlock = ({
 	const years = [],
 		months = [];
 	years.push(
-		<option key="exp-year-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "Year* &#9660;" : ""}}/>
+		<option
+			key="exp-year-base-0"
+			value=""
+			disabled="disabled"
+			dangerouslySetInnerHTML={{
+				__html: allowInputPlaceholders ? "Year* &#9660;" : "",
+			}}
+		/>
 	);
 	for (let y = curYear; y < curYear + 25; y++) {
 		years.push(
@@ -153,7 +160,14 @@ const PaymentBlock = ({
 		);
 	}
 	months.push(
-		<option key="exp-month-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "Month* &#9660;" : ""}}/>
+		<option
+			key="exp-month-base-0"
+			value=""
+			disabled="disabled"
+			dangerouslySetInnerHTML={{
+				__html: allowInputPlaceholders ? "Month* &#9660;" : "",
+			}}
+		/>
 	);
 	for (let m = 1; m < 13; m++) {
 		const val = ("0" + m).slice(-2);

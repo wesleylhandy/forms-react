@@ -128,7 +128,7 @@ class GivingFormProvider extends Component {
 		validateAndUpdateField: async action => {
 			const { name } = action;
 			const isZip = name.includes("Zip");
-			const value = this.state.fields[name]
+			const value = this.state.fields[name];
 			action.value = value;
 			if (isZip) {
 				this.setState(
@@ -136,9 +136,14 @@ class GivingFormProvider extends Component {
 					async () => {
 						if (!zip_regex.test(value)) {
 							action.error = value ? "Invalid Postal Code" : "Required";
-							this.setState(state => reducer(state, action), ()=> {
-								this.setState(state => reducer(state, { type: "TOGGLE_ZIP_VALIDATION" }))
-							})
+							this.setState(
+								state => reducer(state, action),
+								() => {
+									this.setState(state =>
+										reducer(state, { type: "TOGGLE_ZIP_VALIDATION" })
+									);
+								}
+							);
 						} else {
 							try {
 								const oldCity = this.state.fields[
@@ -188,39 +193,60 @@ class GivingFormProvider extends Component {
 					this.state.fields.ExpiresMonth,
 					this.state.fields.ExpiresYear
 				);
-				
-				this.setState(state => reducer(state, action), ()=> {
-					if (name == "Country" && value != "United States") {
-						let action = {
-							type: "UPDATE_FIELDS",
-							fields: [{
-								name: "State",
-								value: "00",
-								error: "",
-							}, {
-								name: "Phone",
-								value: "",
-								error: ""
-							}, {
-								name: "Zip",
-								value: "NA",
-								error: ""
-							}]
+
+				this.setState(
+					state => reducer(state, action),
+					() => {
+						if (name == "Country" && value != "United States") {
+							let action = {
+								type: "UPDATE_FIELDS",
+								fields: [
+									{
+										name: "State",
+										value: "00",
+										error: "",
+									},
+									{
+										name: "Phone",
+										value: "",
+										error: "",
+									},
+									{
+										name: "Zip",
+										value: "NA",
+										error: "",
+									},
+								],
+							};
+							setTimeout(
+								() => this.setState(state => reducer(state, action)),
+								1000
+							);
 						}
-						setTimeout(() => this.setState(state => reducer(state, action)), 1000);
+						if (name == "Country" && value == "United States") {
+							const { State, Zip } = this.state.fields;
+							if (State == "00") {
+								this.setState(state =>
+									reducer(state, {
+										type: "UPDATE_FIELD",
+										name: "State",
+										value: "",
+									})
+								);
+							}
+							if (Zip == "NA") {
+								this.setState(state =>
+									reducer(state, {
+										type: "UPDATE_FIELD",
+										name: "Zip",
+										value: "",
+									})
+								);
+							}
+						}
 					}
-					if (name == "Country" && value == "United States") {
-						const { State, Zip } = this.state.fields;
-						if ( State == "00") {
-							this.setState(state => reducer(state, {type: "UPDATE_FIELD", name: "State", value: ""}))
-						}
-						if ( Zip == "NA") {
-							this.setState(state => reducer(state, {type: "UPDATE_FIELD", name: "Zip", value: ""}))
-						}
-					}
-				});
+				);
 			}
-			
 		},
 		submitGivingForm: async type => {
 			return new Promise((resolve, reject) => {
@@ -233,13 +259,15 @@ class GivingFormProvider extends Component {
 								return this.setState(
 									state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
 									() => {
-										this.setState(state =>
-											reducer(state, {
-												type: "UPDATE_FIELD",
-												name: "amount",
-												value: "",
-												error: "Please make a valid donation",
-											}), resolve(false)
+										this.setState(
+											state =>
+												reducer(state, {
+													type: "UPDATE_FIELD",
+													name: "amount",
+													value: "",
+													error: "Please make a valid donation",
+												}),
+											resolve(false)
 										);
 									}
 								);
@@ -408,7 +436,10 @@ class GivingFormProvider extends Component {
 							return this.setState(
 								state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
 								() => {
-									this.setState(state => reducer(state, action), resolve(false));
+									this.setState(
+										state => reducer(state, action),
+										resolve(false)
+									);
 								}
 							);
 						}
@@ -448,7 +479,8 @@ class GivingFormProvider extends Component {
 						} = this.context.formConfig;
 						const ClientBrowser =
 							window && window.navigator ? window.navigator.userAgent : "";
-						const UrlReferer = window.location.origin + window.location.pathname;
+						const UrlReferer =
+							window.location.origin + window.location.pathname;
 
 						//construct phone fields from regex
 						const Phoneareacode = phone.trim().match(phone_regex)
@@ -475,7 +507,9 @@ class GivingFormProvider extends Component {
 							? this.state.fields.Monthlypledgeday
 							: null;
 						const Monthlypledgeamount =
-							isMonthly && pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
+							isMonthly && pledgeFound > -1
+								? items[pledgeFound].PledgeAmount
+								: 0;
 						const Singledonationamount =
 							!isMonthly && pledgeFound > -1
 								? items[pledgeFound].PledgeAmount
@@ -511,7 +545,8 @@ class GivingFormProvider extends Component {
 											.DetailDescription;
 										DetailCprojCredit = this.state.designationInfo
 											.DetailCprojCredit;
-										DetailCprojMail = this.state.designationInfo.DetailCprojMail;
+										DetailCprojMail = this.state.designationInfo
+											.DetailCprojMail;
 									}
 									// console.log({DetailName});
 									return {
@@ -620,7 +655,7 @@ class GivingFormProvider extends Component {
 												type: "SUBMIT_FORM",
 											});
 										}
-										resolve(true)
+										resolve(true);
 									}
 								)
 							);
@@ -643,13 +678,14 @@ class GivingFormProvider extends Component {
 									})
 								);
 							}
-							this.setState(state =>
-								reducer(state, { type: "TOGGLE_SUBMITTING" }), resolve(false)
+							this.setState(
+								state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+								resolve(false)
 							);
 						}
 					}
 				);
-			})
+			});
 		},
 		submitAskForm: action => {
 			return new Promise((resolve, reject) => {
@@ -672,7 +708,8 @@ class GivingFormProvider extends Component {
 									);
 								} else {
 									try {
-										const url = window.location.origin + window.location.pathname;
+										const url =
+											window.location.origin + window.location.pathname;
 										const sDynamicPageUrl =
 											url +
 											(url.charAt(url.length - 1) == "/"
@@ -689,15 +726,15 @@ class GivingFormProvider extends Component {
 										console.error(err);
 									}
 								}
-								this.setState(state =>
-									reducer(state, { type: "TOGGLE_SUBMITTING" }), resolve(isValidGift)
+								this.setState(
+									state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+									resolve(isValidGift)
 								);
 							}
 						);
 					}
 				);
-			})
-
+			});
 		},
 		addToCart: action => this.setState(state => reducer(state, action)),
 		removeFromCart: action => this.setState(state => reducer(state, action)),

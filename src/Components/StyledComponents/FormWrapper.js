@@ -32,8 +32,8 @@ const Wrapper = styled.main`
 	padding: ${props => props.formPadding};
 	margin: ${props => props.formMargin};
 	width: 100%;
-	box-shadow: 0 0 7px 0 rgba(0,0,0,0.07);
-	@media screen and (max-width: ${props=> props.formMaxWidth}) {
+	box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.07);
+	@media screen and (max-width: ${props => props.formMaxWidth}) {
 		margin: 0 auto;
 	}
 	@media screen and (max-width: 493px) {
