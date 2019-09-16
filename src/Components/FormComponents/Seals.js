@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "@emotion/styled";
 
 const SealsBlock = styled.section`
@@ -55,7 +55,7 @@ function Seals({ style = {} }) {
 						href={cert.href}
 						aria-label="Digicert Seal"
 					>
-						DigiCert.com
+						{/* */}
 					</a>
 				</div>
 			)}
@@ -77,4 +77,4 @@ function Seals({ style = {} }) {
 	);
 }
 
-export default Seals;
+export default memo(Seals);
