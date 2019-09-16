@@ -119,7 +119,7 @@ const CCBlock = styled.div`
 const InfoCircle = styled.div`
 	position: absolute;
 	right: 5px;
-	top: 0;
+	top: -2px;
 	a {
 		cursor: pointer;
 		text-decoration: none;

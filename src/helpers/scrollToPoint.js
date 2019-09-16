@@ -27,9 +27,9 @@ export function scrollToPoint(top = 0, parent = window, el = null) {
 	} else {
 		top = parentHeight <= visibleHeight ? 0 : top;
 	}
-	window.requestAnimationFrame(winScroll);
+	window.requestAnimationFrame(uiScroll);
 
-	function winScroll(timestamp) {
+	function uiScroll(timestamp) {
 		let scroll;
 		if (parent === window) {
 			scroll = parent.scrollY ? parent.scrollY : parent.pageYOffset;
@@ -42,16 +42,16 @@ export function scrollToPoint(top = 0, parent = window, el = null) {
 				window.cancelAnimationFrame(timestamp);
 				return;
 			}
-			scroll = scroll + speed > top ? top : scroll + speed;
+			scroll = scroll + speed >= top ? top : scroll + speed;
 		} else {
 			if (scroll <= top) {
 				window.cancelAnimationFrame(timestamp);
 				return;
 			}
-			scroll = scroll - speed < top ? top : scroll - speed;
+			scroll = scroll - speed <= top ? top : scroll - speed;
 		}
 		parent.scroll(0, scroll);
-		window.requestAnimationFrame(winScroll);
+		window.requestAnimationFrame(uiScroll);
 	}
 }
 

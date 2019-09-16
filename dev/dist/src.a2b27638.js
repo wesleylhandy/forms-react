@@ -58808,9 +58808,9 @@ styleSheet.flush()
 						top = parentHeight <= visibleHeight ? 0 : top;
 					}
 
-					window.requestAnimationFrame(winScroll);
+					window.requestAnimationFrame(uiScroll);
 
-					function winScroll(timestamp) {
+					function uiScroll(timestamp) {
 						var scroll;
 
 						if (parent === window) {
@@ -58827,18 +58827,18 @@ styleSheet.flush()
 								return;
 							}
 
-							scroll = scroll + speed > top ? top : scroll + speed;
+							scroll = scroll + speed >= top ? top : scroll + speed;
 						} else {
 							if (scroll <= top) {
 								window.cancelAnimationFrame(timestamp);
 								return;
 							}
 
-							scroll = scroll - speed < top ? top : scroll - speed;
+							scroll = scroll - speed <= top ? top : scroll - speed;
 						}
 
 						parent.scroll(0, scroll);
-						window.requestAnimationFrame(winScroll);
+						window.requestAnimationFrame(uiScroll);
 					}
 				}
 				/**
@@ -64141,7 +64141,7 @@ styleSheet.flush()
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "56866" + "/"
+						protocol + "://" + hostname + ":" + "62584" + "/"
 					);
 
 					ws.onmessage = function(event) {
