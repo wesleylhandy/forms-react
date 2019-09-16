@@ -107,7 +107,7 @@ function AddressBlock({
 									submitting || validating
 								}
 								options={[
-									<option key="state-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "State* &#9660;" : ""}}/>,
+									<option key="state-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "State* &#9660;" : ""}} hidden/>,
 									<Media key="media-query" query="(max-width: 613px)">
 										{matches =>
 											matches ? (
@@ -169,10 +169,10 @@ function AddressBlock({
 								handleInputChange={handleBlur}
 								disabled={submitting || validating}
 								options={[
-									<option key="country-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "Country* &#9660;" : ""}}/>,
+									<option key="country-base-0" value="" disabled="disabled" dangerouslySetInnerHTML={{__html: allowInputPlaceholders ? "Country* &#9660;" : ""}} hidden/>,
 									countries.map((country, i) => (
 										<option key={`country-${i}`} value={country}>
-											{country}
+											{ country }
 										</option>
 									)),
 								]}
@@ -218,7 +218,7 @@ function AddressBlock({
 							placeholder="Phone"
 							maxLength="24"
 							required={false}
-							value={fields.phone}
+							value={fields.phoneDisplay}
 							disabled={ submitting }
 							handleInputChange={handleInputChange}
 							handleBlur={handleBlur}

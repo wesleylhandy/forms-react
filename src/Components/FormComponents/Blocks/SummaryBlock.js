@@ -72,7 +72,7 @@ const SummaryBlock = ({ withContainer, submitting }) => {
 		}
 	};
 	return (
-		<BlockContainer className={withContainer ? "column" : "row"} onClick={handleGoBackClick}>
+		<BlockContainer className={withContainer ? "column" : "row"}>
 			<LiveMessage message={a11yMessage} aria-live="polite" />
 			<div className="amount-block">
 				{amount.toLocaleString(undefined, {minimumFractionDigits: 0, maximiumFractionDigits: 0, style: 'currency', currency: 'USD', currencyDisplay: 'symbol'})} <span dangerouslySetInnerHTML={{ __html: duration }}></span>

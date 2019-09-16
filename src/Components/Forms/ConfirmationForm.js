@@ -19,6 +19,7 @@ import Seals from "../FormComponents/Seals";
 import HeaderBlock from "../FormComponents/Blocks/HeaderBlock";
 import FooterBlock from "../FormComponents/Blocks/FooterBlock";
 import { scrollToPoint, offsetTop } from "../../helpers/scrollToPoint";
+import formDisplayValue from "../../helpers/form-display-values";
 
 const Disclaimer = styled.div`
 	color: #444444;
@@ -90,6 +91,7 @@ class ConfirmationForm extends Component {
 				Country: "United States",
 				Emailaddress: "",
 				phone: "",
+				phoneDisplay: "",
 				ExpiresMonth: curMonth.slice(-2),
 				ExpiresYear: curYear,
 				ccNumber: "",
@@ -126,8 +128,12 @@ class ConfirmationForm extends Component {
 			errors && errors.length
 				? Object.values(errors).filter(val => val && val.length > 0).length > 0
 				: false;
-		if (selected & !scrolled) {
+		if (selected && !scrolled) {
 			console.log("Scrolling Snapshot on Payment");
+			return true;
+		}
+		if (!selected && scrolled) {
+			console.log("Go Back Snapshot on Payment");
 			return true;
 		}
 		if (submitted && !hasErrors && !confirmed && !hiddenFormLoaded) {
@@ -147,12 +153,14 @@ class ConfirmationForm extends Component {
 		return null;
 	}
 	componentDidUpdate(prevProps, prevState, snapshot) {
-		if (snapshot && !this.state.scrolled) {
+		if (snapshot && !this.state.scrolled && this.context.selected) {
 			this.setState({ scrolled: true }, () => {
 				const target = document.getElementById("react-club-payment-form");
 				const top = offsetTop(target);
 				scrollToPoint(top);
 			});
+		} else if (snapshot && this.state.scrolled && !this.context.selected) {
+			this.setState({scrolled: false})
 		} else if (snapshot && !this.state.hiddenFormLoaded) {
 			// bubble formaction
 			document.forms.hiddenform.submit.type = "submit";
@@ -294,49 +302,8 @@ class ConfirmationForm extends Component {
 		const target = e.target;
 		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
-		if (name === "ccNumber") {
-			value = value.replace(/ /g, "")
-			let ccNumberDisplay = value
-			if (ccNumberDisplay.length > 4) {
-				const digits = ccNumberDisplay.split("");
-				let firstDivision, secondDivision, thirdDivision, fourthDivision;
-				switch (digits[0]) {
-					case "3":
-						firstDivision = [...digits.slice(0,4),]
-						secondDivision = [" ", ...digits.slice(4, 10)]
-						thirdDivision = digits.length > 10 ? [" ", ...digits.slice(10, 15)] : []
-						ccNumberDisplay = [...firstDivision, ...secondDivision, ...thirdDivision].join("");
-						value = value.split("").slice(0, 15).join("");
-						break;
-					case "4":
-					case "5":
-					case "6":
-						firstDivision= [...digits.slice( 0, 4)]
-						secondDivision = [" ", ...digits.slice(4, 8)]
-						thirdDivision = digits.length > 8 ? [" ", ...digits.slice(8, 12)] : []
-						fourthDivision = digits.length > 12 ? [" ", ...digits.slice(12, 16)] : []
-						ccNumberDisplay = [...firstDivision, ...secondDivision, ...thirdDivision, ...fourthDivision].join("");
-						value = value.split("").slice(0, 16).join("");
-						break;
-					default:
-						value = value.split("").slice(0, 16).join("");
-						break;
-				}
-				
-			}
-			
-			let action = {
-				type: "UPDATE_FIELDS",
-				fields: [{
-					name,
-					value,
-					error: "",
-				}, {
-					name: "ccNumberDisplay",
-					value: ccNumberDisplay,
-					error: ""
-				}]
-			}
+		if (name === "ccNumber" || name === "phone") {
+			const action = formDisplayValue(name, value)
 			this.context.updateFields(action)
 		}  else {
 			this.context.updateField({ type: "UPDATE_FIELD", name, value });
@@ -344,17 +311,16 @@ class ConfirmationForm extends Component {
 	};
 	handleBlur = e => {
 		const target = e.target;
-		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
-		if (name === "ccNumber") {
-			value = value.replace(/ /g, "")
-		}
-		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name, value });
+		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name });
 	};
 
 	handleSubmit = async e => {
 		e.preventDefault();
-		this.context.submitGivingForm({ type: "confirmation" });
+		const isValidSubmission = await this.context.submitGivingForm({ type: "confirmation" });
+		if (isValidSubmission) {
+			this.setState({scrolled: false})
+		}
 	};
 	render() {
 		const {

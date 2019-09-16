@@ -211,7 +211,8 @@ const DesignationBlock = ({ designations }) => {
 								className={`designation ${idx === designatedIndex ? "selected" : ""}`}
 								onMouseEnter={() => handleHover(idx)}
 								onMouseLeave={() => handleHover(-1)}
-								onClick={() => handleClick(idx)}
+								onMouseDown={e => { e.preventDefault(); e.stopPropagation(); } }
+								onClick={e => { e.preventDefault(); e.stopPropagation(); handleClick(idx) } }
 								aria-selected={idx === designatedIndex}
 								ref={idx === designatedIndex ? selectedRef : null}
 								role="option"

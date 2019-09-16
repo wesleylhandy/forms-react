@@ -16,11 +16,41 @@ import "../FormComponents/Animations/designations.css";
 import OtherGivingBlock from "../FormComponents/Blocks/OtherGivingBlock";
 import HeaderBlock from "../FormComponents/Blocks/HeaderBlock";
 import FooterBlock from "../FormComponents/Blocks/FooterBlock";
+import { scrollToPoint, offsetTop } from "../../helpers/scrollToPoint";
 
 class AskForm extends Component {
 	state = {
 		monthlyChecked: this.props.defaultOption == "monthly",
+		scrolled: false,
+		initialUpdate: true
 	};
+
+	getSnapshotBeforeUpdate() {
+		const { selected } = this.context;
+		const { scrolled, initialUpdate } = this.state;
+		if (selected && initialUpdate) {
+			console.log("Selection Snapshot on Ask")
+			return true
+		}
+		if (!selected && !scrolled && !initialUpdate) {
+			console.log("Scrolling Snapshot on Ask");
+			return true;
+		}
+
+		return null
+	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if (snapshot && this.context.selected && this.state.initialUpdate) {
+			this.setState({initialUpdate: false})
+		} else if (snapshot && !this.state.scrolled && !this.context.selected) {
+			this.setState({ scrolled: true }, () => {
+				const target = document.getElementById("react-club-ask-form");
+				const top = offsetTop(target);
+				scrollToPoint(top);
+			});
+		}
+	}
 
 	handleRadioClick = e => {
 		const { id } = e.target;
@@ -39,14 +69,16 @@ class AskForm extends Component {
 
 	handleInputChange = e => {
 		const target = e.target;
-		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
-		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name, value });
+		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name });
 	};
 
 	handleSubmit = async e => {
 		e.preventDefault();
-		this.context.submitAskForm({ type: "SUBMIT_ASK_FORM" });
+		const isValidSubmission = await this.context.submitAskForm({ type: "SUBMIT_ASK_FORM" });
+		if (isValidSubmission) {
+			this.setState({scrolled: false})
+		}
 	};
 	addToCart = item => {
 		this.context.addToCart({ type: "ADD_TO_CART", item });
@@ -95,8 +127,7 @@ class AskForm extends Component {
 		};
 		const { monthlyChecked } = this.state;
 		const { errors, fields, submitting, selected } = this.context;
-		const hasErrors =
-			Object.values(errors).filter(val => val && val.length > 0).length > 0;
+		const hasErrors = errors.amount !== "";
 		return !selected ? (
 			<>
 				<HeaderBlock />

@@ -104,9 +104,15 @@ const FormGroup = styled.div`
 		margin-bottom: 0;
 	}
 	select {
+		background-color: transparent;
 		background-image: linear-gradient(180deg, #FFFFFF 13%, #F0F0F0 71%);
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: right top;
+		background-attachment: scroll;
 		box-shadow: 0 1px 4px 0 rgba(0,0,0,0.15);
 		font-size: 17px;
+		-webkit-appearance: menulist;
 	}
 	textarea {
 		height: auto;
@@ -139,7 +145,6 @@ const FormGroup = styled.div`
 	textarea:disabled {
 		background: #919191;
 		cursor: not-allowed;
-		appearance: none;
 	}
 	input.error,
 	select.error,

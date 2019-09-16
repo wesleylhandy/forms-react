@@ -31,15 +31,17 @@ export function scrollToPoint(top = 0, parent = window, el = null) {
 		} else {
 			scroll = parent.scrollTop;
 		}
-		const speed = Math.ceil(Math.sqrt(Math.abs(top - scroll)))
+		const speed = Math.ceil(Math.sqrt(Math.abs(top - scroll + 2)))
 		if (scrollDown) {
 			if (scroll >= top) {
-				return window.cancelAnimationFrame(timestamp);
+				window.cancelAnimationFrame(timestamp);
+				return
 			}
 			scroll = scroll + speed > top ? top : scroll + speed;
 		} else {
 			if (scroll <= top) {
-				return window.cancelAnimationFrame(timestamp);
+				window.cancelAnimationFrame(timestamp);
+				return
 			}
 			scroll = scroll - speed < top ? top : scroll - speed;
 		}

@@ -21,7 +21,7 @@ function TitleDropdown({
 			<option
 				key={`title-${ind}`}
 				value={el}
-				dangerouslySetInnerHTML={{ __html: ind === 0 && allowInputPlaceholders? "Title* &#9660;" : el }}
+				dangerouslySetInnerHTML={{ __html: ind === 0 && allowInputPlaceholders ? "Title* &#9660;" : el }}
 				disabled={ind === 0 ? "disabled" : ""}
 				hidden={ind === 0 ? "hidden" : ""}
 			></option>
@@ -35,7 +35,8 @@ function TitleDropdown({
 			required={true}
 			value={value}
 			error={error}
-			handleInputChange={handleBlur}
+			handleInputChange={handleInputChange}
+			handleBlur={handleBlur}
 			options={options}
 			disabled={disabled}
 		/>

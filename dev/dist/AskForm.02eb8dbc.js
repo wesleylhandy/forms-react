@@ -1500,6 +1500,8 @@ var _HeaderBlock = _interopRequireDefault(require("../FormComponents/Blocks/Head
 
 var _FooterBlock = _interopRequireDefault(require("../FormComponents/Blocks/FooterBlock"));
 
+var _scrollToPoint = require("../../helpers/scrollToPoint");
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -1531,7 +1533,9 @@ function (_Component) {
 
     _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(AskForm)).call.apply(_getPrototypeOf2, [this].concat(args)));
     _this.state = {
-      monthlyChecked: _this.props.defaultOption == "monthly"
+      monthlyChecked: _this.props.defaultOption == "monthly",
+      scrolled: false,
+      initialUpdate: true
     };
 
     _this.handleRadioClick = function (e) {
@@ -1556,13 +1560,11 @@ function (_Component) {
 
     _this.handleInputChange = function (e) {
       var target = e.target;
-      var value = target.type === "checkbox" ? target.checked : target.value;
       var name = target.name;
 
       _this.context.validateAndUpdateField({
         type: "UPDATE_FIELD",
-        name: name,
-        value: value
+        name: name
       });
     };
 
@@ -1572,17 +1574,27 @@ function (_Component) {
       var _ref = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
       _regenerator.default.mark(function _callee(e) {
+        var isValidSubmission;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 e.preventDefault();
-
-                _this.context.submitAskForm({
+                _context.next = 3;
+                return _this.context.submitAskForm({
                   type: "SUBMIT_ASK_FORM"
                 });
 
-              case 2:
+              case 3:
+                isValidSubmission = _context.sent;
+
+                if (isValidSubmission) {
+                  _this.setState({
+                    scrolled: false
+                  });
+                }
+
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -1613,6 +1625,43 @@ function (_Component) {
   }
 
   (0, _createClass2.default)(AskForm, [{
+    key: "getSnapshotBeforeUpdate",
+    value: function getSnapshotBeforeUpdate() {
+      var selected = this.context.selected;
+      var _this$state = this.state,
+          scrolled = _this$state.scrolled,
+          initialUpdate = _this$state.initialUpdate;
+
+      if (selected && initialUpdate) {
+        console.log("Selection Snapshot on Ask");
+        return true;
+      }
+
+      if (!selected && !scrolled && !initialUpdate) {
+        console.log("Scrolling Snapshot on Ask");
+        return true;
+      }
+
+      return null;
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState, snapshot) {
+      if (snapshot && this.context.selected && this.state.initialUpdate) {
+        this.setState({
+          initialUpdate: false
+        });
+      } else if (snapshot && !this.state.scrolled && !this.context.selected) {
+        this.setState({
+          scrolled: true
+        }, function () {
+          var target = document.getElementById("react-club-ask-form");
+          var top = (0, _scrollToPoint.offsetTop)(target);
+          (0, _scrollToPoint.scrollToPoint)(top);
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this$props2 = this.props,
@@ -1657,9 +1706,7 @@ function (_Component) {
           fields = _this$context.fields,
           submitting = _this$context.submitting,
           selected = _this$context.selected;
-      var hasErrors = Object.values(errors).filter(function (val) {
-        return val && val.length > 0;
-      }).length > 0;
+      var hasErrors = errors.amount !== "";
       return !selected ? (0, _core.jsx)(_react.default.Fragment, null, (0, _core.jsx)(_HeaderBlock.default, null), (0, _core.jsx)(_FormWrapper.default, {
         formBackgroundColor: formBackgroundColor,
         formBorderColor: formBorderColor,
@@ -1758,7 +1805,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","react-transition-group":"node_modules/react-transition-group/esm/index.js","react-media":"node_modules/react-media/esm/react-media.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../StyledComponents/FormWrapper":"src/Components/StyledComponents/FormWrapper.js","../FormComponents/Layouts/ClubLayout":"src/Components/FormComponents/Layouts/ClubLayout.js","../FormComponents/Blocks/PremiumBlock":"src/Components/FormComponents/Blocks/PremiumBlock.js","../FormComponents/Blocks/DesignationBlock":"src/Components/FormComponents/Blocks/DesignationBlock.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Seals":"src/Components/FormComponents/Seals.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../FormComponents/Animations/designations.css":"src/Components/FormComponents/Animations/designations.css","../FormComponents/Blocks/OtherGivingBlock":"src/Components/FormComponents/Blocks/OtherGivingBlock.js","../FormComponents/Blocks/HeaderBlock":"src/Components/FormComponents/Blocks/HeaderBlock.js","../FormComponents/Blocks/FooterBlock":"src/Components/FormComponents/Blocks/FooterBlock.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"node_modules/@babel/runtime/helpers/inherits.js","@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","react-transition-group":"node_modules/react-transition-group/esm/index.js","react-media":"node_modules/react-media/esm/react-media.js","../Contexts/GivingFormProvider":"src/Components/Contexts/GivingFormProvider.js","../StyledComponents/FormWrapper":"src/Components/StyledComponents/FormWrapper.js","../FormComponents/Layouts/ClubLayout":"src/Components/FormComponents/Layouts/ClubLayout.js","../FormComponents/Blocks/PremiumBlock":"src/Components/FormComponents/Blocks/PremiumBlock.js","../FormComponents/Blocks/DesignationBlock":"src/Components/FormComponents/Blocks/DesignationBlock.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js","../FormComponents/StyledComponents/FieldSet":"src/Components/FormComponents/StyledComponents/FieldSet.js","../FormComponents/StyledComponents/FormHeader":"src/Components/FormComponents/StyledComponents/FormHeader.js","../FormComponents/Seals":"src/Components/FormComponents/Seals.js","../FormComponents/SubmitButton":"src/Components/FormComponents/SubmitButton.js","../FormComponents/Animations/designations.css":"src/Components/FormComponents/Animations/designations.css","../FormComponents/Blocks/OtherGivingBlock":"src/Components/FormComponents/Blocks/OtherGivingBlock.js","../FormComponents/Blocks/HeaderBlock":"src/Components/FormComponents/Blocks/HeaderBlock.js","../FormComponents/Blocks/FooterBlock":"src/Components/FormComponents/Blocks/FooterBlock.js","../../helpers/scrollToPoint":"src/helpers/scrollToPoint.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1786,7 +1833,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50717" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50605" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

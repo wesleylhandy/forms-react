@@ -126,8 +126,10 @@ class GivingFormProvider extends Component {
 		updateField: action => this.setState(state => reducer(state, action)),
 		updateFields: action => this.setState(state => reducer(state, action)),
 		validateAndUpdateField: async action => {
-			const { name, value } = action;
+			const { name } = action;
 			const isZip = name.includes("Zip");
+			const value = this.state.fields[name]
+			action.value = value;
 			if (isZip) {
 				this.setState(
 					state => reducer(state, { type: "TOGGLE_ZIP_VALIDATION" }),
@@ -221,15 +223,445 @@ class GivingFormProvider extends Component {
 			
 		},
 		submitGivingForm: async type => {
-			this.setState(
-				state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
-				async () => {
-					if (type !== "confirmation") {
-						const isValidGift = this.validateGift();
-						if (!isValidGift) {
+			return new Promise((resolve, reject) => {
+				this.setState(
+					state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+					async () => {
+						if (type !== "confirmation") {
+							const isValidGift = this.validateGift();
+							if (!isValidGift) {
+								return this.setState(
+									state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+									() => {
+										this.setState(state =>
+											reducer(state, {
+												type: "UPDATE_FIELD",
+												name: "amount",
+												value: "",
+												error: "Please make a valid donation",
+											}), resolve(false)
+										);
+									}
+								);
+							}
+						}
+						let isValidForm = true,
+							action = {};
+						if (this.state.fields.Country == "United States") {
+							let oldCity, response;
+							try {
+								oldCity = this.state.fields.City.toUpperCase();
+								response = await callZipCityStateService(
+									"Zip",
+									this.state.fields.Zip,
+									oldCity
+								);
+
+								if (response.action) {
+									this.setState(state => reducer(state, response.action));
+								}
+								const zipError = response.error;
+								let addressError, shipZipError, shipAddressError;
+								if (!zipError) {
+									try {
+										addressError = await callAddressVerification(
+											this.state.fields["Address1"],
+											this.state.fields["Address2"],
+											this.state.fields["City"],
+											this.state.fields["State"],
+											this.state.fields["Zip"]
+										);
+									} catch (err) {
+										console.log("AddressVerificationError");
+										console.error({ err });
+									}
+								}
+								if (
+									this.state.fields["ShipToZip"] &&
+									this.state.fields.ShipToYes
+								) {
+									try {
+										oldCity = this.state.fields.ShipToCity.toUpperCase();
+										response = await callZipCityStateService(
+											"ShipToZip",
+											this.state.fields.ShipToZip,
+											oldCity
+										);
+										if (response.action) {
+											this.setState(state => reducer(state, response.action));
+										}
+										shipZipError = response.error;
+									} catch (err) {
+										console.log("CSZValidationError__SHIPPING");
+										console.error({ err });
+									}
+								}
+								if (!shipZipError && this.state.fields.ShipToYes) {
+									try {
+										shipAddressError = await callAddressVerification(
+											this.state.fields["ShipToAddress1"],
+											this.state.fields["ShipToAddress2"],
+											this.state.fields["ShipToCity"],
+											this.state.fields["ShipToState"],
+											this.state.fields["ShipToZip"]
+										);
+									} catch (err) {
+										console.log("AddressVerificationError__SHIPPING");
+										console.error({ err });
+									}
+								}
+								if (
+									addressError ||
+									shipAddressError ||
+									zipError ||
+									shipZipError
+								) {
+									isValidForm = false;
+									action = {
+										type: "UPDATE_FIELDS",
+										fields: [],
+									};
+									if (addressError) {
+										action.fields.push({
+											name: "Address1",
+											value: this.state.fields.Address1,
+											error: addressError,
+										});
+									}
+									if (shipAddressError) {
+										action.fields.push({
+											name: "ShipToAddress1",
+											value: this.state.fields.ShipToAddress1,
+											error: shipAddressError,
+										});
+									}
+									if (zipError) {
+										action.fields.push({
+											name: "Zip",
+											value: this.state.fields.Zip,
+											error: zipError,
+										});
+									}
+									if (shipZipError) {
+										action.fields.push({
+											name: "ShipToZip",
+											value: this.state.fields.ShipToZip,
+											error: shipZipError,
+										});
+									}
+									this.setState(state => reducer(state, action));
+								}
+							} catch (err) {
+								console.log("CSZValidationError");
+								console.error({ err });
+							}
+						} else {
+							action = {
+								type: "UPDATE_FIELDS",
+								action: {
+									fields: [
+										{
+											name: "Zip",
+											value: "NA",
+											error: "",
+										},
+										{
+											name: "State",
+											value: "00",
+											error: "",
+										},
+									],
+								},
+							};
+							this.setState(state => reducer(state, action));
+						}
+						const { fields } = this.state;
+						const fieldNames = Object.keys(fields);
+						action = {
+							type: "UPDATE_FIELDS",
+							fields: [],
+						};
+						for (let i = 0; i < fieldNames.length; i++) {
+							let error;
+							const name = fieldNames[i];
+							if (!name.includes("Zip")) {
+								const { getHonorific, allowInternational } = this.context;
+								error = validateInput(
+									true,
+									name,
+									fields[name],
+									true,
+									getHonorific,
+									allowInternational,
+									this.state.fields.ShipToYes,
+									this.state.ccNumber,
+									this.state.fields.ExpiresMonth,
+									this.state.fields.ExpiresYear
+								);
+								if (error) {
+									isValidForm = false;
+									action.fields.push({ name, value: fields[name], error });
+								}
+							}
+						}
+						if (!isValidForm) {
 							return this.setState(
 								state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
 								() => {
+									this.setState(state => reducer(state, action), resolve(false));
+								}
+							);
+						}
+						const {
+							Address1,
+							Address2,
+							City,
+							Country,
+							Emailaddress,
+							Firstname,
+							Middlename,
+							Lastname,
+							Spousename,
+							Suffix,
+							State,
+							Title,
+							Zip,
+							ShipToYes,
+							ShipToAddress1,
+							ShipToAddress2,
+							ShipToCity,
+							ShipToState,
+							ShipToZip,
+							ShipToCountry,
+							ShipToName,
+							phone,
+						} = fields;
+						let {
+							mode,
+							EmailSubjectLine = "Thank You for Your Contribution",
+							subscriptions,
+							AddContactYN,
+							ActivityName,
+							ContactSource,
+							SectionName,
+							proxy,
+						} = this.context.formConfig;
+						const ClientBrowser =
+							window && window.navigator ? window.navigator.userAgent : "";
+						const UrlReferer = window.location.origin + window.location.pathname;
+
+						//construct phone fields from regex
+						const Phoneareacode = phone.trim().match(phone_regex)
+								? phone.trim().match(phone_regex)[1]
+								: "",
+							Phoneexchange = phone.trim().match(phone_regex)
+								? phone.trim().match(phone_regex)[2]
+								: "",
+							Phonenumber = phone.trim().match(phone_regex)
+								? phone.trim().match(phone_regex)[3]
+								: "";
+
+						//process cart
+						let TransactionType = "Product";
+						const items = [...this.state.cart.items];
+						const pledgeFound = items.findIndex(
+							el => el && el.type == "donation"
+						);
+						const isMonthly =
+							pledgeFound > -1 ? items[pledgeFound].monthly : false;
+						const DonationType = isMonthly ? "CR" : "CC";
+						const IsRecurringCreditCardDonation = isMonthly;
+						const Monthlypledgeday = isMonthly
+							? this.state.fields.Monthlypledgeday
+							: null;
+						const Monthlypledgeamount =
+							isMonthly && pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
+						const Singledonationamount =
+							!isMonthly && pledgeFound > -1
+								? items[pledgeFound].PledgeAmount
+								: 0;
+						if (Monthlypledgeamount > 0) {
+							TransactionType = "Monthly";
+						}
+						if (Singledonationamount > 0) {
+							TransactionType = "Single";
+						}
+						const ShipTo = ShipToYes === true ? "Yes" : "No";
+						const multipleDonations = () =>
+							items.map(
+								(
+									{
+										DetailName,
+										DetailDescription,
+										DetailCprojCredit,
+										DetailCprojMail,
+										PledgeAmount,
+									},
+									index
+								) => {
+									if (
+										index === pledgeFound &&
+										Object.keys(this.state.designationInfo).length &&
+										!(isMonthly && !this.state.allowMonthlyDesignations)
+									) {
+										DetailName =
+											(isMonthly ? "MP" : "SG") +
+											this.state.designationInfo.DetailName;
+										DetailDescription = this.state.designationInfo
+											.DetailDescription;
+										DetailCprojCredit = this.state.designationInfo
+											.DetailCprojCredit;
+										DetailCprojMail = this.state.designationInfo.DetailCprojMail;
+									}
+									// console.log({DetailName});
+									return {
+										DetailName,
+										DetailDescription,
+										DetailCprojCredit,
+										DetailCprojMail,
+										PledgeAmount,
+									};
+								}
+							);
+						const MultipleDonations = multipleDonations();
+
+						const MotivationText =
+							window.cbn_obj && window.cbn_obj.motivation
+								? window.cbn_obj.motivation
+								: "041181";
+
+						let data = {
+							ActivityName,
+							AddContactYN,
+							Address1,
+							Address2,
+							City,
+							ContactSource,
+							Country,
+							DonationType,
+							Emailaddress,
+							EmailSubjectLine,
+							Firstname,
+							IsRecurringCreditCardDonation,
+							Lastname,
+							Middlename,
+							Monthlypledgeamount,
+							Monthlypledgeday,
+							MotivationText,
+							MultipleDonations,
+							Phoneareacode,
+							Phoneexchange,
+							Phonenumber,
+							SectionName,
+							ShipTo,
+							Singledonationamount,
+							Spousename,
+							State,
+							Suffix,
+							Title,
+							TransactionType,
+							UrlReferer,
+							Zip,
+							ClientBrowser,
+							ShipToAddress1,
+							ShipToAddress2,
+							ShipToCity,
+							ShipToState,
+							ShipToZip,
+							ShipToCountry,
+							ShipToName,
+							mode,
+						};
+						//flatten subscription information
+						if (subscriptions && subscriptions.length) {
+							subscriptions.forEach(sub => (data[sub.key] = sub.value));
+						}
+						try {
+							const msg = await callApi(proxy, {
+								method: "POST",
+								mode: "cors",
+								headers: {
+									"Content-Type": "application/json; charset=utf-8",
+								},
+								body: JSON.stringify(data),
+							});
+							const DonorID = msg.split(";")[0].split(" - ")[1];
+							const confirmUrl = msg.split(" is ")[1];
+							data.DonorID = DonorID;
+							const confirmationData = { confirmUrl, data };
+							this.setState(state =>
+								reducer(
+									state,
+									{
+										type: "SUBMIT_FORM",
+										DonorID,
+										confirmationData,
+									},
+									() => {
+										if (type !== "confirmation") {
+											try {
+												const url =
+													window.location.origin + window.location.pathname;
+												const sDynamicPageUrl =
+													url +
+													(url.charAt(url.length - 1) == "/"
+														? "payment"
+														: "/payment");
+												const sDynamicPageTitle = document.title + " > Payment";
+												window.omTrackDynamicCBNPage(
+													sDynamicPageUrl,
+													sDynamicPageTitle
+												);
+											} catch (err) {
+												console.error("Call Submission Tracking Error");
+												console.error(err);
+											}
+											this.context.submitForm({
+												type: "SUBMIT_FORM",
+											});
+										}
+										resolve(true)
+									}
+								)
+							);
+						} catch (err) {
+							console.error(err.message);
+							const { message } = err;
+							const { breaking, name } = getErrorType(message);
+							// console.log({breaking, name})
+							if (breaking) {
+								alert(
+									"There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700"
+								);
+							} else {
+								this.setState(state =>
+									reducer(state, {
+										type: "UPDATE_FIELD",
+										name,
+										value: fields[name],
+										error: message,
+									})
+								);
+							}
+							this.setState(state =>
+								reducer(state, { type: "TOGGLE_SUBMITTING" }), resolve(false)
+							);
+						}
+					}
+				);
+			})
+		},
+		submitAskForm: action => {
+			return new Promise((resolve, reject) => {
+				this.setState(
+					state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+					() => {
+						const isValidGift = this.validateGift();
+						action.isValid = isValidGift;
+						this.setState(
+							state => reducer(state, action),
+							() => {
+								if (!isValidGift) {
 									this.setState(state =>
 										reducer(state, {
 											type: "UPDATE_FIELD",
@@ -238,476 +670,34 @@ class GivingFormProvider extends Component {
 											error: "Please make a valid donation",
 										})
 									);
-								}
-							);
-						}
-					}
-					let isValidForm = true,
-						action = {};
-					if (this.state.fields.Country == "United States") {
-						let oldCity, response;
-						try {
-							oldCity = this.state.fields.City.toUpperCase();
-							response = await callZipCityStateService(
-								"Zip",
-								this.state.fields.Zip,
-								oldCity
-							);
-
-							if (response.action) {
-								this.setState(state => reducer(state, response.action));
-							}
-							const zipError = response.error;
-							let addressError, shipZipError, shipAddressError;
-							if (!zipError) {
-								try {
-									addressError = await callAddressVerification(
-										this.state.fields["Address1"],
-										this.state.fields["Address2"],
-										this.state.fields["City"],
-										this.state.fields["State"],
-										this.state.fields["Zip"]
-									);
-								} catch (err) {
-									console.log("AddressVerificationError");
-									console.error({ err });
-								}
-							}
-							if (
-								this.state.fields["ShipToZip"] &&
-								this.state.fields.ShipToYes
-							) {
-								try {
-									oldCity = this.state.fields.ShipToCity.toUpperCase();
-									response = await callZipCityStateService(
-										"ShipToZip",
-										this.state.fields.ShipToZip,
-										oldCity
-									);
-									if (response.action) {
-										this.setState(state => reducer(state, response.action));
-									}
-									shipZipError = response.error;
-								} catch (err) {
-									console.log("CSZValidationError__SHIPPING");
-									console.error({ err });
-								}
-							}
-							if (!shipZipError && this.state.fields.ShipToYes) {
-								try {
-									shipAddressError = await callAddressVerification(
-										this.state.fields["ShipToAddress1"],
-										this.state.fields["ShipToAddress2"],
-										this.state.fields["ShipToCity"],
-										this.state.fields["ShipToState"],
-										this.state.fields["ShipToZip"]
-									);
-								} catch (err) {
-									console.log("AddressVerificationError__SHIPPING");
-									console.error({ err });
-								}
-							}
-							if (
-								addressError ||
-								shipAddressError ||
-								zipError ||
-								shipZipError
-							) {
-								isValidForm = false;
-								action = {
-									type: "UPDATE_FIELDS",
-									fields: [],
-								};
-								if (addressError) {
-									action.fields.push({
-										name: "Address1",
-										value: this.state.fields.Address1,
-										error: addressError,
-									});
-								}
-								if (shipAddressError) {
-									action.fields.push({
-										name: "ShipToAddress1",
-										value: this.state.fields.ShipToAddress1,
-										error: shipAddressError,
-									});
-								}
-								if (zipError) {
-									action.fields.push({
-										name: "Zip",
-										value: this.state.fields.Zip,
-										error: zipError,
-									});
-								}
-								if (shipZipError) {
-									action.fields.push({
-										name: "ShipToZip",
-										value: this.state.fields.ShipToZip,
-										error: shipZipError,
-									});
-								}
-								this.setState(state => reducer(state, action));
-							}
-						} catch (err) {
-							console.log("CSZValidationError");
-							console.error({ err });
-						}
-					} else {
-						action = {
-							type: "UPDATE_FIELDS",
-							action: {
-								fields: [
-									{
-										name: "Zip",
-										value: "NA",
-										error: "",
-									},
-									{
-										name: "State",
-										value: "00",
-										error: "",
-									},
-								],
-							},
-						};
-						this.setState(state => reducer(state, action));
-					}
-					const { fields } = this.state;
-					const fieldNames = Object.keys(fields);
-					action = {
-						type: "UPDATE_FIELDS",
-						fields: [],
-					};
-					for (let i = 0; i < fieldNames.length; i++) {
-						let error;
-						const name = fieldNames[i];
-						if (!name.includes("Zip")) {
-							const { getHonorific, allowInternational } = this.context;
-							error = validateInput(
-								true,
-								name,
-								fields[name],
-								true,
-								getHonorific,
-								allowInternational,
-								this.state.fields.ShipToYes,
-								this.state.ccNumber,
-								this.state.fields.ExpiresMonth,
-								this.state.fields.ExpiresYear
-							);
-							if (error) {
-								isValidForm = false;
-								action.fields.push({ name, value: fields[name], error });
-							}
-						}
-					}
-					if (!isValidForm) {
-						return this.setState(
-							state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
-							() => {
-								this.setState(state => reducer(state, action));
-							}
-						);
-					}
-					const {
-						Address1,
-						Address2,
-						City,
-						Country,
-						Emailaddress,
-						Firstname,
-						Middlename,
-						Lastname,
-						Spousename,
-						Suffix,
-						State,
-						Title,
-						Zip,
-						ShipToYes,
-						ShipToAddress1,
-						ShipToAddress2,
-						ShipToCity,
-						ShipToState,
-						ShipToZip,
-						ShipToCountry,
-						ShipToName,
-						phone,
-					} = fields;
-					let {
-						mode,
-						EmailSubjectLine = "Thank You for Your Contribution",
-						subscriptions,
-						AddContactYN,
-						ActivityName,
-						ContactSource,
-						SectionName,
-						proxy,
-					} = this.context.formConfig;
-					const ClientBrowser =
-						window && window.navigator ? window.navigator.userAgent : "";
-					const UrlReferer = window.location.origin + window.location.pathname;
-
-					//construct phone fields from regex
-					const Phoneareacode = phone.trim().match(phone_regex)
-							? phone.trim().match(phone_regex)[1]
-							: "",
-						Phoneexchange = phone.trim().match(phone_regex)
-							? phone.trim().match(phone_regex)[2]
-							: "",
-						Phonenumber = phone.trim().match(phone_regex)
-							? phone.trim().match(phone_regex)[3]
-							: "";
-
-					//process cart
-					let TransactionType = "Product";
-					const items = [...this.state.cart.items];
-					const pledgeFound = items.findIndex(
-						el => el && el.type == "donation"
-					);
-					const isMonthly =
-						pledgeFound > -1 ? items[pledgeFound].monthly : false;
-					const DonationType = isMonthly ? "CR" : "CC";
-					const IsRecurringCreditCardDonation = isMonthly;
-					const Monthlypledgeday = isMonthly
-						? this.state.fields.Monthlypledgeday
-						: null;
-					const Monthlypledgeamount =
-						isMonthly && pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
-					const Singledonationamount =
-						!isMonthly && pledgeFound > -1
-							? items[pledgeFound].PledgeAmount
-							: 0;
-					if (Monthlypledgeamount > 0) {
-						TransactionType = "Monthly";
-					}
-					if (Singledonationamount > 0) {
-						TransactionType = "Single";
-					}
-					const ShipTo = ShipToYes === true ? "Yes" : "No";
-					const multipleDonations = () =>
-						items.map(
-							(
-								{
-									DetailName,
-									DetailDescription,
-									DetailCprojCredit,
-									DetailCprojMail,
-									PledgeAmount,
-								},
-								index
-							) => {
-								if (
-									index === pledgeFound &&
-									Object.keys(this.state.designationInfo).length &&
-									!(isMonthly && !this.state.allowMonthlyDesignations)
-								) {
-									DetailName =
-										(isMonthly ? "MP" : "SG") +
-										this.state.designationInfo.DetailName;
-									DetailDescription = this.state.designationInfo
-										.DetailDescription;
-									DetailCprojCredit = this.state.designationInfo
-										.DetailCprojCredit;
-									DetailCprojMail = this.state.designationInfo.DetailCprojMail;
-								}
-								// console.log({DetailName});
-								return {
-									DetailName,
-									DetailDescription,
-									DetailCprojCredit,
-									DetailCprojMail,
-									PledgeAmount,
-								};
-							}
-						);
-					const MultipleDonations = multipleDonations();
-
-					const MotivationText =
-						window.cbn_obj && window.cbn_obj.motivation
-							? window.cbn_obj.motivation
-							: "041181";
-
-					let data = {
-						ActivityName,
-						AddContactYN,
-						Address1,
-						Address2,
-						City,
-						ContactSource,
-						Country,
-						DonationType,
-						Emailaddress,
-						EmailSubjectLine,
-						Firstname,
-						IsRecurringCreditCardDonation,
-						Lastname,
-						Middlename,
-						Monthlypledgeamount,
-						Monthlypledgeday,
-						MotivationText,
-						MultipleDonations,
-						Phoneareacode,
-						Phoneexchange,
-						Phonenumber,
-						SectionName,
-						ShipTo,
-						Singledonationamount,
-						Spousename,
-						State,
-						Suffix,
-						Title,
-						TransactionType,
-						UrlReferer,
-						Zip,
-						ClientBrowser,
-						ShipToAddress1,
-						ShipToAddress2,
-						ShipToCity,
-						ShipToState,
-						ShipToZip,
-						ShipToCountry,
-						ShipToName,
-						mode,
-					};
-					//flatten subscription information
-					if (subscriptions && subscriptions.length) {
-						subscriptions.forEach(sub => (data[sub.key] = sub.value));
-					}
-					try {
-						const msg = await callApi(proxy, {
-							method: "POST",
-							mode: "cors",
-							headers: {
-								"Content-Type": "application/json; charset=utf-8",
-							},
-							body: JSON.stringify(data),
-						});
-						const DonorID = msg.split(";")[0].split(" - ")[1];
-						const confirmUrl = msg.split(" is ")[1];
-						data.DonorID = DonorID;
-						const confirmationData = { confirmUrl, data };
-						// let formAction;
-						// try {
-						// 	const html = await callApi(confirmUrl, {
-						// 		method: "POST",
-						// 		body: new URLSearchParams(bodyFormData),
-						// 	});
-						// 	const parser = new DOMParser();
-						// 	const doc = parser.parseFromString(html, "text/html");
-						// 	const form = doc.querySelector("form");
-						// 	formAction = form ? form.action : "";
-						// 	const inputs = doc.querySelectorAll('input[type="hidden"]');
-						// 	inputs.forEach(input =>
-						// 		confirmationData.push({ name: input.name, value: input.value })
-						// 	);
-						// } catch (err) {
-						// 	console.error("GetConfirmationPageError");
-						// 	console.error({ err });
-						// }
-						return this.setState(state =>
-							reducer(
-								state,
-								{
-									type: "SUBMIT_FORM",
-									DonorID,
-									confirmationData,
-								},
-								() => {
-									if (type !== "confirmation") {
-										try {
-											const url =
-												window.location.origin + window.location.pathname;
-											const sDynamicPageUrl =
-												url +
-												(url.charAt(url.length - 1) == "/"
-													? "payment"
-													: "/payment");
-											const sDynamicPageTitle = document.title + " > Payment";
-											window.omTrackDynamicCBNPage(
-												sDynamicPageUrl,
-												sDynamicPageTitle
-											);
-										} catch (err) {
-											console.error("Call Submission Tracking Error");
-											console.error(err);
-										}
-										this.context.submitForm({
-											type: "SUBMIT_FORM",
-										});
+								} else {
+									try {
+										const url = window.location.origin + window.location.pathname;
+										const sDynamicPageUrl =
+											url +
+											(url.charAt(url.length - 1) == "/"
+												? "payment"
+												: "/payment");
+										const sDynamicPageTitle =
+											document.title + " > Choose Donation";
+										window.omTrackDynamicCBNPage(
+											sDynamicPageUrl,
+											sDynamicPageTitle
+										);
+									} catch (err) {
+										console.error("Call Submission Tracking Error");
+										console.error(err);
 									}
 								}
-							)
-						);
-					} catch (err) {
-						console.error(err.message);
-						const { message } = err;
-						const { breaking, name } = getErrorType(message);
-						// console.log({breaking, name})
-						if (breaking) {
-							alert(
-								"There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700"
-							);
-						} else {
-							this.setState(state =>
-								reducer(state, {
-									type: "UPDATE_FIELD",
-									name,
-									value: fields[name],
-									error: message,
-								})
-							);
-						}
-						return this.setState(state =>
-							reducer(state, { type: "TOGGLE_SUBMITTING" })
-						);
-					}
-				}
-			);
-		},
-		submitAskForm: action => {
-			this.setState(
-				state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
-				() => {
-					const isValidGift = this.validateGift();
-					action.isValid = isValidGift;
-					this.setState(
-						state => reducer(state, action),
-						() => {
-							if (!isValidGift) {
 								this.setState(state =>
-									reducer(state, {
-										type: "UPDATE_FIELD",
-										name: "amount",
-										value: "",
-										error: "Please make a valid donation",
-									})
+									reducer(state, { type: "TOGGLE_SUBMITTING" }), resolve(isValidGift)
 								);
-							} else {
-								try {
-									const url = window.location.origin + window.location.pathname;
-									const sDynamicPageUrl =
-										url +
-										(url.charAt(url.length - 1) == "/"
-											? "payment"
-											: "/payment");
-									const sDynamicPageTitle =
-										document.title + " > Choose Donation";
-									window.omTrackDynamicCBNPage(
-										sDynamicPageUrl,
-										sDynamicPageTitle
-									);
-								} catch (err) {
-									console.error("Call Submission Tracking Error");
-									console.error(err);
-								}
 							}
-							this.setState(state =>
-								reducer(state, { type: "TOGGLE_SUBMITTING" })
-							);
-						}
-					);
-				}
-			);
+						);
+					}
+				);
+			})
+
 		},
 		addToCart: action => this.setState(state => reducer(state, action)),
 		removeFromCart: action => this.setState(state => reducer(state, action)),
