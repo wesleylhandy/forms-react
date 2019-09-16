@@ -36,7 +36,7 @@ export function scrollToPoint(top = 0, parent = window, el = null) {
 		} else {
 			scroll = parent.scrollTop;
 		}
-		const speed = Math.ceil(Math.sqrt(Math.abs(top - scroll + 2)));
+		const speed = Math.ceil(Math.sqrt(Math.abs(top - scroll))) + 2;
 		if (scrollDown) {
 			if (scroll + speed > top) {
 				window.cancelAnimationFrame(timestamp);
