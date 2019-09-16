@@ -62,11 +62,9 @@ const ClubOtherGiftAmountStyle = styled.div`
 			font-weight: 600;
 			z-index: 5;
 			left: 10px;
-			top: 13px;
-			width: 10px;
-			height: 30px;
+			top: 0;
+			line-height: 50px;
 			@media screen and (max-width: 559px) {
-				top: 14px;
 				font-size: 18px;
 			}
 		}
