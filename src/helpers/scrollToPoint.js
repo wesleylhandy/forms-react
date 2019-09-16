@@ -38,13 +38,13 @@ export function scrollToPoint(top = 0, parent = window, el = null) {
 		}
 		const speed = Math.ceil(Math.sqrt(Math.abs(top - scroll + 2)));
 		if (scrollDown) {
-			if (scroll >= top) {
+			if (scroll + speed > top) {
 				window.cancelAnimationFrame(timestamp);
 				return;
 			}
 			scroll = scroll + speed >= top ? top : scroll + speed;
 		} else {
-			if (scroll <= top) {
+			if (scroll - speed < top) {
 				window.cancelAnimationFrame(timestamp);
 				return;
 			}
