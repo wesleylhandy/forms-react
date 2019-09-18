@@ -4695,7 +4695,8 @@ styleSheet.flush()
 					var match; // https://esbench.com/bench/5b809c2cf2949800a0f61fb5
 
 					while ((match = labelPattern.exec(styles)) !== null) {
-						identifierName += "-" + match[1]; // $FlowFixMe we know it's not null
+						identifierName +=
+							"-" + match[1]; // $FlowFixMe we know it's not null
 					}
 
 					var name = (0, _hash.default)(styles) + identifierName;
@@ -46324,8 +46325,8 @@ styleSheet.flush()
 
 															case 26:
 																proxyUri = "http://"
-																	.concat("10.100.43.32", ":")
-																	.concat("8080");
+																	.concat("127.0.0.1", ":")
+																	.concat("8282");
 																_context.next = 29;
 																return Promise.all([
 																	(0, _fetchHelpers.callApi)(
@@ -58818,17 +58819,17 @@ styleSheet.flush()
 							scroll = parent.scrollTop;
 						}
 
-						var speed = Math.ceil(Math.sqrt(Math.abs(top - scroll + 2)));
+						var speed = Math.ceil(Math.sqrt(Math.abs(top - scroll))) + 2;
 
 						if (scrollDown) {
-							if (scroll >= top) {
+							if (scroll + speed > top) {
 								window.cancelAnimationFrame(timestamp);
 								return;
 							}
 
 							scroll = scroll + speed >= top ? top : scroll + speed;
 						} else {
-							if (scroll <= top) {
+							if (scroll - speed < top) {
 								window.cancelAnimationFrame(timestamp);
 								return;
 							}
@@ -59046,6 +59047,11 @@ styleSheet.flush()
 								e.preventDefault();
 								setHasOpened(true);
 								toggleOpen(!isOpen);
+
+								if (isOpen) {
+									displayRef.current.focus();
+								}
+
 								break;
 
 							case 27:
@@ -59128,8 +59134,9 @@ styleSheet.flush()
 								"Designation Selected: " + designations[designatedIndex].title
 							);
 						} else if (hasOpened) {
-							console.log("Layout Effect Called");
-							displayRef.current.focus();
+							console.log("Layout Effect Called"); // displayRef.current.focus();
+
+							selectedRef.current.blur();
 						} else {
 							console.log("Layout Effect Called");
 							setA11yMessage(
@@ -64140,7 +64147,7 @@ styleSheet.flush()
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "62584" + "/"
+						protocol + "://" + hostname + ":" + "49913" + "/"
 					);
 
 					ws.onmessage = function(event) {

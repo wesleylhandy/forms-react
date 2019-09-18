@@ -55,6 +55,9 @@ const DesignationBlock = ({ designations }) => {
 				e.preventDefault();
 				setHasOpened(true);
 				toggleOpen(!isOpen);
+				if (isOpen) {
+					displayRef.current.focus();
+				}
 				break;
 			case 27: // ESC
 				e.preventDefault();
@@ -124,7 +127,8 @@ const DesignationBlock = ({ designations }) => {
 			);
 		} else if (hasOpened) {
 			console.log("Layout Effect Called");
-			displayRef.current.focus();
+			// displayRef.current.focus();
+			selectedRef.current.blur();
 		} else {
 			console.log("Layout Effect Called");
 			setA11yMessage(
