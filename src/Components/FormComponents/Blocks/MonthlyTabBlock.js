@@ -1,6 +1,6 @@
 import React from "react";
 
-import Tab from "../Tab";
+import Tab from "../FunctionalComponents/Tab";
 import Divider from "../StyledComponents/Divider";
 import FieldSet from "../StyledComponents/FieldSet";
 import FormRow from "../StyledComponents/FormRow";

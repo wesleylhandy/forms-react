@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import { FormConfigContext } from "./Contexts/FormConfigProvider";
 import FormRouter from "./Forms/FormRouter";
-import { LiveAnnouncer } from "react-aria-live";
+import { LiveAnnouncer } from "react-aria-live"; // for posting a11y messages for screen reader users
 
 import Wrapper from "./StyledComponents/Wrapper";
 import Spinner from "./StyledComponents/Spinner";
 
-function handleUnload(e) {
-	e.returnValue =
-		"Are you sure you want to go back?\n You may lose all your changes to this page.";
-	return "Are you sure you want to go back?\n You may lose all your changes to this page.";
+/**
+ * Intercepts onbeforeunload event and sets a unique alert warning users about losing information if they leave the page
+ * @param {Event} e - onbeforeunload events from window object
+ */
+const handleUnload = e => {
+	const returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page.";
+	e.returnValue = returnValue;
+	return returnValue;
 }
 
 class App extends Component {
@@ -38,6 +42,6 @@ class App extends Component {
 	}
 }
 
-App.contextType = FormConfigContext;
+App.contextType = FormConfigContext; // subscribe to FormConfigProvider at top level
 
 export default App;

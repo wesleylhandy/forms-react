@@ -1,3 +1,10 @@
+/**
+ * Reducer function that returns a copy of (not a reference to) the original state, with mutations to the new copy, that replaces state
+ * @param {Object} state - current state of Provider
+ * @param {Object} action - action.type tells what to do with the current state
+ * @param {String} action.type - the name of the action to call
+ * @returns {Object} state - newly constructed state
+ */
 const reducer = (state, action) => {
 	const {
 		allowMonthlyDesignations,

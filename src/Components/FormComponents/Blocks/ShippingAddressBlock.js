@@ -1,12 +1,13 @@
 import React from "react";
+import Media from "react-media";
 
-import SelectGroup from "../SelectGroup";
-import InputGroup from "../InputGroup";
+import SelectGroup from "../FunctionalComponents/SelectGroup";
+import InputGroup from "../FunctionalComponents/InputGroup";
 import FormPanel from "../StyledComponents/FormPanel";
 import FormRow from "../StyledComponents/FormRow";
 import ShippingTitle from "../StyledComponents/ShippingTitle";
 
-import getStateOptions from "../../../helpers/renderStateOptions";
+import StateOptions from "../FunctionalComponents/StateOptions";
 
 function ShippingAddressBlock({
 	fields,
@@ -89,7 +90,13 @@ function ShippingAddressBlock({
 						<option key="shiptostate-base-0" value="">
 							State* &#9663;
 						</option>,
-						getStateOptions(allowInternational),
+						<Media key="media-query" query="(max-width: 613px)">
+							{matches =>
+								matches
+									? <StateOptions allowInternational={allowInternational} displayIndex={0}/>
+									: <StateOptions allowInternational={allowInternational} displayIndex={1}/>
+							}
+						</Media>,
 					]}
 				/>
 			</FormRow>

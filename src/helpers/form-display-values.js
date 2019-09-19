@@ -1,9 +1,17 @@
+/**
+ * Takes in name/value pair from controlled input onChange event.
+ * Converts value into two different strings, one formatted for display, one with formatting stripped
+ * Returns an Action to be called on the Components reducer to update both the validated value and the display value
+ * @param {String} name - name of the field being updated
+ * @param {String} value - value of the field being updated
+ * @returns {Object} action.type, action.fields[], action.fields.name, action.fields.value, action.fields.error
+ */
 const formDisplayValue = (name, value) => {
 	const displayName = name + "Display";
-	let strippedValue = value.replace(/[ \-\(\)]/g, "");
+	let strippedValue = value.replace(/[ \-\(\)]/g, ""); // remove any formatting marks (spaces, dashes, parentheses)
 	let displayValue = strippedValue;
-	const digits = displayValue ? displayValue.split("") : [];
-	let firstDivision, secondDivision, thirdDivision, fourthDivision;
+	const digits = displayValue ? displayValue.split("") : []; // get just the individual characters without formatting as an array
+	let firstDivision, secondDivision, thirdDivision, fourthDivision; // initialize dividing variable stores
 	if (name === "ccNumber") {
 		if (displayValue.length > 4) {
 			switch (digits[0]) {
@@ -21,6 +29,7 @@ const formDisplayValue = (name, value) => {
 						.split("")
 						.slice(0, 15)
 						.join("");
+					// value will be in format of #### ###### ##### for Amex
 					break;
 				case "4":
 				case "5":
@@ -41,8 +50,10 @@ const formDisplayValue = (name, value) => {
 						.split("")
 						.slice(0, 16)
 						.join("");
+					// value will be in format of #### #### #### #### for VI, MC, DS
 					break;
 				default:
+					// only return 16 max digits
 					strippedValue = strippedValue
 						.split("")
 						.slice(0, 16)
@@ -64,6 +75,7 @@ const formDisplayValue = (name, value) => {
 				.split("")
 				.slice(0, 10)
 				.join("");
+			// value will be in format of ( ### ) ### - ####
 		}
 	}
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import RadioButton from "./StyledComponents/RadioButton";
+import RadioButton from "../StyledComponents/RadioButton";
 
 const RadioButtonGroup = ({ id, name, checked, handleRadioClick, label }) => {
 	return (

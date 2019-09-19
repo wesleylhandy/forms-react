@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 
 import FormRow from "../StyledComponents/FormRow";
 import FieldSet from "../StyledComponents/FieldSet";
-import SelectGroup from "../SelectGroup";
-import InputGroup from "../InputGroup";
+import SelectGroup from "../FunctionalComponents/SelectGroup";
+import InputGroup from "../FunctionalComponents/InputGroup";
 
 import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 

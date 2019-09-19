@@ -1,6 +1,6 @@
 import React from "react";
 
-import ClubTab from "../ClubTab";
+import ClubTab from "../FunctionalComponents/ClubTab";
 import Divider from "../StyledComponents/Divider";
 import FieldSet from "../StyledComponents/FieldSet";
 import FormRow from "../StyledComponents/FormRow";

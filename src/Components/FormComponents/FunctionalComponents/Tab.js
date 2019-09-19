@@ -1,6 +1,6 @@
 import React from "react";
 
-import TabGroup from "./StyledComponents/TabGroup";
+import TabGroup from "../StyledComponents/TabGroup";
 
 function Tab({ id, name, checked, handleTabClick, label }) {
 	return (

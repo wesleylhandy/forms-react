@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 
-import { FormConfigContext } from "../Contexts/FormConfigProvider";
+import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 
-import ClubTabGroup from "./StyledComponents/ClubTabGroup";
+import ClubTabGroup from "../StyledComponents/ClubTabGroup";
 
 const ClubTab = ({ id, name, checked, handleTabClick, label }) => {
 	const { getCssConfig } = useContext(FormConfigContext);

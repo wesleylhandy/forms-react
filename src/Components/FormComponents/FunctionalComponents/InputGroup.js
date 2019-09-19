@@ -1,22 +1,30 @@
 import React, { useContext } from "react";
-import FormGroup from "./StyledComponents/FormGroup";
-import InputError from "./StyledComponents/InputError";
+import FormGroup from "../StyledComponents/FormGroup";
+import InputError from "../StyledComponents/InputError";
 
-import { FormConfigContext } from "../Contexts/FormConfigProvider";
+import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 
-const SelectGroup = ({
+const InputGroup = ({
 	id,
 	specialStyle,
+	label,
 	required,
 	error,
 	value,
+	type,
+	maxLength,
+	placeholder,
+	disabled,
+	validation,
 	handleInputChange,
 	handleBlur,
-	options,
-	disabled,
-	label,
+	textareaSize,
+	allowInternational,
+	inputMode = "text",
 }) => {
-	const { getCssConfig } = useContext(FormConfigContext);
+	const { getCssConfig, allowInputPlaceholders } = useContext(
+		FormConfigContext
+	);
 	const {
 		inputBackgroundColor = "#f0f0f0",
 		inputBorderColor = "#333",
@@ -37,10 +45,12 @@ const SelectGroup = ({
 		labelOpacity = "0",
 		labelTextTransform = "none",
 	} = getCssConfig("label");
+
 	return (
 		<FormGroup
 			id={`form-field-${id}`}
 			className={`input-group ${specialStyle ? specialStyle : ""}`}
+			textareaSize={textareaSize}
 			inputBackgroundColor={inputBackgroundColor}
 			inputBorderColor={inputBorderColor}
 			inputBorderRadius={inputBorderRadius}
@@ -61,20 +71,28 @@ const SelectGroup = ({
 			<label htmlFor={id}>
 				{label}
 				<span>{required ? "*" : ""}</span>
+				{allowInternational ? (
+					<small style={{ fontSize: "10px", marginLeft: 8 }}>
+						(Outside U.S. use &ldquo;NA&rdquo;}
+					</small>
+				) : null}
 			</label>
-			<select
+			<input
 				className={error ? "error" : ""}
+				type={type}
 				id={id}
+				maxLength={maxLength}
 				name={id}
-				disabled={disabled}
+				placeholder={allowInputPlaceholders ? placeholder : ""}
 				required={required}
 				value={value}
 				onChange={handleInputChange}
 				onBlur={handleBlur}
 				aria-invalid={error ? true : false}
-			>
-				{options}
-			</select>
+				disabled={disabled}
+				pattern={validation ? validation : ".*"}
+				inputMode={inputMode}
+			/>
 			<InputError className="input-error" inputErrorColor={inputErrorColor}>
 				{error}
 			</InputError>
@@ -82,4 +100,4 @@ const SelectGroup = ({
 	);
 };
 
-export default SelectGroup;
+export default InputGroup;

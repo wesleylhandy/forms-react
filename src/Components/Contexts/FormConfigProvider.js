@@ -3,18 +3,16 @@ import { callApi } from "../../helpers/fetch-helpers";
 
 export const FormConfigContext = React.createContext();
 
+// uses it own reducer to avoid conflicts with other Contexts in use
 const reducer = (state, action) => {
 	const { type, status, formConfig, cssConfig } = action;
 	switch (type) {
 		case "INIT_FORM_STATE":
 			return { ...state, status, formConfig, cssConfig };
-			break;
 		case "LOAD_ERROR":
 			return { ...state, status };
-			break;
 		case "SUBMIT_FORM":
 			return { ...state, submitted: true };
-			break;
 		case "GO_BACK":
 			return { ...state, submitted: false, confirmed: false };
 		case "CONFIRMED":
@@ -34,6 +32,10 @@ class FormConfigProvider extends Component {
 		submitted: false,
 		confirmed: false,
 		getConfiguration: async ({ rootEntry, formType }) => {
+
+			// TODO: REDUCE INITIALIZATION OF DATA TO A SINGLE API CALL
+
+
 			let initialState = {},
 				initialStyle = {},
 				cssConfig = {},
@@ -82,6 +84,7 @@ class FormConfigProvider extends Component {
 							.cssConfig
 					: initialStyle;
 
+				// Disable React Dev Tools in Production
 				try {
 					if (formConfig.mode === "production") {
 						if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {

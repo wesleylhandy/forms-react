@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 
-import { FormConfigContext } from "../Contexts/FormConfigProvider";
+import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 
-import SubmitButtonGroup from "./StyledComponents/SubmitButtonGroup";
-import FormError from "./StyledComponents/FormError";
+import SubmitButtonGroup from "../StyledComponents/SubmitButtonGroup";
+import FormError from "../StyledComponents/FormError";
 
 const SubmitButton = ({
 	hasErrors,

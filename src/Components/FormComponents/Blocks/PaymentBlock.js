@@ -12,8 +12,8 @@ import Amex from "../SVG/Amex";
 import Visa from "../SVG/Visa";
 import FieldSet from "../StyledComponents/FieldSet";
 import FormRow from "../StyledComponents/FormRow";
-import InputGroup from "../InputGroup";
-import SelectGroup from "../SelectGroup";
+import InputGroup from "../FunctionalComponents/InputGroup";
+import SelectGroup from "../FunctionalComponents/SelectGroup";
 
 const PaymentBlockContainer = styled.section`
 	margin: 30px auto;

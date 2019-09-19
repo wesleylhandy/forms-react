@@ -8,13 +8,13 @@ import { FormConfigContext } from "../../Contexts/FormConfigProvider";
 
 import FormRow from "../StyledComponents/FormRow";
 import FieldSet from "../StyledComponents/FieldSet";
-import InputGroup from "../InputGroup";
-import SelectGroup from "../SelectGroup";
+import InputGroup from "../FunctionalComponents/InputGroup";
+import SelectGroup from "../FunctionalComponents/SelectGroup";
 
-import getStateOptions from "../../../helpers/renderStateOptions";
+import StateOptions from "../FunctionalComponents/StateOptions";
 import { countries } from "../../../config/dropdowns.json";
 
-function AddressBlock({
+const  AddressBlock = ({
 	fields,
 	errors,
 	handleInputChange,
@@ -26,7 +26,7 @@ function AddressBlock({
 	hideAddressTwo,
 	submitting,
 	validating,
-}) {
+}) => {
 	const { allowInputPlaceholders } = useContext(FormConfigContext);
 	return (
 		<FieldSet className="address-block">
@@ -117,8 +117,8 @@ function AddressBlock({
 									<Media key="media-query" query="(max-width: 613px)">
 										{matches =>
 											matches
-												? getStateOptions(allowInternational, 0)
-												: getStateOptions(allowInternational, 1)
+												? <StateOptions allowInternational={allowInternational} displayIndex={0}/>
+												: <StateOptions allowInternational={allowInternational} displayIndex={1}/>
 										}
 									</Media>,
 								]}

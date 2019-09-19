@@ -55,7 +55,7 @@ function Seals({ style = {} }) {
 						href={cert.href}
 						aria-label="Digicert Seal"
 					>
-						DigiCert.com
+						{/* DigiCert.com */}
 					</a>
 				</div>
 			)}

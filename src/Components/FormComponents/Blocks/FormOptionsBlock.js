@@ -1,6 +1,6 @@
 import React from "react";
 
-import Checkbox from "../Checkbox";
+import Checkbox from "../FunctionalComponents/Checkbox";
 import FormRow from "../StyledComponents/FormRow";
 
 function FormOptionsBlock({ id, checked, handleInputChange, label }) {

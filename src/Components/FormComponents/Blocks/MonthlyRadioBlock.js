@@ -1,6 +1,6 @@
 import React from "react";
 
-import RadioButtonGroup from "../RadioButtonGroup";
+import RadioButtonGroup from "../FunctionalComponents/RadioButtonGroup";
 import FieldSet from "../StyledComponents/FieldSet";
 import FormHeader from "../StyledComponents/FormHeader";
 import FormRow from "../StyledComponents/FormRow";

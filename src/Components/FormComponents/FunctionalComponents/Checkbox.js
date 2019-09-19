@@ -1,6 +1,6 @@
 import React from "react";
 
-import CheckboxGroup from "./StyledComponents/CheckboxGroup";
+import CheckboxGroup from "../StyledComponents/CheckboxGroup";
 
 function Checkbox({ id, checked, handleInputChange, label }) {
 	return (

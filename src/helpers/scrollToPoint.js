@@ -1,7 +1,9 @@
 import "raf/polyfill";
 /**
- * Function to scroll to a particular point on the DOM
+ * Function to scroll to a particular point on the DOM or within a overflow:scroll box
  * @param {Number} top - pageYoffset of form
+ * @param {HTMLElement} [parent=window] - defaults to window, but can receive any DOM element that is a parent of the scollpoint
+ * @param {HTMLElement} [el=null] - not necessary if scrolling on window, but if scrolling within a container it must be provided
  */
 export function scrollToPoint(top = 0, parent = window, el = null) {
 	if (parent !== window && !el) {
@@ -57,8 +59,8 @@ export function scrollToPoint(top = 0, parent = window, el = null) {
 
 /**
  *
- * @param {Node} el - DOM Element
- * @param {Node} parent - DOM element - defaults to window
+ * @param {HTMLElement} el - DOM Element
+ * @param {HTMLElement} parent - DOM element - defaults to window
  * @returns {Number} - integer representing offsetTop of the element relative to the viewport
  */
 export function offsetTop(el, parent = window) {

@@ -2,6 +2,9 @@ import React, { Component } from "react";
 
 import Spinner from "./StyledComponents/Spinner";
 
+/**
+ * ErrorBoundary is an HOC to catch errors unhandled by its component children using the componentDidCatch lifecycle event
+ */
 class ErrorBoundary extends Component {
 	constructor(props) {
 		super(props);

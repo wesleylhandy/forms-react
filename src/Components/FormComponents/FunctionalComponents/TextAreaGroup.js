@@ -1,6 +1,6 @@
 import React from "react";
-import FormGroup from "./StyledComponents/FormGroup";
-import InputError from "./StyledComponents/InputError";
+import FormGroup from "../StyledComponents/FormGroup";
+import InputError from "../StyledComponents/InputError";
 
 const TextAreaGroup = ({
 	id,

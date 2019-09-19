@@ -1,4 +1,5 @@
 import "whatwg-fetch";
+
 /**
  * Asynchronous function
  * @param {string} uri - Endpoint being called

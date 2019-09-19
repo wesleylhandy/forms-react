@@ -7,7 +7,7 @@ import FieldSet from "../FormComponents/StyledComponents/FieldSet";
 import FormHeader from "../FormComponents/StyledComponents/FormHeader";
 import NameBlock from "../FormComponents/Blocks/NameBlock";
 import AddressBlock from "../FormComponents/Blocks/AddressBlock";
-import SubmitButton from "../FormComponents/SubmitButton";
+import SubmitButton from "../FormComponents/FunctionalComponents/SubmitButton";
 import Spinner from "../StyledComponents/Spinner";
 import FormWrapper from "../StyledComponents/FormWrapper";
 class SignUpForm extends Component {

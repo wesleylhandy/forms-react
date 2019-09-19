@@ -6,9 +6,9 @@ import {
 	usMilitary,
 	usStates,
 	usTerritories,
-} from "../config/dropdowns.json";
+} from "../../../config/dropdowns.json";
 
-function getStateOptions(international, displayIndex = 1) {
+const StateOptions = ({allowInternational, displayIndex = 1}) => {
 	function renderOptGroup(type, options) {
 		return (
 			<optgroup key={type.replace(" ", "")} label={type}>
@@ -30,7 +30,7 @@ function getStateOptions(international, displayIndex = 1) {
 	const otherOpt = renderOptGroup("Other", other);
 	let provinces = null;
 
-	if (international) {
+	if (allowInternational) {
 		provinces = renderOptGroup("Canadian Provinces", canadianProvinces);
 	}
 	optGroups.push(states, military, provinces, territories, otherOpt);
@@ -38,4 +38,4 @@ function getStateOptions(international, displayIndex = 1) {
 	return optGroups;
 }
 
-export default getStateOptions;
+export default StateOptions;

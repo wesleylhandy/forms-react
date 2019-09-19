@@ -10,7 +10,7 @@ import NameBlock from "../FormComponents/Blocks/NameBlock";
 import ShippingAddressBlock from "../FormComponents/Blocks/ShippingAddressBlock";
 import AddressBlock from "../FormComponents/Blocks/AddressBlock";
 import FormOptionsBlock from "../FormComponents/Blocks/FormOptionsBlock";
-import SubmitButton from "../FormComponents/SubmitButton";
+import SubmitButton from "../FormComponents/FunctionalComponents/SubmitButton";
 import Spinner from "../StyledComponents/Spinner";
 import FormWrapper from "../StyledComponents/FormWrapper";
 

@@ -10,9 +10,9 @@ import FormHeader from "../FormComponents/StyledComponents/FormHeader";
 import ProductSummary from "../FormComponents/StyledComponents/ProductSummary";
 import CCButton from "../FormComponents/StyledComponents/CCButton";
 import HiddenForm from "../FormComponents/StyledComponents/HiddenForm";
-import InputGroup from "../FormComponents/InputGroup";
-import SelectGroup from "../FormComponents/SelectGroup";
-import SubmitButton from "../FormComponents/SubmitButton";
+import InputGroup from "../FormComponents/FunctionalComponents/InputGroup";
+import SelectGroup from "../FormComponents/FunctionalComponents/SelectGroup";
+import SubmitButton from "../FormComponents/FunctionalComponents/SubmitButton";
 import FormWrapper from "../StyledComponents/FormWrapper";
 import {
 	FaCcAmex,
