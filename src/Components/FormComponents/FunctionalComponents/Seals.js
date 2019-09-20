@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useMemo } from "react";
 import styled from "@emotion/styled";
 
 const SealsBlock = styled.section`
@@ -43,38 +43,42 @@ const certs = {
 	},
 };
 
-function Seals({ style = {} }) {
+const DigiCert = memo(() => {
 	const { origin } = window.location;
 	const cert = certs[origin];
 	return (
-		<SealsBlock id="seals" style={style}>
-			{cert && (
-				<div id={cert.id} data-language="en" className="seals__seal">
-					<a
-						className="seals__seal--link"
-						href={cert.href}
-						aria-label="Digicert Seal"
-					>
-						{/* DigiCert.com */}
-					</a>
-				</div>
-			)}
-			<div id="ECFA_Logo" className="seals__seal">
+		cert && (
+			<div id={cert.id} data-language="en" className="seals__seal">
 				<a
 					className="seals__seal--link"
-					href="http://www.ecfa.org"
-					target="_blank"
-					aria-label="ECFA Seal"
+					href={cert.href}
+					aria-label="Digicert Seal"
 				>
-					<img
-						className="seals__seal-img"
-						src="https://www.cbn.com/source/giving/shared/ecfa-logo-blacktext_sm.png"
-						alt="ECFA"
-					/>
+					{/* DigiCert.com */}
 				</a>
 			</div>
-		</SealsBlock>
+		)
 	);
-}
+});
+
+const Seals = ({ style = {} }) => (
+	<SealsBlock id="seals" style={style}>
+		<DigiCert />
+		<div id="ECFA_Logo" className="seals__seal">
+			<a
+				className="seals__seal--link"
+				href="http://www.ecfa.org"
+				target="_blank"
+				aria-label="ECFA Seal"
+			>
+				<img
+					className="seals__seal-img"
+					src="https://www.cbn.com/source/giving/shared/ecfa-logo-blacktext_sm.png"
+					alt="ECFA"
+				/>
+			</a>
+		</div>
+	</SealsBlock>
+);
 
 export default memo(Seals);

@@ -8,7 +8,7 @@ import {
 	usTerritories,
 } from "../../../config/dropdowns.json";
 
-const StateOptions = ({allowInternational, displayIndex = 1}) => {
+const StateOptions = ({ allowInternational, displayIndex = 1 }) => {
 	function renderOptGroup(type, options) {
 		return (
 			<optgroup key={type.replace(" ", "")} label={type}>
@@ -36,6 +36,6 @@ const StateOptions = ({allowInternational, displayIndex = 1}) => {
 	optGroups.push(states, military, provinces, territories, otherOpt);
 
 	return optGroups;
-}
+};
 
 export default StateOptions;

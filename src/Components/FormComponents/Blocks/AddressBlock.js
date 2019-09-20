@@ -14,7 +14,7 @@ import SelectGroup from "../FunctionalComponents/SelectGroup";
 import StateOptions from "../FunctionalComponents/StateOptions";
 import { countries } from "../../../config/dropdowns.json";
 
-const  AddressBlock = ({
+const AddressBlock = ({
 	fields,
 	errors,
 	handleInputChange,
@@ -116,9 +116,17 @@ const  AddressBlock = ({
 									/>,
 									<Media key="media-query" query="(max-width: 613px)">
 										{matches =>
-											matches
-												? <StateOptions allowInternational={allowInternational} displayIndex={0}/>
-												: <StateOptions allowInternational={allowInternational} displayIndex={1}/>
+											matches ? (
+												<StateOptions
+													allowInternational={allowInternational}
+													displayIndex={0}
+												/>
+											) : (
+												<StateOptions
+													allowInternational={allowInternational}
+													displayIndex={1}
+												/>
+											)
 										}
 									</Media>,
 								]}
@@ -242,6 +250,6 @@ const  AddressBlock = ({
 			</FormRow>
 		</FieldSet>
 	);
-}
+};
 
 export default AddressBlock;

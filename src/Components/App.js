@@ -11,10 +11,11 @@ import Spinner from "./StyledComponents/Spinner";
  * @param {Event} e - onbeforeunload events from window object
  */
 const handleUnload = e => {
-	const returnValue = "Are you sure you want to go back?\n You may lose all your changes to this page.";
+	const returnValue =
+		"Are you sure you want to go back?\n You may lose all your changes to this page.";
 	e.returnValue = returnValue;
 	return returnValue;
-}
+};
 
 class App extends Component {
 	componentDidMount() {

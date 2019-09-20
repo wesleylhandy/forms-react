@@ -32,9 +32,7 @@ class FormConfigProvider extends Component {
 		submitted: false,
 		confirmed: false,
 		getConfiguration: async ({ rootEntry, formType }) => {
-
 			// TODO: REDUCE INITIALIZATION OF DATA TO A SINGLE API CALL
-
 
 			let initialState = {},
 				initialStyle = {},
@@ -53,12 +51,10 @@ class FormConfigProvider extends Component {
 					initialState = rootEntry.dataset.initialState;
 					initialStyle = rootEntry.dataset.initialStyle;
 				} else if (isWordpress) {
-					const cssConfigUrl = `${proxyUri}cbngiving/v1/${formName}?type=css_setup`;
-					const formConfigUrl = `${proxyUri}cbngiving/v1/${formName}?type=form_setup`;
-					[initialStyle, initialState] = await Promise.all([
-						callApi(cssConfigUrl, { method: "GET" }),
-						callApi(formConfigUrl, { method: "GET" }),
-					]);
+					const configUrl = `${proxyUri}cbngiving/v1/${formName}?type=initial_setup`;
+					const config = await callApi(configUrl, { method: "GET" });
+					initialState = config.initialState;
+					initialStyle = config.initialStyle;
 					proxyUri = `${proxyUri}cbngiving/v1/${formName}`;
 				} else {
 					proxyUri = `http://${process.env.DEV_SERVER_IP}:${process.env.DEV_SERVER_PORT}`;

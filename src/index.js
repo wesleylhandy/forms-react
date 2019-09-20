@@ -10,7 +10,7 @@ import App from "./Components/App";
 // Initialize Provider/Context for Top-Level
 import FormConfigProvider from "./Components/Contexts/FormConfigProvider";
 
-// currently only supports one form type at a time on a page 
+// currently only supports one form type at a time on a page
 // this could be changed by using querySelectorAll, classes, and then looping through each to render multiple configured forms
 const clubGivingRootEntry = document.getElementById("club-form-root");
 const givingRootEntry = document.getElementById("giving-form-root");

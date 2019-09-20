@@ -92,9 +92,17 @@ function ShippingAddressBlock({
 						</option>,
 						<Media key="media-query" query="(max-width: 613px)">
 							{matches =>
-								matches
-									? <StateOptions allowInternational={allowInternational} displayIndex={0}/>
-									: <StateOptions allowInternational={allowInternational} displayIndex={1}/>
+								matches ? (
+									<StateOptions
+										allowInternational={allowInternational}
+										displayIndex={0}
+									/>
+								) : (
+									<StateOptions
+										allowInternational={allowInternational}
+										displayIndex={1}
+									/>
+								)
 							}
 						</Media>,
 					]}
