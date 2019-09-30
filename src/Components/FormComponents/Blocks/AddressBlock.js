@@ -101,7 +101,8 @@ const AddressBlock = ({
 								required={true}
 								value={fields.State}
 								error={errors.State}
-								handleInputChange={handleBlur}
+								handleInputChange={handleInputChange}
+								handleBlur={handleBlur}
 								required={fields.Country == "United States"}
 								disabled={submitting || validating}
 								options={[
@@ -176,7 +177,8 @@ const AddressBlock = ({
 								required={true}
 								value={fields.Country}
 								error={errors.Country}
-								handleInputChange={handleBlur}
+								handleInputChange={handleInputChange}
+								handleBlur={handleBlur}
 								disabled={submitting || validating}
 								options={[
 									<option
