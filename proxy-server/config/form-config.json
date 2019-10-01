@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "mode": "testing",
+            "mode": "development",
             "formType": "club",
             "formTitle": "Your generous gifts allow CBN to fullfill the great commission through mass media evangelism and humanitarian aid.",
             "formHeader": {

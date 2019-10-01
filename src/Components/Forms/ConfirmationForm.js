@@ -317,9 +317,9 @@ class ConfirmationForm extends Component {
 
 	handleSubmit = async e => {
 		e.preventDefault();
-		const { mode } = this.context;
-		console.log({ mode });
-		if (mode !== "testing") {
+		const { isTestingForm } = this.context;
+		// console.log({isTestingForm})
+		if (!isTestingForm) {
 			const isValidSubmission = await this.context.submitGivingForm({
 				type: "confirmation",
 			});

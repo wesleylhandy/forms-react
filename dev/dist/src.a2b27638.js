@@ -46156,7 +46156,10 @@ styleSheet.flush()
 					var type = action.type,
 						status = action.status,
 						formConfig = action.formConfig,
-						cssConfig = action.cssConfig;
+						cssConfig = action.cssConfig,
+						_action$isTestingForm = action.isTestingForm,
+						isTestingForm =
+							_action$isTestingForm === void 0 ? false : _action$isTestingForm;
 
 					switch (type) {
 						case "INIT_FORM_STATE":
@@ -46164,6 +46167,7 @@ styleSheet.flush()
 								status: status,
 								formConfig: formConfig,
 								cssConfig: cssConfig,
+								isTestingForm: isTestingForm,
 							});
 
 						case "LOAD_ERROR":
@@ -46229,6 +46233,7 @@ styleSheet.flush()
 								cssConfig: {},
 								submitted: false,
 								confirmed: false,
+								isTestingForm: false,
 								getConfiguration: (function() {
 									var _getConfiguration = (0, _asyncToGenerator2.default)(
 										/*#__PURE__*/
@@ -46241,6 +46246,7 @@ styleSheet.flush()
 												formConfig,
 												generator,
 												formName,
+												isTestingForm,
 												proxyUri,
 												isLocal,
 												isDrupal,
@@ -46268,6 +46274,8 @@ styleSheet.flush()
 																	? rootEntry.dataset.environment.toLowerCase()
 																	: null;
 																formName = rootEntry.dataset.formName;
+																isTestingForm =
+																	rootEntry.dataset.formMode === "testing";
 																proxyUri = rootEntry.dataset.rest;
 																isLocal =
 																	generator && generator.includes("local");
@@ -46277,44 +46285,44 @@ styleSheet.flush()
 																	generator && generator.includes("wordpress");
 
 																if (!isDrupal) {
-																	_context.next = 14;
+																	_context.next = 15;
 																	break;
 																}
 
 																initialState = rootEntry.dataset.initialState;
 																initialStyle = rootEntry.dataset.initialStyle;
-																_context.next = 31;
+																_context.next = 32;
 																break;
 
-															case 14:
+															case 15:
 																if (!isWordpress) {
-																	_context.next = 24;
+																	_context.next = 25;
 																	break;
 																}
 
 																configUrl = ""
 																	.concat(proxyUri, "cbngiving/v1/")
 																	.concat(formName, "?type=initial_setup");
-																_context.next = 18;
+																_context.next = 19;
 																return (0, _fetchHelpers.callApi)(configUrl, {
 																	method: "GET",
 																});
 
-															case 18:
+															case 19:
 																config = _context.sent;
 																initialState = config.initialState;
 																initialStyle = config.initialStyle;
 																proxyUri = ""
 																	.concat(proxyUri, "cbngiving/v1/")
 																	.concat(formName);
-																_context.next = 31;
+																_context.next = 32;
 																break;
 
-															case 24:
+															case 25:
 																proxyUri = "http://"
 																	.concat("10.100.43.32", ":")
 																	.concat("8080");
-																_context.next = 27;
+																_context.next = 28;
 																return Promise.all([
 																	(0, _fetchHelpers.callApi)(
 																		"".concat(
@@ -46336,13 +46344,13 @@ styleSheet.flush()
 																	),
 																]);
 
-															case 27:
+															case 28:
 																_ref2 = _context.sent;
 																_ref3 = (0, _slicedToArray2.default)(_ref2, 2);
 																initialState = _ref3[0];
 																initialStyle = _ref3[1];
 
-															case 31:
+															case 32:
 																configurations = initialState.configurations;
 																formConfig = Array.isArray(configurations)
 																	? configurations.filter(function(config) {
@@ -46383,7 +46391,7 @@ styleSheet.flush()
 																}
 
 																if (!Object.keys(formConfig).length) {
-																	_context.next = 41;
+																	_context.next = 42;
 																	break;
 																}
 
@@ -46397,25 +46405,26 @@ styleSheet.flush()
 																		formConfig: formConfig,
 																		cssConfig: cssConfig,
 																		status: "loaded",
+																		isTestingForm: isTestingForm,
 																	});
 																});
 
-																_context.next = 42;
+																_context.next = 43;
 																break;
 
-															case 41:
+															case 42:
 																throw new Error(
 																	"Unable to Load Configuration for ".concat(
 																		formType
 																	)
 																);
 
-															case 42:
-																_context.next = 47;
+															case 43:
+																_context.next = 48;
 																break;
 
-															case 44:
-																_context.prev = 44;
+															case 45:
+																_context.prev = 45;
 																_context.t0 = _context["catch"](2);
 
 																_this.setState(
@@ -46433,7 +46442,7 @@ styleSheet.flush()
 																	}
 																);
 
-															case 47:
+															case 48:
 															case "end":
 																return _context.stop();
 														}
@@ -46441,7 +46450,7 @@ styleSheet.flush()
 												},
 												_callee,
 												null,
-												[[2, 44]]
+												[[2, 45]]
 											);
 										})
 									);
@@ -48447,7 +48456,7 @@ styleSheet.flush()
 								submitting: false,
 								fields: {},
 								errors: {},
-								mode: _this.context.formConfig.mode,
+								isTestingForm: _this.context.isTestingForm,
 								submitted: false,
 								selected: false,
 								DonorID: "",
@@ -64229,7 +64238,7 @@ styleSheet.flush()
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "56770" + "/"
+						protocol + "://" + hostname + ":" + "57998" + "/"
 					);
 
 					ws.onmessage = function(event) {

@@ -5,10 +5,10 @@ export const FormConfigContext = React.createContext();
 
 // uses it own reducer to avoid conflicts with other Contexts in use
 const reducer = (state, action) => {
-	const { type, status, formConfig, cssConfig } = action;
+	const { type, status, formConfig, cssConfig, isTestingForm = false } = action;
 	switch (type) {
 		case "INIT_FORM_STATE":
-			return { ...state, status, formConfig, cssConfig };
+			return { ...state, status, formConfig, cssConfig, isTestingForm };
 		case "LOAD_ERROR":
 			return { ...state, status };
 		case "SUBMIT_FORM":
@@ -31,6 +31,7 @@ class FormConfigProvider extends Component {
 		cssConfig: {},
 		submitted: false,
 		confirmed: false,
+		isTestingForm: false,
 		getConfiguration: async ({ rootEntry, formType }) => {
 			// TODO: REDUCE INITIALIZATION OF DATA TO A SINGLE API CALL
 
@@ -43,6 +44,7 @@ class FormConfigProvider extends Component {
 					? rootEntry.dataset.environment.toLowerCase()
 					: null;
 				const formName = rootEntry.dataset.formName;
+				const isTestingForm = rootEntry.dataset.formMode === "testing";
 				let proxyUri = rootEntry.dataset.rest;
 				const isLocal = generator && generator.includes("local");
 				const isDrupal = generator && generator.includes("drupal");
@@ -109,6 +111,7 @@ class FormConfigProvider extends Component {
 							formConfig,
 							cssConfig,
 							status: "loaded",
+							isTestingForm,
 						})
 					);
 				} else {
