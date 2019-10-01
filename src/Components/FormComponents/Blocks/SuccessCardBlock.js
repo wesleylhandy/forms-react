@@ -21,7 +21,8 @@ const SuccessCardBlock = ({
 						style={{ marginBottom: 60, padding: "0 10px" }}
 					>
 						When you join The 700 Club, you will receive an email to video
-						stream <em>{premiumTitle}</em> by Pat Robertson.
+						stream <em dangerouslySetInnerHTML={{ __html: premiumTitle }} /> by
+						Pat Robertson.
 					</div>
 				</div>
 			</Card>
@@ -40,7 +41,14 @@ const SuccessCardBlock = ({
 					>
 						Get the latest reports about how your donations are making an impact
 						throughout the world and stay up-to-date with CBN.com{" "}
-						<a href="">View Email Updates</a>
+						<a
+							className="disabled"
+							tabIndex="-1"
+							role="button"
+							aria-disabled="true"
+						>
+							View Email Updates
+						</a>
 					</div>
 				</div>
 			</Card>

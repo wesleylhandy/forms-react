@@ -7,7 +7,6 @@ const BlockContainer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	cursor: pointer;
 	a {
 		color: #009bdf;
 		cursor: pointer;

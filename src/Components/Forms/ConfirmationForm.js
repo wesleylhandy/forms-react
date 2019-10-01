@@ -562,8 +562,25 @@ class ConfirmationForm extends Component {
 						<Seals style={{ marginTop: "0" }} />
 						<Disclaimer>
 							If you experience a problem with this transaction, send a message
-							to <a href="mailto:partners@cbn.org">partners@cbn.org</a> or call{" "}
-							<a href="tel:18002891777">1-800-289-1777</a>.
+							to{" "}
+							<a
+								className="disabled"
+								tabIndex="-1"
+								role="button"
+								aria-disabled="true"
+							>
+								partners@cbn.org
+							</a>{" "}
+							or call{" "}
+							<a
+								className="disabled"
+								tabIndex="-1"
+								role="button"
+								aria-disabled="true"
+							>
+								1-800-289-1777
+							</a>
+							.
 						</Disclaimer>
 					</SealsSection>
 					<FooterBlock />

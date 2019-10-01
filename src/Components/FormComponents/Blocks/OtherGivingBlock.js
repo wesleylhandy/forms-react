@@ -17,7 +17,14 @@ const OtherGivingBlock = () => {
 					<h4 className="card__title">Give By Phone</h4>
 					<div className="card__body">
 						<div className="phone">
-							<a href="tel:18007007000">1-800-700-7000</a>
+							<a
+								className="disabled"
+								tabIndex="-1"
+								role="button"
+								aria-disabled="true"
+							>
+								1-800-700-7000
+							</a>
 						</div>
 						<div className="phone--info">
 							Donate by phone or get assistance with your donation.
@@ -35,7 +42,12 @@ const OtherGivingBlock = () => {
 					<div className="card__body">
 						<div className="mail-in-form">
 							To donate by check or to a specific cause, please complete this{" "}
-							<a href="https://www.cbn.com/giving/700club/option.aspx?o=4">
+							<a
+								className="disabled"
+								tabIndex="-1"
+								role="button"
+								aria-disabled="true"
+							>
 								donation form
 							</a>{" "}
 							by printing and mailing to:
@@ -57,38 +69,53 @@ const OtherGivingBlock = () => {
 					linkTextDecoration={linkTextDecoration}
 					linkHoverTextDecoration={linkHoverTextDecoration}
 				>
-					<h4 className="card__title">Some Title</h4>
+					<h4 className="card__title">More Ways To Give</h4>
 					<div className="card__body">
 						<a
-							className="giving-links"
-							href="https://www.cbn.com/giving/700club/pledgeExpress.aspx"
+							className="giving-links disabled"
+							tabIndex="-1"
+							role="button"
+							aria-disabled="true"
 						>
 							Pledge Giving
 						</a>
-						<a className="giving-links" href="http://www.cbnlegacy.org/">
+						<a
+							className="giving-links disabled"
+							tabIndex="-1"
+							role="button"
+							aria-disabled="true"
+						>
 							Planned Giving & Your Legacy
 						</a>
 						<a
-							className="giving-links"
-							href="https://www.cbn.com/giving/livingtributes/"
+							className="giving-links disabled"
+							tabIndex="-1"
+							role="button"
+							aria-disabled="true"
 						>
 							Memorial & Tribute Gifts
 						</a>
 						<a
-							className="giving-links"
-							href="https://www.cbn.com/partners/matchinggifts.aspx"
+							className="giving-links disabled"
+							tabIndex="-1"
+							role="button"
+							aria-disabled="true"
 						>
 							Employer Matching
 						</a>
 						<a
-							className="giving-links"
-							href="https://www.cbn.com/giving/700club/stockgifts.aspx"
+							className="giving-links disabled"
+							tabIndex="-1"
+							role="button"
+							aria-disabled="true"
 						>
 							Stock Gifts
 						</a>
 						<a
-							className="giving-links"
-							href="https://www.cbn.com/giving/700club/workplacegiving.aspx"
+							className="giving-links disabled"
+							tabIndex="-1"
+							role="button"
+							aria-disabled="true"
 						>
 							Workplace Giving
 						</a>

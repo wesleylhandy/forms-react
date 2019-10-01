@@ -2241,7 +2241,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 										(0, _core.jsx)(
 											"a",
 											{
-												href: "tel:18007007000",
+												className: "disabled",
+												tabIndex: "-1",
+												role: "button",
+												"aria-disabled": "true",
 											},
 											"1-800-700-7000"
 										)
@@ -2286,8 +2289,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 										(0, _core.jsx)(
 											"a",
 											{
-												href:
-													"https://www.cbn.com/giving/700club/option.aspx?o=4",
+												className: "disabled",
+												tabIndex: "-1",
+												role: "button",
+												"aria-disabled": "true",
 											},
 											"donation form"
 										),
@@ -2330,7 +2335,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 									{
 										className: "card__title",
 									},
-									"Some Title"
+									"More Ways To Give"
 								),
 								(0, _core.jsx)(
 									"div",
@@ -2340,51 +2345,60 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 									(0, _core.jsx)(
 										"a",
 										{
-											className: "giving-links",
-											href:
-												"https://www.cbn.com/giving/700club/pledgeExpress.aspx",
+											className: "giving-links disabled",
+											tabIndex: "-1",
+											role: "button",
+											"aria-disabled": "true",
 										},
 										"Pledge Giving"
 									),
 									(0, _core.jsx)(
 										"a",
 										{
-											className: "giving-links",
-											href: "http://www.cbnlegacy.org/",
+											className: "giving-links disabled",
+											tabIndex: "-1",
+											role: "button",
+											"aria-disabled": "true",
 										},
 										"Planned Giving & Your Legacy"
 									),
 									(0, _core.jsx)(
 										"a",
 										{
-											className: "giving-links",
-											href: "https://www.cbn.com/giving/livingtributes/",
+											className: "giving-links disabled",
+											tabIndex: "-1",
+											role: "button",
+											"aria-disabled": "true",
 										},
 										"Memorial & Tribute Gifts"
 									),
 									(0, _core.jsx)(
 										"a",
 										{
-											className: "giving-links",
-											href: "https://www.cbn.com/partners/matchinggifts.aspx",
+											className: "giving-links disabled",
+											tabIndex: "-1",
+											role: "button",
+											"aria-disabled": "true",
 										},
 										"Employer Matching"
 									),
 									(0, _core.jsx)(
 										"a",
 										{
-											className: "giving-links",
-											href:
-												"https://www.cbn.com/giving/700club/stockgifts.aspx",
+											className: "giving-links disabled",
+											tabIndex: "-1",
+											role: "button",
+											"aria-disabled": "true",
 										},
 										"Stock Gifts"
 									),
 									(0, _core.jsx)(
 										"a",
 										{
-											className: "giving-links",
-											href:
-												"https://www.cbn.com/giving/700club/workplacegiving.aspx",
+											className: "giving-links disabled",
+											tabIndex: "-1",
+											role: "button",
+											"aria-disabled": "true",
 										},
 										"Workplace Giving"
 									)
@@ -3075,7 +3089,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "57998" + "/"
+						protocol + "://" + hostname + ":" + "56537" + "/"
 					);
 
 					ws.onmessage = function(event) {

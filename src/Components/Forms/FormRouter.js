@@ -72,6 +72,11 @@ const FormRouter = props => {
 								.wrapper {
 									background-color: #eceff1;
 								}
+								a.disabled {
+									cursor: not-allowed !important;
+									text-decoration: none !important;
+									opacity: 0.5 !important;
+								}
 							`}
 						/>
 						<ErrorBoundary>

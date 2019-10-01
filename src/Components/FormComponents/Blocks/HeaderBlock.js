@@ -136,7 +136,15 @@ const HeaderBlock = ({ successTitle, successDescription }) => {
 				<div className="nav-container">
 					<CBNLogo />
 					<span>
-						Give By Phone <a href="tel:18007007000">1-800-700-7000</a>
+						Give By Phone{" "}
+						<a
+							className="disabled"
+							tabIndex="-1"
+							role="button"
+							aria-disabled="true"
+						>
+							1-800-700-7000
+						</a>
 					</span>
 				</div>
 			</Nav>

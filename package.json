@@ -22,7 +22,7 @@
     "author": "Wesley L. Handy, Internet Developer II, The Christian Broadcasting Network, Inc. (Wesley.Handy@cbn.org)",
     "license": "ISC",
     "private": true,
-    "browserslist": "> 1%, last 2 versions",
+    "browserslist": "> 1%, last 2 versions, IE 11",
     "dependencies": {
         "@babel/polyfill": "^7.4.4",
         "@emotion/babel-preset-css-prop": "^10.0.9",

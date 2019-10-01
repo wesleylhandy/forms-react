@@ -75,36 +75,57 @@ const FooterBlock = () => {
 					Network, Inc., A Non-profit 501 (c)(3) Charitable Organization
 				</div>
 				<div className="footer-links">
-					<a className="footer-links--link" href="https://www.cbn.com/">
+					<a
+						className="footer-links--link disabled"
+						tabIndex="-1"
+						role="button"
+						aria-disabled="true"
+					>
 						Home
 					</a>
 					<span className="pipe">|</span>
-					<a className="footer-links--link" href="http://www1.cbn.com/about">
+					<a
+						className="footer-links--link disabled"
+						tabIndex="-1"
+						role="button"
+						aria-disabled="true"
+					>
 						About CBN
 					</a>
 					<span className="pipe">|</span>
 					<a
-						className="footer-links--link"
-						href="http://www1.cbn.com/cbn-donor-privacy-policy"
+						className="footer-links--link disabled"
+						tabIndex="-1"
+						role="button"
+						aria-disabled="true"
 					>
 						Donor Privacy Notice
 					</a>
 					<span className="pipe">|</span>
 					<a
-						className="footer-links--link"
-						href="http://www1.cbn.com/about/cbn.com-privacy-notice"
+						className="footer-links--link disabled"
+						tabIndex="-1"
+						role="button"
+						aria-disabled="true"
 					>
 						CBN.com Privacy Notice
 					</a>
 					<span className="pipe">|</span>
 					<a
-						className="footer-links--link"
-						href="http://www1.cbn.com/terms-of-use"
+						className="footer-links--link disabled"
+						tabIndex="-1"
+						role="button"
+						aria-disabled="true"
 					>
 						Terms of Use
 					</a>
 					<span className="pipe">|</span>
-					<a className="footer-links--link" href="http://www1.cbn.com/contact">
+					<a
+						className="footer-links--link disabled"
+						tabIndex="-1"
+						role="button"
+						aria-disabled="true"
+					>
 						Contact
 					</a>
 				</div>

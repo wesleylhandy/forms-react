@@ -208,7 +208,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 											},
 										},
 										"When you join The 700 Club, you will receive an email to video stream ",
-										(0, _core.jsx)("em", null, premiumTitle),
+										(0, _core.jsx)("em", {
+											dangerouslySetInnerHTML: {
+												__html: premiumTitle,
+											},
+										}),
 										" by Pat Robertson."
 									)
 								)
@@ -248,7 +252,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 										(0, _core.jsx)(
 											"a",
 											{
-												href: "",
+												className: "disabled",
+												tabIndex: "-1",
+												role: "button",
+												"aria-disabled": "true",
 											},
 											"View Email Updates"
 										)
@@ -766,7 +773,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "57998" + "/"
+						protocol + "://" + hostname + ":" + "56537" + "/"
 					);
 
 					ws.onmessage = function(event) {
