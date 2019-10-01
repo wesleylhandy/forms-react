@@ -33,6 +33,7 @@ class GivingFormProvider extends Component {
 		submitting: false,
 		fields: {},
 		errors: {},
+		mode: this.context.formConfig.mode,
 		submitted: false,
 		selected: false,
 		DonorID: "",

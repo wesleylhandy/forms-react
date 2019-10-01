@@ -317,11 +317,57 @@ class ConfirmationForm extends Component {
 
 	handleSubmit = async e => {
 		e.preventDefault();
-		const isValidSubmission = await this.context.submitGivingForm({
-			type: "confirmation",
-		});
-		if (isValidSubmission) {
-			this.setState({ scrolled: false });
+		const { mode } = this.context;
+		console.log({mode})
+		if (mode !== "testing") {
+			const isValidSubmission = await this.context.submitGivingForm({
+				type: "confirmation",
+			});
+			if (isValidSubmission) {
+				this.setState({ scrolled: false });
+			}
+		} else {
+			const {
+				ccNumber,
+				ExpiresYear,
+				ExpiresMonth,
+				cvnCode,
+			} = this.context.fields;
+
+			let ccChecked;
+			if (ccNumber) {
+				switch (parseInt(ccNumber.slice(0, 1))) {
+					case 4:
+						ccChecked = "001";
+						break;
+					case 5:
+						ccChecked = "002";
+						break;
+					case 3:
+						ccChecked = "003";
+						break;
+					case 6:
+						ccChecked = "004";
+						break;
+				}
+			}
+			const isValid = checkValues(
+				ccChecked,
+				ccNumber,
+				ExpiresMonth,
+				ExpiresYear,
+				cvnCode
+			);
+			if (isValid.passes) {
+				setTimeout(() => this.context.setConfirmed({
+					type: "CONFIRMED",
+					trackingVars: [{om_sMonthlyPledge: this.context.cart.items[0].monthly ? "Y" : "N"}],
+				}), Math.round(Math.random() * 3500) + 1500)
+			} else {
+				// handle validation errors
+				const { errors } = isValid;
+				this.context.handleCCErrors({ type: "UPDATE_CC_ERRORS", errors });
+			}
 		}
 	};
 	render() {
