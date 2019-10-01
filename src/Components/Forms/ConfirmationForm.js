@@ -318,7 +318,7 @@ class ConfirmationForm extends Component {
 	handleSubmit = async e => {
 		e.preventDefault();
 		const { mode } = this.context;
-		console.log({mode})
+		console.log({ mode });
 		if (mode !== "testing") {
 			const isValidSubmission = await this.context.submitGivingForm({
 				type: "confirmation",
@@ -359,10 +359,20 @@ class ConfirmationForm extends Component {
 				cvnCode
 			);
 			if (isValid.passes) {
-				setTimeout(() => this.context.setConfirmed({
-					type: "CONFIRMED",
-					trackingVars: [{om_sMonthlyPledge: this.context.cart.items[0].monthly ? "Y" : "N"}],
-				}), Math.round(Math.random() * 3500) + 1500)
+				setTimeout(
+					() =>
+						this.context.setConfirmed({
+							type: "CONFIRMED",
+							trackingVars: [
+								{
+									om_sMonthlyPledge: this.context.cart.items[0].monthly
+										? "Y"
+										: "N",
+								},
+							],
+						}),
+					Math.round(Math.random() * 3500) + 1500
+				);
 			} else {
 				// handle validation errors
 				const { errors } = isValid;
