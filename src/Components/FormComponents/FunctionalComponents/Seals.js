@@ -69,7 +69,7 @@ const DigiCert = memo(() => {
 
 const Seals = ({ style = {} }) => {
 	const [loaded, setLoaded] = useState(false);
-	const digicertScript = document.querySelector("script[src='seal']");
+	const digicertScript = document.querySelector("script[src*='seal.min.js']");
 
 	const onLoad = () => {
 		if (!loaded) {
