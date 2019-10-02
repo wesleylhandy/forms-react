@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from "react";
+import React, { memo, createRef } from "react";
 import styled from "@emotion/styled";
 
 const SealsBlock = styled.section`
@@ -46,18 +46,22 @@ const certs = {
 const DigiCert = memo(() => {
 	const { origin } = window.location;
 	const cert = certs[origin];
+	const digicertSeal = React.createRef();
 	return (
 		cert && (
-			<div id={cert.id} data-language="en" className="seals__seal">
-				<div>
-					<a
-						className="seals__seal--link"
-						href={cert.href}
-						aria-label="Digicert Seal"
-					>
-						{/* DigiCert.com */}
-					</a>
-				</div>
+			<div
+				id={cert.id}
+				data-language="en"
+				className="seals__seal"
+				ref={digicertSeal}
+			>
+				<a
+					className="seals__seal--link"
+					href={cert.href}
+					aria-label="Digicert Seal"
+				>
+					{/* DigiCert.com */}
+				</a>
 			</div>
 		)
 	);
