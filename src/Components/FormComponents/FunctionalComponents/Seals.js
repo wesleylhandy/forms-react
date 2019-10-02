@@ -45,7 +45,7 @@ const certs = {
 
 const DigiCert = memo(() => {
 	const { origin } = window.location;
-	const cert = true //certs[origin];
+	const cert = certs[origin];
 	return (
 		cert && (
 			<div id={cert.id} data-language="en" className="seals__seal">

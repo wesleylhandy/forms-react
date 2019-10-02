@@ -197,7 +197,28 @@ class GivingFormProvider extends Component {
 
 				this.setState(
 					state => reducer(state, action),
-					() => {
+					async () => {
+						if (name === "ExpiresYear" || name === "ExpiresMonth") {
+							let validationName = name === "ExpiresYear" ? "ExpiresMonth" : "ExpiresYear";
+							let error = await validateInput(
+								false,
+								validationName, 
+								this.state.fields[validationName], 
+								true, 
+								getHonorific, 
+								allowInternational, 
+								this.state.fields.ShipToYes,
+								this.state.fields.ccNumber,
+								this.state.fields.ExpiresMonth,
+								this.state.fields.ExpiresYear
+							)
+							this.setState(state => reducer(state, {
+								type: "UPDATE_FIELD",
+								name: validationName,
+								value: this.state.fields[validationName],
+								error
+							}))
+						}
 						if (name == "Country" && value != "United States") {
 							let action = {
 								type: "UPDATE_FIELDS",
@@ -254,7 +275,7 @@ class GivingFormProvider extends Component {
 				this.setState(
 					state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
 					async () => {
-						if (type !== "confirmation") {
+						if (type !== "confirmation" && type !== "testing") {
 							const isValidGift = this.validateGift();
 							if (!isValidGift) {
 								return this.setState(
@@ -443,6 +464,12 @@ class GivingFormProvider extends Component {
 									);
 								}
 							);
+						}
+						if (type === "testing") {
+							return this.setState(
+								state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+								() => resolve(true)
+							)
 						}
 						const {
 							Address1,

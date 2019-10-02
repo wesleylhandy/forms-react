@@ -37778,12 +37778,12 @@ function (_Component) {
       validateAndUpdateField: function () {
         var _validateAndUpdateField = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee3(action) {
+        _regenerator.default.mark(function _callee4(action) {
           var name, isZip, value, _this$context, getHonorific, allowInternational;
 
-          return _regenerator.default.wrap(function _callee3$(_context3) {
+          return _regenerator.default.wrap(function _callee4$(_context4) {
             while (1) {
-              switch (_context3.prev = _context3.next) {
+              switch (_context4.prev = _context4.next) {
                 case 0:
                   name = action.name;
                   isZip = name.includes("Zip");
@@ -37791,7 +37791,7 @@ function (_Component) {
                   action.value = value;
 
                   if (!isZip) {
-                    _context3.next = 8;
+                    _context4.next = 8;
                     break;
                   }
 
@@ -37884,77 +37884,114 @@ function (_Component) {
                     }, _callee2, null, [[5, 14]]);
                   })));
 
-                  _context3.next = 13;
+                  _context4.next = 13;
                   break;
 
                 case 8:
                   _this$context = _this.context, getHonorific = _this$context.getHonorific, allowInternational = _this$context.allowInternational;
-                  _context3.next = 11;
+                  _context4.next = 11;
                   return (0, _validators.validateInput)(false, name, value, true, getHonorific, allowInternational, _this.state.fields.ShipToYes, _this.state.fields.ccNumber, _this.state.fields.ExpiresMonth, _this.state.fields.ExpiresYear);
 
                 case 11:
-                  action.error = _context3.sent;
+                  action.error = _context4.sent;
 
                   _this.setState(function (state) {
                     return (0, _reducer.default)(state, action);
-                  }, function () {
-                    if (name == "Country" && value != "United States") {
-                      var _action = {
-                        type: "UPDATE_FIELDS",
-                        fields: [{
-                          name: "State",
-                          value: "00",
-                          error: ""
-                        }, {
-                          name: "Phone",
-                          value: "",
-                          error: ""
-                        }, {
-                          name: "Zip",
-                          value: "NA",
-                          error: ""
-                        }]
-                      };
-                      setTimeout(function () {
-                        return _this.setState(function (state) {
-                          return (0, _reducer.default)(state, _action);
-                        });
-                      }, 1000);
-                    }
+                  },
+                  /*#__PURE__*/
+                  (0, _asyncToGenerator2.default)(
+                  /*#__PURE__*/
+                  _regenerator.default.mark(function _callee3() {
+                    var validationName, error, _action, _this$state$fields2, State, Zip;
 
-                    if (name == "Country" && value == "United States") {
-                      var _this$state$fields2 = _this.state.fields,
-                          State = _this$state$fields2.State,
-                          Zip = _this$state$fields2.Zip;
+                    return _regenerator.default.wrap(function _callee3$(_context3) {
+                      while (1) {
+                        switch (_context3.prev = _context3.next) {
+                          case 0:
+                            if (!(name === "ExpiresYear" || name === "ExpiresMonth")) {
+                              _context3.next = 6;
+                              break;
+                            }
 
-                      if (State == "00") {
-                        _this.setState(function (state) {
-                          return (0, _reducer.default)(state, {
-                            type: "UPDATE_FIELD",
-                            name: "State",
-                            value: ""
-                          });
-                        });
+                            validationName = name === "ExpiresYear" ? "ExpiresMonth" : "ExpiresYear";
+                            _context3.next = 4;
+                            return (0, _validators.validateInput)(false, validationName, _this.state.fields[validationName], true, getHonorific, allowInternational, _this.state.fields.ShipToYes, _this.state.fields.ccNumber, _this.state.fields.ExpiresMonth, _this.state.fields.ExpiresYear);
+
+                          case 4:
+                            error = _context3.sent;
+
+                            _this.setState(function (state) {
+                              return (0, _reducer.default)(state, {
+                                type: "UPDATE_FIELD",
+                                name: validationName,
+                                value: _this.state.fields[validationName],
+                                error: error
+                              });
+                            });
+
+                          case 6:
+                            if (name == "Country" && value != "United States") {
+                              _action = {
+                                type: "UPDATE_FIELDS",
+                                fields: [{
+                                  name: "State",
+                                  value: "00",
+                                  error: ""
+                                }, {
+                                  name: "Phone",
+                                  value: "",
+                                  error: ""
+                                }, {
+                                  name: "Zip",
+                                  value: "NA",
+                                  error: ""
+                                }]
+                              };
+                              setTimeout(function () {
+                                return _this.setState(function (state) {
+                                  return (0, _reducer.default)(state, _action);
+                                });
+                              }, 1000);
+                            }
+
+                            if (name == "Country" && value == "United States") {
+                              _this$state$fields2 = _this.state.fields, State = _this$state$fields2.State, Zip = _this$state$fields2.Zip;
+
+                              if (State == "00") {
+                                _this.setState(function (state) {
+                                  return (0, _reducer.default)(state, {
+                                    type: "UPDATE_FIELD",
+                                    name: "State",
+                                    value: ""
+                                  });
+                                });
+                              }
+
+                              if (Zip == "NA") {
+                                _this.setState(function (state) {
+                                  return (0, _reducer.default)(state, {
+                                    type: "UPDATE_FIELD",
+                                    name: "Zip",
+                                    value: ""
+                                  });
+                                });
+                              }
+                            }
+
+                          case 8:
+                          case "end":
+                            return _context3.stop();
+                        }
                       }
-
-                      if (Zip == "NA") {
-                        _this.setState(function (state) {
-                          return (0, _reducer.default)(state, {
-                            type: "UPDATE_FIELD",
-                            name: "Zip",
-                            value: ""
-                          });
-                        });
-                      }
-                    }
-                  });
+                    }, _callee3);
+                  })));
 
                 case 13:
                 case "end":
-                  return _context3.stop();
+                  return _context4.stop();
               }
             }
-          }, _callee3);
+          }, _callee4);
         }));
 
         function validateAndUpdateField(_x3) {
@@ -37966,12 +38003,12 @@ function (_Component) {
       submitGivingForm: function () {
         var _submitGivingForm = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee5(type) {
-          return _regenerator.default.wrap(function _callee5$(_context5) {
+        _regenerator.default.mark(function _callee6(type) {
+          return _regenerator.default.wrap(function _callee6$(_context6) {
             while (1) {
-              switch (_context5.prev = _context5.next) {
+              switch (_context6.prev = _context6.next) {
                 case 0:
-                  return _context5.abrupt("return", new Promise(function (resolve, reject) {
+                  return _context6.abrupt("return", new Promise(function (resolve, reject) {
                     _this.setState(function (state) {
                       return (0, _reducer.default)(state, {
                         type: "TOGGLE_SUBMITTING"
@@ -37980,26 +38017,26 @@ function (_Component) {
                     /*#__PURE__*/
                     (0, _asyncToGenerator2.default)(
                     /*#__PURE__*/
-                    _regenerator.default.mark(function _callee4() {
+                    _regenerator.default.mark(function _callee5() {
                       var isValidGift, isValidForm, action, oldCity, response, zipError, addressError, shipZipError, shipAddressError, fields, fieldNames, i, error, name, _this$context2, getHonorific, allowInternational, Address1, Address2, City, Country, Emailaddress, Firstname, Middlename, Lastname, Spousename, Suffix, State, Title, Zip, ShipToYes, ShipToAddress1, ShipToAddress2, ShipToCity, ShipToState, ShipToZip, ShipToCountry, ShipToName, phone, _this$context$formCon, mode, _this$context$formCon2, EmailSubjectLine, subscriptions, AddContactYN, ActivityName, ContactSource, SectionName, proxy, ClientBrowser, UrlReferer, Phoneareacode, Phoneexchange, Phonenumber, TransactionType, items, pledgeFound, isMonthly, DonationType, IsRecurringCreditCardDonation, Monthlypledgeday, Monthlypledgeamount, Singledonationamount, ShipTo, multipleDonations, MultipleDonations, MotivationText, data, msg, DonorID, confirmUrl, confirmationData, message, _getErrorType, breaking, _name;
 
-                      return _regenerator.default.wrap(function _callee4$(_context4) {
+                      return _regenerator.default.wrap(function _callee5$(_context5) {
                         while (1) {
-                          switch (_context4.prev = _context4.next) {
+                          switch (_context5.prev = _context5.next) {
                             case 0:
-                              if (!(type !== "confirmation")) {
-                                _context4.next = 4;
+                              if (!(type !== "confirmation" && type !== "testing")) {
+                                _context5.next = 4;
                                 break;
                               }
 
                               isValidGift = _this.validateGift();
 
                               if (isValidGift) {
-                                _context4.next = 4;
+                                _context5.next = 4;
                                 break;
                               }
 
-                              return _context4.abrupt("return", _this.setState(function (state) {
+                              return _context5.abrupt("return", _this.setState(function (state) {
                                 return (0, _reducer.default)(state, {
                                   type: "TOGGLE_SUBMITTING"
                                 });
@@ -38018,17 +38055,17 @@ function (_Component) {
                               isValidForm = true, action = {};
 
                               if (!(_this.state.fields.Country == "United States")) {
-                                _context4.next = 58;
+                                _context5.next = 58;
                                 break;
                               }
 
-                              _context4.prev = 6;
+                              _context5.prev = 6;
                               oldCity = _this.state.fields.City.toUpperCase();
-                              _context4.next = 10;
+                              _context5.next = 10;
                               return (0, _validators.callZipCityStateService)("Zip", _this.state.fields.Zip, oldCity);
 
                             case 10:
-                              response = _context4.sent;
+                              response = _context5.sent;
 
                               if (response.action) {
                                 _this.setState(function (state) {
@@ -38039,40 +38076,40 @@ function (_Component) {
                               zipError = response.error;
 
                               if (zipError) {
-                                _context4.next = 24;
+                                _context5.next = 24;
                                 break;
                               }
 
-                              _context4.prev = 14;
-                              _context4.next = 17;
+                              _context5.prev = 14;
+                              _context5.next = 17;
                               return (0, _validators.callAddressVerification)(_this.state.fields["Address1"], _this.state.fields["Address2"], _this.state.fields["City"], _this.state.fields["State"], _this.state.fields["Zip"]);
 
                             case 17:
-                              addressError = _context4.sent;
-                              _context4.next = 24;
+                              addressError = _context5.sent;
+                              _context5.next = 24;
                               break;
 
                             case 20:
-                              _context4.prev = 20;
-                              _context4.t0 = _context4["catch"](14);
+                              _context5.prev = 20;
+                              _context5.t0 = _context5["catch"](14);
                               console.log("AddressVerificationError");
                               console.error({
-                                err: _context4.t0
+                                err: _context5.t0
                               });
 
                             case 24:
                               if (!(_this.state.fields["ShipToZip"] && _this.state.fields.ShipToYes)) {
-                                _context4.next = 38;
+                                _context5.next = 38;
                                 break;
                               }
 
-                              _context4.prev = 25;
+                              _context5.prev = 25;
                               oldCity = _this.state.fields.ShipToCity.toUpperCase();
-                              _context4.next = 29;
+                              _context5.next = 29;
                               return (0, _validators.callZipCityStateService)("ShipToZip", _this.state.fields.ShipToZip, oldCity);
 
                             case 29:
-                              response = _context4.sent;
+                              response = _context5.sent;
 
                               if (response.action) {
                                 _this.setState(function (state) {
@@ -38081,38 +38118,38 @@ function (_Component) {
                               }
 
                               shipZipError = response.error;
-                              _context4.next = 38;
+                              _context5.next = 38;
                               break;
 
                             case 34:
-                              _context4.prev = 34;
-                              _context4.t1 = _context4["catch"](25);
+                              _context5.prev = 34;
+                              _context5.t1 = _context5["catch"](25);
                               console.log("CSZValidationError__SHIPPING");
                               console.error({
-                                err: _context4.t1
+                                err: _context5.t1
                               });
 
                             case 38:
                               if (!(!shipZipError && _this.state.fields.ShipToYes)) {
-                                _context4.next = 49;
+                                _context5.next = 49;
                                 break;
                               }
 
-                              _context4.prev = 39;
-                              _context4.next = 42;
+                              _context5.prev = 39;
+                              _context5.next = 42;
                               return (0, _validators.callAddressVerification)(_this.state.fields["ShipToAddress1"], _this.state.fields["ShipToAddress2"], _this.state.fields["ShipToCity"], _this.state.fields["ShipToState"], _this.state.fields["ShipToZip"]);
 
                             case 42:
-                              shipAddressError = _context4.sent;
-                              _context4.next = 49;
+                              shipAddressError = _context5.sent;
+                              _context5.next = 49;
                               break;
 
                             case 45:
-                              _context4.prev = 45;
-                              _context4.t2 = _context4["catch"](39);
+                              _context5.prev = 45;
+                              _context5.t2 = _context5["catch"](39);
                               console.log("AddressVerificationError__SHIPPING");
                               console.error({
-                                err: _context4.t2
+                                err: _context5.t2
                               });
 
                             case 49:
@@ -38160,19 +38197,19 @@ function (_Component) {
                                 });
                               }
 
-                              _context4.next = 56;
+                              _context5.next = 56;
                               break;
 
                             case 52:
-                              _context4.prev = 52;
-                              _context4.t3 = _context4["catch"](6);
+                              _context5.prev = 52;
+                              _context5.t3 = _context5["catch"](6);
                               console.log("CSZValidationError");
                               console.error({
-                                err: _context4.t3
+                                err: _context5.t3
                               });
 
                             case 56:
-                              _context4.next = 60;
+                              _context5.next = 60;
                               break;
 
                             case 58:
@@ -38223,11 +38260,11 @@ function (_Component) {
                               }
 
                               if (isValidForm) {
-                                _context4.next = 66;
+                                _context5.next = 66;
                                 break;
                               }
 
-                              return _context4.abrupt("return", _this.setState(function (state) {
+                              return _context5.abrupt("return", _this.setState(function (state) {
                                 return (0, _reducer.default)(state, {
                                   type: "TOGGLE_SUBMITTING"
                                 });
@@ -38238,6 +38275,20 @@ function (_Component) {
                               }));
 
                             case 66:
+                              if (!(type === "testing")) {
+                                _context5.next = 68;
+                                break;
+                              }
+
+                              return _context5.abrupt("return", _this.setState(function (state) {
+                                return (0, _reducer.default)(state, {
+                                  type: "TOGGLE_SUBMITTING"
+                                });
+                              }, function () {
+                                return resolve(true);
+                              }));
+
+                            case 68:
                               Address1 = fields.Address1, Address2 = fields.Address2, City = fields.City, Country = fields.Country, Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Middlename = fields.Middlename, Lastname = fields.Lastname, Spousename = fields.Spousename, Suffix = fields.Suffix, State = fields.State, Title = fields.Title, Zip = fields.Zip, ShipToYes = fields.ShipToYes, ShipToAddress1 = fields.ShipToAddress1, ShipToAddress2 = fields.ShipToAddress2, ShipToCity = fields.ShipToCity, ShipToState = fields.ShipToState, ShipToZip = fields.ShipToZip, ShipToCountry = fields.ShipToCountry, ShipToName = fields.ShipToName, phone = fields.phone;
                               _this$context$formCon = _this.context.formConfig, mode = _this$context$formCon.mode, _this$context$formCon2 = _this$context$formCon.EmailSubjectLine, EmailSubjectLine = _this$context$formCon2 === void 0 ? "Thank You for Your Contribution" : _this$context$formCon2, subscriptions = _this$context$formCon.subscriptions, AddContactYN = _this$context$formCon.AddContactYN, ActivityName = _this$context$formCon.ActivityName, ContactSource = _this$context$formCon.ContactSource, SectionName = _this$context$formCon.SectionName, proxy = _this$context$formCon.proxy;
                               ClientBrowser = window && window.navigator ? window.navigator.userAgent : "";
@@ -38268,12 +38319,12 @@ function (_Component) {
                               ShipTo = ShipToYes === true ? "Yes" : "No";
 
                               multipleDonations = function multipleDonations() {
-                                return items.map(function (_ref3, index) {
-                                  var DetailName = _ref3.DetailName,
-                                      DetailDescription = _ref3.DetailDescription,
-                                      DetailCprojCredit = _ref3.DetailCprojCredit,
-                                      DetailCprojMail = _ref3.DetailCprojMail,
-                                      PledgeAmount = _ref3.PledgeAmount;
+                                return items.map(function (_ref4, index) {
+                                  var DetailName = _ref4.DetailName,
+                                      DetailDescription = _ref4.DetailDescription,
+                                      DetailCprojCredit = _ref4.DetailCprojCredit,
+                                      DetailCprojMail = _ref4.DetailCprojMail,
+                                      PledgeAmount = _ref4.PledgeAmount;
 
                                   if (index === pledgeFound && Object.keys(_this.state.designationInfo).length && !(isMonthly && !_this.state.allowMonthlyDesignations)) {
                                     DetailName = (isMonthly ? "MP" : "SG") + _this.state.designationInfo.DetailName;
@@ -38344,8 +38395,8 @@ function (_Component) {
                                 });
                               }
 
-                              _context4.prev = 88;
-                              _context4.next = 91;
+                              _context5.prev = 90;
+                              _context5.next = 93;
                               return (0, _fetchHelpers.callApi)(proxy, {
                                 method: "POST",
                                 mode: "cors",
@@ -38355,8 +38406,8 @@ function (_Component) {
                                 body: JSON.stringify(data)
                               });
 
-                            case 91:
-                              msg = _context4.sent;
+                            case 93:
+                              msg = _context5.sent;
                               DonorID = msg.split(";")[0].split(" - ")[1];
                               confirmUrl = msg.split(" is ")[1];
                               data.DonorID = DonorID;
@@ -38391,14 +38442,14 @@ function (_Component) {
                                 });
                               });
 
-                              _context4.next = 106;
+                              _context5.next = 108;
                               break;
 
-                            case 99:
-                              _context4.prev = 99;
-                              _context4.t4 = _context4["catch"](88);
-                              console.error(_context4.t4.message);
-                              message = _context4.t4.message;
+                            case 101:
+                              _context5.prev = 101;
+                              _context5.t4 = _context5["catch"](90);
+                              console.error(_context5.t4.message);
+                              message = _context5.t4.message;
                               _getErrorType = (0, _errorTypes.getErrorType)(message), breaking = _getErrorType.breaking, _name = _getErrorType.name; // console.log({breaking, name})
 
                               if (breaking) {
@@ -38420,21 +38471,21 @@ function (_Component) {
                                 });
                               }, resolve(false));
 
-                            case 106:
+                            case 108:
                             case "end":
-                              return _context4.stop();
+                              return _context5.stop();
                           }
                         }
-                      }, _callee4, null, [[6, 52], [14, 20], [25, 34], [39, 45], [88, 99]]);
+                      }, _callee5, null, [[6, 52], [14, 20], [25, 34], [39, 45], [90, 101]]);
                     })));
                   }));
 
                 case 1:
                 case "end":
-                  return _context5.stop();
+                  return _context6.stop();
               }
             }
-          }, _callee5);
+          }, _callee6);
         }));
 
         function submitGivingForm(_x4) {
@@ -38510,27 +38561,27 @@ function (_Component) {
       getGlobals: function () {
         var _getGlobals = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee6() {
-          var isSecure, url, _ref4, devServicesUri, preProdServicesUri, prodServicesUri, devReceiptUri, preProdReceiptUri, prodReceiptUri, action;
+        _regenerator.default.mark(function _callee7() {
+          var isSecure, url, _ref5, devServicesUri, preProdServicesUri, prodServicesUri, devReceiptUri, preProdReceiptUri, prodReceiptUri, action;
 
-          return _regenerator.default.wrap(function _callee6$(_context6) {
+          return _regenerator.default.wrap(function _callee7$(_context7) {
             while (1) {
-              switch (_context6.prev = _context6.next) {
+              switch (_context7.prev = _context7.next) {
                 case 0:
                   isSecure = window.location.protocol == "https:";
                   url = !isSecure ? "http://securegiving.cbn.local/UI/globals/form-config.json" : "https://securegiving.cbn.com/UI/globals/form-config.json";
-                  _context6.prev = 2;
-                  _context6.next = 5;
+                  _context7.prev = 2;
+                  _context7.next = 5;
                   return (0, _fetchHelpers.callApi)(url);
 
                 case 5:
-                  _ref4 = _context6.sent;
-                  devServicesUri = _ref4.devServicesUri;
-                  preProdServicesUri = _ref4.preProdServicesUri;
-                  prodServicesUri = _ref4.prodServicesUri;
-                  devReceiptUri = _ref4.devReceiptUri;
-                  preProdReceiptUri = _ref4.preProdReceiptUri;
-                  prodReceiptUri = _ref4.prodReceiptUri;
+                  _ref5 = _context7.sent;
+                  devServicesUri = _ref5.devServicesUri;
+                  preProdServicesUri = _ref5.preProdServicesUri;
+                  prodServicesUri = _ref5.prodServicesUri;
+                  devReceiptUri = _ref5.devReceiptUri;
+                  preProdReceiptUri = _ref5.preProdReceiptUri;
+                  prodReceiptUri = _ref5.prodReceiptUri;
                   action = {
                     type: "GLOBAL_URIS",
                     msgUris: [devServicesUri, preProdServicesUri, prodServicesUri, devReceiptUri, preProdReceiptUri, prodReceiptUri]
@@ -38540,22 +38591,22 @@ function (_Component) {
                     return (0, _reducer.default)(state, action);
                   });
 
-                  return _context6.abrupt("return", true);
+                  return _context7.abrupt("return", true);
 
                 case 17:
-                  _context6.prev = 17;
-                  _context6.t0 = _context6["catch"](2);
+                  _context7.prev = 17;
+                  _context7.t0 = _context7["catch"](2);
                   console.error({
-                    err: _context6.t0
+                    err: _context7.t0
                   });
-                  throw new Error(_context6.t0);
+                  throw new Error(_context7.t0);
 
                 case 21:
                 case "end":
-                  return _context6.stop();
+                  return _context7.stop();
               }
             }
-          }, _callee6, null, [[2, 17]]);
+          }, _callee7, null, [[2, 17]]);
         }));
 
         function getGlobals() {
@@ -46463,7 +46514,7 @@ var SealsBlock = (0, _styledBase.default)("section", {
 } : {
   name: "ggw6lv",
   styles: "box-sizing:border-box;margin:20px auto;padding:0;width:100%;max-width:680px;display:flex;flex-direction:row;justify-content:center;align-items:center;.seals__seal{box-sizing:border-box;display:block;padding:0;margin:0;width:100%;text-align:center;a.seals__seal--link,img.seals__seal-img{box-shadow:none !important;text-decoration:none !important;}}@media screen and (max-width:550px){flex-wrap:wrap;.seals__seal{margin-top:20px;}}",
-  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlNlYWxzLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdpQyIsImZpbGUiOiJTZWFscy5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyBtZW1vLCB1c2VNZW1vIH0gZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgU2VhbHNCbG9jayA9IHN0eWxlZC5zZWN0aW9uYFxuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRtYXJnaW46IDIwcHggYXV0bztcblx0cGFkZGluZzogMDtcblx0d2lkdGg6IDEwMCU7XG5cdG1heC13aWR0aDogNjgwcHg7XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHQuc2VhbHNfX3NlYWwge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0cGFkZGluZzogMDtcblx0XHRtYXJnaW46IDA7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdGEuc2VhbHNfX3NlYWwtLWxpbmssXG5cdFx0aW1nLnNlYWxzX19zZWFsLWltZyB7XG5cdFx0XHRib3gtc2hhZG93OiBub25lICFpbXBvcnRhbnQ7XG5cdFx0XHR0ZXh0LWRlY29yYXRpb246IG5vbmUgIWltcG9ydGFudDtcblx0XHR9XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNTUwcHgpIHtcblx0XHRmbGV4LXdyYXA6IHdyYXA7XG5cdFx0LnNlYWxzX19zZWFsIHtcblx0XHRcdG1hcmdpbi10b3A6IDIwcHg7XG5cdFx0fVxuXHR9XG5gO1xuXG5jb25zdCBjZXJ0cyA9IHtcblx0XCJodHRwczovL3d3dy5jYm4uY29tXCI6IHtcblx0XHRpZDogXCJEaWdpQ2VydENsaWNrSURfUlhEUVhST0ZcIixcblx0XHRocmVmOiBcImh0dHBzOi8vd3d3LmRpZ2ljZXJ0LmNvbS9ldi1tdWx0aS1kb21haW4tc3NsLmh0bVwiLFxuXHR9LFxuXHRcImh0dHBzOi8vaW1wYWN0LmNibi5jb21cIjoge1xuXHRcdGlkOiBcIkRpZ2lDZXJ0Q2xpY2tJRF82ZGR4Qmd5QlwiLFxuXHRcdGhyZWY6IFwiaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL3NzbC1jZXJ0aWZpY2F0ZS5odG1cIixcblx0fSxcbn07XG5cbmNvbnN0IERpZ2lDZXJ0ID0gbWVtbygoKSA9PiB7XG5cdGNvbnN0IHsgb3JpZ2luIH0gPSB3aW5kb3cubG9jYXRpb247XG5cdGNvbnN0IGNlcnQgPSB0cnVlIC8vY2VydHNbb3JpZ2luXTtcblx0cmV0dXJuIChcblx0XHRjZXJ0ICYmIChcblx0XHRcdDxkaXYgaWQ9e2NlcnQuaWR9IGRhdGEtbGFuZ3VhZ2U9XCJlblwiIGNsYXNzTmFtZT1cInNlYWxzX19zZWFsXCI+XG5cdFx0XHRcdDxkaXY+XG5cdFx0XHRcdFx0PGFcblx0XHRcdFx0XHRcdGNsYXNzTmFtZT1cInNlYWxzX19zZWFsLS1saW5rXCJcblx0XHRcdFx0XHRcdGhyZWY9e2NlcnQuaHJlZn1cblx0XHRcdFx0XHRcdGFyaWEtbGFiZWw9XCJEaWdpY2VydCBTZWFsXCJcblx0XHRcdFx0XHQ+XG5cdFx0XHRcdFx0XHR7LyogRGlnaUNlcnQuY29tICovfVxuXHRcdFx0XHRcdDwvYT5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHQ8L2Rpdj5cblx0XHQpXG5cdCk7XG59KTtcblxuY29uc3QgU2VhbHMgPSAoeyBzdHlsZSA9IHt9IH0pID0+IChcblx0PFNlYWxzQmxvY2sgaWQ9XCJzZWFsc1wiIHN0eWxlPXtzdHlsZX0+XG5cdFx0PERpZ2lDZXJ0IC8+XG5cdFx0PGRpdiBpZD1cIkVDRkFfTG9nb1wiIGNsYXNzTmFtZT1cInNlYWxzX19zZWFsXCI+XG5cdFx0XHQ8YVxuXHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC0tbGlua1wiXG5cdFx0XHRcdGhyZWY9XCJodHRwOi8vd3d3LmVjZmEub3JnXCJcblx0XHRcdFx0dGFyZ2V0PVwiX2JsYW5rXCJcblx0XHRcdFx0YXJpYS1sYWJlbD1cIkVDRkEgU2VhbFwiXG5cdFx0XHQ+XG5cdFx0XHRcdDxpbWdcblx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC1pbWdcIlxuXHRcdFx0XHRcdHNyYz1cImh0dHBzOi8vd3d3LmNibi5jb20vc291cmNlL2dpdmluZy9zaGFyZWQvZWNmYS1sb2dvLWJsYWNrdGV4dF9zbS5wbmdcIlxuXHRcdFx0XHRcdGFsdD1cIkVDRkFcIlxuXHRcdFx0XHQvPlxuXHRcdFx0PC9hPlxuXHRcdDwvZGl2PlxuXHQ8L1NlYWxzQmxvY2s+XG4pO1xuXG5leHBvcnQgZGVmYXVsdCBtZW1vKFNlYWxzKTtcbiJdfQ== */"
+  map: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlNlYWxzLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdpQyIsImZpbGUiOiJTZWFscy5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyBtZW1vLCB1c2VNZW1vIH0gZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgU2VhbHNCbG9jayA9IHN0eWxlZC5zZWN0aW9uYFxuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRtYXJnaW46IDIwcHggYXV0bztcblx0cGFkZGluZzogMDtcblx0d2lkdGg6IDEwMCU7XG5cdG1heC13aWR0aDogNjgwcHg7XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHQuc2VhbHNfX3NlYWwge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0cGFkZGluZzogMDtcblx0XHRtYXJnaW46IDA7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdGEuc2VhbHNfX3NlYWwtLWxpbmssXG5cdFx0aW1nLnNlYWxzX19zZWFsLWltZyB7XG5cdFx0XHRib3gtc2hhZG93OiBub25lICFpbXBvcnRhbnQ7XG5cdFx0XHR0ZXh0LWRlY29yYXRpb246IG5vbmUgIWltcG9ydGFudDtcblx0XHR9XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNTUwcHgpIHtcblx0XHRmbGV4LXdyYXA6IHdyYXA7XG5cdFx0LnNlYWxzX19zZWFsIHtcblx0XHRcdG1hcmdpbi10b3A6IDIwcHg7XG5cdFx0fVxuXHR9XG5gO1xuXG5jb25zdCBjZXJ0cyA9IHtcblx0XCJodHRwczovL3d3dy5jYm4uY29tXCI6IHtcblx0XHRpZDogXCJEaWdpQ2VydENsaWNrSURfUlhEUVhST0ZcIixcblx0XHRocmVmOiBcImh0dHBzOi8vd3d3LmRpZ2ljZXJ0LmNvbS9ldi1tdWx0aS1kb21haW4tc3NsLmh0bVwiLFxuXHR9LFxuXHRcImh0dHBzOi8vaW1wYWN0LmNibi5jb21cIjoge1xuXHRcdGlkOiBcIkRpZ2lDZXJ0Q2xpY2tJRF82ZGR4Qmd5QlwiLFxuXHRcdGhyZWY6IFwiaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL3NzbC1jZXJ0aWZpY2F0ZS5odG1cIixcblx0fSxcbn07XG5cbmNvbnN0IERpZ2lDZXJ0ID0gbWVtbygoKSA9PiB7XG5cdGNvbnN0IHsgb3JpZ2luIH0gPSB3aW5kb3cubG9jYXRpb247XG5cdGNvbnN0IGNlcnQgPSBjZXJ0c1tvcmlnaW5dO1xuXHRyZXR1cm4gKFxuXHRcdGNlcnQgJiYgKFxuXHRcdFx0PGRpdiBpZD17Y2VydC5pZH0gZGF0YS1sYW5ndWFnZT1cImVuXCIgY2xhc3NOYW1lPVwic2VhbHNfX3NlYWxcIj5cblx0XHRcdFx0PGRpdj5cblx0XHRcdFx0XHQ8YVxuXHRcdFx0XHRcdFx0Y2xhc3NOYW1lPVwic2VhbHNfX3NlYWwtLWxpbmtcIlxuXHRcdFx0XHRcdFx0aHJlZj17Y2VydC5ocmVmfVxuXHRcdFx0XHRcdFx0YXJpYS1sYWJlbD1cIkRpZ2ljZXJ0IFNlYWxcIlxuXHRcdFx0XHRcdD5cblx0XHRcdFx0XHRcdHsvKiBEaWdpQ2VydC5jb20gKi99XG5cdFx0XHRcdFx0PC9hPlxuXHRcdFx0XHQ8L2Rpdj5cblx0XHRcdDwvZGl2PlxuXHRcdClcblx0KTtcbn0pO1xuXG5jb25zdCBTZWFscyA9ICh7IHN0eWxlID0ge30gfSkgPT4gKFxuXHQ8U2VhbHNCbG9jayBpZD1cInNlYWxzXCIgc3R5bGU9e3N0eWxlfT5cblx0XHQ8RGlnaUNlcnQgLz5cblx0XHQ8ZGl2IGlkPVwiRUNGQV9Mb2dvXCIgY2xhc3NOYW1lPVwic2VhbHNfX3NlYWxcIj5cblx0XHRcdDxhXG5cdFx0XHRcdGNsYXNzTmFtZT1cInNlYWxzX19zZWFsLS1saW5rXCJcblx0XHRcdFx0aHJlZj1cImh0dHA6Ly93d3cuZWNmYS5vcmdcIlxuXHRcdFx0XHR0YXJnZXQ9XCJfYmxhbmtcIlxuXHRcdFx0XHRhcmlhLWxhYmVsPVwiRUNGQSBTZWFsXCJcblx0XHRcdD5cblx0XHRcdFx0PGltZ1xuXHRcdFx0XHRcdGNsYXNzTmFtZT1cInNlYWxzX19zZWFsLWltZ1wiXG5cdFx0XHRcdFx0c3JjPVwiaHR0cHM6Ly93d3cuY2JuLmNvbS9zb3VyY2UvZ2l2aW5nL3NoYXJlZC9lY2ZhLWxvZ28tYmxhY2t0ZXh0X3NtLnBuZ1wiXG5cdFx0XHRcdFx0YWx0PVwiRUNGQVwiXG5cdFx0XHRcdC8+XG5cdFx0XHQ8L2E+XG5cdFx0PC9kaXY+XG5cdDwvU2VhbHNCbG9jaz5cbik7XG5cbmV4cG9ydCBkZWZhdWx0IG1lbW8oU2VhbHMpO1xuIl19 */"
 });
 var certs = {
   "https://www.cbn.com": {
@@ -46477,8 +46528,7 @@ var certs = {
 };
 var DigiCert = (0, _react.memo)(function () {
   var origin = window.location.origin;
-  var cert = true; //certs[origin];
-
+  var cert = certs[origin];
   return cert && (0, _core.jsx)("div", {
     id: cert.id,
     "data-language": "en",
@@ -47713,7 +47763,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63424" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65015" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
