@@ -45,17 +45,19 @@ const certs = {
 
 const DigiCert = memo(() => {
 	const { origin } = window.location;
-	const cert = certs[origin];
+	const cert = true //certs[origin];
 	return (
 		cert && (
 			<div id={cert.id} data-language="en" className="seals__seal">
-				<a
-					className="seals__seal--link"
-					href={cert.href}
-					aria-label="Digicert Seal"
-				>
-					{/* DigiCert.com */}
-				</a>
+				<div>
+					<a
+						className="seals__seal--link"
+						href={cert.href}
+						aria-label="Digicert Seal"
+					>
+						{/* DigiCert.com */}
+					</a>
+				</div>
 			</div>
 		)
 	);
