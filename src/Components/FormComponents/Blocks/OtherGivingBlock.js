@@ -57,7 +57,7 @@ const OtherGivingBlock = () => {
 					linkTextDecoration={linkTextDecoration}
 					linkHoverTextDecoration={linkHoverTextDecoration}
 				>
-					<h4 className="card__title">Some Title</h4>
+					<h4 className="card__title">More Ways To Give</h4>
 					<div className="card__body">
 						<a
 							className="giving-links"

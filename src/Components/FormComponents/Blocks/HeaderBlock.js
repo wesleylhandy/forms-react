@@ -60,6 +60,7 @@ const Header = styled.header`
 
 const Nav = styled.nav`
 	height: 100px;
+	width: 100%;
 	display: flex;
 	justify-content: center;
 	flex-direction: row;

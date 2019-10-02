@@ -40,7 +40,7 @@ const SuccessCardBlock = ({
 					>
 						Get the latest reports about how your donations are making an impact
 						throughout the world and stay up-to-date with CBN.com{" "}
-						<a href="">View Email Updates</a>
+						<a href="https://www.cbn.com/community/af/emailpreferences.aspx" target="_blank">View Email Updates</a>
 					</div>
 				</div>
 			</Card>
