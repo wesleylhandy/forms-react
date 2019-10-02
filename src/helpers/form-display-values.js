@@ -1,3 +1,5 @@
+import { validateCCInput } from "./cc-validation"
+
 /**
  * Takes in name/value pair from controlled input onChange event.
  * Converts value into two different strings, one formatted for display, one with formatting stripped
@@ -12,6 +14,7 @@ const formDisplayValue = (name, value) => {
 	let displayValue = strippedValue;
 	const digits = displayValue ? displayValue.split("") : []; // get just the individual characters without formatting as an array
 	let firstDivision, secondDivision, thirdDivision, fourthDivision; // initialize dividing variable stores
+	let res, error = ""; // init error message for cc validation
 	if (name === "ccNumber") {
 		if (displayValue.length > 4) {
 			switch (digits[0]) {
@@ -25,15 +28,20 @@ const formDisplayValue = (name, value) => {
 						...secondDivision,
 						...thirdDivision,
 					].join("");
-					value = value
+					strippedValue = strippedValue
 						.split("")
 						.slice(0, 15)
 						.join("");
 					// value will be in format of #### ###### ##### for Amex
+					if (strippedValue.length == 15) {
+						res = validateCCInput("ccNumber", strippedValue, strippedValue);
+						error = res.error;
+					} 
 					break;
 				case "4":
 				case "5":
 				case "6":
+				default:
 					firstDivision = [...digits.slice(0, 4)];
 					secondDivision = [" ", ...digits.slice(4, 8)];
 					thirdDivision =
@@ -51,15 +59,13 @@ const formDisplayValue = (name, value) => {
 						.slice(0, 16)
 						.join("");
 					// value will be in format of #### #### #### #### for VI, MC, DS
-					break;
-				default:
-					// only return 16 max digits
-					strippedValue = strippedValue
-						.split("")
-						.slice(0, 16)
-						.join("");
+					if (strippedValue.length == 16) {
+						res = validateCCInput("ccNumber", strippedValue, strippedValue);
+						error = res.error;
+					} 
 					break;
 			}
+			
 		}
 	} else if (name === "phone") {
 		if (displayValue.length > 0) {
@@ -85,7 +91,7 @@ const formDisplayValue = (name, value) => {
 			{
 				name,
 				value: strippedValue,
-				error: "",
+				error,
 			},
 			{
 				name: displayName,
