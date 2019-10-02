@@ -198,25 +198,28 @@ class GivingFormProvider extends Component {
 					state => reducer(state, action),
 					async () => {
 						if (name === "ExpiresYear" || name === "ExpiresMonth") {
-							let validationName = name === "ExpiresYear" ? "ExpiresMonth" : "ExpiresYear";
+							let validationName =
+								name === "ExpiresYear" ? "ExpiresMonth" : "ExpiresYear";
 							let error = await validateInput(
 								false,
-								validationName, 
-								this.state.fields[validationName], 
-								true, 
-								getHonorific, 
-								allowInternational, 
+								validationName,
+								this.state.fields[validationName],
+								true,
+								getHonorific,
+								allowInternational,
 								this.state.fields.ShipToYes,
 								this.state.fields.ccNumber,
 								this.state.fields.ExpiresMonth,
 								this.state.fields.ExpiresYear
-							)
-							this.setState(state => reducer(state, {
-								type: "UPDATE_FIELD",
-								name: validationName,
-								value: this.state.fields[validationName],
-								error
-							}))
+							);
+							this.setState(state =>
+								reducer(state, {
+									type: "UPDATE_FIELD",
+									name: validationName,
+									value: this.state.fields[validationName],
+									error,
+								})
+							);
 						}
 						if (name == "Country" && value != "United States") {
 							let action = {
