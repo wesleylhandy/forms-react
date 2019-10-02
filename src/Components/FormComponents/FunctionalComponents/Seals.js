@@ -1,4 +1,4 @@
-import React, { memo, createRef } from "react";
+import React, { memo, createRef, useEffect, useState } from "react";
 import styled from "@emotion/styled";
 
 const SealsBlock = styled.section`
@@ -46,7 +46,7 @@ const certs = {
 const DigiCert = memo(() => {
 	const { origin } = window.location;
 	const cert = certs[origin];
-	const digicertSeal = React.createRef();
+	const digicertSeal = createRef();
 	return (
 		cert && (
 			<div
@@ -67,24 +67,50 @@ const DigiCert = memo(() => {
 	);
 });
 
-const Seals = ({ style = {} }) => (
-	<SealsBlock id="seals" style={style}>
-		<DigiCert />
-		<div id="ECFA_Logo" className="seals__seal">
-			<a
-				className="seals__seal--link"
-				href="http://www.ecfa.org"
-				target="_blank"
-				aria-label="ECFA Seal"
-			>
-				<img
-					className="seals__seal-img"
-					src="https://www.cbn.com/source/giving/shared/ecfa-logo-blacktext_sm.png"
-					alt="ECFA"
-				/>
-			</a>
-		</div>
-	</SealsBlock>
-);
+const Seals = ({ style = {} }) => {
+	const [loaded, setLoaded] = useState(false);
+	const digicertScript = document.querySelector("script[src='seal']");
+
+	const onLoad = () => {
+		if (!loaded) {
+			setLoaded(true);
+		}
+	};
+
+	useEffect(() => {
+		console.log("Seal Script Effect");
+		if (digicertScript && !loaded) {
+			const newScript = document.createElement("script");
+			newScript.type = digicertScript.type;
+			newScript.src = digicertScript.src;
+			newScript.async = digicertScript.async;
+			newScript.innerHTML = digicertScript.innerHTML;
+			newScript.addEventListener("load", onLoad);
+			digicertScript.remove();
+			document.body.appendChild(newScript);
+			return () => newScript.removeEventListener("load", onLoad);
+		}
+	}, [loaded, digicertScript]);
+
+	return (
+		<SealsBlock id="seals" style={style}>
+			<DigiCert />
+			<div id="ECFA_Logo" className="seals__seal">
+				<a
+					className="seals__seal--link"
+					href="http://www.ecfa.org"
+					target="_blank"
+					aria-label="ECFA Seal"
+				>
+					<img
+						className="seals__seal-img"
+						src="https://www.cbn.com/source/giving/shared/ecfa-logo-blacktext_sm.png"
+						alt="ECFA"
+					/>
+				</a>
+			</div>
+		</SealsBlock>
+	);
+};
 
 export default memo(Seals);
