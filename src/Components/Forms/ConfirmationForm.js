@@ -328,12 +328,12 @@ class ConfirmationForm extends Component {
 			}
 		} else {
 			const isValidSubmission = await this.context.submitGivingForm({
-				type: "testing", 
+				type: "testing",
 			});
 			if (isValidSubmission) {
 				setTimeout(
-					() => this.context.setConfirmed(
-						{
+					() =>
+						this.context.setConfirmed({
 							type: "CONFIRMED",
 							trackingVars: [
 								{
@@ -342,8 +342,7 @@ class ConfirmationForm extends Component {
 										: "N",
 								},
 							],
-						}
-					),
+						}),
 					Math.round(Math.random() * 3500) + 1500
 				);
 			}

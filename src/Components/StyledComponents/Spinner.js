@@ -1,6 +1,19 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+const SpinnerContainer = styled.div`
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	z-index: 10;
+`;
+
 const LoadingSpinner = styled.div`
 	&.loading_spinner {
 		box-sizing: border-box;
@@ -50,16 +63,18 @@ const LoadingSpinner = styled.div`
 
 function Spinner() {
 	return (
-		<LoadingSpinner className="loading_spinner">
-			<img
-				className="loading_spinner__flames"
-				src="//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/cbn-flame-circle.png"
-			/>
-			<img
-				className="loading_spinner__back"
-				src="//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/loader-spinner@3x.png"
-			/>
-		</LoadingSpinner>
+		<SpinnerContainer>
+			<LoadingSpinner className="loading_spinner">
+				<img
+					className="loading_spinner__flames"
+					src="//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/cbn-flame-circle.png"
+				/>
+				<img
+					className="loading_spinner__back"
+					src="//www1.cbn.com/sites/all/themes/cbn_default/images/spinner/loader-spinner@3x.png"
+				/>
+			</LoadingSpinner>
+		</SpinnerContainer>
 	);
 }
 

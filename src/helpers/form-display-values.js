@@ -1,4 +1,4 @@
-import { validateCCInput } from "./cc-validation"
+import { validateCCInput } from "./cc-validation";
 
 /**
  * Takes in name/value pair from controlled input onChange event.
@@ -14,7 +14,8 @@ const formDisplayValue = (name, value) => {
 	let displayValue = strippedValue;
 	const digits = displayValue ? displayValue.split("") : []; // get just the individual characters without formatting as an array
 	let firstDivision, secondDivision, thirdDivision, fourthDivision; // initialize dividing variable stores
-	let res, error = ""; // init error message for cc validation
+	let res,
+		error = ""; // init error message for cc validation
 	if (name === "ccNumber") {
 		if (displayValue.length > 4) {
 			switch (digits[0]) {
@@ -36,7 +37,7 @@ const formDisplayValue = (name, value) => {
 					if (strippedValue.length == 15) {
 						res = validateCCInput("ccNumber", strippedValue, strippedValue);
 						error = res.error;
-					} 
+					}
 					break;
 				case "4":
 				case "5":
@@ -62,10 +63,9 @@ const formDisplayValue = (name, value) => {
 					if (strippedValue.length == 16) {
 						res = validateCCInput("ccNumber", strippedValue, strippedValue);
 						error = res.error;
-					} 
+					}
 					break;
 			}
-			
 		}
 	} else if (name === "phone") {
 		if (displayValue.length > 0) {
