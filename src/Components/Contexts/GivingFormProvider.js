@@ -273,7 +273,7 @@ class GivingFormProvider extends Component {
 				);
 			}
 		},
-		submitGivingForm: async type => {
+		submitGivingForm: async ({ type }) => {
 			return new Promise((resolve, reject) => {
 				this.setState(
 					state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
@@ -469,250 +469,254 @@ class GivingFormProvider extends Component {
 							);
 						}
 						if (type === "testing") {
+							console.log("TESTING - NO DATA PROCESSING OR DATA STORAGE");
 							return this.setState(
 								state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
 								() => resolve(true)
 							);
-						}
-						const {
-							Address1,
-							Address2,
-							City,
-							Country,
-							Emailaddress,
-							Firstname,
-							Middlename,
-							Lastname,
-							Spousename,
-							Suffix,
-							State,
-							Title,
-							Zip,
-							ShipToYes,
-							ShipToAddress1,
-							ShipToAddress2,
-							ShipToCity,
-							ShipToState,
-							ShipToZip,
-							ShipToCountry,
-							ShipToName,
-							phone,
-						} = fields;
-						let {
-							mode,
-							EmailSubjectLine = "Thank You for Your Contribution",
-							subscriptions,
-							AddContactYN,
-							ActivityName,
-							ContactSource,
-							SectionName,
-							proxy,
-						} = this.context.formConfig;
-						const ClientBrowser =
-							window && window.navigator ? window.navigator.userAgent : "";
-						const UrlReferer =
-							window.location.origin + window.location.pathname;
+						} else {
+							console.log("GIVING SERVICES SUBMISSION");
+							const {
+								Address1,
+								Address2,
+								City,
+								Country,
+								Emailaddress,
+								Firstname,
+								Middlename,
+								Lastname,
+								Spousename,
+								Suffix,
+								State,
+								Title,
+								Zip,
+								ShipToYes,
+								ShipToAddress1,
+								ShipToAddress2,
+								ShipToCity,
+								ShipToState,
+								ShipToZip,
+								ShipToCountry,
+								ShipToName,
+								phone,
+							} = fields;
+							let {
+								mode,
+								EmailSubjectLine = "Thank You for Your Contribution",
+								subscriptions,
+								AddContactYN,
+								ActivityName,
+								ContactSource,
+								SectionName,
+								proxy,
+							} = this.context.formConfig;
+							const ClientBrowser =
+								window && window.navigator ? window.navigator.userAgent : "";
+							const UrlReferer =
+								window.location.origin + window.location.pathname;
 
-						//construct phone fields from regex
-						const Phoneareacode = phone.trim().match(phone_regex)
-								? phone.trim().match(phone_regex)[1]
-								: "",
-							Phoneexchange = phone.trim().match(phone_regex)
-								? phone.trim().match(phone_regex)[2]
-								: "",
-							Phonenumber = phone.trim().match(phone_regex)
-								? phone.trim().match(phone_regex)[3]
-								: "";
+							//construct phone fields from regex
+							const Phoneareacode = phone.trim().match(phone_regex)
+									? phone.trim().match(phone_regex)[1]
+									: "",
+								Phoneexchange = phone.trim().match(phone_regex)
+									? phone.trim().match(phone_regex)[2]
+									: "",
+								Phonenumber = phone.trim().match(phone_regex)
+									? phone.trim().match(phone_regex)[3]
+									: "";
 
-						//process cart
-						let TransactionType = "Product";
-						const items = [...this.state.cart.items];
-						const pledgeFound = items.findIndex(
-							el => el && el.type == "donation"
-						);
-						const isMonthly =
-							pledgeFound > -1 ? items[pledgeFound].monthly : false;
-						const DonationType = isMonthly ? "CR" : "CC";
-						const IsRecurringCreditCardDonation = isMonthly;
-						const Monthlypledgeday = isMonthly
-							? this.state.fields.Monthlypledgeday
-							: null;
-						const Monthlypledgeamount =
-							isMonthly && pledgeFound > -1
-								? items[pledgeFound].PledgeAmount
-								: 0;
-						const Singledonationamount =
-							!isMonthly && pledgeFound > -1
-								? items[pledgeFound].PledgeAmount
-								: 0;
-						if (Monthlypledgeamount > 0) {
-							TransactionType = "Monthly";
-						}
-						if (Singledonationamount > 0) {
-							TransactionType = "Single";
-						}
-						const ShipTo = ShipToYes === true ? "Yes" : "No";
-						const multipleDonations = () =>
-							items.map(
-								(
-									{
-										DetailName,
-										DetailDescription,
-										DetailCprojCredit,
-										DetailCprojMail,
-										PledgeAmount,
-									},
-									index
-								) => {
-									if (
-										index === pledgeFound &&
-										Object.keys(this.state.designationInfo).length &&
-										!(isMonthly && !this.state.allowMonthlyDesignations)
-									) {
-										DetailName =
-											(isMonthly ? "MP" : "SG") +
-											this.state.designationInfo.DetailName;
-										DetailDescription = this.state.designationInfo
-											.DetailDescription;
-										DetailCprojCredit = this.state.designationInfo
-											.DetailCprojCredit;
-										DetailCprojMail = this.state.designationInfo
-											.DetailCprojMail;
-									}
-									// console.log({DetailName});
-									return {
-										DetailName,
-										DetailDescription,
-										DetailCprojCredit,
-										DetailCprojMail,
-										PledgeAmount,
-									};
-								}
+							//process cart
+							let TransactionType = "Product";
+							const items = [...this.state.cart.items];
+							const pledgeFound = items.findIndex(
+								el => el && el.type == "donation"
 							);
-						const MultipleDonations = multipleDonations();
-
-						const MotivationText =
-							window.cbn_obj && window.cbn_obj.motivation
-								? window.cbn_obj.motivation
-								: "041181";
-
-						let data = {
-							ActivityName,
-							AddContactYN,
-							Address1,
-							Address2,
-							City,
-							ContactSource,
-							Country,
-							DonationType,
-							Emailaddress,
-							EmailSubjectLine,
-							Firstname,
-							IsRecurringCreditCardDonation,
-							Lastname,
-							Middlename,
-							Monthlypledgeamount,
-							Monthlypledgeday,
-							MotivationText,
-							MultipleDonations,
-							Phoneareacode,
-							Phoneexchange,
-							Phonenumber,
-							SectionName,
-							ShipTo,
-							Singledonationamount,
-							Spousename,
-							State,
-							Suffix,
-							Title,
-							TransactionType,
-							UrlReferer,
-							Zip,
-							ClientBrowser,
-							ShipToAddress1,
-							ShipToAddress2,
-							ShipToCity,
-							ShipToState,
-							ShipToZip,
-							ShipToCountry,
-							ShipToName,
-							mode,
-						};
-						//flatten subscription information
-						if (subscriptions && subscriptions.length) {
-							subscriptions.forEach(sub => (data[sub.key] = sub.value));
-						}
-						try {
-							const msg = await callApi(proxy, {
-								method: "POST",
-								mode: "cors",
-								headers: {
-									"Content-Type": "application/json; charset=utf-8",
-								},
-								body: JSON.stringify(data),
-							});
-							const DonorID = msg.split(";")[0].split(" - ")[1];
-							const confirmUrl = msg.split(" is ")[1];
-							data.DonorID = DonorID;
-							const confirmationData = { confirmUrl, data };
-							this.setState(state =>
-								reducer(
-									state,
-									{
-										type: "SUBMIT_FORM",
-										DonorID,
-										confirmationData,
-									},
-									() => {
-										if (type !== "confirmation") {
-											try {
-												const url =
-													window.location.origin + window.location.pathname;
-												const sDynamicPageUrl =
-													url +
-													(url.charAt(url.length - 1) == "/"
-														? "payment"
-														: "/payment");
-												const sDynamicPageTitle = document.title + " > Payment";
-												window.omTrackDynamicCBNPage(
-													sDynamicPageUrl,
-													sDynamicPageTitle
-												);
-											} catch (err) {
-												console.error("Call Submission Tracking Error");
-												console.error(err);
-											}
-											this.context.submitForm({
-												type: "SUBMIT_FORM",
-											});
+							const isMonthly =
+								pledgeFound > -1 ? items[pledgeFound].monthly : false;
+							const DonationType = isMonthly ? "CR" : "CC";
+							const IsRecurringCreditCardDonation = isMonthly;
+							const Monthlypledgeday = isMonthly
+								? this.state.fields.Monthlypledgeday
+								: null;
+							const Monthlypledgeamount =
+								isMonthly && pledgeFound > -1
+									? items[pledgeFound].PledgeAmount
+									: 0;
+							const Singledonationamount =
+								!isMonthly && pledgeFound > -1
+									? items[pledgeFound].PledgeAmount
+									: 0;
+							if (Monthlypledgeamount > 0) {
+								TransactionType = "Monthly";
+							}
+							if (Singledonationamount > 0) {
+								TransactionType = "Single";
+							}
+							const ShipTo = ShipToYes === true ? "Yes" : "No";
+							const multipleDonations = () =>
+								items.map(
+									(
+										{
+											DetailName,
+											DetailDescription,
+											DetailCprojCredit,
+											DetailCprojMail,
+											PledgeAmount,
+										},
+										index
+									) => {
+										if (
+											index === pledgeFound &&
+											Object.keys(this.state.designationInfo).length &&
+											!(isMonthly && !this.state.allowMonthlyDesignations)
+										) {
+											DetailName =
+												(isMonthly ? "MP" : "SG") +
+												this.state.designationInfo.DetailName;
+											DetailDescription = this.state.designationInfo
+												.DetailDescription;
+											DetailCprojCredit = this.state.designationInfo
+												.DetailCprojCredit;
+											DetailCprojMail = this.state.designationInfo
+												.DetailCprojMail;
 										}
-										resolve(true);
+										// console.log({DetailName});
+										return {
+											DetailName,
+											DetailDescription,
+											DetailCprojCredit,
+											DetailCprojMail,
+											PledgeAmount,
+										};
 									}
-								)
-							);
-						} catch (err) {
-							console.error(err.message);
-							const { message } = err;
-							const { breaking, name } = getErrorType(message);
-							// console.log({breaking, name})
-							if (breaking) {
-								alert(
-									"There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700"
 								);
-							} else {
+							const MultipleDonations = multipleDonations();
+
+							const MotivationText =
+								window.cbn_obj && window.cbn_obj.motivation
+									? window.cbn_obj.motivation
+									: "041181";
+
+							let data = {
+								ActivityName,
+								AddContactYN,
+								Address1,
+								Address2,
+								City,
+								ContactSource,
+								Country,
+								DonationType,
+								Emailaddress,
+								EmailSubjectLine,
+								Firstname,
+								IsRecurringCreditCardDonation,
+								Lastname,
+								Middlename,
+								Monthlypledgeamount,
+								Monthlypledgeday,
+								MotivationText,
+								MultipleDonations,
+								Phoneareacode,
+								Phoneexchange,
+								Phonenumber,
+								SectionName,
+								ShipTo,
+								Singledonationamount,
+								Spousename,
+								State,
+								Suffix,
+								Title,
+								TransactionType,
+								UrlReferer,
+								Zip,
+								ClientBrowser,
+								ShipToAddress1,
+								ShipToAddress2,
+								ShipToCity,
+								ShipToState,
+								ShipToZip,
+								ShipToCountry,
+								ShipToName,
+								mode,
+							};
+							//flatten subscription information
+							if (subscriptions && subscriptions.length) {
+								subscriptions.forEach(sub => (data[sub.key] = sub.value));
+							}
+							try {
+								const msg = await callApi(proxy, {
+									method: "POST",
+									mode: "cors",
+									headers: {
+										"Content-Type": "application/json; charset=utf-8",
+									},
+									body: JSON.stringify(data),
+								});
+								const DonorID = msg.split(";")[0].split(" - ")[1];
+								const confirmUrl = msg.split(" is ")[1];
+								data.DonorID = DonorID;
+								const confirmationData = { confirmUrl, data };
 								this.setState(state =>
-									reducer(state, {
-										type: "UPDATE_FIELD",
-										name,
-										value: fields[name],
-										error: message,
-									})
+									reducer(
+										state,
+										{
+											type: "SUBMIT_FORM",
+											DonorID,
+											confirmationData,
+										},
+										() => {
+											if (type !== "confirmation") {
+												try {
+													const url =
+														window.location.origin + window.location.pathname;
+													const sDynamicPageUrl =
+														url +
+														(url.charAt(url.length - 1) == "/"
+															? "payment"
+															: "/payment");
+													const sDynamicPageTitle =
+														document.title + " > Payment";
+													window.omTrackDynamicCBNPage(
+														sDynamicPageUrl,
+														sDynamicPageTitle
+													);
+												} catch (err) {
+													console.error("Call Submission Tracking Error");
+													console.error(err);
+												}
+												this.context.submitForm({
+													type: "SUBMIT_FORM",
+												});
+											}
+											resolve(true);
+										}
+									)
+								);
+							} catch (err) {
+								console.error(err.message);
+								const { message } = err;
+								const { breaking, name } = getErrorType(message);
+								// console.log({breaking, name})
+								if (breaking) {
+									alert(
+										"There was an internal error submitting your form. Please check your information and try again or call us at 1-800-759-0700"
+									);
+								} else {
+									this.setState(state =>
+										reducer(state, {
+											type: "UPDATE_FIELD",
+											name,
+											value: fields[name],
+											error: message,
+										})
+									);
+								}
+								this.setState(
+									state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
+									resolve(false)
 								);
 							}
-							this.setState(
-								state => reducer(state, { type: "TOGGLE_SUBMITTING" }),
-								resolve(false)
-							);
 						}
 					}
 				);
@@ -737,7 +741,7 @@ class GivingFormProvider extends Component {
 											error: "Please make a valid donation",
 										})
 									);
-								} else {
+								} else if (!action.isTestingForm) {
 									try {
 										const url =
 											window.location.origin + window.location.pathname;

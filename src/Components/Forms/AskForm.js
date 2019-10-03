@@ -75,8 +75,10 @@ class AskForm extends Component {
 
 	handleSubmit = async e => {
 		e.preventDefault();
+		const { isTestingForm } = this.context;
 		const isValidSubmission = await this.context.submitAskForm({
 			type: "SUBMIT_ASK_FORM",
+			isTestingForm,
 		});
 		if (isValidSubmission) {
 			this.setState({ scrolled: false });

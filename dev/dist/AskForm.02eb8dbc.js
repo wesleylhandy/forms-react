@@ -2671,7 +2671,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 									var _ref = (0, _asyncToGenerator2.default)(
 										/*#__PURE__*/
 										_regenerator.default.mark(function _callee(e) {
-											var isValidSubmission;
+											var isTestingForm, isValidSubmission;
 											return _regenerator.default.wrap(function _callee$(
 												_context
 											) {
@@ -2679,12 +2679,14 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 													switch ((_context.prev = _context.next)) {
 														case 0:
 															e.preventDefault();
-															_context.next = 3;
+															isTestingForm = _this.context.isTestingForm;
+															_context.next = 4;
 															return _this.context.submitAskForm({
 																type: "SUBMIT_ASK_FORM",
+																isTestingForm: isTestingForm,
 															});
 
-														case 3:
+														case 4:
 															isValidSubmission = _context.sent;
 
 															if (isValidSubmission) {
@@ -2693,7 +2695,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 																});
 															}
 
-														case 5:
+														case 6:
 														case "end":
 															return _context.stop();
 													}
@@ -3089,7 +3091,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "55531" + "/"
+						protocol + "://" + hostname + ":" + "58596" + "/"
 					);
 
 					ws.onmessage = function(event) {

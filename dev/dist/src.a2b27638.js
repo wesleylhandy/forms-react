@@ -4695,7 +4695,8 @@ styleSheet.flush()
 					var match; // https://esbench.com/bench/5b809c2cf2949800a0f61fb5
 
 					while ((match = labelPattern.exec(styles)) !== null) {
-						identifierName += "-" + match[1]; // $FlowFixMe we know it's not null
+						identifierName +=
+							"-" + match[1]; // $FlowFixMe we know it's not null
 					}
 
 					var name = (0, _hash.default)(styles) + identifierName;
@@ -49030,13 +49031,15 @@ styleSheet.flush()
 								submitGivingForm: (function() {
 									var _submitGivingForm = (0, _asyncToGenerator2.default)(
 										/*#__PURE__*/
-										_regenerator.default.mark(function _callee6(type) {
+										_regenerator.default.mark(function _callee6(_ref3) {
+											var type;
 											return _regenerator.default.wrap(function _callee6$(
 												_context6
 											) {
 												while (1) {
 													switch ((_context6.prev = _context6.next)) {
 														case 0:
+															type = _ref3.type;
 															return _context6.abrupt(
 																"return",
 																new Promise(function(resolve, reject) {
@@ -49585,10 +49588,13 @@ styleSheet.flush()
 
 																									case 66:
 																										if (!(type === "testing")) {
-																											_context5.next = 68;
+																											_context5.next = 71;
 																											break;
 																										}
 
+																										console.log(
+																											"TESTING - NO DATA PROCESSING OR DATA STORAGE"
+																										);
 																										return _context5.abrupt(
 																											"return",
 																											_this.setState(
@@ -49608,7 +49614,10 @@ styleSheet.flush()
 																											)
 																										);
 
-																									case 68:
+																									case 71:
+																										console.log(
+																											"GIVING SERVICES SUBMISSION"
+																										);
 																										(Address1 =
 																											fields.Address1),
 																											(Address2 =
@@ -49773,19 +49782,19 @@ styleSheet.flush()
 
 																										multipleDonations = function multipleDonations() {
 																											return items.map(function(
-																												_ref4,
+																												_ref5,
 																												index
 																											) {
 																												var DetailName =
-																														_ref4.DetailName,
+																														_ref5.DetailName,
 																													DetailDescription =
-																														_ref4.DetailDescription,
+																														_ref5.DetailDescription,
 																													DetailCprojCredit =
-																														_ref4.DetailCprojCredit,
+																														_ref5.DetailCprojCredit,
 																													DetailCprojMail =
-																														_ref4.DetailCprojMail,
+																														_ref5.DetailCprojMail,
 																													PledgeAmount =
-																														_ref4.PledgeAmount;
+																														_ref5.PledgeAmount;
 
 																												if (
 																													index ===
@@ -49894,8 +49903,8 @@ styleSheet.flush()
 																											);
 																										}
 
-																										_context5.prev = 90;
-																										_context5.next = 93;
+																										_context5.prev = 94;
+																										_context5.next = 97;
 																										return (0,
 																										_fetchHelpers.callApi)(
 																											proxy,
@@ -49912,7 +49921,7 @@ styleSheet.flush()
 																											}
 																										);
 
-																									case 93:
+																									case 97:
 																										msg = _context5.sent;
 																										DonorID = msg
 																											.split(";")[0]
@@ -49984,14 +49993,14 @@ styleSheet.flush()
 																											);
 																										});
 
-																										_context5.next = 108;
+																										_context5.next = 112;
 																										break;
 
-																									case 101:
-																										_context5.prev = 101;
+																									case 105:
+																										_context5.prev = 105;
 																										_context5.t4 = _context5[
 																											"catch"
-																										](90);
+																										](94);
 																										console.error(
 																											_context5.t4.message
 																										);
@@ -50040,7 +50049,7 @@ styleSheet.flush()
 																										},
 																										resolve(false));
 
-																									case 108:
+																									case 112:
 																									case "end":
 																										return _context5.stop();
 																								}
@@ -50053,7 +50062,7 @@ styleSheet.flush()
 																							[14, 20],
 																							[25, 34],
 																							[39, 45],
-																							[90, 101],
+																							[94, 105],
 																						]
 																					);
 																				}
@@ -50063,7 +50072,7 @@ styleSheet.flush()
 																})
 															);
 
-														case 1:
+														case 2:
 														case "end":
 															return _context6.stop();
 													}
@@ -50106,7 +50115,7 @@ styleSheet.flush()
 																	error: "Please make a valid donation",
 																});
 															});
-														} else {
+														} else if (!action.isTestingForm) {
 															try {
 																var url =
 																	window.location.origin +
@@ -50165,7 +50174,7 @@ styleSheet.flush()
 										_regenerator.default.mark(function _callee7() {
 											var isSecure,
 												url,
-												_ref5,
+												_ref6,
 												devServicesUri,
 												preProdServicesUri,
 												prodServicesUri,
@@ -50188,13 +50197,13 @@ styleSheet.flush()
 																return (0, _fetchHelpers.callApi)(url);
 
 															case 5:
-																_ref5 = _context7.sent;
-																devServicesUri = _ref5.devServicesUri;
-																preProdServicesUri = _ref5.preProdServicesUri;
-																prodServicesUri = _ref5.prodServicesUri;
-																devReceiptUri = _ref5.devReceiptUri;
-																preProdReceiptUri = _ref5.preProdReceiptUri;
-																prodReceiptUri = _ref5.prodReceiptUri;
+																_ref6 = _context7.sent;
+																devServicesUri = _ref6.devServicesUri;
+																preProdServicesUri = _ref6.preProdServicesUri;
+																prodServicesUri = _ref6.prodServicesUri;
+																devReceiptUri = _ref6.devReceiptUri;
+																preProdReceiptUri = _ref6.preProdReceiptUri;
+																prodReceiptUri = _ref6.prodReceiptUri;
 																action = {
 																	type: "GLOBAL_URIS",
 																	msgUris: [
@@ -62316,7 +62325,7 @@ styleSheet.flush()
 								styles:
 									"box-sizing:border-box;margin:20px auto;padding:0;width:100%;max-width:680px;display:flex;flex-direction:row;justify-content:center;align-items:center;.seals__seal{box-sizing:border-box;display:block;padding:0;margin:0;width:100%;text-align:center;a.seals__seal--link,img.seals__seal-img{box-shadow:none !important;text-decoration:none !important;}}@media screen and (max-width:550px){flex-wrap:wrap;.seals__seal{margin-top:20px;}}",
 								map:
-									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlNlYWxzLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdpQyIsImZpbGUiOiJTZWFscy5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyBtZW1vLCBjcmVhdGVSZWYsIHVzZUVmZmVjdCwgdXNlU3RhdGUgfSBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBTZWFsc0Jsb2NrID0gc3R5bGVkLnNlY3Rpb25gXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdG1hcmdpbjogMjBweCBhdXRvO1xuXHRwYWRkaW5nOiAwO1xuXHR3aWR0aDogMTAwJTtcblx0bWF4LXdpZHRoOiA2ODBweDtcblx0ZGlzcGxheTogZmxleDtcblx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0anVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG5cdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdC5zZWFsc19fc2VhbCB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRkaXNwbGF5OiBibG9jaztcblx0XHRwYWRkaW5nOiAwO1xuXHRcdG1hcmdpbjogMDtcblx0XHR3aWR0aDogMTAwJTtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0YS5zZWFsc19fc2VhbC0tbGluayxcblx0XHRpbWcuc2VhbHNfX3NlYWwtaW1nIHtcblx0XHRcdGJveC1zaGFkb3c6IG5vbmUgIWltcG9ydGFudDtcblx0XHRcdHRleHQtZGVjb3JhdGlvbjogbm9uZSAhaW1wb3J0YW50O1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1NTBweCkge1xuXHRcdGZsZXgtd3JhcDogd3JhcDtcblx0XHQuc2VhbHNfX3NlYWwge1xuXHRcdFx0bWFyZ2luLXRvcDogMjBweDtcblx0XHR9XG5cdH1cbmA7XG5cbmNvbnN0IGNlcnRzID0ge1xuXHRcImh0dHBzOi8vd3d3LmNibi5jb21cIjoge1xuXHRcdGlkOiBcIkRpZ2lDZXJ0Q2xpY2tJRF9SWERRWFJPRlwiLFxuXHRcdGhyZWY6IFwiaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL2V2LW11bHRpLWRvbWFpbi1zc2wuaHRtXCIsXG5cdH0sXG5cdFwiaHR0cHM6Ly9pbXBhY3QuY2JuLmNvbVwiOiB7XG5cdFx0aWQ6IFwiRGlnaUNlcnRDbGlja0lEXzZkZHhCZ3lCXCIsXG5cdFx0aHJlZjogXCJodHRwczovL3d3dy5kaWdpY2VydC5jb20vc3NsLWNlcnRpZmljYXRlLmh0bVwiLFxuXHR9LFxufTtcblxuY29uc3QgRGlnaUNlcnQgPSBtZW1vKCgpID0+IHtcblx0Y29uc3QgeyBvcmlnaW4gfSA9IHdpbmRvdy5sb2NhdGlvbjtcblx0Y29uc3QgY2VydCA9IGNlcnRzW29yaWdpbl07XG5cdGNvbnN0IGRpZ2ljZXJ0U2VhbCA9IGNyZWF0ZVJlZigpO1xuXHRyZXR1cm4gKFxuXHRcdGNlcnQgJiYgKFxuXHRcdFx0PGRpdlxuXHRcdFx0XHRpZD17Y2VydC5pZH1cblx0XHRcdFx0ZGF0YS1sYW5ndWFnZT1cImVuXCJcblx0XHRcdFx0Y2xhc3NOYW1lPVwic2VhbHNfX3NlYWxcIlxuXHRcdFx0XHRyZWY9e2RpZ2ljZXJ0U2VhbH1cblx0XHRcdD5cblx0XHRcdFx0PGFcblx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC0tbGlua1wiXG5cdFx0XHRcdFx0aHJlZj17Y2VydC5ocmVmfVxuXHRcdFx0XHRcdGFyaWEtbGFiZWw9XCJEaWdpY2VydCBTZWFsXCJcblx0XHRcdFx0PlxuXHRcdFx0XHRcdHsvKiBEaWdpQ2VydC5jb20gKi99XG5cdFx0XHRcdDwvYT5cblx0XHRcdDwvZGl2PlxuXHRcdClcblx0KTtcbn0pO1xuXG5jb25zdCBTZWFscyA9ICh7IHN0eWxlID0ge30gfSkgPT4ge1xuXG5cdGNvbnN0IFsgbG9hZGVkLCBzZXRMb2FkZWQgXSA9IHVzZVN0YXRlKGZhbHNlKVxuXHRjb25zdCBkaWdpY2VydFNjcmlwdCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCJzY3JpcHRbc3JjPSdzZWFsJ11cIilcblxuXHRjb25zdCBvbkxvYWQgPSAoKSA9PiB7XG5cdFx0aWYgKCFsb2FkZWQpIHtcblx0XHRcdHNldExvYWRlZCh0cnVlKVxuXHRcdH1cblx0fVxuXG5cdHVzZUVmZmVjdCgoKSA9PiB7XHRcblx0XHRjb25zb2xlLmxvZyhcIlNlYWwgU2NyaXB0IEVmZmVjdFwiKVxuXHRcdGlmIChkaWdpY2VydFNjcmlwdCAmJiAhbG9hZGVkKSB7XG5cdFx0XHRjb25zdCBuZXdTY3JpcHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwic2NyaXB0XCIpO1xuXHRcdFx0bmV3U2NyaXB0LnR5cGUgPSBkaWdpY2VydFNjcmlwdC50eXBlXG5cdFx0XHRuZXdTY3JpcHQuc3JjID0gZGlnaWNlcnRTY3JpcHQuc3JjXG5cdFx0XHRuZXdTY3JpcHQuYXN5bmMgPSBkaWdpY2VydFNjcmlwdC5hc3luY1xuXHRcdFx0bmV3U2NyaXB0LmlubmVySFRNTCA9IGRpZ2ljZXJ0U2NyaXB0LmlubmVySFRNTFxuXHRcdFx0bmV3U2NyaXB0LmFkZEV2ZW50TGlzdGVuZXIoXCJsb2FkXCIsIG9uTG9hZClcblx0XHRcdGRpZ2ljZXJ0U2NyaXB0LnJlbW92ZSgpO1xuXHRcdFx0ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChuZXdTY3JpcHQpXG5cdFx0XHRyZXR1cm4gKCkgPT4gbmV3U2NyaXB0LnJlbW92ZUV2ZW50TGlzdGVuZXIoXCJsb2FkXCIsIG9uTG9hZClcblx0XHR9IFxuXHR9LCBbbG9hZGVkLCBkaWdpY2VydFNjcmlwdF0pXG5cblx0cmV0dXJuIChcblx0XHQ8U2VhbHNCbG9jayBpZD1cInNlYWxzXCIgc3R5bGU9e3N0eWxlfT5cblx0XHRcdDxEaWdpQ2VydCAvPlxuXHRcdFx0PGRpdiBpZD1cIkVDRkFfTG9nb1wiIGNsYXNzTmFtZT1cInNlYWxzX19zZWFsXCI+XG5cdFx0XHRcdDxhXG5cdFx0XHRcdFx0Y2xhc3NOYW1lPVwic2VhbHNfX3NlYWwtLWxpbmtcIlxuXHRcdFx0XHRcdGhyZWY9XCJodHRwOi8vd3d3LmVjZmEub3JnXCJcblx0XHRcdFx0XHR0YXJnZXQ9XCJfYmxhbmtcIlxuXHRcdFx0XHRcdGFyaWEtbGFiZWw9XCJFQ0ZBIFNlYWxcIlxuXHRcdFx0XHQ+XG5cdFx0XHRcdFx0PGltZ1xuXHRcdFx0XHRcdFx0Y2xhc3NOYW1lPVwic2VhbHNfX3NlYWwtaW1nXCJcblx0XHRcdFx0XHRcdHNyYz1cImh0dHBzOi8vd3d3LmNibi5jb20vc291cmNlL2dpdmluZy9zaGFyZWQvZWNmYS1sb2dvLWJsYWNrdGV4dF9zbS5wbmdcIlxuXHRcdFx0XHRcdFx0YWx0PVwiRUNGQVwiXG5cdFx0XHRcdFx0Lz5cblx0XHRcdFx0PC9hPlxuXHRcdFx0PC9kaXY+XG5cdFx0PC9TZWFsc0Jsb2NrPlxuXHQpO1xufVxuXG5leHBvcnQgZGVmYXVsdCBtZW1vKFNlYWxzKTtcbiJdfQ== */",
+									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlNlYWxzLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdpQyIsImZpbGUiOiJTZWFscy5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyBtZW1vLCBjcmVhdGVSZWYsIHVzZUVmZmVjdCwgdXNlU3RhdGUgfSBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBTZWFsc0Jsb2NrID0gc3R5bGVkLnNlY3Rpb25gXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdG1hcmdpbjogMjBweCBhdXRvO1xuXHRwYWRkaW5nOiAwO1xuXHR3aWR0aDogMTAwJTtcblx0bWF4LXdpZHRoOiA2ODBweDtcblx0ZGlzcGxheTogZmxleDtcblx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0anVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG5cdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdC5zZWFsc19fc2VhbCB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRkaXNwbGF5OiBibG9jaztcblx0XHRwYWRkaW5nOiAwO1xuXHRcdG1hcmdpbjogMDtcblx0XHR3aWR0aDogMTAwJTtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0YS5zZWFsc19fc2VhbC0tbGluayxcblx0XHRpbWcuc2VhbHNfX3NlYWwtaW1nIHtcblx0XHRcdGJveC1zaGFkb3c6IG5vbmUgIWltcG9ydGFudDtcblx0XHRcdHRleHQtZGVjb3JhdGlvbjogbm9uZSAhaW1wb3J0YW50O1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1NTBweCkge1xuXHRcdGZsZXgtd3JhcDogd3JhcDtcblx0XHQuc2VhbHNfX3NlYWwge1xuXHRcdFx0bWFyZ2luLXRvcDogMjBweDtcblx0XHR9XG5cdH1cbmA7XG5cbmNvbnN0IGNlcnRzID0ge1xuXHRcImh0dHBzOi8vd3d3LmNibi5jb21cIjoge1xuXHRcdGlkOiBcIkRpZ2lDZXJ0Q2xpY2tJRF9SWERRWFJPRlwiLFxuXHRcdGhyZWY6IFwiaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL2V2LW11bHRpLWRvbWFpbi1zc2wuaHRtXCIsXG5cdH0sXG5cdFwiaHR0cHM6Ly9pbXBhY3QuY2JuLmNvbVwiOiB7XG5cdFx0aWQ6IFwiRGlnaUNlcnRDbGlja0lEXzZkZHhCZ3lCXCIsXG5cdFx0aHJlZjogXCJodHRwczovL3d3dy5kaWdpY2VydC5jb20vc3NsLWNlcnRpZmljYXRlLmh0bVwiLFxuXHR9LFxufTtcblxuY29uc3QgRGlnaUNlcnQgPSBtZW1vKCgpID0+IHtcblx0Y29uc3QgeyBvcmlnaW4gfSA9IHdpbmRvdy5sb2NhdGlvbjtcblx0Y29uc3QgY2VydCA9IGNlcnRzW29yaWdpbl07XG5cdGNvbnN0IGRpZ2ljZXJ0U2VhbCA9IGNyZWF0ZVJlZigpO1xuXHRyZXR1cm4gKFxuXHRcdGNlcnQgJiYgKFxuXHRcdFx0PGRpdlxuXHRcdFx0XHRpZD17Y2VydC5pZH1cblx0XHRcdFx0ZGF0YS1sYW5ndWFnZT1cImVuXCJcblx0XHRcdFx0Y2xhc3NOYW1lPVwic2VhbHNfX3NlYWxcIlxuXHRcdFx0XHRyZWY9e2RpZ2ljZXJ0U2VhbH1cblx0XHRcdD5cblx0XHRcdFx0PGFcblx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC0tbGlua1wiXG5cdFx0XHRcdFx0aHJlZj17Y2VydC5ocmVmfVxuXHRcdFx0XHRcdGFyaWEtbGFiZWw9XCJEaWdpY2VydCBTZWFsXCJcblx0XHRcdFx0PlxuXHRcdFx0XHRcdHsvKiBEaWdpQ2VydC5jb20gKi99XG5cdFx0XHRcdDwvYT5cblx0XHRcdDwvZGl2PlxuXHRcdClcblx0KTtcbn0pO1xuXG5jb25zdCBTZWFscyA9ICh7IHN0eWxlID0ge30gfSkgPT4ge1xuXHRjb25zdCBbbG9hZGVkLCBzZXRMb2FkZWRdID0gdXNlU3RhdGUoZmFsc2UpO1xuXHRjb25zdCBkaWdpY2VydFNjcmlwdCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCJzY3JpcHRbc3JjKj0nc2VhbC5taW4uanMnXVwiKTtcblxuXHRjb25zdCBvbkxvYWQgPSAoKSA9PiB7XG5cdFx0aWYgKCFsb2FkZWQpIHtcblx0XHRcdHNldExvYWRlZCh0cnVlKTtcblx0XHR9XG5cdH07XG5cblx0dXNlRWZmZWN0KCgpID0+IHtcblx0XHRjb25zb2xlLmxvZyhcIlNlYWwgU2NyaXB0IEVmZmVjdFwiKTtcblx0XHRpZiAoZGlnaWNlcnRTY3JpcHQgJiYgIWxvYWRlZCkge1xuXHRcdFx0Y29uc3QgbmV3U2NyaXB0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInNjcmlwdFwiKTtcblx0XHRcdG5ld1NjcmlwdC50eXBlID0gZGlnaWNlcnRTY3JpcHQudHlwZTtcblx0XHRcdG5ld1NjcmlwdC5zcmMgPSBkaWdpY2VydFNjcmlwdC5zcmM7XG5cdFx0XHRuZXdTY3JpcHQuYXN5bmMgPSBkaWdpY2VydFNjcmlwdC5hc3luYztcblx0XHRcdG5ld1NjcmlwdC5pbm5lckhUTUwgPSBkaWdpY2VydFNjcmlwdC5pbm5lckhUTUw7XG5cdFx0XHRuZXdTY3JpcHQuYWRkRXZlbnRMaXN0ZW5lcihcImxvYWRcIiwgb25Mb2FkKTtcblx0XHRcdGRpZ2ljZXJ0U2NyaXB0LnJlbW92ZSgpO1xuXHRcdFx0ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChuZXdTY3JpcHQpO1xuXHRcdFx0cmV0dXJuICgpID0+IG5ld1NjcmlwdC5yZW1vdmVFdmVudExpc3RlbmVyKFwibG9hZFwiLCBvbkxvYWQpO1xuXHRcdH1cblx0fSwgW2xvYWRlZCwgZGlnaWNlcnRTY3JpcHRdKTtcblxuXHRyZXR1cm4gKFxuXHRcdDxTZWFsc0Jsb2NrIGlkPVwic2VhbHNcIiBzdHlsZT17c3R5bGV9PlxuXHRcdFx0PERpZ2lDZXJ0IC8+XG5cdFx0XHQ8ZGl2IGlkPVwiRUNGQV9Mb2dvXCIgY2xhc3NOYW1lPVwic2VhbHNfX3NlYWxcIj5cblx0XHRcdFx0PGFcblx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC0tbGlua1wiXG5cdFx0XHRcdFx0aHJlZj1cImh0dHA6Ly93d3cuZWNmYS5vcmdcIlxuXHRcdFx0XHRcdHRhcmdldD1cIl9ibGFua1wiXG5cdFx0XHRcdFx0YXJpYS1sYWJlbD1cIkVDRkEgU2VhbFwiXG5cdFx0XHRcdD5cblx0XHRcdFx0XHQ8aW1nXG5cdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC1pbWdcIlxuXHRcdFx0XHRcdFx0c3JjPVwiaHR0cHM6Ly93d3cuY2JuLmNvbS9zb3VyY2UvZ2l2aW5nL3NoYXJlZC9lY2ZhLWxvZ28tYmxhY2t0ZXh0X3NtLnBuZ1wiXG5cdFx0XHRcdFx0XHRhbHQ9XCJFQ0ZBXCJcblx0XHRcdFx0XHQvPlxuXHRcdFx0XHQ8L2E+XG5cdFx0XHQ8L2Rpdj5cblx0XHQ8L1NlYWxzQmxvY2s+XG5cdCk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBtZW1vKFNlYWxzKTtcbiJdfQ== */",
 						  }
 				);
 				var certs = {
@@ -62361,7 +62370,9 @@ styleSheet.flush()
 						loaded = _useState2[0],
 						setLoaded = _useState2[1];
 
-					var digicertScript = document.querySelector("script[src='seal']");
+					var digicertScript = document.querySelector(
+						"script[src*='seal.min.js']"
+					);
 
 					var onLoad = function onLoad() {
 						if (!loaded) {
@@ -62423,7 +62434,7 @@ styleSheet.flush()
 
 				__signature__(
 					Seals,
-					"useState{[ loaded, setLoaded ](false)}\nuseEffect{}"
+					"useState{[loaded, setLoaded](false)}\nuseEffect{}"
 				);
 
 				var _default = (0, _react.memo)(Seals);
@@ -64447,7 +64458,7 @@ styleSheet.flush()
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "55531" + "/"
+						protocol + "://" + hostname + ":" + "58596" + "/"
 					);
 
 					ws.onmessage = function(event) {

@@ -330,6 +330,8 @@ class ConfirmationForm extends Component {
 			const isValidSubmission = await this.context.submitGivingForm({
 				type: "testing",
 			});
+			const delay = Math.round(Math.random() * 3500) + 1500;
+			console.log(`Simulating API call with artificial delay of ${delay}ms.`);
 			if (isValidSubmission) {
 				setTimeout(
 					() =>
@@ -343,7 +345,7 @@ class ConfirmationForm extends Component {
 								},
 							],
 						}),
-					Math.round(Math.random() * 3500) + 1500
+					delay
 				);
 			}
 		}
