@@ -1,0 +1,33 @@
+{
+    "contactApiExamples": [{
+        "type": "newsletters",
+        "headers": {
+            "SubscriptionCode": "israel",
+            "Subscribe": true,
+            "UnsubscribeMarketingForNewContacts": true,
+            "InceptionSource": "Subscribe - Israel Cause Page - Israel Newsletter",
+            "ActivityCode": "Subscribe - Israel Cause Page - Israel Newsletter"
+        }
+    }, {
+        "type": "feedback",
+        "headers": {
+            "FeedbackType": "Item Request",
+            "Topic": "Islam Booklet",
+            "FormUrl": "",
+            "InceptionSource": "Request Resource - Islam Booklet - Download",
+            "ActivityCode": "Request Resource - Islam Booklet - Download",
+            "Message": ""
+        }
+    }, {
+        "type": "activity",
+        "headers": {
+            "Activity": "Feedback - Sign Up - Protect The Unborn Petition",
+            "Topic": "Islam Booklet Download",
+            "MarketingSubscribes": "CBN",
+            "Campaign":"",
+            "Location":"",
+            "UpdateExisting":true,
+            "InceptionSource": "Feedback - Sign Up - Protect The Unborn Petition"
+        }
+    }]
+}

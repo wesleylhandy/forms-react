@@ -204,7 +204,7 @@ router.get("/signup", (req, res) => {
 	res.json({ Error: "Not for Snooping Eyes" });
 });
 
-router.post("/signup", (req, res) => {
+router.post("/signup", async (req, res) => {
 	const data = { ...req.body };
 	if (!data) {
 		res.statusCode = 400;
@@ -228,8 +228,7 @@ router.post("/signup", (req, res) => {
 		CBN_HTTP_X_FORWARDED_FOR = parsed.toString();
 	}
 	console.log({ CBN_HTTP_X_FORWARDED_FOR });
-	const mode = data.mode;
-	const contactAPI = [...data.contactAPI];
+	const { mode, contactAPI } = data;
 	const endpoints = {
 		feedback: `${
 			mode == "production"
@@ -247,39 +246,34 @@ router.post("/signup", (req, res) => {
 				: "http://services.cbn.local/contacts/api/"
 		}newsletters.aspx`,
 	};
-	let responses = [];
 	const cheerio = require("cheerio");
-	contactAPI.forEach(async ({ type, call, headers }) => {
-		if (call) {
-			const endpoint = endpoints[type];
-			headers.ApiKey = ApiKey;
-			headers.CBN_HTTP_X_FORWARDED_FOR = CBN_HTTP_X_FORWARDED_FOR;
-			console.log({ headers });
-			try {
-				const msg = await callApi(endpoint, {
-					method: "GET",
-					headers,
-				});
-				const $ = cheerio.load(msg, { xmlMode: true });
-				if ($("returnCode").text() == "SUCCESS") {
-					responses.push(msg);
-				} else {
-					const error = {
-						body: $("returnCode").text(),
-						status: 400,
-					};
-					throw new Error(error);
-				}
-			} catch (err) {
-				console.error({ BeforeResSentErr: JSON.stringify(err, null, 2) });
-				res.statusCode = error.status;
-				return res.send(error.body);
-			}
-		}
-	});
+	const { type, headers } = contactAPI;
 
-	// need to parse XML responses
-	res.send(responses);
+	const endpoint = endpoints[type];
+	headers.ApiKey = ApiKey;
+	headers.CBN_HTTP_X_FORWARDED_FOR = CBN_HTTP_X_FORWARDED_FOR;
+	console.log({ headers });
+	try {
+		const msg = await callApi(endpoint, {
+			method: "GET",
+			headers,
+		});
+		const $ = cheerio.load(msg, { xmlMode: true });
+		if ($("returnCode").text() == "SUCCESS") {
+			res.send(msg);
+		} else {
+			const error = {
+				body: $("returnCode").text(),
+				status: 400,
+			};
+			throw new Error(error);
+		}
+	} catch (err) {
+		console.error({ BeforeResSentErr: JSON.stringify(err, null, 2) });
+		res.statusCode = error.status;
+		return res.send(error.body);
+	}
+
 });
 
 router.get("/product", (req, res) => {

@@ -260,52 +260,30 @@
         }, {
             "mode": "development",
             "formType": "signup",
-            "formTitle": "Download Your Free Resource Today",
-            "submitButtonText": "Submit",
+            "formTitle": "Contact Us",
+            "formInstructions": "For general inquiries about <em>I Am Patrick: The Patron Saint of Ireland</em> or other CBN Documentary films, please complete the form below or contact us at <a href='mailto:films@cbn.com'>films@cbn.com</a>.",
+            "submitButtonText": "Send",
             "getName": true,
             "getHonorific": false,
             "getMiddleName": false,
             "getSuffix": false,
             "getSpouseInfo": false,
             "getAddress":false,
+            "getMessage": true,
+            "getPhone": true,
             "allowInternational": false,
             "proxy": "",
-            "contactAPI": [
-                {
-                    "call": false,
-                    "type": "newsletters",
-                    "headers": {
-                        "SubscriptionCode": "israel",
-                        "Subscribe": true,
-                        "UnsubscribeMarketingForNewContacts": true,
-                        "InceptionSource": "Subscribe - Israel Cause Page - Israel Newsletter",
-                        "ActivityCode": "Subscribe - Israel Cause Page - Israel Newsletter"
-                    }
-                }, {
-                    "call": true,
-                    "type": "feedback",
-                    "headers": {
-                        "FeedbackType": "Item Request",
-                        "Topic": "Islam Booklet",
-                        "FormUrl": "",
-                        "InceptionSource": "Request Resource - Islam Booklet - Download",
-                        "ActivityCode": "Request Resource - Islam Booklet - Download",
-                        "Message": "--empty--"
-                    }
-                }, {
-                    "call": false,
-                    "type": "activity",
-                    "headers": {
-                        "Activity": "Feedback - Sign Up - Protect The Unborn Petition",
-                        "Topic": "Islam Booklet Download",
-                        "MarketingSubscribes": "CBN",
-                        "Campaign":"",
-                        "Location":"",
-                        "UpdateExisting":true,
-                        "InceptionSource": "Feedback - Sign Up - Protect The Unborn Petition"
-                    }
+            "contactAPI": {
+                "type": "feedback",
+                "headers": {
+                    "FeedbackType": "CBN Films Feedback",
+                    "Topic": "I Am Patrick",
+                    "FormUrl": "",
+                    "InceptionSource": "Contact Form - I Am Patrick Contact Page",
+                    "ActivityCode": "Contact Form - I Am Patrick Contact Page",
+                    "Message": ""
                 }
-            ],
+            },
             "successMessage":"<h1>Thank You</h1>"
         }, {
             "mode": "development",

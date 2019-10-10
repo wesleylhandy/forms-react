@@ -11,7 +11,6 @@ const SubmitButton = ({
 	handleSubmit,
 	submitting,
 	value,
-	styles,
 }) => {
 	const { getCssConfig } = useContext(FormConfigContext);
 	const {

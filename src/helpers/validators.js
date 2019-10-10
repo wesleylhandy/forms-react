@@ -116,6 +116,7 @@ export const callAddressVerification = async (
  * @param {*} value - String, Number or Boolean of value from the input
  * @param {Boolean} [getAddress] - Boolean to determine if a field is required
  * @param {Boolean} [getHonorific] - Boolean to determine if a field is required
+ * @param {Boolean} [getMessage] - Boolean to determine if a field is required
  * @param {Boolean} [allowInternational] - Boolean only necessary for Country Validation
  * @param {Boolean} [ShipToYes] - Boolean for validating Shipping Address
  * @param {String} [ccNumber]
@@ -129,6 +130,7 @@ export const validateInput = (
 	value,
 	getAddress,
 	getHonorific,
+	getMessage,
 	allowInternational,
 	ShipToYes,
 	ccNumber,
@@ -219,6 +221,12 @@ export const validateInput = (
 			if (value && !phone_regex.test(value)) {
 				error = "Numbers only: ie. 7575551212";
 			}
+			break;
+		case "message":
+			if (!value && getMessage) {
+				error = "Required";
+			}
+			console.log({value, getMessage})
 			break;
 	}
 	return error;

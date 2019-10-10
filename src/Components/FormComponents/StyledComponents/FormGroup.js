@@ -92,7 +92,6 @@ const FormGroup = styled.div`
 		width: 100%;
 		margin-top: 5px;
 		padding: 0 10px;
-		line-height: 44px !important;
 		background: none;
 		background-color: ${props => props.inputBackgroundColor};
 		border: ${props => props.inputBorderWidth} solid
@@ -102,6 +101,9 @@ const FormGroup = styled.div`
 		transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 		position: relative;
 		margin-bottom: 0;
+	}
+	input, select {
+		line-height: 44px !important;
 	}
 	select {
 		background-color: transparent;
@@ -115,10 +117,15 @@ const FormGroup = styled.div`
 		-webkit-appearance: menulist;
 	}
 	textarea {
+		line-height: 1.5;
+		padding: 10px;
 		height: auto;
 		${props => ({
 			minHeight: props.minHeight,
 		})}
+		&+.input-error {
+			top: calc(${props => props.minHeight}px + 6px);
+		}
 	}
 	input::placeholder,
 	select::placeholder,

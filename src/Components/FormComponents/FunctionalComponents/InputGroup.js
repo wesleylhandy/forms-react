@@ -18,7 +18,6 @@ const InputGroup = ({
 	validation,
 	handleInputChange,
 	handleBlur,
-	textareaSize,
 	allowInternational,
 	inputMode = "text",
 }) => {
@@ -50,7 +49,6 @@ const InputGroup = ({
 		<FormGroup
 			id={`form-field-${id}`}
 			className={`input-group ${specialStyle ? specialStyle : ""}`}
-			textareaSize={textareaSize}
 			inputBackgroundColor={inputBackgroundColor}
 			inputBorderColor={inputBorderColor}
 			inputBorderRadius={inputBorderRadius}

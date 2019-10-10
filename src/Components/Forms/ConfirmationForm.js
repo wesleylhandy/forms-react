@@ -18,25 +18,9 @@ import HiddenForm from "../FormComponents/StyledComponents/HiddenForm";
 import Seals from "../FormComponents/FunctionalComponents/Seals";
 import HeaderBlock from "../FormComponents/Blocks/HeaderBlock";
 import FooterBlock from "../FormComponents/Blocks/FooterBlock";
+import Disclaimer from "../FormComponents/StyledComponents/Disclaimer";
 import { scrollToPoint, offsetTop } from "../../helpers/scrollToPoint";
 import formDisplayValue from "../../helpers/form-display-values";
-
-const Disclaimer = styled.div`
-	color: #444444;
-	font-size: 16px;
-	text-align: center;
-	a {
-		cursor: pointer;
-		font-size: 16px;
-		color: #444444;
-		text-decoration: none;
-		transition: color 200ms ease-in-out;
-		&:hover {
-			text-decoration: underline;
-			color: #333333;
-		}
-	}
-`;
 
 const SealsSection = styled.section`
 	background: white;

@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 
 import { FormConfigContext } from "./FormConfigProvider";
-import { cryptLS, readLS, removeOneLS, emptyLS } from "../../helpers/ls";
-import { getErrorType } from "../../helpers/error-types";
 import { callApi } from "../../helpers/fetch-helpers";
-import { log } from "util";
-import { phone_regex } from "../../helpers/validators";
 import {
 	zip_regex,
 	callZipCityStateService,
@@ -22,6 +18,7 @@ class SignUpFormProvider extends Component {
 		errors: {},
 		initialized: false,
 		submitting: false,
+		submitted: false,
 		initFields: action => this.setState(state => reducer(state, action)),
 		updateField: action => this.setState(state => reducer(state, action)),
 		validateAndUpdateField: async action => {
@@ -50,13 +47,15 @@ class SignUpFormProvider extends Component {
 					}
 				}
 			} else {
-				const { getAddress, getHonorific, allowInternational } = this.context;
+				const { getAddress, getHonorific, getMessage, allowInternational } = this.context;
+				console.log({getMessage})
 				action.error = await validateInput(
 					false,
 					name,
 					value,
 					getAddress,
 					getHonorific,
+					getMessage,
 					allowInternational,
 					this.state.ShipToYes
 				);
@@ -165,45 +164,42 @@ class SignUpFormProvider extends Component {
 					const {
 						Emailaddress,
 						Firstname,
-						Middlename,
 						Lastname,
-						Spousename,
-						Suffix,
-						Title,
 						phone,
+						message
 					} = fields;
 
 					const { mode, proxy } = this.context.formConfig;
-					const contactAPI = [...this.context.formConfig.contactAPI];
+					const contactAPI = {...this.context.formConfig.contactAPI};
 					const motivation =
 						window.cbn_obj && cbn_obj.motivation
 							? cbn_obj.motivation
 							: "041148";
 
-					for (let i = 0; i < contactAPI.length; i++) {
-						if ((contactAPI[i].type = "feedback")) {
-							contactAPI[i].headers.EmailAddress = Emailaddress;
-							contactAPI[i].headers.FirstName = Firstname;
-							contactAPI[i].headers.LastName = Lastname;
-							contactAPI[i].headers.FormUrl =
-								window.location.origin +
-								window.location.pathname +
-								window.location.search;
-						} else if ((contactAPI[i].type = "activity")) {
-							contactAPI[i].headers.Location =
-								window.location.origin + window.location.pathname;
-							contactAPI[i].headers.Campaign =
-								contactAPI[i].headers.Campaign || motivation;
-							contactAPI[i].headers.EmailAddress = Emailaddress;
-							contactAPI[i].headers.FirstName = Firstname;
-							contactAPI[i].headers.LastName = Lastname;
-							contactAPI[i].headers.PhoneNumber = phone;
-						} else if ((contactAPI[i].type = "newsletter")) {
-							contactAPI[i].headers.EmailAddress = Emailaddress;
-							contactAPI[i].headers.FirstName = Firstname;
-							contactAPI[i].headers.LastName = Lastname;
-						}
+					if (contactAPI.type = "feedback") {
+						contactAPI.headers.EmailAddress = Emailaddress;
+						contactAPI.headers.FirstName = Firstname;
+						contactAPI.headers.LastName = Lastname;
+						contactAPI.headers.FormUrl =
+							window.location.origin +
+							window.location.pathname +
+							window.location.search;
+						contactAPI.headers.Message = message ? message : "--Empty--";
+					} else if (contactAPI.type = "activity") {
+						contactAPI.headers.Location =
+							window.location.origin + window.location.pathname;
+						contactAPI.headers.Campaign =
+							contactAPI.headers.Campaign || motivation;
+						contactAPI.headers.EmailAddress = Emailaddress;
+						contactAPI.headers.FirstName = Firstname;
+						contactAPI.headers.LastName = Lastname;
+						contactAPI.headers.PhoneNumber = phone;
+					} else if (contactAPI.type = "newsletter") {
+						contactAPI.headers.EmailAddress = Emailaddress;
+						contactAPI.headers.FirstName = Firstname;
+						contactAPI.headers.LastName = Lastname;
 					}
+
 					const data = {
 						mode,
 						contactAPI,
