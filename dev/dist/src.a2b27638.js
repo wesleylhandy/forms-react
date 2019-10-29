@@ -36063,7 +36063,7 @@ function (_Component) {
                   break;
 
                 case 24:
-                  proxyUri = "http://".concat("10.100.43.32", ":").concat("8080");
+                  proxyUri = "http://".concat("10.100.43.59", ":").concat("8080");
                   _context.next = 27;
                   return Promise.all([(0, _fetchHelpers.callApi)("".concat(proxyUri, "/config/form-config.json"), {
                     method: "GET"
@@ -37111,6 +37111,7 @@ function () {
  * @param {Boolean} submitting - current state of the form, true if being submitted
  * @param {String} name - name of the input being validated
  * @param {*} value - String, Number or Boolean of value from the input
+ * @param {Boolean} [getName] - Boolean to determine if a field is required
  * @param {Boolean} [getAddress] - Boolean to determine if a field is required
  * @param {Boolean} [getHonorific] - Boolean to determine if a field is required
  * @param {Boolean} [getMessage] - Boolean to determine if a field is required
@@ -37125,7 +37126,7 @@ function () {
 
 exports.callAddressVerification = callAddressVerification;
 
-var validateInput = function validateInput(submitting, name, value, getAddress, getHonorific, getMessage, allowInternational, ShipToYes, ccNumber, ccMonth, ccYear) {
+var validateInput = function validateInput(submitting, name, value, getName, getAddress, getHonorific, getMessage, allowInternational, ShipToYes, ccNumber, ccMonth, ccYear) {
   var error = "";
 
   switch (name) {
@@ -37167,7 +37168,7 @@ var validateInput = function validateInput(submitting, name, value, getAddress, 
         error = "No special characters allowed. Please call if you need assistance.";
       }
 
-      if (!value) {
+      if (!value && getName) {
         error = "Required";
       }
 
@@ -37185,7 +37186,7 @@ var validateInput = function validateInput(submitting, name, value, getAddress, 
         error = "No special characters allowed. Please call if you need assistance.";
       }
 
-      if (!value) {
+      if (!value && getName) {
         error = "Required";
       }
 
@@ -37239,10 +37240,6 @@ var validateInput = function validateInput(submitting, name, value, getAddress, 
         error = "Required";
       }
 
-      console.log({
-        value: value,
-        getMessage: getMessage
-      });
       break;
   }
 
@@ -37895,7 +37892,7 @@ function (_Component) {
                 case 8:
                   _this$context = _this.context, getHonorific = _this$context.getHonorific, allowInternational = _this$context.allowInternational;
                   _context4.next = 11;
-                  return (0, _validators.validateInput)(false, name, value, true, getHonorific, false, allowInternational, _this.state.fields.ShipToYes, _this.state.fields.ccNumber, _this.state.fields.ExpiresMonth, _this.state.fields.ExpiresYear);
+                  return (0, _validators.validateInput)(false, name, value, true, true, getHonorific, false, allowInternational, _this.state.fields.ShipToYes, _this.state.fields.ccNumber, _this.state.fields.ExpiresMonth, _this.state.fields.ExpiresYear);
 
                 case 11:
                   action.error = _context4.sent;
@@ -37920,7 +37917,7 @@ function (_Component) {
 
                             validationName = name === "ExpiresYear" ? "ExpiresMonth" : "ExpiresYear";
                             _context3.next = 4;
-                            return (0, _validators.validateInput)(false, validationName, _this.state.fields[validationName], true, getHonorific, false, allowInternational, _this.state.fields.ShipToYes, _this.state.fields.ccNumber, _this.state.fields.ExpiresMonth, _this.state.fields.ExpiresYear);
+                            return (0, _validators.validateInput)(false, validationName, _this.state.fields[validationName], true, true, getHonorific, false, allowInternational, _this.state.fields.ShipToYes, _this.state.fields.ccNumber, _this.state.fields.ExpiresMonth, _this.state.fields.ExpiresYear);
 
                           case 4:
                             error = _context3.sent;
@@ -38251,7 +38248,7 @@ function (_Component) {
 
                                 if (!name.includes("Zip")) {
                                   _this$context2 = _this.context, getHonorific = _this$context2.getHonorific, allowInternational = _this$context2.allowInternational;
-                                  error = (0, _validators.validateInput)(true, name, fields[name], true, getHonorific, false, allowInternational, _this.state.fields.ShipToYes, _this.state.ccNumber, _this.state.fields.ExpiresMonth, _this.state.fields.ExpiresYear);
+                                  error = (0, _validators.validateInput)(true, name, fields[name], true, true, getHonorific, false, allowInternational, _this.state.fields.ShipToYes, _this.state.ccNumber, _this.state.fields.ExpiresMonth, _this.state.fields.ExpiresYear);
 
                                   if (error) {
                                     isValidForm = false;
@@ -39145,7 +39142,7 @@ function (_Component) {
         var _validateAndUpdateField = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
         _regenerator.default.mark(function _callee(action) {
-          var name, value, isZip, oldCity, response, _this$context, getAddress, getHonorific, getMessage, allowInternational;
+          var name, value, isZip, oldCity, response, _this$context$formCon, getName, getAddress, getHonorific, getMessage, allowInternational;
 
           return _regenerator.default.wrap(function _callee$(_context) {
             while (1) {
@@ -39196,26 +39193,24 @@ function (_Component) {
                   });
 
                 case 20:
-                  _context.next = 27;
+                  _context.next = 26;
                   break;
 
                 case 22:
-                  _this$context = _this.context, getAddress = _this$context.getAddress, getHonorific = _this$context.getHonorific, getMessage = _this$context.getMessage, allowInternational = _this$context.allowInternational;
-                  console.log({
-                    getMessage: getMessage
-                  });
-                  _context.next = 26;
-                  return (0, _validators.validateInput)(false, name, value, getAddress, getHonorific, getMessage, allowInternational, _this.state.ShipToYes);
+                  _this$context$formCon = _this.context.formConfig, getName = _this$context$formCon.getName, getAddress = _this$context$formCon.getAddress, getHonorific = _this$context$formCon.getHonorific, getMessage = _this$context$formCon.getMessage, allowInternational = _this$context$formCon.allowInternational; // console.log({getMessage})
 
-                case 26:
+                  _context.next = 25;
+                  return (0, _validators.validateInput)(false, name, value, getName, getAddress, getHonorific, getMessage, allowInternational, _this.state.ShipToYes);
+
+                case 25:
                   action.error = _context.sent;
 
-                case 27:
+                case 26:
                   _this.setState(function (state) {
                     return (0, _reducer.default)(state, action);
                   });
 
-                case 28:
+                case 27:
                 case "end":
                   return _context.stop();
               }
@@ -39246,7 +39241,7 @@ function (_Component) {
                   (0, _asyncToGenerator2.default)(
                   /*#__PURE__*/
                   _regenerator.default.mark(function _callee2() {
-                    var isValidForm, oldCity, response, zipError, addressError, _action, fields, fieldNames, i, error, name, _this$context2, getAddress, getHonorific, allowInternational, Emailaddress, Firstname, Lastname, phone, message, _this$context$formCon, mode, proxy, contactAPI, motivation, data, msg;
+                    var isValidForm, oldCity, response, zipError, addressError, _action, fields, fieldNames, i, error, name, _this$context$formCon2, getAddress, getHonorific, getMessage, getName, allowInternational, Emailaddress, Firstname, Lastname, phone, message, _this$context$formCon3, mode, proxy, contactAPI, motivation, data, msg;
 
                     return _regenerator.default.wrap(function _callee2$(_context2) {
                       while (1) {
@@ -39350,8 +39345,8 @@ function (_Component) {
                               name = fieldNames[i];
 
                               if (!name.includes("Zip")) {
-                                _this$context2 = _this.context, getAddress = _this$context2.getAddress, getHonorific = _this$context2.getHonorific, allowInternational = _this$context2.allowInternational;
-                                error = (0, _validators.validateInput)(true, name, fields[name], getAddress, getHonorific, allowInternational, false);
+                                _this$context$formCon2 = _this.context.formConfig, getAddress = _this$context$formCon2.getAddress, getHonorific = _this$context$formCon2.getHonorific, getMessage = _this$context$formCon2.getMessage, getName = _this$context$formCon2.getName, allowInternational = _this$context$formCon2.allowInternational;
+                                error = (0, _validators.validateInput)(true, name, fields[name], getName, getAddress, getHonorific, getMessage, allowInternational, false);
 
                                 if (error) {
                                   isValidForm = false;
@@ -39381,7 +39376,7 @@ function (_Component) {
 
                           case 33:
                             Emailaddress = fields.Emailaddress, Firstname = fields.Firstname, Lastname = fields.Lastname, phone = fields.phone, message = fields.message;
-                            _this$context$formCon = _this.context.formConfig, mode = _this$context$formCon.mode, proxy = _this$context$formCon.proxy;
+                            _this$context$formCon3 = _this.context.formConfig, mode = _this$context$formCon3.mode, proxy = _this$context$formCon3.proxy;
                             contactAPI = (0, _objectSpread2.default)({}, _this.context.formConfig.contactAPI);
                             motivation = window.cbn_obj && cbn_obj.motivation ? cbn_obj.motivation : "041148";
 
@@ -39398,10 +39393,10 @@ function (_Component) {
                               contactAPI.headers.FirstName = Firstname;
                               contactAPI.headers.LastName = Lastname;
                               contactAPI.headers.PhoneNumber = phone;
-                            } else if (contactAPI.type = "newsletter") {
+                            } else if (contactAPI.type = "newsletters") {
                               contactAPI.headers.EmailAddress = Emailaddress;
-                              contactAPI.headers.FirstName = Firstname;
-                              contactAPI.headers.LastName = Lastname;
+                              if (Firstname) contactAPI.headers.FirstName = Firstname;
+                              if (Lastname) contactAPI.headers.LastName = Lastname;
                             }
 
                             data = {
@@ -47212,7 +47207,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63135" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50234" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,4 +1,19 @@
 import "whatwg-fetch";
+import { cryptValue, readValue } from "./ls"
+
+const fetchIntercept = () => {
+	const originalFetch = fetch
+	window.__fetch = function() {
+		return originalFetch.apply(this, arguments).then(req => {
+			let authToken = req.headers.get("X-CSRF-JWT")
+			cryptValue(authToken, 1000 * 60 * 15, "__wpt")
+			return req
+		})
+	}
+}
+
+fetchIntercept()
+
 
 /**
  * Asynchronous function
@@ -6,10 +21,16 @@ import "whatwg-fetch";
  * @param {Object} [options={}] - Request Options Object to set headers, method, body, etc
  * @returns {string|Object} - Resolves data being requested or Rejects Error
  */
-export async function callApi(uri, options = {}) {
+export async function callApi(uri, options = {}, useIntercept = false) {
+	if (options && options.method == 'POST') {
+		const authToken = readValue("__wpt");
+		if (authToken) {
+			options.headers['Authorization'] = `Token ${authToken}`
+		}
+	}
 	let data;
 	try {
-		data = await loadData(uri, options);
+		data = await loadData(uri, options, useIntercept);
 		return data;
 	} catch (err) {
 		console.error(err);
@@ -27,8 +48,13 @@ export async function callApi(uri, options = {}) {
  * @param {Object} [options={}] - Options being passed to Fetch API
  * @returns {Object|string} - will return JSON if contentType is json or String if not, and an Error Object if call failes
  */
-async function loadData(uri, options = {}) {
-	let response = await fetch(uri, options);
+async function loadData(uri, options = {}, useIntercept) {
+	let response;
+	if (useIntercept) {
+		response = await window.__fetch(uri, options)
+	} else {
+		response = await fetch(uri, options);
+	}
 	const contentType = response.headers.get("content-type");
 	if (response.status >= 200 && response.status < 300) {
 		if (contentType && contentType.includes("application/json")) {

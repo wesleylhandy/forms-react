@@ -21,6 +21,22 @@ export function readLS(type) {
 }
 
 /**
+ * Returns decrypted text or null
+ * @param {String} type - either full store or just info
+ * @returns {Object|null}
+ */
+export function readValue(type) {
+	const { value, expiration } = ls.get(type);
+	// console.log({formData, expiration})
+	if (value && expiration) {
+		const present = Date.now();
+		return present > +expiration ? null : value;
+	} else {
+		return null;
+	}
+}
+
+/**
  * Encrypts Data for storing in browser memory
  * @param {Object} formData - Object representing the data stored
  * @param {Number} lifetime - number of milliseconds in the future to set expiration
@@ -29,6 +45,17 @@ export function readLS(type) {
 export function cryptLS({ formData }, lifetime, type) {
 	const expiration = Date.now() + lifetime;
 	ls.set(type, { formData, expiration });
+}
+
+/**
+ * Encrypts Data for storing in browser memory
+ * @param {String} value - String representing the data stored
+ * @param {Number} lifetime - number of milliseconds in the future to set expiration
+ * @param {String} type - either full store or just info
+ */
+export function cryptValue(value, lifetime, type) {
+	const expiration = Date.now() + lifetime;
+	ls.set(type, { value, expiration });
 }
 
 export function removeOneLS(type) {

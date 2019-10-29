@@ -259,7 +259,7 @@
             "successMessage":"<h1>Thank You</h1>"
         }, {
             "mode": "development",
-            "formType": "signup",
+            "formType": "?",
             "formTitle": "Contact Us",
             "formInstructions": "For general inquiries about <em>I Am Patrick: The Patron Saint of Ireland</em> or other CBN Documentary films, please complete the form below or contact us at <a href='mailto:films@cbn.com'>films@cbn.com</a>.",
             "submitButtonText": "Send",
@@ -284,7 +284,34 @@
                     "Message": ""
                 }
             },
-            "successMessage":"<h1>Thank You</h1>"
+            "successMessage":"<h1>Thank You for your submission! We will be in touch with your shortly.</h1>"
+        }, {
+            "mode": "development",
+            "formType": "signup",
+            "formTitle": "Updates",
+            "formInstructions": "Sign-up to get special updates on <em>I Am Patrick: The Patron Saint of Ireland</em> and other CBN Documentary films.",
+            "submitButtonText": "Sign Up!",
+            "getName": false,
+            "getHonorific": false,
+            "getMiddleName": false,
+            "getSuffix": false,
+            "getSpouseInfo": false,
+            "getAddress":false,
+            "getMessage": false,
+            "getPhone": false,
+            "allowInternational": false,
+            "proxy": "",
+            "contactAPI": {
+                "type": "newsletters",
+                "headers": {
+                    "SubscriptionCode": "Films",
+                    "Subscribe": true,
+                    "UnsubscribeMarketingForNewContacts": true,
+                    "InceptionSource": "Contact Form - I Am Patrick Contact Page",
+                    "ActivityCode": "Contact Form - I Am Patrick Contact Page"
+                }
+            },
+            "successMessage":"<h1>Thank You for your submission! We will be in touch with your shortly.</h1>"
         }, {
             "mode": "development",
             "formType": "product",

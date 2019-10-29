@@ -252,7 +252,7 @@ router.post("/signup", async (req, res) => {
 	const endpoint = endpoints[type];
 	headers.ApiKey = ApiKey;
 	headers.CBN_HTTP_X_FORWARDED_FOR = CBN_HTTP_X_FORWARDED_FOR;
-	console.log({ headers });
+	console.log({ endpoint, headers });
 	try {
 		const msg = await callApi(endpoint, {
 			method: "GET",
@@ -262,16 +262,14 @@ router.post("/signup", async (req, res) => {
 		if ($("returnCode").text() == "SUCCESS") {
 			res.send(msg);
 		} else {
-			const error = {
-				body: $("returnCode").text(),
-				status: 400,
-			};
-			throw new Error(error);
+			console.log({msg})
+			const error = $("returnCode").text();
+			throw error;
 		}
 	} catch (err) {
 		console.error({ BeforeResSentErr: JSON.stringify(err, null, 2) });
-		res.statusCode = error.status;
-		return res.send(error.body);
+		res.statusCode = err.status || 400;
+		return res.json(err);
 	}
 
 });

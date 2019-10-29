@@ -47,12 +47,13 @@ class SignUpFormProvider extends Component {
 					}
 				}
 			} else {
-				const { getAddress, getHonorific, getMessage, allowInternational } = this.context;
-				console.log({getMessage})
+				const { getName, getAddress, getHonorific, getMessage, allowInternational } = this.context.formConfig;
+				// console.log({getMessage})
 				action.error = await validateInput(
 					false,
 					name,
 					value,
+					getName,
 					getAddress,
 					getHonorific,
 					getMessage,
@@ -136,14 +137,18 @@ class SignUpFormProvider extends Component {
 							const {
 								getAddress,
 								getHonorific,
+								getMessage,
+								getName,
 								allowInternational,
-							} = this.context;
+							} = this.context.formConfig;
 							error = validateInput(
 								true,
 								name,
 								fields[name],
+								getName,
 								getAddress,
 								getHonorific,
+								getMessage,
 								allowInternational,
 								false
 							);
@@ -194,10 +199,10 @@ class SignUpFormProvider extends Component {
 						contactAPI.headers.FirstName = Firstname;
 						contactAPI.headers.LastName = Lastname;
 						contactAPI.headers.PhoneNumber = phone;
-					} else if (contactAPI.type = "newsletter") {
+					} else if (contactAPI.type = "newsletters") {
 						contactAPI.headers.EmailAddress = Emailaddress;
-						contactAPI.headers.FirstName = Firstname;
-						contactAPI.headers.LastName = Lastname;
+						if ( Firstname ) contactAPI.headers.FirstName = Firstname;
+						if ( Lastname ) contactAPI.headers.LastName = Lastname;
 					}
 
 					const data = {

@@ -114,6 +114,7 @@ export const callAddressVerification = async (
  * @param {Boolean} submitting - current state of the form, true if being submitted
  * @param {String} name - name of the input being validated
  * @param {*} value - String, Number or Boolean of value from the input
+ * @param {Boolean} [getName] - Boolean to determine if a field is required
  * @param {Boolean} [getAddress] - Boolean to determine if a field is required
  * @param {Boolean} [getHonorific] - Boolean to determine if a field is required
  * @param {Boolean} [getMessage] - Boolean to determine if a field is required
@@ -128,6 +129,7 @@ export const validateInput = (
 	submitting,
 	name,
 	value,
+	getName,
 	getAddress,
 	getHonorific,
 	getMessage,
@@ -170,7 +172,7 @@ export const validateInput = (
 				error =
 					"No special characters allowed. Please call if you need assistance.";
 			}
-			if (!value) {
+			if (!value && getName) {
 				error = "Required";
 			}
 			break;
@@ -185,7 +187,7 @@ export const validateInput = (
 				error =
 					"No special characters allowed. Please call if you need assistance.";
 			}
-			if (!value) {
+			if (!value && getName) {
 				error = "Required";
 			}
 			break;
@@ -226,7 +228,6 @@ export const validateInput = (
 			if (!value && getMessage) {
 				error = "Required";
 			}
-			console.log({value, getMessage})
 			break;
 	}
 	return error;
