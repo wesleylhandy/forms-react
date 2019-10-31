@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { FormConfigContext } from "./FormConfigProvider";
-import { cryptLS, readLS, removeOneLS, emptyLS } from "../../helpers/ls";
+import { cryptLS, readLS, removeOneLS } from "../../helpers/ls";
 import { getErrorType } from "../../helpers/error-types";
 import { callApi } from "../../helpers/fetch-helpers";
 import {
@@ -50,7 +50,7 @@ class GivingFormProvider extends Component {
 				const { items, ...formData } = data;
 
 				if (!formData) {
-					emptyLS();
+					removeOneLS("info");
 				}
 				if (!store) {
 					removeOneLS("store");

@@ -1,6 +1,7 @@
 import "./vendors";
 import "core-js/stable";
 import "./helpers/remove-polyfill";
+import {fetchIntercept} from "./helpers/fetch-helpers"
 
 import React from "react";
 import * as ReactDOM from "react-dom";
@@ -10,6 +11,8 @@ import App from "./Components/App";
 
 // Initialize Provider/Context for Top-Level
 import FormConfigProvider from "./Components/Contexts/FormConfigProvider";
+
+fetchIntercept();
 
 // currently only supports one form type at a time on a page
 // this could be changed by using querySelectorAll, classes, and then looping through each to render multiple configured forms

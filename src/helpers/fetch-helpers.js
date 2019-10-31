@@ -1,7 +1,7 @@
 import "whatwg-fetch";
 import { cryptValue, readValue } from "./ls";
 
-const fetchIntercept = () => {
+export const fetchIntercept = () => {
 	const originalFetch = fetch;
 	window.__fetch = function() {
 		return originalFetch.apply(this, arguments).then(req => {
@@ -12,8 +12,6 @@ const fetchIntercept = () => {
 	};
 };
 
-fetchIntercept();
-
 /**
  * Asynchronous function
  * @param {string} uri - Endpoint being called
@@ -21,6 +19,11 @@ fetchIntercept();
  * @returns {string|Object} - Resolves data being requested or Rejects Error
  */
 export async function callApi(uri, options = {}, useIntercept = false) {
+	console.log(
+		useIntercept
+		  ? "Requesting permission for flyby."
+		  : "That's a negative Ghostrider, the pattern is full."
+	  );
 	if (options && options.method == "POST") {
 		const authToken = readValue("__wpt");
 		if (authToken) {
