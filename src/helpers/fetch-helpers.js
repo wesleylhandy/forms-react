@@ -21,9 +21,9 @@ export const fetchIntercept = () => {
 export async function callApi(uri, options = {}, useIntercept = false) {
 	console.log(
 		useIntercept
-		  ? "Requesting permission for flyby."
-		  : "That's a negative Ghostrider, the pattern is full."
-	  );
+			? "Requesting permission for flyby."
+			: "That's a negative Ghostrider, the pattern is full."
+	);
 	if (options && options.method == "POST") {
 		const authToken = readValue("__wpt");
 		if (authToken) {

@@ -1,7 +1,7 @@
 import "./vendors";
 import "core-js/stable";
 import "./helpers/remove-polyfill";
-import {fetchIntercept} from "./helpers/fetch-helpers"
+import { fetchIntercept } from "./helpers/fetch-helpers";
 
 import React from "react";
 import * as ReactDOM from "react-dom";
