@@ -34710,7 +34710,32 @@ require("_bundle_loader")(require.resolve("secure-ls"));
 require("_bundle_loader")(require.resolve("react-aria-live"));
 
 require("_bundle_loader")(require.resolve("whatwg-fetch"));
-},{"_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","core-js/stable":[["stable.7461f3b3.js","node_modules/core-js/stable/index.js"],"stable.7461f3b3.js.map","node_modules/core-js/stable/index.js"],"react":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/react/index.js"],"react-dom":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/react-dom/index.js"],"typography":[["dist.a16385fa.js","node_modules/typography/dist/index.js"],"dist.a16385fa.js.map","node_modules/typography/dist/index.js"],"react-typography":[["dist.c0d38775.js","node_modules/react-typography/dist/index.js"],"dist.c0d38775.js.map","node_modules/react-typography/dist/index.js"],"@emotion/styled":[["styled.browser.esm.1eb75cdb.js","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"styled.browser.esm.1eb75cdb.js.map","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"@emotion/core":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/@emotion/core/dist/core.browser.esm.js"],"prop-types":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/prop-types/index.js"],"secure-ls":[["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],"secure-ls.0cd04304.js.map","node_modules/secure-ls/dist/secure-ls.js"],"react-aria-live":[["es.d5457454.js","node_modules/react-aria-live/es/index.js"],"es.d5457454.js.map","node_modules/react-aria-live/es/index.js"],"whatwg-fetch":[["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],"fetch.6e6c81fd.js.map","node_modules/whatwg-fetch/fetch.js"]}],"node_modules/@babel/runtime/helpers/classCallCheck.js":[function(require,module,exports) {
+},{"_bundle_loader":"node_modules/parcel-bundler/src/builtins/bundle-loader.js","core-js/stable":[["stable.7461f3b3.js","node_modules/core-js/stable/index.js"],"stable.7461f3b3.js.map","node_modules/core-js/stable/index.js"],"react":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/react/index.js"],"react-dom":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/react-dom/index.js"],"typography":[["dist.a16385fa.js","node_modules/typography/dist/index.js"],"dist.a16385fa.js.map","node_modules/typography/dist/index.js"],"react-typography":[["dist.c0d38775.js","node_modules/react-typography/dist/index.js"],"dist.c0d38775.js.map","node_modules/react-typography/dist/index.js"],"@emotion/styled":[["styled.browser.esm.1eb75cdb.js","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"styled.browser.esm.1eb75cdb.js.map","node_modules/@emotion/styled/dist/styled.browser.esm.js"],"@emotion/core":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/@emotion/core/dist/core.browser.esm.js"],"prop-types":[["src.a2b27638.js","src/index.js"],"src.a2b27638.js.map","src.a2b27638.css","node_modules/prop-types/index.js"],"secure-ls":[["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],"secure-ls.0cd04304.js.map","node_modules/secure-ls/dist/secure-ls.js"],"react-aria-live":[["es.d5457454.js","node_modules/react-aria-live/es/index.js"],"es.d5457454.js.map","node_modules/react-aria-live/es/index.js"],"whatwg-fetch":[["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],"fetch.6e6c81fd.js.map","node_modules/whatwg-fetch/fetch.js"]}],"src/helpers/remove-polyfill.js":[function(require,module,exports) {
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+(function (arr) {
+  arr.forEach(function (item) {
+    if (item.hasOwnProperty('remove')) {
+      return;
+    }
+
+    Object.defineProperty(item, 'remove', {
+      configurable: true,
+      enumerable: true,
+      writable: true,
+      value: function remove() {
+        if (this.parentNode === null) {
+          return;
+        }
+
+        this.parentNode.removeChild(this);
+      }
+    });
+  });
+})([Element.prototype, CharacterData.prototype, DocumentType.prototype]);
+},{}],"node_modules/@babel/runtime/helpers/classCallCheck.js":[function(require,module,exports) {
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -35678,7 +35703,141 @@ function _objectSpread(target) {
 }
 
 module.exports = _objectSpread;
-},{"./defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js"}],"src/helpers/fetch-helpers.js":[function(require,module,exports) {
+},{"./defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js"}],"src/helpers/ls.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.readLS = readLS;
+exports.readValue = readValue;
+exports.cryptLS = cryptLS;
+exports.cryptValue = cryptValue;
+exports.removeOneLS = removeOneLS;
+exports.emptyLS = emptyLS;
+
+var _secureLs = _interopRequireDefault(require("secure-ls"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
+  enterModule && enterModule(module);
+})();
+
+var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
+  return a;
+};
+
+var alphabetSoup = "$3cr3t5";
+var ls = new _secureLs.default({
+  encryptionSecret: alphabetSoup
+});
+/**
+ * Returns decrypted text or null
+ * @param {String} type - either full store or just info
+ * @returns {Object|null}
+ */
+
+function readLS(type) {
+  var _ls$get = ls.get(type),
+      formData = _ls$get.formData,
+      expiration = _ls$get.expiration; // console.log({formData, expiration})
+
+
+  if (formData && expiration) {
+    var present = Date.now();
+    return present > +expiration ? null : formData;
+  } else {
+    return null;
+  }
+}
+/**
+ * Returns decrypted text or null
+ * @param {String} type - either full store or just info
+ * @returns {Object|null}
+ */
+
+
+function readValue(type) {
+  var _ls$get2 = ls.get(type),
+      value = _ls$get2.value,
+      expiration = _ls$get2.expiration; // console.log({formData, expiration})
+
+
+  if (value && expiration) {
+    var present = Date.now();
+    return present > +expiration ? null : value;
+  } else {
+    return null;
+  }
+}
+/**
+ * Encrypts Data for storing in browser memory
+ * @param {Object} formData - Object representing the data stored
+ * @param {Number} lifetime - number of milliseconds in the future to set expiration
+ * @param {String} type - either full store or just info
+ */
+
+
+function cryptLS(_ref, lifetime, type) {
+  var formData = _ref.formData;
+  var expiration = Date.now() + lifetime;
+  ls.set(type, {
+    formData: formData,
+    expiration: expiration
+  });
+}
+/**
+ * Encrypts Data for storing in browser memory
+ * @param {String} value - String representing the data stored
+ * @param {Number} lifetime - number of milliseconds in the future to set expiration
+ * @param {String} type - either full store or just info
+ */
+
+
+function cryptValue(value, lifetime, type) {
+  var expiration = Date.now() + lifetime;
+  ls.set(type, {
+    value: value,
+    expiration: expiration
+  });
+}
+
+function removeOneLS(type) {
+  ls.remove(type);
+}
+
+function emptyLS() {
+  ls.removeAll();
+}
+
+;
+
+(function () {
+  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(alphabetSoup, "alphabetSoup", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(ls, "ls", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(readLS, "readLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(readValue, "readValue", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(cryptLS, "cryptLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(cryptValue, "cryptValue", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(removeOneLS, "removeOneLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+  reactHotLoader.register(emptyLS, "emptyLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
+})();
+
+;
+
+(function () {
+  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
+  leaveModule && leaveModule(module);
+})();
+},{"react-hot-loader":"node_modules/react-hot-loader/index.js","secure-ls":"node_modules/secure-ls/dist/secure-ls.js"}],"src/helpers/fetch-helpers.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35692,6 +35851,8 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 require("whatwg-fetch");
 
+var _ls = require("./ls");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (function () {
@@ -35703,12 +35864,26 @@ var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoader
   return a;
 };
 
+var fetchIntercept = function fetchIntercept() {
+  var originalFetch = fetch;
+
+  window.__fetch = function () {
+    return originalFetch.apply(this, arguments).then(function (req) {
+      var authToken = req.headers.get("X-CSRF-JWT");
+      (0, _ls.cryptValue)(authToken, 1000 * 60 * 15, "__wpt");
+      return req;
+    });
+  };
+};
+
+fetchIntercept();
 /**
  * Asynchronous function
  * @param {string} uri - Endpoint being called
  * @param {Object} [options={}] - Request Options Object to set headers, method, body, etc
  * @returns {string|Object} - Resolves data being requested or Rejects Error
  */
+
 function callApi(_x) {
   return _callApi.apply(this, arguments);
 }
@@ -35725,6 +35900,8 @@ function _callApi() {
   /*#__PURE__*/
   _regenerator.default.mark(function _callee(uri) {
     var options,
+        useIntercept,
+        authToken,
         data,
         _args = arguments;
     return _regenerator.default.wrap(function _callee$(_context) {
@@ -35732,35 +35909,45 @@ function _callApi() {
         switch (_context.prev = _context.next) {
           case 0:
             options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
-            _context.prev = 1;
-            _context.next = 4;
-            return loadData(uri, options);
+            useIntercept = _args.length > 2 && _args[2] !== undefined ? _args[2] : false;
 
-          case 4:
+            if (options && options.method == 'POST') {
+              authToken = (0, _ls.readValue)("__wpt");
+
+              if (authToken) {
+                options.headers['Authorization'] = "Token ".concat(authToken);
+              }
+            }
+
+            _context.prev = 3;
+            _context.next = 6;
+            return loadData(uri, options, useIntercept);
+
+          case 6:
             data = _context.sent;
             return _context.abrupt("return", data);
 
-          case 8:
-            _context.prev = 8;
-            _context.t0 = _context["catch"](1);
+          case 10:
+            _context.prev = 10;
+            _context.t0 = _context["catch"](3);
             console.error(_context.t0);
 
             if (!(typeof _context.t0 == "string")) {
-              _context.next = 15;
+              _context.next = 17;
               break;
             }
 
             throw new Error(_context.t0);
 
-          case 15:
+          case 17:
             throw new Error(_context.t0.message);
 
-          case 16:
+          case 18:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 8]]);
+    }, _callee, null, [[3, 10]]);
   }));
   return _callApi.apply(this, arguments);
 }
@@ -35774,6 +35961,7 @@ function _loadData() {
   /*#__PURE__*/
   _regenerator.default.mark(function _callee2(uri) {
     var options,
+        useIntercept,
         response,
         contentType,
         _args2 = arguments;
@@ -35782,38 +35970,56 @@ function _loadData() {
         switch (_context2.prev = _context2.next) {
           case 0:
             options = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : {};
-            _context2.next = 3;
+            useIntercept = _args2.length > 2 ? _args2[2] : undefined;
+
+            if (!useIntercept) {
+              _context2.next = 8;
+              break;
+            }
+
+            _context2.next = 5;
+            return window.__fetch(uri, options);
+
+          case 5:
+            response = _context2.sent;
+            _context2.next = 11;
+            break;
+
+          case 8:
+            _context2.next = 10;
             return fetch(uri, options);
 
-          case 3:
+          case 10:
             response = _context2.sent;
+
+          case 11:
             contentType = response.headers.get("content-type");
 
             if (!(response.status >= 200 && response.status < 300)) {
-              _context2.next = 13;
+              _context2.next = 20;
               break;
             }
 
             if (!(contentType && contentType.includes("application/json"))) {
-              _context2.next = 10;
+              _context2.next = 17;
               break;
             }
 
             return _context2.abrupt("return", response.json());
 
-          case 10:
+          case 17:
             return _context2.abrupt("return", response.text());
 
-          case 11:
-            _context2.next = 14;
+          case 18:
+            _context2.next = 21;
             break;
 
-          case 13:
+          case 20:
             return _context2.abrupt("return", getErrorBody(response, contentType).then(function (body) {
               return Promise.reject(body);
             }));
 
-          case 14:
+          case 21:
           case "end":
             return _context2.stop();
         }
@@ -35882,6 +36088,7 @@ function _getErrorBody() {
     return;
   }
 
+  reactHotLoader.register(fetchIntercept, "fetchIntercept", "/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js");
   reactHotLoader.register(callApi, "callApi", "/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js");
   reactHotLoader.register(loadData, "loadData", "/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js");
   reactHotLoader.register(getErrorBody, "getErrorBody", "/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js");
@@ -35893,7 +36100,7 @@ function _getErrorBody() {
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","react-hot-loader":"node_modules/react-hot-loader/index.js","whatwg-fetch":"node_modules/whatwg-fetch/fetch.js"}],"src/Components/Contexts/FormConfigProvider.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"node_modules/@babel/runtime/helpers/asyncToGenerator.js","react-hot-loader":"node_modules/react-hot-loader/index.js","whatwg-fetch":"node_modules/whatwg-fetch/fetch.js","./ls":"src/helpers/ls.js"}],"src/Components/Contexts/FormConfigProvider.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36337,102 +36544,7 @@ function _objectWithoutProperties(source, excluded) {
 }
 
 module.exports = _objectWithoutProperties;
-},{"./objectWithoutPropertiesLoose":"node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js"}],"src/helpers/ls.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.readLS = readLS;
-exports.cryptLS = cryptLS;
-exports.removeOneLS = removeOneLS;
-exports.emptyLS = emptyLS;
-
-var _secureLs = _interopRequireDefault(require("secure-ls"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-(function () {
-  var enterModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).enterModule;
-  enterModule && enterModule(module);
-})();
-
-var __signature__ = typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal.default.signature : function (a) {
-  return a;
-};
-
-var alphabetSoup = "$3cr3t5";
-var ls = new _secureLs.default({
-  encryptionSecret: alphabetSoup
-});
-/**
- * Returns decrypted text or null
- * @param {String} type - either full store or just info
- * @returns {Object|null}
- */
-
-function readLS(type) {
-  var _ls$get = ls.get(type),
-      formData = _ls$get.formData,
-      expiration = _ls$get.expiration; // console.log({formData, expiration})
-
-
-  if (formData && expiration) {
-    var present = Date.now();
-    return present > +expiration ? null : formData;
-  } else {
-    return null;
-  }
-}
-/**
- * Encrypts Data for storing in browser memory
- * @param {Object} formData - Object representing the data stored
- * @param {Number} lifetime - number of milliseconds in the future to set expiration
- * @param {String} type - either full store or just info
- */
-
-
-function cryptLS(_ref, lifetime, type) {
-  var formData = _ref.formData;
-  var expiration = Date.now() + lifetime;
-  ls.set(type, {
-    formData: formData,
-    expiration: expiration
-  });
-}
-
-function removeOneLS(type) {
-  ls.remove(type);
-}
-
-function emptyLS() {
-  ls.removeAll();
-}
-
-;
-
-(function () {
-  var reactHotLoader = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).default;
-
-  if (!reactHotLoader) {
-    return;
-  }
-
-  reactHotLoader.register(alphabetSoup, "alphabetSoup", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-  reactHotLoader.register(ls, "ls", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-  reactHotLoader.register(readLS, "readLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-  reactHotLoader.register(cryptLS, "cryptLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-  reactHotLoader.register(removeOneLS, "removeOneLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-  reactHotLoader.register(emptyLS, "emptyLS", "/Users/wehand/Code/react-form-drupal/src/helpers/ls.js");
-})();
-
-;
-
-(function () {
-  var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
-  leaveModule && leaveModule(module);
-})();
-},{"react-hot-loader":"node_modules/react-hot-loader/index.js","secure-ls":"node_modules/secure-ls/dist/secure-ls.js"}],"src/helpers/error-types.js":[function(require,module,exports) {
+},{"./objectWithoutPropertiesLoose":"node_modules/@babel/runtime/helpers/objectWithoutPropertiesLoose.js"}],"src/helpers/error-types.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40427,6 +40539,8 @@ require("./vendors");
 
 require("core-js/stable");
 
+require("./helpers/remove-polyfill");
+
 var _react = _interopRequireDefault(require("react"));
 
 var ReactDOM = _interopRequireWildcard(require("react-dom"));
@@ -40504,7 +40618,7 @@ if (productRootEntry) {
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","./vendors":"src/vendors.js","core-js/stable":"node_modules/core-js/stable/index.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./Components/App":"src/Components/App.js","./Components/Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js"}],"node_modules/react-transition-group/node_modules/@babel/runtime/helpers/esm/extends.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","./vendors":"src/vendors.js","core-js/stable":"node_modules/core-js/stable/index.js","./helpers/remove-polyfill":"src/helpers/remove-polyfill.js","react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./Components/App":"src/Components/App.js","./Components/Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js"}],"node_modules/react-transition-group/node_modules/@babel/runtime/helpers/esm/extends.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47207,7 +47321,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50234" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54208" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -47425,6 +47539,6 @@ module.exports = function loadCSSBundle(bundle) {
   });
 };
 },{}],0:[function(require,module,exports) {
-var b=require("node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.register("css",require("node_modules/parcel-bundler/src/builtins/loaders/browser/css-loader.js"));b.load([["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],["es.d5457454.js","node_modules/react-aria-live/es/index.js"],["stable.7461f3b3.js","node_modules/core-js/stable/index.js"]]).then(function(){require("src/index.js");});
+var b=require("node_modules/parcel-bundler/src/builtins/bundle-loader.js");b.register("js",require("node_modules/parcel-bundler/src/builtins/loaders/browser/js-loader.js"));b.register("css",require("node_modules/parcel-bundler/src/builtins/loaders/browser/css-loader.js"));b.load([["secure-ls.0cd04304.js","node_modules/secure-ls/dist/secure-ls.js"],["fetch.6e6c81fd.js","node_modules/whatwg-fetch/fetch.js"],["es.d5457454.js","node_modules/react-aria-live/es/index.js"],["stable.7461f3b3.js","node_modules/core-js/stable/index.js"]]).then(function(){require("src/index.js");});
 },{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js",0], null)
 //# sourceMappingURL=/src.a2b27638.js.map

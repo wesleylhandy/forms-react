@@ -18,10 +18,11 @@
       [
         "@babel/preset-env", 
         { 
-          "useBuiltIns": "entry", 
+          "useBuiltIns": "usage", 
           "corejs": 3, 
           "targets": { 
-            "node": "current" 
+            "node": "current",
+            "browsers": [ "> 1%", "last 2 versions", "ie >= 11" ] 
           } 
         }
       ], 

@@ -1,5 +1,6 @@
 import "./vendors";
 import "core-js/stable";
+import "./helpers/remove-polyfill";
 
 import React from "react";
 import * as ReactDOM from "react-dom";
