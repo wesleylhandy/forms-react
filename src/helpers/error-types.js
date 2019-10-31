@@ -30,6 +30,7 @@ const breakingErrors = [
 	"Valid Client Browser name is required",
 	"Missing Donation Details",
 	"Motivation text is required and must not exceed required length or contain HTML Markup",
+	"Sorry, you are not allowed to do that",
 ];
 
 /**
