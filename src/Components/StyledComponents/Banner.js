@@ -15,8 +15,8 @@ const DevBanner = styled.div`
 	box-sizing: border-box;
 `;
 
-const Banner = () => (
-	<DevBanner className="banner">Form Under Development</DevBanner>
+const Banner = ({ expired = false}) => (
+	<DevBanner className="banner">{expired ? "Your Session Has Expired, Please Refresh Your Browser" : "Form Under Development"}</DevBanner>
 );
 
 export default Banner;

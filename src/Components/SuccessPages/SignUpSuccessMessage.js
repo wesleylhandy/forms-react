@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { SignUpFormContext } from "../Contexts/SignUpFormProvider";
+import { FormConfigContext } from "../Contexts/FormConfigProvider";
 
 import FormPanel from "../FormComponents/StyledComponents/FormPanel";
 
@@ -11,6 +12,10 @@ const SignUpSuccessMessage = ({ submitted, successMessage }) => {
 	const {
 		fields: { Firstname, Lastname, Spousename },
 	} = useContext(SignUpFormContext);
+	const { clearTimeouts } = useContext(FormConfigContext)
+	if (submitted) {
+		clearTimeouts();
+	}
 	return (
 		submitted && (
 			<FormPanel

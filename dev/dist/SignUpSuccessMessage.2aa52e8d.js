@@ -131,6 +131,8 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _SignUpFormProvider = require("../Contexts/SignUpFormProvider");
 
+var _FormConfigProvider = require("../Contexts/FormConfigProvider");
+
 var _FormPanel = _interopRequireDefault(require("../FormComponents/StyledComponents/FormPanel"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -162,13 +164,20 @@ var SignUpSuccessMessage = function SignUpSuccessMessage(_ref) {
       Lastname = _useContext$fields.Lastname,
       Spousename = _useContext$fields.Spousename;
 
+  var _useContext2 = (0, _react.useContext)(_FormConfigProvider.FormConfigContext),
+      clearTimeouts = _useContext2.clearTimeouts;
+
+  if (submitted) {
+    clearTimeouts();
+  }
+
   return submitted && (0, _core.jsx)(_FormPanel.default, {
     className: "success-message",
     dangerouslySetInnerHTML: createMarkup(successMessage)
   });
 };
 
-__signature__(SignUpSuccessMessage, "useContext{{\n\t\tfields: { Firstname, Lastname, Spousename },\n\t}}");
+__signature__(SignUpSuccessMessage, "useContext{{\n\t\tfields: { Firstname, Lastname, Spousename },\n\t}}\nuseContext{{ clearTimeouts }}");
 
 var _default = SignUpSuccessMessage;
 var _default2 = _default;
@@ -193,7 +202,7 @@ exports.default = _default2;
   var leaveModule = (typeof reactHotLoaderGlobal !== 'undefined' ? reactHotLoaderGlobal : require('react-hot-loader')).leaveModule;
   leaveModule && leaveModule(module);
 })();
-},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@emotion/core":"node_modules/@emotion/core/dist/core.browser.esm.js","react-hot-loader":"node_modules/react-hot-loader/index.js","react":"node_modules/react/index.js","../Contexts/SignUpFormProvider":"src/Components/Contexts/SignUpFormProvider.js","../Contexts/FormConfigProvider":"src/Components/Contexts/FormConfigProvider.js","../FormComponents/StyledComponents/FormPanel":"src/Components/FormComponents/StyledComponents/FormPanel.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -221,7 +230,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54208" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52667" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

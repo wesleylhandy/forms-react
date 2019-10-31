@@ -5,10 +5,10 @@ export const FormConfigContext = React.createContext();
 
 // uses it own reducer to avoid conflicts with other Contexts in use
 const reducer = (state, action) => {
-	const { type, status, formConfig, cssConfig } = action;
+	const { type, status, formConfig, cssConfig, idleWarning, expiredWarning } = action;
 	switch (type) {
 		case "INIT_FORM_STATE":
-			return { ...state, status, formConfig, cssConfig };
+			return { ...state, status, formConfig, cssConfig, idleWarning, expiredWarning };
 		case "LOAD_ERROR":
 			return { ...state, status };
 		case "SUBMIT_FORM":
@@ -26,11 +26,18 @@ const reducer = (state, action) => {
 
 class FormConfigProvider extends Component {
 	state = {
+		idleWarning: -1,
+		expiredWarning: -1,
+		expired: false,
 		status: "initial",
 		formConfig: {},
 		cssConfig: {},
 		submitted: false,
 		confirmed: false,
+		clearTimeouts: () => {
+			clearTimeout(this.state.idleWarning);
+			clearTimeout(this.state.expiredWarning);
+		},
 		getConfiguration: async ({ rootEntry, formType }) => {
 			// TODO: REDUCE INITIALIZATION OF DATA TO A SINGLE API CALL
 
@@ -103,12 +110,16 @@ class FormConfigProvider extends Component {
 
 				if (Object.keys(formConfig).length) {
 					formConfig.proxy = isLocal ? `${proxyUri}/${formType}` : proxyUri;
+					const idleWarning = setTimeout(()=> alert('This session will expire in 5 minutes.'), 10 * 60 * 1000);
+					const expiredWarning = setTimeout(()=> this.setState({expired: true}, () => alert('This session has expired. Please refresh this page if you wish to continue.')), 15 * 60 * 1000);
 					this.setState(state =>
 						reducer(state, {
 							type: "INIT_FORM_STATE",
 							formConfig,
 							cssConfig,
 							status: "loaded",
+							idleWarning,
+							expiredWarning
 						})
 					);
 				} else {
