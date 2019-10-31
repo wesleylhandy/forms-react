@@ -1,19 +1,18 @@
 import "whatwg-fetch";
-import { cryptValue, readValue } from "./ls"
+import { cryptValue, readValue } from "./ls";
 
 const fetchIntercept = () => {
-	const originalFetch = fetch
+	const originalFetch = fetch;
 	window.__fetch = function() {
 		return originalFetch.apply(this, arguments).then(req => {
-			let authToken = req.headers.get("X-CSRF-JWT")
-			cryptValue(authToken, 1000 * 60 * 15, "__wpt")
-			return req
-		})
-	}
-}
+			let authToken = req.headers.get("X-CSRF-JWT");
+			cryptValue(authToken, 1000 * 60 * 15, "__wpt");
+			return req;
+		});
+	};
+};
 
-fetchIntercept()
-
+fetchIntercept();
 
 /**
  * Asynchronous function
@@ -22,10 +21,10 @@ fetchIntercept()
  * @returns {string|Object} - Resolves data being requested or Rejects Error
  */
 export async function callApi(uri, options = {}, useIntercept = false) {
-	if (options && options.method == 'POST') {
+	if (options && options.method == "POST") {
 		const authToken = readValue("__wpt");
 		if (authToken) {
-			options.headers['Authorization'] = `Token ${authToken}`
+			options.headers["Authorization"] = `Token ${authToken}`;
 		}
 	}
 	let data;
@@ -51,7 +50,7 @@ export async function callApi(uri, options = {}, useIntercept = false) {
 async function loadData(uri, options = {}, useIntercept) {
 	let response;
 	if (useIntercept) {
-		response = await window.__fetch(uri, options)
+		response = await window.__fetch(uri, options);
 	} else {
 		response = await fetch(uri, options);
 	}

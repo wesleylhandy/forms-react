@@ -62,7 +62,7 @@ class SignUpForm extends Component {
 		const target = e.target;
 		let value = target.type === "checkbox" ? target.checked : target.value;
 		const name = target.name;
-		console.log({name, value})
+		console.log({ name, value });
 		this.context.validateAndUpdateField({ type: "UPDATE_FIELD", name, value });
 	};
 	handleSubmit = async e => {
@@ -93,7 +93,14 @@ class SignUpForm extends Component {
 			formMaxWidth,
 			formPadding,
 		} = this.props;
-		const { errors, fields, initialized, submitting, submitted, validating } = this.context;
+		const {
+			errors,
+			fields,
+			initialized,
+			submitting,
+			submitted,
+			validating,
+		} = this.context;
 		const hasErrors =
 			Object.values(errors).filter(val => val && val.length > 0).length > 0;
 		return !submitted ? (
@@ -117,7 +124,10 @@ class SignUpForm extends Component {
 					<FormHeader className="form-title form-header">
 						{formTitle}
 					</FormHeader>
-					<FormInstructions className="form-instructions" formInstructions={formInstructions}/>
+					<FormInstructions
+						className="form-instructions"
+						formInstructions={formInstructions}
+					/>
 					{initialized ? (
 						<FormPanel className="form-panel">
 							<FieldSet>
@@ -150,8 +160,8 @@ class SignUpForm extends Component {
 										submitting={submitting || submitted}
 										validating={validating}
 									/>
-									{
-										getMessage && <MessageBlock
+									{getMessage && (
+										<MessageBlock
 											id="message"
 											label="Message"
 											specialStyle="form-group--Message"
@@ -163,7 +173,7 @@ class SignUpForm extends Component {
 											disabled={submitting || submitted}
 											minHeight={100}
 										/>
-									}
+									)}
 								</FormPanel>
 							</FieldSet>
 							<FieldSet>

@@ -25,9 +25,13 @@ const ClubSuccessMessage = lazy(() =>
 import Spinner from "../StyledComponents/Spinner";
 
 const FormRouter = props => {
-	const { formConfig, submitted, confirmed, getCssConfig, expired } = useContext(
-		FormConfigContext
-	);
+	const {
+		formConfig,
+		submitted,
+		confirmed,
+		getCssConfig,
+		expired,
+	} = useContext(FormConfigContext);
 	const {
 		formType,
 		allowInternational,
@@ -75,64 +79,62 @@ const FormRouter = props => {
 								}
 							`}
 						/>
-						{
-							expired ? (
-								<Banner expired={true}/>
-							) : (
-								<>
-									<ErrorBoundary>
-										<AskForm
-											{...props}
-											{...formConfig}
-											formBackgroundColor={formBackgroundColor}
-											formBorderColor={formBorderColor}
-											formBorderRadius={formBorderRadius}
-											formBorderWidth={formBorderWidth}
-											formBoxShadow={formBoxShadow}
-											formMaxWidth={formMaxWidth}
-											formPadding={formPadding}
-											formMargin={formMargin}
-											formColor={formColor}
-										/>
-									</ErrorBoundary>
-									<ErrorBoundary>
-										<ConfirmationForm
-											allowInternational={allowInternational}
-											getPhone={getPhone}
-											getHonorific={getHonorific}
-											getSuffix={getSuffix}
-											getMiddleName={getMiddleName}
-											getSpouseInfo={getSpouseInfo}
-											submitted={submitted}
-											formBackgroundColor={formBackgroundColor}
-											formBorderColor={formBorderColor}
-											formBorderRadius={formBorderRadius}
-											formBorderWidth={formBorderWidth}
-											formBoxShadow={formBoxShadow}
-											formMaxWidth={formMaxWidth}
-											formPadding={formPadding}
-											formMargin={formMargin}
-											formColor={formColor}
-										/>
-									</ErrorBoundary>
-									<ErrorBoundary>
-										<ClubSuccessMessage
-											confirmed={confirmed}
-											successMessage={formConfig.successMessage}
-											formBackgroundColor={formBackgroundColor}
-											formBorderColor={formBorderColor}
-											formBorderRadius={formBorderRadius}
-											formBorderWidth={formBorderWidth}
-											formBoxShadow={formBoxShadow}
-											formMaxWidth={formMaxWidth}
-											formPadding={formPadding}
-											formMargin={formMargin}
-											formColor={formColor}
-										/>
-									</ErrorBoundary>
-								</>
-							)
-						}
+						{expired ? (
+							<Banner expired={true} />
+						) : (
+							<>
+								<ErrorBoundary>
+									<AskForm
+										{...props}
+										{...formConfig}
+										formBackgroundColor={formBackgroundColor}
+										formBorderColor={formBorderColor}
+										formBorderRadius={formBorderRadius}
+										formBorderWidth={formBorderWidth}
+										formBoxShadow={formBoxShadow}
+										formMaxWidth={formMaxWidth}
+										formPadding={formPadding}
+										formMargin={formMargin}
+										formColor={formColor}
+									/>
+								</ErrorBoundary>
+								<ErrorBoundary>
+									<ConfirmationForm
+										allowInternational={allowInternational}
+										getPhone={getPhone}
+										getHonorific={getHonorific}
+										getSuffix={getSuffix}
+										getMiddleName={getMiddleName}
+										getSpouseInfo={getSpouseInfo}
+										submitted={submitted}
+										formBackgroundColor={formBackgroundColor}
+										formBorderColor={formBorderColor}
+										formBorderRadius={formBorderRadius}
+										formBorderWidth={formBorderWidth}
+										formBoxShadow={formBoxShadow}
+										formMaxWidth={formMaxWidth}
+										formPadding={formPadding}
+										formMargin={formMargin}
+										formColor={formColor}
+									/>
+								</ErrorBoundary>
+								<ErrorBoundary>
+									<ClubSuccessMessage
+										confirmed={confirmed}
+										successMessage={formConfig.successMessage}
+										formBackgroundColor={formBackgroundColor}
+										formBorderColor={formBorderColor}
+										formBorderRadius={formBorderRadius}
+										formBorderWidth={formBorderWidth}
+										formBoxShadow={formBoxShadow}
+										formMaxWidth={formMaxWidth}
+										formPadding={formPadding}
+										formMargin={formMargin}
+										formColor={formColor}
+									/>
+								</ErrorBoundary>
+							</>
+						)}
 					</Suspense>
 				</GivingFormProvider>
 			);
@@ -141,9 +143,8 @@ const FormRouter = props => {
 			return (
 				<GivingFormProvider>
 					<Suspense fallback={<Spinner />}>
-					{
-						expired ? (
-							<Banner expired={true}/>
+						{expired ? (
+							<Banner expired={true} />
 						) : (
 							<>
 								<ErrorBoundary>
@@ -192,8 +193,7 @@ const FormRouter = props => {
 									/>
 								</ErrorBoundary>
 							</>
-						)
-					}
+						)}
 					</Suspense>
 				</GivingFormProvider>
 			);
@@ -225,9 +225,8 @@ const FormRouter = props => {
 			return (
 				<SignUpFormProvider>
 					<Suspense fallback={<Spinner />}>
-					{
-						expired ? (
-							<Banner expired={true}/>
+						{expired ? (
+							<Banner expired={true} />
 						) : (
 							<>
 								<ErrorBoundary>
@@ -261,8 +260,7 @@ const FormRouter = props => {
 									/>
 								</ErrorBoundary>
 							</>
-						)
-					}
+						)}
 					</Suspense>
 				</SignUpFormProvider>
 			);

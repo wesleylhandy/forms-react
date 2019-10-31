@@ -10,7 +10,7 @@ const createMarkup = text => {
 
 const GivingSuccessMessage = ({ confirmed, successMessage }) => {
 	const { trackingVars } = useContext(GivingFormContext);
-	const { clearTimeouts } = useContext(FormConfigContext)
+	const { clearTimeouts } = useContext(FormConfigContext);
 	if (confirmed) {
 		clearTimeouts();
 	}

@@ -262,7 +262,7 @@ router.post("/signup", async (req, res) => {
 		if ($("returnCode").text() == "SUCCESS") {
 			res.send(msg);
 		} else {
-			console.log({msg})
+			console.log({ msg });
 			const error = $("returnCode").text();
 			throw error;
 		}
@@ -271,7 +271,6 @@ router.post("/signup", async (req, res) => {
 		res.statusCode = err.status || 400;
 		return res.json(err);
 	}
-
 });
 
 router.get("/product", (req, res) => {

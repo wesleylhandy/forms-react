@@ -12,7 +12,7 @@ const SignUpSuccessMessage = ({ submitted, successMessage }) => {
 	const {
 		fields: { Firstname, Lastname, Spousename },
 	} = useContext(SignUpFormContext);
-	const { clearTimeouts } = useContext(FormConfigContext)
+	const { clearTimeouts } = useContext(FormConfigContext);
 	if (submitted) {
 		clearTimeouts();
 	}

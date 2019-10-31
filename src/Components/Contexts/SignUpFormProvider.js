@@ -47,7 +47,13 @@ class SignUpFormProvider extends Component {
 					}
 				}
 			} else {
-				const { getName, getAddress, getHonorific, getMessage, allowInternational } = this.context.formConfig;
+				const {
+					getName,
+					getAddress,
+					getHonorific,
+					getMessage,
+					allowInternational,
+				} = this.context.formConfig;
 				// console.log({getMessage})
 				action.error = await validateInput(
 					false,
@@ -166,22 +172,16 @@ class SignUpFormProvider extends Component {
 							}
 						);
 					}
-					const {
-						Emailaddress,
-						Firstname,
-						Lastname,
-						phone,
-						message
-					} = fields;
+					const { Emailaddress, Firstname, Lastname, phone, message } = fields;
 
 					const { mode, proxy } = this.context.formConfig;
-					const contactAPI = {...this.context.formConfig.contactAPI};
+					const contactAPI = { ...this.context.formConfig.contactAPI };
 					const motivation =
 						window.cbn_obj && cbn_obj.motivation
 							? cbn_obj.motivation
 							: "041148";
 
-					if (contactAPI.type = "feedback") {
+					if ((contactAPI.type = "feedback")) {
 						contactAPI.headers.EmailAddress = Emailaddress;
 						contactAPI.headers.FirstName = Firstname;
 						contactAPI.headers.LastName = Lastname;
@@ -190,7 +190,7 @@ class SignUpFormProvider extends Component {
 							window.location.pathname +
 							window.location.search;
 						contactAPI.headers.Message = message ? message : "--Empty--";
-					} else if (contactAPI.type = "activity") {
+					} else if ((contactAPI.type = "activity")) {
 						contactAPI.headers.Location =
 							window.location.origin + window.location.pathname;
 						contactAPI.headers.Campaign =
@@ -199,10 +199,10 @@ class SignUpFormProvider extends Component {
 						contactAPI.headers.FirstName = Firstname;
 						contactAPI.headers.LastName = Lastname;
 						contactAPI.headers.PhoneNumber = phone;
-					} else if (contactAPI.type = "newsletters") {
+					} else if ((contactAPI.type = "newsletters")) {
 						contactAPI.headers.EmailAddress = Emailaddress;
-						if ( Firstname ) contactAPI.headers.FirstName = Firstname;
-						if ( Lastname ) contactAPI.headers.LastName = Lastname;
+						if (Firstname) contactAPI.headers.FirstName = Firstname;
+						if (Lastname) contactAPI.headers.LastName = Lastname;
 					}
 
 					const data = {

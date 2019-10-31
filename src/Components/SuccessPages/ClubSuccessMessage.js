@@ -97,7 +97,9 @@ const ClubSuccessMessage = ({
 		fields: { Firstname },
 		designationInfo: { title },
 	} = useContext(GivingFormContext);
-	const { getCssConfig, getFormConfig, clearTimeouts } = useContext(FormConfigContext);
+	const { getCssConfig, getFormConfig, clearTimeouts } = useContext(
+		FormConfigContext
+	);
 	const trackingObj = trackingVars.reduce((obj, variable) => {
 		for (let key in variable) {
 			obj[key] = variable[key];
@@ -137,7 +139,7 @@ const ClubSuccessMessage = ({
 			scrollToPoint(top);
 		}
 	}, [confirmed, scrolled]);
-	if ( confirmed ) {
+	if (confirmed) {
 		clearTimeouts();
 	}
 	return (

@@ -1,4 +1,4 @@
-import React, { useContext }  from "react";
+import React, { useContext } from "react";
 import FormGroup from "../StyledComponents/FormGroup";
 import InputError from "../StyledComponents/InputError";
 
@@ -16,7 +16,7 @@ const TextAreaGroup = ({
 	handleBlur,
 	handleInputChange,
 	value,
-	disabled
+	disabled,
 }) => {
 	const { getCssConfig, allowInputPlaceholders } = useContext(
 		FormConfigContext
@@ -80,7 +80,9 @@ const TextAreaGroup = ({
 				onBlur={handleBlur}
 				disabled={disabled}
 			/>
-			<InputError className="input-error" inputErrorColor={inputErrorColor}>{error}</InputError>
+			<InputError className="input-error" inputErrorColor={inputErrorColor}>
+				{error}
+			</InputError>
 		</FormGroup>
 	);
 };

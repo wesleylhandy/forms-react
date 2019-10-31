@@ -102,7 +102,8 @@ const FormGroup = styled.div`
 		position: relative;
 		margin-bottom: 0;
 	}
-	input, select {
+	input,
+	select {
 		line-height: 44px !important;
 	}
 	select {
