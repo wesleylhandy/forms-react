@@ -73,7 +73,7 @@ class FormConfigProvider extends Component {
 					initialStyle = rootEntry.dataset.initialStyle;
 				} else if (isWordpress) {
 					const configUrl = `${proxyUri}cbngiving/v1/${formName}?type=initial_setup`;
-					const config = await callApi(configUrl, { method: "GET" });
+					const config = await callApi(configUrl, { method: "GET" }, true);
 					initialState = config.initialState;
 					initialStyle = config.initialStyle;
 					proxyUri = `${proxyUri}cbngiving/v1/${formName}`;
@@ -82,10 +82,10 @@ class FormConfigProvider extends Component {
 					[initialState, initialStyle] = await Promise.all([
 						callApi(`${proxyUri}/config/form-config.json`, {
 							method: "GET",
-						}),
+						}, true),
 						callApi(`${proxyUri}/config/css-config.json`, {
 							method: "GET",
-						}),
+						}, true),
 					]);
 				}
 				let configurations;
