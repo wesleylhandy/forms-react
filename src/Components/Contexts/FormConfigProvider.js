@@ -80,12 +80,20 @@ class FormConfigProvider extends Component {
 				} else {
 					proxyUri = `http://${process.env.DEV_SERVER_IP}:${process.env.DEV_SERVER_PORT}`;
 					[initialState, initialStyle] = await Promise.all([
-						callApi(`${proxyUri}/config/form-config.json`, {
-							method: "GET",
-						}, true),
-						callApi(`${proxyUri}/config/css-config.json`, {
-							method: "GET",
-						}, true),
+						callApi(
+							`${proxyUri}/config/form-config.json`,
+							{
+								method: "GET",
+							},
+							true
+						),
+						callApi(
+							`${proxyUri}/config/css-config.json`,
+							{
+								method: "GET",
+							},
+							true
+						),
 					]);
 				}
 				let configurations;
