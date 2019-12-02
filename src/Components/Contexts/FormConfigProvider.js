@@ -153,7 +153,6 @@ class FormConfigProvider extends Component {
 						15 * 60 * 1000
 					);
 					if (preset) {
-
 						const { designations = [{ DetailName: "" }] } = formConfig;
 						const idx = designations.findIndex(({ DetailName }) =>
 							DetailName.includes(preset)
@@ -162,7 +161,7 @@ class FormConfigProvider extends Component {
 							formConfig.preset = preset;
 							formConfig.defaultOption = "single";
 							formConfig.designatedIndex = idx > -1 ? idx : 0;
-						
+
 							const presetTitle = idx > -1 ? designations[idx].title : "";
 							if (presetTitle && headerTitle) {
 								formConfig.formHeader.title = headerTitle.replace(
