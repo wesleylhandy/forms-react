@@ -1,4 +1,10 @@
-import React, { useState, useContext, useRef, useLayoutEffect } from "react";
+import React, {
+	useState,
+	useContext,
+	useRef,
+	useLayoutEffect,
+	useEffect,
+} from "react";
 import { GivingFormContext } from "../../Contexts/GivingFormProvider";
 import { CSSTransition } from "react-transition-group";
 import { LiveMessage } from "react-aria-live";
@@ -20,7 +26,8 @@ import CloseBtn from "../SVG/CloseBtn";
 
 import { scrollToPoint, offsetTop } from "../../../helpers/scrollToPoint";
 
-const DesignationBlock = ({ designations }) => {
+const DesignationBlock = ({ designations, preset }) => {
+	const [initialized, setInitialized] = useState(false);
 	const [hasOpened, setHasOpened] = useState(false);
 	const [isOpen, toggleOpen] = useState(false);
 	const [hovering, setHoverIndex] = useState(-1);
@@ -136,6 +143,24 @@ const DesignationBlock = ({ designations }) => {
 			);
 		}
 	});
+	useEffect(() => {
+		if (!initialized) {
+			const initialDesignation = preset
+				? designations.findIndex(({ DetailName }) =>
+						DetailName.includes(preset)
+				  )
+				: 0;
+			if (initialDesignation != designatedIndex) {
+				console.log("Designation Effect Called");
+				updateDesignation({
+					type: "UPDATE_DESIGNATION",
+					designatedIndex: initialDesignation,
+					designationInfo: designations[initialDesignation],
+				});
+			}
+			setInitialized(true);
+		}
+	}, [initialized]);
 	return (
 		<>
 			<LiveMessage

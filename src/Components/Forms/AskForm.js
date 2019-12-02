@@ -101,6 +101,7 @@ class AskForm extends Component {
 			singleAmounts,
 			singleDescriptions,
 			designations,
+			preset,
 			monthlyPledgeData,
 			singlePledgeData,
 			defaultAmount,
@@ -194,7 +195,7 @@ class AskForm extends Component {
 								unmountOnExit
 								appear
 							>
-								<DesignationBlock designations={designations} />
+								<DesignationBlock designations={designations} preset={preset} />
 							</CSSTransition>
 						</FormPanel>
 						<FormPanel className="form-panel">

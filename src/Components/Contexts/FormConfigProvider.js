@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { callApi } from "../../helpers/fetch-helpers";
+import getQueryVariable from "../../helpers/get-query-variable";
 
 export const FormConfigContext = React.createContext();
 
@@ -68,6 +69,9 @@ class FormConfigProvider extends Component {
 				const isLocal = generator && generator.includes("local");
 				const isDrupal = generator && generator.includes("drupal");
 				const isWordpress = generator && generator.includes("wordpress");
+				const queryPreset = getQueryVariable("preset");
+				const preset = queryPreset ? queryPreset : rootEntry.dataset.preset;
+				const headerTitle = rootEntry.dataset.title;
 				if (isDrupal) {
 					initialState = rootEntry.dataset.initialState;
 					initialStyle = rootEntry.dataset.initialStyle;
@@ -77,6 +81,9 @@ class FormConfigProvider extends Component {
 					initialState = config.initialState;
 					initialStyle = config.initialStyle;
 					proxyUri = `${proxyUri}cbngiving/v1/${formName}`;
+					if (initialState.formType === "signup") {
+						proxyUri += `/contacts/${initialState.contactAPI.type}`;
+					}
 				} else {
 					proxyUri = `http://${process.env.DEV_SERVER_IP}:${process.env.DEV_SERVER_PORT}`;
 					[initialState, initialStyle] = await Promise.all([
@@ -145,6 +152,26 @@ class FormConfigProvider extends Component {
 							),
 						15 * 60 * 1000
 					);
+					if (preset) {
+
+						const { designations = [{ DetailName: "" }] } = formConfig;
+						const idx = designations.findIndex(({ DetailName }) =>
+							DetailName.includes(preset)
+						);
+						if (idx > -1) {
+							formConfig.preset = preset;
+							formConfig.defaultOption = "single";
+							formConfig.designatedIndex = idx > -1 ? idx : 0;
+						
+							const presetTitle = idx > -1 ? designations[idx].title : "";
+							if (presetTitle && headerTitle) {
+								formConfig.formHeader.title = headerTitle.replace(
+									/(\#\#PRESET\#\#)/gi,
+									presetTitle
+								);
+							}
+						}
+					}
 					this.setState(state =>
 						reducer(state, {
 							type: "INIT_FORM_STATE",
