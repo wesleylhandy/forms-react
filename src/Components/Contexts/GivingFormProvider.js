@@ -821,7 +821,11 @@ class GivingFormProvider extends Component {
 					this.context.setConfirmed(action);
 				}
 			),
-		getSelection: action => this.setState(state => reducer(state, action), () => this.context.refreshToken()),
+		getSelection: action =>
+			this.setState(
+				state => reducer(state, action),
+				() => this.context.refreshToken()
+			),
 		goBack: action =>
 			this.setState(
 				state => reducer(state, action),

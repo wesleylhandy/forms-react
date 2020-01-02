@@ -146,7 +146,6 @@ class FormConfigProvider extends Component {
 					formConfig.tokenRefreshUri = isLocal
 						? `${proxyUri}/refresh?campaign=${formName}`
 						: tokenRefreshUri;
-					this.setTimeouts();
 					if (preset) {
 						const { designations = [{ DetailName: "" }] } = formConfig;
 						const idx = designations.findIndex(({ DetailName }) =>
@@ -196,6 +195,7 @@ class FormConfigProvider extends Component {
 							status: "loaded",
 						})
 					);
+					this.setTimeouts();
 				} else {
 					throw new Error(`Unable to Load Configuration for ${formType}`);
 				}
@@ -237,7 +237,7 @@ class FormConfigProvider extends Component {
 	clearTimeouts = () => {
 		clearTimeout(this.state.idleWarning);
 		clearTimeout(this.state.expiredWarning);
-	}
+	};
 	setTimeouts = async () => {
 		if (this.state.idleWarning != -1) {
 			try {
@@ -250,7 +250,7 @@ class FormConfigProvider extends Component {
 				);
 				this.clearTimeouts();
 			} catch (err) {
-				console.error({err})
+				console.error({ err });
 				return;
 			}
 		}
@@ -274,7 +274,7 @@ class FormConfigProvider extends Component {
 				expiredWarning,
 			})
 		);
-	}
+	};
 	render() {
 		const {
 			state,
