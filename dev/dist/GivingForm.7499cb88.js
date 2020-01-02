@@ -202,12 +202,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						RadioButton,
 						"RadioButton",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/RadioButton.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/RadioButton.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/RadioButton.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/RadioButton.js"
 					);
 				})();
 
@@ -306,12 +306,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						RadioButtonGroup,
 						"RadioButtonGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/RadioButtonGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/RadioButtonGroup.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/RadioButtonGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/RadioButtonGroup.js"
 					);
 				})();
 
@@ -499,12 +499,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						CCInfoBlock,
 						"CCInfoBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/CCInfoBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/CCInfoBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/CCInfoBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/CCInfoBlock.js"
 					);
 				})();
 
@@ -635,12 +635,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						MonthlyRadioGroup,
 						"MonthlyRadioGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/MonthlyRadioBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/MonthlyRadioBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/MonthlyRadioBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/MonthlyRadioBlock.js"
 					);
 				})();
 
@@ -739,12 +739,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						TabGroup,
 						"TabGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/TabGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/TabGroup.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/TabGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/TabGroup.js"
 					);
 				})();
 
@@ -844,12 +844,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						Tab,
 						"Tab",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/Tab.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Tab.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/Tab.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Tab.js"
 					);
 				})();
 
@@ -969,12 +969,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						MonthlyTabGroup,
 						"MonthlyTabGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/MonthlyTabBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/MonthlyTabBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/MonthlyTabBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/MonthlyTabBlock.js"
 					);
 				})();
 
@@ -1072,12 +1072,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						AskArray,
 						"AskArray",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/AskArray.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/AskArray.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/AskArray.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/AskArray.js"
 					);
 				})();
 
@@ -1168,12 +1168,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						AskArrayBtn,
 						"AskArrayBtn",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/AskArrayBtn.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/AskArrayBtn.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/AskArrayBtn.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/AskArrayBtn.js"
 					);
 				})();
 
@@ -1264,12 +1264,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						OtherGiftAmountGroup,
 						"OtherGiftAmountGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/OtherGiftAmountGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/OtherGiftAmountGroup.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/OtherGiftAmountGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/OtherGiftAmountGroup.js"
 					);
 				})();
 
@@ -1361,12 +1361,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						AmountError,
 						"AmountError",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/AmountError.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/AmountError.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/AmountError.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/AmountError.js"
 					);
 				})();
 
@@ -2070,17 +2070,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						getIndex,
 						"getIndex",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Layouts/GivingLayout.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Layouts/GivingLayout.js"
 					);
 					reactHotLoader.register(
 						GivingLayout,
 						"GivingLayout",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Layouts/GivingLayout.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Layouts/GivingLayout.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Layouts/GivingLayout.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Layouts/GivingLayout.js"
 					);
 				})();
 
@@ -2859,12 +2859,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						GivingForm,
 						"GivingForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/GivingForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/GivingForm.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/GivingForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/GivingForm.js"
 					);
 				})();
 
@@ -2958,7 +2958,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "64978" + "/"
+						protocol + "://" + hostname + ":" + "57606" + "/"
 					);
 
 					ws.onmessage = function(event) {

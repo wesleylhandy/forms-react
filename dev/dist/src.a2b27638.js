@@ -5455,42 +5455,42 @@ object-assign
 					reactHotLoader.register(
 						alphabetSoup,
 						"alphabetSoup",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/ls.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/ls.js"
 					);
 					reactHotLoader.register(
 						ls,
 						"ls",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/ls.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/ls.js"
 					);
 					reactHotLoader.register(
 						readLS,
 						"readLS",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/ls.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/ls.js"
 					);
 					reactHotLoader.register(
 						readValue,
 						"readValue",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/ls.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/ls.js"
 					);
 					reactHotLoader.register(
 						cryptLS,
 						"cryptLS",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/ls.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/ls.js"
 					);
 					reactHotLoader.register(
 						cryptValue,
 						"cryptValue",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/ls.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/ls.js"
 					);
 					reactHotLoader.register(
 						removeOneLS,
 						"removeOneLS",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/ls.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/ls.js"
 					);
 					reactHotLoader.register(
 						emptyLS,
 						"emptyLS",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/ls.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/ls.js"
 					);
 				})();
 
@@ -5809,22 +5809,22 @@ object-assign
 					reactHotLoader.register(
 						fetchIntercept,
 						"fetchIntercept",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/fetch-helpers.js"
 					);
 					reactHotLoader.register(
 						callApi,
 						"callApi",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/fetch-helpers.js"
 					);
 					reactHotLoader.register(
 						loadData,
 						"loadData",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/fetch-helpers.js"
 					);
 					reactHotLoader.register(
 						getErrorBody,
 						"getErrorBody",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/fetch-helpers.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/fetch-helpers.js"
 					);
 				})();
 
@@ -6178,7 +6178,7 @@ object-assign
 					reactHotLoader.register(
 						getQueryVariable,
 						"getQueryVariable",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/get-query-variable.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/get-query-variable.js"
 					);
 				})();
 
@@ -6774,14 +6774,9 @@ object-assign
 									});
 								},
 								setConfirmed: function setConfirmed(action) {
-									return _this.setState(
-										function(state) {
-											return reducer(state, action);
-										},
-										function() {
-											return _this.setTimeouts();
-										}
-									);
+									return _this.setState(function(state) {
+										return reducer(state, action);
+									});
 								},
 								goBack: function goBack(action) {
 									return _this.setState(
@@ -6820,6 +6815,9 @@ object-assign
 								},
 								refreshToken: function refreshToken() {
 									return _this.setTimeouts();
+								},
+								clearTimeouts: function clearTimeouts() {
+									return _this.clearTimeouts();
 								},
 							};
 
@@ -6972,22 +6970,22 @@ object-assign
 					reactHotLoader.register(
 						FormConfigContext,
 						"FormConfigContext",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/FormConfigProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/FormConfigProvider.js"
 					);
 					reactHotLoader.register(
 						reducer,
 						"reducer",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/FormConfigProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/FormConfigProvider.js"
 					);
 					reactHotLoader.register(
 						FormConfigProvider,
 						"FormConfigProvider",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/FormConfigProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/FormConfigProvider.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/FormConfigProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/FormConfigProvider.js"
 					);
 				})();
 
@@ -7274,17 +7272,17 @@ object-assign
 					reactHotLoader.register(
 						formErrors,
 						"formErrors",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/error-types.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/error-types.js"
 					);
 					reactHotLoader.register(
 						breakingErrors,
 						"breakingErrors",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/error-types.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/error-types.js"
 					);
 					reactHotLoader.register(
 						getErrorType,
 						"getErrorType",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/error-types.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/error-types.js"
 					);
 				})();
 
@@ -7679,37 +7677,37 @@ object-assign
 					reactHotLoader.register(
 						checkExpDate,
 						"checkExpDate",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/cc-validation.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/cc-validation.js"
 					);
 					reactHotLoader.register(
 						checkDigits,
 						"checkDigits",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/cc-validation.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/cc-validation.js"
 					);
 					reactHotLoader.register(
 						validateCCInput,
 						"validateCCInput",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/cc-validation.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/cc-validation.js"
 					);
 					reactHotLoader.register(
 						IsValidCreditCardType,
 						"IsValidCreditCardType",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/cc-validation.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/cc-validation.js"
 					);
 					reactHotLoader.register(
 						validateCCInfo,
 						"validateCCInfo",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/cc-validation.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/cc-validation.js"
 					);
 					reactHotLoader.register(
 						checkValues,
 						"checkValues",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/cc-validation.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/cc-validation.js"
 					);
 					reactHotLoader.register(
 						checkCVNCode,
 						"checkCVNCode",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/cc-validation.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/cc-validation.js"
 					);
 				})();
 
@@ -8201,42 +8199,42 @@ object-assign
 					reactHotLoader.register(
 						email_regex,
 						"email_regex",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/validators.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/validators.js"
 					);
 					reactHotLoader.register(
 						phone_regex,
 						"phone_regex",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/validators.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/validators.js"
 					);
 					reactHotLoader.register(
 						zip_regex,
 						"zip_regex",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/validators.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/validators.js"
 					);
 					reactHotLoader.register(
 						firstname_regex,
 						"firstname_regex",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/validators.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/validators.js"
 					);
 					reactHotLoader.register(
 						lastname_regex,
 						"lastname_regex",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/validators.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/validators.js"
 					);
 					reactHotLoader.register(
 						callZipCityStateService,
 						"callZipCityStateService",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/validators.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/validators.js"
 					);
 					reactHotLoader.register(
 						callAddressVerification,
 						"callAddressVerification",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/validators.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/validators.js"
 					);
 					reactHotLoader.register(
 						validateInput,
 						"validateInput",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/validators.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/validators.js"
 					);
 				})();
 
@@ -8615,12 +8613,12 @@ object-assign
 					reactHotLoader.register(
 						reducer,
 						"reducer",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/reducer.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/reducer.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/reducer.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/reducer.js"
 					);
 				})();
 
@@ -10726,32 +10724,32 @@ object-assign
 					reactHotLoader.register(
 						d,
 						"d",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/GivingFormProvider.js"
 					);
 					reactHotLoader.register(
 						curMonth,
 						"curMonth",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/GivingFormProvider.js"
 					);
 					reactHotLoader.register(
 						curYear,
 						"curYear",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/GivingFormProvider.js"
 					);
 					reactHotLoader.register(
 						GivingFormContext,
 						"GivingFormContext",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/GivingFormProvider.js"
 					);
 					reactHotLoader.register(
 						GivingFormProvider,
 						"GivingFormProvider",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/GivingFormProvider.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/GivingFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/GivingFormProvider.js"
 					);
 				})();
 
@@ -11241,17 +11239,17 @@ object-assign
 					reactHotLoader.register(
 						ProductFormContext,
 						"ProductFormContext",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/ProductFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/ProductFormProvider.js"
 					);
 					reactHotLoader.register(
 						ProductFormProvider,
 						"ProductFormProvider",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/ProductFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/ProductFormProvider.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/ProductFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/ProductFormProvider.js"
 					);
 				})();
 
@@ -12115,17 +12113,17 @@ object-assign
 					reactHotLoader.register(
 						SignUpFormContext,
 						"SignUpFormContext",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/SignUpFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/SignUpFormProvider.js"
 					);
 					reactHotLoader.register(
 						SignUpFormProvider,
 						"SignUpFormProvider",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/SignUpFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/SignUpFormProvider.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Contexts/SignUpFormProvider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Contexts/SignUpFormProvider.js"
 					);
 				})();
 
@@ -12619,22 +12617,22 @@ object-assign
 					reactHotLoader.register(
 						SpinnerContainer,
 						"SpinnerContainer",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Spinner.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Spinner.js"
 					);
 					reactHotLoader.register(
 						LoadingSpinner,
 						"LoadingSpinner",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Spinner.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Spinner.js"
 					);
 					reactHotLoader.register(
 						Spinner,
 						"Spinner",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Spinner.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Spinner.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Spinner.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Spinner.js"
 					);
 				})();
 
@@ -12862,12 +12860,12 @@ object-assign
 					reactHotLoader.register(
 						ErrorBoundary,
 						"ErrorBoundary",
-						"/Users/wehand/Code/react-form-drupal/src/Components/ErrorBoundary.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/ErrorBoundary.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/ErrorBoundary.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/ErrorBoundary.js"
 					);
 				})();
 
@@ -13429,62 +13427,62 @@ object-assign
 					reactHotLoader.register(
 						Banner,
 						"Banner",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						GivingForm,
 						"GivingForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						AskForm,
 						"AskForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						ConfirmationForm,
 						"ConfirmationForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						PaymentForm,
 						"PaymentForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						ProductForm,
 						"ProductForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						SignUpForm,
 						"SignUpForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						GivingSuccessMessage,
 						"GivingSuccessMessage",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						SignUpSuccessMessage,
 						"SignUpSuccessMessage",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						ClubSuccessMessage,
 						"ClubSuccessMessage",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						FormRouter,
 						"FormRouter",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/FormRouter.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
 					);
 				})();
 
@@ -13650,12 +13648,12 @@ object-assign
 					reactHotLoader.register(
 						Wrapper,
 						"Wrapper",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Wrapper.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Wrapper.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/Wrapper.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Wrapper.js"
 					);
 				})();
 
@@ -13884,17 +13882,17 @@ object-assign
 					reactHotLoader.register(
 						handleUnload,
 						"handleUnload",
-						"/Users/wehand/Code/react-form-drupal/src/Components/App.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/App.js"
 					);
 					reactHotLoader.register(
 						App,
 						"App",
-						"/Users/wehand/Code/react-form-drupal/src/Components/App.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/App.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/App.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/App.js"
 					);
 				})();
 
@@ -14094,22 +14092,22 @@ object-assign
 					reactHotLoader.register(
 						clubGivingRootEntry,
 						"clubGivingRootEntry",
-						"/Users/wehand/Code/react-form-drupal/src/index.js"
+						"/Users/wehand/Code/cbnforms-react/src/index.js"
 					);
 					reactHotLoader.register(
 						givingRootEntry,
 						"givingRootEntry",
-						"/Users/wehand/Code/react-form-drupal/src/index.js"
+						"/Users/wehand/Code/cbnforms-react/src/index.js"
 					);
 					reactHotLoader.register(
 						signupRootEntry,
 						"signupRootEntry",
-						"/Users/wehand/Code/react-form-drupal/src/index.js"
+						"/Users/wehand/Code/cbnforms-react/src/index.js"
 					);
 					reactHotLoader.register(
 						productRootEntry,
 						"productRootEntry",
-						"/Users/wehand/Code/react-form-drupal/src/index.js"
+						"/Users/wehand/Code/cbnforms-react/src/index.js"
 					);
 				})();
 
@@ -17353,32 +17351,32 @@ object-assign
 					reactHotLoader.register(
 						duration,
 						"duration",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/FormWrapper.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/FormWrapper.js"
 					);
 					reactHotLoader.register(
 						defaultStyle,
 						"defaultStyle",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/FormWrapper.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/FormWrapper.js"
 					);
 					reactHotLoader.register(
 						transitionStyles,
 						"transitionStyles",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/FormWrapper.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/FormWrapper.js"
 					);
 					reactHotLoader.register(
 						Wrapper,
 						"Wrapper",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/FormWrapper.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/FormWrapper.js"
 					);
 					reactHotLoader.register(
 						FormWrapper,
 						"FormWrapper",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/FormWrapper.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/FormWrapper.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/StyledComponents/FormWrapper.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/FormWrapper.js"
 					);
 				})();
 
@@ -17508,12 +17506,12 @@ object-assign
 					reactHotLoader.register(
 						Divider,
 						"Divider",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Divider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Divider.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Divider.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Divider.js"
 					);
 				})();
 
@@ -17604,12 +17602,12 @@ object-assign
 					reactHotLoader.register(
 						FieldSet,
 						"FieldSet",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FieldSet.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FieldSet.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FieldSet.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FieldSet.js"
 					);
 				})();
 
@@ -17700,12 +17698,12 @@ object-assign
 					reactHotLoader.register(
 						FormRow,
 						"FormRow",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormRow.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FormRow.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormRow.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FormRow.js"
 					);
 				})();
 
@@ -17812,12 +17810,12 @@ object-assign
 					reactHotLoader.register(
 						FormHeader,
 						"FormHeader",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormHeader.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FormHeader.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormHeader.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FormHeader.js"
 					);
 				})();
 
@@ -18004,32 +18002,32 @@ object-assign
 					reactHotLoader.register(
 						DesignationOverlay,
 						"DesignationOverlay",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Designation.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Designation.js"
 					);
 					reactHotLoader.register(
 						DesignationContainer,
 						"DesignationContainer",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Designation.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Designation.js"
 					);
 					reactHotLoader.register(
 						Designation,
 						"Designation",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Designation.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Designation.js"
 					);
 					reactHotLoader.register(
 						DesignationCheck,
 						"DesignationCheck",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Designation.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Designation.js"
 					);
 					reactHotLoader.register(
 						DesignationListContainer,
 						"DesignationListContainer",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Designation.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Designation.js"
 					);
 					reactHotLoader.register(
 						DesignationList,
 						"DesignationList",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Designation.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Designation.js"
 					);
 				})();
 
@@ -18156,12 +18154,12 @@ object-assign
 					reactHotLoader.register(
 						DropArrow,
 						"DropArrow",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/DropArrow.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/DropArrow.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/DropArrow.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/DropArrow.js"
 					);
 				})();
 
@@ -18277,12 +18275,12 @@ object-assign
 					reactHotLoader.register(
 						CheckMark,
 						"CheckMark",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/CheckMark.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/CheckMark.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/CheckMark.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/CheckMark.js"
 					);
 				})();
 
@@ -18369,12 +18367,12 @@ object-assign
 					reactHotLoader.register(
 						CloseBtn,
 						"CloseBtn",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/CloseBtn.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/CloseBtn.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/CloseBtn.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/CloseBtn.js"
 					);
 				})();
 
@@ -18898,12 +18896,12 @@ object-assign
 					reactHotLoader.register(
 						scrollToPoint,
 						"scrollToPoint",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/scrollToPoint.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/scrollToPoint.js"
 					);
 					reactHotLoader.register(
 						offsetTop,
 						"offsetTop",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/scrollToPoint.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/scrollToPoint.js"
 					);
 				})();
 
@@ -19455,12 +19453,12 @@ object-assign
 					reactHotLoader.register(
 						DesignationBlock,
 						"DesignationBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/DesignationBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/DesignationBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/DesignationBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/DesignationBlock.js"
 					);
 				})();
 
@@ -19567,12 +19565,12 @@ object-assign
 					reactHotLoader.register(
 						FormPanel,
 						"FormPanel",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormPanel.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FormPanel.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormPanel.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FormPanel.js"
 					);
 				})();
 
@@ -19681,12 +19679,12 @@ object-assign
 					reactHotLoader.register(
 						SubmitButtonGroup,
 						"SubmitButtonGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/SubmitButtonGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/SubmitButtonGroup.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/SubmitButtonGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/SubmitButtonGroup.js"
 					);
 				})();
 
@@ -19767,12 +19765,12 @@ object-assign
 					reactHotLoader.register(
 						FormError,
 						"FormError",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormError.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FormError.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormError.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FormError.js"
 					);
 				})();
 
@@ -19988,12 +19986,12 @@ object-assign
 					reactHotLoader.register(
 						SubmitButton,
 						"SubmitButton",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/SubmitButton.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/SubmitButton.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/SubmitButton.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/SubmitButton.js"
 					);
 				})();
 
@@ -20157,12 +20155,12 @@ object-assign
 					reactHotLoader.register(
 						FormGroup,
 						"FormGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FormGroup.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/FormGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/FormGroup.js"
 					);
 				})();
 
@@ -20244,12 +20242,12 @@ object-assign
 					reactHotLoader.register(
 						InputError,
 						"InputError",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/InputError.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/InputError.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/InputError.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/InputError.js"
 					);
 				})();
 
@@ -20517,12 +20515,12 @@ object-assign
 					reactHotLoader.register(
 						SelectGroup,
 						"SelectGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/SelectGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/SelectGroup.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/SelectGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/SelectGroup.js"
 					);
 				})();
 
@@ -20818,12 +20816,12 @@ object-assign
 					reactHotLoader.register(
 						InputGroup,
 						"InputGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/InputGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/InputGroup.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/InputGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/InputGroup.js"
 					);
 				})();
 
@@ -21253,27 +21251,27 @@ object-assign
 					reactHotLoader.register(
 						TitleDropdown,
 						"TitleDropdown",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/NameBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/NameBlock.js"
 					);
 					reactHotLoader.register(
 						NameInput,
 						"NameInput",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/NameBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/NameBlock.js"
 					);
 					reactHotLoader.register(
 						SpouseInput,
 						"SpouseInput",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/NameBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/NameBlock.js"
 					);
 					reactHotLoader.register(
 						NameBlock,
 						"NameBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/NameBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/NameBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/NameBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/NameBlock.js"
 					);
 				})();
 
@@ -21745,12 +21743,12 @@ object-assign
 					reactHotLoader.register(
 						StateOptions,
 						"StateOptions",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/StateOptions.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/StateOptions.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/StateOptions.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/StateOptions.js"
 					);
 				})();
 
@@ -22192,12 +22190,12 @@ object-assign
 					reactHotLoader.register(
 						AddressBlock,
 						"AddressBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/AddressBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/AddressBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/AddressBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/AddressBlock.js"
 					);
 				})();
 
@@ -22468,27 +22466,27 @@ object-assign
 					reactHotLoader.register(
 						SealsBlock,
 						"SealsBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/Seals.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
 					);
 					reactHotLoader.register(
 						certs,
 						"certs",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/Seals.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
 					);
 					reactHotLoader.register(
 						DigiCert,
 						"DigiCert",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/Seals.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
 					);
 					reactHotLoader.register(
 						Seals,
 						"Seals",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/Seals.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/Seals.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
 					);
 				})();
 
@@ -22765,12 +22763,12 @@ object-assign
 					reactHotLoader.register(
 						CBNLogo,
 						"CBNLogo",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/CBNLogo.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/CBNLogo.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/CBNLogo.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/CBNLogo.js"
 					);
 				})();
 
@@ -23015,22 +23013,22 @@ object-assign
 					reactHotLoader.register(
 						Header,
 						"Header",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/HeaderBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
 					);
 					reactHotLoader.register(
 						Nav,
 						"Nav",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/HeaderBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
 					);
 					reactHotLoader.register(
 						HeaderBlock,
 						"HeaderBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/HeaderBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/HeaderBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
 					);
 				})();
 
@@ -23303,17 +23301,17 @@ object-assign
 					reactHotLoader.register(
 						Footer,
 						"Footer",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/FooterBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FooterBlock.js"
 					);
 					reactHotLoader.register(
 						FooterBlock,
 						"FooterBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/FooterBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FooterBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/FooterBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FooterBlock.js"
 					);
 				})();
 
@@ -23407,12 +23405,12 @@ object-assign
 					reactHotLoader.register(
 						HiddenForm,
 						"HiddenForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/HiddenForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/HiddenForm.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/HiddenForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/HiddenForm.js"
 					);
 				})();
 
@@ -23662,12 +23660,12 @@ object-assign
 					reactHotLoader.register(
 						ProductLayout,
 						"ProductLayout",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Layouts/ProductLayout.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Layouts/ProductLayout.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Layouts/ProductLayout.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Layouts/ProductLayout.js"
 					);
 				})();
 
@@ -23754,12 +23752,12 @@ object-assign
 					reactHotLoader.register(
 						ShippingTitle,
 						"ShippingTitle",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/ShippingTitle.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ShippingTitle.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/ShippingTitle.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ShippingTitle.js"
 					);
 				})();
 
@@ -23997,12 +23995,12 @@ object-assign
 					reactHotLoader.register(
 						ShippingAddressBlock,
 						"ShippingAddressBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/ShippingAddressBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/ShippingAddressBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/ShippingAddressBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/ShippingAddressBlock.js"
 					);
 				})();
 
@@ -24121,17 +24119,17 @@ object-assign
 					reactHotLoader.register(
 						CheckBoxControl,
 						"CheckBoxControl",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/CheckboxGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/CheckboxGroup.js"
 					);
 					reactHotLoader.register(
 						CheckboxGroup,
 						"CheckboxGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/CheckboxGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/CheckboxGroup.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/CheckboxGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/CheckboxGroup.js"
 					);
 				})();
 
@@ -24229,12 +24227,12 @@ object-assign
 					reactHotLoader.register(
 						Checkbox,
 						"Checkbox",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/Checkbox.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Checkbox.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/Checkbox.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Checkbox.js"
 					);
 				})();
 
@@ -24328,12 +24326,12 @@ object-assign
 					reactHotLoader.register(
 						FormOptionsBlock,
 						"FormOptionsBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/FormOptionsBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FormOptionsBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/FormOptionsBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FormOptionsBlock.js"
 					);
 				})();
 
@@ -24556,12 +24554,12 @@ object-assign
 					reactHotLoader.register(
 						formDisplayValue,
 						"formDisplayValue",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/form-display-values.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/form-display-values.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/helpers/form-display-values.js"
+						"/Users/wehand/Code/cbnforms-react/src/helpers/form-display-values.js"
 					);
 				})();
 
@@ -24650,12 +24648,12 @@ object-assign
 					reactHotLoader.register(
 						Disclaimer,
 						"Disclaimer",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Disclaimer.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Disclaimer.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Disclaimer.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Disclaimer.js"
 					);
 				})();
 
@@ -24783,17 +24781,17 @@ object-assign
 					reactHotLoader.register(
 						CardSection,
 						"CardSection",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Card.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Card.js"
 					);
 					reactHotLoader.register(
 						CardContainer,
 						"CardContainer",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Card.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Card.js"
 					);
 					reactHotLoader.register(
 						Card,
 						"Card",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/StyledComponents/Card.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Card.js"
 					);
 				})();
 
@@ -24844,7 +24842,7 @@ object-assign
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "64978" + "/"
+						protocol + "://" + hostname + ":" + "57606" + "/"
 					);
 
 					ws.onmessage = function(event) {

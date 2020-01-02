@@ -213,8 +213,7 @@ class FormConfigProvider extends Component {
 			}
 		},
 		submitForm: action => this.setState(state => reducer(state, action)),
-		setConfirmed: action =>
-			this.setState(state => reducer(state, action), () => this.setTimeouts()),
+		setConfirmed: action => this.setState(state => reducer(state, action)),
 		goBack: action =>
 			this.setState(state => reducer(state, action), () => this.setTimeouts()),
 		getCssConfig: type => {
@@ -234,6 +233,7 @@ class FormConfigProvider extends Component {
 		},
 		setCssConfig: action => this.setState(state => reducer(state, action)),
 		refreshToken: () => this.setTimeouts(),
+		clearTimeouts: () => this.clearTimeouts(),
 	};
 	clearTimeouts = () => {
 		clearTimeout(this.state.idleWarning);

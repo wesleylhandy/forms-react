@@ -271,17 +271,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						createMarkup,
 						"createMarkup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/SuccessPages/SignUpSuccessMessage.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/SuccessPages/SignUpSuccessMessage.js"
 					);
 					reactHotLoader.register(
 						SignUpSuccessMessage,
 						"SignUpSuccessMessage",
-						"/Users/wehand/Code/react-form-drupal/src/Components/SuccessPages/SignUpSuccessMessage.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/SuccessPages/SignUpSuccessMessage.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/SuccessPages/SignUpSuccessMessage.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/SuccessPages/SignUpSuccessMessage.js"
 					);
 				})();
 
@@ -337,7 +337,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "64978" + "/"
+						protocol + "://" + hostname + ":" + "57606" + "/"
 					);
 
 					ws.onmessage = function(event) {

@@ -733,12 +733,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						ProductForm,
 						"ProductForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/ProductForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/ProductForm.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/ProductForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/ProductForm.js"
 					);
 				})();
 
@@ -828,7 +828,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "64978" + "/"
+						protocol + "://" + hostname + ":" + "57606" + "/"
 					);
 
 					ws.onmessage = function(event) {

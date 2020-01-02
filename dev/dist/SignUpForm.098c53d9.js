@@ -212,17 +212,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						Instructions,
 						"Instructions",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/FormInstructions.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/FormInstructions.js"
 					);
 					reactHotLoader.register(
 						FormInstructions,
 						"FormInstructions",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/FormInstructions.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/FormInstructions.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/FormInstructions.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/FormInstructions.js"
 					);
 				})();
 
@@ -496,12 +496,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						TextAreaGroup,
 						"TextAreaGroup",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/TextAreaGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/TextAreaGroup.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/FunctionalComponents/TextAreaGroup.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/TextAreaGroup.js"
 					);
 				})();
 
@@ -599,12 +599,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						MessageBlock,
 						"MessageBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/MessageBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/MessageBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/MessageBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/MessageBlock.js"
 					);
 				})();
 
@@ -1121,12 +1121,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						SignUpForm,
 						"SignUpForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/SignUpForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/SignUpForm.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/SignUpForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/SignUpForm.js"
 					);
 				})();
 
@@ -1216,7 +1216,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "64978" + "/"
+						protocol + "://" + hostname + ":" + "57606" + "/"
 					);
 
 					ws.onmessage = function(event) {

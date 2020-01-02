@@ -341,17 +341,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						BlockContainer,
 						"BlockContainer",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/SummaryBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/SummaryBlock.js"
 					);
 					reactHotLoader.register(
 						SummaryBlock,
 						"SummaryBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/SummaryBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/SummaryBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/SummaryBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/SummaryBlock.js"
 					);
 				})();
 
@@ -486,12 +486,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						LockSymbol,
 						"LockSymbol",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/LockSymbol.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/LockSymbol.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/LockSymbol.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/LockSymbol.js"
 					);
 				})();
 
@@ -621,12 +621,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						InfoSymbol,
 						"InfoSymbol",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/InfoSymbol.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/InfoSymbol.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/InfoSymbol.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/InfoSymbol.js"
 					);
 				})();
 
@@ -1035,12 +1035,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						MasterCard,
 						"MasterCard",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/MasterCard.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/MasterCard.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/MasterCard.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/MasterCard.js"
 					);
 				})();
 
@@ -1230,12 +1230,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						Discover,
 						"Discover",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/Discover.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/Discover.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/Discover.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/Discover.js"
 					);
 				})();
 
@@ -1391,12 +1391,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						Amex,
 						"Amex",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/Amex.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/Amex.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/Amex.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/Amex.js"
 					);
 				})();
 
@@ -1515,12 +1515,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						Visa,
 						"Visa",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/Visa.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/Visa.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/SVG/Visa.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/Visa.js"
 					);
 				})();
 
@@ -1958,32 +1958,32 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						PaymentBlockContainer,
 						"PaymentBlockContainer",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/PaymentBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/PaymentBlock.js"
 					);
 					reactHotLoader.register(
 						SafetyDisclaimer,
 						"SafetyDisclaimer",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/PaymentBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/PaymentBlock.js"
 					);
 					reactHotLoader.register(
 						CCBlock,
 						"CCBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/PaymentBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/PaymentBlock.js"
 					);
 					reactHotLoader.register(
 						InfoCircle,
 						"InfoCircle",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/PaymentBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/PaymentBlock.js"
 					);
 					reactHotLoader.register(
 						PaymentBlock,
 						"PaymentBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/PaymentBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/PaymentBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/PaymentBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/PaymentBlock.js"
 					);
 				})();
 
@@ -3038,42 +3038,42 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						SealsSection,
 						"SealsSection",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/ConfirmationForm.js"
 					);
 					reactHotLoader.register(
 						getDay,
 						"getDay",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/ConfirmationForm.js"
 					);
 					reactHotLoader.register(
 						d,
 						"d",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/ConfirmationForm.js"
 					);
 					reactHotLoader.register(
 						curMonth,
 						"curMonth",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/ConfirmationForm.js"
 					);
 					reactHotLoader.register(
 						curYear,
 						"curYear",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/ConfirmationForm.js"
 					);
 					reactHotLoader.register(
 						timeout,
 						"timeout",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/ConfirmationForm.js"
 					);
 					reactHotLoader.register(
 						ConfirmationForm,
 						"ConfirmationForm",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/ConfirmationForm.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/Forms/ConfirmationForm.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/ConfirmationForm.js"
 					);
 				})();
 
@@ -3174,7 +3174,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "64978" + "/"
+						protocol + "://" + hostname + ":" + "57606" + "/"
 					);
 
 					ws.onmessage = function(event) {

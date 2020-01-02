@@ -281,12 +281,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						SuccessCardBlock,
 						"SuccessCardBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/SuccessCardBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/SuccessCardBlock.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/FormComponents/Blocks/SuccessCardBlock.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/SuccessCardBlock.js"
 					);
 				})();
 
@@ -712,27 +712,27 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					reactHotLoader.register(
 						ThankYouMessage,
 						"ThankYouMessage",
-						"/Users/wehand/Code/react-form-drupal/src/Components/SuccessPages/ClubSuccessMessage.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/SuccessPages/ClubSuccessMessage.js"
 					);
 					reactHotLoader.register(
 						SignatureBlock,
 						"SignatureBlock",
-						"/Users/wehand/Code/react-form-drupal/src/Components/SuccessPages/ClubSuccessMessage.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/SuccessPages/ClubSuccessMessage.js"
 					);
 					reactHotLoader.register(
 						PostScript,
 						"PostScript",
-						"/Users/wehand/Code/react-form-drupal/src/Components/SuccessPages/ClubSuccessMessage.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/SuccessPages/ClubSuccessMessage.js"
 					);
 					reactHotLoader.register(
 						ClubSuccessMessage,
 						"ClubSuccessMessage",
-						"/Users/wehand/Code/react-form-drupal/src/Components/SuccessPages/ClubSuccessMessage.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/SuccessPages/ClubSuccessMessage.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/react-form-drupal/src/Components/SuccessPages/ClubSuccessMessage.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/SuccessPages/ClubSuccessMessage.js"
 					);
 				})();
 
@@ -802,7 +802,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "64978" + "/"
+						protocol + "://" + hostname + ":" + "57606" + "/"
 					);
 
 					ws.onmessage = function(event) {
