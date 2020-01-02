@@ -221,7 +221,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "51910" + "/"
+						protocol + "://" + hostname + ":" + "56615" + "/"
 					);
 
 					ws.onmessage = function(event) {
@@ -258,8 +258,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 								assetsToAccept.forEach(function(v) {
 									hmrAcceptRun(v[0], v[1]);
 								});
-							} else {
-								window.location.reload();
+							} else if (location.reload) {
+								// `location` global exists in a web worker context but lacks `.reload()` function.
+								location.reload();
 							}
 						}
 

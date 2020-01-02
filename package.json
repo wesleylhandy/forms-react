@@ -23,8 +23,8 @@
     "license": "ISC",
     "private": true,
     "browserslist": [
-        "> 1%", 
-        "last 2 versions", 
+        "> 1%",
+        "last 2 versions",
         "IE 11"
     ],
     "dependencies": {

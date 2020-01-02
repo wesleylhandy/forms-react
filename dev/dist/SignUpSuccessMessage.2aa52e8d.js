@@ -138,8 +138,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				});
 				exports.default = void 0;
 
-				var _core = require("@emotion/core");
-
 				var _react = _interopRequireWildcard(require("react"));
 
 				var _SignUpFormProvider = require("../Contexts/SignUpFormProvider");
@@ -150,40 +148,62 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					require("../FormComponents/StyledComponents/FormPanel")
 				);
 
+				var _core = require("@emotion/core");
+
 				function _interopRequireDefault(obj) {
 					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
 				}
 
 				function _interopRequireWildcard(obj) {
 					if (obj && obj.__esModule) {
 						return obj;
-					} else {
-						var newObj = {};
-						if (obj != null) {
-							for (var key in obj) {
-								if (Object.prototype.hasOwnProperty.call(obj, key)) {
-									var desc =
-										Object.defineProperty && Object.getOwnPropertyDescriptor
-											? Object.getOwnPropertyDescriptor(obj, key)
-											: {};
-									if (desc.get || desc.set) {
-										Object.defineProperty(newObj, key, desc);
-									} else {
-										newObj[key] = obj[key];
-									}
-								}
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
 							}
 						}
-						newObj.default = obj;
-						return newObj;
 					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
 
@@ -239,10 +259,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -266,16 +286,14 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 				"../Contexts/SignUpFormProvider":
 					"src/Components/Contexts/SignUpFormProvider.js",
@@ -283,6 +301,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"src/Components/Contexts/FormConfigProvider.js",
 				"../FormComponents/StyledComponents/FormPanel":
 					"src/Components/FormComponents/StyledComponents/FormPanel.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"node_modules/parcel-bundler/src/builtins/hmr-runtime.js": [
@@ -318,7 +337,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "51910" + "/"
+						protocol + "://" + hostname + ":" + "56615" + "/"
 					);
 
 					ws.onmessage = function(event) {
@@ -355,8 +374,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 								assetsToAccept.forEach(function(v) {
 									hmrAcceptRun(v[0], v[1]);
 								});
-							} else {
-								window.location.reload();
+							} else if (location.reload) {
+								// `location` global exists in a web worker context but lacks `.reload()` function.
+								location.reload();
 							}
 						}
 

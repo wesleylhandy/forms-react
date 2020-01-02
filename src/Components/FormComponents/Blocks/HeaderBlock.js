@@ -27,29 +27,45 @@ const Header = styled.header`
 		width: 100%;
 		box-sizing: border-box;
 		h2.header-title {
-			font-size: 40px;
+			font-size: 36px;
 			font-weight: bold;
 			color: #ffffff;
 			text-align: center;
-			line-height: 49px;
+			line-height: 42px;
 			margin: 0;
 			margin-block-start: 0;
 			margin-block-end: 0;
 			padding: 0;
 		}
 		p.header-description {
-			font-size: 26px;
+			font-size: 20px;
 			font-weight: 600;
-			line-height: 32px;
+			line-height: 23px;
 			color: #ffffff;
 			text-align: center;
 			margin: 0;
 			margin-block-start: 0;
 			margin-block-end: 0;
 			padding: 0;
-			@media screen and (max-width: 649px) {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			span {
+				padding-top: 20px;
 				font-size: 20px;
+				font-weight: 600;
 				line-height: 23px;
+				color: #ffffff;
+				text-align: center;
+				width: 100%;
+			}
+			em {
+				width: 100%;
+				padding-top: 20px;
+				font-size: 18px;
+				font-weight: 600;
+				line-height: 22px;
+				font-style: italic;
 			}
 		}
 		@media screen and (max-width: 649px) {
@@ -143,9 +159,12 @@ const HeaderBlock = ({ successTitle, successDescription }) => {
 			</Nav>
 			<div className="header-container">
 				<h2 className="header-title">{successTitle ? successTitle : title}</h2>
-				<p className="header-description">
-					{successDescription ? successDescription : description}
-				</p>
+				<p
+					className="header-description"
+					dangerouslySetInnerHTML={{
+						__html: successDescription ? successDescription : description,
+					}}
+				/>
 			</div>
 		</Header>
 	);

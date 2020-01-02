@@ -132,7 +132,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		"node_modules/core-js/internals/global.js": [
 			function(require, module, exports) {
 				var global = arguments[3];
-				var O = "object";
 				var check = function(it) {
 					return it && it.Math == Math && it;
 				};
@@ -140,10 +139,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 				module.exports =
 					// eslint-disable-next-line no-undef
-					check(typeof globalThis == O && globalThis) ||
-					check(typeof window == O && window) ||
-					check(typeof self == O && self) ||
-					check(typeof global == O && global) ||
+					check(typeof globalThis == "object" && globalThis) ||
+					check(typeof window == "object" && window) ||
+					check(typeof self == "object" && self) ||
+					check(typeof global == "object" && global) ||
 					// eslint-disable-next-line no-new-func
 					Function("return this")();
 			},
@@ -477,7 +476,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/to-primitive.js",
 			},
 		],
-		"node_modules/core-js/internals/hide.js": [
+		"node_modules/core-js/internals/create-non-enumerable-property.js": [
 			function(require, module, exports) {
 				var DESCRIPTORS = require("../internals/descriptors");
 				var definePropertyModule = require("../internals/object-define-property");
@@ -508,11 +507,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		"node_modules/core-js/internals/set-global.js": [
 			function(require, module, exports) {
 				var global = require("../internals/global");
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 
 				module.exports = function(key, value) {
 					try {
-						hide(global, key, value);
+						createNonEnumerableProperty(global, key, value);
 					} catch (error) {
 						global[key] = value;
 					}
@@ -521,7 +520,61 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			},
 			{
 				"../internals/global": "node_modules/core-js/internals/global.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
+			},
+		],
+		"node_modules/core-js/internals/shared-store.js": [
+			function(require, module, exports) {
+				var global = require("../internals/global");
+				var setGlobal = require("../internals/set-global");
+
+				var SHARED = "__core-js_shared__";
+				var store = global[SHARED] || setGlobal(SHARED, {});
+
+				module.exports = store;
+			},
+			{
+				"../internals/global": "node_modules/core-js/internals/global.js",
+				"../internals/set-global":
+					"node_modules/core-js/internals/set-global.js",
+			},
+		],
+		"node_modules/core-js/internals/inspect-source.js": [
+			function(require, module, exports) {
+				var store = require("../internals/shared-store");
+
+				var functionToString = Function.toString;
+
+				// this helper broken in `3.4.1-3.4.4`, so we can't use `shared` helper
+				if (typeof store.inspectSource != "function") {
+					store.inspectSource = function(it) {
+						return functionToString.call(it);
+					};
+				}
+
+				module.exports = store.inspectSource;
+			},
+			{
+				"../internals/shared-store":
+					"node_modules/core-js/internals/shared-store.js",
+			},
+		],
+		"node_modules/core-js/internals/native-weak-map.js": [
+			function(require, module, exports) {
+				var global = require("../internals/global");
+				var inspectSource = require("../internals/inspect-source");
+
+				var WeakMap = global.WeakMap;
+
+				module.exports =
+					typeof WeakMap === "function" &&
+					/native code/.test(inspectSource(WeakMap));
+			},
+			{
+				"../internals/global": "node_modules/core-js/internals/global.js",
+				"../internals/inspect-source":
+					"node_modules/core-js/internals/inspect-source.js",
 			},
 		],
 		"node_modules/core-js/internals/is-pure.js": [
@@ -532,51 +585,21 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		],
 		"node_modules/core-js/internals/shared.js": [
 			function(require, module, exports) {
-				var global = require("../internals/global");
-				var setGlobal = require("../internals/set-global");
 				var IS_PURE = require("../internals/is-pure");
-
-				var SHARED = "__core-js_shared__";
-				var store = global[SHARED] || setGlobal(SHARED, {});
+				var store = require("../internals/shared-store");
 
 				(module.exports = function(key, value) {
 					return store[key] || (store[key] = value !== undefined ? value : {});
 				})("versions", []).push({
-					version: "3.1.3",
+					version: "3.6.1",
 					mode: IS_PURE ? "pure" : "global",
 					copyright: "© 2019 Denis Pushkarev (zloirock.ru)",
 				});
 			},
 			{
-				"../internals/global": "node_modules/core-js/internals/global.js",
-				"../internals/set-global":
-					"node_modules/core-js/internals/set-global.js",
 				"../internals/is-pure": "node_modules/core-js/internals/is-pure.js",
-			},
-		],
-		"node_modules/core-js/internals/function-to-string.js": [
-			function(require, module, exports) {
-				var shared = require("../internals/shared");
-
-				module.exports = shared("native-function-to-string", Function.toString);
-			},
-			{ "../internals/shared": "node_modules/core-js/internals/shared.js" },
-		],
-		"node_modules/core-js/internals/native-weak-map.js": [
-			function(require, module, exports) {
-				var global = require("../internals/global");
-				var nativeFunctionToString = require("../internals/function-to-string");
-
-				var WeakMap = global.WeakMap;
-
-				module.exports =
-					typeof WeakMap === "function" &&
-					/native code/.test(nativeFunctionToString.call(WeakMap));
-			},
-			{
-				"../internals/global": "node_modules/core-js/internals/global.js",
-				"../internals/function-to-string":
-					"node_modules/core-js/internals/function-to-string.js",
+				"../internals/shared-store":
+					"node_modules/core-js/internals/shared-store.js",
 			},
 		],
 		"node_modules/core-js/internals/uid.js": [
@@ -622,7 +645,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var NATIVE_WEAK_MAP = require("../internals/native-weak-map");
 				var global = require("../internals/global");
 				var isObject = require("../internals/is-object");
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 				var objectHas = require("../internals/has");
 				var sharedKey = require("../internals/shared-key");
 				var hiddenKeys = require("../internals/hidden-keys");
@@ -663,7 +686,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var STATE = sharedKey("state");
 					hiddenKeys[STATE] = true;
 					set = function(it, metadata) {
-						hide(it, STATE, metadata);
+						createNonEnumerableProperty(it, STATE, metadata);
 						return metadata;
 					};
 					get = function(it) {
@@ -687,7 +710,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/native-weak-map.js",
 				"../internals/global": "node_modules/core-js/internals/global.js",
 				"../internals/is-object": "node_modules/core-js/internals/is-object.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/has": "node_modules/core-js/internals/has.js",
 				"../internals/shared-key":
 					"node_modules/core-js/internals/shared-key.js",
@@ -698,20 +722,15 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		"node_modules/core-js/internals/redefine.js": [
 			function(require, module, exports) {
 				var global = require("../internals/global");
-				var shared = require("../internals/shared");
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 				var has = require("../internals/has");
 				var setGlobal = require("../internals/set-global");
-				var nativeFunctionToString = require("../internals/function-to-string");
+				var inspectSource = require("../internals/inspect-source");
 				var InternalStateModule = require("../internals/internal-state");
 
 				var getInternalState = InternalStateModule.get;
 				var enforceInternalState = InternalStateModule.enforce;
-				var TEMPLATE = String(nativeFunctionToString).split("toString");
-
-				shared("inspectSource", function(it) {
-					return nativeFunctionToString.call(it);
-				});
+				var TEMPLATE = String(String).split("String");
 
 				(module.exports = function(O, key, value, options) {
 					var unsafe = options ? !!options.unsafe : false;
@@ -719,7 +738,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var noTargetGet = options ? !!options.noTargetGet : false;
 					if (typeof value == "function") {
 						if (typeof key == "string" && !has(value, "name"))
-							hide(value, "name", key);
+							createNonEnumerableProperty(value, "name", key);
 						enforceInternalState(value).source = TEMPLATE.join(
 							typeof key == "string" ? key : ""
 						);
@@ -734,31 +753,33 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						simple = true;
 					}
 					if (simple) O[key] = value;
-					else hide(O, key, value);
+					else createNonEnumerableProperty(O, key, value);
 					// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
 				})(Function.prototype, "toString", function toString() {
 					return (
 						(typeof this == "function" && getInternalState(this).source) ||
-						nativeFunctionToString.call(this)
+						inspectSource(this)
 					);
 				});
 			},
 			{
 				"../internals/global": "node_modules/core-js/internals/global.js",
-				"../internals/shared": "node_modules/core-js/internals/shared.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/has": "node_modules/core-js/internals/has.js",
 				"../internals/set-global":
 					"node_modules/core-js/internals/set-global.js",
-				"../internals/function-to-string":
-					"node_modules/core-js/internals/function-to-string.js",
+				"../internals/inspect-source":
+					"node_modules/core-js/internals/inspect-source.js",
 				"../internals/internal-state":
 					"node_modules/core-js/internals/internal-state.js",
 			},
 		],
 		"node_modules/core-js/internals/path.js": [
 			function(require, module, exports) {
-				module.exports = require("../internals/global");
+				var global = require("../internals/global");
+
+				module.exports = global;
 			},
 			{ "../internals/global": "node_modules/core-js/internals/global.js" },
 		],
@@ -824,7 +845,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				// Helper for a popular repeating case of the spec:
 				// Let integer be ? ToInteger(index).
-				// If integer < 0, let result be max((length + integer), 0); else let result be min(length, length).
+				// If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
 				module.exports = function(index, length) {
 					var integer = toInteger(index);
 					return integer < 0 ? max(integer + length, 0) : min(integer, length);
@@ -1053,7 +1074,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var global = require("../internals/global");
 				var getOwnPropertyDescriptor = require("../internals/object-get-own-property-descriptor")
 					.f;
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 				var redefine = require("../internals/redefine");
 				var setGlobal = require("../internals/set-global");
 				var copyConstructorProperties = require("../internals/copy-constructor-properties");
@@ -1103,7 +1124,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							}
 							// add a flag to not completely full polyfills
 							if (options.sham || (targetProperty && targetProperty.sham)) {
-								hide(sourceProperty, "sham", true);
+								createNonEnumerableProperty(sourceProperty, "sham", true);
 							}
 							// extend global
 							redefine(target, key, sourceProperty, options);
@@ -1114,7 +1135,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/global": "node_modules/core-js/internals/global.js",
 				"../internals/object-get-own-property-descriptor":
 					"node_modules/core-js/internals/object-get-own-property-descriptor.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/redefine": "node_modules/core-js/internals/redefine.js",
 				"../internals/set-global":
 					"node_modules/core-js/internals/set-global.js",
@@ -1136,6 +1158,22 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					});
 			},
 			{ "../internals/fails": "node_modules/core-js/internals/fails.js" },
+		],
+		"node_modules/core-js/internals/use-symbol-as-uid.js": [
+			function(require, module, exports) {
+				var NATIVE_SYMBOL = require("../internals/native-symbol");
+
+				module.exports =
+					NATIVE_SYMBOL &&
+					// eslint-disable-next-line no-undef
+					!Symbol.sham &&
+					// eslint-disable-next-line no-undef
+					typeof Symbol.iterator == "symbol";
+			},
+			{
+				"../internals/native-symbol":
+					"node_modules/core-js/internals/native-symbol.js",
+			},
 		],
 		"node_modules/core-js/internals/is-array.js": [
 			function(require, module, exports) {
@@ -1245,36 +1283,70 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var html = require("../internals/html");
 				var documentCreateElement = require("../internals/document-create-element");
 				var sharedKey = require("../internals/shared-key");
+
+				var GT = ">";
+				var LT = "<";
+				var PROTOTYPE = "prototype";
+				var SCRIPT = "script";
 				var IE_PROTO = sharedKey("IE_PROTO");
 
-				var PROTOTYPE = "prototype";
-				var Empty = function() {
+				var EmptyConstructor = function() {
 					/* empty */
 				};
 
+				var scriptTag = function(content) {
+					return LT + SCRIPT + GT + content + LT + "/" + SCRIPT + GT;
+				};
+
+				// Create object with fake `null` prototype: use ActiveX Object with cleared prototype
+				var NullProtoObjectViaActiveX = function(activeXDocument) {
+					activeXDocument.write(scriptTag(""));
+					activeXDocument.close();
+					var temp = activeXDocument.parentWindow.Object;
+					activeXDocument = null; // avoid memory leak
+					return temp;
+				};
+
 				// Create object with fake `null` prototype: use iframe Object with cleared prototype
-				var createDict = function() {
+				var NullProtoObjectViaIFrame = function() {
 					// Thrash, waste and sodomy: IE GC bug
 					var iframe = documentCreateElement("iframe");
-					var length = enumBugKeys.length;
-					var lt = "<";
-					var script = "script";
-					var gt = ">";
-					var js = "java" + script + ":";
+					var JS = "java" + SCRIPT + ":";
 					var iframeDocument;
 					iframe.style.display = "none";
 					html.appendChild(iframe);
-					iframe.src = String(js);
+					// https://github.com/zloirock/core-js/issues/475
+					iframe.src = String(JS);
 					iframeDocument = iframe.contentWindow.document;
 					iframeDocument.open();
-					iframeDocument.write(
-						lt + script + gt + "document.F=Object" + lt + "/" + script + gt
-					);
+					iframeDocument.write(scriptTag("document.F=Object"));
 					iframeDocument.close();
-					createDict = iframeDocument.F;
-					while (length--) delete createDict[PROTOTYPE][enumBugKeys[length]];
-					return createDict();
+					return iframeDocument.F;
 				};
+
+				// Check for document.domain and active x support
+				// No need to use active x approach when document.domain is not set
+				// see https://github.com/es-shims/es5-shim/issues/150
+				// variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
+				// avoid IE GC bug
+				var activeXDocument;
+				var NullProtoObject = function() {
+					try {
+						/* global ActiveXObject */
+						activeXDocument = document.domain && new ActiveXObject("htmlfile");
+					} catch (error) {
+						/* ignore */
+					}
+					NullProtoObject = activeXDocument
+						? NullProtoObjectViaActiveX(activeXDocument)
+						: NullProtoObjectViaIFrame();
+					var length = enumBugKeys.length;
+					while (length--)
+						delete NullProtoObject[PROTOTYPE][enumBugKeys[length]];
+					return NullProtoObject();
+				};
+
+				hiddenKeys[IE_PROTO] = true;
 
 				// `Object.create` method
 				// https://tc39.github.io/ecma262/#sec-object.create
@@ -1283,18 +1355,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					function create(O, Properties) {
 						var result;
 						if (O !== null) {
-							Empty[PROTOTYPE] = anObject(O);
-							result = new Empty();
-							Empty[PROTOTYPE] = null;
+							EmptyConstructor[PROTOTYPE] = anObject(O);
+							result = new EmptyConstructor();
+							EmptyConstructor[PROTOTYPE] = null;
 							// add "__proto__" for Object.getPrototypeOf polyfill
 							result[IE_PROTO] = O;
-						} else result = createDict();
+						} else result = NullProtoObject();
 						return Properties === undefined
 							? result
 							: defineProperties(result, Properties);
 					};
-
-				hiddenKeys[IE_PROTO] = true;
 			},
 			{
 				"../internals/an-object": "node_modules/core-js/internals/an-object.js",
@@ -1350,32 +1420,45 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			function(require, module, exports) {
 				var global = require("../internals/global");
 				var shared = require("../internals/shared");
+				var has = require("../internals/has");
 				var uid = require("../internals/uid");
 				var NATIVE_SYMBOL = require("../internals/native-symbol");
+				var USE_SYMBOL_AS_UID = require("../internals/use-symbol-as-uid");
 
+				var WellKnownSymbolsStore = shared("wks");
 				var Symbol = global.Symbol;
-				var store = shared("wks");
+				var createWellKnownSymbol = USE_SYMBOL_AS_UID
+					? Symbol
+					: (Symbol && Symbol.withoutSetter) || uid;
 
 				module.exports = function(name) {
-					return (
-						store[name] ||
-						(store[name] =
-							(NATIVE_SYMBOL && Symbol[name]) ||
-							(NATIVE_SYMBOL ? Symbol : uid)("Symbol." + name))
-					);
+					if (!has(WellKnownSymbolsStore, name)) {
+						if (NATIVE_SYMBOL && has(Symbol, name))
+							WellKnownSymbolsStore[name] = Symbol[name];
+						else
+							WellKnownSymbolsStore[name] = createWellKnownSymbol(
+								"Symbol." + name
+							);
+					}
+					return WellKnownSymbolsStore[name];
 				};
 			},
 			{
 				"../internals/global": "node_modules/core-js/internals/global.js",
 				"../internals/shared": "node_modules/core-js/internals/shared.js",
+				"../internals/has": "node_modules/core-js/internals/has.js",
 				"../internals/uid": "node_modules/core-js/internals/uid.js",
 				"../internals/native-symbol":
 					"node_modules/core-js/internals/native-symbol.js",
+				"../internals/use-symbol-as-uid":
+					"node_modules/core-js/internals/use-symbol-as-uid.js",
 			},
 		],
 		"node_modules/core-js/internals/wrapped-well-known-symbol.js": [
 			function(require, module, exports) {
-				exports.f = require("../internals/well-known-symbol");
+				var wellKnownSymbol = require("../internals/well-known-symbol");
+
+				exports.f = wellKnownSymbol;
 			},
 			{
 				"../internals/well-known-symbol":
@@ -1606,9 +1689,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"use strict";
 				var $ = require("../internals/export");
 				var global = require("../internals/global");
+				var getBuiltIn = require("../internals/get-built-in");
 				var IS_PURE = require("../internals/is-pure");
 				var DESCRIPTORS = require("../internals/descriptors");
 				var NATIVE_SYMBOL = require("../internals/native-symbol");
+				var USE_SYMBOL_AS_UID = require("../internals/use-symbol-as-uid");
 				var fails = require("../internals/fails");
 				var has = require("../internals/has");
 				var isArray = require("../internals/is-array");
@@ -1626,7 +1711,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var getOwnPropertyDescriptorModule = require("../internals/object-get-own-property-descriptor");
 				var definePropertyModule = require("../internals/object-define-property");
 				var propertyIsEnumerableModule = require("../internals/object-property-is-enumerable");
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 				var redefine = require("../internals/redefine");
 				var shared = require("../internals/shared");
 				var sharedKey = require("../internals/shared-key");
@@ -1647,8 +1732,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var getInternalState = InternalStateModule.getterFor(SYMBOL);
 				var ObjectPrototype = Object[PROTOTYPE];
 				var $Symbol = global.Symbol;
-				var JSON = global.JSON;
-				var nativeJSONStringify = JSON && JSON.stringify;
+				var $stringify = getBuiltIn("JSON", "stringify");
 				var nativeGetOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
 				var nativeDefineProperty = definePropertyModule.f;
 				var nativeGetOwnPropertyNames = getOwnPropertyNamesExternal.f;
@@ -1707,14 +1791,13 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					return symbol;
 				};
 
-				var isSymbol =
-					NATIVE_SYMBOL && typeof $Symbol.iterator == "symbol"
-						? function(it) {
-								return typeof it == "symbol";
-						  }
-						: function(it) {
-								return Object(it) instanceof $Symbol;
-						  };
+				var isSymbol = USE_SYMBOL_AS_UID
+					? function(it) {
+							return typeof it == "symbol";
+					  }
+					: function(it) {
+							return Object(it) instanceof $Symbol;
+					  };
 
 				var $defineProperty = function defineProperty(O, P, Attributes) {
 					if (O === ObjectPrototype)
@@ -1862,11 +1945,19 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						return getInternalState(this).tag;
 					});
 
+					redefine($Symbol, "withoutSetter", function(description) {
+						return wrap(uid(description), description);
+					});
+
 					propertyIsEnumerableModule.f = $propertyIsEnumerable;
 					definePropertyModule.f = $defineProperty;
 					getOwnPropertyDescriptorModule.f = $getOwnPropertyDescriptor;
 					getOwnPropertyNamesModule.f = getOwnPropertyNamesExternal.f = $getOwnPropertyNames;
 					getOwnPropertySymbolsModule.f = $getOwnPropertySymbols;
+
+					wrappedWellKnownSymbolModule.f = function(name) {
+						return wrap(wellKnownSymbol(name), name);
+					};
 
 					if (DESCRIPTORS) {
 						// https://github.com/tc39/proposal-Symbol-description
@@ -1885,10 +1976,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							);
 						}
 					}
-
-					wrappedWellKnownSymbolModule.f = function(name) {
-						return wrap(wellKnownSymbol(name), name);
-					};
 				}
 
 				$(
@@ -1991,32 +2078,31 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				// `JSON.stringify` method behavior with symbols
 				// https://tc39.github.io/ecma262/#sec-json.stringify
-				JSON &&
+				if ($stringify) {
+					var FORCED_JSON_STRINGIFY =
+						!NATIVE_SYMBOL ||
+						fails(function() {
+							var symbol = $Symbol();
+							// MS Edge converts symbol values to JSON as {}
+							return (
+								$stringify([symbol]) != "[null]" ||
+								// WebKit converts symbol values to JSON as null
+								$stringify({ a: symbol }) != "{}" ||
+								// V8 throws on boxed symbols
+								$stringify(Object(symbol)) != "{}"
+							);
+						});
+
 					$(
+						{ target: "JSON", stat: true, forced: FORCED_JSON_STRINGIFY },
 						{
-							target: "JSON",
-							stat: true,
-							forced:
-								!NATIVE_SYMBOL ||
-								fails(function() {
-									var symbol = $Symbol();
-									// MS Edge converts symbol values to JSON as {}
-									return (
-										nativeJSONStringify([symbol]) != "[null]" ||
-										// WebKit converts symbol values to JSON as null
-										nativeJSONStringify({ a: symbol }) != "{}" ||
-										// V8 throws on boxed symbols
-										nativeJSONStringify(Object(symbol)) != "{}"
-									);
-								}),
-						},
-						{
-							stringify: function stringify(it) {
+							// eslint-disable-next-line no-unused-vars
+							stringify: function stringify(it, replacer, space) {
 								var args = [it];
 								var index = 1;
-								var replacer, $replacer;
+								var $replacer;
 								while (arguments.length > index) args.push(arguments[index++]);
-								$replacer = replacer = args[1];
+								$replacer = replacer;
 								if ((!isObject(replacer) && it === undefined) || isSymbol(it))
 									return; // IE8 returns string on undefined
 								if (!isArray(replacer))
@@ -2026,15 +2112,21 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 										if (!isSymbol(value)) return value;
 									};
 								args[1] = replacer;
-								return nativeJSONStringify.apply(JSON, args);
+								return $stringify.apply(null, args);
 							},
 						}
 					);
+				}
 
 				// `Symbol.prototype[@@toPrimitive]` method
 				// https://tc39.github.io/ecma262/#sec-symbol.prototype-@@toprimitive
-				if (!$Symbol[PROTOTYPE][TO_PRIMITIVE])
-					hide($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
+				if (!$Symbol[PROTOTYPE][TO_PRIMITIVE]) {
+					createNonEnumerableProperty(
+						$Symbol[PROTOTYPE],
+						TO_PRIMITIVE,
+						$Symbol[PROTOTYPE].valueOf
+					);
+				}
 				// `Symbol.prototype[@@toStringTag]` property
 				// https://tc39.github.io/ecma262/#sec-symbol.prototype-@@tostringtag
 				setToStringTag($Symbol, SYMBOL);
@@ -2044,11 +2136,15 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			{
 				"../internals/export": "node_modules/core-js/internals/export.js",
 				"../internals/global": "node_modules/core-js/internals/global.js",
+				"../internals/get-built-in":
+					"node_modules/core-js/internals/get-built-in.js",
 				"../internals/is-pure": "node_modules/core-js/internals/is-pure.js",
 				"../internals/descriptors":
 					"node_modules/core-js/internals/descriptors.js",
 				"../internals/native-symbol":
 					"node_modules/core-js/internals/native-symbol.js",
+				"../internals/use-symbol-as-uid":
+					"node_modules/core-js/internals/use-symbol-as-uid.js",
 				"../internals/fails": "node_modules/core-js/internals/fails.js",
 				"../internals/has": "node_modules/core-js/internals/has.js",
 				"../internals/is-array": "node_modules/core-js/internals/is-array.js",
@@ -2077,7 +2173,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/object-define-property.js",
 				"../internals/object-property-is-enumerable":
 					"node_modules/core-js/internals/object-property-is-enumerable.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/redefine": "node_modules/core-js/internals/redefine.js",
 				"../internals/shared": "node_modules/core-js/internals/shared.js",
 				"../internals/shared-key":
@@ -2360,13 +2457,34 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var IndexedObject = require("../internals/indexed-object");
 
 				var nativeAssign = Object.assign;
+				var defineProperty = Object.defineProperty;
 
 				// `Object.assign` method
 				// https://tc39.github.io/ecma262/#sec-object.assign
-				// should work with symbols and should have deterministic property order (V8 bug)
 				module.exports =
 					!nativeAssign ||
 					fails(function() {
+						// should have correct order of operations (Edge bug)
+						if (
+							DESCRIPTORS &&
+							nativeAssign(
+								{ b: 1 },
+								nativeAssign(
+									defineProperty({}, "a", {
+										enumerable: true,
+										get: function() {
+											defineProperty(this, "b", {
+												value: 3,
+												enumerable: false,
+											});
+										},
+									}),
+									{ b: 2 }
+								)
+							).b !== 1
+						)
+							return true;
+						// should work with symbols and should have deterministic property order (V8 bug)
 						var A = {};
 						var B = {};
 						// eslint-disable-next-line no-undef
@@ -2757,8 +2875,25 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/iterators": "node_modules/core-js/internals/iterators.js",
 			},
 		],
+		"node_modules/core-js/internals/to-string-tag-support.js": [
+			function(require, module, exports) {
+				var wellKnownSymbol = require("../internals/well-known-symbol");
+
+				var TO_STRING_TAG = wellKnownSymbol("toStringTag");
+				var test = {};
+
+				test[TO_STRING_TAG] = "z";
+
+				module.exports = String(test) === "[object z]";
+			},
+			{
+				"../internals/well-known-symbol":
+					"node_modules/core-js/internals/well-known-symbol.js",
+			},
+		],
 		"node_modules/core-js/internals/classof.js": [
 			function(require, module, exports) {
+				var TO_STRING_TAG_SUPPORT = require("../internals/to-string-tag-support");
 				var classofRaw = require("../internals/classof-raw");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
 
@@ -2781,26 +2916,31 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				};
 
 				// getting tag from ES6+ `Object.prototype.toString`
-				module.exports = function(it) {
-					var O, tag, result;
-					return it === undefined
-						? "Undefined"
-						: it === null
-						? "Null"
-						: // @@toStringTag case
-						typeof (tag = tryGet((O = Object(it)), TO_STRING_TAG)) == "string"
-						? tag
-						: // builtinTag case
-						CORRECT_ARGUMENTS
-						? classofRaw(O)
-						: // ES3 arguments fallback
-						(result = classofRaw(O)) == "Object" &&
-						  typeof O.callee == "function"
-						? "Arguments"
-						: result;
-				};
+				module.exports = TO_STRING_TAG_SUPPORT
+					? classofRaw
+					: function(it) {
+							var O, tag, result;
+							return it === undefined
+								? "Undefined"
+								: it === null
+								? "Null"
+								: // @@toStringTag case
+								typeof (tag = tryGet((O = Object(it)), TO_STRING_TAG)) ==
+								  "string"
+								? tag
+								: // builtinTag case
+								CORRECT_ARGUMENTS
+								? classofRaw(O)
+								: // ES3 arguments fallback
+								(result = classofRaw(O)) == "Object" &&
+								  typeof O.callee == "function"
+								? "Arguments"
+								: result;
+					  };
 			},
 			{
+				"../internals/to-string-tag-support":
+					"node_modules/core-js/internals/to-string-tag-support.js",
 				"../internals/classof-raw":
 					"node_modules/core-js/internals/classof-raw.js",
 				"../internals/well-known-symbol":
@@ -2870,7 +3010,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					IS_ITERATOR
 				) {
 					var boundFunction = bind(fn, that, AS_ENTRIES ? 2 : 1);
-					var iterator, iterFn, index, length, result, step;
+					var iterator, iterFn, index, length, result, next, step;
 
 					if (IS_ITERATOR) {
 						iterator = iterable;
@@ -2898,14 +3038,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						iterator = iterFn.call(iterable);
 					}
 
-					while (!(step = iterator.next()).done) {
+					next = iterator.next;
+					while (!(step = next.call(iterator)).done) {
 						result = callWithSafeIterationClosing(
 							iterator,
 							boundFunction,
 							step.value,
 							AS_ENTRIES
 						);
-						if (result && result instanceof Result) return result;
+						if (typeof result == "object" && result && result instanceof Result)
+							return result;
 					}
 					return new Result(false);
 				});
@@ -3525,43 +3667,38 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		"node_modules/core-js/internals/object-to-string.js": [
 			function(require, module, exports) {
 				"use strict";
+				var TO_STRING_TAG_SUPPORT = require("../internals/to-string-tag-support");
 				var classof = require("../internals/classof");
-				var wellKnownSymbol = require("../internals/well-known-symbol");
-
-				var TO_STRING_TAG = wellKnownSymbol("toStringTag");
-				var test = {};
-
-				test[TO_STRING_TAG] = "z";
 
 				// `Object.prototype.toString` method implementation
 				// https://tc39.github.io/ecma262/#sec-object.prototype.tostring
-				module.exports =
-					String(test) !== "[object z]"
-						? function toString() {
-								return "[object " + classof(this) + "]";
-						  }
-						: test.toString;
+				module.exports = TO_STRING_TAG_SUPPORT
+					? {}.toString
+					: function toString() {
+							return "[object " + classof(this) + "]";
+					  };
 			},
 			{
+				"../internals/to-string-tag-support":
+					"node_modules/core-js/internals/to-string-tag-support.js",
 				"../internals/classof": "node_modules/core-js/internals/classof.js",
-				"../internals/well-known-symbol":
-					"node_modules/core-js/internals/well-known-symbol.js",
 			},
 		],
 		"node_modules/core-js/modules/es.object.to-string.js": [
 			function(require, module, exports) {
+				var TO_STRING_TAG_SUPPORT = require("../internals/to-string-tag-support");
 				var redefine = require("../internals/redefine");
 				var toString = require("../internals/object-to-string");
 
-				var ObjectPrototype = Object.prototype;
-
 				// `Object.prototype.toString` method
 				// https://tc39.github.io/ecma262/#sec-object.prototype.tostring
-				if (toString !== ObjectPrototype.toString) {
-					redefine(ObjectPrototype, "toString", toString, { unsafe: true });
+				if (!TO_STRING_TAG_SUPPORT) {
+					redefine(Object.prototype, "toString", toString, { unsafe: true });
 				}
 			},
 			{
+				"../internals/to-string-tag-support":
+					"node_modules/core-js/internals/to-string-tag-support.js",
 				"../internals/redefine": "node_modules/core-js/internals/redefine.js",
 				"../internals/object-to-string":
 					"node_modules/core-js/internals/object-to-string.js",
@@ -3898,6 +4035,25 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/well-known-symbol.js",
 			},
 		],
+		"node_modules/core-js/modules/es.global-this.js": [
+			function(require, module, exports) {
+				var $ = require("../internals/export");
+				var global = require("../internals/global");
+
+				// `globalThis` object
+				// https://github.com/tc39/proposal-global
+				$(
+					{ global: true },
+					{
+						globalThis: global,
+					}
+				);
+			},
+			{
+				"../internals/export": "node_modules/core-js/internals/export.js",
+				"../internals/global": "node_modules/core-js/internals/global.js",
+			},
+		],
 		"node_modules/core-js/internals/array-from.js": [
 			function(require, module, exports) {
 				"use strict";
@@ -3921,7 +4077,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var mapping = mapfn !== undefined;
 					var index = 0;
 					var iteratorMethod = getIteratorMethod(O);
-					var length, result, step, iterator;
+					var length, result, step, iterator, next;
 					if (mapping)
 						mapfn = bind(
 							mapfn,
@@ -3934,8 +4090,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						!(C == Array && isArrayIteratorMethod(iteratorMethod))
 					) {
 						iterator = iteratorMethod.call(O);
+						next = iterator.next;
 						result = new C();
-						for (; !(step = iterator.next()).done; index++) {
+						for (; !(step = next.call(iterator)).done; index++) {
 							createProperty(
 								result,
 								index,
@@ -4120,28 +4277,77 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/create-property.js",
 			},
 		],
+		"node_modules/core-js/internals/user-agent.js": [
+			function(require, module, exports) {
+				var getBuiltIn = require("../internals/get-built-in");
+
+				module.exports = getBuiltIn("navigator", "userAgent") || "";
+			},
+			{
+				"../internals/get-built-in":
+					"node_modules/core-js/internals/get-built-in.js",
+			},
+		],
+		"node_modules/core-js/internals/v8-version.js": [
+			function(require, module, exports) {
+				var global = require("../internals/global");
+				var userAgent = require("../internals/user-agent");
+
+				var process = global.process;
+				var versions = process && process.versions;
+				var v8 = versions && versions.v8;
+				var match, version;
+
+				if (v8) {
+					match = v8.split(".");
+					version = match[0] + match[1];
+				} else if (userAgent) {
+					match = userAgent.match(/Edge\/(\d+)/);
+					if (!match || match[1] >= 74) {
+						match = userAgent.match(/Chrome\/(\d+)/);
+						if (match) version = match[1];
+					}
+				}
+
+				module.exports = version && +version;
+			},
+			{
+				"../internals/global": "node_modules/core-js/internals/global.js",
+				"../internals/user-agent":
+					"node_modules/core-js/internals/user-agent.js",
+			},
+		],
 		"node_modules/core-js/internals/array-method-has-species-support.js": [
 			function(require, module, exports) {
 				var fails = require("../internals/fails");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
+				var V8_VERSION = require("../internals/v8-version");
 
 				var SPECIES = wellKnownSymbol("species");
 
 				module.exports = function(METHOD_NAME) {
-					return !fails(function() {
-						var array = [];
-						var constructor = (array.constructor = {});
-						constructor[SPECIES] = function() {
-							return { foo: 1 };
-						};
-						return array[METHOD_NAME](Boolean).foo !== 1;
-					});
+					// We can't use this feature detection in V8 since it causes
+					// deoptimization and serious performance degradation
+					// https://github.com/zloirock/core-js/issues/677
+					return (
+						V8_VERSION >= 51 ||
+						!fails(function() {
+							var array = [];
+							var constructor = (array.constructor = {});
+							constructor[SPECIES] = function() {
+								return { foo: 1 };
+							};
+							return array[METHOD_NAME](Boolean).foo !== 1;
+						})
+					);
 				};
 			},
 			{
 				"../internals/fails": "node_modules/core-js/internals/fails.js",
 				"../internals/well-known-symbol":
 					"node_modules/core-js/internals/well-known-symbol.js",
+				"../internals/v8-version":
+					"node_modules/core-js/internals/v8-version.js",
 			},
 		],
 		"node_modules/core-js/modules/es.array.concat.js": [
@@ -4157,16 +4363,22 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var arraySpeciesCreate = require("../internals/array-species-create");
 				var arrayMethodHasSpeciesSupport = require("../internals/array-method-has-species-support");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
+				var V8_VERSION = require("../internals/v8-version");
 
 				var IS_CONCAT_SPREADABLE = wellKnownSymbol("isConcatSpreadable");
 				var MAX_SAFE_INTEGER = 0x1fffffffffffff;
 				var MAXIMUM_ALLOWED_INDEX_EXCEEDED = "Maximum allowed index exceeded";
 
-				var IS_CONCAT_SPREADABLE_SUPPORT = !fails(function() {
-					var array = [];
-					array[IS_CONCAT_SPREADABLE] = false;
-					return array.concat()[0] !== array;
-				});
+				// We can't use this feature detection in V8 since it causes
+				// deoptimization and serious performance degradation
+				// https://github.com/zloirock/core-js/issues/679
+				var IS_CONCAT_SPREADABLE_SUPPORT =
+					V8_VERSION >= 51 ||
+					!fails(function() {
+						var array = [];
+						array[IS_CONCAT_SPREADABLE] = false;
+						return array.concat()[0] !== array;
+					});
 
 				var SPECIES_SUPPORT = arrayMethodHasSpeciesSupport("concat");
 
@@ -4225,6 +4437,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/array-method-has-species-support.js",
 				"../internals/well-known-symbol":
 					"node_modules/core-js/internals/well-known-symbol.js",
+				"../internals/v8-version":
+					"node_modules/core-js/internals/v8-version.js",
 			},
 		],
 		"node_modules/core-js/internals/array-copy-within.js": [
@@ -4279,7 +4493,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			function(require, module, exports) {
 				var wellKnownSymbol = require("../internals/well-known-symbol");
 				var create = require("../internals/object-create");
-				var hide = require("../internals/hide");
+				var definePropertyModule = require("../internals/object-define-property");
 
 				var UNSCOPABLES = wellKnownSymbol("unscopables");
 				var ArrayPrototype = Array.prototype;
@@ -4287,7 +4501,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				// Array.prototype[@@unscopables]
 				// https://tc39.github.io/ecma262/#sec-array.prototype-@@unscopables
 				if (ArrayPrototype[UNSCOPABLES] == undefined) {
-					hide(ArrayPrototype, UNSCOPABLES, create(null));
+					definePropertyModule.f(ArrayPrototype, UNSCOPABLES, {
+						configurable: true,
+						value: create(null),
+					});
 				}
 
 				// add a key to Array.prototype[@@unscopables]
@@ -4300,7 +4517,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/well-known-symbol.js",
 				"../internals/object-create":
 					"node_modules/core-js/internals/object-create.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/object-define-property":
+					"node_modules/core-js/internals/object-define-property.js",
 			},
 		],
 		"node_modules/core-js/modules/es.array.copy-within.js": [
@@ -4446,7 +4664,18 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"use strict";
 				var $ = require("../internals/export");
 				var $filter = require("../internals/array-iteration").filter;
+				var fails = require("../internals/fails");
 				var arrayMethodHasSpeciesSupport = require("../internals/array-method-has-species-support");
+
+				var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport("filter");
+				// Edge 14- issue
+				var USES_TO_LENGTH =
+					HAS_SPECIES_SUPPORT &&
+					!fails(function() {
+						[].filter.call({ length: -1, 0: 1 }, function(it) {
+							throw it;
+						});
+					});
 
 				// `Array.prototype.filter` method
 				// https://tc39.github.io/ecma262/#sec-array.prototype.filter
@@ -4455,7 +4684,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					{
 						target: "Array",
 						proto: true,
-						forced: !arrayMethodHasSpeciesSupport("filter"),
+						forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH,
 					},
 					{
 						filter: function filter(callbackfn /* , thisArg */) {
@@ -4472,6 +4701,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/export": "node_modules/core-js/internals/export.js",
 				"../internals/array-iteration":
 					"node_modules/core-js/internals/array-iteration.js",
+				"../internals/fails": "node_modules/core-js/internals/fails.js",
 				"../internals/array-method-has-species-support":
 					"node_modules/core-js/internals/array-method-has-species-support.js",
 			},
@@ -4951,7 +5181,18 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"use strict";
 				var $ = require("../internals/export");
 				var $map = require("../internals/array-iteration").map;
+				var fails = require("../internals/fails");
 				var arrayMethodHasSpeciesSupport = require("../internals/array-method-has-species-support");
+
+				var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport("map");
+				// FF49- issue
+				var USES_TO_LENGTH =
+					HAS_SPECIES_SUPPORT &&
+					!fails(function() {
+						[].map.call({ length: -1, 0: 1 }, function(it) {
+							throw it;
+						});
+					});
 
 				// `Array.prototype.map` method
 				// https://tc39.github.io/ecma262/#sec-array.prototype.map
@@ -4960,7 +5201,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					{
 						target: "Array",
 						proto: true,
-						forced: !arrayMethodHasSpeciesSupport("map"),
+						forced: !HAS_SPECIES_SUPPORT || !USES_TO_LENGTH,
 					},
 					{
 						map: function map(callbackfn /* , thisArg */) {
@@ -4977,6 +5218,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/export": "node_modules/core-js/internals/export.js",
 				"../internals/array-iteration":
 					"node_modules/core-js/internals/array-iteration.js",
+				"../internals/fails": "node_modules/core-js/internals/fails.js",
 				"../internals/array-method-has-species-support":
 					"node_modules/core-js/internals/array-method-has-species-support.js",
 			},
@@ -5124,6 +5366,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					},
 					{
 						reverse: function reverse() {
+							// eslint-disable-next-line no-self-assign
 							if (isArray(this)) this.length = this.length;
 							return nativeReverse.call(this);
 						},
@@ -5255,8 +5498,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var fails = require("../internals/fails");
 				var sloppyArrayMethod = require("../internals/sloppy-array-method");
 
-				var nativeSort = [].sort;
-				var test = [1, 2, 3];
+				var test = [];
+				var nativeSort = test.sort;
 
 				// IE8-
 				var FAILS_ON_UNDEFINED = fails(function() {
@@ -5468,7 +5711,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			function(require, module, exports) {
 				"use strict";
 				var getPrototypeOf = require("../internals/object-get-prototype-of");
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 				var has = require("../internals/has");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
 				var IS_PURE = require("../internals/is-pure");
@@ -5500,8 +5743,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				if (IteratorPrototype == undefined) IteratorPrototype = {};
 
 				// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-				if (!IS_PURE && !has(IteratorPrototype, ITERATOR))
-					hide(IteratorPrototype, ITERATOR, returnThis);
+				if (!IS_PURE && !has(IteratorPrototype, ITERATOR)) {
+					createNonEnumerableProperty(IteratorPrototype, ITERATOR, returnThis);
+				}
 
 				module.exports = {
 					IteratorPrototype: IteratorPrototype,
@@ -5511,7 +5755,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			{
 				"../internals/object-get-prototype-of":
 					"node_modules/core-js/internals/object-get-prototype-of.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/has": "node_modules/core-js/internals/has.js",
 				"../internals/well-known-symbol":
 					"node_modules/core-js/internals/well-known-symbol.js",
@@ -5562,7 +5807,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var getPrototypeOf = require("../internals/object-get-prototype-of");
 				var setPrototypeOf = require("../internals/object-set-prototype-of");
 				var setToStringTag = require("../internals/set-to-string-tag");
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 				var redefine = require("../internals/redefine");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
 				var IS_PURE = require("../internals/is-pure");
@@ -5648,7 +5893,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 								} else if (
 									typeof CurrentIteratorPrototype[ITERATOR] != "function"
 								) {
-									hide(CurrentIteratorPrototype, ITERATOR, returnThis);
+									createNonEnumerableProperty(
+										CurrentIteratorPrototype,
+										ITERATOR,
+										returnThis
+									);
 								}
 							}
 							// Set @@toStringTag to native iterators
@@ -5679,7 +5928,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						(!IS_PURE || FORCED) &&
 						IterablePrototype[ITERATOR] !== defaultIterator
 					) {
-						hide(IterablePrototype, ITERATOR, defaultIterator);
+						createNonEnumerableProperty(
+							IterablePrototype,
+							ITERATOR,
+							defaultIterator
+						);
 					}
 					Iterators[NAME] = defaultIterator;
 
@@ -5724,7 +5977,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/object-set-prototype-of.js",
 				"../internals/set-to-string-tag":
 					"node_modules/core-js/internals/set-to-string-tag.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/redefine": "node_modules/core-js/internals/redefine.js",
 				"../internals/well-known-symbol":
 					"node_modules/core-js/internals/well-known-symbol.js",
@@ -6029,13 +6283,29 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			function(require, module, exports) {
 				"use strict";
 				var $ = require("../internals/export");
+				var getOwnPropertyDescriptor = require("../internals/object-get-own-property-descriptor")
+					.f;
 				var toLength = require("../internals/to-length");
 				var notARegExp = require("../internals/not-a-regexp");
 				var requireObjectCoercible = require("../internals/require-object-coercible");
 				var correctIsRegExpLogic = require("../internals/correct-is-regexp-logic");
+				var IS_PURE = require("../internals/is-pure");
 
 				var nativeEndsWith = "".endsWith;
 				var min = Math.min;
+
+				var CORRECT_IS_REGEXP_LOGIC = correctIsRegExpLogic("endsWith");
+				// https://github.com/zloirock/core-js/pull/702
+				var MDN_POLYFILL_BUG =
+					!IS_PURE &&
+					!CORRECT_IS_REGEXP_LOGIC &&
+					!!(function() {
+						var descriptor = getOwnPropertyDescriptor(
+							String.prototype,
+							"endsWith"
+						);
+						return descriptor && !descriptor.writable;
+					})();
 
 				// `String.prototype.endsWith` method
 				// https://tc39.github.io/ecma262/#sec-string.prototype.endswith
@@ -6043,7 +6313,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					{
 						target: "String",
 						proto: true,
-						forced: !correctIsRegExpLogic("endsWith"),
+						forced: !MDN_POLYFILL_BUG && !CORRECT_IS_REGEXP_LOGIC,
 					},
 					{
 						endsWith: function endsWith(
@@ -6067,6 +6337,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			},
 			{
 				"../internals/export": "node_modules/core-js/internals/export.js",
+				"../internals/object-get-own-property-descriptor":
+					"node_modules/core-js/internals/object-get-own-property-descriptor.js",
 				"../internals/to-length": "node_modules/core-js/internals/to-length.js",
 				"../internals/not-a-regexp":
 					"node_modules/core-js/internals/not-a-regexp.js",
@@ -6074,6 +6346,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/require-object-coercible.js",
 				"../internals/correct-is-regexp-logic":
 					"node_modules/core-js/internals/correct-is-regexp-logic.js",
+				"../internals/is-pure": "node_modules/core-js/internals/is-pure.js",
 			},
 		],
 		"node_modules/core-js/modules/es.string.includes.js": [
@@ -6135,10 +6408,39 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/an-object": "node_modules/core-js/internals/an-object.js",
 			},
 		],
+		"node_modules/core-js/internals/regexp-sticky-helpers.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				var fails = require("./fails");
+
+				// babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError,
+				// so we use an intermediate function.
+				function RE(s, f) {
+					return RegExp(s, f);
+				}
+
+				exports.UNSUPPORTED_Y = fails(function() {
+					// babel-minify transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError
+					var re = RE("a", "y");
+					re.lastIndex = 2;
+					return re.exec("abcd") != null;
+				});
+
+				exports.BROKEN_CARET = fails(function() {
+					// https://bugzilla.mozilla.org/show_bug.cgi?id=773687
+					var re = RE("^r", "gy");
+					re.lastIndex = 2;
+					return re.exec("str") != null;
+				});
+			},
+			{ "./fails": "node_modules/core-js/internals/fails.js" },
+		],
 		"node_modules/core-js/internals/regexp-exec.js": [
 			function(require, module, exports) {
 				"use strict";
 				var regexpFlags = require("./regexp-flags");
+				var stickyHelpers = require("./regexp-sticky-helpers");
 
 				var nativeExec = RegExp.prototype.exec;
 				// This always refers to the native implementation, because the
@@ -6156,27 +6458,61 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					return re1.lastIndex !== 0 || re2.lastIndex !== 0;
 				})();
 
+				var UNSUPPORTED_Y =
+					stickyHelpers.UNSUPPORTED_Y || stickyHelpers.BROKEN_CARET;
+
 				// nonparticipating capturing group, copied from es5-shim's String#split patch.
 				var NPCG_INCLUDED = /()??/.exec("")[1] !== undefined;
 
-				var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED;
+				var PATCH = UPDATES_LAST_INDEX_WRONG || NPCG_INCLUDED || UNSUPPORTED_Y;
 
 				if (PATCH) {
 					patchedExec = function exec(str) {
 						var re = this;
 						var lastIndex, reCopy, match, i;
+						var sticky = UNSUPPORTED_Y && re.sticky;
+						var flags = regexpFlags.call(re);
+						var source = re.source;
+						var charsAdded = 0;
+						var strCopy = str;
+
+						if (sticky) {
+							flags = flags.replace("y", "");
+							if (flags.indexOf("g") === -1) {
+								flags += "g";
+							}
+
+							strCopy = String(str).slice(re.lastIndex);
+							// Support anchored sticky behavior.
+							if (
+								re.lastIndex > 0 &&
+								(!re.multiline ||
+									(re.multiline && str[re.lastIndex - 1] !== "\n"))
+							) {
+								source = "(?: " + source + ")";
+								strCopy = " " + strCopy;
+								charsAdded++;
+							}
+							// ^(? + rx + ) is needed, in combination with some str slicing, to
+							// simulate the 'y' flag.
+							reCopy = new RegExp("^(?:" + source + ")", flags);
+						}
 
 						if (NPCG_INCLUDED) {
-							reCopy = new RegExp(
-								"^" + re.source + "$(?!\\s)",
-								regexpFlags.call(re)
-							);
+							reCopy = new RegExp("^" + source + "$(?!\\s)", flags);
 						}
 						if (UPDATES_LAST_INDEX_WRONG) lastIndex = re.lastIndex;
 
-						match = nativeExec.call(re, str);
+						match = nativeExec.call(sticky ? reCopy : re, strCopy);
 
-						if (UPDATES_LAST_INDEX_WRONG && match) {
+						if (sticky) {
+							if (match) {
+								match.input = match.input.slice(charsAdded);
+								match[0] = match[0].slice(charsAdded);
+								match.index = re.lastIndex;
+								re.lastIndex += match[0].length;
+							} else re.lastIndex = 0;
+						} else if (UPDATES_LAST_INDEX_WRONG && match) {
 							re.lastIndex = re.global
 								? match.index + match[0].length
 								: lastIndex;
@@ -6197,16 +6533,20 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				module.exports = patchedExec;
 			},
-			{ "./regexp-flags": "node_modules/core-js/internals/regexp-flags.js" },
+			{
+				"./regexp-flags": "node_modules/core-js/internals/regexp-flags.js",
+				"./regexp-sticky-helpers":
+					"node_modules/core-js/internals/regexp-sticky-helpers.js",
+			},
 		],
 		"node_modules/core-js/internals/fix-regexp-well-known-symbol-logic.js": [
 			function(require, module, exports) {
 				"use strict";
-				var hide = require("../internals/hide");
 				var redefine = require("../internals/redefine");
 				var fails = require("../internals/fails");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
 				var regexpExec = require("../internals/regexp-exec");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 
 				var SPECIES = wellKnownSymbol("species");
 
@@ -6222,6 +6562,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					};
 					return "".replace(re, "$<a>") !== "7";
 				});
+
+				// IE <= 11 replaces $0 with the whole match, as if it was $&
+				// https://stackoverflow.com/questions/6024666/getting-ie-to-replace-a-regex-with-the-literal-string-0
+				var REPLACE_KEEPS_$0 = (function() {
+					return "a".replace(/./, "$0") === "$0";
+				})();
 
 				// Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
 				// Weex JS has frozen built-in prototypes, so use try / catch wrapper
@@ -6253,19 +6599,26 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							// Symbol-named RegExp methods call .exec
 							var execCalled = false;
 							var re = /a/;
-							re.exec = function() {
-								execCalled = true;
-								return null;
-							};
 
 							if (KEY === "split") {
+								// We can't use real regex here since it causes deoptimization
+								// and serious performance degradation in V8
+								// https://github.com/zloirock/core-js/issues/306
+								re = {};
 								// RegExp[@@split] doesn't call the regex's exec method, but first creates
 								// a new one. We need to return the patched regex when creating the new one.
 								re.constructor = {};
 								re.constructor[SPECIES] = function() {
 									return re;
 								};
+								re.flags = "";
+								re[SYMBOL] = /./[SYMBOL];
 							}
+
+							re.exec = function() {
+								execCalled = true;
+								return null;
+							};
 
 							re[SYMBOL]("");
 							return !execCalled;
@@ -6274,34 +6627,34 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					if (
 						!DELEGATES_TO_SYMBOL ||
 						!DELEGATES_TO_EXEC ||
-						(KEY === "replace" && !REPLACE_SUPPORTS_NAMED_GROUPS) ||
+						(KEY === "replace" &&
+							!(REPLACE_SUPPORTS_NAMED_GROUPS && REPLACE_KEEPS_$0)) ||
 						(KEY === "split" && !SPLIT_WORKS_WITH_OVERWRITTEN_EXEC)
 					) {
 						var nativeRegExpMethod = /./[SYMBOL];
-						var methods = exec(SYMBOL, ""[KEY], function(
-							nativeMethod,
-							regexp,
-							str,
-							arg2,
-							forceStringMethod
-						) {
-							if (regexp.exec === regexpExec) {
-								if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
-									// The native String method already delegates to @@method (this
-									// polyfilled function), leasing to infinite recursion.
-									// We avoid it by directly calling the native @@method method.
+						var methods = exec(
+							SYMBOL,
+							""[KEY],
+							function(nativeMethod, regexp, str, arg2, forceStringMethod) {
+								if (regexp.exec === regexpExec) {
+									if (DELEGATES_TO_SYMBOL && !forceStringMethod) {
+										// The native String method already delegates to @@method (this
+										// polyfilled function), leasing to infinite recursion.
+										// We avoid it by directly calling the native @@method method.
+										return {
+											done: true,
+											value: nativeRegExpMethod.call(regexp, str, arg2),
+										};
+									}
 									return {
 										done: true,
-										value: nativeRegExpMethod.call(regexp, str, arg2),
+										value: nativeMethod.call(str, regexp, arg2),
 									};
 								}
-								return {
-									done: true,
-									value: nativeMethod.call(str, regexp, arg2),
-								};
-							}
-							return { done: false };
-						});
+								return { done: false };
+							},
+							{ REPLACE_KEEPS_$0: REPLACE_KEEPS_$0 }
+						);
 						var stringMethod = methods[0];
 						var regexMethod = methods[1];
 
@@ -6321,18 +6674,21 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 										return regexMethod.call(string, this);
 								  }
 						);
-						if (sham) hide(RegExp.prototype[SYMBOL], "sham", true);
 					}
+
+					if (sham)
+						createNonEnumerableProperty(RegExp.prototype[SYMBOL], "sham", true);
 				};
 			},
 			{
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
 				"../internals/redefine": "node_modules/core-js/internals/redefine.js",
 				"../internals/fails": "node_modules/core-js/internals/fails.js",
 				"../internals/well-known-symbol":
 					"node_modules/core-js/internals/well-known-symbol.js",
 				"../internals/regexp-exec":
 					"node_modules/core-js/internals/regexp-exec.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 			},
 		],
 		"node_modules/core-js/internals/advance-string-index.js": [
@@ -6489,9 +6845,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var toLength = require("../internals/to-length");
 				var aFunction = require("../internals/a-function");
 				var anObject = require("../internals/an-object");
-				var classof = require("../internals/classof");
-				var getFlags = require("../internals/regexp-flags");
-				var hide = require("../internals/hide");
+				var classof = require("../internals/classof-raw");
+				var isRegExp = require("../internals/is-regexp");
+				var getRegExpFlags = require("../internals/regexp-flags");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
+				var fails = require("../internals/fails");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
 				var speciesConstructor = require("../internals/species-constructor");
 				var advanceStringIndex = require("../internals/advance-string-index");
@@ -6507,6 +6865,13 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				);
 				var RegExpPrototype = RegExp.prototype;
 				var regExpBuiltinExec = RegExpPrototype.exec;
+				var nativeMatchAll = "".matchAll;
+
+				var WORKS_WITH_NON_GLOBAL_REGEX =
+					!!nativeMatchAll &&
+					!fails(function() {
+						"a".matchAll(/./);
+					});
 
 				var regExpExec = function(R, S) {
 					var exec = R.exec;
@@ -6566,7 +6931,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						R instanceof RegExp &&
 						!("flags" in RegExpPrototype)
 					) {
-						flagsValue = getFlags.call(R);
+						flagsValue = getRegExpFlags.call(R);
 					}
 					flags = flagsValue === undefined ? "" : String(flagsValue);
 					matcher = new C(C === RegExp ? R.source : R, flags);
@@ -6579,12 +6944,31 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				// `String.prototype.matchAll` method
 				// https://github.com/tc39/proposal-string-matchall
 				$(
-					{ target: "String", proto: true },
+					{
+						target: "String",
+						proto: true,
+						forced: WORKS_WITH_NON_GLOBAL_REGEX,
+					},
 					{
 						matchAll: function matchAll(regexp) {
 							var O = requireObjectCoercible(this);
-							var S, matcher, rx;
+							var flags, S, matcher, rx;
 							if (regexp != null) {
+								if (isRegExp(regexp)) {
+									flags = String(
+										requireObjectCoercible(
+											"flags" in RegExpPrototype
+												? regexp.flags
+												: getRegExpFlags.call(regexp)
+										)
+									);
+									if (!~flags.indexOf("g"))
+										throw TypeError(
+											"`.matchAll` does not allow non-global regexes"
+										);
+								}
+								if (WORKS_WITH_NON_GLOBAL_REGEX)
+									return nativeMatchAll.apply(O, arguments);
 								matcher = regexp[MATCH_ALL];
 								if (
 									matcher === undefined &&
@@ -6593,7 +6977,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 								)
 									matcher = $matchAll;
 								if (matcher != null) return aFunction(matcher).call(regexp, O);
-							}
+							} else if (WORKS_WITH_NON_GLOBAL_REGEX)
+								return nativeMatchAll.apply(O, arguments);
 							S = String(O);
 							rx = new RegExp(regexp, "g");
 							return IS_PURE ? $matchAll.call(rx, S) : rx[MATCH_ALL](S);
@@ -6603,7 +6988,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				IS_PURE ||
 					MATCH_ALL in RegExpPrototype ||
-					hide(RegExpPrototype, MATCH_ALL, $matchAll);
+					createNonEnumerableProperty(RegExpPrototype, MATCH_ALL, $matchAll);
 			},
 			{
 				"../internals/export": "node_modules/core-js/internals/export.js",
@@ -6615,10 +7000,14 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/a-function":
 					"node_modules/core-js/internals/a-function.js",
 				"../internals/an-object": "node_modules/core-js/internals/an-object.js",
-				"../internals/classof": "node_modules/core-js/internals/classof.js",
+				"../internals/classof-raw":
+					"node_modules/core-js/internals/classof-raw.js",
+				"../internals/is-regexp": "node_modules/core-js/internals/is-regexp.js",
 				"../internals/regexp-flags":
 					"node_modules/core-js/internals/regexp-flags.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
+				"../internals/fails": "node_modules/core-js/internals/fails.js",
 				"../internals/well-known-symbol":
 					"node_modules/core-js/internals/well-known-symbol.js",
 				"../internals/species-constructor":
@@ -6698,17 +7087,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/string-repeat.js",
 				"../internals/require-object-coercible":
 					"node_modules/core-js/internals/require-object-coercible.js",
-			},
-		],
-		"node_modules/core-js/internals/user-agent.js": [
-			function(require, module, exports) {
-				var getBuiltIn = require("../internals/get-built-in");
-
-				module.exports = getBuiltIn("navigator", "userAgent") || "";
-			},
-			{
-				"../internals/get-built-in":
-					"node_modules/core-js/internals/get-built-in.js",
 			},
 		],
 		"node_modules/core-js/internals/webkit-string-pad-bug.js": [
@@ -6833,7 +7211,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				fixRegExpWellKnownSymbolLogic("replace", 2, function(
 					REPLACE,
 					nativeReplace,
-					maybeCallNative
+					maybeCallNative,
+					reason
 				) {
 					return [
 						// `String.prototype.replace` method
@@ -6849,13 +7228,19 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						// `RegExp.prototype[@@replace]` method
 						// https://tc39.github.io/ecma262/#sec-regexp.prototype-@@replace
 						function(regexp, replaceValue) {
-							var res = maybeCallNative(
-								nativeReplace,
-								regexp,
-								this,
-								replaceValue
-							);
-							if (res.done) return res.value;
+							if (
+								reason.REPLACE_KEEPS_$0 ||
+								(typeof replaceValue === "string" &&
+									replaceValue.indexOf("$0") === -1)
+							) {
+								var res = maybeCallNative(
+									nativeReplace,
+									regexp,
+									this,
+									replaceValue
+								);
+								if (res.done) return res.value;
+							}
 
 							var rx = anObject(regexp);
 							var S = String(this);
@@ -7240,13 +7625,29 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			function(require, module, exports) {
 				"use strict";
 				var $ = require("../internals/export");
+				var getOwnPropertyDescriptor = require("../internals/object-get-own-property-descriptor")
+					.f;
 				var toLength = require("../internals/to-length");
 				var notARegExp = require("../internals/not-a-regexp");
 				var requireObjectCoercible = require("../internals/require-object-coercible");
 				var correctIsRegExpLogic = require("../internals/correct-is-regexp-logic");
+				var IS_PURE = require("../internals/is-pure");
 
 				var nativeStartsWith = "".startsWith;
 				var min = Math.min;
+
+				var CORRECT_IS_REGEXP_LOGIC = correctIsRegExpLogic("startsWith");
+				// https://github.com/zloirock/core-js/pull/702
+				var MDN_POLYFILL_BUG =
+					!IS_PURE &&
+					!CORRECT_IS_REGEXP_LOGIC &&
+					!!(function() {
+						var descriptor = getOwnPropertyDescriptor(
+							String.prototype,
+							"startsWith"
+						);
+						return descriptor && !descriptor.writable;
+					})();
 
 				// `String.prototype.startsWith` method
 				// https://tc39.github.io/ecma262/#sec-string.prototype.startswith
@@ -7254,7 +7655,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					{
 						target: "String",
 						proto: true,
-						forced: !correctIsRegExpLogic("startsWith"),
+						forced: !MDN_POLYFILL_BUG && !CORRECT_IS_REGEXP_LOGIC,
 					},
 					{
 						startsWith: function startsWith(searchString /* , position = 0 */) {
@@ -7276,6 +7677,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			},
 			{
 				"../internals/export": "node_modules/core-js/internals/export.js",
+				"../internals/object-get-own-property-descriptor":
+					"node_modules/core-js/internals/object-get-own-property-descriptor.js",
 				"../internals/to-length": "node_modules/core-js/internals/to-length.js",
 				"../internals/not-a-regexp":
 					"node_modules/core-js/internals/not-a-regexp.js",
@@ -7283,6 +7686,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/require-object-coercible.js",
 				"../internals/correct-is-regexp-logic":
 					"node_modules/core-js/internals/correct-is-regexp-logic.js",
+				"../internals/is-pure": "node_modules/core-js/internals/is-pure.js",
 			},
 		],
 		"node_modules/core-js/internals/whitespaces.js": [
@@ -7968,8 +8372,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					.f;
 				var isRegExp = require("../internals/is-regexp");
 				var getFlags = require("../internals/regexp-flags");
+				var stickyHelpers = require("../internals/regexp-sticky-helpers");
 				var redefine = require("../internals/redefine");
 				var fails = require("../internals/fails");
+				var setInternalState = require("../internals/internal-state").set;
 				var setSpecies = require("../internals/set-species");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
 
@@ -7982,11 +8388,14 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				// "new" should create a new object, old webkit bug
 				var CORRECT_NEW = new NativeRegExp(re1) !== re1;
 
+				var UNSUPPORTED_Y = stickyHelpers.UNSUPPORTED_Y;
+
 				var FORCED =
 					DESCRIPTORS &&
 					isForced(
 						"RegExp",
 						!CORRECT_NEW ||
+							UNSUPPORTED_Y ||
 							fails(function() {
 								re2[MATCH] = false;
 								// RegExp constructor can alter flags and IsRegExp works correct with @@match
@@ -8005,30 +8414,42 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						var thisIsRegExp = this instanceof RegExpWrapper;
 						var patternIsRegExp = isRegExp(pattern);
 						var flagsAreUndefined = flags === undefined;
-						return !thisIsRegExp &&
+						var sticky;
+
+						if (
+							!thisIsRegExp &&
 							patternIsRegExp &&
 							pattern.constructor === RegExpWrapper &&
 							flagsAreUndefined
-							? pattern
-							: inheritIfRequired(
-									CORRECT_NEW
-										? new NativeRegExp(
-												patternIsRegExp && !flagsAreUndefined
-													? pattern.source
-													: pattern,
-												flags
-										  )
-										: NativeRegExp(
-												(patternIsRegExp = pattern instanceof RegExpWrapper)
-													? pattern.source
-													: pattern,
-												patternIsRegExp && flagsAreUndefined
-													? getFlags.call(pattern)
-													: flags
-										  ),
-									thisIsRegExp ? this : RegExpPrototype,
-									RegExpWrapper
-							  );
+						) {
+							return pattern;
+						}
+
+						if (CORRECT_NEW) {
+							if (patternIsRegExp && !flagsAreUndefined)
+								pattern = pattern.source;
+						} else if (pattern instanceof RegExpWrapper) {
+							if (flagsAreUndefined) flags = getFlags.call(pattern);
+							pattern = pattern.source;
+						}
+
+						if (UNSUPPORTED_Y) {
+							sticky = !!flags && flags.indexOf("y") > -1;
+							if (sticky) flags = flags.replace(/y/g, "");
+						}
+
+						var result = inheritIfRequired(
+							CORRECT_NEW
+								? new NativeRegExp(pattern, flags)
+								: NativeRegExp(pattern, flags),
+							thisIsRegExp ? this : RegExpPrototype,
+							RegExpWrapper
+						);
+
+						if (UNSUPPORTED_Y && sticky)
+							setInternalState(result, { sticky: sticky });
+
+						return result;
 					};
 					var proxy = function(key) {
 						key in RegExpWrapper ||
@@ -8067,8 +8488,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/is-regexp": "node_modules/core-js/internals/is-regexp.js",
 				"../internals/regexp-flags":
 					"node_modules/core-js/internals/regexp-flags.js",
+				"../internals/regexp-sticky-helpers":
+					"node_modules/core-js/internals/regexp-sticky-helpers.js",
 				"../internals/redefine": "node_modules/core-js/internals/redefine.js",
 				"../internals/fails": "node_modules/core-js/internals/fails.js",
+				"../internals/internal-state":
+					"node_modules/core-js/internals/internal-state.js",
 				"../internals/set-species":
 					"node_modules/core-js/internals/set-species.js",
 				"../internals/well-known-symbol":
@@ -8099,10 +8524,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var DESCRIPTORS = require("../internals/descriptors");
 				var objectDefinePropertyModule = require("../internals/object-define-property");
 				var regExpFlags = require("../internals/regexp-flags");
+				var UNSUPPORTED_Y = require("../internals/regexp-sticky-helpers")
+					.UNSUPPORTED_Y;
 
 				// `RegExp.prototype.flags` getter
 				// https://tc39.github.io/ecma262/#sec-get-regexp.prototype.flags
-				if (DESCRIPTORS && /./g.flags != "g") {
+				if (DESCRIPTORS && (/./g.flags != "g" || UNSUPPORTED_Y)) {
 					objectDefinePropertyModule.f(RegExp.prototype, "flags", {
 						configurable: true,
 						get: regExpFlags,
@@ -8116,6 +8543,85 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/object-define-property.js",
 				"../internals/regexp-flags":
 					"node_modules/core-js/internals/regexp-flags.js",
+				"../internals/regexp-sticky-helpers":
+					"node_modules/core-js/internals/regexp-sticky-helpers.js",
+			},
+		],
+		"node_modules/core-js/modules/es.regexp.sticky.js": [
+			function(require, module, exports) {
+				var DESCRIPTORS = require("../internals/descriptors");
+				var UNSUPPORTED_Y = require("../internals/regexp-sticky-helpers")
+					.UNSUPPORTED_Y;
+				var defineProperty = require("../internals/object-define-property").f;
+				var getInternalState = require("../internals/internal-state").get;
+				var RegExpPrototype = RegExp.prototype;
+
+				// `RegExp.prototype.sticky` getter
+				if (DESCRIPTORS && UNSUPPORTED_Y) {
+					defineProperty(RegExp.prototype, "sticky", {
+						configurable: true,
+						get: function() {
+							if (this === RegExpPrototype) return undefined;
+							// We can't use InternalStateModule.getterFor because
+							// we don't add metadata for regexps created by a literal.
+							if (this instanceof RegExp) {
+								return !!getInternalState(this).sticky;
+							}
+							throw TypeError("Incompatible receiver, RegExp required");
+						},
+					});
+				}
+			},
+			{
+				"../internals/descriptors":
+					"node_modules/core-js/internals/descriptors.js",
+				"../internals/regexp-sticky-helpers":
+					"node_modules/core-js/internals/regexp-sticky-helpers.js",
+				"../internals/object-define-property":
+					"node_modules/core-js/internals/object-define-property.js",
+				"../internals/internal-state":
+					"node_modules/core-js/internals/internal-state.js",
+			},
+		],
+		"node_modules/core-js/modules/es.regexp.test.js": [
+			function(require, module, exports) {
+				"use strict";
+				var $ = require("../internals/export");
+				var isObject = require("../internals/is-object");
+
+				var DELEGATES_TO_EXEC = (function() {
+					var execCalled = false;
+					var re = /[ac]/;
+					re.exec = function() {
+						execCalled = true;
+						return /./.exec.apply(this, arguments);
+					};
+					return re.test("abc") === true && execCalled;
+				})();
+
+				var nativeTest = /./.test;
+
+				$(
+					{ target: "RegExp", proto: true, forced: !DELEGATES_TO_EXEC },
+					{
+						test: function(str) {
+							if (typeof this.exec !== "function") {
+								return nativeTest.call(this, str);
+							}
+							var result = this.exec(str);
+							if (result !== null && !isObject(result)) {
+								throw new Error(
+									"RegExp exec method returned something other than an Object or null"
+								);
+							}
+							return !!result;
+						},
+					}
+				);
+			},
+			{
+				"../internals/export": "node_modules/core-js/internals/export.js",
+				"../internals/is-object": "node_modules/core-js/internals/is-object.js",
 			},
 		],
 		"node_modules/core-js/modules/es.regexp.to-string.js": [
@@ -9126,13 +9632,18 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			function(require, module, exports) {
 				var $ = require("../internals/export");
 
+				var $hypot = Math.hypot;
 				var abs = Math.abs;
 				var sqrt = Math.sqrt;
+
+				// Chrome 77 bug
+				// https://bugs.chromium.org/p/v8/issues/detail?id=9546
+				var BUGGY = !!$hypot && $hypot(Infinity, NaN) !== Infinity;
 
 				// `Math.hypot` method
 				// https://tc39.github.io/ecma262/#sec-math.hypot
 				$(
-					{ target: "Math", stat: true },
+					{ target: "Math", stat: true, forced: BUGGY },
 					{
 						hypot: function hypot(value1, value2) {
 							// eslint-disable-line no-unused-vars
@@ -9558,7 +10069,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		],
 		"node_modules/core-js/modules/es.date.to-primitive.js": [
 			function(require, module, exports) {
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 				var dateToPrimitive = require("../internals/date-to-primitive");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
 
@@ -9567,15 +10078,74 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				// `Date.prototype[@@toPrimitive]` method
 				// https://tc39.github.io/ecma262/#sec-date.prototype-@@toprimitive
-				if (!(TO_PRIMITIVE in DatePrototype))
-					hide(DatePrototype, TO_PRIMITIVE, dateToPrimitive);
+				if (!(TO_PRIMITIVE in DatePrototype)) {
+					createNonEnumerableProperty(
+						DatePrototype,
+						TO_PRIMITIVE,
+						dateToPrimitive
+					);
+				}
 			},
 			{
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/date-to-primitive":
 					"node_modules/core-js/internals/date-to-primitive.js",
 				"../internals/well-known-symbol":
 					"node_modules/core-js/internals/well-known-symbol.js",
+			},
+		],
+		"node_modules/core-js/modules/es.json.stringify.js": [
+			function(require, module, exports) {
+				var $ = require("../internals/export");
+				var getBuiltIn = require("../internals/get-built-in");
+				var fails = require("../internals/fails");
+
+				var $stringify = getBuiltIn("JSON", "stringify");
+				var re = /[\uD800-\uDFFF]/g;
+				var low = /^[\uD800-\uDBFF]$/;
+				var hi = /^[\uDC00-\uDFFF]$/;
+
+				var fix = function(match, offset, string) {
+					var prev = string.charAt(offset - 1);
+					var next = string.charAt(offset + 1);
+					if (
+						(low.test(match) && !hi.test(next)) ||
+						(hi.test(match) && !low.test(prev))
+					) {
+						return "\\u" + match.charCodeAt(0).toString(16);
+					}
+					return match;
+				};
+
+				var FORCED = fails(function() {
+					return (
+						$stringify("\uDF06\uD834") !== '"\\udf06\\ud834"' ||
+						$stringify("\uDEAD") !== '"\\udead"'
+					);
+				});
+
+				if ($stringify) {
+					// https://github.com/tc39/proposal-well-formed-stringify
+					$(
+						{ target: "JSON", stat: true, forced: FORCED },
+						{
+							// eslint-disable-next-line no-unused-vars
+							stringify: function stringify(it, replacer, space) {
+								var result = $stringify.apply(null, arguments);
+								return typeof result == "string"
+									? result.replace(re, fix)
+									: result;
+							},
+						}
+					);
+				}
+			},
+			{
+				"../internals/export": "node_modules/core-js/internals/export.js",
+				"../internals/get-built-in":
+					"node_modules/core-js/internals/get-built-in.js",
+				"../internals/fails": "node_modules/core-js/internals/fails.js",
 			},
 		],
 		"node_modules/core-js/modules/es.json.to-string-tag.js": [
@@ -9592,6 +10162,14 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/set-to-string-tag":
 					"node_modules/core-js/internals/set-to-string-tag.js",
 			},
+		],
+		"node_modules/core-js/internals/native-promise-constructor.js": [
+			function(require, module, exports) {
+				var global = require("../internals/global");
+
+				module.exports = global.Promise;
+			},
+			{ "../internals/global": "node_modules/core-js/internals/global.js" },
 		],
 		"node_modules/core-js/internals/redefine-all.js": [
 			function(require, module, exports) {
@@ -9617,6 +10195,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			},
 			{},
 		],
+		"node_modules/core-js/internals/is-ios.js": [
+			function(require, module, exports) {
+				var userAgent = require("../internals/user-agent");
+
+				module.exports = /(iphone|ipod|ipad).*applewebkit/i.test(userAgent);
+			},
+			{
+				"../internals/user-agent":
+					"node_modules/core-js/internals/user-agent.js",
+			},
+		],
 		"node_modules/core-js/internals/task.js": [
 			function(require, module, exports) {
 				var global = require("../internals/global");
@@ -9625,6 +10214,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var bind = require("../internals/bind-context");
 				var html = require("../internals/html");
 				var createElement = require("../internals/document-create-element");
+				var IS_IOS = require("../internals/is-ios");
 
 				var location = global.location;
 				var set = global.setImmediate;
@@ -9691,7 +10281,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							Dispatch.now(runner(id));
 						};
 						// Browsers with MessageChannel, includes WebWorkers
-					} else if (MessageChannel) {
+						// except iOS - https://github.com/zloirock/core-js/issues/624
+					} else if (MessageChannel && !IS_IOS) {
 						channel = new MessageChannel();
 						port = channel.port2;
 						channel.port1.onmessage = listener;
@@ -9739,6 +10330,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/html": "node_modules/core-js/internals/html.js",
 				"../internals/document-create-element":
 					"node_modules/core-js/internals/document-create-element.js",
+				"../internals/is-ios": "node_modules/core-js/internals/is-ios.js",
 			},
 		],
 		"node_modules/core-js/internals/microtask.js": [
@@ -9748,7 +10340,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					.f;
 				var classof = require("../internals/classof-raw");
 				var macrotask = require("../internals/task").set;
-				var userAgent = require("../internals/user-agent");
+				var IS_IOS = require("../internals/is-ios");
 
 				var MutationObserver =
 					global.MutationObserver || global.WebKitMutationObserver;
@@ -9763,7 +10355,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var queueMicrotask =
 					queueMicrotaskDescriptor && queueMicrotaskDescriptor.value;
 
-				var flush, head, last, notify, toggle, node, promise;
+				var flush, head, last, notify, toggle, node, promise, then;
 
 				// modern engines have queueMicrotask method
 				if (!queueMicrotask) {
@@ -9791,13 +10383,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							process.nextTick(flush);
 						};
 						// browsers with MutationObserver, except iOS - https://github.com/zloirock/core-js/issues/339
-					} else if (
-						MutationObserver &&
-						!/(iphone|ipod|ipad).*applewebkit/i.test(userAgent)
-					) {
+					} else if (MutationObserver && !IS_IOS) {
 						toggle = true;
 						node = document.createTextNode("");
-						new MutationObserver(flush).observe(node, { characterData: true }); // eslint-disable-line no-new
+						new MutationObserver(flush).observe(node, { characterData: true });
 						notify = function() {
 							node.data = toggle = !toggle;
 						};
@@ -9805,8 +10394,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					} else if (Promise && Promise.resolve) {
 						// Promise.resolve without an argument throws an error in LG WebOS 2
 						promise = Promise.resolve(undefined);
+						then = promise.then;
 						notify = function() {
-							promise.then(flush);
+							then.call(promise, flush);
 						};
 						// for other environments - macrotask based on:
 						// - setImmediate
@@ -9841,8 +10431,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/classof-raw":
 					"node_modules/core-js/internals/classof-raw.js",
 				"../internals/task": "node_modules/core-js/internals/task.js",
-				"../internals/user-agent":
-					"node_modules/core-js/internals/user-agent.js",
+				"../internals/is-ios": "node_modules/core-js/internals/is-ios.js",
 			},
 		],
 		"node_modules/core-js/internals/new-promise-capability.js": [
@@ -9925,7 +10514,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $ = require("../internals/export");
 				var IS_PURE = require("../internals/is-pure");
 				var global = require("../internals/global");
-				var path = require("../internals/path");
+				var getBuiltIn = require("../internals/get-built-in");
+				var NativePromise = require("../internals/native-promise-constructor");
+				var redefine = require("../internals/redefine");
 				var redefineAll = require("../internals/redefine-all");
 				var setToStringTag = require("../internals/set-to-string-tag");
 				var setSpecies = require("../internals/set-species");
@@ -9933,6 +10524,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var aFunction = require("../internals/a-function");
 				var anInstance = require("../internals/an-instance");
 				var classof = require("../internals/classof-raw");
+				var inspectSource = require("../internals/inspect-source");
 				var iterate = require("../internals/iterate");
 				var checkCorrectnessOfIteration = require("../internals/check-correctness-of-iteration");
 				var speciesConstructor = require("../internals/species-constructor");
@@ -9942,23 +10534,21 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var hostReportErrors = require("../internals/host-report-errors");
 				var newPromiseCapabilityModule = require("../internals/new-promise-capability");
 				var perform = require("../internals/perform");
-				var userAgent = require("../internals/user-agent");
 				var InternalStateModule = require("../internals/internal-state");
 				var isForced = require("../internals/is-forced");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
+				var V8_VERSION = require("../internals/v8-version");
 
 				var SPECIES = wellKnownSymbol("species");
 				var PROMISE = "Promise";
 				var getInternalState = InternalStateModule.get;
 				var setInternalState = InternalStateModule.set;
 				var getInternalPromiseState = InternalStateModule.getterFor(PROMISE);
-				var PromiseConstructor = global[PROMISE];
+				var PromiseConstructor = NativePromise;
 				var TypeError = global.TypeError;
 				var document = global.document;
 				var process = global.process;
-				var $fetch = global.fetch;
-				var versions = process && process.versions;
-				var v8 = (versions && versions.v8) || "";
+				var $fetch = getBuiltIn("fetch");
 				var newPromiseCapability = newPromiseCapabilityModule.f;
 				var newGenericPromiseCapability = newPromiseCapability;
 				var IS_NODE = classof(process) == "process";
@@ -9974,29 +10564,45 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var REJECTED = 2;
 				var HANDLED = 1;
 				var UNHANDLED = 2;
-				var Internal, OwnPromiseCapability, PromiseWrapper;
+				var Internal, OwnPromiseCapability, PromiseWrapper, nativeThen;
 
 				var FORCED = isForced(PROMISE, function() {
-					// correct subclassing with @@species support
-					var promise = PromiseConstructor.resolve(1);
-					var empty = function() {
-						/* empty */
-					};
-					var FakePromise = ((promise.constructor = {})[SPECIES] = function(
-						exec
-					) {
-						exec(empty, empty);
-					});
-					// unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-					return !(
-						(IS_NODE || typeof PromiseRejectionEvent == "function") &&
-						(!IS_PURE || promise["finally"]) &&
-						promise.then(empty) instanceof FakePromise &&
-						// v8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
+					var GLOBAL_CORE_JS_PROMISE =
+						inspectSource(PromiseConstructor) !== String(PromiseConstructor);
+					if (!GLOBAL_CORE_JS_PROMISE) {
+						// V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
 						// https://bugs.chromium.org/p/chromium/issues/detail?id=830565
-						// we can't detect it synchronously, so just check versions
-						v8.indexOf("6.6") !== 0 &&
-						userAgent.indexOf("Chrome/66") === -1
+						// We can't detect it synchronously, so just check versions
+						if (V8_VERSION === 66) return true;
+						// Unhandled rejections tracking support, NodeJS Promise without it fails @@species test
+						if (!IS_NODE && typeof PromiseRejectionEvent != "function")
+							return true;
+					}
+					// We need Promise#finally in the pure version for preventing prototype pollution
+					if (IS_PURE && !PromiseConstructor.prototype["finally"]) return true;
+					// We can't use @@species feature detection in V8 since it causes
+					// deoptimization and performance degradation
+					// https://github.com/zloirock/core-js/issues/679
+					if (V8_VERSION >= 51 && /native code/.test(PromiseConstructor))
+						return false;
+					// Detect correctness of subclassing with @@species support
+					var promise = PromiseConstructor.resolve(1);
+					var FakePromise = function(exec) {
+						exec(
+							function() {
+								/* empty */
+							},
+							function() {
+								/* empty */
+							}
+						);
+					};
+					var constructor = (promise.constructor = {});
+					constructor[SPECIES] = FakePromise;
+					return !(
+						promise.then(function() {
+							/* empty */
+						}) instanceof FakePromise
 					);
 				});
 
@@ -10222,20 +10828,38 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							: newGenericPromiseCapability(C);
 					};
 
-					// wrap fetch result
-					if (!IS_PURE && typeof $fetch == "function")
-						$(
-							{ global: true, enumerable: true, forced: true },
-							{
-								// eslint-disable-next-line no-unused-vars
-								fetch: function fetch(input) {
-									return promiseResolve(
-										PromiseConstructor,
-										$fetch.apply(global, arguments)
-									);
-								},
-							}
+					if (!IS_PURE && typeof NativePromise == "function") {
+						nativeThen = NativePromise.prototype.then;
+
+						// wrap native Promise#then for native async functions
+						redefine(
+							NativePromise.prototype,
+							"then",
+							function then(onFulfilled, onRejected) {
+								var that = this;
+								return new PromiseConstructor(function(resolve, reject) {
+									nativeThen.call(that, resolve, reject);
+								}).then(onFulfilled, onRejected);
+								// https://github.com/zloirock/core-js/issues/640
+							},
+							{ unsafe: true }
 						);
+
+						// wrap fetch result
+						if (typeof $fetch == "function")
+							$(
+								{ global: true, enumerable: true, forced: true },
+								{
+									// eslint-disable-next-line no-unused-vars
+									fetch: function fetch(input /* , init */) {
+										return promiseResolve(
+											PromiseConstructor,
+											$fetch.apply(global, arguments)
+										);
+									},
+								}
+							);
+					}
 				}
 
 				$(
@@ -10248,7 +10872,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				setToStringTag(PromiseConstructor, PROMISE, false, true);
 				setSpecies(PROMISE);
 
-				PromiseWrapper = path[PROMISE];
+				PromiseWrapper = getBuiltIn(PROMISE);
 
 				// statics
 				$(
@@ -10334,7 +10958,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/export": "node_modules/core-js/internals/export.js",
 				"../internals/is-pure": "node_modules/core-js/internals/is-pure.js",
 				"../internals/global": "node_modules/core-js/internals/global.js",
-				"../internals/path": "node_modules/core-js/internals/path.js",
+				"../internals/get-built-in":
+					"node_modules/core-js/internals/get-built-in.js",
+				"../internals/native-promise-constructor":
+					"node_modules/core-js/internals/native-promise-constructor.js",
+				"../internals/redefine": "node_modules/core-js/internals/redefine.js",
 				"../internals/redefine-all":
 					"node_modules/core-js/internals/redefine-all.js",
 				"../internals/set-to-string-tag":
@@ -10348,6 +10976,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/an-instance.js",
 				"../internals/classof-raw":
 					"node_modules/core-js/internals/classof-raw.js",
+				"../internals/inspect-source":
+					"node_modules/core-js/internals/inspect-source.js",
 				"../internals/iterate": "node_modules/core-js/internals/iterate.js",
 				"../internals/check-correctness-of-iteration":
 					"node_modules/core-js/internals/check-correctness-of-iteration.js",
@@ -10362,27 +10992,109 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/new-promise-capability":
 					"node_modules/core-js/internals/new-promise-capability.js",
 				"../internals/perform": "node_modules/core-js/internals/perform.js",
-				"../internals/user-agent":
-					"node_modules/core-js/internals/user-agent.js",
 				"../internals/internal-state":
 					"node_modules/core-js/internals/internal-state.js",
 				"../internals/is-forced": "node_modules/core-js/internals/is-forced.js",
 				"../internals/well-known-symbol":
 					"node_modules/core-js/internals/well-known-symbol.js",
+				"../internals/v8-version":
+					"node_modules/core-js/internals/v8-version.js",
+			},
+		],
+		"node_modules/core-js/modules/es.promise.all-settled.js": [
+			function(require, module, exports) {
+				"use strict";
+				var $ = require("../internals/export");
+				var aFunction = require("../internals/a-function");
+				var newPromiseCapabilityModule = require("../internals/new-promise-capability");
+				var perform = require("../internals/perform");
+				var iterate = require("../internals/iterate");
+
+				// `Promise.allSettled` method
+				// https://github.com/tc39/proposal-promise-allSettled
+				$(
+					{ target: "Promise", stat: true },
+					{
+						allSettled: function allSettled(iterable) {
+							var C = this;
+							var capability = newPromiseCapabilityModule.f(C);
+							var resolve = capability.resolve;
+							var reject = capability.reject;
+							var result = perform(function() {
+								var promiseResolve = aFunction(C.resolve);
+								var values = [];
+								var counter = 0;
+								var remaining = 1;
+								iterate(iterable, function(promise) {
+									var index = counter++;
+									var alreadyCalled = false;
+									values.push(undefined);
+									remaining++;
+									promiseResolve.call(C, promise).then(
+										function(value) {
+											if (alreadyCalled) return;
+											alreadyCalled = true;
+											values[index] = { status: "fulfilled", value: value };
+											--remaining || resolve(values);
+										},
+										function(e) {
+											if (alreadyCalled) return;
+											alreadyCalled = true;
+											values[index] = { status: "rejected", reason: e };
+											--remaining || resolve(values);
+										}
+									);
+								});
+								--remaining || resolve(values);
+							});
+							if (result.error) reject(result.value);
+							return capability.promise;
+						},
+					}
+				);
+			},
+			{
+				"../internals/export": "node_modules/core-js/internals/export.js",
+				"../internals/a-function":
+					"node_modules/core-js/internals/a-function.js",
+				"../internals/new-promise-capability":
+					"node_modules/core-js/internals/new-promise-capability.js",
+				"../internals/perform": "node_modules/core-js/internals/perform.js",
+				"../internals/iterate": "node_modules/core-js/internals/iterate.js",
 			},
 		],
 		"node_modules/core-js/modules/es.promise.finally.js": [
 			function(require, module, exports) {
 				"use strict";
 				var $ = require("../internals/export");
+				var IS_PURE = require("../internals/is-pure");
+				var NativePromise = require("../internals/native-promise-constructor");
+				var fails = require("../internals/fails");
 				var getBuiltIn = require("../internals/get-built-in");
 				var speciesConstructor = require("../internals/species-constructor");
 				var promiseResolve = require("../internals/promise-resolve");
+				var redefine = require("../internals/redefine");
+
+				// Safari bug https://bugs.webkit.org/show_bug.cgi?id=200829
+				var NON_GENERIC =
+					!!NativePromise &&
+					fails(function() {
+						NativePromise.prototype["finally"].call(
+							{
+								then: function() {
+									/* empty */
+								},
+							},
+							function() {
+								/* empty */
+							}
+						);
+					});
 
 				// `Promise.prototype.finally` method
 				// https://tc39.github.io/ecma262/#sec-promise.prototype.finally
 				$(
-					{ target: "Promise", proto: true, real: true },
+					{ target: "Promise", proto: true, real: true, forced: NON_GENERIC },
 					{
 						finally: function(onFinally) {
 							var C = speciesConstructor(this, getBuiltIn("Promise"));
@@ -10406,15 +11118,33 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						},
 					}
 				);
+
+				// patch native Promise.prototype for native async functions
+				if (
+					!IS_PURE &&
+					typeof NativePromise == "function" &&
+					!NativePromise.prototype["finally"]
+				) {
+					redefine(
+						NativePromise.prototype,
+						"finally",
+						getBuiltIn("Promise").prototype["finally"]
+					);
+				}
 			},
 			{
 				"../internals/export": "node_modules/core-js/internals/export.js",
+				"../internals/is-pure": "node_modules/core-js/internals/is-pure.js",
+				"../internals/native-promise-constructor":
+					"node_modules/core-js/internals/native-promise-constructor.js",
+				"../internals/fails": "node_modules/core-js/internals/fails.js",
 				"../internals/get-built-in":
 					"node_modules/core-js/internals/get-built-in.js",
 				"../internals/species-constructor":
 					"node_modules/core-js/internals/species-constructor.js",
 				"../internals/promise-resolve":
 					"node_modules/core-js/internals/promise-resolve.js",
+				"../internals/redefine": "node_modules/core-js/internals/redefine.js",
 			},
 		],
 		"node_modules/core-js/internals/collection.js": [
@@ -10433,18 +11163,14 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var setToStringTag = require("../internals/set-to-string-tag");
 				var inheritIfRequired = require("../internals/inherit-if-required");
 
-				module.exports = function(
-					CONSTRUCTOR_NAME,
-					wrapper,
-					common,
-					IS_MAP,
-					IS_WEAK
-				) {
+				module.exports = function(CONSTRUCTOR_NAME, wrapper, common) {
+					var IS_MAP = CONSTRUCTOR_NAME.indexOf("Map") !== -1;
+					var IS_WEAK = CONSTRUCTOR_NAME.indexOf("Weak") !== -1;
+					var ADDER = IS_MAP ? "set" : "add";
 					var NativeConstructor = global[CONSTRUCTOR_NAME];
 					var NativePrototype =
 						NativeConstructor && NativeConstructor.prototype;
 					var Constructor = NativeConstructor;
-					var ADDER = IS_MAP ? "set" : "add";
 					var exported = {};
 
 					var fixMethod = function(KEY) {
@@ -10453,30 +11179,30 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							NativePrototype,
 							KEY,
 							KEY == "add"
-								? function add(a) {
-										nativeMethod.call(this, a === 0 ? 0 : a);
+								? function add(value) {
+										nativeMethod.call(this, value === 0 ? 0 : value);
 										return this;
 								  }
 								: KEY == "delete"
-								? function(a) {
-										return IS_WEAK && !isObject(a)
+								? function(key) {
+										return IS_WEAK && !isObject(key)
 											? false
-											: nativeMethod.call(this, a === 0 ? 0 : a);
+											: nativeMethod.call(this, key === 0 ? 0 : key);
 								  }
 								: KEY == "get"
-								? function get(a) {
-										return IS_WEAK && !isObject(a)
+								? function get(key) {
+										return IS_WEAK && !isObject(key)
 											? undefined
-											: nativeMethod.call(this, a === 0 ? 0 : a);
+											: nativeMethod.call(this, key === 0 ? 0 : key);
 								  }
 								: KEY == "has"
-								? function has(a) {
-										return IS_WEAK && !isObject(a)
+								? function has(key) {
+										return IS_WEAK && !isObject(key)
 											? false
-											: nativeMethod.call(this, a === 0 ? 0 : a);
+											: nativeMethod.call(this, key === 0 ? 0 : key);
 								  }
-								: function set(a, b) {
-										nativeMethod.call(this, a === 0 ? 0 : a, b);
+								: function set(key, value) {
+										nativeMethod.call(this, key === 0 ? 0 : key, value);
 										return this;
 								  }
 						);
@@ -10509,7 +11235,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						// early implementations not supports chaining
 						var HASNT_CHAINING =
 							instance[ADDER](IS_WEAK ? {} : -0, 1) != instance;
-						// V8 ~  Chromium 40- weak-collections throws on primitives, but should return false
+						// V8 ~ Chromium 40- weak-collections throws on primitives, but should return false
 						var THROWS_ON_PRIMITIVES = fails(function() {
 							instance.has(1);
 						});
@@ -10847,13 +11573,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				// https://tc39.github.io/ecma262/#sec-map-objects
 				module.exports = collection(
 					"Map",
-					function(get) {
+					function(init) {
 						return function Map() {
-							return get(this, arguments.length ? arguments[0] : undefined);
+							return init(this, arguments.length ? arguments[0] : undefined);
 						};
 					},
-					collectionStrong,
-					true
+					collectionStrong
 				);
 			},
 			{
@@ -10873,9 +11598,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				// https://tc39.github.io/ecma262/#sec-set-objects
 				module.exports = collection(
 					"Set",
-					function(get) {
+					function(init) {
 						return function Set() {
-							return get(this, arguments.length ? arguments[0] : undefined);
+							return init(this, arguments.length ? arguments[0] : undefined);
 						};
 					},
 					collectionStrong
@@ -11055,9 +11780,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var isExtensible = Object.isExtensible;
 				var InternalWeakMap;
 
-				var wrapper = function(get) {
+				var wrapper = function(init) {
 					return function WeakMap() {
-						return get(this, arguments.length ? arguments[0] : undefined);
+						return init(this, arguments.length ? arguments[0] : undefined);
 					};
 				};
 
@@ -11066,9 +11791,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $WeakMap = (module.exports = collection(
 					"WeakMap",
 					wrapper,
-					collectionWeak,
-					true,
-					true
+					collectionWeak
 				));
 
 				// IE11 WeakMap frozen keys fix
@@ -11155,14 +11878,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				// https://tc39.github.io/ecma262/#sec-weakset-constructor
 				collection(
 					"WeakSet",
-					function(get) {
+					function(init) {
 						return function WeakSet() {
-							return get(this, arguments.length ? arguments[0] : undefined);
+							return init(this, arguments.length ? arguments[0] : undefined);
 						};
 					},
-					collectionWeak,
-					false,
-					true
+					collectionWeak
 				);
 			},
 			{
@@ -11180,7 +11901,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var isObject = require("../internals/is-object");
 				var has = require("../internals/has");
 				var classof = require("../internals/classof");
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 				var redefine = require("../internals/redefine");
 				var defineProperty = require("../internals/object-define-property").f;
 				var getPrototypeOf = require("../internals/object-get-prototype-of");
@@ -11204,7 +11925,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var TO_STRING_TAG = wellKnownSymbol("toStringTag");
 				var TYPED_ARRAY_TAG = uid("TYPED_ARRAY_TAG");
 				var NATIVE_ARRAY_BUFFER = !!(global.ArrayBuffer && DataView);
-				var NATIVE_ARRAY_BUFFER_VIEWS = NATIVE_ARRAY_BUFFER && !!setPrototypeOf;
+				// Fixing native typed arrays in Opera Presto crashes the browser, see #595
+				var NATIVE_ARRAY_BUFFER_VIEWS =
+					NATIVE_ARRAY_BUFFER &&
+					!!setPrototypeOf &&
+					classof(global.opera) !== "Opera";
 				var TYPED_ARRAY_TAG_REQIRED = false;
 				var NAME;
 
@@ -11252,7 +11977,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					throw TypeError("Target is not a typed array constructor");
 				};
 
-				var exportProto = function(KEY, property, forced) {
+				var exportTypedArrayMethod = function(KEY, property, forced) {
 					if (!DESCRIPTORS) return;
 					if (forced)
 						for (var ARRAY in TypedArrayConstructorsList) {
@@ -11276,7 +12001,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					}
 				};
 
-				var exportStatic = function(KEY, property, forced) {
+				var exportTypedArrayStaticMethod = function(KEY, property, forced) {
 					var ARRAY, TypedArrayConstructor;
 					if (!DESCRIPTORS) return;
 					if (setPrototypeOf) {
@@ -11363,7 +12088,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					});
 					for (NAME in TypedArrayConstructorsList)
 						if (global[NAME]) {
-							hide(global[NAME], TYPED_ARRAY_TAG, NAME);
+							createNonEnumerableProperty(global[NAME], TYPED_ARRAY_TAG, NAME);
 						}
 				}
 
@@ -11382,8 +12107,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					TYPED_ARRAY_TAG: TYPED_ARRAY_TAG_REQIRED && TYPED_ARRAY_TAG,
 					aTypedArray: aTypedArray,
 					aTypedArrayConstructor: aTypedArrayConstructor,
-					exportProto: exportProto,
-					exportStatic: exportStatic,
+					exportTypedArrayMethod: exportTypedArrayMethod,
+					exportTypedArrayStaticMethod: exportTypedArrayStaticMethod,
 					isView: isView,
 					isTypedArray: isTypedArray,
 					TypedArray: TypedArray,
@@ -11397,7 +12122,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/is-object": "node_modules/core-js/internals/is-object.js",
 				"../internals/has": "node_modules/core-js/internals/has.js",
 				"../internals/classof": "node_modules/core-js/internals/classof.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/redefine": "node_modules/core-js/internals/redefine.js",
 				"../internals/object-define-property":
 					"node_modules/core-js/internals/object-define-property.js",
@@ -11431,39 +12157,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/to-length": "node_modules/core-js/internals/to-length.js",
 			},
 		],
-		"node_modules/core-js/internals/array-buffer.js": [
+		"node_modules/core-js/internals/ieee754.js": [
 			function(require, module, exports) {
-				"use strict";
-				var global = require("../internals/global");
-				var DESCRIPTORS = require("../internals/descriptors");
-				var NATIVE_ARRAY_BUFFER = require("../internals/array-buffer-view-core")
-					.NATIVE_ARRAY_BUFFER;
-				var hide = require("../internals/hide");
-				var redefineAll = require("../internals/redefine-all");
-				var fails = require("../internals/fails");
-				var anInstance = require("../internals/an-instance");
-				var toInteger = require("../internals/to-integer");
-				var toLength = require("../internals/to-length");
-				var toIndex = require("../internals/to-index");
-				var getOwnPropertyNames = require("../internals/object-get-own-property-names")
-					.f;
-				var defineProperty = require("../internals/object-define-property").f;
-				var arrayFill = require("../internals/array-fill");
-				var setToStringTag = require("../internals/set-to-string-tag");
-				var InternalStateModule = require("../internals/internal-state");
-
-				var getInternalState = InternalStateModule.get;
-				var setInternalState = InternalStateModule.set;
-				var ARRAY_BUFFER = "ArrayBuffer";
-				var DATA_VIEW = "DataView";
-				var PROTOTYPE = "prototype";
-				var WRONG_LENGTH = "Wrong length";
-				var WRONG_INDEX = "Wrong index";
-				var NativeArrayBuffer = global[ARRAY_BUFFER];
-				var $ArrayBuffer = NativeArrayBuffer;
-				var $DataView = global[DATA_VIEW];
-				var Math = global.Math;
-				var RangeError = global.RangeError;
+				// IEEE754 conversions based on https://github.com/feross/ieee754
 				// eslint-disable-next-line no-shadow-restricted-names
 				var Infinity = 1 / 0;
 				var abs = Math.abs;
@@ -11472,8 +12168,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var log = Math.log;
 				var LN2 = Math.LN2;
 
-				// IEEE754 conversions based on https://github.com/feross/ieee754
-				var packIEEE754 = function(number, mantissaLength, bytes) {
+				var pack = function(number, mantissaLength, bytes) {
 					var buffer = new Array(bytes);
 					var exponentLength = bytes * 8 - mantissaLength - 1;
 					var eMax = (1 << exponentLength) - 1;
@@ -11534,7 +12229,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					return buffer;
 				};
 
-				var unpackIEEE754 = function(buffer, mantissaLength) {
+				var unpack = function(buffer, mantissaLength) {
 					var bytes = buffer.length;
 					var exponentLength = bytes * 8 - mantissaLength - 1;
 					var eMax = (1 << exponentLength) - 1;
@@ -11569,11 +12264,49 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					return (sign ? -1 : 1) * mantissa * pow(2, exponent - mantissaLength);
 				};
 
-				var unpackInt32 = function(buffer) {
-					return (
-						(buffer[3] << 24) | (buffer[2] << 16) | (buffer[1] << 8) | buffer[0]
-					);
+				module.exports = {
+					pack: pack,
+					unpack: unpack,
 				};
+			},
+			{},
+		],
+		"node_modules/core-js/internals/array-buffer.js": [
+			function(require, module, exports) {
+				"use strict";
+				var global = require("../internals/global");
+				var DESCRIPTORS = require("../internals/descriptors");
+				var NATIVE_ARRAY_BUFFER = require("../internals/array-buffer-view-core")
+					.NATIVE_ARRAY_BUFFER;
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
+				var redefineAll = require("../internals/redefine-all");
+				var fails = require("../internals/fails");
+				var anInstance = require("../internals/an-instance");
+				var toInteger = require("../internals/to-integer");
+				var toLength = require("../internals/to-length");
+				var toIndex = require("../internals/to-index");
+				var IEEE754 = require("../internals/ieee754");
+				var getOwnPropertyNames = require("../internals/object-get-own-property-names")
+					.f;
+				var defineProperty = require("../internals/object-define-property").f;
+				var arrayFill = require("../internals/array-fill");
+				var setToStringTag = require("../internals/set-to-string-tag");
+				var InternalStateModule = require("../internals/internal-state");
+
+				var getInternalState = InternalStateModule.get;
+				var setInternalState = InternalStateModule.set;
+				var ARRAY_BUFFER = "ArrayBuffer";
+				var DATA_VIEW = "DataView";
+				var PROTOTYPE = "prototype";
+				var WRONG_LENGTH = "Wrong length";
+				var WRONG_INDEX = "Wrong index";
+				var NativeArrayBuffer = global[ARRAY_BUFFER];
+				var $ArrayBuffer = NativeArrayBuffer;
+				var $DataView = global[DATA_VIEW];
+				var RangeError = global.RangeError;
+
+				var packIEEE754 = IEEE754.pack;
+				var unpackIEEE754 = IEEE754.unpack;
 
 				var packInt8 = function(number) {
 					return [number & 0xff];
@@ -11590,6 +12323,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						(number >> 16) & 0xff,
 						(number >> 24) & 0xff,
 					];
+				};
+
+				var unpackInt32 = function(buffer) {
+					return (
+						(buffer[3] << 24) | (buffer[2] << 16) | (buffer[1] << 8) | buffer[0]
+					);
 				};
 
 				var packFloat32 = function(number) {
@@ -11609,8 +12348,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				};
 
 				var get = function(view, count, index, isLittleEndian) {
-					var numIndex = +index;
-					var intIndex = toIndex(numIndex);
+					var intIndex = toIndex(index);
 					var store = getInternalState(view);
 					if (intIndex + count > store.byteLength)
 						throw RangeError(WRONG_INDEX);
@@ -11628,8 +12366,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					value,
 					isLittleEndian
 				) {
-					var numIndex = +index;
-					var intIndex = toIndex(numIndex);
+					var intIndex = toIndex(index);
 					var store = getInternalState(view);
 					if (intIndex + count > store.byteLength)
 						throw RangeError(WRONG_INDEX);
@@ -11863,8 +12600,13 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							keys.length > j;
 
 						) {
-							if (!((key = keys[j++]) in $ArrayBuffer))
-								hide($ArrayBuffer, key, NativeArrayBuffer[key]);
+							if (!((key = keys[j++]) in $ArrayBuffer)) {
+								createNonEnumerableProperty(
+									$ArrayBuffer,
+									key,
+									NativeArrayBuffer[key]
+								);
+							}
 						}
 						ArrayBufferPrototype.constructor = $ArrayBuffer;
 					}
@@ -11890,8 +12632,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				setToStringTag($ArrayBuffer, ARRAY_BUFFER);
 				setToStringTag($DataView, DATA_VIEW);
-				exports[ARRAY_BUFFER] = $ArrayBuffer;
-				exports[DATA_VIEW] = $DataView;
+
+				module.exports = {
+					ArrayBuffer: $ArrayBuffer,
+					DataView: $DataView,
+				};
 			},
 			{
 				"../internals/global": "node_modules/core-js/internals/global.js",
@@ -11899,7 +12644,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/descriptors.js",
 				"../internals/array-buffer-view-core":
 					"node_modules/core-js/internals/array-buffer-view-core.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/redefine-all":
 					"node_modules/core-js/internals/redefine-all.js",
 				"../internals/fails": "node_modules/core-js/internals/fails.js",
@@ -11909,6 +12655,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/to-integer.js",
 				"../internals/to-length": "node_modules/core-js/internals/to-length.js",
 				"../internals/to-index": "node_modules/core-js/internals/to-index.js",
+				"../internals/ieee754": "node_modules/core-js/internals/ieee754.js",
 				"../internals/object-get-own-property-names":
 					"node_modules/core-js/internals/object-get-own-property-names.js",
 				"../internals/object-define-property":
@@ -12097,7 +12844,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						new Int8Array(iterable);
 					}, true) ||
 					fails(function() {
-						// Safari 11 bug
+						// Safari (11+) bug - a reason why even Safari 13 should load a typed array polyfill
 						return new Int8Array(new ArrayBuffer(2), 1, undefined).length !== 1;
 					});
 			},
@@ -12110,19 +12857,34 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/array-buffer-view-core.js",
 			},
 		],
-		"node_modules/core-js/internals/to-offset.js": [
+		"node_modules/core-js/internals/to-positive-integer.js": [
 			function(require, module, exports) {
 				var toInteger = require("../internals/to-integer");
 
-				module.exports = function(it, BYTES) {
-					var offset = toInteger(it);
-					if (offset < 0 || offset % BYTES) throw RangeError("Wrong offset");
-					return offset;
+				module.exports = function(it) {
+					var result = toInteger(it);
+					if (result < 0) throw RangeError("The argument can't be less than 0");
+					return result;
 				};
 			},
 			{
 				"../internals/to-integer":
 					"node_modules/core-js/internals/to-integer.js",
+			},
+		],
+		"node_modules/core-js/internals/to-offset.js": [
+			function(require, module, exports) {
+				var toPositiveInteger = require("../internals/to-positive-integer");
+
+				module.exports = function(it, BYTES) {
+					var offset = toPositiveInteger(it);
+					if (offset % BYTES) throw RangeError("Wrong offset");
+					return offset;
+				};
+			},
+			{
+				"../internals/to-positive-integer":
+					"node_modules/core-js/internals/to-positive-integer.js",
 			},
 		],
 		"node_modules/core-js/internals/typed-array-from.js": [
@@ -12141,14 +12903,15 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var mapfn = argumentsLength > 1 ? arguments[1] : undefined;
 					var mapping = mapfn !== undefined;
 					var iteratorMethod = getIteratorMethod(O);
-					var i, length, result, step, iterator;
+					var i, length, result, step, iterator, next;
 					if (
 						iteratorMethod != undefined &&
 						!isArrayIteratorMethod(iteratorMethod)
 					) {
 						iterator = iteratorMethod.call(O);
+						next = iterator.next;
 						O = [];
-						while (!(step = iterator.next()).done) {
+						while (!(step = next.call(iterator)).done) {
 							O.push(step.value);
 						}
 					}
@@ -12187,7 +12950,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var ArrayBufferModule = require("../internals/array-buffer");
 				var anInstance = require("../internals/an-instance");
 				var createPropertyDescriptor = require("../internals/create-property-descriptor");
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 				var toLength = require("../internals/to-length");
 				var toIndex = require("../internals/to-index");
 				var toOffset = require("../internals/to-offset");
@@ -12205,6 +12968,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var definePropertyModule = require("../internals/object-define-property");
 				var getOwnPropertyDescriptorModule = require("../internals/object-get-own-property-descriptor");
 				var InternalStateModule = require("../internals/internal-state");
+				var inheritIfRequired = require("../internals/inherit-if-required");
 
 				var getInternalState = InternalStateModule.get;
 				var setInternalState = InternalStateModule.set;
@@ -12311,8 +13075,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						}
 					);
 
-					// eslint-disable-next-line max-statements
-					module.exports = function(TYPE, BYTES, wrapper, CLAMPED) {
+					module.exports = function(TYPE, wrapper, CLAMPED) {
+						var BYTES = TYPE.match(/\d+$/)[0] / 8;
 						var CONSTRUCTOR_NAME = TYPE + (CLAMPED ? "Clamped" : "") + "Array";
 						var GETTER = "get" + TYPE;
 						var SETTER = "set" + TYPE;
@@ -12408,24 +13172,30 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 								$length
 							) {
 								anInstance(dummy, TypedArrayConstructor, CONSTRUCTOR_NAME);
-								if (!isObject(data))
-									return new NativeTypedArrayConstructor(toIndex(data));
-								if (isArrayBuffer(data))
-									return $length !== undefined
-										? new NativeTypedArrayConstructor(
-												data,
-												toOffset(typedArrayOffset, BYTES),
-												$length
-										  )
-										: typedArrayOffset !== undefined
-										? new NativeTypedArrayConstructor(
-												data,
-												toOffset(typedArrayOffset, BYTES)
-										  )
-										: new NativeTypedArrayConstructor(data);
-								if (isTypedArray(data))
-									return fromList(TypedArrayConstructor, data);
-								return typedArrayFrom.call(TypedArrayConstructor, data);
+								return inheritIfRequired(
+									(function() {
+										if (!isObject(data))
+											return new NativeTypedArrayConstructor(toIndex(data));
+										if (isArrayBuffer(data))
+											return $length !== undefined
+												? new NativeTypedArrayConstructor(
+														data,
+														toOffset(typedArrayOffset, BYTES),
+														$length
+												  )
+												: typedArrayOffset !== undefined
+												? new NativeTypedArrayConstructor(
+														data,
+														toOffset(typedArrayOffset, BYTES)
+												  )
+												: new NativeTypedArrayConstructor(data);
+										if (isTypedArray(data))
+											return fromList(TypedArrayConstructor, data);
+										return typedArrayFrom.call(TypedArrayConstructor, data);
+									})(),
+									dummy,
+									TypedArrayConstructor
+								);
 							});
 
 							if (setPrototypeOf)
@@ -12433,12 +13203,13 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							forEach(
 								getOwnPropertyNames(NativeTypedArrayConstructor),
 								function(key) {
-									if (!(key in TypedArrayConstructor))
-										hide(
+									if (!(key in TypedArrayConstructor)) {
+										createNonEnumerableProperty(
 											TypedArrayConstructor,
 											key,
 											NativeTypedArrayConstructor[key]
 										);
+									}
 								}
 							);
 							TypedArrayConstructor.prototype = TypedArrayConstructorPrototype;
@@ -12448,19 +13219,20 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							TypedArrayConstructorPrototype.constructor !==
 							TypedArrayConstructor
 						) {
-							hide(
+							createNonEnumerableProperty(
 								TypedArrayConstructorPrototype,
 								"constructor",
 								TypedArrayConstructor
 							);
 						}
 
-						if (TYPED_ARRAY_TAG)
-							hide(
+						if (TYPED_ARRAY_TAG) {
+							createNonEnumerableProperty(
 								TypedArrayConstructorPrototype,
 								TYPED_ARRAY_TAG,
 								CONSTRUCTOR_NAME
 							);
+						}
 
 						exported[CONSTRUCTOR_NAME] = TypedArrayConstructor;
 
@@ -12474,11 +13246,19 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						);
 
 						if (!(BYTES_PER_ELEMENT in TypedArrayConstructor)) {
-							hide(TypedArrayConstructor, BYTES_PER_ELEMENT, BYTES);
+							createNonEnumerableProperty(
+								TypedArrayConstructor,
+								BYTES_PER_ELEMENT,
+								BYTES
+							);
 						}
 
 						if (!(BYTES_PER_ELEMENT in TypedArrayConstructorPrototype)) {
-							hide(TypedArrayConstructorPrototype, BYTES_PER_ELEMENT, BYTES);
+							createNonEnumerableProperty(
+								TypedArrayConstructorPrototype,
+								BYTES_PER_ELEMENT,
+								BYTES
+							);
 						}
 
 						setSpecies(CONSTRUCTOR_NAME);
@@ -12503,7 +13283,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/an-instance.js",
 				"../internals/create-property-descriptor":
 					"node_modules/core-js/internals/create-property-descriptor.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/to-length": "node_modules/core-js/internals/to-length.js",
 				"../internals/to-index": "node_modules/core-js/internals/to-index.js",
 				"../internals/to-offset": "node_modules/core-js/internals/to-offset.js",
@@ -12530,15 +13311,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/object-get-own-property-descriptor.js",
 				"../internals/internal-state":
 					"node_modules/core-js/internals/internal-state.js",
+				"../internals/inherit-if-required":
+					"node_modules/core-js/internals/inherit-if-required.js",
 			},
 		],
 		"node_modules/core-js/modules/es.typed-array.int8-array.js": [
 			function(require, module, exports) {
-				var typedArrayConstructor = require("../internals/typed-array-constructor");
+				var createTypedArrayConstructor = require("../internals/typed-array-constructor");
 
 				// `Int8Array` constructor
 				// https://tc39.github.io/ecma262/#sec-typedarray-objects
-				typedArrayConstructor("Int8", 1, function(init) {
+				createTypedArrayConstructor("Int8", function(init) {
 					return function Int8Array(data, byteOffset, length) {
 						return init(this, data, byteOffset, length);
 					};
@@ -12551,11 +13334,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		],
 		"node_modules/core-js/modules/es.typed-array.uint8-array.js": [
 			function(require, module, exports) {
-				var typedArrayConstructor = require("../internals/typed-array-constructor");
+				var createTypedArrayConstructor = require("../internals/typed-array-constructor");
 
 				// `Uint8Array` constructor
 				// https://tc39.github.io/ecma262/#sec-typedarray-objects
-				typedArrayConstructor("Uint8", 1, function(init) {
+				createTypedArrayConstructor("Uint8", function(init) {
 					return function Uint8Array(data, byteOffset, length) {
 						return init(this, data, byteOffset, length);
 					};
@@ -12568,13 +13351,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		],
 		"node_modules/core-js/modules/es.typed-array.uint8-clamped-array.js": [
 			function(require, module, exports) {
-				var typedArrayConstructor = require("../internals/typed-array-constructor");
+				var createTypedArrayConstructor = require("../internals/typed-array-constructor");
 
 				// `Uint8ClampedArray` constructor
 				// https://tc39.github.io/ecma262/#sec-typedarray-objects
-				typedArrayConstructor(
+				createTypedArrayConstructor(
 					"Uint8",
-					1,
 					function(init) {
 						return function Uint8ClampedArray(data, byteOffset, length) {
 							return init(this, data, byteOffset, length);
@@ -12590,11 +13372,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		],
 		"node_modules/core-js/modules/es.typed-array.int16-array.js": [
 			function(require, module, exports) {
-				var typedArrayConstructor = require("../internals/typed-array-constructor");
+				var createTypedArrayConstructor = require("../internals/typed-array-constructor");
 
 				// `Int16Array` constructor
 				// https://tc39.github.io/ecma262/#sec-typedarray-objects
-				typedArrayConstructor("Int16", 2, function(init) {
+				createTypedArrayConstructor("Int16", function(init) {
 					return function Int16Array(data, byteOffset, length) {
 						return init(this, data, byteOffset, length);
 					};
@@ -12607,11 +13389,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		],
 		"node_modules/core-js/modules/es.typed-array.uint16-array.js": [
 			function(require, module, exports) {
-				var typedArrayConstructor = require("../internals/typed-array-constructor");
+				var createTypedArrayConstructor = require("../internals/typed-array-constructor");
 
 				// `Uint16Array` constructor
 				// https://tc39.github.io/ecma262/#sec-typedarray-objects
-				typedArrayConstructor("Uint16", 2, function(init) {
+				createTypedArrayConstructor("Uint16", function(init) {
 					return function Uint16Array(data, byteOffset, length) {
 						return init(this, data, byteOffset, length);
 					};
@@ -12624,11 +13406,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		],
 		"node_modules/core-js/modules/es.typed-array.int32-array.js": [
 			function(require, module, exports) {
-				var typedArrayConstructor = require("../internals/typed-array-constructor");
+				var createTypedArrayConstructor = require("../internals/typed-array-constructor");
 
 				// `Int32Array` constructor
 				// https://tc39.github.io/ecma262/#sec-typedarray-objects
-				typedArrayConstructor("Int32", 4, function(init) {
+				createTypedArrayConstructor("Int32", function(init) {
 					return function Int32Array(data, byteOffset, length) {
 						return init(this, data, byteOffset, length);
 					};
@@ -12641,11 +13423,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		],
 		"node_modules/core-js/modules/es.typed-array.uint32-array.js": [
 			function(require, module, exports) {
-				var typedArrayConstructor = require("../internals/typed-array-constructor");
+				var createTypedArrayConstructor = require("../internals/typed-array-constructor");
 
 				// `Uint32Array` constructor
 				// https://tc39.github.io/ecma262/#sec-typedarray-objects
-				typedArrayConstructor("Uint32", 4, function(init) {
+				createTypedArrayConstructor("Uint32", function(init) {
 					return function Uint32Array(data, byteOffset, length) {
 						return init(this, data, byteOffset, length);
 					};
@@ -12658,11 +13440,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		],
 		"node_modules/core-js/modules/es.typed-array.float32-array.js": [
 			function(require, module, exports) {
-				var typedArrayConstructor = require("../internals/typed-array-constructor");
+				var createTypedArrayConstructor = require("../internals/typed-array-constructor");
 
 				// `Float32Array` constructor
 				// https://tc39.github.io/ecma262/#sec-typedarray-objects
-				typedArrayConstructor("Float32", 4, function(init) {
+				createTypedArrayConstructor("Float32", function(init) {
 					return function Float32Array(data, byteOffset, length) {
 						return init(this, data, byteOffset, length);
 					};
@@ -12675,11 +13457,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		],
 		"node_modules/core-js/modules/es.typed-array.float64-array.js": [
 			function(require, module, exports) {
-				var typedArrayConstructor = require("../internals/typed-array-constructor");
+				var createTypedArrayConstructor = require("../internals/typed-array-constructor");
 
 				// `Float64Array` constructor
 				// https://tc39.github.io/ecma262/#sec-typedarray-objects
-				typedArrayConstructor("Float64", 8, function(init) {
+				createTypedArrayConstructor("Float64", function(init) {
 					return function Float64Array(data, byteOffset, length) {
 						return init(this, data, byteOffset, length);
 					};
@@ -12694,12 +13476,13 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			function(require, module, exports) {
 				"use strict";
 				var TYPED_ARRAYS_CONSTRUCTORS_REQUIRES_WRAPPERS = require("../internals/typed-arrays-constructors-requires-wrappers");
-				var ArrayBufferViewCore = require("../internals/array-buffer-view-core");
+				var exportTypedArrayStaticMethod = require("../internals/array-buffer-view-core")
+					.exportTypedArrayStaticMethod;
 				var typedArrayFrom = require("../internals/typed-array-from");
 
 				// `%TypedArray%.from` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.from
-				ArrayBufferViewCore.exportStatic(
+				exportTypedArrayStaticMethod(
 					"from",
 					typedArrayFrom,
 					TYPED_ARRAYS_CONSTRUCTORS_REQUIRES_WRAPPERS
@@ -12721,10 +13504,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var TYPED_ARRAYS_CONSTRUCTORS_REQUIRES_WRAPPERS = require("../internals/typed-arrays-constructors-requires-wrappers");
 
 				var aTypedArrayConstructor = ArrayBufferViewCore.aTypedArrayConstructor;
+				var exportTypedArrayStaticMethod =
+					ArrayBufferViewCore.exportTypedArrayStaticMethod;
 
 				// `%TypedArray%.of` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.of
-				ArrayBufferViewCore.exportStatic(
+				exportTypedArrayStaticMethod(
 					"of",
 					function of(/* ...items */) {
 						var index = 0;
@@ -12750,10 +13535,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $copyWithin = require("../internals/array-copy-within");
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.copyWithin` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.copywithin
-				ArrayBufferViewCore.exportProto("copyWithin", function copyWithin(
+				exportTypedArrayMethod("copyWithin", function copyWithin(
 					target,
 					start /* , end */
 				) {
@@ -12779,10 +13565,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $every = require("../internals/array-iteration").every;
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.every` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.every
-				ArrayBufferViewCore.exportProto("every", function every(
+				exportTypedArrayMethod("every", function every(
 					callbackfn /* , thisArg */
 				) {
 					return $every(
@@ -12806,13 +13593,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $fill = require("../internals/array-fill");
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.fill` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.fill
 				// eslint-disable-next-line no-unused-vars
-				ArrayBufferViewCore.exportProto("fill", function fill(
-					value /* , start, end */
-				) {
+				exportTypedArrayMethod("fill", function fill(value /* , start, end */) {
 					return $fill.apply(aTypedArray(this), arguments);
 				});
 			},
@@ -12832,10 +13618,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
 				var aTypedArrayConstructor = ArrayBufferViewCore.aTypedArrayConstructor;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.filter` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.filter
-				ArrayBufferViewCore.exportProto("filter", function filter(
+				exportTypedArrayMethod("filter", function filter(
 					callbackfn /* , thisArg */
 				) {
 					var list = $filter(
@@ -12867,10 +13654,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $find = require("../internals/array-iteration").find;
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.find` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.find
-				ArrayBufferViewCore.exportProto("find", function find(
+				exportTypedArrayMethod("find", function find(
 					predicate /* , thisArg */
 				) {
 					return $find(
@@ -12894,10 +13682,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $findIndex = require("../internals/array-iteration").findIndex;
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.findIndex` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.findindex
-				ArrayBufferViewCore.exportProto("findIndex", function findIndex(
+				exportTypedArrayMethod("findIndex", function findIndex(
 					predicate /* , thisArg */
 				) {
 					return $findIndex(
@@ -12921,10 +13710,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $forEach = require("../internals/array-iteration").forEach;
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.forEach` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.foreach
-				ArrayBufferViewCore.exportProto("forEach", function forEach(
+				exportTypedArrayMethod("forEach", function forEach(
 					callbackfn /* , thisArg */
 				) {
 					$forEach(
@@ -12948,10 +13738,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $includes = require("../internals/array-includes").includes;
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.includes` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.includes
-				ArrayBufferViewCore.exportProto("includes", function includes(
+				exportTypedArrayMethod("includes", function includes(
 					searchElement /* , fromIndex */
 				) {
 					return $includes(
@@ -12975,10 +13766,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $indexOf = require("../internals/array-includes").indexOf;
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.indexOf` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.indexof
-				ArrayBufferViewCore.exportProto("indexOf", function indexOf(
+				exportTypedArrayMethod("indexOf", function indexOf(
 					searchElement /* , fromIndex */
 				) {
 					return $indexOf(
@@ -13009,7 +13801,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var arrayKeys = ArrayIterators.keys;
 				var arrayEntries = ArrayIterators.entries;
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
-				var exportProto = ArrayBufferViewCore.exportProto;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 				var nativeTypedArrayIterator =
 					Uint8Array && Uint8Array.prototype[ITERATOR];
 
@@ -13024,20 +13816,20 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				// `%TypedArray%.prototype.entries` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.entries
-				exportProto("entries", function entries() {
+				exportTypedArrayMethod("entries", function entries() {
 					return arrayEntries.call(aTypedArray(this));
 				});
 				// `%TypedArray%.prototype.keys` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.keys
-				exportProto("keys", function keys() {
+				exportTypedArrayMethod("keys", function keys() {
 					return arrayKeys.call(aTypedArray(this));
 				});
 				// `%TypedArray%.prototype.values` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.values
-				exportProto("values", typedArrayValues, !CORRECT_ITER_NAME);
+				exportTypedArrayMethod("values", typedArrayValues, !CORRECT_ITER_NAME);
 				// `%TypedArray%.prototype[@@iterator]` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype-@@iterator
-				exportProto(ITERATOR, typedArrayValues, !CORRECT_ITER_NAME);
+				exportTypedArrayMethod(ITERATOR, typedArrayValues, !CORRECT_ITER_NAME);
 			},
 			{
 				"../internals/global": "node_modules/core-js/internals/global.js",
@@ -13055,12 +13847,13 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var ArrayBufferViewCore = require("../internals/array-buffer-view-core");
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 				var $join = [].join;
 
 				// `%TypedArray%.prototype.join` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.join
 				// eslint-disable-next-line no-unused-vars
-				ArrayBufferViewCore.exportProto("join", function join(separator) {
+				exportTypedArrayMethod("join", function join(separator) {
 					return $join.apply(aTypedArray(this), arguments);
 				});
 			},
@@ -13076,11 +13869,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $lastIndexOf = require("../internals/array-last-index-of");
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.lastIndexOf` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.lastindexof
 				// eslint-disable-next-line no-unused-vars
-				ArrayBufferViewCore.exportProto("lastIndexOf", function lastIndexOf(
+				exportTypedArrayMethod("lastIndexOf", function lastIndexOf(
 					searchElement /* , fromIndex */
 				) {
 					return $lastIndexOf.apply(aTypedArray(this), arguments);
@@ -13102,12 +13896,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
 				var aTypedArrayConstructor = ArrayBufferViewCore.aTypedArrayConstructor;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.map` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.map
-				ArrayBufferViewCore.exportProto("map", function map(
-					mapfn /* , thisArg */
-				) {
+				exportTypedArrayMethod("map", function map(mapfn /* , thisArg */) {
 					return $map(
 						aTypedArray(this),
 						mapfn,
@@ -13136,10 +13929,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $reduce = require("../internals/array-reduce").left;
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.reduce` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.reduce
-				ArrayBufferViewCore.exportProto("reduce", function reduce(
+				exportTypedArrayMethod("reduce", function reduce(
 					callbackfn /* , initialValue */
 				) {
 					return $reduce(
@@ -13164,10 +13958,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $reduceRight = require("../internals/array-reduce").right;
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.reduceRicht` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.reduceright
-				ArrayBufferViewCore.exportProto("reduceRight", function reduceRight(
+				exportTypedArrayMethod("reduceRight", function reduceRight(
 					callbackfn /* , initialValue */
 				) {
 					return $reduceRight(
@@ -13191,11 +13986,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var ArrayBufferViewCore = require("../internals/array-buffer-view-core");
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 				var floor = Math.floor;
 
 				// `%TypedArray%.prototype.reverse` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.reverse
-				ArrayBufferViewCore.exportProto("reverse", function reverse() {
+				exportTypedArrayMethod("reverse", function reverse() {
 					var that = this;
 					var length = aTypedArray(that).length;
 					var middle = floor(length / 2);
@@ -13224,6 +14020,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var fails = require("../internals/fails");
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				var FORCED = fails(function() {
 					// eslint-disable-next-line no-undef
@@ -13232,7 +14029,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				// `%TypedArray%.prototype.set` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.set
-				ArrayBufferViewCore.exportProto(
+				exportTypedArrayMethod(
 					"set",
 					function set(arrayLike /* , offset */) {
 						aTypedArray(this);
@@ -13268,6 +14065,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
 				var aTypedArrayConstructor = ArrayBufferViewCore.aTypedArrayConstructor;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 				var $slice = [].slice;
 
 				var FORCED = fails(function() {
@@ -13277,7 +14075,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				// `%TypedArray%.prototype.slice` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.slice
-				ArrayBufferViewCore.exportProto(
+				exportTypedArrayMethod(
 					"slice",
 					function slice(start, end) {
 						var list = $slice.call(aTypedArray(this), start, end);
@@ -13306,10 +14104,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var $some = require("../internals/array-iteration").some;
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.some` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.some
-				ArrayBufferViewCore.exportProto("some", function some(
+				exportTypedArrayMethod("some", function some(
 					callbackfn /* , thisArg */
 				) {
 					return $some(
@@ -13332,11 +14131,12 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var ArrayBufferViewCore = require("../internals/array-buffer-view-core");
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 				var $sort = [].sort;
 
 				// `%TypedArray%.prototype.sort` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.sort
-				ArrayBufferViewCore.exportProto("sort", function sort(comparefn) {
+				exportTypedArrayMethod("sort", function sort(comparefn) {
 					return $sort.call(aTypedArray(this), comparefn);
 				});
 			},
@@ -13354,24 +14154,18 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var speciesConstructor = require("../internals/species-constructor");
 
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 
 				// `%TypedArray%.prototype.subarray` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.subarray
-				ArrayBufferViewCore.exportProto("subarray", function subarray(
-					begin,
-					end
-				) {
+				exportTypedArrayMethod("subarray", function subarray(begin, end) {
 					var O = aTypedArray(this);
 					var length = O.length;
 					var beginIndex = toAbsoluteIndex(begin, length);
-					return new (speciesConstructor(O, O.constructor))(
-						O.buffer,
-						O.byteOffset + beginIndex * O.BYTES_PER_ELEMENT,
-						toLength(
-							(end === undefined ? length : toAbsoluteIndex(end, length)) -
-								beginIndex
-						)
-					);
+					return new (speciesConstructor(
+						O,
+						O.constructor
+					))(O.buffer, O.byteOffset + beginIndex * O.BYTES_PER_ELEMENT, toLength((end === undefined ? length : toAbsoluteIndex(end, length)) - beginIndex));
 				});
 			},
 			{
@@ -13393,6 +14187,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				var Int8Array = global.Int8Array;
 				var aTypedArray = ArrayBufferViewCore.aTypedArray;
+				var exportTypedArrayMethod = ArrayBufferViewCore.exportTypedArrayMethod;
 				var $toLocaleString = [].toLocaleString;
 				var $slice = [].slice;
 
@@ -13415,7 +14210,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				// `%TypedArray%.prototype.toLocaleString` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.tolocalestring
-				ArrayBufferViewCore.exportProto(
+				exportTypedArrayMethod(
 					"toLocaleString",
 					function toLocaleString() {
 						return $toLocaleString.apply(
@@ -13438,12 +14233,13 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 		"node_modules/core-js/modules/es.typed-array.to-string.js": [
 			function(require, module, exports) {
 				"use strict";
-				var global = require("../internals/global");
-				var ArrayBufferViewCore = require("../internals/array-buffer-view-core");
+				var exportTypedArrayMethod = require("../internals/array-buffer-view-core")
+					.exportTypedArrayMethod;
 				var fails = require("../internals/fails");
+				var global = require("../internals/global");
 
 				var Uint8Array = global.Uint8Array;
-				var Uint8ArrayPrototype = Uint8Array && Uint8Array.prototype;
+				var Uint8ArrayPrototype = (Uint8Array && Uint8Array.prototype) || {};
 				var arrayToString = [].toString;
 				var arrayJoin = [].join;
 
@@ -13457,19 +14253,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					};
 				}
 
+				var IS_NOT_ARRAY_METHOD = Uint8ArrayPrototype.toString != arrayToString;
+
 				// `%TypedArray%.prototype.toString` method
 				// https://tc39.github.io/ecma262/#sec-%typedarray%.prototype.tostring
-				ArrayBufferViewCore.exportProto(
-					"toString",
-					arrayToString,
-					(Uint8ArrayPrototype || {}).toString != arrayToString
-				);
+				exportTypedArrayMethod("toString", arrayToString, IS_NOT_ARRAY_METHOD);
 			},
 			{
-				"../internals/global": "node_modules/core-js/internals/global.js",
 				"../internals/array-buffer-view-core":
 					"node_modules/core-js/internals/array-buffer-view-core.js",
 				"../internals/fails": "node_modules/core-js/internals/fails.js",
+				"../internals/global": "node_modules/core-js/internals/global.js",
 			},
 		],
 		"node_modules/core-js/modules/es.reflect.apply.js": [
@@ -13903,6 +14697,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var anObject = require("../internals/an-object");
 				var isObject = require("../internals/is-object");
 				var has = require("../internals/has");
+				var fails = require("../internals/fails");
 				var definePropertyModule = require("../internals/object-define-property");
 				var getOwnPropertyDescriptorModule = require("../internals/object-get-own-property-descriptor");
 				var getPrototypeOf = require("../internals/object-get-prototype-of");
@@ -13953,8 +14748,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						: (ownDescriptor.set.call(receiver, V), true);
 				}
 
+				// MS Edge 17-18 Reflect.set allows setting the property to object
+				// with non-writable property on the prototype
+				var MS_EDGE_BUG = fails(function() {
+					var object = definePropertyModule.f({}, "a", { configurable: true });
+					// eslint-disable-next-line no-undef
+					return Reflect.set(getPrototypeOf(object), "a", 1, object) !== false;
+				});
+
 				$(
-					{ target: "Reflect", stat: true },
+					{ target: "Reflect", stat: true, forced: MS_EDGE_BUG },
 					{
 						set: set,
 					}
@@ -13965,6 +14768,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/an-object": "node_modules/core-js/internals/an-object.js",
 				"../internals/is-object": "node_modules/core-js/internals/is-object.js",
 				"../internals/has": "node_modules/core-js/internals/has.js",
+				"../internals/fails": "node_modules/core-js/internals/fails.js",
 				"../internals/object-define-property":
 					"node_modules/core-js/internals/object-define-property.js",
 				"../internals/object-get-own-property-descriptor":
@@ -14055,6 +14859,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				require("../modules/es.function.bind");
 				require("../modules/es.function.name");
 				require("../modules/es.function.has-instance");
+				require("../modules/es.global-this");
 				require("../modules/es.array.from");
 				require("../modules/es.array.is-array");
 				require("../modules/es.array.of");
@@ -14118,6 +14923,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				require("../modules/es.regexp.constructor");
 				require("../modules/es.regexp.exec");
 				require("../modules/es.regexp.flags");
+				require("../modules/es.regexp.sticky");
+				require("../modules/es.regexp.test");
 				require("../modules/es.regexp.to-string");
 				require("../modules/es.parse-int");
 				require("../modules/es.parse-float");
@@ -14156,8 +14963,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				require("../modules/es.date.to-iso-string");
 				require("../modules/es.date.to-string");
 				require("../modules/es.date.to-primitive");
+				require("../modules/es.json.stringify");
 				require("../modules/es.json.to-string-tag");
 				require("../modules/es.promise");
+				require("../modules/es.promise.all-settled");
 				require("../modules/es.promise.finally");
 				require("../modules/es.map");
 				require("../modules/es.set");
@@ -14214,8 +15023,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				require("../modules/es.reflect.prevent-extensions");
 				require("../modules/es.reflect.set");
 				require("../modules/es.reflect.set-prototype-of");
+				var path = require("../internals/path");
 
-				module.exports = require("../internals/path");
+				module.exports = path;
 			},
 			{
 				"../modules/es.symbol": "node_modules/core-js/modules/es.symbol.js",
@@ -14303,6 +15113,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/modules/es.function.name.js",
 				"../modules/es.function.has-instance":
 					"node_modules/core-js/modules/es.function.has-instance.js",
+				"../modules/es.global-this":
+					"node_modules/core-js/modules/es.global-this.js",
 				"../modules/es.array.from":
 					"node_modules/core-js/modules/es.array.from.js",
 				"../modules/es.array.is-array":
@@ -14428,6 +15240,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/modules/es.regexp.exec.js",
 				"../modules/es.regexp.flags":
 					"node_modules/core-js/modules/es.regexp.flags.js",
+				"../modules/es.regexp.sticky":
+					"node_modules/core-js/modules/es.regexp.sticky.js",
+				"../modules/es.regexp.test":
+					"node_modules/core-js/modules/es.regexp.test.js",
 				"../modules/es.regexp.to-string":
 					"node_modules/core-js/modules/es.regexp.to-string.js",
 				"../modules/es.parse-int":
@@ -14503,9 +15319,13 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/modules/es.date.to-string.js",
 				"../modules/es.date.to-primitive":
 					"node_modules/core-js/modules/es.date.to-primitive.js",
+				"../modules/es.json.stringify":
+					"node_modules/core-js/modules/es.json.stringify.js",
 				"../modules/es.json.to-string-tag":
 					"node_modules/core-js/modules/es.json.to-string-tag.js",
 				"../modules/es.promise": "node_modules/core-js/modules/es.promise.js",
+				"../modules/es.promise.all-settled":
+					"node_modules/core-js/modules/es.promise.all-settled.js",
 				"../modules/es.promise.finally":
 					"node_modules/core-js/modules/es.promise.finally.js",
 				"../modules/es.map": "node_modules/core-js/modules/es.map.js",
@@ -14662,7 +15482,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var global = require("../internals/global");
 				var DOMIterables = require("../internals/dom-iterables");
 				var forEach = require("../internals/array-for-each");
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 
 				for (var COLLECTION_NAME in DOMIterables) {
 					var Collection = global[COLLECTION_NAME];
@@ -14670,7 +15490,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					// some Chrome versions have non-configurable methods on DOMTokenList
 					if (CollectionPrototype && CollectionPrototype.forEach !== forEach)
 						try {
-							hide(CollectionPrototype, "forEach", forEach);
+							createNonEnumerableProperty(
+								CollectionPrototype,
+								"forEach",
+								forEach
+							);
 						} catch (error) {
 							CollectionPrototype.forEach = forEach;
 						}
@@ -14682,7 +15506,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/dom-iterables.js",
 				"../internals/array-for-each":
 					"node_modules/core-js/internals/array-for-each.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 			},
 		],
 		"node_modules/core-js/modules/web.dom-collections.iterator.js": [
@@ -14690,7 +15515,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var global = require("../internals/global");
 				var DOMIterables = require("../internals/dom-iterables");
 				var ArrayIteratorMethods = require("../modules/es.array.iterator");
-				var hide = require("../internals/hide");
+				var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
 
 				var ITERATOR = wellKnownSymbol("iterator");
@@ -14704,12 +15529,21 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						// some Chrome versions have non-configurable methods on DOMTokenList
 						if (CollectionPrototype[ITERATOR] !== ArrayValues)
 							try {
-								hide(CollectionPrototype, ITERATOR, ArrayValues);
+								createNonEnumerableProperty(
+									CollectionPrototype,
+									ITERATOR,
+									ArrayValues
+								);
 							} catch (error) {
 								CollectionPrototype[ITERATOR] = ArrayValues;
 							}
-						if (!CollectionPrototype[TO_STRING_TAG])
-							hide(CollectionPrototype, TO_STRING_TAG, COLLECTION_NAME);
+						if (!CollectionPrototype[TO_STRING_TAG]) {
+							createNonEnumerableProperty(
+								CollectionPrototype,
+								TO_STRING_TAG,
+								COLLECTION_NAME
+							);
+						}
 						if (DOMIterables[COLLECTION_NAME])
 							for (var METHOD_NAME in ArrayIteratorMethods) {
 								// some Chrome versions have non-configurable methods on DOMTokenList
@@ -14718,7 +15552,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 									ArrayIteratorMethods[METHOD_NAME]
 								)
 									try {
-										hide(
+										createNonEnumerableProperty(
 											CollectionPrototype,
 											METHOD_NAME,
 											ArrayIteratorMethods[METHOD_NAME]
@@ -14737,20 +15571,22 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/core-js/internals/dom-iterables.js",
 				"../modules/es.array.iterator":
 					"node_modules/core-js/modules/es.array.iterator.js",
-				"../internals/hide": "node_modules/core-js/internals/hide.js",
+				"../internals/create-non-enumerable-property":
+					"node_modules/core-js/internals/create-non-enumerable-property.js",
 				"../internals/well-known-symbol":
 					"node_modules/core-js/internals/well-known-symbol.js",
 			},
 		],
 		"node_modules/core-js/modules/web.immediate.js": [
 			function(require, module, exports) {
+				var $ = require("../internals/export");
 				var global = require("../internals/global");
 				var task = require("../internals/task");
 
 				var FORCED = !global.setImmediate || !global.clearImmediate;
 
 				// http://w3c.github.io/setImmediate/
-				require("../internals/export")(
+				$(
 					{ global: true, bind: true, enumerable: true, forced: FORCED },
 					{
 						// `setImmediate` method
@@ -14763,9 +15599,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				);
 			},
 			{
+				"../internals/export": "node_modules/core-js/internals/export.js",
 				"../internals/global": "node_modules/core-js/internals/global.js",
 				"../internals/task": "node_modules/core-js/internals/task.js",
-				"../internals/export": "node_modules/core-js/internals/export.js",
 			},
 		],
 		"node_modules/core-js/modules/web.queue-microtask.js": [
@@ -14856,14 +15692,19 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var ITERATOR = wellKnownSymbol("iterator");
 
 				module.exports = !fails(function() {
-					var url = new URL("b?e=1", "http://a");
+					var url = new URL("b?a=1&b=2&c=3", "http://a");
 					var searchParams = url.searchParams;
+					var result = "";
 					url.pathname = "c%20d";
+					searchParams.forEach(function(value, key) {
+						searchParams["delete"]("b");
+						result += key + value;
+					});
 					return (
 						(IS_PURE && !url.toJSON) ||
 						!searchParams.sort ||
-						url.href !== "http://a/c%20d?e=1" ||
-						searchParams.get("e") !== "1" ||
+						url.href !== "http://a/c%20d?a=1&c=3" ||
+						searchParams.get("c") !== "3" ||
 						String(new URLSearchParams("?a=1")) !== "a=1" ||
 						!searchParams[ITERATOR] ||
 						// throws in Edge
@@ -14872,7 +15713,11 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						// not punycoded in Edge
 						new URL("http://тест").host !== "xn--e1aybc" ||
 						// not escaped in Chrome 62-
-						new URL("http://a#б").hash !== "#%D0%B1"
+						new URL("http://a#б").hash !== "#%D0%B1" ||
+						// fails in Chrome 66-
+						result !== "a1c3" ||
+						// throws in Safari
+						new URL("http://x", undefined).host !== "x"
 					);
 				});
 			},
@@ -15095,6 +15940,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				// TODO: in core-js@4, move /modules/ dependencies to public entries for better optimization by tools like `preset-env`
 				require("../modules/es.array.iterator");
 				var $ = require("../internals/export");
+				var getBuiltIn = require("../internals/get-built-in");
 				var USE_NATIVE_URL = require("../internals/native-url");
 				var redefine = require("../internals/redefine");
 				var redefineAll = require("../internals/redefine-all");
@@ -15104,12 +15950,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var anInstance = require("../internals/an-instance");
 				var hasOwn = require("../internals/has");
 				var bind = require("../internals/bind-context");
+				var classof = require("../internals/classof");
 				var anObject = require("../internals/an-object");
 				var isObject = require("../internals/is-object");
+				var create = require("../internals/object-create");
+				var createPropertyDescriptor = require("../internals/create-property-descriptor");
 				var getIterator = require("../internals/get-iterator");
 				var getIteratorMethod = require("../internals/get-iterator-method");
 				var wellKnownSymbol = require("../internals/well-known-symbol");
 
+				var $fetch = getBuiltIn("fetch");
+				var Headers = getBuiltIn("Headers");
 				var ITERATOR = wellKnownSymbol("iterator");
 				var URL_SEARCH_PARAMS = "URLSearchParams";
 				var URL_SEARCH_PARAMS_ITERATOR = URL_SEARCH_PARAMS + "Iterator";
@@ -15234,7 +16085,15 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var init = arguments.length > 0 ? arguments[0] : undefined;
 					var that = this;
 					var entries = [];
-					var iteratorMethod, iterator, step, entryIterator, first, second, key;
+					var iteratorMethod,
+						iterator,
+						next,
+						step,
+						entryIterator,
+						entryNext,
+						first,
+						second,
+						key;
 
 					setInternalState(that, {
 						type: URL_SEARCH_PARAMS,
@@ -15250,12 +16109,14 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 							iteratorMethod = getIteratorMethod(init);
 							if (typeof iteratorMethod === "function") {
 								iterator = iteratorMethod.call(init);
-								while (!(step = iterator.next()).done) {
+								next = iterator.next;
+								while (!(step = next.call(iterator)).done) {
 									entryIterator = getIterator(anObject(step.value));
+									entryNext = entryIterator.next;
 									if (
-										(first = entryIterator.next()).done ||
-										(second = entryIterator.next()).done ||
-										!entryIterator.next().done
+										(first = entryNext.call(entryIterator)).done ||
+										(second = entryNext.call(entryIterator)).done ||
+										!entryNext.call(entryIterator).done
 									)
 										throw TypeError("Expected sequence with length 2");
 									entries.push({
@@ -15460,6 +16321,47 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					}
 				);
 
+				// Wrap `fetch` for correct work with polyfilled `URLSearchParams`
+				// https://github.com/zloirock/core-js/issues/674
+				if (
+					!USE_NATIVE_URL &&
+					typeof $fetch == "function" &&
+					typeof Headers == "function"
+				) {
+					$(
+						{ global: true, enumerable: true, forced: true },
+						{
+							fetch: function fetch(input /* , init */) {
+								var args = [input];
+								var init, body, headers;
+								if (arguments.length > 1) {
+									init = arguments[1];
+									if (isObject(init)) {
+										body = init.body;
+										if (classof(body) === URL_SEARCH_PARAMS) {
+											headers = init.headers
+												? new Headers(init.headers)
+												: new Headers();
+											if (!headers.has("content-type")) {
+												headers.set(
+													"content-type",
+													"application/x-www-form-urlencoded;charset=UTF-8"
+												);
+											}
+											init = create(init, {
+												body: createPropertyDescriptor(0, String(body)),
+												headers: createPropertyDescriptor(0, headers),
+											});
+										}
+									}
+									args.push(init);
+								}
+								return $fetch.apply(this, args);
+							},
+						}
+					);
+				}
+
 				module.exports = {
 					URLSearchParams: URLSearchParamsConstructor,
 					getState: getInternalParamsState,
@@ -15469,6 +16371,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../modules/es.array.iterator":
 					"node_modules/core-js/modules/es.array.iterator.js",
 				"../internals/export": "node_modules/core-js/internals/export.js",
+				"../internals/get-built-in":
+					"node_modules/core-js/internals/get-built-in.js",
 				"../internals/native-url":
 					"node_modules/core-js/internals/native-url.js",
 				"../internals/redefine": "node_modules/core-js/internals/redefine.js",
@@ -15485,8 +16389,13 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../internals/has": "node_modules/core-js/internals/has.js",
 				"../internals/bind-context":
 					"node_modules/core-js/internals/bind-context.js",
+				"../internals/classof": "node_modules/core-js/internals/classof.js",
 				"../internals/an-object": "node_modules/core-js/internals/an-object.js",
 				"../internals/is-object": "node_modules/core-js/internals/is-object.js",
+				"../internals/object-create":
+					"node_modules/core-js/internals/object-create.js",
+				"../internals/create-property-descriptor":
+					"node_modules/core-js/internals/create-property-descriptor.js",
 				"../internals/get-iterator":
 					"node_modules/core-js/internals/get-iterator.js",
 				"../internals/get-iterator-method":
@@ -15784,7 +16693,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var specialSchemes = {
 					ftp: 21,
 					file: null,
-					gopher: 70,
 					http: 80,
 					https: 443,
 					ws: 80,
@@ -16740,8 +17648,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				require("../modules/web.url");
 				require("../modules/web.url.to-json");
 				require("../modules/web.url-search-params");
+				var path = require("../internals/path");
 
-				module.exports = require("../internals/path");
+				module.exports = path;
 			},
 			{
 				"../modules/web.dom-collections.for-each":
@@ -16765,8 +17674,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 			function(require, module, exports) {
 				require("../es");
 				require("../web");
+				var path = require("../internals/path");
 
-				module.exports = require("../internals/path");
+				module.exports = path;
 			},
 			{
 				"../es": "node_modules/core-js/es/index.js",
@@ -16807,7 +17717,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "51910" + "/"
+						protocol + "://" + hostname + ":" + "56615" + "/"
 					);
 
 					ws.onmessage = function(event) {
@@ -16844,8 +17754,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 								assetsToAccept.forEach(function(v) {
 									hmrAcceptRun(v[0], v[1]);
 								});
-							} else {
-								window.location.reload();
+							} else if (location.reload) {
+								// `location` global exists in a web worker context but lacks `.reload()` function.
+								location.reload();
 							}
 						}
 

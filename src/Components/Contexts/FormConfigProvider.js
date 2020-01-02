@@ -21,6 +21,10 @@ const reducer = (state, action) => {
 				status,
 				formConfig,
 				cssConfig,
+			};
+		case "SET_TIMEOUTS":
+			return {
+				...state,
 				idleWarning,
 				expiredWarning,
 			};
@@ -53,13 +57,50 @@ class FormConfigProvider extends Component {
 			clearTimeout(this.state.idleWarning);
 			clearTimeout(this.state.expiredWarning);
 		},
+		setTimeouts: async () => {
+			if (this.state.idleWarning != -1) {
+				try {
+					const res = callApi(
+						this.state.formConfig.tokenRefreshUri,
+						{
+							method: "GET",
+						},
+						true
+					);
+					this.clearTimeouts();
+				} catch (err) {
+					return;
+				}
+			}
+			const idleWarning = setTimeout(
+				() => alert("This session will expire in 5 minutes."),
+				25 * 60 * 1000
+			);
+			const expiredWarning = setTimeout(
+				() =>
+					this.setState({ expired: true }, () =>
+						alert(
+							"This session has expired. Please refresh this page if you wish to continue."
+						)
+					),
+				30 * 60 * 1000
+			);
+			this.setState(state =>
+				reducer(state, {
+					type: "SET_TIMEOUTS",
+					idleWarning,
+					expiredWarning,
+				})
+			);
+		},
 		getConfiguration: async ({ rootEntry, formType }) => {
 			// TODO: REDUCE INITIALIZATION OF DATA TO A SINGLE API CALL
 
 			let initialState = {},
 				initialStyle = {},
 				cssConfig = {},
-				formConfig = {};
+				formConfig = {},
+				tokenRefreshUri = "";
 			try {
 				const generator = rootEntry.dataset.environment
 					? rootEntry.dataset.environment.toLowerCase()
@@ -72,11 +113,14 @@ class FormConfigProvider extends Component {
 				const queryPreset = getQueryVariable("preset");
 				const preset = queryPreset ? queryPreset : rootEntry.dataset.preset;
 				const headerTitle = rootEntry.dataset.title;
+				const headerSubtitle = rootEntry.dataset.subtitle;
+				const submitButtonText = rootEntry.dataset.submitButtonText;
 				if (isDrupal) {
 					initialState = rootEntry.dataset.initialState;
 					initialStyle = rootEntry.dataset.initialStyle;
 				} else if (isWordpress) {
 					const configUrl = `${proxyUri}cbngiving/v1/${formName}?type=initial_setup`;
+					tokenRefreshUri = `${proxyUri}cbngiving/v1/refresh_token?campaign=${formName}`;
 					const config = await callApi(configUrl, { method: "GET" }, true);
 					initialState = config.initialState;
 					initialStyle = config.initialStyle;
@@ -139,19 +183,10 @@ class FormConfigProvider extends Component {
 
 				if (Object.keys(formConfig).length) {
 					formConfig.proxy = isLocal ? `${proxyUri}/${formType}` : proxyUri;
-					const idleWarning = setTimeout(
-						() => alert("This session will expire in 5 minutes."),
-						10 * 60 * 1000
-					);
-					const expiredWarning = setTimeout(
-						() =>
-							this.setState({ expired: true }, () =>
-								alert(
-									"This session has expired. Please refresh this page if you wish to continue."
-								)
-							),
-						15 * 60 * 1000
-					);
+					formConfig.tokenRefreshUri = isLocal
+						? `${proxyUri}/refresh?campaign=${formName}`
+						: tokenRefreshUri;
+					this.setTimeouts();
 					if (preset) {
 						const { designations = [{ DetailName: "" }] } = formConfig;
 						const idx = designations.findIndex(({ DetailName }) =>
@@ -169,7 +204,29 @@ class FormConfigProvider extends Component {
 									presetTitle
 								);
 							}
+							if (presetTitle && headerSubtitle) {
+								formConfig.formHeader.description = headerSubtitle.replace(
+									/(\#\#PRESET\#\#)/gi,
+									presetTitle
+								);
+							}
 						}
+					} else {
+						if (headerTitle) {
+							formConfig.formHeader.title = headerTitle.replace(
+								/(\#\#PRESET\#\#)/gi,
+								"CBN Ministries"
+							);
+						}
+						if (headerSubtitle) {
+							formConfig.formHeader.description = headerSubtitle.replace(
+								/(\#\#PRESET\#\#)/gi,
+								"CBN Ministries"
+							);
+						}
+					}
+					if (submitButtonText) {
+						formConfig.submitButtonText = submitButtonText;
 					}
 					this.setState(state =>
 						reducer(state, {
@@ -177,8 +234,6 @@ class FormConfigProvider extends Component {
 							formConfig,
 							cssConfig,
 							status: "loaded",
-							idleWarning,
-							expiredWarning,
 						})
 					);
 				} else {
@@ -197,8 +252,10 @@ class FormConfigProvider extends Component {
 			}
 		},
 		submitForm: action => this.setState(state => reducer(state, action)),
-		setConfirmed: action => this.setState(state => reducer(state, action)),
-		goBack: action => this.setState(state => reducer(state, action)),
+		setConfirmed: action =>
+			this.setState(state => reducer(state, action), () => this.setTimeouts()),
+		goBack: action =>
+			this.setState(state => reducer(state, action), () => this.setTimeouts()),
 		getCssConfig: type => {
 			const config = Object.entries(this.state.cssConfig).reduce(
 				(obj, [key, value]) => {

@@ -165,10 +165,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
 
@@ -224,10 +224,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -246,17 +246,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
 				"@emotion/styled-base":
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 			},
 		],
@@ -269,8 +268,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				});
 				exports.default = void 0;
 
-				var _core = require("@emotion/core");
-
 				var _react = _interopRequireWildcard(require("react"));
 
 				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
@@ -279,40 +276,62 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					require("../StyledComponents/ClubTabGroup")
 				);
 
+				var _core = require("@emotion/core");
+
 				function _interopRequireDefault(obj) {
 					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
 				}
 
 				function _interopRequireWildcard(obj) {
 					if (obj && obj.__esModule) {
 						return obj;
-					} else {
-						var newObj = {};
-						if (obj != null) {
-							for (var key in obj) {
-								if (Object.prototype.hasOwnProperty.call(obj, key)) {
-									var desc =
-										Object.defineProperty && Object.getOwnPropertyDescriptor
-											? Object.getOwnPropertyDescriptor(obj, key)
-											: {};
-									if (desc.get || desc.set) {
-										Object.defineProperty(newObj, key, desc);
-									} else {
-										newObj[key] = obj[key];
-									}
-								}
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
 							}
 						}
-						newObj.default = obj;
-						return newObj;
 					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
 
@@ -427,10 +446,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -449,21 +468,20 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 				"../../Contexts/FormConfigProvider":
 					"src/Components/Contexts/FormConfigProvider.js",
 				"../StyledComponents/ClubTabGroup":
 					"src/Components/FormComponents/StyledComponents/ClubTabGroup.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"src/Components/FormComponents/Blocks/MonthlyClubTabBlock.js": [
@@ -474,8 +492,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					value: true,
 				});
 				exports.default = void 0;
-
-				var _core = require("@emotion/core");
 
 				var _react = _interopRequireDefault(require("react"));
 
@@ -495,15 +511,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					require("../StyledComponents/FormRow")
 				);
 
+				var _core = require("@emotion/core");
+
 				function _interopRequireDefault(obj) {
 					return obj && obj.__esModule ? obj : { default: obj };
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
 
@@ -607,10 +625,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -629,16 +647,14 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 				"../FunctionalComponents/ClubTab":
 					"src/Components/FormComponents/FunctionalComponents/ClubTab.js",
@@ -648,6 +664,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"src/Components/FormComponents/StyledComponents/FieldSet.js",
 				"../StyledComponents/FormRow":
 					"src/Components/FormComponents/StyledComponents/FormRow.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"src/Components/FormComponents/StyledComponents/ClubAskArray.js": [
@@ -670,12 +687,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
 
 				var __signature__ =
 					typeof reactHotLoaderGlobal !== "undefined"
@@ -700,16 +721,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 									"display:flex;flex-direction:row;justify-content:center;flex-wrap:wrap;&.askarray--club{position:relative;box-sizing:border-box;height:auto;width:calc(100% + 5px);border-bottom:5px solid transparent;flex-wrap:nowrap;margin:30px 0;flex-wrap:nowrap;justify-content:space-between;outline:none;@media screen and (max-width:716px){flex-wrap:wrap;margin:20px auto;margin-bottom:10px;}}",
 								map:
 									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNsdWJBc2tBcnJheS5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHK0IiLCJmaWxlIjoiQ2x1YkFza0FycmF5LmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IENsdWJBc2tBcnJheSA9IHN0eWxlZC5kaXZgXG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRmbGV4LXdyYXA6IHdyYXA7XG5cdCYuYXNrYXJyYXktLWNsdWIge1xuXHRcdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGhlaWdodDogYXV0bztcblx0XHR3aWR0aDogY2FsYygxMDAlICsgNXB4KTtcblx0XHRib3JkZXItYm90dG9tOiA1cHggc29saWQgdHJhbnNwYXJlbnQ7XG5cdFx0ZmxleC13cmFwOiBub3dyYXA7XG5cdFx0bWFyZ2luOiAzMHB4IDA7XG5cdFx0ZmxleC13cmFwOiBub3dyYXA7XG5cdFx0anVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuO1xuXHRcdG91dGxpbmU6IG5vbmU7XG5cdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNzE2cHgpIHtcblx0XHRcdGZsZXgtd3JhcDogd3JhcDtcblx0XHRcdG1hcmdpbjogMjBweCBhdXRvO1xuXHRcdFx0bWFyZ2luLWJvdHRvbTogMTBweDtcblx0XHR9XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IENsdWJBc2tBcnJheTtcbiJdfQ== */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
 						  }
 				);
 				var _default = ClubAskArray;
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -728,17 +750,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
 				"@emotion/styled-base":
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 			},
 		],
@@ -762,10 +783,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
 
@@ -821,10 +842,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -843,17 +864,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
 				"@emotion/styled-base":
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 			},
 		],
@@ -865,8 +885,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					value: true,
 				});
 				exports.default = void 0;
-
-				var _core = require("@emotion/core");
 
 				var _react = _interopRequireWildcard(require("react"));
 
@@ -880,40 +898,62 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				require("../Animations/askarray.css");
 
+				var _core = require("@emotion/core");
+
 				function _interopRequireDefault(obj) {
 					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
 				}
 
 				function _interopRequireWildcard(obj) {
 					if (obj && obj.__esModule) {
 						return obj;
-					} else {
-						var newObj = {};
-						if (obj != null) {
-							for (var key in obj) {
-								if (Object.prototype.hasOwnProperty.call(obj, key)) {
-									var desc =
-										Object.defineProperty && Object.getOwnPropertyDescriptor
-											? Object.getOwnPropertyDescriptor(obj, key)
-											: {};
-									if (desc.get || desc.set) {
-										Object.defineProperty(newObj, key, desc);
-									} else {
-										newObj[key] = obj[key];
-									}
-								}
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
 							}
 						}
-						newObj.default = obj;
-						return newObj;
 					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
 
@@ -1064,10 +1104,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -1091,16 +1131,14 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 				"../../Contexts/FormConfigProvider":
 					"src/Components/Contexts/FormConfigProvider.js",
@@ -1110,6 +1148,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/react-transition-group/esm/index.js",
 				"../Animations/askarray.css":
 					"src/Components/FormComponents/Animations/askarray.css",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"src/Components/FormComponents/StyledComponents/ClubOtherGiftAmountGroup.js": [
@@ -1125,35 +1164,55 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					require("@emotion/styled-base")
 				);
 
-				var _core = require("@emotion/core");
-
 				var _react = _interopRequireWildcard(require("react"));
 
 				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
 
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
 				function _interopRequireWildcard(obj) {
 					if (obj && obj.__esModule) {
 						return obj;
-					} else {
-						var newObj = {};
-						if (obj != null) {
-							for (var key in obj) {
-								if (Object.prototype.hasOwnProperty.call(obj, key)) {
-									var desc =
-										Object.defineProperty && Object.getOwnPropertyDescriptor
-											? Object.getOwnPropertyDescriptor(obj, key)
-											: {};
-									if (desc.get || desc.set) {
-										Object.defineProperty(newObj, key, desc);
-									} else {
-										newObj[key] = obj[key];
-									}
-								}
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
 							}
 						}
-						newObj.default = obj;
-						return newObj;
 					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
 				}
 
 				function _interopRequireDefault(obj) {
@@ -1161,10 +1220,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
 
@@ -1334,10 +1393,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -1361,21 +1420,20 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
 				"@emotion/styled-base":
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 				"../../Contexts/FormConfigProvider":
 					"src/Components/Contexts/FormConfigProvider.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"src/Components/FormComponents/Layouts/ClubLayout.js": [
@@ -1411,8 +1469,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					require("@babel/runtime/helpers/inherits")
 				);
 
-				var _core = require("@emotion/core");
-
 				var _react = _interopRequireWildcard(require("react"));
 
 				var _reactTransitionGroup = require("react-transition-group");
@@ -1441,29 +1497,51 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					require("../StyledComponents/ClubOtherGiftAmountGroup")
 				);
 
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
 				function _interopRequireWildcard(obj) {
 					if (obj && obj.__esModule) {
 						return obj;
-					} else {
-						var newObj = {};
-						if (obj != null) {
-							for (var key in obj) {
-								if (Object.prototype.hasOwnProperty.call(obj, key)) {
-									var desc =
-										Object.defineProperty && Object.getOwnPropertyDescriptor
-											? Object.getOwnPropertyDescriptor(obj, key)
-											: {};
-									if (desc.get || desc.set) {
-										Object.defineProperty(newObj, key, desc);
-									} else {
-										newObj[key] = obj[key];
-									}
-								}
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
 							}
 						}
-						newObj.default = obj;
-						return newObj;
 					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
 				}
 
 				function _interopRequireDefault(obj) {
@@ -1471,10 +1549,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
 
@@ -1858,10 +1936,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -1885,10 +1963,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
@@ -1905,8 +1983,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/@babel/runtime/helpers/getPrototypeOf.js",
 				"@babel/runtime/helpers/inherits":
 					"node_modules/@babel/runtime/helpers/inherits.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 				"react-transition-group":
 					"node_modules/react-transition-group/esm/index.js",
@@ -1924,6 +2000,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"src/Components/FormComponents/Blocks/GivingArrayBlock.js",
 				"../StyledComponents/ClubOtherGiftAmountGroup":
 					"src/Components/FormComponents/StyledComponents/ClubOtherGiftAmountGroup.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"src/Components/FormComponents/Blocks/PremiumBlock.js": [
@@ -1939,23 +2016,27 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					require("@emotion/styled-base")
 				);
 
-				var _core = require("@emotion/core");
-
 				var _react = _interopRequireDefault(require("react"));
 
 				var _reactMedia = _interopRequireDefault(require("react-media"));
+
+				var _core = require("@emotion/core");
 
 				function _interopRequireDefault(obj) {
 					return obj && obj.__esModule ? obj : { default: obj };
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
 
 				var __signature__ =
 					typeof reactHotLoaderGlobal !== "undefined"
@@ -1980,6 +2061,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 									"@media screen and (max-width:649px){font-weight:bold;}",
 								map:
 									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlByZW1pdW1CbG9jay5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFJK0IiLCJmaWxlIjoiUHJlbWl1bUJsb2NrLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5pbXBvcnQgTWVkaWEgZnJvbSBcInJlYWN0LW1lZGlhXCI7XG5cbmNvbnN0IFByZW1pdW1JbnRybyA9IHN0eWxlZC5kaXZgXG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdH1cbmA7XG5cbmNvbnN0IFByZW11aW1JbmZvQmxvY2sgPSBzdHlsZWQuZGl2YFxuXHRtYXJnaW46IDIwcHggMCAzMHB4IDA7XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0ZGl2LnByZW1pdW0taW1nIHtcblx0XHR3aWR0aDogMTYwcHg7XG5cdFx0ZmxleDogMCAwIDE2MHB4O1xuXHRcdGltZy5pbWctcmVzcG9uc2l2ZSB7XG5cdFx0XHRkaXNwbGF5OiBibG9jaztcblx0XHRcdG1heC13aWR0aDogMTAwJTtcblx0XHR9XG5cdH1cblx0ZGl2LnByZW1pdW0tZGVzY3JpcHRpb24ge1xuXHRcdG1heC13aWR0aDogNTc1cHg7XG5cdFx0ZmxleDogMSAwIDE0MHB4O1xuXHRcdHVsIHtcblx0XHRcdGxpc3Qtc3R5bGU6IG5vbmU7XG5cdFx0XHRtYXJnaW4tYmxvY2stc3RhcnQ6IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stZW5kOiAwO1xuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjQ5cHgpIHtcblx0XHRcdFx0cGFkZGluZy1pbmxpbmUtc3RhcnQ6IDIwcHg7XG5cdFx0XHR9XG5cdFx0XHRsaTo6YmVmb3JlIHtcblx0XHRcdFx0Y29udGVudDogXCJcIjtcblx0XHRcdFx0YmFja2dyb3VuZDogI2Y3YjUwMDtcblx0XHRcdFx0ZGlzcGxheTogaW5saW5lLWJsb2NrO1xuXHRcdFx0XHR3aWR0aDogN3B4O1xuXHRcdFx0XHRoZWlnaHQ6IDdweDtcblx0XHRcdFx0Ym9yZGVyLXJhZGl1czogNTAlO1xuXHRcdFx0XHRtYXJnaW4tbGVmdDogLTFlbTtcblx0XHRcdFx0bWFyZ2luLXJpZ2h0OiA4cHg7XG5cdFx0XHR9XG5cdFx0XHRsaSArIGxpIHtcblx0XHRcdFx0bWFyZ2luLXRvcDogMjBweDtcblx0XHRcdH1cblx0XHRcdGxpIHtcblx0XHRcdFx0Y29sb3I6ICMxODE4MTg7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0bGluZS1oZWlnaHQ6IDIxcHg7XG5cdFx0XHRcdGVtIHtcblx0XHRcdFx0XHRmb250LXNpemU6IDE2cHg7XG5cdFx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0XHR9XG5cdFx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0XHRcdCY6OmJlZm9yZSB7XG5cdFx0XHRcdFx0XHRkaXNwbGF5OiBub25lO1xuXHRcdFx0XHRcdH1cblx0XHRcdFx0fVxuXHRcdFx0fVxuXHRcdH1cblx0fVxuYDtcblxuY29uc3QgUHJlbWl1bUJsb2NrID0gKHtcblx0cHJlbWl1bURhdGE6IHtcblx0XHRwcmVtaXVtVGl0bGUsXG5cdFx0cHJlbWl1bUltZ1VybCxcblx0XHRwcmVtaXVtRGVzY3JpcHRpb25zLFxuXHRcdHNob3J0RGVzY3JpcHRpb25zLFxuXHR9LFxuXHRtb250aGx5Q2hlY2tlZCxcbn0pID0+IHtcblx0cmV0dXJuIChcblx0XHQ8PlxuXHRcdFx0PFByZW1pdW1JbnRybz5BbGwgTW9udGhseSBQYXJ0bmVycyBSZWNlaXZlOjwvUHJlbWl1bUludHJvPlxuXHRcdFx0PFByZW11aW1JbmZvQmxvY2s+XG5cdFx0XHRcdDxkaXYgY2xhc3NOYW1lPVwicHJlbWl1bS1pbWdcIj5cblx0XHRcdFx0XHQ8aW1nXG5cdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJpbWctcmVzcG9uc2l2ZVwiXG5cdFx0XHRcdFx0XHRhbHQ9e2BEVkQgUHJlbWl1bSBmb3IgXCIke3ByZW1pdW1UaXRsZX1cImB9XG5cdFx0XHRcdFx0XHRzcmM9e3ByZW1pdW1JbWdVcmx9XG5cdFx0XHRcdFx0Lz5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHRcdDxkaXYgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvblwiPlxuXHRcdFx0XHRcdDxNZWRpYSBxdWVyeT1cIihtYXgtd2lkdGg6IDY0OXB4KVwiPlxuXHRcdFx0XHRcdFx0e21hdGNoZXMgPT5cblx0XHRcdFx0XHRcdFx0bWF0Y2hlcyA/IChcblx0XHRcdFx0XHRcdFx0XHQ8dWwgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdFwiPlxuXHRcdFx0XHRcdFx0XHRcdFx0e3Nob3J0RGVzY3JpcHRpb25zLm1hcCgoZGVzYywgaWR4KSA9PiAoXG5cdFx0XHRcdFx0XHRcdFx0XHRcdDxsaVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRcdGtleT17YHByZW1kZXNjLSR7aWR4fWB9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0Y2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdC0taXRlbVwiXG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0ZGFuZ2Vyb3VzbHlTZXRJbm5lckhUTUw9e3sgX19odG1sOiBkZXNjIH19XG5cdFx0XHRcdFx0XHRcdFx0XHRcdD48L2xpPlxuXHRcdFx0XHRcdFx0XHRcdFx0KSl9XG5cdFx0XHRcdFx0XHRcdFx0PC91bD5cblx0XHRcdFx0XHRcdFx0KSA6IChcblx0XHRcdFx0XHRcdFx0XHQ8dWwgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdFwiPlxuXHRcdFx0XHRcdFx0XHRcdFx0e3ByZW1pdW1EZXNjcmlwdGlvbnMubWFwKChkZXNjLCBpZHgpID0+IChcblx0XHRcdFx0XHRcdFx0XHRcdFx0PGxpXG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0a2V5PXtgcHJlbWRlc2MtJHtpZHh9YH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJwcmVtaXVtLWRlc2NyaXB0aW9uX19saXN0LS1pdGVtXCJcblx0XHRcdFx0XHRcdFx0XHRcdFx0XHRkYW5nZXJvdXNseVNldElubmVySFRNTD17eyBfX2h0bWw6IGRlc2MgfX1cblx0XHRcdFx0XHRcdFx0XHRcdFx0PjwvbGk+XG5cdFx0XHRcdFx0XHRcdFx0XHQpKX1cblx0XHRcdFx0XHRcdFx0XHQ8L3VsPlxuXHRcdFx0XHRcdFx0XHQpXG5cdFx0XHRcdFx0XHR9XG5cdFx0XHRcdFx0PC9NZWRpYT5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHQ8L1ByZW11aW1JbmZvQmxvY2s+XG5cdFx0PC8+XG5cdCk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBQcmVtaXVtQmxvY2s7XG4iXX0= */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
 						  }
 				);
 				var PremuimInfoBlock = (0, _styledBase.default)("div", {
@@ -1998,6 +2080,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 									'margin:20px 0 30px 0;display:flex;flex-direction:row;justify-content:space-between;div.premium-img{width:160px;flex:0 0 160px;img.img-responsive{display:block;max-width:100%;}}div.premium-description{max-width:575px;flex:1 0 140px;ul{list-style:none;margin-block-start:0;margin-block-end:0;@media screen and (max-width:649px){padding-inline-start:20px;}li::before{content:"";background:#f7b500;display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:-1em;margin-right:8px;}li + li{margin-top:20px;}li{color:#181818;font-size:16px;line-height:21px;em{font-size:16px;font-style:italic;}@media screen and (max-width:649px){font-style:italic;&::before{display:none;}}}}}',
 								map:
 									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlByZW1pdW1CbG9jay5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFVbUMiLCJmaWxlIjoiUHJlbWl1bUJsb2NrLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5pbXBvcnQgTWVkaWEgZnJvbSBcInJlYWN0LW1lZGlhXCI7XG5cbmNvbnN0IFByZW1pdW1JbnRybyA9IHN0eWxlZC5kaXZgXG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdH1cbmA7XG5cbmNvbnN0IFByZW11aW1JbmZvQmxvY2sgPSBzdHlsZWQuZGl2YFxuXHRtYXJnaW46IDIwcHggMCAzMHB4IDA7XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0ZGl2LnByZW1pdW0taW1nIHtcblx0XHR3aWR0aDogMTYwcHg7XG5cdFx0ZmxleDogMCAwIDE2MHB4O1xuXHRcdGltZy5pbWctcmVzcG9uc2l2ZSB7XG5cdFx0XHRkaXNwbGF5OiBibG9jaztcblx0XHRcdG1heC13aWR0aDogMTAwJTtcblx0XHR9XG5cdH1cblx0ZGl2LnByZW1pdW0tZGVzY3JpcHRpb24ge1xuXHRcdG1heC13aWR0aDogNTc1cHg7XG5cdFx0ZmxleDogMSAwIDE0MHB4O1xuXHRcdHVsIHtcblx0XHRcdGxpc3Qtc3R5bGU6IG5vbmU7XG5cdFx0XHRtYXJnaW4tYmxvY2stc3RhcnQ6IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stZW5kOiAwO1xuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjQ5cHgpIHtcblx0XHRcdFx0cGFkZGluZy1pbmxpbmUtc3RhcnQ6IDIwcHg7XG5cdFx0XHR9XG5cdFx0XHRsaTo6YmVmb3JlIHtcblx0XHRcdFx0Y29udGVudDogXCJcIjtcblx0XHRcdFx0YmFja2dyb3VuZDogI2Y3YjUwMDtcblx0XHRcdFx0ZGlzcGxheTogaW5saW5lLWJsb2NrO1xuXHRcdFx0XHR3aWR0aDogN3B4O1xuXHRcdFx0XHRoZWlnaHQ6IDdweDtcblx0XHRcdFx0Ym9yZGVyLXJhZGl1czogNTAlO1xuXHRcdFx0XHRtYXJnaW4tbGVmdDogLTFlbTtcblx0XHRcdFx0bWFyZ2luLXJpZ2h0OiA4cHg7XG5cdFx0XHR9XG5cdFx0XHRsaSArIGxpIHtcblx0XHRcdFx0bWFyZ2luLXRvcDogMjBweDtcblx0XHRcdH1cblx0XHRcdGxpIHtcblx0XHRcdFx0Y29sb3I6ICMxODE4MTg7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0bGluZS1oZWlnaHQ6IDIxcHg7XG5cdFx0XHRcdGVtIHtcblx0XHRcdFx0XHRmb250LXNpemU6IDE2cHg7XG5cdFx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0XHR9XG5cdFx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0XHRcdCY6OmJlZm9yZSB7XG5cdFx0XHRcdFx0XHRkaXNwbGF5OiBub25lO1xuXHRcdFx0XHRcdH1cblx0XHRcdFx0fVxuXHRcdFx0fVxuXHRcdH1cblx0fVxuYDtcblxuY29uc3QgUHJlbWl1bUJsb2NrID0gKHtcblx0cHJlbWl1bURhdGE6IHtcblx0XHRwcmVtaXVtVGl0bGUsXG5cdFx0cHJlbWl1bUltZ1VybCxcblx0XHRwcmVtaXVtRGVzY3JpcHRpb25zLFxuXHRcdHNob3J0RGVzY3JpcHRpb25zLFxuXHR9LFxuXHRtb250aGx5Q2hlY2tlZCxcbn0pID0+IHtcblx0cmV0dXJuIChcblx0XHQ8PlxuXHRcdFx0PFByZW1pdW1JbnRybz5BbGwgTW9udGhseSBQYXJ0bmVycyBSZWNlaXZlOjwvUHJlbWl1bUludHJvPlxuXHRcdFx0PFByZW11aW1JbmZvQmxvY2s+XG5cdFx0XHRcdDxkaXYgY2xhc3NOYW1lPVwicHJlbWl1bS1pbWdcIj5cblx0XHRcdFx0XHQ8aW1nXG5cdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJpbWctcmVzcG9uc2l2ZVwiXG5cdFx0XHRcdFx0XHRhbHQ9e2BEVkQgUHJlbWl1bSBmb3IgXCIke3ByZW1pdW1UaXRsZX1cImB9XG5cdFx0XHRcdFx0XHRzcmM9e3ByZW1pdW1JbWdVcmx9XG5cdFx0XHRcdFx0Lz5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHRcdDxkaXYgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvblwiPlxuXHRcdFx0XHRcdDxNZWRpYSBxdWVyeT1cIihtYXgtd2lkdGg6IDY0OXB4KVwiPlxuXHRcdFx0XHRcdFx0e21hdGNoZXMgPT5cblx0XHRcdFx0XHRcdFx0bWF0Y2hlcyA/IChcblx0XHRcdFx0XHRcdFx0XHQ8dWwgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdFwiPlxuXHRcdFx0XHRcdFx0XHRcdFx0e3Nob3J0RGVzY3JpcHRpb25zLm1hcCgoZGVzYywgaWR4KSA9PiAoXG5cdFx0XHRcdFx0XHRcdFx0XHRcdDxsaVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRcdGtleT17YHByZW1kZXNjLSR7aWR4fWB9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0Y2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdC0taXRlbVwiXG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0ZGFuZ2Vyb3VzbHlTZXRJbm5lckhUTUw9e3sgX19odG1sOiBkZXNjIH19XG5cdFx0XHRcdFx0XHRcdFx0XHRcdD48L2xpPlxuXHRcdFx0XHRcdFx0XHRcdFx0KSl9XG5cdFx0XHRcdFx0XHRcdFx0PC91bD5cblx0XHRcdFx0XHRcdFx0KSA6IChcblx0XHRcdFx0XHRcdFx0XHQ8dWwgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdFwiPlxuXHRcdFx0XHRcdFx0XHRcdFx0e3ByZW1pdW1EZXNjcmlwdGlvbnMubWFwKChkZXNjLCBpZHgpID0+IChcblx0XHRcdFx0XHRcdFx0XHRcdFx0PGxpXG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0a2V5PXtgcHJlbWRlc2MtJHtpZHh9YH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJwcmVtaXVtLWRlc2NyaXB0aW9uX19saXN0LS1pdGVtXCJcblx0XHRcdFx0XHRcdFx0XHRcdFx0XHRkYW5nZXJvdXNseVNldElubmVySFRNTD17eyBfX2h0bWw6IGRlc2MgfX1cblx0XHRcdFx0XHRcdFx0XHRcdFx0PjwvbGk+XG5cdFx0XHRcdFx0XHRcdFx0XHQpKX1cblx0XHRcdFx0XHRcdFx0XHQ8L3VsPlxuXHRcdFx0XHRcdFx0XHQpXG5cdFx0XHRcdFx0XHR9XG5cdFx0XHRcdFx0PC9NZWRpYT5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHQ8L1ByZW11aW1JbmZvQmxvY2s+XG5cdFx0PC8+XG5cdCk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBQcmVtaXVtQmxvY2s7XG4iXX0= */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
 						  }
 				);
 
@@ -2079,10 +2162,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -2111,20 +2194,19 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
 				"@emotion/styled-base":
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 				"react-media": "node_modules/react-media/esm/react-media.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"src/Components/FormComponents/Blocks/OtherGivingBlock.js": [
@@ -2136,44 +2218,64 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				});
 				exports.default = void 0;
 
-				var _core = require("@emotion/core");
-
 				var _react = _interopRequireWildcard(require("react"));
 
 				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
 
 				var _Card = require("../StyledComponents/Card");
 
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
 				function _interopRequireWildcard(obj) {
 					if (obj && obj.__esModule) {
 						return obj;
-					} else {
-						var newObj = {};
-						if (obj != null) {
-							for (var key in obj) {
-								if (Object.prototype.hasOwnProperty.call(obj, key)) {
-									var desc =
-										Object.defineProperty && Object.getOwnPropertyDescriptor
-											? Object.getOwnPropertyDescriptor(obj, key)
-											: {};
-									if (desc.get || desc.set) {
-										Object.defineProperty(newObj, key, desc);
-									} else {
-										newObj[key] = obj[key];
-									}
-								}
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
 							}
 						}
-						newObj.default = obj;
-						return newObj;
 					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
 
@@ -2404,10 +2506,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -2426,21 +2528,20 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 				"../../Contexts/FormConfigProvider":
 					"src/Components/Contexts/FormConfigProvider.js",
 				"../StyledComponents/Card":
 					"src/Components/FormComponents/StyledComponents/Card.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"src/Components/Forms/AskForm.js": [
@@ -2479,8 +2580,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _inherits2 = _interopRequireDefault(
 					require("@babel/runtime/helpers/inherits")
 				);
-
-				var _core = require("@emotion/core");
 
 				var _react = _interopRequireWildcard(require("react"));
 
@@ -2542,29 +2641,51 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				var _scrollToPoint = require("../../helpers/scrollToPoint");
 
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
 				function _interopRequireWildcard(obj) {
 					if (obj && obj.__esModule) {
 						return obj;
-					} else {
-						var newObj = {};
-						if (obj != null) {
-							for (var key in obj) {
-								if (Object.prototype.hasOwnProperty.call(obj, key)) {
-									var desc =
-										Object.defineProperty && Object.getOwnPropertyDescriptor
-											? Object.getOwnPropertyDescriptor(obj, key)
-											: {};
-									if (desc.get || desc.set) {
-										Object.defineProperty(newObj, key, desc);
-									} else {
-										newObj[key] = obj[key];
-									}
-								}
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
 							}
 						}
-						newObj.default = obj;
-						return newObj;
 					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
 				}
 
 				function _interopRequireDefault(obj) {
@@ -2572,10 +2693,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
 
@@ -2963,10 +3084,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -2985,10 +3106,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
@@ -3007,8 +3128,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/@babel/runtime/helpers/getPrototypeOf.js",
 				"@babel/runtime/helpers/inherits":
 					"node_modules/@babel/runtime/helpers/inherits.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 				"react-transition-group":
 					"node_modules/react-transition-group/esm/index.js",
@@ -3042,6 +3161,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"../FormComponents/Blocks/FooterBlock":
 					"src/Components/FormComponents/Blocks/FooterBlock.js",
 				"../../helpers/scrollToPoint": "src/helpers/scrollToPoint.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"node_modules/parcel-bundler/src/builtins/hmr-runtime.js": [
@@ -3077,7 +3197,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "51910" + "/"
+						protocol + "://" + hostname + ":" + "56615" + "/"
 					);
 
 					ws.onmessage = function(event) {
@@ -3114,8 +3234,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 								assetsToAccept.forEach(function(v) {
 									hmrAcceptRun(v[0], v[1]);
 								});
-							} else {
-								window.location.reload();
+							} else if (location.reload) {
+								// `location` global exists in a web worker context but lacks `.reload()` function.
+								location.reload();
 							}
 						}
 

@@ -107,6 +107,11 @@ router.get("/config/:filename", (req, res) => {
 	}
 });
 
+router.get("/refresh", (req, res) => {
+	const { campaign = "" } = req.params;
+	res.json({ campaign });
+});
+
 router.get("/globals", (req, res) => {
 	const api = process.env.GLOBAL_JSON_URL;
 	fetch(api)

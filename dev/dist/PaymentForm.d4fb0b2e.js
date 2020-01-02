@@ -149,12 +149,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
 
 				var __signature__ =
 					typeof reactHotLoaderGlobal !== "undefined"
@@ -179,16 +183,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 									"background-color:#333;width:100%;-webkit-box-flex:1;-ms-flex:1 1 auto;flex:1 1 auto;-ms-flex-item-align:center;align-self:center;height:2px;overflow:visible;margin:20px 0;box-sizing:border-box;",
 								map:
 									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1MaW5lLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUcyQiIsImZpbGUiOiJGb3JtTGluZS5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBGb3JtTGluZSA9IHN0eWxlZC5kaXZgXG5cdGJhY2tncm91bmQtY29sb3I6ICMzMzM7XG5cdHdpZHRoOiAxMDAlO1xuXHQtd2Via2l0LWJveC1mbGV4OiAxO1xuXHQtbXMtZmxleDogMSAxIGF1dG87XG5cdGZsZXg6IDEgMSBhdXRvO1xuXHQtbXMtZmxleC1pdGVtLWFsaWduOiBjZW50ZXI7XG5cdGFsaWduLXNlbGY6IGNlbnRlcjtcblx0aGVpZ2h0OiAycHg7XG5cdG92ZXJmbG93OiB2aXNpYmxlO1xuXHRtYXJnaW46IDIwcHggMDtcblx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcbmA7XG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1MaW5lO1xuIl19 */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
 						  }
 				);
 				var _default = FormLine;
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -207,17 +212,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
 				"@emotion/styled-base":
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 			},
 		],
@@ -241,12 +245,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
 
 				var __signature__ =
 					typeof reactHotLoaderGlobal !== "undefined"
@@ -271,16 +279,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 									"padding:10px;font-size:15px;font-weight:300;display:flex;flex-direction:row;justify-content:flex-start;flex-wrap:wrap;align-items:center;div.flex-row{display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:10px;flex:1 1 100%;}",
 								map:
 									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlByb2R1Y3RTdW1tYXJ5LmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdpQyIsImZpbGUiOiJQcm9kdWN0U3VtbWFyeS5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBQcm9kdWN0U3VtbWFyeSA9IHN0eWxlZC5kaXZgXG5cdHBhZGRpbmc6IDEwcHg7XG5cdGZvbnQtc2l6ZTogMTVweDtcblx0Zm9udC13ZWlnaHQ6IDMwMDtcblx0ZGlzcGxheTogZmxleDtcblx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0anVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuXHRmbGV4LXdyYXA6IHdyYXA7XG5cdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdGRpdi5mbGV4LXJvdyB7XG5cdFx0ZGlzcGxheTogZmxleDtcblx0XHRmbGV4LWRpcmVjdGlvbjogcm93O1xuXHRcdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0XHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHRcdHBhZGRpbmc6IDEwcHg7XG5cdFx0ZmxleDogMSAxIDEwMCU7XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IFByb2R1Y3RTdW1tYXJ5O1xuIl19 */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
 						  }
 				);
 				var _default = ProductSummary;
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -299,17 +308,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
 				"@emotion/styled-base":
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 			},
 		],
@@ -333,12 +341,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
 
 				var __signature__ =
 					typeof reactHotLoaderGlobal !== "undefined"
@@ -363,16 +375,17 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 									'display:flex;flex-direction:row;align-items:center;box-sizing:border-box;padding:5px;height:calc(19px * 2);line-height:calc(19px * 2);input[type="radio"]{box-sizing:border-box;position:absolute;opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";}input[type="radio"] + label.Visa,input[type="radio"] + label.MasterCard,input[type="radio"] + label.AmericanExpress,input[type="radio"] + label.Discover{box-sizing:border-box;font-size:40px;font-weight:600;display:flex;align-items:center;padding:5px;}input[type="radio"] + label.Visa{color:#172274;}input[type="radio"] + label.MasterCard{color:#ea001b;}input[type="radio"] + label.AmericanExpress{color:#2e78bf;}input[type="radio"] + label.Discover{color:#f58220;}input[type="radio"]:checked + label{background-color:#eee;box-sizing:border-box;box-shadow:0 0 4px #000;border-radius:4px;}input[type="radio"]:focus + label,input[type="radio"]:hover + label{background-color:#f4f4f4;box-sizing:border-box;box-shadow:0 0 4px #777;border-radius:4px;}input[type="radio"]:disabled + label{box-shadow:0 0 4px #000;border-radius:4px;border-color:#bfbfbf;background:#bfbfbf;box-sizing:border-box;}',
 								map:
 									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNDQnV0dG9uLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUc4QiIsImZpbGUiOiJDQ0J1dHRvbi5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBSYWRpb0J1dHRvbiA9IHN0eWxlZC5kaXZgXG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdHBhZGRpbmc6IDVweDtcblx0aGVpZ2h0OiBjYWxjKDE5cHggKiAyKTtcblx0bGluZS1oZWlnaHQ6IGNhbGMoMTlweCAqIDIpO1xuXHRpbnB1dFt0eXBlPVwicmFkaW9cIl0ge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0cG9zaXRpb246IGFic29sdXRlO1xuXHRcdG9wYWNpdHk6IDA7XG5cdFx0LW1zLWZpbHRlcjogXCJwcm9naWQ6RFhJbWFnZVRyYW5zZm9ybS5NaWNyb3NvZnQuQWxwaGEoT3BhY2l0eT0wKVwiO1xuXHR9XG5cdGlucHV0W3R5cGU9XCJyYWRpb1wiXSArIGxhYmVsLlZpc2EsXG5cdGlucHV0W3R5cGU9XCJyYWRpb1wiXSArIGxhYmVsLk1hc3RlckNhcmQsXG5cdGlucHV0W3R5cGU9XCJyYWRpb1wiXSArIGxhYmVsLkFtZXJpY2FuRXhwcmVzcyxcblx0aW5wdXRbdHlwZT1cInJhZGlvXCJdICsgbGFiZWwuRGlzY292ZXIge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Zm9udC1zaXplOiA0MHB4O1xuXHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0ZGlzcGxheTogZmxleDtcblx0XHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHRcdHBhZGRpbmc6IDVweDtcblx0fVxuXHRpbnB1dFt0eXBlPVwicmFkaW9cIl0gKyBsYWJlbC5WaXNhIHtcblx0XHRjb2xvcjogIzE3MjI3NDtcblx0fVxuXHRpbnB1dFt0eXBlPVwicmFkaW9cIl0gKyBsYWJlbC5NYXN0ZXJDYXJkIHtcblx0XHRjb2xvcjogI2VhMDAxYjtcblx0fVxuXHRpbnB1dFt0eXBlPVwicmFkaW9cIl0gKyBsYWJlbC5BbWVyaWNhbkV4cHJlc3Mge1xuXHRcdGNvbG9yOiAjMmU3OGJmO1xuXHR9XG5cdGlucHV0W3R5cGU9XCJyYWRpb1wiXSArIGxhYmVsLkRpc2NvdmVyIHtcblx0XHRjb2xvcjogI2Y1ODIyMDtcblx0fVxuXHRpbnB1dFt0eXBlPVwicmFkaW9cIl06Y2hlY2tlZCArIGxhYmVsIHtcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZWVlO1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Ym94LXNoYWRvdzogMCAwIDRweCAjMDAwO1xuXHRcdGJvcmRlci1yYWRpdXM6IDRweDtcblx0fVxuXHRpbnB1dFt0eXBlPVwicmFkaW9cIl06Zm9jdXMgKyBsYWJlbCxcblx0aW5wdXRbdHlwZT1cInJhZGlvXCJdOmhvdmVyICsgbGFiZWwge1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICNmNGY0ZjQ7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRib3gtc2hhZG93OiAwIDAgNHB4ICM3Nzc7XG5cdFx0Ym9yZGVyLXJhZGl1czogNHB4O1xuXHR9XG5cdGlucHV0W3R5cGU9XCJyYWRpb1wiXTpkaXNhYmxlZCArIGxhYmVsIHtcblx0XHRib3gtc2hhZG93OiAwIDAgNHB4ICMwMDA7XG5cdFx0Ym9yZGVyLXJhZGl1czogNHB4O1xuXHRcdGJvcmRlci1jb2xvcjogI2JmYmZiZjtcblx0XHRiYWNrZ3JvdW5kOiAjYmZiZmJmO1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IFJhZGlvQnV0dG9uO1xuIl19 */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
 						  }
 				);
 				var _default = RadioButton;
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -391,17 +404,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
 				"@emotion/styled-base":
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 			},
 		],
@@ -413,7 +425,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					value: true,
 				});
 				exports.IconsManifest = void 0;
-				const IconsManifest = [
+				var IconsManifest = [
 					{
 						id: "fa",
 						name: "Font Awesome",
@@ -481,6 +493,13 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 						license: "MIT",
 						licenseUrl: "https://opensource.org/licenses/MIT",
 					},
+					{
+						id: "ai",
+						name: "Ant Design Icons",
+						projectUrl: "https://github.com/ant-design/ant-design-icons",
+						license: "MIT",
+						licenseUrl: "https://opensource.org/licenses/MIT",
+					},
 				];
 				exports.IconsManifest = IconsManifest;
 			},
@@ -497,29 +516,49 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				var React = _interopRequireWildcard(require("react"));
 
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
 				function _interopRequireWildcard(obj) {
 					if (obj && obj.__esModule) {
 						return obj;
-					} else {
-						var newObj = {};
-						if (obj != null) {
-							for (var key in obj) {
-								if (Object.prototype.hasOwnProperty.call(obj, key)) {
-									var desc =
-										Object.defineProperty && Object.getOwnPropertyDescriptor
-											? Object.getOwnPropertyDescriptor(obj, key)
-											: {};
-									if (desc.get || desc.set) {
-										Object.defineProperty(newObj, key, desc);
-									} else {
-										newObj[key] = obj[key];
-									}
-								}
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
 							}
 						}
-						newObj.default = obj;
-						return newObj;
 					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
 				}
 
 				var DefaultContext = {
@@ -550,29 +589,49 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				var _iconContext = require("./iconContext");
 
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
 				function _interopRequireWildcard(obj) {
 					if (obj && obj.__esModule) {
 						return obj;
-					} else {
-						var newObj = {};
-						if (obj != null) {
-							for (var key in obj) {
-								if (Object.prototype.hasOwnProperty.call(obj, key)) {
-									var desc =
-										Object.defineProperty && Object.getOwnPropertyDescriptor
-											? Object.getOwnPropertyDescriptor(obj, key)
-											: {};
-									if (desc.get || desc.set) {
-										Object.defineProperty(newObj, key, desc);
-									} else {
-										newObj[key] = obj[key];
-									}
-								}
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
 							}
 						}
-						newObj.default = obj;
-						return newObj;
 					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
 				}
 
 				var __assign =
@@ -32653,8 +32712,8 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				});
 				exports.default = void 0;
 
-				var _objectSpread2 = _interopRequireDefault(
-					require("@babel/runtime/helpers/objectSpread")
+				var _defineProperty2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/defineProperty")
 				);
 
 				var _toConsumableArray2 = _interopRequireDefault(
@@ -32680,8 +32739,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _inherits2 = _interopRequireDefault(
 					require("@babel/runtime/helpers/inherits")
 				);
-
-				var _core = require("@emotion/core");
 
 				var _react = _interopRequireWildcard(require("react"));
 
@@ -32741,29 +32798,51 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 
 				var _ccValidation = require("../../helpers/cc-validation");
 
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
 				function _interopRequireWildcard(obj) {
 					if (obj && obj.__esModule) {
 						return obj;
-					} else {
-						var newObj = {};
-						if (obj != null) {
-							for (var key in obj) {
-								if (Object.prototype.hasOwnProperty.call(obj, key)) {
-									var desc =
-										Object.defineProperty && Object.getOwnPropertyDescriptor
-											? Object.getOwnPropertyDescriptor(obj, key)
-											: {};
-									if (desc.get || desc.set) {
-										Object.defineProperty(newObj, key, desc);
-									} else {
-										newObj[key] = obj[key];
-									}
-								}
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
 							}
 						}
-						newObj.default = obj;
-						return newObj;
 					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
 				}
 
 				function _interopRequireDefault(obj) {
@@ -32771,12 +32850,50 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				}
 
 				(function() {
-					var enterModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).enterModule;
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
 					enterModule && enterModule(module);
 				})();
+
+				function ownKeys(object, enumerableOnly) {
+					var keys = Object.keys(object);
+					if (Object.getOwnPropertySymbols) {
+						var symbols = Object.getOwnPropertySymbols(object);
+						if (enumerableOnly)
+							symbols = symbols.filter(function(sym) {
+								return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+							});
+						keys.push.apply(keys, symbols);
+					}
+					return keys;
+				}
+
+				function _objectSpread(target) {
+					for (var i = 1; i < arguments.length; i++) {
+						var source = arguments[i] != null ? arguments[i] : {};
+						if (i % 2) {
+							ownKeys(Object(source), true).forEach(function(key) {
+								(0, _defineProperty2.default)(target, key, source[key]);
+							});
+						} else if (Object.getOwnPropertyDescriptors) {
+							Object.defineProperties(
+								target,
+								Object.getOwnPropertyDescriptors(source)
+							);
+						} else {
+							ownKeys(Object(source)).forEach(function(key) {
+								Object.defineProperty(
+									target,
+									key,
+									Object.getOwnPropertyDescriptor(source, key)
+								);
+							});
+						}
+					}
+					return target;
+				}
 
 				var __signature__ =
 					typeof reactHotLoaderGlobal !== "undefined"
@@ -33215,16 +33332,14 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 								var value =
 									target.type === "checkbox" ? target.checked : target.value;
 								var name = target.name;
-								var errors = (0, _objectSpread2.default)(
-									{},
-									_this.state.errors
-								);
+
+								var errors = _objectSpread({}, _this.state.errors);
+
 								var response = (0, _ccValidation.validateInput)(name, value);
 								errors[name] = response.error;
-								var fields = (0, _objectSpread2.default)(
-									{},
-									_this.state.fields
-								);
+
+								var fields = _objectSpread({}, _this.state.fields);
+
 								fields[name] = value;
 								var ccChecked = _this.state.ccChecked;
 
@@ -33675,10 +33790,10 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
-					var reactHotLoader = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).default;
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
 
 					if (!reactHotLoader) {
 						return;
@@ -33712,16 +33827,16 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				})();
 
 				(function() {
-					var leaveModule = (typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal
-						: require("react-hot-loader")
-					).leaveModule;
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
 					leaveModule && leaveModule(module);
 				})();
 			},
 			{
-				"@babel/runtime/helpers/objectSpread":
-					"node_modules/@babel/runtime/helpers/objectSpread.js",
+				"@babel/runtime/helpers/defineProperty":
+					"node_modules/@babel/runtime/helpers/defineProperty.js",
 				"@babel/runtime/helpers/toConsumableArray":
 					"node_modules/@babel/runtime/helpers/toConsumableArray.js",
 				"@babel/runtime/helpers/classCallCheck":
@@ -33734,8 +33849,6 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					"node_modules/@babel/runtime/helpers/getPrototypeOf.js",
 				"@babel/runtime/helpers/inherits":
 					"node_modules/@babel/runtime/helpers/inherits.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"react-hot-loader": "node_modules/react-hot-loader/index.js",
 				react: "node_modules/react/index.js",
 				"../Contexts/GivingFormProvider":
 					"src/Components/Contexts/GivingFormProvider.js",
@@ -33766,6 +33879,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 				"react-icons/fa": "node_modules/react-icons/fa/index.esm.js",
 				"../../helpers/scrollToPoint": "src/helpers/scrollToPoint.js",
 				"../../helpers/cc-validation": "src/helpers/cc-validation.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"node_modules/parcel-bundler/src/builtins/hmr-runtime.js": [
@@ -33801,7 +33915,7 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "51910" + "/"
+						protocol + "://" + hostname + ":" + "56615" + "/"
 					);
 
 					ws.onmessage = function(event) {
@@ -33838,8 +33952,9 @@ parcelRequire = (function(modules, cache, entry, globalName) {
 								assetsToAccept.forEach(function(v) {
 									hmrAcceptRun(v[0], v[1]);
 								});
-							} else {
-								window.location.reload();
+							} else if (location.reload) {
+								// `location` global exists in a web worker context but lacks `.reload()` function.
+								location.reload();
 							}
 						}
 
