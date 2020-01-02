@@ -738,6 +738,7 @@ class GivingFormProvider extends Component {
 									);
 								} else {
 									try {
+										this.context.refreshToken();
 										const url =
 											window.location.origin + window.location.pathname;
 										const sDynamicPageUrl =
@@ -820,7 +821,7 @@ class GivingFormProvider extends Component {
 					this.context.setConfirmed(action);
 				}
 			),
-		getSelection: action => this.setState(state => reducer(state, action)),
+		getSelection: action => this.setState(state => reducer(state, action), () => this.context.refreshToken()),
 		goBack: action =>
 			this.setState(
 				state => reducer(state, action),

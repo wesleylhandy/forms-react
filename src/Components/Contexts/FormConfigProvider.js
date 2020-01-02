@@ -53,46 +53,6 @@ class FormConfigProvider extends Component {
 		cssConfig: {},
 		submitted: false,
 		confirmed: false,
-		clearTimeouts: () => {
-			clearTimeout(this.state.idleWarning);
-			clearTimeout(this.state.expiredWarning);
-		},
-		setTimeouts: async () => {
-			if (this.state.idleWarning != -1) {
-				try {
-					const res = callApi(
-						this.state.formConfig.tokenRefreshUri,
-						{
-							method: "GET",
-						},
-						true
-					);
-					this.clearTimeouts();
-				} catch (err) {
-					return;
-				}
-			}
-			const idleWarning = setTimeout(
-				() => alert("This session will expire in 5 minutes."),
-				25 * 60 * 1000
-			);
-			const expiredWarning = setTimeout(
-				() =>
-					this.setState({ expired: true }, () =>
-						alert(
-							"This session has expired. Please refresh this page if you wish to continue."
-						)
-					),
-				30 * 60 * 1000
-			);
-			this.setState(state =>
-				reducer(state, {
-					type: "SET_TIMEOUTS",
-					idleWarning,
-					expiredWarning,
-				})
-			);
-		},
 		getConfiguration: async ({ rootEntry, formType }) => {
 			// TODO: REDUCE INITIALIZATION OF DATA TO A SINGLE API CALL
 
@@ -272,7 +232,49 @@ class FormConfigProvider extends Component {
 			return this.state.formConfig[key];
 		},
 		setCssConfig: action => this.setState(state => reducer(state, action)),
+		refreshToken: () => this.setTimeouts(),
 	};
+	clearTimeouts = () => {
+		clearTimeout(this.state.idleWarning);
+		clearTimeout(this.state.expiredWarning);
+	}
+	setTimeouts = async () => {
+		if (this.state.idleWarning != -1) {
+			try {
+				const res = callApi(
+					this.state.formConfig.tokenRefreshUri,
+					{
+						method: "GET",
+					},
+					true
+				);
+				this.clearTimeouts();
+			} catch (err) {
+				console.error({err})
+				return;
+			}
+		}
+		const idleWarning = setTimeout(
+			() => alert("This session will expire in 5 minutes."),
+			25 * 60 * 1000
+		);
+		const expiredWarning = setTimeout(
+			() =>
+				this.setState({ expired: true }, () =>
+					alert(
+						"This session has expired. Please refresh this page if you wish to continue."
+					)
+				),
+			30 * 60 * 1000
+		);
+		this.setState(state =>
+			reducer(state, {
+				type: "SET_TIMEOUTS",
+				idleWarning,
+				expiredWarning,
+			})
+		);
+	}
 	render() {
 		const {
 			state,
