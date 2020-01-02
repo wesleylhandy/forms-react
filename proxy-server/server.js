@@ -107,8 +107,8 @@ router.get("/config/:filename", (req, res) => {
 	}
 });
 
-router.get("/refresh", (req, res) => {
-	const { campaign = "" } = req.query;
+router.post("/refresh", (req, res) => {
+	const { campaign = "" } = req.body;
 	res.json({ campaign });
 });
 

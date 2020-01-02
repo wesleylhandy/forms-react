@@ -6529,12 +6529,10 @@ object-assign
 																configUrl = ""
 																	.concat(proxyUri, "cbngiving/v1/")
 																	.concat(formName, "?type=initial_setup");
-																tokenRefreshUri = ""
-																	.concat(
-																		proxyUri,
-																		"cbngiving/v1/refresh_token?campaign="
-																	)
-																	.concat(formName);
+																tokenRefreshUri = "".concat(
+																	proxyUri,
+																	"cbngiving/v1/refresh_token"
+																);
 																_context.next = 24;
 																return (0, _fetchHelpers.callApi)(
 																	configUrl,
@@ -6636,7 +6634,7 @@ object-assign
 																}
 
 																if (!Object.keys(formConfig).length) {
-																	_context.next = 52;
+																	_context.next = 53;
 																	break;
 																}
 
@@ -6644,10 +6642,9 @@ object-assign
 																	? "".concat(proxyUri, "/").concat(formType)
 																	: proxyUri;
 																formConfig.tokenRefreshUri = isLocal
-																	? ""
-																			.concat(proxyUri, "/refresh?campaign=")
-																			.concat(formName)
+																	? "".concat(proxyUri, "/refresh")
 																	: tokenRefreshUri;
+																formConfig.campaignName = formName;
 
 																if (preset) {
 																	(_formConfig = formConfig),
@@ -6719,22 +6716,22 @@ object-assign
 
 																_this.setTimeouts();
 
-																_context.next = 53;
+																_context.next = 54;
 																break;
 
-															case 52:
+															case 53:
 																throw new Error(
 																	"Unable to Load Configuration for ".concat(
 																		formType
 																	)
 																);
 
-															case 53:
-																_context.next = 58;
+															case 54:
+																_context.next = 59;
 																break;
 
-															case 55:
-																_context.prev = 55;
+															case 56:
+																_context.prev = 56;
 																_context.t0 = _context["catch"](2);
 
 																_this.setState(
@@ -6752,7 +6749,7 @@ object-assign
 																	}
 																);
 
-															case 58:
+															case 59:
 															case "end":
 																return _context.stop();
 														}
@@ -6760,7 +6757,7 @@ object-assign
 												},
 												_callee,
 												null,
-												[[2, 55]]
+												[[2, 56]]
 											);
 										})
 									);
@@ -6836,7 +6833,13 @@ object-assign
 								(0, _asyncToGenerator2.default)(
 									/*#__PURE__*/
 									_regenerator.default.mark(function _callee2() {
-										var res, idleWarning, expiredWarning;
+										var _this$state$formConfi,
+											tokenRefreshUri,
+											campaign,
+											res,
+											idleWarning,
+											expiredWarning;
+
 										return _regenerator.default.wrap(
 											function _callee2$(_context2) {
 												while (1) {
@@ -6848,15 +6851,30 @@ object-assign
 															}
 
 															_context2.prev = 1;
-															res = (0, _fetchHelpers.callApi)(
-																_this.state.formConfig.tokenRefreshUri,
-																{
-																	method: "GET",
-																},
-																true
-															);
+															(_this$state$formConfi = _this.state.formConfig),
+																(tokenRefreshUri =
+																	_this$state$formConfi.tokenRefreshUri),
+																(campaign = _this$state$formConfi.campaignName);
 
-															_this.clearTimeouts();
+															if (tokenRefreshUri && campaign) {
+																res = (0, _fetchHelpers.callApi)(
+																	tokenRefreshUri,
+																	{
+																		method: "POST",
+																		mode: "cors",
+																		headers: {
+																			"Content-Type":
+																				"application/json; charset=utf-8",
+																		},
+																		body: JSON.stringify({
+																			campaign: campaign,
+																		}),
+																	},
+																	true
+																);
+
+																_this.clearTimeouts();
+															}
 
 															_context2.next = 10;
 															break;
@@ -24826,7 +24844,7 @@ object-assign
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "57505" + "/"
+						protocol + "://" + hostname + ":" + "64978" + "/"
 					);
 
 					ws.onmessage = function(event) {

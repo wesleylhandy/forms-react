@@ -80,7 +80,7 @@ class FormConfigProvider extends Component {
 					initialStyle = rootEntry.dataset.initialStyle;
 				} else if (isWordpress) {
 					const configUrl = `${proxyUri}cbngiving/v1/${formName}?type=initial_setup`;
-					tokenRefreshUri = `${proxyUri}cbngiving/v1/refresh_token?campaign=${formName}`;
+					tokenRefreshUri = `${proxyUri}cbngiving/v1/refresh_token`;
 					const config = await callApi(configUrl, { method: "GET" }, true);
 					initialState = config.initialState;
 					initialStyle = config.initialStyle;
@@ -144,8 +144,9 @@ class FormConfigProvider extends Component {
 				if (Object.keys(formConfig).length) {
 					formConfig.proxy = isLocal ? `${proxyUri}/${formType}` : proxyUri;
 					formConfig.tokenRefreshUri = isLocal
-						? `${proxyUri}/refresh?campaign=${formName}`
+						? `${proxyUri}/refresh`
 						: tokenRefreshUri;
+					formConfig.campaignName = formName;
 					if (preset) {
 						const { designations = [{ DetailName: "" }] } = formConfig;
 						const idx = designations.findIndex(({ DetailName }) =>
@@ -241,14 +242,25 @@ class FormConfigProvider extends Component {
 	setTimeouts = async () => {
 		if (this.state.idleWarning != -1) {
 			try {
-				const res = callApi(
-					this.state.formConfig.tokenRefreshUri,
-					{
-						method: "GET",
-					},
-					true
-				);
-				this.clearTimeouts();
+				const {
+					tokenRefreshUri,
+					campaignName: campaign,
+				} = this.state.formConfig;
+				if (tokenRefreshUri && campaign) {
+					const res = callApi(
+						tokenRefreshUri,
+						{
+							method: "POST",
+							mode: "cors",
+							headers: {
+								"Content-Type": "application/json; charset=utf-8",
+							},
+							body: JSON.stringify({ campaign }),
+						},
+						true
+					);
+					this.clearTimeouts();
+				}
 			} catch (err) {
 				console.error({ err });
 				return;
