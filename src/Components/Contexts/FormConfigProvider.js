@@ -268,7 +268,7 @@ class FormConfigProvider extends Component {
 		}
 		const idleWarning = setTimeout(
 			() => alert("This session will expire in 5 minutes."),
-			25 * 60 * 1000
+			10 * 60 * 1000
 		);
 		const expiredWarning = setTimeout(
 			() =>
@@ -277,7 +277,7 @@ class FormConfigProvider extends Component {
 						"This session has expired. Please refresh this page if you wish to continue."
 					)
 				),
-			30 * 60 * 1000
+			15 * 60 * 1000
 		);
 		this.setState(state =>
 			reducer(state, {

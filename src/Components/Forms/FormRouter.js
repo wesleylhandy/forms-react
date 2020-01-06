@@ -6,6 +6,7 @@ import GivingFormProvider from "../Contexts/GivingFormProvider";
 import ProductFormProvider from "../Contexts/ProductFormProvider";
 import SignUpFormProvider from "../Contexts/SignUpFormProvider";
 import ErrorBoundary from "../ErrorBoundary";
+const TimeoutForm = lazy(() => import("./TimeoutForm"));
 const Banner = lazy(() => import("../StyledComponents/Banner"));
 const GivingForm = lazy(() => import("./GivingForm"));
 const AskForm = lazy(() => import("./AskForm"));
@@ -80,7 +81,20 @@ const FormRouter = props => {
 							`}
 						/>
 						{expired ? (
-							<Banner expired={true} />
+							<TimeoutForm
+								{...props}
+								{...formConfig}
+								formBackgroundColor={formBackgroundColor}
+								formBorderColor={formBorderColor}
+								formBorderRadius={formBorderRadius}
+								formBorderWidth={formBorderWidth}
+								formBoxShadow={formBoxShadow}
+								formMaxWidth={formMaxWidth}
+								formPadding={formPadding}
+								formMargin={formMargin}
+								formColor={formColor}
+								expired={true}
+							/>
 						) : (
 							<>
 								<ErrorBoundary>

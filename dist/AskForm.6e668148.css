@@ -1,2 +1,17 @@
-.askarray-item--level-appear,.askarray-item--level-enter{opacity:0}.askarray-item--level-enter-active,.askarray-item--level-enter-appear{opacity:1;transition:opacity .4s ease-in}.askarray-item--level-exit{opacity:1}.askarray-item--level-exit-active{opacity:0;transition:opacity .4s ease-in}
+.askarray-item--level-appear,
+.askarray-item--level-enter {
+	opacity: 0;
+}
+.askarray-item--level-enter-active,
+.askarray-item--level-enter-appear {
+	opacity: 1;
+	transition: opacity 0.4s ease-in;
+}
+.askarray-item--level-exit {
+	opacity: 1;
+}
+.askarray-item--level-exit-active {
+	opacity: 0;
+	transition: opacity 0.4s ease-in;
+}
 /*# sourceMappingURL=/AskForm.6e668148.css.map */

@@ -43,6 +43,23 @@
 	transition: all 200ms;
 }
 
+.askarray-item--level-enter,
+.askarray-item--level-appear {
+	opacity: 0;
+}
+.askarray-item--level-enter-active,
+.askarray-item--level-enter-appear {
+	opacity: 1;
+	transition: opacity 400ms ease-in;
+}
+.askarray-item--level-exit {
+	opacity: 1;
+}
+.askarray-item--level-exit-active {
+	opacity: 0;
+	transition: opacity 400ms ease-in;
+}
+
 .country-change-transition-enter,
 .country-change-transition-appear {
 	opacity: 0;

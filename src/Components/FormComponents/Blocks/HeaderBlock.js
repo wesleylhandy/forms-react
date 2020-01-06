@@ -50,6 +50,7 @@ const Header = styled.header`
 			display: flex;
 			flex-direction: row;
 			flex-wrap: wrap;
+			justify-content: center;
 			span {
 				padding-top: 20px;
 				font-size: 20px;

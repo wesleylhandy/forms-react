@@ -116,6 +116,7 @@ class AskForm extends Component {
 			formMargin,
 			formMaxWidth,
 			formPadding,
+			expired,
 		} = this.props;
 		const givingOptions = {
 			monthlyOption,
@@ -131,7 +132,7 @@ class AskForm extends Component {
 		const { monthlyChecked } = this.state;
 		const { errors, fields, submitting, selected } = this.context;
 		const hasErrors = errors.amount !== "";
-		return !selected ? (
+		return !selected || expired ? (
 			<>
 				<HeaderBlock />
 				<FormWrapper
@@ -144,7 +145,7 @@ class AskForm extends Component {
 					formPadding={formPadding}
 					formMargin={formMargin}
 					formColor={formColor}
-					inProp={!selected}
+					inProp={!selected || expired}
 				>
 					<form
 						id="react-club-ask-form"

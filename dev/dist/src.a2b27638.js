@@ -6561,8 +6561,8 @@ object-assign
 
 															case 31:
 																proxyUri = "http://"
-																	.concat("127.0.0.1", ":")
-																	.concat("8282");
+																	.concat("10.100.43.94", ":")
+																	.concat("8080");
 																_context.next = 34;
 																return Promise.all([
 																	(0, _fetchHelpers.callApi)(
@@ -6902,7 +6902,7 @@ object-assign
 																		);
 																	}
 																);
-															}, 30 * 60 * 1000);
+															}, 1 * 60 * 1000);
 
 															_this.setState(function(state) {
 																return reducer(state, {
@@ -12894,690 +12894,7 @@ object-assign
 				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
-		"src/Components/Forms/FormRouter.js": [
-			function(require, module, exports) {
-				"use strict";
-
-				Object.defineProperty(exports, "__esModule", {
-					value: true,
-				});
-				exports.default = void 0;
-
-				var _extends2 = _interopRequireDefault(
-					require("@babel/runtime/helpers/extends")
-				);
-
-				var _react = _interopRequireWildcard(require("react"));
-
-				var _core = require("@emotion/core");
-
-				var _FormConfigProvider = require("../Contexts/FormConfigProvider");
-
-				var _GivingFormProvider = _interopRequireDefault(
-					require("../Contexts/GivingFormProvider")
-				);
-
-				var _ProductFormProvider = _interopRequireDefault(
-					require("../Contexts/ProductFormProvider")
-				);
-
-				var _SignUpFormProvider = _interopRequireDefault(
-					require("../Contexts/SignUpFormProvider")
-				);
-
-				var _ErrorBoundary = _interopRequireDefault(
-					require("../ErrorBoundary")
-				);
-
-				var _Spinner = _interopRequireDefault(
-					require("../StyledComponents/Spinner")
-				);
-
-				function _getRequireWildcardCache() {
-					if (typeof WeakMap !== "function") return null;
-					var cache = new WeakMap();
-					_getRequireWildcardCache = function() {
-						return cache;
-					};
-					return cache;
-				}
-
-				function _interopRequireWildcard(obj) {
-					if (obj && obj.__esModule) {
-						return obj;
-					}
-					if (
-						obj === null ||
-						(typeof obj !== "object" && typeof obj !== "function")
-					) {
-						return { default: obj };
-					}
-					var cache = _getRequireWildcardCache();
-					if (cache && cache.has(obj)) {
-						return cache.get(obj);
-					}
-					var newObj = {};
-					var hasPropertyDescriptor =
-						Object.defineProperty && Object.getOwnPropertyDescriptor;
-					for (var key in obj) {
-						if (Object.prototype.hasOwnProperty.call(obj, key)) {
-							var desc = hasPropertyDescriptor
-								? Object.getOwnPropertyDescriptor(obj, key)
-								: null;
-							if (desc && (desc.get || desc.set)) {
-								Object.defineProperty(newObj, key, desc);
-							} else {
-								newObj[key] = obj[key];
-							}
-						}
-					}
-					newObj.default = obj;
-					if (cache) {
-						cache.set(obj, newObj);
-					}
-					return newObj;
-				}
-
-				function _interopRequireDefault(obj) {
-					return obj && obj.__esModule ? obj : { default: obj };
-				}
-
-				(function() {
-					var enterModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.enterModule
-							: undefined;
-					enterModule && enterModule(module);
-				})();
-
-				var __signature__ =
-					typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal.default.signature
-						: function(a) {
-								return a;
-						  };
-
-				var Banner = (0, _react.lazy)(function() {
-					return require("_bundle_loader")(
-						require.resolve("../StyledComponents/Banner")
-					);
-				});
-				var GivingForm = (0, _react.lazy)(function() {
-					return require("_bundle_loader")(require.resolve("./GivingForm"));
-				});
-				var AskForm = (0, _react.lazy)(function() {
-					return require("_bundle_loader")(require.resolve("./AskForm"));
-				});
-				var ConfirmationForm = (0, _react.lazy)(function() {
-					return require("_bundle_loader")(
-						require.resolve("./ConfirmationForm")
-					);
-				});
-				var PaymentForm = (0, _react.lazy)(function() {
-					return require("_bundle_loader")(require.resolve("./PaymentForm"));
-				});
-				var ProductForm = (0, _react.lazy)(function() {
-					return require("_bundle_loader")(require.resolve("./ProductForm"));
-				});
-				var SignUpForm = (0, _react.lazy)(function() {
-					return require("_bundle_loader")(require.resolve("./SignUpForm"));
-				});
-				var GivingSuccessMessage = (0, _react.lazy)(function() {
-					return require("_bundle_loader")(
-						require.resolve("../SuccessPages/GivingSuccessMessage")
-					);
-				});
-				var SignUpSuccessMessage = (0, _react.lazy)(function() {
-					return require("_bundle_loader")(
-						require.resolve("../SuccessPages/SignUpSuccessMessage")
-					);
-				});
-				var ClubSuccessMessage = (0, _react.lazy)(function() {
-					return require("_bundle_loader")(
-						require.resolve("../SuccessPages/ClubSuccessMessage")
-					);
-				});
-
-				var FormRouter = function FormRouter(props) {
-					var _useContext = (0, _react.useContext)(
-							_FormConfigProvider.FormConfigContext
-						),
-						formConfig = _useContext.formConfig,
-						submitted = _useContext.submitted,
-						confirmed = _useContext.confirmed,
-						getCssConfig = _useContext.getCssConfig,
-						expired = _useContext.expired;
-
-					var formType = formConfig.formType,
-						allowInternational = formConfig.allowInternational,
-						getPhone = formConfig.getPhone,
-						getHonorific = formConfig.getHonorific,
-						getSuffix = formConfig.getSuffix,
-						getMiddleName = formConfig.getMiddleName,
-						getSpouseInfo = formConfig.getSpouseInfo;
-
-					var _getCssConfig = getCssConfig("form"),
-						_getCssConfig$formExt = _getCssConfig.formExternalFont,
-						formExternalFont =
-							_getCssConfig$formExt === void 0 ? "none" : _getCssConfig$formExt,
-						_getCssConfig$formFon = _getCssConfig.formFontFamily,
-						formFontFamily =
-							_getCssConfig$formFon === void 0
-								? "Arial, sans-serif"
-								: _getCssConfig$formFon,
-						_getCssConfig$formFon2 = _getCssConfig.formFontStyle,
-						formFontStyle =
-							_getCssConfig$formFon2 === void 0
-								? "normal"
-								: _getCssConfig$formFon2,
-						_getCssConfig$formFon3 = _getCssConfig.formFontWeight,
-						formFontWeight =
-							_getCssConfig$formFon3 === void 0
-								? "400"
-								: _getCssConfig$formFon3,
-						_getCssConfig$formFon4 = _getCssConfig.formFontSize,
-						formFontSize =
-							_getCssConfig$formFon4 === void 0
-								? "19px"
-								: _getCssConfig$formFon4,
-						_getCssConfig$formBac = _getCssConfig.formBackgroundColor,
-						formBackgroundColor =
-							_getCssConfig$formBac === void 0 ? "#fff" : _getCssConfig$formBac,
-						_getCssConfig$formBor = _getCssConfig.formBorderColor,
-						formBorderColor =
-							_getCssConfig$formBor === void 0
-								? "transparent"
-								: _getCssConfig$formBor,
-						_getCssConfig$formBor2 = _getCssConfig.formBorderRadius,
-						formBorderRadius =
-							_getCssConfig$formBor2 === void 0 ? "0" : _getCssConfig$formBor2,
-						_getCssConfig$formBor3 = _getCssConfig.formBorderWidth,
-						formBorderWidth =
-							_getCssConfig$formBor3 === void 0
-								? "2px"
-								: _getCssConfig$formBor3,
-						_getCssConfig$formBox = _getCssConfig.formBoxShadow,
-						formBoxShadow =
-							_getCssConfig$formBox === void 0
-								? "0 0 7px 0 rgba(0,0,0,0.07)"
-								: _getCssConfig$formBox,
-						_getCssConfig$formMax = _getCssConfig.formMaxWidth,
-						formMaxWidth =
-							_getCssConfig$formMax === void 0
-								? "768px"
-								: _getCssConfig$formMax,
-						_getCssConfig$formPad = _getCssConfig.formPadding,
-						formPadding =
-							_getCssConfig$formPad === void 0 ? "0" : _getCssConfig$formPad,
-						_getCssConfig$formMar = _getCssConfig.formMargin,
-						formMargin =
-							_getCssConfig$formMar === void 0 ? "0" : _getCssConfig$formMar,
-						_getCssConfig$formCol = _getCssConfig.formColor,
-						formColor =
-							_getCssConfig$formCol === void 0 ? "#333" : _getCssConfig$formCol;
-
-					switch (formType) {
-						case "club":
-							return (0, _core.jsx)(
-								_GivingFormProvider.default,
-								null,
-								(0, _core.jsx)(
-									_react.Suspense,
-									{
-										fallback: (0, _core.jsx)(_Spinner.default, null),
-									},
-									(0, _core.jsx)(_core.Global, {
-										styles:
-											/*#__PURE__*/
-											(0, _core.css)(
-												formExternalFont
-													? '@import url("'.concat(formExternalFont, '");')
-													: "",
-												" *{font-family:",
-												formFontFamily,
-												";font-size:",
-												formFontSize,
-												";font-weight:",
-												formFontWeight,
-												";font-style:",
-												formFontStyle,
-												";line-height:unset;box-sizing:unset;}.wrapper{background-color:#eceff1;};label:FormRouter;" +
-													("development" === "production"
-														? ""
-														: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Sb3V0ZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBa0VrQiIsImZpbGUiOiJGb3JtUm91dGVyLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IHVzZUNvbnRleHQsIFN1c3BlbnNlLCBsYXp5IH0gZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgeyBHbG9iYWwsIGNzcyB9IGZyb20gXCJAZW1vdGlvbi9jb3JlXCI7XG5cbmltcG9ydCB7IEZvcm1Db25maWdDb250ZXh0IH0gZnJvbSBcIi4uL0NvbnRleHRzL0Zvcm1Db25maWdQcm92aWRlclwiO1xuaW1wb3J0IEdpdmluZ0Zvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvR2l2aW5nRm9ybVByb3ZpZGVyXCI7XG5pbXBvcnQgUHJvZHVjdEZvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvUHJvZHVjdEZvcm1Qcm92aWRlclwiO1xuaW1wb3J0IFNpZ25VcEZvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvU2lnblVwRm9ybVByb3ZpZGVyXCI7XG5pbXBvcnQgRXJyb3JCb3VuZGFyeSBmcm9tIFwiLi4vRXJyb3JCb3VuZGFyeVwiO1xuY29uc3QgQmFubmVyID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuLi9TdHlsZWRDb21wb25lbnRzL0Jhbm5lclwiKSk7XG5jb25zdCBHaXZpbmdGb3JtID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuL0dpdmluZ0Zvcm1cIikpO1xuY29uc3QgQXNrRm9ybSA9IGxhenkoKCkgPT4gaW1wb3J0KFwiLi9Bc2tGb3JtXCIpKTtcbmNvbnN0IENvbmZpcm1hdGlvbkZvcm0gPSBsYXp5KCgpID0+IGltcG9ydChcIi4vQ29uZmlybWF0aW9uRm9ybVwiKSk7XG5jb25zdCBQYXltZW50Rm9ybSA9IGxhenkoKCkgPT4gaW1wb3J0KFwiLi9QYXltZW50Rm9ybVwiKSk7XG5jb25zdCBQcm9kdWN0Rm9ybSA9IGxhenkoKCkgPT4gaW1wb3J0KFwiLi9Qcm9kdWN0Rm9ybVwiKSk7XG5jb25zdCBTaWduVXBGb3JtID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuL1NpZ25VcEZvcm1cIikpO1xuY29uc3QgR2l2aW5nU3VjY2Vzc01lc3NhZ2UgPSBsYXp5KCgpID0+XG5cdGltcG9ydChcIi4uL1N1Y2Nlc3NQYWdlcy9HaXZpbmdTdWNjZXNzTWVzc2FnZVwiKVxuKTtcbmNvbnN0IFNpZ25VcFN1Y2Nlc3NNZXNzYWdlID0gbGF6eSgoKSA9PlxuXHRpbXBvcnQoXCIuLi9TdWNjZXNzUGFnZXMvU2lnblVwU3VjY2Vzc01lc3NhZ2VcIilcbik7XG5jb25zdCBDbHViU3VjY2Vzc01lc3NhZ2UgPSBsYXp5KCgpID0+XG5cdGltcG9ydChcIi4uL1N1Y2Nlc3NQYWdlcy9DbHViU3VjY2Vzc01lc3NhZ2VcIilcbik7XG5pbXBvcnQgU3Bpbm5lciBmcm9tIFwiLi4vU3R5bGVkQ29tcG9uZW50cy9TcGlubmVyXCI7XG5cbmNvbnN0IEZvcm1Sb3V0ZXIgPSBwcm9wcyA9PiB7XG5cdGNvbnN0IHtcblx0XHRmb3JtQ29uZmlnLFxuXHRcdHN1Ym1pdHRlZCxcblx0XHRjb25maXJtZWQsXG5cdFx0Z2V0Q3NzQ29uZmlnLFxuXHRcdGV4cGlyZWQsXG5cdH0gPSB1c2VDb250ZXh0KEZvcm1Db25maWdDb250ZXh0KTtcblx0Y29uc3Qge1xuXHRcdGZvcm1UeXBlLFxuXHRcdGFsbG93SW50ZXJuYXRpb25hbCxcblx0XHRnZXRQaG9uZSxcblx0XHRnZXRIb25vcmlmaWMsXG5cdFx0Z2V0U3VmZml4LFxuXHRcdGdldE1pZGRsZU5hbWUsXG5cdFx0Z2V0U3BvdXNlSW5mbyxcblx0fSA9IGZvcm1Db25maWc7XG5cblx0Y29uc3Qge1xuXHRcdGZvcm1FeHRlcm5hbEZvbnQgPSBcIm5vbmVcIixcblx0XHRmb3JtRm9udEZhbWlseSA9IFwiQXJpYWwsIHNhbnMtc2VyaWZcIixcblx0XHRmb3JtRm9udFN0eWxlID0gXCJub3JtYWxcIixcblx0XHRmb3JtRm9udFdlaWdodCA9IFwiNDAwXCIsXG5cdFx0Zm9ybUZvbnRTaXplID0gXCIxOXB4XCIsXG5cdFx0Zm9ybUJhY2tncm91bmRDb2xvciA9IFwiI2ZmZlwiLFxuXHRcdGZvcm1Cb3JkZXJDb2xvciA9IFwidHJhbnNwYXJlbnRcIixcblx0XHRmb3JtQm9yZGVyUmFkaXVzID0gXCIwXCIsXG5cdFx0Zm9ybUJvcmRlcldpZHRoID0gXCIycHhcIixcblx0XHRmb3JtQm94U2hhZG93ID0gXCIwIDAgN3B4IDAgcmdiYSgwLDAsMCwwLjA3KVwiLFxuXHRcdGZvcm1NYXhXaWR0aCA9IFwiNzY4cHhcIixcblx0XHRmb3JtUGFkZGluZyA9IFwiMFwiLFxuXHRcdGZvcm1NYXJnaW4gPSBcIjBcIixcblx0XHRmb3JtQ29sb3IgPSBcIiMzMzNcIixcblx0fSA9IGdldENzc0NvbmZpZyhcImZvcm1cIik7XG5cdHN3aXRjaCAoZm9ybVR5cGUpIHtcblx0XHRjYXNlIFwiY2x1YlwiOlxuXHRcdFx0cmV0dXJuIChcblx0XHRcdFx0PEdpdmluZ0Zvcm1Qcm92aWRlcj5cblx0XHRcdFx0XHQ8U3VzcGVuc2UgZmFsbGJhY2s9ezxTcGlubmVyIC8+fT5cblx0XHRcdFx0XHRcdDxHbG9iYWxcblx0XHRcdFx0XHRcdFx0c3R5bGVzPXtjc3NgXG5cdFx0XHRcdFx0XHRcdFx0JHtmb3JtRXh0ZXJuYWxGb250ID8gYEBpbXBvcnQgdXJsKFwiJHtmb3JtRXh0ZXJuYWxGb250fVwiKTtgIDogXCJcIn1cblx0XHRcdFx0XHRcdFx0XHQqIHtcblx0XHRcdFx0XHRcdFx0XHRcdGZvbnQtZmFtaWx5OiAke2Zvcm1Gb250RmFtaWx5fTtcblx0XHRcdFx0XHRcdFx0XHRcdGZvbnQtc2l6ZTogJHtmb3JtRm9udFNpemV9O1xuXHRcdFx0XHRcdFx0XHRcdFx0Zm9udC13ZWlnaHQ6ICR7Zm9ybUZvbnRXZWlnaHR9O1xuXHRcdFx0XHRcdFx0XHRcdFx0Zm9udC1zdHlsZTogJHtmb3JtRm9udFN0eWxlfTtcblx0XHRcdFx0XHRcdFx0XHRcdGxpbmUtaGVpZ2h0OiB1bnNldDtcblx0XHRcdFx0XHRcdFx0XHRcdGJveC1zaXppbmc6IHVuc2V0O1xuXHRcdFx0XHRcdFx0XHRcdH1cblx0XHRcdFx0XHRcdFx0XHQud3JhcHBlciB7XG5cdFx0XHRcdFx0XHRcdFx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZWNlZmYxO1xuXHRcdFx0XHRcdFx0XHRcdH1cblx0XHRcdFx0XHRcdFx0YH1cblx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHR7ZXhwaXJlZCA/IChcblx0XHRcdFx0XHRcdFx0PEJhbm5lciBleHBpcmVkPXt0cnVlfSAvPlxuXHRcdFx0XHRcdFx0KSA6IChcblx0XHRcdFx0XHRcdFx0PD5cblx0XHRcdFx0XHRcdFx0XHQ8RXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0XHRcdDxBc2tGb3JtXG5cdFx0XHRcdFx0XHRcdFx0XHRcdHsuLi5wcm9wc31cblx0XHRcdFx0XHRcdFx0XHRcdFx0ey4uLmZvcm1Db25maWd9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1CYWNrZ3JvdW5kQ29sb3I9e2Zvcm1CYWNrZ3JvdW5kQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyUmFkaXVzPXtmb3JtQm9yZGVyUmFkaXVzfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyV2lkdGg9e2Zvcm1Cb3JkZXJXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybU1heFdpZHRoPXtmb3JtTWF4V2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1QYWRkaW5nPXtmb3JtUGFkZGluZ31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUNvbG9yPXtmb3JtQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHQvPlxuXHRcdFx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0XHQ8RXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0XHRcdDxDb25maXJtYXRpb25Gb3JtXG5cdFx0XHRcdFx0XHRcdFx0XHRcdGFsbG93SW50ZXJuYXRpb25hbD17YWxsb3dJbnRlcm5hdGlvbmFsfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRnZXRQaG9uZT17Z2V0UGhvbmV9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGdldEhvbm9yaWZpYz17Z2V0SG9ub3JpZmljfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRnZXRTdWZmaXg9e2dldFN1ZmZpeH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Z2V0TWlkZGxlTmFtZT17Z2V0TWlkZGxlTmFtZX1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Z2V0U3BvdXNlSW5mbz17Z2V0U3BvdXNlSW5mb31cblx0XHRcdFx0XHRcdFx0XHRcdFx0c3VibWl0dGVkPXtzdWJtaXR0ZWR9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1CYWNrZ3JvdW5kQ29sb3I9e2Zvcm1CYWNrZ3JvdW5kQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyUmFkaXVzPXtmb3JtQm9yZGVyUmFkaXVzfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyV2lkdGg9e2Zvcm1Cb3JkZXJXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybU1heFdpZHRoPXtmb3JtTWF4V2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1QYWRkaW5nPXtmb3JtUGFkZGluZ31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUNvbG9yPXtmb3JtQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHQvPlxuXHRcdFx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0XHQ8RXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0XHRcdDxDbHViU3VjY2Vzc01lc3NhZ2Vcblx0XHRcdFx0XHRcdFx0XHRcdFx0Y29uZmlybWVkPXtjb25maXJtZWR9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdHN1Y2Nlc3NNZXNzYWdlPXtmb3JtQ29uZmlnLnN1Y2Nlc3NNZXNzYWdlfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyQ29sb3I9e2Zvcm1Cb3JkZXJDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlclJhZGl1cz17Zm9ybUJvcmRlclJhZGl1c31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3hTaGFkb3c9e2Zvcm1Cb3hTaGFkb3d9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXhXaWR0aD17Zm9ybU1heFdpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXJnaW49e2Zvcm1NYXJnaW59XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Db2xvcj17Zm9ybUNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdDwvPlxuXHRcdFx0XHRcdFx0KX1cblx0XHRcdFx0XHQ8L1N1c3BlbnNlPlxuXHRcdFx0XHQ8L0dpdmluZ0Zvcm1Qcm92aWRlcj5cblx0XHRcdCk7XG5cdFx0XHRicmVhaztcblx0XHRjYXNlIFwiZ2l2aW5nXCI6XG5cdFx0XHRyZXR1cm4gKFxuXHRcdFx0XHQ8R2l2aW5nRm9ybVByb3ZpZGVyPlxuXHRcdFx0XHRcdDxTdXNwZW5zZSBmYWxsYmFjaz17PFNwaW5uZXIgLz59PlxuXHRcdFx0XHRcdFx0e2V4cGlyZWQgPyAoXG5cdFx0XHRcdFx0XHRcdDxCYW5uZXIgZXhwaXJlZD17dHJ1ZX0gLz5cblx0XHRcdFx0XHRcdCkgOiAoXG5cdFx0XHRcdFx0XHRcdDw+XG5cdFx0XHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0XHQ8R2l2aW5nRm9ybVxuXHRcdFx0XHRcdFx0XHRcdFx0XHR7Li4ucHJvcHN9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdHsuLi5mb3JtQ29uZmlnfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRzdWJtaXR0ZWQ9e3N1Ym1pdHRlZH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJhY2tncm91bmRDb2xvcj17Zm9ybUJhY2tncm91bmRDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlckNvbG9yPXtmb3JtQm9yZGVyQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJXaWR0aD17Zm9ybUJvcmRlcldpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm94U2hhZG93PXtmb3JtQm94U2hhZG93fVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybVBhZGRpbmc9e2Zvcm1QYWRkaW5nfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWFyZ2luPXtmb3JtTWFyZ2lufVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHRcdFx0PFBheW1lbnRGb3JtXG5cdFx0XHRcdFx0XHRcdFx0XHRcdHN1Ym1pdHRlZD17c3VibWl0dGVkfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyQ29sb3I9e2Zvcm1Cb3JkZXJDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlclJhZGl1cz17Zm9ybUJvcmRlclJhZGl1c31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3hTaGFkb3c9e2Zvcm1Cb3hTaGFkb3d9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXhXaWR0aD17Zm9ybU1heFdpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXJnaW49e2Zvcm1NYXJnaW59XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Db2xvcj17Zm9ybUNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0XHQ8R2l2aW5nU3VjY2Vzc01lc3NhZ2Vcblx0XHRcdFx0XHRcdFx0XHRcdFx0Y29uZmlybWVkPXtjb25maXJtZWR9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdHN1Y2Nlc3NNZXNzYWdlPXtmb3JtQ29uZmlnLnN1Y2Nlc3NNZXNzYWdlfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyQ29sb3I9e2Zvcm1Cb3JkZXJDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlclJhZGl1cz17Zm9ybUJvcmRlclJhZGl1c31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3hTaGFkb3c9e2Zvcm1Cb3hTaGFkb3d9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXhXaWR0aD17Zm9ybU1heFdpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXJnaW49e2Zvcm1NYXJnaW59XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Db2xvcj17Zm9ybUNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdDwvPlxuXHRcdFx0XHRcdFx0KX1cblx0XHRcdFx0XHQ8L1N1c3BlbnNlPlxuXHRcdFx0XHQ8L0dpdmluZ0Zvcm1Qcm92aWRlcj5cblx0XHRcdCk7XG5cdFx0XHRicmVhaztcblx0XHRjYXNlIFwicHJvZHVjdFwiOlxuXHRcdFx0cmV0dXJuIChcblx0XHRcdFx0PFByb2R1Y3RGb3JtUHJvdmlkZXI+XG5cdFx0XHRcdFx0PFN1c3BlbnNlIGZhbGxiYWNrPXs8U3Bpbm5lciAvPn0+XG5cdFx0XHRcdFx0XHQ8RXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0PFByb2R1Y3RGb3JtXG5cdFx0XHRcdFx0XHRcdFx0ey4uLnByb3BzfVxuXHRcdFx0XHRcdFx0XHRcdHsuLi5mb3JtQ29uZmlnfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1CYWNrZ3JvdW5kQ29sb3I9e2Zvcm1CYWNrZ3JvdW5kQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlckNvbG9yPXtmb3JtQm9yZGVyQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlclJhZGl1cz17Zm9ybUJvcmRlclJhZGl1c31cblx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyV2lkdGg9e2Zvcm1Cb3JkZXJXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQm94U2hhZG93PXtmb3JtQm94U2hhZG93fVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1NYXhXaWR0aD17Zm9ybU1heFdpZHRofVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1QYWRkaW5nPXtmb3JtUGFkZGluZ31cblx0XHRcdFx0XHRcdFx0XHRmb3JtTWFyZ2luPXtmb3JtTWFyZ2lufVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Db2xvcj17Zm9ybUNvbG9yfVxuXHRcdFx0XHRcdFx0XHQvPlxuXHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdDwvU3VzcGVuc2U+XG5cdFx0XHRcdDwvUHJvZHVjdEZvcm1Qcm92aWRlcj5cblx0XHRcdCk7XG5cdFx0XHRicmVhaztcblx0XHRjYXNlIFwic2lnbnVwXCI6XG5cdFx0XHRyZXR1cm4gKFxuXHRcdFx0XHQ8U2lnblVwRm9ybVByb3ZpZGVyPlxuXHRcdFx0XHRcdDxTdXNwZW5zZSBmYWxsYmFjaz17PFNwaW5uZXIgLz59PlxuXHRcdFx0XHRcdFx0e2V4cGlyZWQgPyAoXG5cdFx0XHRcdFx0XHRcdDxCYW5uZXIgZXhwaXJlZD17dHJ1ZX0gLz5cblx0XHRcdFx0XHRcdCkgOiAoXG5cdFx0XHRcdFx0XHRcdDw+XG5cdFx0XHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0XHQ8U2lnblVwRm9ybVxuXHRcdFx0XHRcdFx0XHRcdFx0XHR7Li4ucHJvcHN9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdHsuLi5mb3JtQ29uZmlnfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyQ29sb3I9e2Zvcm1Cb3JkZXJDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlclJhZGl1cz17Zm9ybUJvcmRlclJhZGl1c31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3hTaGFkb3c9e2Zvcm1Cb3hTaGFkb3d9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXhXaWR0aD17Zm9ybU1heFdpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXJnaW49e2Zvcm1NYXJnaW59XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Db2xvcj17Zm9ybUNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0XHQ8U2lnblVwU3VjY2Vzc01lc3NhZ2Vcblx0XHRcdFx0XHRcdFx0XHRcdFx0c3VibWl0dGVkPXtzdWJtaXR0ZWR9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdHN1Y2Nlc3NNZXNzYWdlPXtmb3JtQ29uZmlnLnN1Y2Nlc3NNZXNzYWdlfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyQ29sb3I9e2Zvcm1Cb3JkZXJDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlclJhZGl1cz17Zm9ybUJvcmRlclJhZGl1c31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3hTaGFkb3c9e2Zvcm1Cb3hTaGFkb3d9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXhXaWR0aD17Zm9ybU1heFdpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXJnaW49e2Zvcm1NYXJnaW59XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Db2xvcj17Zm9ybUNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdDwvPlxuXHRcdFx0XHRcdFx0KX1cblx0XHRcdFx0XHQ8L1N1c3BlbnNlPlxuXHRcdFx0XHQ8L1NpZ25VcEZvcm1Qcm92aWRlcj5cblx0XHRcdCk7XG5cdFx0XHRicmVhaztcblx0XHRkZWZhdWx0OlxuXHRcdFx0Y29uc29sZS5lcnJvcihcIkZvcm0gQ29uZmlndXJhdGlvbiBFcnJvclwiKTtcblx0XHRcdGNvbnNvbGUuZXJyb3IoeyBmb3JtVHlwZSwgZm9ybUNvbmZpZywgcHJvcHMgfSk7XG5cdFx0XHR0cnkge1xuXHRcdFx0XHR3aW5kb3cub21UcmFja0RlYnVnKFxuXHRcdFx0XHRcdHdpbmRvdy5sb2NhdGlvbi5ocmVmICsgXCIgLSBSZWFjdCBHaXZpbmcgRm9ybVwiLFxuXHRcdFx0XHRcdEpTT04uc3RyaW5naWZ5KHsgZm9ybVR5cGUsIGZvcm1Db25maWcsIHByb3BzIH0pXG5cdFx0XHRcdCk7XG5cdFx0XHR9IGNhdGNoIChlcnIpIHtcblx0XHRcdFx0Y29uc29sZS5lcnJvcihcIkVycm9yIFRyYWNraW5nIEVycm9yXCIpO1xuXHRcdFx0XHRjb25zb2xlLmVycm9yKGVycik7XG5cdFx0XHR9XG5cdFx0XHRhbGVydChcblx0XHRcdFx0XCJUaGVyZSB3YXMgYW4gaW50ZXJuYWwgZXJyb3IgbG9hZGluZyB0aGlzIGZvcm0uIFBsZWFzZSBjaGVjayBiYWNrIGxhdGVyIG9yIGNhbGwgdXMgYXQgMS04MDAtNzU5LTA3MDBcIlxuXHRcdFx0KTtcblx0XHRcdHJldHVybiBudWxsO1xuXHRcdFx0YnJlYWs7XG5cdH1cbn07XG5cbmV4cG9ydCBkZWZhdWx0IEZvcm1Sb3V0ZXI7XG4iXX0= */")
-											),
-									}),
-									expired
-										? (0, _core.jsx)(Banner, {
-												expired: true,
-										  })
-										: (0, _core.jsx)(
-												_react.default.Fragment,
-												null,
-												(0, _core.jsx)(
-													_ErrorBoundary.default,
-													null,
-													(0, _core.jsx)(
-														AskForm,
-														(0, _extends2.default)({}, props, formConfig, {
-															formBackgroundColor: formBackgroundColor,
-															formBorderColor: formBorderColor,
-															formBorderRadius: formBorderRadius,
-															formBorderWidth: formBorderWidth,
-															formBoxShadow: formBoxShadow,
-															formMaxWidth: formMaxWidth,
-															formPadding: formPadding,
-															formMargin: formMargin,
-															formColor: formColor,
-														})
-													)
-												),
-												(0, _core.jsx)(
-													_ErrorBoundary.default,
-													null,
-													(0, _core.jsx)(ConfirmationForm, {
-														allowInternational: allowInternational,
-														getPhone: getPhone,
-														getHonorific: getHonorific,
-														getSuffix: getSuffix,
-														getMiddleName: getMiddleName,
-														getSpouseInfo: getSpouseInfo,
-														submitted: submitted,
-														formBackgroundColor: formBackgroundColor,
-														formBorderColor: formBorderColor,
-														formBorderRadius: formBorderRadius,
-														formBorderWidth: formBorderWidth,
-														formBoxShadow: formBoxShadow,
-														formMaxWidth: formMaxWidth,
-														formPadding: formPadding,
-														formMargin: formMargin,
-														formColor: formColor,
-													})
-												),
-												(0, _core.jsx)(
-													_ErrorBoundary.default,
-													null,
-													(0, _core.jsx)(ClubSuccessMessage, {
-														confirmed: confirmed,
-														successMessage: formConfig.successMessage,
-														formBackgroundColor: formBackgroundColor,
-														formBorderColor: formBorderColor,
-														formBorderRadius: formBorderRadius,
-														formBorderWidth: formBorderWidth,
-														formBoxShadow: formBoxShadow,
-														formMaxWidth: formMaxWidth,
-														formPadding: formPadding,
-														formMargin: formMargin,
-														formColor: formColor,
-													})
-												)
-										  )
-								)
-							);
-							break;
-
-						case "giving":
-							return (0, _core.jsx)(
-								_GivingFormProvider.default,
-								null,
-								(0, _core.jsx)(
-									_react.Suspense,
-									{
-										fallback: (0, _core.jsx)(_Spinner.default, null),
-									},
-									expired
-										? (0, _core.jsx)(Banner, {
-												expired: true,
-										  })
-										: (0, _core.jsx)(
-												_react.default.Fragment,
-												null,
-												(0, _core.jsx)(
-													_ErrorBoundary.default,
-													null,
-													(0, _core.jsx)(
-														GivingForm,
-														(0, _extends2.default)({}, props, formConfig, {
-															submitted: submitted,
-															formBackgroundColor: formBackgroundColor,
-															formBorderColor: formBorderColor,
-															formBorderRadius: formBorderRadius,
-															formBorderWidth: formBorderWidth,
-															formBoxShadow: formBoxShadow,
-															formMaxWidth: formMaxWidth,
-															formPadding: formPadding,
-															formMargin: formMargin,
-															formColor: formColor,
-														})
-													)
-												),
-												(0, _core.jsx)(
-													_ErrorBoundary.default,
-													null,
-													(0, _core.jsx)(PaymentForm, {
-														submitted: submitted,
-														formBackgroundColor: formBackgroundColor,
-														formBorderColor: formBorderColor,
-														formBorderRadius: formBorderRadius,
-														formBorderWidth: formBorderWidth,
-														formBoxShadow: formBoxShadow,
-														formMaxWidth: formMaxWidth,
-														formPadding: formPadding,
-														formMargin: formMargin,
-														formColor: formColor,
-													})
-												),
-												(0, _core.jsx)(
-													_ErrorBoundary.default,
-													null,
-													(0, _core.jsx)(GivingSuccessMessage, {
-														confirmed: confirmed,
-														successMessage: formConfig.successMessage,
-														formBackgroundColor: formBackgroundColor,
-														formBorderColor: formBorderColor,
-														formBorderRadius: formBorderRadius,
-														formBorderWidth: formBorderWidth,
-														formBoxShadow: formBoxShadow,
-														formMaxWidth: formMaxWidth,
-														formPadding: formPadding,
-														formMargin: formMargin,
-														formColor: formColor,
-													})
-												)
-										  )
-								)
-							);
-							break;
-
-						case "product":
-							return (0, _core.jsx)(
-								_ProductFormProvider.default,
-								null,
-								(0, _core.jsx)(
-									_react.Suspense,
-									{
-										fallback: (0, _core.jsx)(_Spinner.default, null),
-									},
-									(0, _core.jsx)(
-										_ErrorBoundary.default,
-										null,
-										(0, _core.jsx)(
-											ProductForm,
-											(0, _extends2.default)({}, props, formConfig, {
-												formBackgroundColor: formBackgroundColor,
-												formBorderColor: formBorderColor,
-												formBorderRadius: formBorderRadius,
-												formBorderWidth: formBorderWidth,
-												formBoxShadow: formBoxShadow,
-												formMaxWidth: formMaxWidth,
-												formPadding: formPadding,
-												formMargin: formMargin,
-												formColor: formColor,
-											})
-										)
-									)
-								)
-							);
-							break;
-
-						case "signup":
-							return (0, _core.jsx)(
-								_SignUpFormProvider.default,
-								null,
-								(0, _core.jsx)(
-									_react.Suspense,
-									{
-										fallback: (0, _core.jsx)(_Spinner.default, null),
-									},
-									expired
-										? (0, _core.jsx)(Banner, {
-												expired: true,
-										  })
-										: (0, _core.jsx)(
-												_react.default.Fragment,
-												null,
-												(0, _core.jsx)(
-													_ErrorBoundary.default,
-													null,
-													(0, _core.jsx)(
-														SignUpForm,
-														(0, _extends2.default)({}, props, formConfig, {
-															formBackgroundColor: formBackgroundColor,
-															formBorderColor: formBorderColor,
-															formBorderRadius: formBorderRadius,
-															formBorderWidth: formBorderWidth,
-															formBoxShadow: formBoxShadow,
-															formMaxWidth: formMaxWidth,
-															formPadding: formPadding,
-															formMargin: formMargin,
-															formColor: formColor,
-														})
-													)
-												),
-												(0, _core.jsx)(
-													_ErrorBoundary.default,
-													null,
-													(0, _core.jsx)(SignUpSuccessMessage, {
-														submitted: submitted,
-														successMessage: formConfig.successMessage,
-														formBackgroundColor: formBackgroundColor,
-														formBorderColor: formBorderColor,
-														formBorderRadius: formBorderRadius,
-														formBorderWidth: formBorderWidth,
-														formBoxShadow: formBoxShadow,
-														formMaxWidth: formMaxWidth,
-														formPadding: formPadding,
-														formMargin: formMargin,
-														formColor: formColor,
-													})
-												)
-										  )
-								)
-							);
-							break;
-
-						default:
-							console.error("Form Configuration Error");
-							console.error({
-								formType: formType,
-								formConfig: formConfig,
-								props: props,
-							});
-
-							try {
-								window.omTrackDebug(
-									window.location.href + " - React Giving Form",
-									JSON.stringify({
-										formType: formType,
-										formConfig: formConfig,
-										props: props,
-									})
-								);
-							} catch (err) {
-								console.error("Error Tracking Error");
-								console.error(err);
-							}
-
-							alert(
-								"There was an internal error loading this form. Please check back later or call us at 1-800-759-0700"
-							);
-							return null;
-							break;
-					}
-				};
-
-				__signature__(
-					FormRouter,
-					"useContext{{\n\t\tformConfig,\n\t\tsubmitted,\n\t\tconfirmed,\n\t\tgetCssConfig,\n\t\texpired,\n\t}}"
-				);
-
-				var _default = FormRouter;
-				var _default2 = _default;
-				exports.default = _default2;
-				(function() {
-					var reactHotLoader =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.default
-							: undefined;
-
-					if (!reactHotLoader) {
-						return;
-					}
-
-					reactHotLoader.register(
-						Banner,
-						"Banner",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						GivingForm,
-						"GivingForm",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						AskForm,
-						"AskForm",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						ConfirmationForm,
-						"ConfirmationForm",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						PaymentForm,
-						"PaymentForm",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						ProductForm,
-						"ProductForm",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						SignUpForm,
-						"SignUpForm",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						GivingSuccessMessage,
-						"GivingSuccessMessage",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						SignUpSuccessMessage,
-						"SignUpSuccessMessage",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						ClubSuccessMessage,
-						"ClubSuccessMessage",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						FormRouter,
-						"FormRouter",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-					reactHotLoader.register(
-						_default,
-						"default",
-						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
-					);
-				})();
-
-				(function() {
-					var leaveModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.leaveModule
-							: undefined;
-					leaveModule && leaveModule(module);
-				})();
-			},
-			{
-				"@babel/runtime/helpers/extends":
-					"node_modules/@babel/runtime/helpers/extends.js",
-				react: "node_modules/react/index.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-				"../Contexts/FormConfigProvider":
-					"src/Components/Contexts/FormConfigProvider.js",
-				"../Contexts/GivingFormProvider":
-					"src/Components/Contexts/GivingFormProvider.js",
-				"../Contexts/ProductFormProvider":
-					"src/Components/Contexts/ProductFormProvider.js",
-				"../Contexts/SignUpFormProvider":
-					"src/Components/Contexts/SignUpFormProvider.js",
-				"../ErrorBoundary": "src/Components/ErrorBoundary.js",
-				_bundle_loader:
-					"node_modules/parcel-bundler/src/builtins/bundle-loader.js",
-				"../StyledComponents/Banner": [
-					["Banner.ea8099bd.js", "src/Components/StyledComponents/Banner.js"],
-					"Banner.ea8099bd.js.map",
-					"src/Components/StyledComponents/Banner.js",
-				],
-				"./GivingForm": [
-					["GivingForm.7499cb88.js", "src/Components/Forms/GivingForm.js"],
-					"GivingForm.7499cb88.js.map",
-					"src/Components/Forms/GivingForm.js",
-				],
-				"./AskForm": [
-					["AskForm.02eb8dbc.js", "src/Components/Forms/AskForm.js"],
-					"AskForm.02eb8dbc.js.map",
-					"AskForm.02eb8dbc.css",
-					"src/Components/Forms/AskForm.js",
-				],
-				"./ConfirmationForm": [
-					[
-						"ConfirmationForm.4ca5b1aa.js",
-						"src/Components/Forms/ConfirmationForm.js",
-					],
-					"ConfirmationForm.4ca5b1aa.js.map",
-					"src/Components/Forms/ConfirmationForm.js",
-				],
-				"./PaymentForm": [
-					["PaymentForm.d4fb0b2e.js", "src/Components/Forms/PaymentForm.js"],
-					"PaymentForm.d4fb0b2e.js.map",
-					"src/Components/Forms/PaymentForm.js",
-				],
-				"./ProductForm": [
-					["ProductForm.eb9cea15.js", "src/Components/Forms/ProductForm.js"],
-					"ProductForm.eb9cea15.js.map",
-					"src/Components/Forms/ProductForm.js",
-				],
-				"./SignUpForm": [
-					["SignUpForm.098c53d9.js", "src/Components/Forms/SignUpForm.js"],
-					"SignUpForm.098c53d9.js.map",
-					"src/Components/Forms/SignUpForm.js",
-				],
-				"../SuccessPages/GivingSuccessMessage": [
-					[
-						"GivingSuccessMessage.2b757bea.js",
-						"src/Components/SuccessPages/GivingSuccessMessage.js",
-					],
-					"GivingSuccessMessage.2b757bea.js.map",
-					"src/Components/SuccessPages/GivingSuccessMessage.js",
-				],
-				"../SuccessPages/SignUpSuccessMessage": [
-					[
-						"SignUpSuccessMessage.2aa52e8d.js",
-						"src/Components/SuccessPages/SignUpSuccessMessage.js",
-					],
-					"SignUpSuccessMessage.2aa52e8d.js.map",
-					"src/Components/SuccessPages/SignUpSuccessMessage.js",
-				],
-				"../SuccessPages/ClubSuccessMessage": [
-					[
-						"ClubSuccessMessage.0af04581.js",
-						"src/Components/SuccessPages/ClubSuccessMessage.js",
-					],
-					"ClubSuccessMessage.0af04581.js.map",
-					"src/Components/SuccessPages/ClubSuccessMessage.js",
-				],
-				"../StyledComponents/Spinner":
-					"src/Components/StyledComponents/Spinner.js",
-			},
-		],
-		"src/Components/StyledComponents/Wrapper.js": [
+		"src/Components/StyledComponents/Banner.js": [
 			function(require, module, exports) {
 				"use strict";
 
@@ -13591,6 +12908,8 @@ object-assign
 				);
 
 				var _react = _interopRequireDefault(require("react"));
+
+				var _core = require("@emotion/core");
 
 				function _interopRequireDefault(obj) {
 					return obj && obj.__esModule ? obj : { default: obj };
@@ -13615,24 +12934,84 @@ object-assign
 								return a;
 						  };
 
-				var Wrapper = (0, _styledBase.default)("div", {
-					target: "en698az0",
-					label: "Wrapper",
+				var BannerContent = (0, _styledBase.default)("div", {
+					target: "ezbeoyg0",
+					label: "BannerContent",
 				})(
 					"development" === "production"
 						? {
-								name: "12pxovs",
-								styles: "&.wrapper{width:100%;margin:0;padding:0;}",
+								name: "17r2fem",
+								styles:
+									"width:100%;max-width:580px;padding:30px;text-align:center;background:lightgoldenrodyellow;color:maroon;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-style:normal;border:1px dotted #000;margin:30px auto;box-sizing:border-box;font-size:20px;line-height:1.25;&.banner--expired{cursor:pointer;}a{box-sizing:border-box;font-size:20px;line-height:1.25;color:indigo;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-style:normal;cursor:pointer;}",
 						  }
 						: {
-								name: "12pxovs",
-								styles: "&.wrapper{width:100%;margin:0;padding:0;}",
+								name: "17r2fem",
+								styles:
+									"width:100%;max-width:580px;padding:30px;text-align:center;background:lightgoldenrodyellow;color:maroon;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-style:normal;border:1px dotted #000;margin:30px auto;box-sizing:border-box;font-size:20px;line-height:1.25;&.banner--expired{cursor:pointer;}a{box-sizing:border-box;font-size:20px;line-height:1.25;color:indigo;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-style:normal;cursor:pointer;}",
 								map:
-									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIldyYXBwZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRzBCIiwiZmlsZSI6IldyYXBwZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgV3JhcHBlciA9IHN0eWxlZC5kaXZgXG5cdCYud3JhcHBlciB7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0bWFyZ2luOiAwO1xuXHRcdHBhZGRpbmc6IDA7XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IFdyYXBwZXI7XG4iXX0= */",
+									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkJhbm5lci5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHZ0MiLCJmaWxlIjoiQmFubmVyLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IEJhbm5lckNvbnRlbnQgPSBzdHlsZWQuZGl2YFxuXHR3aWR0aDogMTAwJTtcblx0bWF4LXdpZHRoOiA1ODBweDtcblx0cGFkZGluZzogMzBweDtcblx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRiYWNrZ3JvdW5kOiBsaWdodGdvbGRlbnJvZHllbGxvdztcblx0Y29sb3I6IG1hcm9vbjtcblx0Zm9udC1mYW1pbHk6IEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7XG5cdGZvbnQtd2VpZ2h0OiBib2xkO1xuXHRmb250LXN0eWxlOiBub3JtYWw7XG5cdGJvcmRlcjogMXB4IGRvdHRlZCAjMDAwO1xuXHRtYXJnaW46IDMwcHggYXV0bztcblx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0Zm9udC1zaXplOiAyMHB4O1xuXHRsaW5lLWhlaWdodDogMS4yNTtcblx0Ji5iYW5uZXItLWV4cGlyZWQge1xuXHRcdGN1cnNvcjpwb2ludGVyO1xuXHR9XG5cdGEge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Zm9udC1zaXplOiAyMHB4O1xuXHRcdGxpbmUtaGVpZ2h0OiAxLjI1O1xuXHRcdGNvbG9yOiBpbmRpZ287XG5cdFx0Zm9udC1mYW1pbHk6IEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7XG5cdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdFx0Zm9udC1zdHlsZTogbm9ybWFsO1xuXHRcdGN1cnNvcjpwb2ludGVyO1xuXHR9XG5gO1xuXG5jb25zdCBUaW1lb3V0QmFubmVyID0gc3R5bGVkLmRpdmBcblx0cG9zaXRpb246IGZpeGVkO1xuXHR0b3A6IDA7XG5cdGJvdHRvbTogMDtcblx0cmlnaHQ6IDA7XG5cdGxlZnQ6IDA7XG5cdGJhY2tncm91bmQ6IHJnYmEoMCwwLDAsLjUpO1xuXHR6LWluZGV4OiAxMDtcblx0ZGlzcGxheTogZmxleDtcblx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0anVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG5cdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5gXG5cbmNvbnN0IEJhbm5lciA9ICh7IGV4cGlyZWQgPSBmYWxzZSB9KSA9PiBleHBpcmVkID8gKFxuXHQ8VGltZW91dEJhbm5lcj5cblx0XHQ8QmFubmVyQ29udGVudCBjbGFzc05hbWU9XCJiYW5uZXIgYmFubmVyLS1leHBpcmVkXCIgb25DbGljaz17KCk9PiB3aW5kb3cgJiYgd2luZG93LmxvY2F0aW9uLnJlbG9hZCh0cnVlKX0+XG5cdFx0XHRZb3VyIFNlc3Npb24gSGFzIEV4cGlyZWRcblx0XHRcdDxici8+XG5cdFx0XHRQbGVhc2UgPGEgb25DbGljaz17KCk9PiB3aW5kb3cgJiYgd2luZG93LmxvY2F0aW9uLnJlbG9hZCh0cnVlKX0+Q2xpY2sgSGVyZSB0byBSZWZyZXNoIFlvdXIgQnJvd3NlcjwvYT5cblx0XHQ8L0Jhbm5lckNvbnRlbnQ+XG5cdDwvVGltZW91dEJhbm5lcj5cbikgOiAoXG5cdDxCYW5uZXJDb250ZW50IGNsYXNzTmFtZT1cImJhbm5lclwiPkZvcm0gVW5kZXIgRGV2ZWxvcG1lbnQ8L0Jhbm5lckNvbnRlbnQ+XG4pO1xuXG5leHBvcnQgZGVmYXVsdCBCYW5uZXI7XG4iXX0= */",
 								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
 						  }
 				);
-				var _default = Wrapper;
+				var TimeoutBanner = (0, _styledBase.default)("div", {
+					target: "ezbeoyg1",
+					label: "TimeoutBanner",
+				})(
+					"development" === "production"
+						? {
+								name: "a10ykh",
+								styles:
+									"position:fixed;top:0;bottom:0;right:0;left:0;background:rgba(0,0,0,.5);z-index:10;display:flex;flex-direction:row;justify-content:center;align-items:center;",
+						  }
+						: {
+								name: "a10ykh",
+								styles:
+									"position:fixed;top:0;bottom:0;right:0;left:0;background:rgba(0,0,0,.5);z-index:10;display:flex;flex-direction:row;justify-content:center;align-items:center;",
+								map:
+									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkJhbm5lci5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFpQ2dDIiwiZmlsZSI6IkJhbm5lci5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBCYW5uZXJDb250ZW50ID0gc3R5bGVkLmRpdmBcblx0d2lkdGg6IDEwMCU7XG5cdG1heC13aWR0aDogNTgwcHg7XG5cdHBhZGRpbmc6IDMwcHg7XG5cdHRleHQtYWxpZ246IGNlbnRlcjtcblx0YmFja2dyb3VuZDogbGlnaHRnb2xkZW5yb2R5ZWxsb3c7XG5cdGNvbG9yOiBtYXJvb247XG5cdGZvbnQtZmFtaWx5OiBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmO1xuXHRmb250LXdlaWdodDogYm9sZDtcblx0Zm9udC1zdHlsZTogbm9ybWFsO1xuXHRib3JkZXI6IDFweCBkb3R0ZWQgIzAwMDtcblx0bWFyZ2luOiAzMHB4IGF1dG87XG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdGZvbnQtc2l6ZTogMjBweDtcblx0bGluZS1oZWlnaHQ6IDEuMjU7XG5cdCYuYmFubmVyLS1leHBpcmVkIHtcblx0XHRjdXJzb3I6cG9pbnRlcjtcblx0fVxuXHRhIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGZvbnQtc2l6ZTogMjBweDtcblx0XHRsaW5lLWhlaWdodDogMS4yNTtcblx0XHRjb2xvcjogaW5kaWdvO1xuXHRcdGZvbnQtZmFtaWx5OiBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmO1xuXHRcdGZvbnQtd2VpZ2h0OiBib2xkO1xuXHRcdGZvbnQtc3R5bGU6IG5vcm1hbDtcblx0XHRjdXJzb3I6cG9pbnRlcjtcblx0fVxuYDtcblxuY29uc3QgVGltZW91dEJhbm5lciA9IHN0eWxlZC5kaXZgXG5cdHBvc2l0aW9uOiBmaXhlZDtcblx0dG9wOiAwO1xuXHRib3R0b206IDA7XG5cdHJpZ2h0OiAwO1xuXHRsZWZ0OiAwO1xuXHRiYWNrZ3JvdW5kOiByZ2JhKDAsMCwwLC41KTtcblx0ei1pbmRleDogMTA7XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRhbGlnbi1pdGVtczogY2VudGVyO1xuYFxuXG5jb25zdCBCYW5uZXIgPSAoeyBleHBpcmVkID0gZmFsc2UgfSkgPT4gZXhwaXJlZCA/IChcblx0PFRpbWVvdXRCYW5uZXI+XG5cdFx0PEJhbm5lckNvbnRlbnQgY2xhc3NOYW1lPVwiYmFubmVyIGJhbm5lci0tZXhwaXJlZFwiIG9uQ2xpY2s9eygpPT4gd2luZG93ICYmIHdpbmRvdy5sb2NhdGlvbi5yZWxvYWQodHJ1ZSl9PlxuXHRcdFx0WW91ciBTZXNzaW9uIEhhcyBFeHBpcmVkXG5cdFx0XHQ8YnIvPlxuXHRcdFx0UGxlYXNlIDxhIG9uQ2xpY2s9eygpPT4gd2luZG93ICYmIHdpbmRvdy5sb2NhdGlvbi5yZWxvYWQodHJ1ZSl9PkNsaWNrIEhlcmUgdG8gUmVmcmVzaCBZb3VyIEJyb3dzZXI8L2E+XG5cdFx0PC9CYW5uZXJDb250ZW50PlxuXHQ8L1RpbWVvdXRCYW5uZXI+XG4pIDogKFxuXHQ8QmFubmVyQ29udGVudCBjbGFzc05hbWU9XCJiYW5uZXJcIj5Gb3JtIFVuZGVyIERldmVsb3BtZW50PC9CYW5uZXJDb250ZW50PlxuKTtcblxuZXhwb3J0IGRlZmF1bHQgQmFubmVyO1xuIl19 */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
+						  }
+				);
+
+				var Banner = function Banner(_ref) {
+					var _ref$expired = _ref.expired,
+						expired = _ref$expired === void 0 ? false : _ref$expired;
+					return expired
+						? (0, _core.jsx)(
+								TimeoutBanner,
+								null,
+								(0, _core.jsx)(
+									BannerContent,
+									{
+										className: "banner banner--expired",
+										onClick: function onClick() {
+											return window && window.location.reload(true);
+										},
+									},
+									"Your Session Has Expired",
+									(0, _core.jsx)("br", null),
+									"Please ",
+									(0, _core.jsx)(
+										"a",
+										{
+											onClick: function onClick() {
+												return window && window.location.reload(true);
+											},
+										},
+										"Click Here to Refresh Your Browser"
+									)
+								)
+						  )
+						: (0, _core.jsx)(
+								BannerContent,
+								{
+									className: "banner",
+								},
+								"Form Under Development"
+						  );
+				};
+
+				var _default = Banner;
 				var _default2 = _default;
 				exports.default = _default2;
 				(function() {
@@ -13646,14 +13025,24 @@ object-assign
 					}
 
 					reactHotLoader.register(
-						Wrapper,
-						"Wrapper",
-						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Wrapper.js"
+						BannerContent,
+						"BannerContent",
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Banner.js"
+					);
+					reactHotLoader.register(
+						TimeoutBanner,
+						"TimeoutBanner",
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Banner.js"
+					);
+					reactHotLoader.register(
+						Banner,
+						"Banner",
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Banner.js"
 					);
 					reactHotLoader.register(
 						_default,
 						"default",
-						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Wrapper.js"
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Banner.js"
 					);
 				})();
 
@@ -13669,466 +13058,6 @@ object-assign
 				"@emotion/styled-base":
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
 				react: "node_modules/react/index.js",
-			},
-		],
-		"src/Components/App.js": [
-			function(require, module, exports) {
-				"use strict";
-
-				Object.defineProperty(exports, "__esModule", {
-					value: true,
-				});
-				exports.default = void 0;
-
-				var _classCallCheck2 = _interopRequireDefault(
-					require("@babel/runtime/helpers/classCallCheck")
-				);
-
-				var _createClass2 = _interopRequireDefault(
-					require("@babel/runtime/helpers/createClass")
-				);
-
-				var _possibleConstructorReturn2 = _interopRequireDefault(
-					require("@babel/runtime/helpers/possibleConstructorReturn")
-				);
-
-				var _getPrototypeOf2 = _interopRequireDefault(
-					require("@babel/runtime/helpers/getPrototypeOf")
-				);
-
-				var _inherits2 = _interopRequireDefault(
-					require("@babel/runtime/helpers/inherits")
-				);
-
-				var _react = _interopRequireWildcard(require("react"));
-
-				var _FormConfigProvider = require("./Contexts/FormConfigProvider");
-
-				var _FormRouter = _interopRequireDefault(require("./Forms/FormRouter"));
-
-				var _reactAriaLive = require("react-aria-live");
-
-				var _Wrapper = _interopRequireDefault(
-					require("./StyledComponents/Wrapper")
-				);
-
-				var _Spinner = _interopRequireDefault(
-					require("./StyledComponents/Spinner")
-				);
-
-				var _core = require("@emotion/core");
-
-				function _getRequireWildcardCache() {
-					if (typeof WeakMap !== "function") return null;
-					var cache = new WeakMap();
-					_getRequireWildcardCache = function() {
-						return cache;
-					};
-					return cache;
-				}
-
-				function _interopRequireWildcard(obj) {
-					if (obj && obj.__esModule) {
-						return obj;
-					}
-					if (
-						obj === null ||
-						(typeof obj !== "object" && typeof obj !== "function")
-					) {
-						return { default: obj };
-					}
-					var cache = _getRequireWildcardCache();
-					if (cache && cache.has(obj)) {
-						return cache.get(obj);
-					}
-					var newObj = {};
-					var hasPropertyDescriptor =
-						Object.defineProperty && Object.getOwnPropertyDescriptor;
-					for (var key in obj) {
-						if (Object.prototype.hasOwnProperty.call(obj, key)) {
-							var desc = hasPropertyDescriptor
-								? Object.getOwnPropertyDescriptor(obj, key)
-								: null;
-							if (desc && (desc.get || desc.set)) {
-								Object.defineProperty(newObj, key, desc);
-							} else {
-								newObj[key] = obj[key];
-							}
-						}
-					}
-					newObj.default = obj;
-					if (cache) {
-						cache.set(obj, newObj);
-					}
-					return newObj;
-				}
-
-				function _interopRequireDefault(obj) {
-					return obj && obj.__esModule ? obj : { default: obj };
-				}
-
-				(function() {
-					var enterModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.enterModule
-							: undefined;
-					enterModule && enterModule(module);
-				})();
-
-				var __signature__ =
-					typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal.default.signature
-						: function(a) {
-								return a;
-						  };
-
-				/**
-				 * Intercepts onbeforeunload event and sets a unique alert warning users about losing information if they leave the page
-				 * @param {Event} e - onbeforeunload events from window object
-				 */
-				var handleUnload = function handleUnload(e) {
-					var returnValue =
-						"Are you sure you want to go back?\n You may lose all your changes to this page.";
-					e.returnValue = returnValue;
-					return returnValue;
-				};
-
-				var App =
-					/*#__PURE__*/
-					(function(_Component) {
-						(0, _inherits2.default)(App, _Component);
-
-						function App() {
-							(0, _classCallCheck2.default)(this, App);
-							return (0, _possibleConstructorReturn2.default)(
-								this,
-								(0, _getPrototypeOf2.default)(App).apply(this, arguments)
-							);
-						}
-
-						(0, _createClass2.default)(App, [
-							{
-								key: "componentDidMount",
-								value: function componentDidMount() {
-									window.addEventListener("beforeunload", handleUnload);
-									var _this$props = this.props,
-										rootEntry = _this$props.rootEntry,
-										formType = _this$props.formType;
-									this.context.getConfiguration({
-										rootEntry: rootEntry,
-										formType: formType,
-									});
-								},
-							},
-							{
-								key: "componentWillUnmount",
-								value: function componentWillUnmount() {
-									window.removeEventListener("beforeunload", handleUnload);
-								},
-							},
-							{
-								key: "render",
-								value: function render() {
-									var _this$context = this.context,
-										status = _this$context.status,
-										confirmed = _this$context.confirmed;
-
-									if (confirmed) {
-										window.removeEventListener("beforeunload", handleUnload);
-									}
-
-									return (0, _core.jsx)(
-										_reactAriaLive.LiveAnnouncer,
-										null,
-										(0, _core.jsx)(
-											_Wrapper.default,
-											{
-												className: "wrapper",
-											},
-											status !== "loaded"
-												? (0, _core.jsx)(_Spinner.default, null)
-												: (0, _core.jsx)(_FormRouter.default, null)
-										)
-									);
-								},
-							},
-							{
-								key: "__reactstandin__regenerateByEval",
-								// @ts-ignore
-								value: function __reactstandin__regenerateByEval(key, code) {
-									// @ts-ignore
-									this[key] = eval(code);
-								},
-							},
-						]);
-						return App;
-					})(_react.Component);
-
-				App.contextType = _FormConfigProvider.FormConfigContext; // subscribe to FormConfigProvider at top level
-
-				var _default = App;
-				var _default2 = _default;
-				exports.default = _default2;
-				(function() {
-					var reactHotLoader =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.default
-							: undefined;
-
-					if (!reactHotLoader) {
-						return;
-					}
-
-					reactHotLoader.register(
-						handleUnload,
-						"handleUnload",
-						"/Users/wehand/Code/cbnforms-react/src/Components/App.js"
-					);
-					reactHotLoader.register(
-						App,
-						"App",
-						"/Users/wehand/Code/cbnforms-react/src/Components/App.js"
-					);
-					reactHotLoader.register(
-						_default,
-						"default",
-						"/Users/wehand/Code/cbnforms-react/src/Components/App.js"
-					);
-				})();
-
-				(function() {
-					var leaveModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.leaveModule
-							: undefined;
-					leaveModule && leaveModule(module);
-				})();
-			},
-			{
-				"@babel/runtime/helpers/classCallCheck":
-					"node_modules/@babel/runtime/helpers/classCallCheck.js",
-				"@babel/runtime/helpers/createClass":
-					"node_modules/@babel/runtime/helpers/createClass.js",
-				"@babel/runtime/helpers/possibleConstructorReturn":
-					"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js",
-				"@babel/runtime/helpers/getPrototypeOf":
-					"node_modules/@babel/runtime/helpers/getPrototypeOf.js",
-				"@babel/runtime/helpers/inherits":
-					"node_modules/@babel/runtime/helpers/inherits.js",
-				react: "node_modules/react/index.js",
-				"./Contexts/FormConfigProvider":
-					"src/Components/Contexts/FormConfigProvider.js",
-				"./Forms/FormRouter": "src/Components/Forms/FormRouter.js",
-				"react-aria-live": "node_modules/react-aria-live/es/index.js",
-				"./StyledComponents/Wrapper":
-					"src/Components/StyledComponents/Wrapper.js",
-				"./StyledComponents/Spinner":
-					"src/Components/StyledComponents/Spinner.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-			},
-		],
-		"src/index.js": [
-			function(require, module, exports) {
-				"use strict";
-
-				require("./vendors");
-
-				require("core-js/stable");
-
-				require("./helpers/remove-polyfill");
-
-				var _fetchHelpers = require("./helpers/fetch-helpers");
-
-				var _react = _interopRequireDefault(require("react"));
-
-				var ReactDOM = _interopRequireWildcard(require("react-dom"));
-
-				var _App = _interopRequireDefault(require("./Components/App"));
-
-				var _FormConfigProvider = _interopRequireDefault(
-					require("./Components/Contexts/FormConfigProvider")
-				);
-
-				var _core = require("@emotion/core");
-
-				function _getRequireWildcardCache() {
-					if (typeof WeakMap !== "function") return null;
-					var cache = new WeakMap();
-					_getRequireWildcardCache = function() {
-						return cache;
-					};
-					return cache;
-				}
-
-				function _interopRequireWildcard(obj) {
-					if (obj && obj.__esModule) {
-						return obj;
-					}
-					if (
-						obj === null ||
-						(typeof obj !== "object" && typeof obj !== "function")
-					) {
-						return { default: obj };
-					}
-					var cache = _getRequireWildcardCache();
-					if (cache && cache.has(obj)) {
-						return cache.get(obj);
-					}
-					var newObj = {};
-					var hasPropertyDescriptor =
-						Object.defineProperty && Object.getOwnPropertyDescriptor;
-					for (var key in obj) {
-						if (Object.prototype.hasOwnProperty.call(obj, key)) {
-							var desc = hasPropertyDescriptor
-								? Object.getOwnPropertyDescriptor(obj, key)
-								: null;
-							if (desc && (desc.get || desc.set)) {
-								Object.defineProperty(newObj, key, desc);
-							} else {
-								newObj[key] = obj[key];
-							}
-						}
-					}
-					newObj.default = obj;
-					if (cache) {
-						cache.set(obj, newObj);
-					}
-					return newObj;
-				}
-
-				function _interopRequireDefault(obj) {
-					return obj && obj.__esModule ? obj : { default: obj };
-				}
-
-				(function() {
-					var enterModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.enterModule
-							: undefined;
-					enterModule && enterModule(module);
-				})();
-
-				var __signature__ =
-					typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal.default.signature
-						: function(a) {
-								return a;
-						  };
-
-				(0, _fetchHelpers.fetchIntercept)(); // currently only supports one form type at a time on a page
-				// this could be changed by using querySelectorAll, classes, and then looping through each to render multiple configured forms
-
-				var clubGivingRootEntry = document.getElementById("club-form-root");
-				var givingRootEntry = document.getElementById("giving-form-root");
-				var signupRootEntry = document.getElementById("signup-form-root");
-				var productRootEntry = document.getElementById("product-form-root");
-
-				if (clubGivingRootEntry) {
-					ReactDOM.render(
-						(0, _core.jsx)(
-							_FormConfigProvider.default,
-							null,
-							(0, _core.jsx)(_App.default, {
-								rootEntry: clubGivingRootEntry,
-								formType: "club",
-							})
-						),
-						clubGivingRootEntry
-					);
-				}
-
-				if (givingRootEntry) {
-					ReactDOM.render(
-						(0, _core.jsx)(
-							_FormConfigProvider.default,
-							null,
-							(0, _core.jsx)(_App.default, {
-								rootEntry: givingRootEntry,
-								formType: "giving",
-							})
-						),
-						givingRootEntry
-					);
-				}
-
-				if (signupRootEntry) {
-					ReactDOM.render(
-						(0, _core.jsx)(
-							_FormConfigProvider.default,
-							null,
-							(0, _core.jsx)(_App.default, {
-								rootEntry: signupRootEntry,
-								formType: "signup",
-							})
-						),
-						signupRootEntry
-					);
-				}
-
-				if (productRootEntry) {
-					ReactDOM.render(
-						(0, _core.jsx)(
-							_FormConfigProvider.default,
-							null,
-							(0, _core.jsx)(_App.default, {
-								rootEntry: productRootEntry,
-								formType: "product",
-							})
-						),
-						productRootEntry
-					);
-				}
-
-				(function() {
-					var reactHotLoader =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.default
-							: undefined;
-
-					if (!reactHotLoader) {
-						return;
-					}
-
-					reactHotLoader.register(
-						clubGivingRootEntry,
-						"clubGivingRootEntry",
-						"/Users/wehand/Code/cbnforms-react/src/index.js"
-					);
-					reactHotLoader.register(
-						givingRootEntry,
-						"givingRootEntry",
-						"/Users/wehand/Code/cbnforms-react/src/index.js"
-					);
-					reactHotLoader.register(
-						signupRootEntry,
-						"signupRootEntry",
-						"/Users/wehand/Code/cbnforms-react/src/index.js"
-					);
-					reactHotLoader.register(
-						productRootEntry,
-						"productRootEntry",
-						"/Users/wehand/Code/cbnforms-react/src/index.js"
-					);
-				})();
-
-				(function() {
-					var leaveModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.leaveModule
-							: undefined;
-					leaveModule && leaveModule(module);
-				})();
-			},
-			{
-				"./vendors": "src/vendors.js",
-				"core-js/stable": "node_modules/core-js/stable/index.js",
-				"./helpers/remove-polyfill": "src/helpers/remove-polyfill.js",
-				"./helpers/fetch-helpers": "src/helpers/fetch-helpers.js",
-				react: "node_modules/react/index.js",
-				"react-dom": "node_modules/react-dom/index.js",
-				"./Components/App": "src/Components/App.js",
-				"./Components/Contexts/FormConfigProvider":
-					"src/Components/Contexts/FormConfigProvider.js",
 				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
@@ -17441,6 +16370,361 @@ object-assign
 					"node_modules/parcel-bundler/src/builtins/bundle-url.js",
 			},
 		],
+		"src/Components/FormComponents/Animations/askarray.css": [
+			function(require, module, exports) {
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var reloadCSS = require("_css_loader");
+
+				module.hot.dispose(reloadCSS);
+				module.hot.accept(reloadCSS);
+			},
+			{ _css_loader: "node_modules/parcel-bundler/src/builtins/css-loader.js" },
+		],
+		"src/Components/FormComponents/StyledComponents/ClubTabGroup.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _styledBase = _interopRequireDefault(
+					require("@emotion/styled-base")
+				);
+
+				var _react = _interopRequireDefault(require("react"));
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var ClubTabGroup = (0, _styledBase.default)("div", {
+					target: "e768zmz0",
+					label: "ClubTabGroup",
+				})(
+					'&.tab-group{box-sizing:border-box;display:flex;flex-direction:row;justify-content:center;align-items:center;flex:1 1 50%;max-width:360px;}input[type="checkbox"].tab-group__input{position:absolute !important;left:-10000px !important;top:auto !important;bottom:auto !important;width:1px !important;height:1px !important;overflow:hidden !important;}input[type="checkbox"].tab-group__input + label{display:block;height:50px;line-height:50px !important;cursor:pointer;width:100%;text-align:center;background-color:',
+					function(props) {
+						return props.toggleBackgroundColor;
+					},
+					";border-radius:",
+					function(props) {
+						return props.toggleBorderRadius;
+					},
+					";border:1px solid ",
+					function(props) {
+						return props.toggleBorderColor;
+					},
+					";margin-bottom:0;color:",
+					function(props) {
+						return props.toggleColor;
+					},
+					';transition:color 200ms ease-in-out,background-color 200ms ease-in-out,border-color 200ms ease-in-out;position:relative;font-weight:bold;@media screen and (max-width:559px){font-size:18px;}}input[type="checkbox"].tab-group__input:checked + label,input[type="checkbox"].tab-group__input + label:hover{color:',
+					function(props) {
+						return props.toggleHoverColor;
+					},
+					";background-color:",
+					function(props) {
+						return props.toggleHoverBackgroundColor;
+					},
+					";border-color:",
+					function(props) {
+						return props.toggleHoverBorderColor;
+					},
+					';}input[type="checkbox"].tab-group__input:checked + label::after{content:"";display:block;border-top:10px solid ',
+					function(props) {
+						return props.toggleBorderColor;
+					},
+					";border-left:15px solid transparent;border-right:15px solid transparent;position:absolute;left:50%;transform:translateX(-50%);box-sizing:content-box;}" +
+						("development" === "production"
+							? ""
+							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNsdWJUYWJHcm91cC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHK0IiLCJmaWxlIjoiQ2x1YlRhYkdyb3VwLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IENsdWJUYWJHcm91cCA9IHN0eWxlZC5kaXZgXG5cdCYudGFiLWdyb3VwIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGRpc3BsYXk6IGZsZXg7XG5cdFx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0XHRqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcblx0XHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHRcdGZsZXg6IDEgMSA1MCU7XG5cdFx0bWF4LXdpZHRoOiAzNjBweDtcblx0fVxuXHRpbnB1dFt0eXBlPVwiY2hlY2tib3hcIl0udGFiLWdyb3VwX19pbnB1dCB7XG5cdFx0cG9zaXRpb246IGFic29sdXRlICFpbXBvcnRhbnQ7XG5cdFx0bGVmdDogLTEwMDAwcHggIWltcG9ydGFudDtcblx0XHR0b3A6IGF1dG8gIWltcG9ydGFudDtcblx0XHRib3R0b206IGF1dG8gIWltcG9ydGFudDtcblx0XHR3aWR0aDogMXB4ICFpbXBvcnRhbnQ7XG5cdFx0aGVpZ2h0OiAxcHggIWltcG9ydGFudDtcblx0XHRvdmVyZmxvdzogaGlkZGVuICFpbXBvcnRhbnQ7XG5cdH1cblx0aW5wdXRbdHlwZT1cImNoZWNrYm94XCJdLnRhYi1ncm91cF9faW5wdXQgKyBsYWJlbCB7XG5cdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0aGVpZ2h0OiA1MHB4O1xuXHRcdGxpbmUtaGVpZ2h0OiA1MHB4ICFpbXBvcnRhbnQ7XG5cdFx0Y3Vyc29yOiBwb2ludGVyO1xuXHRcdHdpZHRoOiAxMDAlO1xuXHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAke3Byb3BzID0+IHByb3BzLnRvZ2dsZUJhY2tncm91bmRDb2xvcn07XG5cdFx0Ym9yZGVyLXJhZGl1czogJHtwcm9wcyA9PiBwcm9wcy50b2dnbGVCb3JkZXJSYWRpdXN9O1xuXHRcdGJvcmRlcjogMXB4IHNvbGlkICR7cHJvcHMgPT4gcHJvcHMudG9nZ2xlQm9yZGVyQ29sb3J9O1xuXHRcdG1hcmdpbi1ib3R0b206IDA7XG5cdFx0Y29sb3I6ICR7cHJvcHMgPT4gcHJvcHMudG9nZ2xlQ29sb3J9O1xuXHRcdHRyYW5zaXRpb246IGNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0LCBiYWNrZ3JvdW5kLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0LFxuXHRcdFx0Ym9yZGVyLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHRcdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0XHRmb250LXdlaWdodDogYm9sZDtcblx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1NTlweCkge1xuXHRcdFx0Zm9udC1zaXplOiAxOHB4O1xuXHRcdH1cblx0fVxuXHRpbnB1dFt0eXBlPVwiY2hlY2tib3hcIl0udGFiLWdyb3VwX19pbnB1dDpjaGVja2VkICsgbGFiZWwsXG5cdGlucHV0W3R5cGU9XCJjaGVja2JveFwiXS50YWItZ3JvdXBfX2lucHV0ICsgbGFiZWw6aG92ZXIge1xuXHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLnRvZ2dsZUhvdmVyQ29sb3J9O1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICR7cHJvcHMgPT4gcHJvcHMudG9nZ2xlSG92ZXJCYWNrZ3JvdW5kQ29sb3J9O1xuXHRcdGJvcmRlci1jb2xvcjogJHtwcm9wcyA9PiBwcm9wcy50b2dnbGVIb3ZlckJvcmRlckNvbG9yfTtcblx0fVxuXHRpbnB1dFt0eXBlPVwiY2hlY2tib3hcIl0udGFiLWdyb3VwX19pbnB1dDpjaGVja2VkICsgbGFiZWw6OmFmdGVyIHtcblx0XHRjb250ZW50OiBcIlwiO1xuXHRcdGRpc3BsYXk6IGJsb2NrO1xuXHRcdGJvcmRlci10b3A6IDEwcHggc29saWQgJHtwcm9wcyA9PiBwcm9wcy50b2dnbGVCb3JkZXJDb2xvcn07XG5cdFx0Ym9yZGVyLWxlZnQ6IDE1cHggc29saWQgdHJhbnNwYXJlbnQ7XG5cdFx0Ym9yZGVyLXJpZ2h0OiAxNXB4IHNvbGlkIHRyYW5zcGFyZW50O1xuXHRcdHBvc2l0aW9uOiBhYnNvbHV0ZTtcblx0XHRsZWZ0OiA1MCU7XG5cdFx0dHJhbnNmb3JtOiB0cmFuc2xhdGVYKC01MCUpO1xuXHRcdGJveC1zaXppbmc6IGNvbnRlbnQtYm94O1xuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBDbHViVGFiR3JvdXA7XG4iXX0= */")
+				);
+				var _default = ClubTabGroup;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						ClubTabGroup,
+						"ClubTabGroup",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ClubTabGroup.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ClubTabGroup.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@emotion/styled-base":
+					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
+				react: "node_modules/react/index.js",
+			},
+		],
+		"src/Components/FormComponents/FunctionalComponents/ClubTab.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
+
+				var _ClubTabGroup = _interopRequireDefault(
+					require("../StyledComponents/ClubTabGroup")
+				);
+
+				var _core = require("@emotion/core");
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var ClubTab = function ClubTab(_ref) {
+					var id = _ref.id,
+						name = _ref.name,
+						checked = _ref.checked,
+						handleTabClick = _ref.handleTabClick,
+						label = _ref.label;
+
+					var _useContext = (0, _react.useContext)(
+							_FormConfigProvider.FormConfigContext
+						),
+						getCssConfig = _useContext.getCssConfig;
+
+					var _getCssConfig = getCssConfig("toggle"),
+						_getCssConfig$toggleC = _getCssConfig.toggleColor,
+						toggleColor =
+							_getCssConfig$toggleC === void 0 ? "#fff" : _getCssConfig$toggleC,
+						_getCssConfig$toggleB = _getCssConfig.toggleBackgroundColor,
+						toggleBackgroundColor =
+							_getCssConfig$toggleB === void 0
+								? "#1775BC"
+								: _getCssConfig$toggleB,
+						_getCssConfig$toggleB2 = _getCssConfig.toggleBorderColor,
+						toggleBorderColor =
+							_getCssConfig$toggleB2 === void 0
+								? "transparent"
+								: _getCssConfig$toggleB2,
+						_getCssConfig$toggleB3 = _getCssConfig.toggleBorderRadius,
+						toggleBorderRadius =
+							_getCssConfig$toggleB3 === void 0
+								? "5px"
+								: _getCssConfig$toggleB3,
+						_getCssConfig$toggleH = _getCssConfig.toggleHoverColor,
+						toggleHoverColor =
+							_getCssConfig$toggleH === void 0
+								? "#1775BC"
+								: _getCssConfig$toggleH,
+						_getCssConfig$toggleH2 = _getCssConfig.toggleHoverBackgroundColor,
+						toggleHoverBackgroundColor =
+							_getCssConfig$toggleH2 === void 0
+								? "#fff"
+								: _getCssConfig$toggleH2,
+						_getCssConfig$toggleH3 = _getCssConfig.toggleHoverBorderColor,
+						toggleHoverBorderColor =
+							_getCssConfig$toggleH3 === void 0
+								? "#1775BC"
+								: _getCssConfig$toggleH3;
+
+					var handleKeyUp = function handleKeyUp(e) {
+						var keyCode = e.keyCode; // console.log({keyCode})
+
+						if (checked && (keyCode == 13 || keyCode == 32)) {
+							// return or space
+							e.preventDefault();
+							handleTabClick({
+								target: {
+									id: "".concat(id, "gift"),
+								},
+							});
+						}
+					};
+
+					return (0, _core.jsx)(
+						_ClubTabGroup.default,
+						{
+							id: "".concat(id, "-group"),
+							className: "tab-group",
+							toggleColor: toggleColor,
+							toggleBackgroundColor: toggleBackgroundColor,
+							toggleBorderColor: toggleBorderColor,
+							toggleBorderRadius: toggleBorderRadius,
+							toggleHoverColor: toggleHoverColor,
+							toggleHoverBackgroundColor: toggleHoverBackgroundColor,
+							toggleHoverBorderColor: toggleHoverBorderColor,
+							onKeyUp: handleKeyUp,
+						},
+						(0, _core.jsx)("input", {
+							className: "tab-group__input",
+							name: name,
+							id: "".concat(id, "gift"),
+							type: "checkbox",
+							checked: checked,
+							onChange: handleTabClick,
+						}),
+						(0, _core.jsx)(
+							"label",
+							{
+								htmlFor: "".concat(id, "gift"),
+								role: "tab",
+								"aria-selected": checked,
+								"aria-controls": "AskArray-".concat(id),
+								id: "".concat(id, "gift-label"),
+								tabIndex: checked ? "0" : "-1",
+							},
+							label
+						)
+					);
+				};
+
+				__signature__(ClubTab, "useContext{{ getCssConfig }}");
+
+				var _default = ClubTab;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						ClubTab,
+						"ClubTab",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/ClubTab.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/ClubTab.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				react: "node_modules/react/index.js",
+				"../../Contexts/FormConfigProvider":
+					"src/Components/Contexts/FormConfigProvider.js",
+				"../StyledComponents/ClubTabGroup":
+					"src/Components/FormComponents/StyledComponents/ClubTabGroup.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
 		"src/Components/FormComponents/StyledComponents/Divider.js": [
 			function(require, module, exports) {
 				"use strict";
@@ -17719,6 +17003,1731 @@ object-assign
 				"@emotion/styled-base":
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
 				react: "node_modules/react/index.js",
+			},
+		],
+		"src/Components/FormComponents/Blocks/MonthlyClubTabBlock.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _react = _interopRequireDefault(require("react"));
+
+				var _ClubTab = _interopRequireDefault(
+					require("../FunctionalComponents/ClubTab")
+				);
+
+				var _Divider = _interopRequireDefault(
+					require("../StyledComponents/Divider")
+				);
+
+				var _FieldSet = _interopRequireDefault(
+					require("../StyledComponents/FieldSet")
+				);
+
+				var _FormRow = _interopRequireDefault(
+					require("../StyledComponents/FormRow")
+				);
+
+				var _core = require("@emotion/core");
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var MonthlyTabGroup = function MonthlyTabGroup(_ref) {
+					var monthlyChecked = _ref.monthlyChecked,
+						handleTabClick = _ref.handleTabClick;
+					var monthly = monthlyChecked;
+					var single = !monthlyChecked;
+
+					var handleKeyUp = function handleKeyUp(e) {
+						var keyCode = e.keyCode;
+
+						switch (keyCode) {
+							case 35:
+								// end key
+								e.preventDefault();
+								handleTabClick({
+									target: {
+										id: "singlegift",
+									},
+								});
+								break;
+
+							case 36:
+								// home key
+								e.preventDefault();
+								handleTabClick({
+									target: {
+										id: "monthlygift",
+									},
+								});
+								break;
+
+							case 37:
+								// left arrow
+								e.preventDefault();
+								handleTabClick({
+									target: {
+										id: monthlyChecked ? "singlegift" : "monthlygift",
+									},
+								});
+								break;
+
+							case 39:
+								// right arrow
+								e.preventDefault();
+								handleTabClick({
+									target: {
+										id: monthlyChecked ? "singlegift" : "monthlygift",
+									},
+								});
+								break;
+						}
+					};
+
+					return (0, _core.jsx)(
+						_FieldSet.default,
+						{
+							className: "monthly-giving-info",
+						},
+						(0, _core.jsx)("legend", null, "Select Monthly or One-Time Gift"),
+						(0, _core.jsx)(
+							_FormRow.default,
+							{
+								className: "monthly-tab",
+								role: "tablist",
+								"aria-label": "Giving Tabs",
+								id: "monthlhy-club-tab-block",
+								"aria-controls": "giving-tabs",
+								onKeyUp: handleKeyUp,
+							},
+							(0, _core.jsx)(_ClubTab.default, {
+								id: "monthly",
+								name: "monthly-toggle",
+								label: "Monthly Partner",
+								checked: monthly,
+								handleTabClick: handleTabClick,
+							}),
+							(0, _core.jsx)(_Divider.default, {
+								color: "transparent",
+							}),
+							(0, _core.jsx)(_ClubTab.default, {
+								id: "single",
+								name: "monthly-toggle",
+								label: "Single Gift",
+								checked: single,
+								handleTabClick: handleTabClick,
+							})
+						)
+					);
+				};
+
+				var _default = MonthlyTabGroup;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						MonthlyTabGroup,
+						"MonthlyTabGroup",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/MonthlyClubTabBlock.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/MonthlyClubTabBlock.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				react: "node_modules/react/index.js",
+				"../FunctionalComponents/ClubTab":
+					"src/Components/FormComponents/FunctionalComponents/ClubTab.js",
+				"../StyledComponents/Divider":
+					"src/Components/FormComponents/StyledComponents/Divider.js",
+				"../StyledComponents/FieldSet":
+					"src/Components/FormComponents/StyledComponents/FieldSet.js",
+				"../StyledComponents/FormRow":
+					"src/Components/FormComponents/StyledComponents/FormRow.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/Components/FormComponents/StyledComponents/ClubAskArray.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _styledBase = _interopRequireDefault(
+					require("@emotion/styled-base")
+				);
+
+				var _react = _interopRequireDefault(require("react"));
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var ClubAskArray = (0, _styledBase.default)("div", {
+					target: "e3cu5ei0",
+					label: "ClubAskArray",
+				})(
+					"development" === "production"
+						? {
+								name: "l4k83b",
+								styles:
+									"display:flex;flex-direction:row;justify-content:center;flex-wrap:wrap;&.askarray--club{position:relative;box-sizing:border-box;height:auto;width:calc(100% + 5px);border-bottom:5px solid transparent;flex-wrap:nowrap;margin:30px 0;flex-wrap:nowrap;justify-content:space-between;outline:none;@media screen and (max-width:716px){flex-wrap:wrap;margin:20px auto;margin-bottom:10px;}}",
+						  }
+						: {
+								name: "l4k83b",
+								styles:
+									"display:flex;flex-direction:row;justify-content:center;flex-wrap:wrap;&.askarray--club{position:relative;box-sizing:border-box;height:auto;width:calc(100% + 5px);border-bottom:5px solid transparent;flex-wrap:nowrap;margin:30px 0;flex-wrap:nowrap;justify-content:space-between;outline:none;@media screen and (max-width:716px){flex-wrap:wrap;margin:20px auto;margin-bottom:10px;}}",
+								map:
+									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNsdWJBc2tBcnJheS5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHK0IiLCJmaWxlIjoiQ2x1YkFza0FycmF5LmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IENsdWJBc2tBcnJheSA9IHN0eWxlZC5kaXZgXG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRmbGV4LXdyYXA6IHdyYXA7XG5cdCYuYXNrYXJyYXktLWNsdWIge1xuXHRcdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGhlaWdodDogYXV0bztcblx0XHR3aWR0aDogY2FsYygxMDAlICsgNXB4KTtcblx0XHRib3JkZXItYm90dG9tOiA1cHggc29saWQgdHJhbnNwYXJlbnQ7XG5cdFx0ZmxleC13cmFwOiBub3dyYXA7XG5cdFx0bWFyZ2luOiAzMHB4IDA7XG5cdFx0ZmxleC13cmFwOiBub3dyYXA7XG5cdFx0anVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuO1xuXHRcdG91dGxpbmU6IG5vbmU7XG5cdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNzE2cHgpIHtcblx0XHRcdGZsZXgtd3JhcDogd3JhcDtcblx0XHRcdG1hcmdpbjogMjBweCBhdXRvO1xuXHRcdFx0bWFyZ2luLWJvdHRvbTogMTBweDtcblx0XHR9XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IENsdWJBc2tBcnJheTtcbiJdfQ== */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
+						  }
+				);
+				var _default = ClubAskArray;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						ClubAskArray,
+						"ClubAskArray",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ClubAskArray.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ClubAskArray.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@emotion/styled-base":
+					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
+				react: "node_modules/react/index.js",
+			},
+		],
+		"src/Components/FormComponents/StyledComponents/ClubAskArrayBtn.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _styledBase = _interopRequireDefault(
+					require("@emotion/styled-base")
+				);
+
+				var _react = _interopRequireDefault(require("react"));
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var ClubAskArrayBtn = (0, _styledBase.default)("div", {
+					target: "e11xy15m0",
+					label: "ClubAskArrayBtn",
+				})(
+					"display:flex;flex-direction:row;justify-content:center;align-items:center;position:relative;&.askbutton--club{box-sizing:border-box;flex:0 0 95px;margin:0 2.5px;@media screen and (max-width:559px){flex:0 0 calc((100% - 77px) / 5);}}div{display:flex;flex-direction:row;justify-content:center;align-items:center;}div.askbutton__amt{background-color:",
+					function(props) {
+						return props.arrayBackgroundColor;
+					},
+					";border-radius:",
+					function(props) {
+						return props.arrayBorderRadius;
+					},
+					";border:1px solid ",
+					function(props) {
+						return props.arrayBorderColor;
+					},
+					";box-sizing:border-box;color:",
+					function(props) {
+						return props.arrayColor;
+					},
+					";cursor:pointer;width:100%;font-weight:600;font-size:30px;height:50px;text-align:center;-webkit-transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;@media screen and (max-width:559px){font-size:18px;}.dollar-sign{font-size:21px;margin-right:1px;font-weight:bold;@media screen and (max-width:559px){font-size:16px;}}}&:focus div:not(.club-level),&:hover div:not(.club-level),&:active div:not(.club-level),div:not(.club-level):hover,div:not(.club-level):focus,div:not(.club-level):active,&.selected div:not(.club-level){background-color:",
+					function(props) {
+						return props.arrayHoverBackgroundColor;
+					},
+					";color:",
+					function(props) {
+						return props.arrayHoverColor;
+					},
+					";border-color:",
+					function(props) {
+						return props.arrayHoverBorderColor;
+					},
+					";}div.club-level{position:absolute;font-weight:bold;font-size:14px;color:",
+					function(props) {
+						return props.arrayDescriptorColor;
+					},
+					";text-align:center;width:110%;left:50%;top:calc(100% + 7px);transform:translateX(-50%);line-height:15px;@media screen and (max-width:395px){width:100%;font-size:12px;line-height:13px;}}" +
+						("development" === "production"
+							? ""
+							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNsdWJBc2tBcnJheUJ0bi5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFHa0MiLCJmaWxlIjoiQ2x1YkFza0FycmF5QnRuLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmNvbnN0IENsdWJBc2tBcnJheUJ0biA9IHN0eWxlZC5kaXZgXG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHRwb3NpdGlvbjogcmVsYXRpdmU7XG5cdCYuYXNrYnV0dG9uLS1jbHViIHtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGZsZXg6IDAgMCA5NXB4O1xuXHRcdG1hcmdpbjogMCAyLjVweDtcblx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1NTlweCkge1xuXHRcdFx0ZmxleDogMCAwIGNhbGMoKDEwMCUgLSA3N3B4KSAvIDUpO1xuXHRcdH1cblx0fVxuXHRkaXYge1xuXHRcdGRpc3BsYXk6IGZsZXg7XG5cdFx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0XHRqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcblx0XHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHR9XG5cdGRpdi5hc2tidXR0b25fX2FtdCB7XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5hcnJheUJhY2tncm91bmRDb2xvcn07XG5cdFx0Ym9yZGVyLXJhZGl1czogJHtwcm9wcyA9PiBwcm9wcy5hcnJheUJvcmRlclJhZGl1c307XG5cdFx0Ym9yZGVyOiAxcHggc29saWQgJHtwcm9wcyA9PiBwcm9wcy5hcnJheUJvcmRlckNvbG9yfTtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmFycmF5Q29sb3J9O1xuXHRcdGN1cnNvcjogcG9pbnRlcjtcblx0XHR3aWR0aDogMTAwJTtcblx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdGZvbnQtc2l6ZTogMzBweDtcblx0XHRoZWlnaHQ6IDUwcHg7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdC13ZWJraXQtdHJhbnNpdGlvbjogYm9yZGVyLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0LCBjb2xvciAyMDBtcyBlYXNlLWluLW91dCxcblx0XHRcdGJhY2tncm91bmQtY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdFx0dHJhbnNpdGlvbjogYm9yZGVyLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0LCBjb2xvciAyMDBtcyBlYXNlLWluLW91dCxcblx0XHRcdGJhY2tncm91bmQtY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNTU5cHgpIHtcblx0XHRcdGZvbnQtc2l6ZTogMThweDtcblx0XHR9XG5cdFx0LmRvbGxhci1zaWduIHtcblx0XHRcdGZvbnQtc2l6ZTogMjFweDtcblx0XHRcdG1hcmdpbi1yaWdodDogMXB4O1xuXHRcdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdFx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1NTlweCkge1xuXHRcdFx0XHRmb250LXNpemU6IDE2cHg7XG5cdFx0XHR9XG5cdFx0fVxuXHR9XG5cdCY6Zm9jdXMgZGl2Om5vdCguY2x1Yi1sZXZlbCksXG5cdCY6aG92ZXIgZGl2Om5vdCguY2x1Yi1sZXZlbCksXG5cdCY6YWN0aXZlIGRpdjpub3QoLmNsdWItbGV2ZWwpLFxuXHRkaXY6bm90KC5jbHViLWxldmVsKTpob3Zlcixcblx0ZGl2Om5vdCguY2x1Yi1sZXZlbCk6Zm9jdXMsXG5cdGRpdjpub3QoLmNsdWItbGV2ZWwpOmFjdGl2ZSxcblx0Ji5zZWxlY3RlZCBkaXY6bm90KC5jbHViLWxldmVsKSB7XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5hcnJheUhvdmVyQmFja2dyb3VuZENvbG9yfTtcblx0XHRjb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5hcnJheUhvdmVyQ29sb3J9O1xuXHRcdGJvcmRlci1jb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5hcnJheUhvdmVyQm9yZGVyQ29sb3J9O1xuXHR9XG5cdGRpdi5jbHViLWxldmVsIHtcblx0XHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdFx0Zm9udC1zaXplOiAxNHB4O1xuXHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmFycmF5RGVzY3JpcHRvckNvbG9yfTtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0d2lkdGg6IDExMCU7XG5cdFx0bGVmdDogNTAlO1xuXHRcdHRvcDogY2FsYygxMDAlICsgN3B4KTtcblx0XHR0cmFuc2Zvcm06IHRyYW5zbGF0ZVgoLTUwJSk7XG5cdFx0bGluZS1oZWlnaHQ6IDE1cHg7XG5cdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogMzk1cHgpIHtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdFx0Zm9udC1zaXplOiAxMnB4O1xuXHRcdFx0bGluZS1oZWlnaHQ6IDEzcHg7XG5cdFx0fVxuXHR9XG5gO1xuXG5leHBvcnQgZGVmYXVsdCBDbHViQXNrQXJyYXlCdG47XG4iXX0= */")
+				);
+				var _default = ClubAskArrayBtn;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						ClubAskArrayBtn,
+						"ClubAskArrayBtn",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ClubAskArrayBtn.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ClubAskArrayBtn.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@emotion/styled-base":
+					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
+				react: "node_modules/react/index.js",
+			},
+		],
+		"src/Components/FormComponents/Blocks/GivingArrayBlock.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
+
+				var _ClubAskArrayBtn = _interopRequireDefault(
+					require("../StyledComponents/ClubAskArrayBtn")
+				);
+
+				var _reactTransitionGroup = require("react-transition-group");
+
+				require("../Animations/askarray.css");
+
+				var _core = require("@emotion/core");
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var partnerLevels = {
+					"20": "700 Club",
+					"40": "700 Club Gold",
+					"84": "1000 Club",
+					"209": "2500 Club",
+					"417": "Founder's Club",
+				};
+
+				var GivingArray = function GivingArray(_ref) {
+					var amounts = _ref.amounts,
+						selectedIndex = _ref.selectedIndex,
+						format = _ref.format,
+						monthlyChecked = _ref.monthlyChecked,
+						addToCart = _ref.addToCart;
+
+					var _useContext = (0, _react.useContext)(
+							_FormConfigProvider.FormConfigContext
+						),
+						getCssConfig = _useContext.getCssConfig;
+
+					var _getCssConfig = getCssConfig("array"),
+						_getCssConfig$arrayCo = _getCssConfig.arrayColor,
+						arrayColor =
+							_getCssConfig$arrayCo === void 0 ? "#fff" : _getCssConfig$arrayCo,
+						_getCssConfig$arrayBa = _getCssConfig.arrayBackgroundColor,
+						arrayBackgroundColor =
+							_getCssConfig$arrayBa === void 0
+								? "#1775BC"
+								: _getCssConfig$arrayBa,
+						_getCssConfig$arrayBo = _getCssConfig.arrayBorderColor,
+						arrayBorderColor =
+							_getCssConfig$arrayBo === void 0
+								? "transparent"
+								: _getCssConfig$arrayBo,
+						_getCssConfig$arrayBo2 = _getCssConfig.arrayBorderRadius,
+						arrayBorderRadius =
+							_getCssConfig$arrayBo2 === void 0
+								? "5px"
+								: _getCssConfig$arrayBo2,
+						_getCssConfig$arrayHo = _getCssConfig.arrayHoverColor,
+						arrayHoverColor =
+							_getCssConfig$arrayHo === void 0
+								? "#1775BC"
+								: _getCssConfig$arrayHo,
+						_getCssConfig$arrayHo2 = _getCssConfig.arrayHoverBackgroundColor,
+						arrayHoverBackgroundColor =
+							_getCssConfig$arrayHo2 === void 0
+								? "#fff"
+								: _getCssConfig$arrayHo2,
+						_getCssConfig$arrayHo3 = _getCssConfig.arrayHoverBorderColor,
+						arrayHoverBorderColor =
+							_getCssConfig$arrayHo3 === void 0
+								? "#1775BC"
+								: _getCssConfig$arrayHo3,
+						_getCssConfig$arrayDe = _getCssConfig.arrayDescriptorColor,
+						arrayDescriptorColor =
+							_getCssConfig$arrayDe === void 0
+								? "#DDB007"
+								: _getCssConfig$arrayDe;
+
+					return amounts.map(function(amount, i) {
+						return (0, _core.jsx)(
+							_reactTransitionGroup.CSSTransition,
+							{
+								in: true,
+								key: "array-"
+									.concat(monthlyChecked ? "monthly" : "single", "-")
+									.concat(i),
+								timeout: 400,
+								classNames: "askarray-item",
+								unmountOnExit: true,
+								appear: true,
+							},
+							(0, _core.jsx)(
+								_ClubAskArrayBtn.default,
+								{
+									className: "askbutton--club ".concat(
+										selectedIndex == i ? "selected" : ""
+									),
+									onClick: function onClick() {
+										return addToCart(amount, i);
+									},
+									arrayColor: arrayColor,
+									arrayBackgroundColor: arrayBackgroundColor,
+									arrayBorderColor: arrayBorderColor,
+									arrayBorderRadius: arrayBorderRadius,
+									arrayHoverColor: arrayHoverColor,
+									arrayHoverBackgroundColor: arrayHoverBackgroundColor,
+									arrayHoverBorderColor: arrayHoverBorderColor,
+									arrayDescriptorColor: arrayDescriptorColor,
+								},
+								(0, _core.jsx)(
+									"div",
+									{
+										className: "askbutton__amt",
+										tabIndex: "0",
+										role: "button",
+										"aria-pressed": selectedIndex == i,
+									},
+									(0, _core.jsx)(
+										"span",
+										{
+											className: "dollar-sign",
+										},
+										"$"
+									),
+									amount.toLocaleString(undefined, {
+										minimumFractionDigits: 0,
+										maximiumFractionDigits: 0,
+										style: "decimal",
+									})
+								),
+								(0, _core.jsx)(
+									_reactTransitionGroup.CSSTransition,
+									{
+										in: monthlyChecked,
+										timeout: 400,
+										classNames: "askarray-item--level",
+										unmountOnExit: true,
+									},
+									(0, _core.jsx)(
+										"div",
+										{
+											className: "club-level",
+										},
+										partnerLevels[amount]
+									)
+								)
+							)
+						);
+					});
+				};
+
+				__signature__(GivingArray, "useContext{{ getCssConfig }}");
+
+				var _default = (0, _react.memo)(GivingArray);
+
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						partnerLevels,
+						"partnerLevels",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/GivingArrayBlock.js"
+					);
+					reactHotLoader.register(
+						GivingArray,
+						"GivingArray",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/GivingArrayBlock.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/GivingArrayBlock.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				react: "node_modules/react/index.js",
+				"../../Contexts/FormConfigProvider":
+					"src/Components/Contexts/FormConfigProvider.js",
+				"../StyledComponents/ClubAskArrayBtn":
+					"src/Components/FormComponents/StyledComponents/ClubAskArrayBtn.js",
+				"react-transition-group":
+					"node_modules/react-transition-group/esm/index.js",
+				"../Animations/askarray.css":
+					"src/Components/FormComponents/Animations/askarray.css",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/Components/FormComponents/StyledComponents/ClubOtherGiftAmountGroup.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _styledBase = _interopRequireDefault(
+					require("@emotion/styled-base")
+				);
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
+
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var ClubOtherGiftAmountStyle = (0, _styledBase.default)("div", {
+					target: "epin2e0",
+					label: "ClubOtherGiftAmountStyle",
+				})(
+					"display:flex;flex-direction:row;justify-content:center;line-height:unset;&.askarray--other{position:relative;box-sizing:border-box;flex:0 0 150px;margin:0 2.5px;transition:all 250ms ease-in-out;@media screen and (max-width:716px){margin:0 auto;",
+					function(props) {
+						return props.isMonthly ? "margin-top: 50px;" : "margin-top: 20px;";
+					},
+					" flex:unset;width:100%;justify-self:center;}}div{display:flex;flex-direction:row;align-items:center;box-sizing:border-box;line-height:unset;margin-bottom:0;position:relative;white-space:nowrap;width:100%;label{font-size:calc(19px * 0.7);font-weight:600;color:",
+					function(props) {
+						return props.arrayColor;
+					},
+					";box-sizing:border-box;position:absolute;left:50%;top:100%;transform:translateX(-50%);}}div.askarray__form-group--other{justify-content:center;max-width:400px;position:relative;z-index:1;@media screen and (max-width:716px){width:100%;max-width:160px;}&:before{color:",
+					function(props) {
+						return props.arrayColor;
+					},
+					";display:block;position:absolute;",
+					function(props) {
+						return props.otherAmount ? "content: '$'" : "content: '$ Other'";
+					},
+					';cursor:text;font-size:21px;font-weight:600;z-index:5;left:10px;top:0;line-height:50px;@media screen and (max-width:559px){font-size:18px;}}&:hover:before{content:"$";cursor:default;}&.selected:before,&:focus-within:before,&:focus:before{color:',
+					function(props) {
+						return props.arrayHoverColor;
+					},
+					';content:"$";}label.form-group__other-input--label{width:1px;height:1px;position:absolute;top:-10000px;}input{position:relative;appearance:none;background:none;background-color:',
+					function(props) {
+						return props.arrayBackgroundColor;
+					},
+					";height:50px;width:100%;-webkit-transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;transition:border-color 200ms ease-in-out,color 200ms ease-in-out,background-color 200ms ease-in-out;border:1px solid ",
+					function(props) {
+						return props.arrayBorderColor;
+					},
+					";border-radius:",
+					function(props) {
+						return props.arrayBorderRadius;
+					},
+					";box-sizing:border-box;color:",
+					function(props) {
+						return props.arrayColor;
+					},
+					";font-size:30px;text-align:left;padding-left:25px;font-weight:600;max-width:220px;white-space:nowrap;@media screen and (max-width:559px){font-size:24px;padding-left:22px;}@media screen and (max-width:395px){font-size:19px;padding-left:20px;}}input:active,input:focus{border-color:",
+					function(props) {
+						return props.arrayHoverBorderColor;
+					},
+					";background-color:",
+					function(props) {
+						return props.arrayHoverBackgroundColor;
+					},
+					";color:",
+					function(props) {
+						return props.arrayHoverColor;
+					},
+					";box-sizing:border-box;}&.selected input{border-color:",
+					function(props) {
+						return props.arrayHoverBorderColor;
+					},
+					";background-color:",
+					function(props) {
+						return props.arrayHoverBackgroundColor;
+					},
+					";color:",
+					function(props) {
+						return props.arrayHoverColor;
+					},
+					";}div.other-amt-error{box-sizing:border-box;position:absolute;color:",
+					function(props) {
+						return props.formErrorColor;
+					},
+					";width:auto;font-weight:600;font-size:16px;opacity:1;overflow:hidden;max-width:100%;white-space:nowrap;bottom:-25px;left:50%;transform:translateX(-50%);@media screen and (max-width:716px){bottom:-18px;font-size:15px;}}}div.selected{}" +
+						("development" === "production"
+							? ""
+							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNsdWJPdGhlckdpZnRBbW91bnRHcm91cC5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFLMkMiLCJmaWxlIjoiQ2x1Yk90aGVyR2lmdEFtb3VudEdyb3VwLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IHVzZUNvbnRleHQgfSBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5pbXBvcnQgeyBGb3JtQ29uZmlnQ29udGV4dCB9IGZyb20gXCIuLi8uLi9Db250ZXh0cy9Gb3JtQ29uZmlnUHJvdmlkZXJcIjtcblxuY29uc3QgQ2x1Yk90aGVyR2lmdEFtb3VudFN0eWxlID0gc3R5bGVkLmRpdmBcblx0ZGlzcGxheTogZmxleDtcblx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0anVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG5cdGxpbmUtaGVpZ2h0OiB1bnNldDtcblx0Ji5hc2thcnJheS0tb3RoZXIge1xuXHRcdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGZsZXg6IDAgMCAxNTBweDtcblx0XHRtYXJnaW46IDAgMi41cHg7XG5cdFx0dHJhbnNpdGlvbjogYWxsIDI1MG1zIGVhc2UtaW4tb3V0O1xuXHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDcxNnB4KSB7XG5cdFx0XHRtYXJnaW46IDAgYXV0bztcblx0XHRcdCR7cHJvcHMgPT4gKHByb3BzLmlzTW9udGhseSA/IFwibWFyZ2luLXRvcDogNTBweDtcIiA6IFwibWFyZ2luLXRvcDogMjBweDtcIil9XG5cdFx0XHRmbGV4OiB1bnNldDtcblx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdFx0anVzdGlmeS1zZWxmOiBjZW50ZXI7XG5cdFx0fVxuXHR9XG5cdGRpdiB7XG5cdFx0ZGlzcGxheTogZmxleDtcblx0XHRmbGV4LWRpcmVjdGlvbjogcm93O1xuXHRcdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRsaW5lLWhlaWdodDogdW5zZXQ7XG5cdFx0bWFyZ2luLWJvdHRvbTogMDtcblx0XHRwb3NpdGlvbjogcmVsYXRpdmU7XG5cdFx0d2hpdGUtc3BhY2U6IG5vd3JhcDtcblx0XHR3aWR0aDogMTAwJTtcblx0XHRsYWJlbCB7XG5cdFx0XHRmb250LXNpemU6IGNhbGMoMTlweCAqIDAuNyk7XG5cdFx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdFx0Y29sb3I6ICR7cHJvcHMgPT4gcHJvcHMuYXJyYXlDb2xvcn07XG5cdFx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdFx0cG9zaXRpb246IGFic29sdXRlO1xuXHRcdFx0bGVmdDogNTAlO1xuXHRcdFx0dG9wOiAxMDAlO1xuXHRcdFx0dHJhbnNmb3JtOiB0cmFuc2xhdGVYKC01MCUpO1xuXHRcdH1cblx0fVxuXHRkaXYuYXNrYXJyYXlfX2Zvcm0tZ3JvdXAtLW90aGVyIHtcblx0XHRqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcblx0XHRtYXgtd2lkdGg6IDQwMHB4O1xuXHRcdHBvc2l0aW9uOiByZWxhdGl2ZTtcblx0XHR6LWluZGV4OiAxO1xuXHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDcxNnB4KSB7XG5cdFx0XHR3aWR0aDogMTAwJTtcblx0XHRcdG1heC13aWR0aDogMTYwcHg7XG5cdFx0fVxuXHRcdCY6YmVmb3JlIHtcblx0XHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmFycmF5Q29sb3J9O1xuXHRcdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0XHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdFx0XHQke3Byb3BzID0+IChwcm9wcy5vdGhlckFtb3VudCA/IFwiY29udGVudDogJyQnXCIgOiBcImNvbnRlbnQ6ICckIE90aGVyJ1wiKX07XG5cdFx0XHRjdXJzb3I6IHRleHQ7XG5cdFx0XHRmb250LXNpemU6IDIxcHg7XG5cdFx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdFx0ei1pbmRleDogNTtcblx0XHRcdGxlZnQ6IDEwcHg7XG5cdFx0XHR0b3A6IDA7XG5cdFx0XHRsaW5lLWhlaWdodDogNTBweDtcblx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDU1OXB4KSB7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMThweDtcblx0XHRcdH1cblx0XHR9XG5cdFx0Jjpob3ZlcjpiZWZvcmUge1xuXHRcdFx0Y29udGVudDogXCIkXCI7XG5cdFx0XHRjdXJzb3I6IGRlZmF1bHQ7XG5cdFx0fVxuXHRcdCYuc2VsZWN0ZWQ6YmVmb3JlLFxuXHRcdCY6Zm9jdXMtd2l0aGluOmJlZm9yZSxcblx0XHQmOmZvY3VzOmJlZm9yZSB7XG5cdFx0XHRjb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5hcnJheUhvdmVyQ29sb3J9O1xuXHRcdFx0Y29udGVudDogXCIkXCI7XG5cdFx0fVxuXHRcdGxhYmVsLmZvcm0tZ3JvdXBfX290aGVyLWlucHV0LS1sYWJlbCB7XG5cdFx0XHR3aWR0aDogMXB4O1xuXHRcdFx0aGVpZ2h0OiAxcHg7XG5cdFx0XHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdFx0XHR0b3A6IC0xMDAwMHB4O1xuXHRcdH1cblx0XHRpbnB1dCB7XG5cdFx0XHRwb3NpdGlvbjogcmVsYXRpdmU7XG5cdFx0XHRhcHBlYXJhbmNlOiBub25lO1xuXHRcdFx0YmFja2dyb3VuZDogbm9uZTtcblx0XHRcdGJhY2tncm91bmQtY29sb3I6ICR7cHJvcHMgPT4gcHJvcHMuYXJyYXlCYWNrZ3JvdW5kQ29sb3J9O1xuXHRcdFx0aGVpZ2h0OiA1MHB4O1xuXHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0XHQtd2Via2l0LXRyYW5zaXRpb246IGJvcmRlci1jb2xvciAyMDBtcyBlYXNlLWluLW91dCxcblx0XHRcdFx0Y29sb3IgMjAwbXMgZWFzZS1pbi1vdXQsIGJhY2tncm91bmQtY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdFx0XHR0cmFuc2l0aW9uOiBib3JkZXItY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQsIGNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0LFxuXHRcdFx0XHRiYWNrZ3JvdW5kLWNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHRcdFx0Ym9yZGVyOiAxcHggc29saWQgJHtwcm9wcyA9PiBwcm9wcy5hcnJheUJvcmRlckNvbG9yfTtcblx0XHRcdGJvcmRlci1yYWRpdXM6ICR7cHJvcHMgPT4gcHJvcHMuYXJyYXlCb3JkZXJSYWRpdXN9O1xuXHRcdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmFycmF5Q29sb3J9O1xuXHRcdFx0Zm9udC1zaXplOiAzMHB4O1xuXHRcdFx0dGV4dC1hbGlnbjogbGVmdDtcblx0XHRcdHBhZGRpbmctbGVmdDogMjVweDtcblx0XHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0XHRtYXgtd2lkdGg6IDIyMHB4O1xuXHRcdFx0d2hpdGUtc3BhY2U6IG5vd3JhcDtcblx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDU1OXB4KSB7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMjRweDtcblx0XHRcdFx0cGFkZGluZy1sZWZ0OiAyMnB4O1xuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogMzk1cHgpIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxOXB4O1xuXHRcdFx0XHRwYWRkaW5nLWxlZnQ6IDIwcHg7XG5cdFx0XHR9XG5cdFx0fVxuXHRcdGlucHV0OmFjdGl2ZSxcblx0XHRpbnB1dDpmb2N1cyB7XG5cdFx0XHRib3JkZXItY29sb3I6ICR7cHJvcHMgPT4gcHJvcHMuYXJyYXlIb3ZlckJvcmRlckNvbG9yfTtcblx0XHRcdGJhY2tncm91bmQtY29sb3I6ICR7cHJvcHMgPT4gcHJvcHMuYXJyYXlIb3ZlckJhY2tncm91bmRDb2xvcn07XG5cdFx0XHRjb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5hcnJheUhvdmVyQ29sb3J9O1xuXHRcdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHR9XG5cdFx0Ji5zZWxlY3RlZCBpbnB1dCB7XG5cdFx0XHRib3JkZXItY29sb3I6ICR7cHJvcHMgPT4gcHJvcHMuYXJyYXlIb3ZlckJvcmRlckNvbG9yfTtcblx0XHRcdGJhY2tncm91bmQtY29sb3I6ICR7cHJvcHMgPT4gcHJvcHMuYXJyYXlIb3ZlckJhY2tncm91bmRDb2xvcn07XG5cdFx0XHRjb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5hcnJheUhvdmVyQ29sb3J9O1xuXHRcdH1cblx0XHRkaXYub3RoZXItYW10LWVycm9yIHtcblx0XHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0XHRwb3NpdGlvbjogYWJzb2x1dGU7XG5cdFx0XHRjb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5mb3JtRXJyb3JDb2xvcn07XG5cdFx0XHR3aWR0aDogYXV0bztcblx0XHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0XHRmb250LXNpemU6IDE2cHg7XG5cdFx0XHRvcGFjaXR5OiAxO1xuXHRcdFx0b3ZlcmZsb3c6IGhpZGRlbjtcblx0XHRcdG1heC13aWR0aDogMTAwJTtcblx0XHRcdHdoaXRlLXNwYWNlOiBub3dyYXA7XG5cdFx0XHRib3R0b206IC0yNXB4O1xuXHRcdFx0bGVmdDogNTAlO1xuXHRcdFx0dHJhbnNmb3JtOiB0cmFuc2xhdGVYKC01MCUpO1xuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNzE2cHgpIHtcblx0XHRcdFx0Ym90dG9tOiAtMThweDtcblx0XHRcdFx0Zm9udC1zaXplOiAxNXB4O1xuXHRcdFx0fVxuXHRcdH1cblx0fVxuXG5cdGRpdi5zZWxlY3RlZCB7XG5cdH1cbmA7XG5cbmNvbnN0IENsdWJPdGhlckdpZnRBbW91bnRHcm91cCA9ICh7IGNoaWxkcmVuLCBzdHlsZSA9IHt9LCBpc01vbnRobHkgfSkgPT4ge1xuXHRjb25zdCB7IGdldENzc0NvbmZpZyB9ID0gdXNlQ29udGV4dChGb3JtQ29uZmlnQ29udGV4dCk7XG5cdGNvbnN0IHtcblx0XHRhcnJheUNvbG9yID0gXCIjZmZmXCIsXG5cdFx0YXJyYXlCYWNrZ3JvdW5kQ29sb3IgPSBcIiMxNzc1QkNcIixcblx0XHRhcnJheUJvcmRlckNvbG9yID0gXCJ0cmFuc3BhcmVudFwiLFxuXHRcdGFycmF5Qm9yZGVyUmFkaXVzID0gXCI1cHhcIixcblx0XHRhcnJheUhvdmVyQ29sb3IgPSBcIiMxNzc1QkNcIixcblx0XHRhcnJheUhvdmVyQmFja2dyb3VuZENvbG9yID0gXCIjZmZmXCIsXG5cdFx0YXJyYXlIb3ZlckJvcmRlckNvbG9yID0gXCIjMTc3NUJDXCIsXG5cdFx0YXJyYXlEZXNjcmlwdG9yQ29sb3IgPSBcIiNEREIwMDdcIixcblx0fSA9IGdldENzc0NvbmZpZyhcImFycmF5XCIpO1xuXHRjb25zdCB7IGZvcm1FcnJvckNvbG9yID0gXCJjcmltc29uXCIgfSA9IGdldENzc0NvbmZpZyhcImZvcm1cIik7XG5cdHJldHVybiAoXG5cdFx0PENsdWJPdGhlckdpZnRBbW91bnRTdHlsZVxuXHRcdFx0aWQ9XCJPdGhlckdpZnRBbW91bnRcIlxuXHRcdFx0Y2xhc3NOYW1lPVwiYXNrYXJyYXktLW90aGVyXCJcblx0XHRcdHN0eWxlPXtzdHlsZX1cblx0XHRcdGFycmF5Q29sb3I9e2FycmF5Q29sb3J9XG5cdFx0XHRhcnJheUJhY2tncm91bmRDb2xvcj17YXJyYXlCYWNrZ3JvdW5kQ29sb3J9XG5cdFx0XHRhcnJheUJvcmRlckNvbG9yPXthcnJheUJvcmRlckNvbG9yfVxuXHRcdFx0YXJyYXlCb3JkZXJSYWRpdXM9e2FycmF5Qm9yZGVyUmFkaXVzfVxuXHRcdFx0YXJyYXlIb3ZlckNvbG9yPXthcnJheUhvdmVyQ29sb3J9XG5cdFx0XHRhcnJheUhvdmVyQmFja2dyb3VuZENvbG9yPXthcnJheUhvdmVyQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0YXJyYXlIb3ZlckJvcmRlckNvbG9yPXthcnJheUhvdmVyQm9yZGVyQ29sb3J9XG5cdFx0XHRhcnJheURlc2NyaXB0b3JDb2xvcj17YXJyYXlEZXNjcmlwdG9yQ29sb3J9XG5cdFx0XHRmb3JtRXJyb3JDb2xvcj17Zm9ybUVycm9yQ29sb3J9XG5cdFx0XHRpc01vbnRobHk9e2lzTW9udGhseX1cblx0XHQ+XG5cdFx0XHR7Y2hpbGRyZW59XG5cdFx0PC9DbHViT3RoZXJHaWZ0QW1vdW50U3R5bGU+XG5cdCk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBDbHViT3RoZXJHaWZ0QW1vdW50R3JvdXA7XG4iXX0= */")
+				);
+
+				var ClubOtherGiftAmountGroup = function ClubOtherGiftAmountGroup(_ref) {
+					var children = _ref.children,
+						_ref$style = _ref.style,
+						style = _ref$style === void 0 ? {} : _ref$style,
+						isMonthly = _ref.isMonthly;
+
+					var _useContext = (0, _react.useContext)(
+							_FormConfigProvider.FormConfigContext
+						),
+						getCssConfig = _useContext.getCssConfig;
+
+					var _getCssConfig = getCssConfig("array"),
+						_getCssConfig$arrayCo = _getCssConfig.arrayColor,
+						arrayColor =
+							_getCssConfig$arrayCo === void 0 ? "#fff" : _getCssConfig$arrayCo,
+						_getCssConfig$arrayBa = _getCssConfig.arrayBackgroundColor,
+						arrayBackgroundColor =
+							_getCssConfig$arrayBa === void 0
+								? "#1775BC"
+								: _getCssConfig$arrayBa,
+						_getCssConfig$arrayBo = _getCssConfig.arrayBorderColor,
+						arrayBorderColor =
+							_getCssConfig$arrayBo === void 0
+								? "transparent"
+								: _getCssConfig$arrayBo,
+						_getCssConfig$arrayBo2 = _getCssConfig.arrayBorderRadius,
+						arrayBorderRadius =
+							_getCssConfig$arrayBo2 === void 0
+								? "5px"
+								: _getCssConfig$arrayBo2,
+						_getCssConfig$arrayHo = _getCssConfig.arrayHoverColor,
+						arrayHoverColor =
+							_getCssConfig$arrayHo === void 0
+								? "#1775BC"
+								: _getCssConfig$arrayHo,
+						_getCssConfig$arrayHo2 = _getCssConfig.arrayHoverBackgroundColor,
+						arrayHoverBackgroundColor =
+							_getCssConfig$arrayHo2 === void 0
+								? "#fff"
+								: _getCssConfig$arrayHo2,
+						_getCssConfig$arrayHo3 = _getCssConfig.arrayHoverBorderColor,
+						arrayHoverBorderColor =
+							_getCssConfig$arrayHo3 === void 0
+								? "#1775BC"
+								: _getCssConfig$arrayHo3,
+						_getCssConfig$arrayDe = _getCssConfig.arrayDescriptorColor,
+						arrayDescriptorColor =
+							_getCssConfig$arrayDe === void 0
+								? "#DDB007"
+								: _getCssConfig$arrayDe;
+
+					var _getCssConfig2 = getCssConfig("form"),
+						_getCssConfig2$formEr = _getCssConfig2.formErrorColor,
+						formErrorColor =
+							_getCssConfig2$formEr === void 0
+								? "crimson"
+								: _getCssConfig2$formEr;
+
+					return (0, _core.jsx)(
+						ClubOtherGiftAmountStyle,
+						{
+							id: "OtherGiftAmount",
+							className: "askarray--other",
+							style: style,
+							arrayColor: arrayColor,
+							arrayBackgroundColor: arrayBackgroundColor,
+							arrayBorderColor: arrayBorderColor,
+							arrayBorderRadius: arrayBorderRadius,
+							arrayHoverColor: arrayHoverColor,
+							arrayHoverBackgroundColor: arrayHoverBackgroundColor,
+							arrayHoverBorderColor: arrayHoverBorderColor,
+							arrayDescriptorColor: arrayDescriptorColor,
+							formErrorColor: formErrorColor,
+							isMonthly: isMonthly,
+						},
+						children
+					);
+				};
+
+				__signature__(ClubOtherGiftAmountGroup, "useContext{{ getCssConfig }}");
+
+				var _default = ClubOtherGiftAmountGroup;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						ClubOtherGiftAmountStyle,
+						"ClubOtherGiftAmountStyle",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ClubOtherGiftAmountGroup.js"
+					);
+					reactHotLoader.register(
+						ClubOtherGiftAmountGroup,
+						"ClubOtherGiftAmountGroup",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ClubOtherGiftAmountGroup.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/ClubOtherGiftAmountGroup.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@emotion/styled-base":
+					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
+				react: "node_modules/react/index.js",
+				"../../Contexts/FormConfigProvider":
+					"src/Components/Contexts/FormConfigProvider.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/Components/FormComponents/Layouts/ClubLayout.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _toConsumableArray2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/toConsumableArray")
+				);
+
+				var _classCallCheck2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/classCallCheck")
+				);
+
+				var _createClass2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/createClass")
+				);
+
+				var _possibleConstructorReturn2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/possibleConstructorReturn")
+				);
+
+				var _getPrototypeOf3 = _interopRequireDefault(
+					require("@babel/runtime/helpers/getPrototypeOf")
+				);
+
+				var _inherits2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/inherits")
+				);
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _reactTransitionGroup = require("react-transition-group");
+
+				require("../Animations/askarray.css");
+
+				var _GivingFormProvider = require("../../Contexts/GivingFormProvider");
+
+				var _MonthlyClubTabBlock = _interopRequireDefault(
+					require("../Blocks/MonthlyClubTabBlock")
+				);
+
+				var _FieldSet = _interopRequireDefault(
+					require("../StyledComponents/FieldSet")
+				);
+
+				var _ClubAskArray = _interopRequireDefault(
+					require("../StyledComponents/ClubAskArray")
+				);
+
+				var _GivingArrayBlock = _interopRequireDefault(
+					require("../Blocks/GivingArrayBlock.js")
+				);
+
+				var _ClubOtherGiftAmountGroup = _interopRequireDefault(
+					require("../StyledComponents/ClubOtherGiftAmountGroup")
+				);
+
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				function getIndex(arr, amount) {
+					return arr.findIndex(function(amt) {
+						return +amt == +amount;
+					});
+				}
+
+				var ClubLayout =
+					/*#__PURE__*/
+					(function(_Component) {
+						(0, _inherits2.default)(ClubLayout, _Component);
+
+						function ClubLayout() {
+							var _getPrototypeOf2;
+
+							var _this;
+
+							(0, _classCallCheck2.default)(this, ClubLayout);
+
+							for (
+								var _len = arguments.length, args = new Array(_len), _key = 0;
+								_key < _len;
+								_key++
+							) {
+								args[_key] = arguments[_key];
+							}
+
+							_this = (0, _possibleConstructorReturn2.default)(
+								this,
+								(_getPrototypeOf2 = (0, _getPrototypeOf3.default)(
+									ClubLayout
+								)).call.apply(_getPrototypeOf2, [this].concat(args))
+							);
+							_this.otherAmountField = _react.default.createRef();
+							_this.state = {
+								prevIndex: null,
+								selectedIndex: null,
+								otherAmount: 0,
+								otherAmountDisplay: "",
+								otherAmountError: "",
+							};
+
+							_this.addToCart = function(amt, index) {
+								var _this$state = _this.state,
+									otherAmountError = _this$state.otherAmountError,
+									selectedIndex = _this$state.selectedIndex;
+
+								_this.setState(
+									{
+										otherAmount: index == 99 ? amt : 0,
+										otherAmountDisplay:
+											index == 99
+												? amt.toLocaleString(undefined, {
+														minimumFractionDigits: 0,
+														maximiumFractionDigits: 0,
+														style: "decimal",
+												  })
+												: "",
+										selectedIndex: index,
+										otherAmountError: index !== 99 ? "" : otherAmountError,
+										prevIndex: selectedIndex,
+									},
+									function() {
+										if (amt) {
+											var _this$props = _this.props,
+												monthlyChecked = _this$props.monthlyChecked,
+												_this$props$givingOpt = _this$props.givingOptions,
+												monthlyPledgeData =
+													_this$props$givingOpt.monthlyPledgeData,
+												singlePledgeData =
+													_this$props$givingOpt.singlePledgeData;
+
+											_this.context.addToCart({
+												type: "ADD_TO_CART",
+												item: {
+													type: "donation",
+													PledgeAmount: amt,
+													DetailCprojMail: monthlyChecked
+														? monthlyPledgeData.DetailCprojMail
+														: singlePledgeData.DetailCprojMail,
+													DetailCprojCredit: monthlyChecked
+														? monthlyPledgeData.DetailCprojCredit
+														: singlePledgeData.DetailCprojCredit,
+													DetailDescription: monthlyChecked
+														? monthlyPledgeData.DetailDescription
+														: singlePledgeData.DetailDescription,
+													DetailName: monthlyChecked
+														? monthlyPledgeData.DetailName
+														: singlePledgeData.DetailName,
+													monthly: monthlyChecked,
+												},
+											});
+										} else {
+											_this.context.removeFromCart({
+												type: "REMOVE_FROM_CART",
+												itemType: "donation",
+											});
+										}
+									}
+								);
+							};
+
+							_this.handleFocus = function(e) {
+								_this.setState(
+									function(state, props) {
+										if (state.selectedIndex !== 99) {
+											return {
+												selectedIndex: 99,
+												prevIndex: state.selectedIndex,
+											};
+										}
+									},
+									function() {
+										if (
+											_this.otherAmountField.current.value == "" ||
+											_this.otherAmountField.current.value == 0
+										) {
+											_this.context.removeFromCart({
+												type: "REMOVE_FROM_CART",
+												itemType: "donation",
+											});
+										}
+
+										_this.otherAmountField.current.focus();
+									}
+								);
+							};
+
+							_this.handleBlur = function(e) {
+								if (
+									_this.otherAmountField.current.value == "" ||
+									_this.otherAmountField.current.value == 0
+								) {
+									_this.setState({
+										selectedIndex: null,
+									});
+								}
+							};
+
+							_this.handleOtherAmt = function(e) {
+								var selectedIndex = _this.state.selectedIndex;
+								var value = e.target.value.trim().replace(/[\$,]/g, "");
+								var isValid = /^\d*(\.\d*)?$/.test(value);
+
+								if (isValid && +value > 0) {
+									value = Math.ceil(Number.parseFloat(value));
+
+									_this.setState(
+										{
+											otherAmountError: "",
+											otherAmount: +value,
+											otherAmountDisplay: value.toLocaleString(undefined, {
+												minimumFractionDigits: 0,
+												maximiumFractionDigits: 0,
+												style: "decimal",
+											}),
+											prevIndex: selectedIndex,
+										},
+										function() {
+											return _this.addToCart(+value, 99);
+										}
+									);
+								} else if (isValid) {
+									_this.setState(
+										{
+											otherAmount: 0,
+											otherAmountDisplay: "",
+											selectedIndex: null,
+											otherAmountError: "",
+											prevIndex: selectedIndex,
+										},
+										function() {
+											return _this.context.removeFromCart({
+												type: "REMOVE_FROM_CART",
+												itemType: "donation",
+											});
+										}
+									);
+								} else {
+									_this.setState({
+										otherAmount: 0,
+										otherAmountDisplay: "",
+										otherAmountError: value !== "" ? "Numbers Only" : "",
+										prevIndex: selectedIndex,
+									});
+								}
+							};
+
+							return _this;
+						}
+
+						(0, _createClass2.default)(ClubLayout, [
+							{
+								key: "componentDidMount",
+								value: function componentDidMount() {
+									var amt = 0,
+										arr = [];
+									var _this$props2 = this.props,
+										defaultAmount = _this$props2.defaultAmount,
+										defaultOption = _this$props2.defaultOption,
+										_this$props2$givingOp = _this$props2.givingOptions,
+										monthlyAmounts = _this$props2$givingOp.monthlyAmounts,
+										singleAmounts = _this$props2$givingOp.singleAmounts,
+										monthlyOption = _this$props2$givingOp.monthlyOption;
+									var _this$context = this.context,
+										initialized = _this$context.initialized,
+										cart = _this$context.cart;
+
+									if (!initialized) {
+										if (defaultOption !== "") {
+											arr =
+												defaultOption == "monthly"
+													? monthlyAmounts
+													: singleAmounts;
+										} else {
+											arr = monthlyOption ? monthlyAmounts : singleAmounts;
+										}
+
+										amt = defaultAmount;
+									} else {
+										var items = (0, _toConsumableArray2.default)(cart.items);
+										var pledgeFound = items.findIndex(function(el) {
+											return el && el.type == "donation";
+										});
+										var monthly =
+											pledgeFound > -1 ? items[pledgeFound].monthly : false;
+										amt =
+											pledgeFound > -1 ? items[pledgeFound].PledgeAmount : 0;
+										arr = monthly ? monthlyAmounts : singleAmounts;
+									}
+
+									if (amt > 0 && arr.length) {
+										var index = getIndex(arr, amt);
+										var selectedIndex = index >= 0 ? index : 99;
+
+										if (selectedIndex >= 0) {
+											// console.log({amt, index})
+											this.addToCart(amt, selectedIndex);
+										}
+									}
+								},
+								/**
+								 * Changes state on the arry to visibly display selected amount and adds donation amount to the cart
+								 * @param {Number} amt - amount to be added to cart
+								 * @param {Number} index - index of selected item or custom amount
+								 */
+							},
+							{
+								key: "render",
+								value: function render() {
+									var _this$props3 = this.props,
+										monthlyChecked = _this$props3.monthlyChecked,
+										handleRadioClick = _this$props3.handleRadioClick,
+										_this$props3$givingOp = _this$props3.givingOptions,
+										monthlyAmounts = _this$props3$givingOp.monthlyAmounts,
+										singleAmounts = _this$props3$givingOp.singleAmounts;
+									var _this$state2 = this.state,
+										otherAmount = _this$state2.otherAmount,
+										otherAmountDisplay = _this$state2.otherAmountDisplay,
+										otherAmountError = _this$state2.otherAmountError,
+										selectedIndex = _this$state2.selectedIndex;
+									var key = "controlled";
+									var amounts = monthlyChecked ? monthlyAmounts : singleAmounts;
+									return (0, _core.jsx)(
+										_FieldSet.default,
+										{
+											id: "giving-tabs",
+										},
+										(0, _core.jsx)(
+											"legend",
+											null,
+											"Giving Amounts and Giving Options"
+										),
+										(0, _core.jsx)(_MonthlyClubTabBlock.default, {
+											monthlyChecked: monthlyChecked,
+											handleTabClick: handleRadioClick,
+										}),
+										(0, _core.jsx)(
+											_ClubAskArray.default,
+											{
+												id: "AskArray-".concat(
+													monthlyChecked ? "monthly" : "single"
+												),
+												className: "askarray--club",
+												role: "tabpanel",
+												tabIndex: "0",
+												"aria-labelledby": monthlyChecked
+													? "monthlygift-label"
+													: "singlegift-label",
+												"aria-expanded": true,
+											},
+											(0, _core.jsx)(
+												_reactTransitionGroup.TransitionGroup,
+												{
+													className: "askarray--club-list",
+													component: null,
+													enter: true,
+													exit: false,
+												},
+												(0, _core.jsx)(_GivingArrayBlock.default, {
+													amounts: amounts,
+													selectedIndex: selectedIndex,
+													format: "buttons",
+													addToCart: this.addToCart,
+													monthlyChecked: monthlyChecked,
+												}),
+												(0, _core.jsx)(
+													_ClubOtherGiftAmountGroup.default,
+													{
+														key: "othergiftamount",
+														otherAmount: otherAmount > 0,
+														isMonthly: monthlyChecked,
+													},
+													(0, _core.jsx)(
+														"div",
+														{
+															id: "OtherAmount",
+															className: "askarray__form-group--other ".concat(
+																selectedIndex == 99 ? "selected" : ""
+															),
+														},
+														(0, _core.jsx)(
+															"label",
+															{
+																className: "form-group__other-input--label",
+																htmlFor: "other-amt-input",
+															},
+															"Other Amount"
+														),
+														(0, _core.jsx)("input", {
+															key: key,
+															ref: this.otherAmountField,
+															className: "form-group__other-input",
+															name: "other-amt-input",
+															id: "other-amt-input",
+															onChange: this.handleOtherAmt,
+															value: otherAmountDisplay,
+															onFocus: this.handleFocus,
+															onBlur: this.handleBlur,
+															inputMode: "numeric",
+															pattern: "[0-9]*",
+															type: "text",
+														}),
+														(0, _core.jsx)(
+															"div",
+															{
+																className: "other-amt-error",
+															},
+															otherAmountError
+														)
+													)
+												)
+											)
+										)
+									);
+								},
+							},
+							{
+								key: "__reactstandin__regenerateByEval",
+								// @ts-ignore
+								value: function __reactstandin__regenerateByEval(key, code) {
+									// @ts-ignore
+									this[key] = eval(code);
+								},
+							},
+						]);
+						return ClubLayout;
+					})(_react.Component);
+
+				ClubLayout.contextType = _GivingFormProvider.GivingFormContext;
+				var _default = ClubLayout;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						getIndex,
+						"getIndex",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Layouts/ClubLayout.js"
+					);
+					reactHotLoader.register(
+						ClubLayout,
+						"ClubLayout",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Layouts/ClubLayout.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Layouts/ClubLayout.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@babel/runtime/helpers/toConsumableArray":
+					"node_modules/@babel/runtime/helpers/toConsumableArray.js",
+				"@babel/runtime/helpers/classCallCheck":
+					"node_modules/@babel/runtime/helpers/classCallCheck.js",
+				"@babel/runtime/helpers/createClass":
+					"node_modules/@babel/runtime/helpers/createClass.js",
+				"@babel/runtime/helpers/possibleConstructorReturn":
+					"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js",
+				"@babel/runtime/helpers/getPrototypeOf":
+					"node_modules/@babel/runtime/helpers/getPrototypeOf.js",
+				"@babel/runtime/helpers/inherits":
+					"node_modules/@babel/runtime/helpers/inherits.js",
+				react: "node_modules/react/index.js",
+				"react-transition-group":
+					"node_modules/react-transition-group/esm/index.js",
+				"../Animations/askarray.css":
+					"src/Components/FormComponents/Animations/askarray.css",
+				"../../Contexts/GivingFormProvider":
+					"src/Components/Contexts/GivingFormProvider.js",
+				"../Blocks/MonthlyClubTabBlock":
+					"src/Components/FormComponents/Blocks/MonthlyClubTabBlock.js",
+				"../StyledComponents/FieldSet":
+					"src/Components/FormComponents/StyledComponents/FieldSet.js",
+				"../StyledComponents/ClubAskArray":
+					"src/Components/FormComponents/StyledComponents/ClubAskArray.js",
+				"../Blocks/GivingArrayBlock.js":
+					"src/Components/FormComponents/Blocks/GivingArrayBlock.js",
+				"../StyledComponents/ClubOtherGiftAmountGroup":
+					"src/Components/FormComponents/StyledComponents/ClubOtherGiftAmountGroup.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/Components/FormComponents/Blocks/PremiumBlock.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _styledBase = _interopRequireDefault(
+					require("@emotion/styled-base")
+				);
+
+				var _react = _interopRequireDefault(require("react"));
+
+				var _reactMedia = _interopRequireDefault(require("react-media"));
+
+				var _core = require("@emotion/core");
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var PremiumIntro = (0, _styledBase.default)("div", {
+					target: "e1cfwhss0",
+					label: "PremiumIntro",
+				})(
+					"development" === "production"
+						? {
+								name: "s632dr",
+								styles:
+									"@media screen and (max-width:649px){font-weight:bold;}",
+						  }
+						: {
+								name: "s632dr",
+								styles:
+									"@media screen and (max-width:649px){font-weight:bold;}",
+								map:
+									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlByZW1pdW1CbG9jay5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFJK0IiLCJmaWxlIjoiUHJlbWl1bUJsb2NrLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5pbXBvcnQgTWVkaWEgZnJvbSBcInJlYWN0LW1lZGlhXCI7XG5cbmNvbnN0IFByZW1pdW1JbnRybyA9IHN0eWxlZC5kaXZgXG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdH1cbmA7XG5cbmNvbnN0IFByZW11aW1JbmZvQmxvY2sgPSBzdHlsZWQuZGl2YFxuXHRtYXJnaW46IDIwcHggMCAzMHB4IDA7XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0ZGl2LnByZW1pdW0taW1nIHtcblx0XHR3aWR0aDogMTYwcHg7XG5cdFx0ZmxleDogMCAwIDE2MHB4O1xuXHRcdGltZy5pbWctcmVzcG9uc2l2ZSB7XG5cdFx0XHRkaXNwbGF5OiBibG9jaztcblx0XHRcdG1heC13aWR0aDogMTAwJTtcblx0XHR9XG5cdH1cblx0ZGl2LnByZW1pdW0tZGVzY3JpcHRpb24ge1xuXHRcdG1heC13aWR0aDogNTc1cHg7XG5cdFx0ZmxleDogMSAwIDE0MHB4O1xuXHRcdHVsIHtcblx0XHRcdGxpc3Qtc3R5bGU6IG5vbmU7XG5cdFx0XHRtYXJnaW4tYmxvY2stc3RhcnQ6IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stZW5kOiAwO1xuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjQ5cHgpIHtcblx0XHRcdFx0cGFkZGluZy1pbmxpbmUtc3RhcnQ6IDIwcHg7XG5cdFx0XHR9XG5cdFx0XHRsaTo6YmVmb3JlIHtcblx0XHRcdFx0Y29udGVudDogXCJcIjtcblx0XHRcdFx0YmFja2dyb3VuZDogI2Y3YjUwMDtcblx0XHRcdFx0ZGlzcGxheTogaW5saW5lLWJsb2NrO1xuXHRcdFx0XHR3aWR0aDogN3B4O1xuXHRcdFx0XHRoZWlnaHQ6IDdweDtcblx0XHRcdFx0Ym9yZGVyLXJhZGl1czogNTAlO1xuXHRcdFx0XHRtYXJnaW4tbGVmdDogLTFlbTtcblx0XHRcdFx0bWFyZ2luLXJpZ2h0OiA4cHg7XG5cdFx0XHR9XG5cdFx0XHRsaSArIGxpIHtcblx0XHRcdFx0bWFyZ2luLXRvcDogMjBweDtcblx0XHRcdH1cblx0XHRcdGxpIHtcblx0XHRcdFx0Y29sb3I6ICMxODE4MTg7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0bGluZS1oZWlnaHQ6IDIxcHg7XG5cdFx0XHRcdGVtIHtcblx0XHRcdFx0XHRmb250LXNpemU6IDE2cHg7XG5cdFx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0XHR9XG5cdFx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0XHRcdCY6OmJlZm9yZSB7XG5cdFx0XHRcdFx0XHRkaXNwbGF5OiBub25lO1xuXHRcdFx0XHRcdH1cblx0XHRcdFx0fVxuXHRcdFx0fVxuXHRcdH1cblx0fVxuYDtcblxuY29uc3QgUHJlbWl1bUJsb2NrID0gKHtcblx0cHJlbWl1bURhdGE6IHtcblx0XHRwcmVtaXVtVGl0bGUsXG5cdFx0cHJlbWl1bUltZ1VybCxcblx0XHRwcmVtaXVtRGVzY3JpcHRpb25zLFxuXHRcdHNob3J0RGVzY3JpcHRpb25zLFxuXHR9LFxuXHRtb250aGx5Q2hlY2tlZCxcbn0pID0+IHtcblx0cmV0dXJuIChcblx0XHQ8PlxuXHRcdFx0PFByZW1pdW1JbnRybz5BbGwgTW9udGhseSBQYXJ0bmVycyBSZWNlaXZlOjwvUHJlbWl1bUludHJvPlxuXHRcdFx0PFByZW11aW1JbmZvQmxvY2s+XG5cdFx0XHRcdDxkaXYgY2xhc3NOYW1lPVwicHJlbWl1bS1pbWdcIj5cblx0XHRcdFx0XHQ8aW1nXG5cdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJpbWctcmVzcG9uc2l2ZVwiXG5cdFx0XHRcdFx0XHRhbHQ9e2BEVkQgUHJlbWl1bSBmb3IgXCIke3ByZW1pdW1UaXRsZX1cImB9XG5cdFx0XHRcdFx0XHRzcmM9e3ByZW1pdW1JbWdVcmx9XG5cdFx0XHRcdFx0Lz5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHRcdDxkaXYgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvblwiPlxuXHRcdFx0XHRcdDxNZWRpYSBxdWVyeT1cIihtYXgtd2lkdGg6IDY0OXB4KVwiPlxuXHRcdFx0XHRcdFx0e21hdGNoZXMgPT5cblx0XHRcdFx0XHRcdFx0bWF0Y2hlcyA/IChcblx0XHRcdFx0XHRcdFx0XHQ8dWwgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdFwiPlxuXHRcdFx0XHRcdFx0XHRcdFx0e3Nob3J0RGVzY3JpcHRpb25zLm1hcCgoZGVzYywgaWR4KSA9PiAoXG5cdFx0XHRcdFx0XHRcdFx0XHRcdDxsaVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRcdGtleT17YHByZW1kZXNjLSR7aWR4fWB9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0Y2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdC0taXRlbVwiXG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0ZGFuZ2Vyb3VzbHlTZXRJbm5lckhUTUw9e3sgX19odG1sOiBkZXNjIH19XG5cdFx0XHRcdFx0XHRcdFx0XHRcdD48L2xpPlxuXHRcdFx0XHRcdFx0XHRcdFx0KSl9XG5cdFx0XHRcdFx0XHRcdFx0PC91bD5cblx0XHRcdFx0XHRcdFx0KSA6IChcblx0XHRcdFx0XHRcdFx0XHQ8dWwgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdFwiPlxuXHRcdFx0XHRcdFx0XHRcdFx0e3ByZW1pdW1EZXNjcmlwdGlvbnMubWFwKChkZXNjLCBpZHgpID0+IChcblx0XHRcdFx0XHRcdFx0XHRcdFx0PGxpXG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0a2V5PXtgcHJlbWRlc2MtJHtpZHh9YH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJwcmVtaXVtLWRlc2NyaXB0aW9uX19saXN0LS1pdGVtXCJcblx0XHRcdFx0XHRcdFx0XHRcdFx0XHRkYW5nZXJvdXNseVNldElubmVySFRNTD17eyBfX2h0bWw6IGRlc2MgfX1cblx0XHRcdFx0XHRcdFx0XHRcdFx0PjwvbGk+XG5cdFx0XHRcdFx0XHRcdFx0XHQpKX1cblx0XHRcdFx0XHRcdFx0XHQ8L3VsPlxuXHRcdFx0XHRcdFx0XHQpXG5cdFx0XHRcdFx0XHR9XG5cdFx0XHRcdFx0PC9NZWRpYT5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHQ8L1ByZW11aW1JbmZvQmxvY2s+XG5cdFx0PC8+XG5cdCk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBQcmVtaXVtQmxvY2s7XG4iXX0= */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
+						  }
+				);
+				var PremuimInfoBlock = (0, _styledBase.default)("div", {
+					target: "e1cfwhss1",
+					label: "PremuimInfoBlock",
+				})(
+					"development" === "production"
+						? {
+								name: "1jd101w",
+								styles:
+									'margin:20px 0 30px 0;display:flex;flex-direction:row;justify-content:space-between;div.premium-img{width:160px;flex:0 0 160px;img.img-responsive{display:block;max-width:100%;}}div.premium-description{max-width:575px;flex:1 0 140px;ul{list-style:none;margin-block-start:0;margin-block-end:0;@media screen and (max-width:649px){padding-inline-start:20px;}li::before{content:"";background:#f7b500;display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:-1em;margin-right:8px;}li + li{margin-top:20px;}li{color:#181818;font-size:16px;line-height:21px;em{font-size:16px;font-style:italic;}@media screen and (max-width:649px){font-style:italic;&::before{display:none;}}}}}',
+						  }
+						: {
+								name: "1jd101w",
+								styles:
+									'margin:20px 0 30px 0;display:flex;flex-direction:row;justify-content:space-between;div.premium-img{width:160px;flex:0 0 160px;img.img-responsive{display:block;max-width:100%;}}div.premium-description{max-width:575px;flex:1 0 140px;ul{list-style:none;margin-block-start:0;margin-block-end:0;@media screen and (max-width:649px){padding-inline-start:20px;}li::before{content:"";background:#f7b500;display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:-1em;margin-right:8px;}li + li{margin-top:20px;}li{color:#181818;font-size:16px;line-height:21px;em{font-size:16px;font-style:italic;}@media screen and (max-width:649px){font-style:italic;&::before{display:none;}}}}}',
+								map:
+									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlByZW1pdW1CbG9jay5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFVbUMiLCJmaWxlIjoiUHJlbWl1bUJsb2NrLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5pbXBvcnQgTWVkaWEgZnJvbSBcInJlYWN0LW1lZGlhXCI7XG5cbmNvbnN0IFByZW1pdW1JbnRybyA9IHN0eWxlZC5kaXZgXG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdH1cbmA7XG5cbmNvbnN0IFByZW11aW1JbmZvQmxvY2sgPSBzdHlsZWQuZGl2YFxuXHRtYXJnaW46IDIwcHggMCAzMHB4IDA7XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0ZGl2LnByZW1pdW0taW1nIHtcblx0XHR3aWR0aDogMTYwcHg7XG5cdFx0ZmxleDogMCAwIDE2MHB4O1xuXHRcdGltZy5pbWctcmVzcG9uc2l2ZSB7XG5cdFx0XHRkaXNwbGF5OiBibG9jaztcblx0XHRcdG1heC13aWR0aDogMTAwJTtcblx0XHR9XG5cdH1cblx0ZGl2LnByZW1pdW0tZGVzY3JpcHRpb24ge1xuXHRcdG1heC13aWR0aDogNTc1cHg7XG5cdFx0ZmxleDogMSAwIDE0MHB4O1xuXHRcdHVsIHtcblx0XHRcdGxpc3Qtc3R5bGU6IG5vbmU7XG5cdFx0XHRtYXJnaW4tYmxvY2stc3RhcnQ6IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stZW5kOiAwO1xuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjQ5cHgpIHtcblx0XHRcdFx0cGFkZGluZy1pbmxpbmUtc3RhcnQ6IDIwcHg7XG5cdFx0XHR9XG5cdFx0XHRsaTo6YmVmb3JlIHtcblx0XHRcdFx0Y29udGVudDogXCJcIjtcblx0XHRcdFx0YmFja2dyb3VuZDogI2Y3YjUwMDtcblx0XHRcdFx0ZGlzcGxheTogaW5saW5lLWJsb2NrO1xuXHRcdFx0XHR3aWR0aDogN3B4O1xuXHRcdFx0XHRoZWlnaHQ6IDdweDtcblx0XHRcdFx0Ym9yZGVyLXJhZGl1czogNTAlO1xuXHRcdFx0XHRtYXJnaW4tbGVmdDogLTFlbTtcblx0XHRcdFx0bWFyZ2luLXJpZ2h0OiA4cHg7XG5cdFx0XHR9XG5cdFx0XHRsaSArIGxpIHtcblx0XHRcdFx0bWFyZ2luLXRvcDogMjBweDtcblx0XHRcdH1cblx0XHRcdGxpIHtcblx0XHRcdFx0Y29sb3I6ICMxODE4MTg7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0bGluZS1oZWlnaHQ6IDIxcHg7XG5cdFx0XHRcdGVtIHtcblx0XHRcdFx0XHRmb250LXNpemU6IDE2cHg7XG5cdFx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0XHR9XG5cdFx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0XHRcdCY6OmJlZm9yZSB7XG5cdFx0XHRcdFx0XHRkaXNwbGF5OiBub25lO1xuXHRcdFx0XHRcdH1cblx0XHRcdFx0fVxuXHRcdFx0fVxuXHRcdH1cblx0fVxuYDtcblxuY29uc3QgUHJlbWl1bUJsb2NrID0gKHtcblx0cHJlbWl1bURhdGE6IHtcblx0XHRwcmVtaXVtVGl0bGUsXG5cdFx0cHJlbWl1bUltZ1VybCxcblx0XHRwcmVtaXVtRGVzY3JpcHRpb25zLFxuXHRcdHNob3J0RGVzY3JpcHRpb25zLFxuXHR9LFxuXHRtb250aGx5Q2hlY2tlZCxcbn0pID0+IHtcblx0cmV0dXJuIChcblx0XHQ8PlxuXHRcdFx0PFByZW1pdW1JbnRybz5BbGwgTW9udGhseSBQYXJ0bmVycyBSZWNlaXZlOjwvUHJlbWl1bUludHJvPlxuXHRcdFx0PFByZW11aW1JbmZvQmxvY2s+XG5cdFx0XHRcdDxkaXYgY2xhc3NOYW1lPVwicHJlbWl1bS1pbWdcIj5cblx0XHRcdFx0XHQ8aW1nXG5cdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJpbWctcmVzcG9uc2l2ZVwiXG5cdFx0XHRcdFx0XHRhbHQ9e2BEVkQgUHJlbWl1bSBmb3IgXCIke3ByZW1pdW1UaXRsZX1cImB9XG5cdFx0XHRcdFx0XHRzcmM9e3ByZW1pdW1JbWdVcmx9XG5cdFx0XHRcdFx0Lz5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHRcdDxkaXYgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvblwiPlxuXHRcdFx0XHRcdDxNZWRpYSBxdWVyeT1cIihtYXgtd2lkdGg6IDY0OXB4KVwiPlxuXHRcdFx0XHRcdFx0e21hdGNoZXMgPT5cblx0XHRcdFx0XHRcdFx0bWF0Y2hlcyA/IChcblx0XHRcdFx0XHRcdFx0XHQ8dWwgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdFwiPlxuXHRcdFx0XHRcdFx0XHRcdFx0e3Nob3J0RGVzY3JpcHRpb25zLm1hcCgoZGVzYywgaWR4KSA9PiAoXG5cdFx0XHRcdFx0XHRcdFx0XHRcdDxsaVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRcdGtleT17YHByZW1kZXNjLSR7aWR4fWB9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0Y2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdC0taXRlbVwiXG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0ZGFuZ2Vyb3VzbHlTZXRJbm5lckhUTUw9e3sgX19odG1sOiBkZXNjIH19XG5cdFx0XHRcdFx0XHRcdFx0XHRcdD48L2xpPlxuXHRcdFx0XHRcdFx0XHRcdFx0KSl9XG5cdFx0XHRcdFx0XHRcdFx0PC91bD5cblx0XHRcdFx0XHRcdFx0KSA6IChcblx0XHRcdFx0XHRcdFx0XHQ8dWwgY2xhc3NOYW1lPVwicHJlbWl1bS1kZXNjcmlwdGlvbl9fbGlzdFwiPlxuXHRcdFx0XHRcdFx0XHRcdFx0e3ByZW1pdW1EZXNjcmlwdGlvbnMubWFwKChkZXNjLCBpZHgpID0+IChcblx0XHRcdFx0XHRcdFx0XHRcdFx0PGxpXG5cdFx0XHRcdFx0XHRcdFx0XHRcdFx0a2V5PXtgcHJlbWRlc2MtJHtpZHh9YH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJwcmVtaXVtLWRlc2NyaXB0aW9uX19saXN0LS1pdGVtXCJcblx0XHRcdFx0XHRcdFx0XHRcdFx0XHRkYW5nZXJvdXNseVNldElubmVySFRNTD17eyBfX2h0bWw6IGRlc2MgfX1cblx0XHRcdFx0XHRcdFx0XHRcdFx0PjwvbGk+XG5cdFx0XHRcdFx0XHRcdFx0XHQpKX1cblx0XHRcdFx0XHRcdFx0XHQ8L3VsPlxuXHRcdFx0XHRcdFx0XHQpXG5cdFx0XHRcdFx0XHR9XG5cdFx0XHRcdFx0PC9NZWRpYT5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHQ8L1ByZW11aW1JbmZvQmxvY2s+XG5cdFx0PC8+XG5cdCk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBQcmVtaXVtQmxvY2s7XG4iXX0= */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
+						  }
+				);
+
+				var PremiumBlock = function PremiumBlock(_ref) {
+					var _ref$premiumData = _ref.premiumData,
+						premiumTitle = _ref$premiumData.premiumTitle,
+						premiumImgUrl = _ref$premiumData.premiumImgUrl,
+						premiumDescriptions = _ref$premiumData.premiumDescriptions,
+						shortDescriptions = _ref$premiumData.shortDescriptions,
+						monthlyChecked = _ref.monthlyChecked;
+					return (0, _core.jsx)(
+						_react.default.Fragment,
+						null,
+						(0, _core.jsx)(PremiumIntro, null, "All Monthly Partners Receive:"),
+						(0, _core.jsx)(
+							PremuimInfoBlock,
+							null,
+							(0, _core.jsx)(
+								"div",
+								{
+									className: "premium-img",
+								},
+								(0, _core.jsx)("img", {
+									className: "img-responsive",
+									alt: 'DVD Premium for "'.concat(premiumTitle, '"'),
+									src: premiumImgUrl,
+								})
+							),
+							(0, _core.jsx)(
+								"div",
+								{
+									className: "premium-description",
+								},
+								(0, _core.jsx)(
+									_reactMedia.default,
+									{
+										query: "(max-width: 649px)",
+									},
+									function(matches) {
+										return matches
+											? (0, _core.jsx)(
+													"ul",
+													{
+														className: "premium-description__list",
+													},
+													shortDescriptions.map(function(desc, idx) {
+														return (0, _core.jsx)("li", {
+															key: "premdesc-".concat(idx),
+															className: "premium-description__list--item",
+															dangerouslySetInnerHTML: {
+																__html: desc,
+															},
+														});
+													})
+											  )
+											: (0, _core.jsx)(
+													"ul",
+													{
+														className: "premium-description__list",
+													},
+													premiumDescriptions.map(function(desc, idx) {
+														return (0, _core.jsx)("li", {
+															key: "premdesc-".concat(idx),
+															className: "premium-description__list--item",
+															dangerouslySetInnerHTML: {
+																__html: desc,
+															},
+														});
+													})
+											  );
+									}
+								)
+							)
+						)
+					);
+				};
+
+				var _default = PremiumBlock;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						PremiumIntro,
+						"PremiumIntro",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/PremiumBlock.js"
+					);
+					reactHotLoader.register(
+						PremuimInfoBlock,
+						"PremuimInfoBlock",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/PremiumBlock.js"
+					);
+					reactHotLoader.register(
+						PremiumBlock,
+						"PremiumBlock",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/PremiumBlock.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/PremiumBlock.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@emotion/styled-base":
+					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
+				react: "node_modules/react/index.js",
+				"react-media": "node_modules/react-media/esm/react-media.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
 		"src/Components/FormComponents/Animations/designations.css": [
@@ -19588,6 +20597,281 @@ object-assign
 				react: "node_modules/react/index.js",
 			},
 		],
+		"src/Components/FormComponents/FunctionalComponents/Seals.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _slicedToArray2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/slicedToArray")
+				);
+
+				var _styledBase = _interopRequireDefault(
+					require("@emotion/styled-base")
+				);
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var SealsBlock = (0, _styledBase.default)("section", {
+					target: "eqfmb930",
+					label: "SealsBlock",
+				})(
+					"development" === "production"
+						? {
+								name: "ggw6lv",
+								styles:
+									"box-sizing:border-box;margin:20px auto;padding:0;width:100%;max-width:680px;display:flex;flex-direction:row;justify-content:center;align-items:center;.seals__seal{box-sizing:border-box;display:block;padding:0;margin:0;width:100%;text-align:center;a.seals__seal--link,img.seals__seal-img{box-shadow:none !important;text-decoration:none !important;}}@media screen and (max-width:550px){flex-wrap:wrap;.seals__seal{margin-top:20px;}}",
+						  }
+						: {
+								name: "ggw6lv",
+								styles:
+									"box-sizing:border-box;margin:20px auto;padding:0;width:100%;max-width:680px;display:flex;flex-direction:row;justify-content:center;align-items:center;.seals__seal{box-sizing:border-box;display:block;padding:0;margin:0;width:100%;text-align:center;a.seals__seal--link,img.seals__seal-img{box-shadow:none !important;text-decoration:none !important;}}@media screen and (max-width:550px){flex-wrap:wrap;.seals__seal{margin-top:20px;}}",
+								map:
+									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlNlYWxzLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdpQyIsImZpbGUiOiJTZWFscy5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyBtZW1vLCBjcmVhdGVSZWYsIHVzZUVmZmVjdCwgdXNlU3RhdGUgfSBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBTZWFsc0Jsb2NrID0gc3R5bGVkLnNlY3Rpb25gXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdG1hcmdpbjogMjBweCBhdXRvO1xuXHRwYWRkaW5nOiAwO1xuXHR3aWR0aDogMTAwJTtcblx0bWF4LXdpZHRoOiA2ODBweDtcblx0ZGlzcGxheTogZmxleDtcblx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0anVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG5cdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdC5zZWFsc19fc2VhbCB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRkaXNwbGF5OiBibG9jaztcblx0XHRwYWRkaW5nOiAwO1xuXHRcdG1hcmdpbjogMDtcblx0XHR3aWR0aDogMTAwJTtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0YS5zZWFsc19fc2VhbC0tbGluayxcblx0XHRpbWcuc2VhbHNfX3NlYWwtaW1nIHtcblx0XHRcdGJveC1zaGFkb3c6IG5vbmUgIWltcG9ydGFudDtcblx0XHRcdHRleHQtZGVjb3JhdGlvbjogbm9uZSAhaW1wb3J0YW50O1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1NTBweCkge1xuXHRcdGZsZXgtd3JhcDogd3JhcDtcblx0XHQuc2VhbHNfX3NlYWwge1xuXHRcdFx0bWFyZ2luLXRvcDogMjBweDtcblx0XHR9XG5cdH1cbmA7XG5cbmNvbnN0IGNlcnRzID0ge1xuXHRcImh0dHBzOi8vd3d3LmNibi5jb21cIjoge1xuXHRcdGlkOiBcIkRpZ2lDZXJ0Q2xpY2tJRF9SWERRWFJPRlwiLFxuXHRcdGhyZWY6IFwiaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL2V2LW11bHRpLWRvbWFpbi1zc2wuaHRtXCIsXG5cdH0sXG5cdFwiaHR0cHM6Ly9pbXBhY3QuY2JuLmNvbVwiOiB7XG5cdFx0aWQ6IFwiRGlnaUNlcnRDbGlja0lEXzZkZHhCZ3lCXCIsXG5cdFx0aHJlZjogXCJodHRwczovL3d3dy5kaWdpY2VydC5jb20vc3NsLWNlcnRpZmljYXRlLmh0bVwiLFxuXHR9LFxufTtcblxuY29uc3QgRGlnaUNlcnQgPSBtZW1vKCgpID0+IHtcblx0Y29uc3QgeyBvcmlnaW4gfSA9IHdpbmRvdy5sb2NhdGlvbjtcblx0Y29uc3QgY2VydCA9IGNlcnRzW29yaWdpbl07XG5cdGNvbnN0IGRpZ2ljZXJ0U2VhbCA9IGNyZWF0ZVJlZigpO1xuXHRyZXR1cm4gKFxuXHRcdGNlcnQgJiYgKFxuXHRcdFx0PGRpdlxuXHRcdFx0XHRpZD17Y2VydC5pZH1cblx0XHRcdFx0ZGF0YS1sYW5ndWFnZT1cImVuXCJcblx0XHRcdFx0Y2xhc3NOYW1lPVwic2VhbHNfX3NlYWxcIlxuXHRcdFx0XHRyZWY9e2RpZ2ljZXJ0U2VhbH1cblx0XHRcdD5cblx0XHRcdFx0PGFcblx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC0tbGlua1wiXG5cdFx0XHRcdFx0aHJlZj17Y2VydC5ocmVmfVxuXHRcdFx0XHRcdGFyaWEtbGFiZWw9XCJEaWdpY2VydCBTZWFsXCJcblx0XHRcdFx0PlxuXHRcdFx0XHRcdHsvKiBEaWdpQ2VydC5jb20gKi99XG5cdFx0XHRcdDwvYT5cblx0XHRcdDwvZGl2PlxuXHRcdClcblx0KTtcbn0pO1xuXG5jb25zdCBTZWFscyA9ICh7IHN0eWxlID0ge30gfSkgPT4ge1xuXHRjb25zdCBbbG9hZGVkLCBzZXRMb2FkZWRdID0gdXNlU3RhdGUoZmFsc2UpO1xuXHRjb25zdCBkaWdpY2VydFNjcmlwdCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCJzY3JpcHRbc3JjKj0nc2VhbC5taW4uanMnXVwiKTtcblxuXHRjb25zdCBvbkxvYWQgPSAoKSA9PiB7XG5cdFx0aWYgKCFsb2FkZWQpIHtcblx0XHRcdHNldExvYWRlZCh0cnVlKTtcblx0XHR9XG5cdH07XG5cblx0dXNlRWZmZWN0KCgpID0+IHtcblx0XHRjb25zb2xlLmxvZyhcIlNlYWwgU2NyaXB0IEVmZmVjdFwiKTtcblx0XHRpZiAoZGlnaWNlcnRTY3JpcHQgJiYgIWxvYWRlZCkge1xuXHRcdFx0Y29uc3QgbmV3U2NyaXB0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInNjcmlwdFwiKTtcblx0XHRcdG5ld1NjcmlwdC50eXBlID0gZGlnaWNlcnRTY3JpcHQudHlwZTtcblx0XHRcdG5ld1NjcmlwdC5zcmMgPSBkaWdpY2VydFNjcmlwdC5zcmM7XG5cdFx0XHRuZXdTY3JpcHQuYXN5bmMgPSBkaWdpY2VydFNjcmlwdC5hc3luYztcblx0XHRcdG5ld1NjcmlwdC5pbm5lckhUTUwgPSBkaWdpY2VydFNjcmlwdC5pbm5lckhUTUw7XG5cdFx0XHRuZXdTY3JpcHQuYWRkRXZlbnRMaXN0ZW5lcihcImxvYWRcIiwgb25Mb2FkKTtcblx0XHRcdGRpZ2ljZXJ0U2NyaXB0LnJlbW92ZSgpO1xuXHRcdFx0ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChuZXdTY3JpcHQpO1xuXHRcdFx0cmV0dXJuICgpID0+IG5ld1NjcmlwdC5yZW1vdmVFdmVudExpc3RlbmVyKFwibG9hZFwiLCBvbkxvYWQpO1xuXHRcdH1cblx0fSwgW2xvYWRlZCwgZGlnaWNlcnRTY3JpcHRdKTtcblxuXHRyZXR1cm4gKFxuXHRcdDxTZWFsc0Jsb2NrIGlkPVwic2VhbHNcIiBzdHlsZT17c3R5bGV9PlxuXHRcdFx0PERpZ2lDZXJ0IC8+XG5cdFx0XHQ8ZGl2IGlkPVwiRUNGQV9Mb2dvXCIgY2xhc3NOYW1lPVwic2VhbHNfX3NlYWxcIj5cblx0XHRcdFx0PGFcblx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC0tbGlua1wiXG5cdFx0XHRcdFx0aHJlZj1cImh0dHA6Ly93d3cuZWNmYS5vcmdcIlxuXHRcdFx0XHRcdHRhcmdldD1cIl9ibGFua1wiXG5cdFx0XHRcdFx0YXJpYS1sYWJlbD1cIkVDRkEgU2VhbFwiXG5cdFx0XHRcdD5cblx0XHRcdFx0XHQ8aW1nXG5cdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC1pbWdcIlxuXHRcdFx0XHRcdFx0c3JjPVwiaHR0cHM6Ly93d3cuY2JuLmNvbS9zb3VyY2UvZ2l2aW5nL3NoYXJlZC9lY2ZhLWxvZ28tYmxhY2t0ZXh0X3NtLnBuZ1wiXG5cdFx0XHRcdFx0XHRhbHQ9XCJFQ0ZBXCJcblx0XHRcdFx0XHQvPlxuXHRcdFx0XHQ8L2E+XG5cdFx0XHQ8L2Rpdj5cblx0XHQ8L1NlYWxzQmxvY2s+XG5cdCk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBtZW1vKFNlYWxzKTtcbiJdfQ== */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
+						  }
+				);
+				var certs = {
+					"https://www.cbn.com": {
+						id: "DigiCertClickID_RXDQXROF",
+						href: "https://www.digicert.com/ev-multi-domain-ssl.htm",
+					},
+					"https://impact.cbn.com": {
+						id: "DigiCertClickID_6ddxBgyB",
+						href: "https://www.digicert.com/ssl-certificate.htm",
+					},
+				};
+				var DigiCert = (0, _react.memo)(function() {
+					var origin = window.location.origin;
+					var cert = certs[origin];
+					var digicertSeal = (0, _react.createRef)();
+					return (
+						cert &&
+						(0, _core.jsx)(
+							"div",
+							{
+								id: cert.id,
+								"data-language": "en",
+								className: "seals__seal",
+								ref: digicertSeal,
+							},
+							(0, _core.jsx)("a", {
+								className: "seals__seal--link",
+								href: cert.href,
+								"aria-label": "Digicert Seal",
+							})
+						)
+					);
+				});
+
+				var Seals = function Seals(_ref) {
+					var _ref$style = _ref.style,
+						style = _ref$style === void 0 ? {} : _ref$style;
+
+					var _useState = (0, _react.useState)(false),
+						_useState2 = (0, _slicedToArray2.default)(_useState, 2),
+						loaded = _useState2[0],
+						setLoaded = _useState2[1];
+
+					var digicertScript = document.querySelector(
+						"script[src*='seal.min.js']"
+					);
+
+					var onLoad = function onLoad() {
+						if (!loaded) {
+							setLoaded(true);
+						}
+					};
+
+					(0, _react.useEffect)(
+						function() {
+							console.log("Seal Script Effect");
+
+							if (digicertScript && !loaded) {
+								var newScript = document.createElement("script");
+								newScript.type = digicertScript.type;
+								newScript.src = digicertScript.src;
+								newScript.async = digicertScript.async;
+								newScript.innerHTML = digicertScript.innerHTML;
+								newScript.addEventListener("load", onLoad);
+								digicertScript.remove();
+								document.body.appendChild(newScript);
+								return function() {
+									return newScript.removeEventListener("load", onLoad);
+								};
+							}
+						},
+						[loaded, digicertScript]
+					);
+					return (0, _core.jsx)(
+						SealsBlock,
+						{
+							id: "seals",
+							style: style,
+						},
+						(0, _core.jsx)(DigiCert, null),
+						(0, _core.jsx)(
+							"div",
+							{
+								id: "ECFA_Logo",
+								className: "seals__seal",
+							},
+							(0, _core.jsx)(
+								"a",
+								{
+									className: "seals__seal--link",
+									href: "http://www.ecfa.org",
+									target: "_blank",
+									"aria-label": "ECFA Seal",
+								},
+								(0, _core.jsx)("img", {
+									className: "seals__seal-img",
+									src:
+										"https://www.cbn.com/source/giving/shared/ecfa-logo-blacktext_sm.png",
+									alt: "ECFA",
+								})
+							)
+						)
+					);
+				};
+
+				__signature__(
+					Seals,
+					"useState{[loaded, setLoaded](false)}\nuseEffect{}"
+				);
+
+				var _default = (0, _react.memo)(Seals);
+
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						SealsBlock,
+						"SealsBlock",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
+					);
+					reactHotLoader.register(
+						certs,
+						"certs",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
+					);
+					reactHotLoader.register(
+						DigiCert,
+						"DigiCert",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
+					);
+					reactHotLoader.register(
+						Seals,
+						"Seals",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@babel/runtime/helpers/slicedToArray":
+					"node_modules/@babel/runtime/helpers/slicedToArray.js",
+				"@emotion/styled-base":
+					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
+				react: "node_modules/react/index.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
 		"src/Components/FormComponents/StyledComponents/SubmitButtonGroup.js": [
 			function(require, module, exports) {
 				"use strict";
@@ -20011,6 +21295,3190 @@ object-assign
 					"src/Components/FormComponents/StyledComponents/SubmitButtonGroup.js",
 				"../StyledComponents/FormError":
 					"src/Components/FormComponents/StyledComponents/FormError.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/Components/FormComponents/StyledComponents/Card.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.Card = exports.CardContainer = exports.CardSection = void 0;
+
+				var _styledBase = _interopRequireDefault(
+					require("@emotion/styled-base")
+				);
+
+				var _react = _interopRequireDefault(require("react"));
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var CardSection = (0, _styledBase.default)("section", {
+					target: "e1lgs3s90",
+					label: "CardSection",
+				})(
+					"development" === "production"
+						? {
+								name: "168isxd",
+								styles:
+									"background:white;margin:0 auto;padding:30px 0;width:100%;h3{font-weight:bold;font-size:22px;margin:0;padding:0 0 20px 0;text-align:center;}@media screen and (max-width:623px){background:#eceff1;}",
+						  }
+						: {
+								name: "168isxd",
+								styles:
+									"background:white;margin:0 auto;padding:30px 0;width:100%;h3{font-weight:bold;font-size:22px;margin:0;padding:0 0 20px 0;text-align:center;}@media screen and (max-width:623px){background:#eceff1;}",
+								map:
+									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNhcmQuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBR3lDIiwiZmlsZSI6IkNhcmQuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuZXhwb3J0IGNvbnN0IENhcmRTZWN0aW9uID0gc3R5bGVkLnNlY3Rpb25gXG5cdGJhY2tncm91bmQ6IHdoaXRlO1xuXHRtYXJnaW46IDAgYXV0bztcblx0cGFkZGluZzogMzBweCAwO1xuXHR3aWR0aDogMTAwJTtcblx0aDMge1xuXHRcdGZvbnQtd2VpZ2h0OiBib2xkO1xuXHRcdGZvbnQtc2l6ZTogMjJweDtcblx0XHRtYXJnaW46IDA7XG5cdFx0cGFkZGluZzogMCAwIDIwcHggMDtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRiYWNrZ3JvdW5kOiAjZWNlZmYxO1xuXHR9XG5gO1xuXG5leHBvcnQgY29uc3QgQ2FyZENvbnRhaW5lciA9IHN0eWxlZC5kaXZgXG5cdHdpZHRoOiBjYWxjKDEwMCUgLSAyMHB4KTtcblx0bWF4LXdpZHRoOiAke3Byb3BzID0+IChwcm9wcy5tYXhXaWR0aCA/IHByb3BzLm1heFdpZHRoIDogXCIxMjAwcHhcIil9O1xuXHRtYXJnaW46IDAgYXV0bztcblx0ZGlzcGxheTogZmxleDtcblx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0anVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuO1xuXHRhbGlnaC1pdGVtczogY2VudGVyO1xuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MjNweCkge1xuXHRcdGZsZXgtd3JhcDogd3JhcDtcblx0fVxuYDtcblxuZXhwb3J0IGNvbnN0IENhcmQgPSBzdHlsZWQuZGl2YFxuXHQmLmNhcmQge1xuXHRcdGhlaWdodDogMjUwcHg7XG5cdFx0ZmxleDogMCAxIDM4MHB4O1xuXHRcdGRpc3BsYXk6IGZsZXg7XG5cdFx0ZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcblx0XHRqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG5cdFx0Ym94LXNoYWRvdzogMCAycHggNHB4IDAgcmdiYSgwLCAwLCAwLCAwLjEpO1xuXHRcdGNvbG9yOiAjM2IzYjNiO1xuXHR9XG5cdCYuY2FyZCArIGRpdi5jYXJkIHtcblx0XHRtYXJnaW4tbGVmdDogMTBweDtcblx0fVxuXHRoNC5jYXJkX190aXRsZSB7XG5cdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdFx0Zm9udC1zaXplOiAyMnB4O1xuXHRcdG1hcmdpbjogMDtcblx0XHRwYWRkaW5nOiAxMHB4IDA7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdGZsZXg6IDAgMCBhdXRvO1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICNlMWU1ZTg7XG5cdH1cblx0ZGl2LmNhcmRfX2JvZHkge1xuXHRcdHBhZGRpbmc6IDEwcHg7XG5cdFx0ZmxleDogMSAxIGF1dG87XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogI2VjZWZmMTtcblx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG5cdFx0anVzdGlmeS1jb250ZW50OiBzcGFjZS1hcm91bmQ7XG5cdFx0YWxpZ24taXRlbXM6IGNlbnRlcjtcblx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MjNweCkge1xuXHRcdFx0YmFja2dyb3VuZDogI2YxZjRmNjtcblx0XHR9XG5cdFx0Lm1haWwtaW4tZm9ybSxcblx0XHQuY2JuLWFkZHJlc3MsXG5cdFx0LmdpdmluZy1saW5rcyxcblx0XHQucGhvbmUtLWluZm8sXG5cdFx0LmdpZnQtaW5mbyB7XG5cdFx0XHRmb250LXNpemU6IDE3cHg7XG5cdFx0XHRsaW5lLWhlaWdodDogMjJweDtcblx0XHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRcdGVtIHtcblx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNzM5cHgpIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxNnB4O1xuXHRcdFx0XHRhLFxuXHRcdFx0XHQuY2JuLWFkZHJlc3MtLXN0cmVldCxcblx0XHRcdFx0LmNibi1hZGRyZXNzLS1jaXR5LXN0YXRlLXppcCB7XG5cdFx0XHRcdFx0Zm9udC1zaXplOiAxNnB4O1xuXHRcdFx0XHR9XG5cdFx0XHR9XG5cdFx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MjNweCkge1xuXHRcdFx0XHRmb250LXNpemU6IDE3cHg7XG5cdFx0XHRcdGEsXG5cdFx0XHRcdC5jYm4tYWRkcmVzcy0tc3RyZWV0LFxuXHRcdFx0XHQuY2JuLWFkZHJlc3MtLWNpdHktc3RhdGUtemlwIHtcblx0XHRcdFx0XHRmb250LXNpemU6IDE3cHg7XG5cdFx0XHRcdH1cblx0XHRcdH1cblx0XHR9XG5cdFx0LnBob25lIHtcblx0XHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRcdGEge1xuXHRcdFx0XHRjdXJzb3I6IHBvaW50ZXI7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMjhweDtcblx0XHRcdFx0Y29sb3I6ICMzYjNiM2I7XG5cdFx0XHRcdHRleHQtZGVjb3JhdGlvbjogbm9uZTtcblx0XHRcdH1cblx0XHR9XG5cdH1cblx0YSB7XG5cdFx0Y29sb3I6ICR7cHJvcHMgPT4gcHJvcHMubGlua0NvbG9yfTtcblx0XHR0ZXh0LWRlY29yYXRpb246ICR7cHJvcHMgPT4gcHJvcHMubGlua1RleHREZWNvcmF0aW9ufTtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0dHJhbnNpdGlvbjogY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdFx0Jjpob3Zlcixcblx0XHQmOmFjdGl2ZSxcblx0XHQmOmZvY3VzIHtcblx0XHRcdHRleHQtZGVjb3JhdGlvbjogJHtwcm9wcyA9PiBwcm9wcy5saW5rSG92ZXJUZXh0RGVjb3JhdGlvbn07XG5cdFx0XHRjb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5saW5rSG92ZXJDb2xvcn07XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYyM3B4KSB7XG5cdFx0Ji5jYXJkIHtcblx0XHRcdG1hcmdpbjogMCBhdXRvO1xuXHRcdH1cblx0XHQmLmNhcmQgKyBkaXYuY2FyZCB7XG5cdFx0XHRtYXJnaW46IDAgYXV0bztcblx0XHRcdG1hcmdpbi10b3A6IDIwcHg7XG5cdFx0fVxuXHR9XG5gO1xuIl19 */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
+						  }
+				);
+				exports.CardSection = CardSection;
+				var CardContainer = (0, _styledBase.default)("div", {
+					target: "e1lgs3s91",
+					label: "CardContainer",
+				})(
+					"width:calc(100% - 20px);max-width:",
+					function(props) {
+						return props.maxWidth ? props.maxWidth : "1200px";
+					},
+					";margin:0 auto;display:flex;flex-direction:row;justify-content:space-between;aligh-items:center;@media screen and (max-width:623px){flex-wrap:wrap;}" +
+						("development" === "production"
+							? ""
+							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNhcmQuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBb0J1QyIsImZpbGUiOiJDYXJkLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmV4cG9ydCBjb25zdCBDYXJkU2VjdGlvbiA9IHN0eWxlZC5zZWN0aW9uYFxuXHRiYWNrZ3JvdW5kOiB3aGl0ZTtcblx0bWFyZ2luOiAwIGF1dG87XG5cdHBhZGRpbmc6IDMwcHggMDtcblx0d2lkdGg6IDEwMCU7XG5cdGgzIHtcblx0XHRmb250LXdlaWdodDogYm9sZDtcblx0XHRmb250LXNpemU6IDIycHg7XG5cdFx0bWFyZ2luOiAwO1xuXHRcdHBhZGRpbmc6IDAgMCAyMHB4IDA7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYyM3B4KSB7XG5cdFx0YmFja2dyb3VuZDogI2VjZWZmMTtcblx0fVxuYDtcblxuZXhwb3J0IGNvbnN0IENhcmRDb250YWluZXIgPSBzdHlsZWQuZGl2YFxuXHR3aWR0aDogY2FsYygxMDAlIC0gMjBweCk7XG5cdG1heC13aWR0aDogJHtwcm9wcyA9PiAocHJvcHMubWF4V2lkdGggPyBwcm9wcy5tYXhXaWR0aCA6IFwiMTIwMHB4XCIpfTtcblx0bWFyZ2luOiAwIGF1dG87XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0YWxpZ2gtaXRlbXM6IGNlbnRlcjtcblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRmbGV4LXdyYXA6IHdyYXA7XG5cdH1cbmA7XG5cbmV4cG9ydCBjb25zdCBDYXJkID0gc3R5bGVkLmRpdmBcblx0Ji5jYXJkIHtcblx0XHRoZWlnaHQ6IDI1MHB4O1xuXHRcdGZsZXg6IDAgMSAzODBweDtcblx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG5cdFx0anVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuXHRcdGJveC1zaGFkb3c6IDAgMnB4IDRweCAwIHJnYmEoMCwgMCwgMCwgMC4xKTtcblx0XHRjb2xvcjogIzNiM2IzYjtcblx0fVxuXHQmLmNhcmQgKyBkaXYuY2FyZCB7XG5cdFx0bWFyZ2luLWxlZnQ6IDEwcHg7XG5cdH1cblx0aDQuY2FyZF9fdGl0bGUge1xuXHRcdGZvbnQtd2VpZ2h0OiBib2xkO1xuXHRcdGZvbnQtc2l6ZTogMjJweDtcblx0XHRtYXJnaW46IDA7XG5cdFx0cGFkZGluZzogMTBweCAwO1xuXHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRmbGV4OiAwIDAgYXV0bztcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZTFlNWU4O1xuXHR9XG5cdGRpdi5jYXJkX19ib2R5IHtcblx0XHRwYWRkaW5nOiAxMHB4O1xuXHRcdGZsZXg6IDEgMSBhdXRvO1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICNlY2VmZjE7XG5cdFx0ZGlzcGxheTogZmxleDtcblx0XHRmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuXHRcdGp1c3RpZnktY29udGVudDogc3BhY2UtYXJvdW5kO1xuXHRcdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRcdGJhY2tncm91bmQ6ICNmMWY0ZjY7XG5cdFx0fVxuXHRcdC5tYWlsLWluLWZvcm0sXG5cdFx0LmNibi1hZGRyZXNzLFxuXHRcdC5naXZpbmctbGlua3MsXG5cdFx0LnBob25lLS1pbmZvLFxuXHRcdC5naWZ0LWluZm8ge1xuXHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0bGluZS1oZWlnaHQ6IDIycHg7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRlbSB7XG5cdFx0XHRcdGZvbnQtc3R5bGU6IGl0YWxpYztcblx0XHRcdH1cblx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDczOXB4KSB7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0YSxcblx0XHRcdFx0LmNibi1hZGRyZXNzLS1zdHJlZXQsXG5cdFx0XHRcdC5jYm4tYWRkcmVzcy0tY2l0eS1zdGF0ZS16aXAge1xuXHRcdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0fVxuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0XHRhLFxuXHRcdFx0XHQuY2JuLWFkZHJlc3MtLXN0cmVldCxcblx0XHRcdFx0LmNibi1hZGRyZXNzLS1jaXR5LXN0YXRlLXppcCB7XG5cdFx0XHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0XHR9XG5cdFx0XHR9XG5cdFx0fVxuXHRcdC5waG9uZSB7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRhIHtcblx0XHRcdFx0Y3Vyc29yOiBwb2ludGVyO1xuXHRcdFx0XHRmb250LXNpemU6IDI4cHg7XG5cdFx0XHRcdGNvbG9yOiAjM2IzYjNiO1xuXHRcdFx0XHR0ZXh0LWRlY29yYXRpb246IG5vbmU7XG5cdFx0XHR9XG5cdFx0fVxuXHR9XG5cdGEge1xuXHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmxpbmtDb2xvcn07XG5cdFx0dGV4dC1kZWNvcmF0aW9uOiAke3Byb3BzID0+IHByb3BzLmxpbmtUZXh0RGVjb3JhdGlvbn07XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdHRyYW5zaXRpb246IGNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHRcdCY6aG92ZXIsXG5cdFx0JjphY3RpdmUsXG5cdFx0Jjpmb2N1cyB7XG5cdFx0XHR0ZXh0LWRlY29yYXRpb246ICR7cHJvcHMgPT4gcHJvcHMubGlua0hvdmVyVGV4dERlY29yYXRpb259O1xuXHRcdFx0Y29sb3I6ICR7cHJvcHMgPT4gcHJvcHMubGlua0hvdmVyQ29sb3J9O1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MjNweCkge1xuXHRcdCYuY2FyZCB7XG5cdFx0XHRtYXJnaW46IDAgYXV0bztcblx0XHR9XG5cdFx0Ji5jYXJkICsgZGl2LmNhcmQge1xuXHRcdFx0bWFyZ2luOiAwIGF1dG87XG5cdFx0XHRtYXJnaW4tdG9wOiAyMHB4O1xuXHRcdH1cblx0fVxuYDtcbiJdfQ== */")
+				);
+				exports.CardContainer = CardContainer;
+				var Card = (0, _styledBase.default)("div", {
+					target: "e1lgs3s92",
+					label: "Card",
+				})(
+					"&.card{height:250px;flex:0 1 380px;display:flex;flex-direction:column;justify-content:flex-start;box-shadow:0 2px 4px 0 rgba(0,0,0,0.1);color:#3b3b3b;}&.card + div.card{margin-left:10px;}h4.card__title{font-weight:bold;font-size:22px;margin:0;padding:10px 0;text-align:center;flex:0 0 auto;background-color:#e1e5e8;}div.card__body{padding:10px;flex:1 1 auto;background-color:#eceff1;display:flex;flex-direction:column;justify-content:space-around;align-items:center;@media screen and (max-width:623px){background:#f1f4f6;}.mail-in-form,.cbn-address,.giving-links,.phone--info,.gift-info{font-size:17px;line-height:22px;text-align:center;em{font-style:italic;}@media screen and (max-width:739px){font-size:16px;a,.cbn-address--street,.cbn-address--city-state-zip{font-size:16px;}}@media screen and (max-width:623px){font-size:17px;a,.cbn-address--street,.cbn-address--city-state-zip{font-size:17px;}}}.phone{text-align:center;a{cursor:pointer;font-size:28px;color:#3b3b3b;text-decoration:none;}}}a{color:",
+					function(props) {
+						return props.linkColor;
+					},
+					";text-decoration:",
+					function(props) {
+						return props.linkTextDecoration;
+					},
+					";text-align:center;transition:color 200ms ease-in-out;&:hover,&:active,&:focus{text-decoration:",
+					function(props) {
+						return props.linkHoverTextDecoration;
+					},
+					";color:",
+					function(props) {
+						return props.linkHoverColor;
+					},
+					";}}@media screen and (max-width:623px){&.card{margin:0 auto;}&.card + div.card{margin:0 auto;margin-top:20px;}}" +
+						("development" === "production"
+							? ""
+							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNhcmQuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBaUM4QiIsImZpbGUiOiJDYXJkLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmV4cG9ydCBjb25zdCBDYXJkU2VjdGlvbiA9IHN0eWxlZC5zZWN0aW9uYFxuXHRiYWNrZ3JvdW5kOiB3aGl0ZTtcblx0bWFyZ2luOiAwIGF1dG87XG5cdHBhZGRpbmc6IDMwcHggMDtcblx0d2lkdGg6IDEwMCU7XG5cdGgzIHtcblx0XHRmb250LXdlaWdodDogYm9sZDtcblx0XHRmb250LXNpemU6IDIycHg7XG5cdFx0bWFyZ2luOiAwO1xuXHRcdHBhZGRpbmc6IDAgMCAyMHB4IDA7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYyM3B4KSB7XG5cdFx0YmFja2dyb3VuZDogI2VjZWZmMTtcblx0fVxuYDtcblxuZXhwb3J0IGNvbnN0IENhcmRDb250YWluZXIgPSBzdHlsZWQuZGl2YFxuXHR3aWR0aDogY2FsYygxMDAlIC0gMjBweCk7XG5cdG1heC13aWR0aDogJHtwcm9wcyA9PiAocHJvcHMubWF4V2lkdGggPyBwcm9wcy5tYXhXaWR0aCA6IFwiMTIwMHB4XCIpfTtcblx0bWFyZ2luOiAwIGF1dG87XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0YWxpZ2gtaXRlbXM6IGNlbnRlcjtcblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRmbGV4LXdyYXA6IHdyYXA7XG5cdH1cbmA7XG5cbmV4cG9ydCBjb25zdCBDYXJkID0gc3R5bGVkLmRpdmBcblx0Ji5jYXJkIHtcblx0XHRoZWlnaHQ6IDI1MHB4O1xuXHRcdGZsZXg6IDAgMSAzODBweDtcblx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG5cdFx0anVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuXHRcdGJveC1zaGFkb3c6IDAgMnB4IDRweCAwIHJnYmEoMCwgMCwgMCwgMC4xKTtcblx0XHRjb2xvcjogIzNiM2IzYjtcblx0fVxuXHQmLmNhcmQgKyBkaXYuY2FyZCB7XG5cdFx0bWFyZ2luLWxlZnQ6IDEwcHg7XG5cdH1cblx0aDQuY2FyZF9fdGl0bGUge1xuXHRcdGZvbnQtd2VpZ2h0OiBib2xkO1xuXHRcdGZvbnQtc2l6ZTogMjJweDtcblx0XHRtYXJnaW46IDA7XG5cdFx0cGFkZGluZzogMTBweCAwO1xuXHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRmbGV4OiAwIDAgYXV0bztcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZTFlNWU4O1xuXHR9XG5cdGRpdi5jYXJkX19ib2R5IHtcblx0XHRwYWRkaW5nOiAxMHB4O1xuXHRcdGZsZXg6IDEgMSBhdXRvO1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICNlY2VmZjE7XG5cdFx0ZGlzcGxheTogZmxleDtcblx0XHRmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuXHRcdGp1c3RpZnktY29udGVudDogc3BhY2UtYXJvdW5kO1xuXHRcdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRcdGJhY2tncm91bmQ6ICNmMWY0ZjY7XG5cdFx0fVxuXHRcdC5tYWlsLWluLWZvcm0sXG5cdFx0LmNibi1hZGRyZXNzLFxuXHRcdC5naXZpbmctbGlua3MsXG5cdFx0LnBob25lLS1pbmZvLFxuXHRcdC5naWZ0LWluZm8ge1xuXHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0bGluZS1oZWlnaHQ6IDIycHg7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRlbSB7XG5cdFx0XHRcdGZvbnQtc3R5bGU6IGl0YWxpYztcblx0XHRcdH1cblx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDczOXB4KSB7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0YSxcblx0XHRcdFx0LmNibi1hZGRyZXNzLS1zdHJlZXQsXG5cdFx0XHRcdC5jYm4tYWRkcmVzcy0tY2l0eS1zdGF0ZS16aXAge1xuXHRcdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0fVxuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0XHRhLFxuXHRcdFx0XHQuY2JuLWFkZHJlc3MtLXN0cmVldCxcblx0XHRcdFx0LmNibi1hZGRyZXNzLS1jaXR5LXN0YXRlLXppcCB7XG5cdFx0XHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0XHR9XG5cdFx0XHR9XG5cdFx0fVxuXHRcdC5waG9uZSB7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRhIHtcblx0XHRcdFx0Y3Vyc29yOiBwb2ludGVyO1xuXHRcdFx0XHRmb250LXNpemU6IDI4cHg7XG5cdFx0XHRcdGNvbG9yOiAjM2IzYjNiO1xuXHRcdFx0XHR0ZXh0LWRlY29yYXRpb246IG5vbmU7XG5cdFx0XHR9XG5cdFx0fVxuXHR9XG5cdGEge1xuXHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmxpbmtDb2xvcn07XG5cdFx0dGV4dC1kZWNvcmF0aW9uOiAke3Byb3BzID0+IHByb3BzLmxpbmtUZXh0RGVjb3JhdGlvbn07XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdHRyYW5zaXRpb246IGNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHRcdCY6aG92ZXIsXG5cdFx0JjphY3RpdmUsXG5cdFx0Jjpmb2N1cyB7XG5cdFx0XHR0ZXh0LWRlY29yYXRpb246ICR7cHJvcHMgPT4gcHJvcHMubGlua0hvdmVyVGV4dERlY29yYXRpb259O1xuXHRcdFx0Y29sb3I6ICR7cHJvcHMgPT4gcHJvcHMubGlua0hvdmVyQ29sb3J9O1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MjNweCkge1xuXHRcdCYuY2FyZCB7XG5cdFx0XHRtYXJnaW46IDAgYXV0bztcblx0XHR9XG5cdFx0Ji5jYXJkICsgZGl2LmNhcmQge1xuXHRcdFx0bWFyZ2luOiAwIGF1dG87XG5cdFx0XHRtYXJnaW4tdG9wOiAyMHB4O1xuXHRcdH1cblx0fVxuYDtcbiJdfQ== */")
+				);
+				exports.Card = Card;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						CardSection,
+						"CardSection",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Card.js"
+					);
+					reactHotLoader.register(
+						CardContainer,
+						"CardContainer",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Card.js"
+					);
+					reactHotLoader.register(
+						Card,
+						"Card",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Card.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@emotion/styled-base":
+					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
+				react: "node_modules/react/index.js",
+			},
+		],
+		"src/Components/FormComponents/Blocks/OtherGivingBlock.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
+
+				var _Card = require("../StyledComponents/Card");
+
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var OtherGivingBlock = function OtherGivingBlock() {
+					var _useContext = (0, _react.useContext)(
+							_FormConfigProvider.FormConfigContext
+						),
+						getCssConfig = _useContext.getCssConfig;
+
+					var _useMemo = (0, _react.useMemo)(function() {
+							return getCssConfig("link");
+						}, []),
+						_useMemo$linkColor = _useMemo.linkColor,
+						linkColor =
+							_useMemo$linkColor === void 0 ? "#009BDf" : _useMemo$linkColor,
+						_useMemo$linkHoverCol = _useMemo.linkHoverColor,
+						linkHoverColor =
+							_useMemo$linkHoverCol === void 0
+								? "#0069ad"
+								: _useMemo$linkHoverCol,
+						_useMemo$linkTextDeco = _useMemo.linkTextDecoration,
+						linkTextDecoration =
+							_useMemo$linkTextDeco === void 0 ? "none" : _useMemo$linkTextDeco,
+						_useMemo$linkHoverTex = _useMemo.linkHoverTextDecoration,
+						linkHoverTextDecoration =
+							_useMemo$linkHoverTex === void 0
+								? "underline"
+								: _useMemo$linkHoverTex;
+
+					return (0, _core.jsx)(
+						_Card.CardSection,
+						null,
+						(0, _core.jsx)(
+							_Card.CardContainer,
+							null,
+							(0, _core.jsx)(
+								_Card.Card,
+								{
+									className: "card",
+								},
+								(0, _core.jsx)(
+									"h4",
+									{
+										className: "card__title",
+									},
+									"Give By Phone"
+								),
+								(0, _core.jsx)(
+									"div",
+									{
+										className: "card__body",
+									},
+									(0, _core.jsx)(
+										"div",
+										{
+											className: "phone",
+										},
+										(0, _core.jsx)(
+											"a",
+											{
+												href: "tel:18007007000",
+											},
+											"1-800-700-7000"
+										)
+									),
+									(0, _core.jsx)(
+										"div",
+										{
+											className: "phone--info",
+										},
+										"Donate by phone or get assistance with your donation."
+									)
+								)
+							),
+							(0, _core.jsx)(
+								_Card.Card,
+								{
+									className: "card",
+									linkColor: linkColor,
+									linkHoverColor: linkHoverColor,
+									linkTextDecoration: linkTextDecoration,
+									linkHoverTextDecoration: linkHoverTextDecoration,
+								},
+								(0, _core.jsx)(
+									"h4",
+									{
+										className: "card__title",
+									},
+									"Mail-In Giving Form"
+								),
+								(0, _core.jsx)(
+									"div",
+									{
+										className: "card__body",
+									},
+									(0, _core.jsx)(
+										"div",
+										{
+											className: "mail-in-form",
+										},
+										"To donate by check or to a specific cause, please complete this",
+										" ",
+										(0, _core.jsx)(
+											"a",
+											{
+												href:
+													"https://www.cbn.com/giving/700club/option.aspx?o=4",
+											},
+											"donation form"
+										),
+										" ",
+										"by printing and mailing to:"
+									),
+									(0, _core.jsx)(
+										"div",
+										{
+											className: "cbn-address",
+										},
+										(0, _core.jsx)(
+											"div",
+											{
+												className: "cbn-address--street",
+											},
+											"977 Centerville Turnpike,"
+										),
+										(0, _core.jsx)(
+											"div",
+											{
+												className: "cbn-address--city-state-zip",
+											},
+											"Virginia Beach, VA 23463"
+										)
+									)
+								)
+							),
+							(0, _core.jsx)(
+								_Card.Card,
+								{
+									className: "card",
+									linkColor: linkColor,
+									linkHoverColor: linkHoverColor,
+									linkTextDecoration: linkTextDecoration,
+									linkHoverTextDecoration: linkHoverTextDecoration,
+								},
+								(0, _core.jsx)(
+									"h4",
+									{
+										className: "card__title",
+									},
+									"More Ways To Give"
+								),
+								(0, _core.jsx)(
+									"div",
+									{
+										className: "card__body",
+									},
+									(0, _core.jsx)(
+										"a",
+										{
+											className: "giving-links",
+											href:
+												"https://www.cbn.com/giving/700club/pledgeExpress.aspx",
+										},
+										"Pledge Giving"
+									),
+									(0, _core.jsx)(
+										"a",
+										{
+											className: "giving-links",
+											href: "http://www.cbnlegacy.org/",
+										},
+										"Planned Giving & Your Legacy"
+									),
+									(0, _core.jsx)(
+										"a",
+										{
+											className: "giving-links",
+											href: "https://www.cbn.com/giving/livingtributes/",
+										},
+										"Memorial & Tribute Gifts"
+									),
+									(0, _core.jsx)(
+										"a",
+										{
+											className: "giving-links",
+											href: "https://www.cbn.com/partners/matchinggifts.aspx",
+										},
+										"Employer Matching"
+									),
+									(0, _core.jsx)(
+										"a",
+										{
+											className: "giving-links",
+											href:
+												"https://www.cbn.com/giving/700club/stockgifts.aspx",
+										},
+										"Stock Gifts"
+									),
+									(0, _core.jsx)(
+										"a",
+										{
+											className: "giving-links",
+											href:
+												"https://www.cbn.com/giving/700club/workplacegiving.aspx",
+										},
+										"Workplace Giving"
+									)
+								)
+							)
+						)
+					);
+				};
+
+				__signature__(
+					OtherGivingBlock,
+					'useContext{{ getCssConfig }}\nuseMemo{{\n\t\tlinkColor = "#009BDf",\n\t\tlinkHoverColor = "#0069ad",\n\t\tlinkTextDecoration = "none",\n\t\tlinkHoverTextDecoration = "underline",\n\t}}'
+				);
+
+				var _default = (0, _react.memo)(OtherGivingBlock);
+
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						OtherGivingBlock,
+						"OtherGivingBlock",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/OtherGivingBlock.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/OtherGivingBlock.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				react: "node_modules/react/index.js",
+				"../../Contexts/FormConfigProvider":
+					"src/Components/Contexts/FormConfigProvider.js",
+				"../StyledComponents/Card":
+					"src/Components/FormComponents/StyledComponents/Card.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/Components/FormComponents/SVG/CBNLogo.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _react = _interopRequireDefault(require("react"));
+
+				var _core = require("@emotion/core");
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var CBNLogo = function CBNLogo() {
+					return (0, _core.jsx)(
+						"svg",
+						{
+							xmlns: "http://www.w3.org/2000/svg",
+							viewBox: "0 0 326.49 104.3",
+						},
+						(0, _core.jsx)("title", null, "CBN Logo"),
+						(0, _core.jsx)(
+							"g",
+							{
+								id: "Layer_2",
+								"data-name": "Layer 2",
+							},
+							(0, _core.jsx)(
+								"g",
+								{
+									id: "COAL",
+								},
+								(0, _core.jsx)("path", {
+									id: "cbn-fire-middle",
+									className: "logo-1 cbn-fire",
+									d:
+										"M73.19,14.75a18.11,18.11,0,0,1,7.47,17.81c-.74,5.33-5.74,7.2-9.43,14.51-3,6-1,10.06-1,10.06s-8.37-1.59-10.47-9.2c-3.29-12,18.43-19.42,14.89-29.71a21.58,21.58,0,0,0-1.43-3.47",
+								}),
+								(0, _core.jsx)("path", {
+									id: "cbn-fire-left",
+									className: "logo-1 cbn-fire",
+									d:
+										"M64.21,31.55a43.92,43.92,0,0,0,4.76-5c-5.48,2-16.92,5.18-21.32,10.49a9.08,9.08,0,0,0-1.75,8.21c1.79,5.87,12.36,9.94,17.15,10.93-3.57-1.86-5.6-4.38-6.45-7.23-2.26-7.58,3.2-12.84,7.61-17.4",
+								}),
+								(0, _core.jsx)("path", {
+									id: "cbn-fire-right",
+									className: "logo-1 cbn-fire",
+									d:
+										"M90.45,40.07c-.68-3.86-3.51-7.19-6.48-10.16,0,0,0,0-.07,0A24.93,24.93,0,0,1,83.68,33c-.54,3.9-2.75,6.4-4.9,8.82a30,30,0,0,0-4.85,6.74c-2.16,4.27-1,7.05-1,7.17l.45,1a32.29,32.29,0,0,1,7.18-4.28c4.76-1.77,11.25-4.53,9.87-12.45",
+								}),
+								(0, _core.jsx)("path", {
+									id: "cbn-C",
+									className: "logo-2 cbn-letter",
+									d:
+										"M65.14,0c20.29,0,21.6.37,25.47.71,5.87.5,7.43.83,17.57,2.29-.2,3.26-.84,6.75-.92,10-.12,3.93.62,5.72-.39,8.05,0,1.19-2.71,1.05-3,.31-.18-6.95-3.79-16.44-38.74-16.44C31.3,5,23,20.62,23,34.45c0,23.72,22,32.71,42.13,35.9,10.79,1,37.1,1.44,40.28-12.79.7-1.66,3.59-.82,3.27,1.24s-3.1,12.09-4.92,14.43c-1.74.93-9,2.89-38.63,2.89-55.27-3.72-64-25.49-64-39.7C1.18,22.69,17.26,0,65.14,0Z",
+								}),
+								(0, _core.jsx)("path", {
+									id: "cbn-N",
+									className: "logo-2 cbn-letter",
+									d:
+										"M214.26,0c2.46-.26,16.84,10.65,19.68,12.38,15.71,9.56,29.93,19.36,46,29.4.67.41,1.93,1.44,2.61,1.85,4,2.43,7.62,4.86,11.58,7.33,2.91,1.82,5.29,4.13,8.81,5.56,0-11.41-.91-23.52-1.17-34.39-.15-5.81,0-9.63-1.08-13.77a7.68,7.68,0,0,0-2.46-3.71C295.15,2.85,289,3.51,285,3c0,0,.45-1.39.93-1.44a61.65,61.65,0,0,1,7.07,0c7.79,0,15.89.69,23.67.11a94.1,94.1,0,0,1,9.84-.11,5.09,5.09,0,0,0-.21,1.24c-4.34.59-9.92,0-11.78,3.09-1.4,2.32-1.17,6.09-1.33,9.6-.72,15.1-.34,30.72-.82,45.79-.12,3.47.19,10.91-.31,13.93-.08.45-1,.52-1.23.92-4.76-.71-6.83-3-10.15-5-4.19-2.44-8.15-4.59-12.29-7.11-1.29-.79-3-2-4.31-2.79-12.67-7.72-24-15.55-36.59-23.21-1.06-.64-2.35-1.79-3.38-2.47-4.45-2.94-8.54-5.78-13.12-8.56-3-1.85-5.71-3.94-9-5.67,0,8.41.41,17,1,25.17.47,6.44,0,12.49.83,18.76.21,1.76,1.64,5.64,2.76,6.5,2.83,2.15,8.95,1.22,13.22,1.86,0,0,0,.92,0,.93-8.57,2.19-21.29-.13-31.05.62a58.37,58.37,0,0,1-10.9,0,7.33,7.33,0,0,0,0-1.24c4.24-.58,10.26.2,12.13-2.79,2-3.27,1.25-9.3,1.44-14.23.49-13.33.59-27.23,1-39.92.15-4.61-.22-9.83.31-13.92C212.94,1.39,212.64.17,214.26,0Z",
+								}),
+								(0, _core.jsx)("path", {
+									id: "cbn-B",
+									className: "logo-1 cbn-letter",
+									d:
+										"M129.49,46.5c0,9.11,0,16.93-.8,21.1-.64,2.87-1.43,5.05-4.61,5.45-1.43.19-5.34.39-7.73.39-1.91,0-2.55.3-2.55.8,0,.69,1.12,1,3.18,1,3.19,0,7.33-.2,11-.2,3.81-.1,7.31-.1,9.06-.1,2.39,0,7.16.1,11.94.3,4.61.09,9.23.29,11.13.29,29.27,0,41.79-10.94,41.79-21.54,0-11.59-15.22-18.67-28.26-21.45,8.75-4.36,16.22-9.21,16.22-17.33C189.85,10,184.76.34,156,.34c-5.41,0-11.62.3-19.41.3-3.19,0-9.88.24-18.31,0-3.17-.08-4.33.89-4.33,1.58s1.16.75,3,.75a25.33,25.33,0,0,1,3.75.17c5.24.69,8.18,1.54,8.5,4.91.32,3.17.32,5.94.32,21ZM147.23,6.29c0-1.09.32-1.49,1.44-1.69a40.58,40.58,0,0,1,5.24-.2c13.69,0,18.54,6.93,18.54,15.15,0,6.28-4.19,13-16.63,12.59-3.65-.11-6-.1-7.47-.3-.64-.1-1.12-.3-1.12-1.09Zm36,49.54c0,12.08-10.93,15.18-18.08,14.91a55.3,55.3,0,0,1-12.37-1.5c-5.09-1.28-5.57-2.34-5.57-8.87V36.89c0-.5.32-.69,1-.69,2.38,0,4,0,6.84.1,16.05.36,28.22,5.87,28.22,19.53",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d: "M3.27,95H0V93.57H8.09V95H4.84v9.14H3.27Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M17.52,99.4H11.69v4.7H10.12V93.57h1.57V98h5.83V93.57h1.57V104.1H17.52Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M21.81,93.57h7.07V95H23.39V98h5.38v1.39H23.39v3.28h5.49v1.39H21.81Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M35.24,98.84a5.27,5.27,0,0,1,5.4-5.44,4.75,4.75,0,0,1,4.18,2.23l-1.34.71a3.35,3.35,0,0,0-2.84-1.54,4,4,0,0,0,0,8.08,3.34,3.34,0,0,0,2.84-1.53l1.34.71a4.8,4.8,0,0,1-4.18,2.23A5.27,5.27,0,0,1,35.24,98.84Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M54.18,99.4H48.35v4.7H46.78V93.57h1.57V98h5.83V93.57h1.57V104.1H54.18Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M62,100h-2v4.06H58.47V93.57H62.9a3.14,3.14,0,0,1,3.38,3.24,3,3,0,0,1-2.62,3.08l2.7,4.21H64.53ZM62.7,95H60.05v3.69H62.7a1.85,1.85,0,1,0,0-3.69Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d: "M68.6,93.57h1.58V104.1H68.6Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M73.16,101.4a4.44,4.44,0,0,0,3.31,1.48c1.71,0,2.31-.86,2.31-1.62,0-1.11-1.2-1.42-2.54-1.77-1.69-.44-3.65-.93-3.65-3.08,0-1.73,1.53-3,3.73-3a5.18,5.18,0,0,1,3.83,1.46l-.92,1.17a4.09,4.09,0,0,0-3-1.23c-1.17,0-2,.6-2,1.48s1.13,1.25,2.44,1.58c1.72.46,3.73,1,3.73,3.24,0,1.64-1.14,3.17-4,3.17a5.37,5.37,0,0,1-4.15-1.68Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d: "M85,95H81.78V93.57h8.09V95H86.62v9.14H85Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d: "M91.89,93.57h1.58V104.1H91.89Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M102.86,101.92H97.7l-.85,2.18H95.11l4.18-10.53h2l4.18,10.53h-1.74Zm-4.7-1.4h4.24L100.27,95Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M108.67,96v8.08h-1.58V93.57h1.62l5.73,7.89V93.57H116V104.1h-1.53Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M123.19,93.57h4.93a2.68,2.68,0,0,1,3,2.69,2.38,2.38,0,0,1-1.83,2.41,2.6,2.6,0,0,1,2,2.59,2.76,2.76,0,0,1-3.05,2.84h-5.06ZM127.83,98a1.54,1.54,0,1,0,0-3.08h-3.07V98Zm.07,4.67a1.58,1.58,0,0,0,1.77-1.66,1.61,1.61,0,0,0-1.77-1.62h-3.14v3.28Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M137.18,100h-2v4.06h-1.58V93.57h4.44a3.14,3.14,0,0,1,3.37,3.24,2.94,2.94,0,0,1-2.62,3.08l2.7,4.21h-1.83Zm.68-5.08h-2.65v3.69h2.65a1.85,1.85,0,1,0,0-3.69Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M148.62,93.4a5.45,5.45,0,1,1-5.3,5.44A5.18,5.18,0,0,1,148.62,93.4Zm0,1.4c-2.25,0-3.67,1.72-3.67,4s1.42,4,3.67,4,3.68-1.73,3.68-4S150.85,94.8,148.62,94.8Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M162.31,101.92h-5.16l-.86,2.18h-1.73l4.18-10.53h2l4.18,10.53h-1.73Zm-4.71-1.4h4.25L159.72,95Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M166.54,93.57h3.75a5.27,5.27,0,1,1,0,10.53h-3.75Zm3.75,9.14a3.88,3.88,0,0,0,0-7.75h-2.18v7.75Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M177.6,98.84A5.27,5.27,0,0,1,183,93.4a4.75,4.75,0,0,1,4.18,2.23l-1.34.71A3.35,3.35,0,0,0,183,94.8a4,4,0,0,0,0,8.08,3.34,3.34,0,0,0,2.84-1.53l1.34.71a4.8,4.8,0,0,1-4.18,2.23A5.27,5.27,0,0,1,177.6,98.84Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M195.73,101.92h-5.16l-.85,2.18H188l4.18-10.53h2l4.18,10.53h-1.74Zm-4.7-1.4h4.24L193.14,95Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M200,101.4a4.44,4.44,0,0,0,3.32,1.48c1.7,0,2.3-.86,2.3-1.62,0-1.11-1.2-1.42-2.54-1.77-1.69-.44-3.64-.93-3.64-3.08,0-1.73,1.53-3,3.72-3A5.18,5.18,0,0,1,207,94.88l-.91,1.17a4.13,4.13,0,0,0-3-1.23c-1.16,0-2,.6-2,1.48s1.14,1.25,2.45,1.58c1.72.46,3.72,1,3.72,3.24,0,1.64-1.14,3.17-4,3.17a5.38,5.38,0,0,1-4.15-1.68Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d: "M211.91,95h-3.27V93.57h8.09V95h-3.25v9.14h-1.57Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d: "M218.76,93.57h1.57V104.1h-1.57Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M224.64,96v8.08h-1.58V93.57h1.63l5.73,7.89V93.57H232V104.1h-1.53Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M239.73,93.4a4.94,4.94,0,0,1,4.16,2.08l-1.28.74a3.63,3.63,0,0,0-2.88-1.42,4.06,4.06,0,0,0,0,8.1,4.06,4.06,0,0,0,2.66-1V100H239V98.58H244v3.86a5.59,5.59,0,0,1-4.24,1.86,5.45,5.45,0,1,1,0-10.9Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M252.4,96v8.08h-1.58V93.57h1.63l5.73,7.89V93.57h1.57V104.1h-1.53Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M262.47,93.57h7.07V95h-5.49V98h5.38v1.39h-5.38v3.28h5.49v1.39h-7.07Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d: "M274.46,95H271.2V93.57h8.09V95H276v9.14h-1.58Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M287.18,96,285,104.1h-1.69l-3-10.53h1.77l2.18,8.45,2.3-8.45h1.28l2.29,8.45,2.17-8.45h1.77l-3,10.53h-1.69Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M300.33,93.4a5.45,5.45,0,1,1-5.3,5.44A5.17,5.17,0,0,1,300.33,93.4Zm0,1.4c-2.26,0-3.68,1.72-3.68,4s1.42,4,3.68,4,3.67-1.73,3.67-4S302.55,94.8,300.33,94.8Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M311.47,100h-2v4.06h-1.58V93.57h4.43a3.14,3.14,0,0,1,3.38,3.24,3,3,0,0,1-2.62,3.08l2.7,4.21H314Zm.68-5.08H309.5v3.69h2.65a1.85,1.85,0,1,0,0-3.69Z",
+								}),
+								(0, _core.jsx)("path", {
+									className: "logo-1",
+									d:
+										"M320.62,99.52l-1,1.12v3.46h-1.58V93.57h1.58V98.8l4.4-5.23h2l-4.34,5,4.68,5.54h-1.95Z",
+								})
+							)
+						)
+					);
+				};
+
+				var _default = CBNLogo;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						CBNLogo,
+						"CBNLogo",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/CBNLogo.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/CBNLogo.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				react: "node_modules/react/index.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/Components/FormComponents/Blocks/HeaderBlock.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _styledBase = _interopRequireDefault(
+					require("@emotion/styled-base")
+				);
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
+
+				var _CBNLogo = _interopRequireDefault(require("../SVG/CBNLogo"));
+
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var Header = (0, _styledBase.default)("header", {
+					target: "ezpq3p70",
+					label: "Header",
+				})(
+					"box-sizing:border-box;width:100%;height:auto;padding:10px;margin:0;margin-bottom:35px;background:#747474;background:",
+					function(props) {
+						return props.background;
+					},
+					";background-size:cover;background-repeat:no-repeat;background-position:center center;@media screen and (max-width:",
+					function(props) {
+						return props.formMaxWidth;
+					},
+					"){margin-bottom:0;}div.header-container{max-width:",
+					function(props) {
+						return props.formMaxWidth;
+					},
+					";margin:0 auto;padding:30px 10px;width:100%;box-sizing:border-box;h2.header-title{font-size:36px;font-weight:bold;color:#ffffff;text-align:center;line-height:42px;margin:0;margin-block-start:0;margin-block-end:0;padding:0;}p.header-description{font-size:20px;font-weight:600;line-height:23px;color:#ffffff;text-align:center;margin:0;margin-block-start:0;margin-block-end:0;padding:0;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;span{padding-top:20px;font-size:20px;font-weight:600;line-height:23px;color:#ffffff;text-align:center;width:100%;}em{width:100%;padding-top:20px;font-size:18px;font-weight:600;line-height:22px;font-style:italic;}}@media screen and (max-width:649px){padding:20px 10px;}}" +
+						("development" === "production"
+							? ""
+							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkhlYWRlckJsb2NrLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQU80QiIsImZpbGUiOiJIZWFkZXJCbG9jay5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyB1c2VDb250ZXh0LCBtZW1vLCB1c2VNZW1vIH0gZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuaW1wb3J0IHsgRm9ybUNvbmZpZ0NvbnRleHQgfSBmcm9tIFwiLi4vLi4vQ29udGV4dHMvRm9ybUNvbmZpZ1Byb3ZpZGVyXCI7XG5cbmltcG9ydCBDQk5Mb2dvIGZyb20gXCIuLi9TVkcvQ0JOTG9nb1wiO1xuXG5jb25zdCBIZWFkZXIgPSBzdHlsZWQuaGVhZGVyYFxuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHR3aWR0aDogMTAwJTtcblx0aGVpZ2h0OiBhdXRvO1xuXHRwYWRkaW5nOiAxMHB4O1xuXHRtYXJnaW46IDA7XG5cdG1hcmdpbi1ib3R0b206IDM1cHg7XG5cdGJhY2tncm91bmQ6ICM3NDc0NzQ7XG5cdGJhY2tncm91bmQ6ICR7cHJvcHMgPT4gcHJvcHMuYmFja2dyb3VuZH07XG5cdGJhY2tncm91bmQtc2l6ZTogY292ZXI7XG5cdGJhY2tncm91bmQtcmVwZWF0OiBuby1yZXBlYXQ7XG5cdGJhY2tncm91bmQtcG9zaXRpb246IGNlbnRlciBjZW50ZXI7XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6ICR7cHJvcHMgPT4gcHJvcHMuZm9ybU1heFdpZHRofSkge1xuXHRcdG1hcmdpbi1ib3R0b206IDA7XG5cdH1cblx0ZGl2LmhlYWRlci1jb250YWluZXIge1xuXHRcdG1heC13aWR0aDogJHtwcm9wcyA9PiBwcm9wcy5mb3JtTWF4V2lkdGh9O1xuXHRcdG1hcmdpbjogMCBhdXRvO1xuXHRcdHBhZGRpbmc6IDMwcHggMTBweDtcblx0XHR3aWR0aDogMTAwJTtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGgyLmhlYWRlci10aXRsZSB7XG5cdFx0XHRmb250LXNpemU6IDM2cHg7XG5cdFx0XHRmb250LXdlaWdodDogYm9sZDtcblx0XHRcdGNvbG9yOiAjZmZmZmZmO1xuXHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdFx0bGluZS1oZWlnaHQ6IDQycHg7XG5cdFx0XHRtYXJnaW46IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stc3RhcnQ6IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stZW5kOiAwO1xuXHRcdFx0cGFkZGluZzogMDtcblx0XHR9XG5cdFx0cC5oZWFkZXItZGVzY3JpcHRpb24ge1xuXHRcdFx0Zm9udC1zaXplOiAyMHB4O1xuXHRcdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRcdGxpbmUtaGVpZ2h0OiAyM3B4O1xuXHRcdFx0Y29sb3I6ICNmZmZmZmY7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRtYXJnaW46IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stc3RhcnQ6IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stZW5kOiAwO1xuXHRcdFx0cGFkZGluZzogMDtcblx0XHRcdGRpc3BsYXk6IGZsZXg7XG5cdFx0XHRmbGV4LWRpcmVjdGlvbjogcm93O1xuXHRcdFx0ZmxleC13cmFwOiB3cmFwO1xuXHRcdFx0anVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG5cdFx0XHRzcGFuIHtcblx0XHRcdFx0cGFkZGluZy10b3A6IDIwcHg7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMjBweDtcblx0XHRcdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRcdFx0bGluZS1oZWlnaHQ6IDIzcHg7XG5cdFx0XHRcdGNvbG9yOiAjZmZmZmZmO1xuXHRcdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdFx0fVxuXHRcdFx0ZW0ge1xuXHRcdFx0XHR3aWR0aDogMTAwJTtcblx0XHRcdFx0cGFkZGluZy10b3A6IDIwcHg7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMThweDtcblx0XHRcdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRcdFx0bGluZS1oZWlnaHQ6IDIycHg7XG5cdFx0XHRcdGZvbnQtc3R5bGU6IGl0YWxpYztcblx0XHRcdH1cblx0XHR9XG5cdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjQ5cHgpIHtcblx0XHRcdHBhZGRpbmc6IDIwcHggMTBweDtcblx0XHR9XG5cdH1cbmA7XG5cbmNvbnN0IE5hdiA9IHN0eWxlZC5uYXZgXG5cdGhlaWdodDogMTAwcHg7XG5cdHdpZHRoOiAxMDAlO1xuXHRkaXNwbGF5OiBmbGV4O1xuXHRqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcblx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0YWxpZ24taXRlbXM6IGNlbnRlcjtcblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjQ5cHgpIHtcblx0XHRoZWlnaHQ6IDQ1cHg7XG5cdH1cblx0ZGl2Lm5hdi1jb250YWluZXIge1xuXHRcdHdpZHRoOiAxMDAlO1xuXHRcdG1heC13aWR0aDogMTIwMHB4O1xuXHRcdG1hcmdpbjogMCBhdXRvO1xuXHRcdGRpc3BsYXk6IGZsZXg7XG5cdFx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0XHRqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47XG5cdFx0YWxpZ24taXRlbXM6IGNlbnRlcjtcblx0XHRzdmcge1xuXHRcdFx0aGVpZ2h0OiA2MHB4O1xuXHRcdFx0LmxvZ28tMSxcblx0XHRcdC5sb2dvLTIge1xuXHRcdFx0XHRmaWxsOiAjZmZmO1xuXHRcdFx0fVxuXHRcdFx0LmxvZ28tMiB7XG5cdFx0XHRcdGZpbGwtcnVsZTogZXZlbm9kZDtcblx0XHRcdH1cblx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0XHRcdGhlaWdodDogNDVweDtcblx0XHRcdH1cblx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDUzMHB4KSB7XG5cdFx0XHRcdG1hcmdpbi10b3A6IDEwcHg7XG5cdFx0XHRcdC5sb2dvLTE6bm90KC5jYm4tbGV0dGVyKTpub3QoLmNibi1maXJlKSxcblx0XHRcdFx0LmxvZ28tMjpub3QoLmNibi1sZXR0ZXIpOm5vdCguY2JuLWZpcmUpIHtcblx0XHRcdFx0XHRkaXNwbGF5OiBub25lO1xuXHRcdFx0XHR9XG5cdFx0XHR9XG5cdFx0fVxuXHRcdHNwYW4ge1xuXHRcdFx0Y29sb3I6ICNmZmZmZmY7XG5cdFx0XHRmbGV4OiAxIDEgMTM1cHg7XG5cdFx0XHR0ZXh0LWFsaWduOiByaWdodDtcblx0XHRcdGEge1xuXHRcdFx0XHRmb250LXNpemU6IDE3cHg7XG5cdFx0XHRcdGZvbnQtd2VpZ2h0OiA1MDA7XG5cdFx0XHRcdGNvbG9yOiB3aGl0ZTtcblx0XHRcdFx0dGV4dC1kZWNvcmF0aW9uOiBub25lO1xuXHRcdFx0XHR0cmFuc2l0aW9uOiBjb2xvciAyMDBtcyBlYXNlLWluLW91dDtcblx0XHRcdH1cblx0XHRcdGE6aG92ZXIsXG5cdFx0XHRhOmFjdGl2ZSxcblx0XHRcdGE6Zm9jdXMge1xuXHRcdFx0XHR0ZXh0LWRlY29yYXRpb246IHVuZGVybGluZTtcblx0XHRcdFx0Y29sb3I6ICNkZGQ7XG5cdFx0XHR9XG5cdFx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA0NjBweCkge1xuXHRcdFx0XHRmbGV4LWdyb3c6IDA7XG5cdFx0XHR9XG5cdFx0fVxuXHR9XG5gO1xuXG5jb25zdCBIZWFkZXJCbG9jayA9ICh7IHN1Y2Nlc3NUaXRsZSwgc3VjY2Vzc0Rlc2NyaXB0aW9uIH0pID0+IHtcblx0Y29uc3QgeyBnZXRDc3NDb25maWcsIGdldEZvcm1Db25maWcgfSA9IHVzZUNvbnRleHQoRm9ybUNvbmZpZ0NvbnRleHQpO1xuXHRjb25zdCB7IGZvcm1NYXhXaWR0aCB9ID0gdXNlTWVtbygoKSA9PiBnZXRDc3NDb25maWcoXCJmb3JtXCIpLCBbXSk7XG5cdGNvbnN0IHsgYmFja2dyb3VuZCwgdGl0bGUsIGRlc2NyaXB0aW9uIH0gPSB1c2VNZW1vKFxuXHRcdCgpID0+IGdldEZvcm1Db25maWcoXCJmb3JtSGVhZGVyXCIpLFxuXHRcdFtdXG5cdCk7XG5cdHJldHVybiAoXG5cdFx0PEhlYWRlclxuXHRcdFx0Y2xhc3NOYW1lPVwiaGVhZGVyXCJcblx0XHRcdGZvcm1NYXhXaWR0aD17Zm9ybU1heFdpZHRofVxuXHRcdFx0YmFja2dyb3VuZD17YmFja2dyb3VuZH1cblx0XHQ+XG5cdFx0XHQ8TmF2IGNsYXNzTmFtZT1cIm5hdlwiPlxuXHRcdFx0XHQ8ZGl2IGNsYXNzTmFtZT1cIm5hdi1jb250YWluZXJcIj5cblx0XHRcdFx0XHQ8Q0JOTG9nbyAvPlxuXHRcdFx0XHRcdDxzcGFuPlxuXHRcdFx0XHRcdFx0R2l2ZSBCeSBQaG9uZSA8YSBocmVmPVwidGVsOjE4MDA3MDA3MDAwXCI+MS04MDAtNzAwLTcwMDA8L2E+XG5cdFx0XHRcdFx0PC9zcGFuPlxuXHRcdFx0XHQ8L2Rpdj5cblx0XHRcdDwvTmF2PlxuXHRcdFx0PGRpdiBjbGFzc05hbWU9XCJoZWFkZXItY29udGFpbmVyXCI+XG5cdFx0XHRcdDxoMiBjbGFzc05hbWU9XCJoZWFkZXItdGl0bGVcIj57c3VjY2Vzc1RpdGxlID8gc3VjY2Vzc1RpdGxlIDogdGl0bGV9PC9oMj5cblx0XHRcdFx0PHBcblx0XHRcdFx0XHRjbGFzc05hbWU9XCJoZWFkZXItZGVzY3JpcHRpb25cIlxuXHRcdFx0XHRcdGRhbmdlcm91c2x5U2V0SW5uZXJIVE1MPXt7XG5cdFx0XHRcdFx0XHRfX2h0bWw6IHN1Y2Nlc3NEZXNjcmlwdGlvbiA/IHN1Y2Nlc3NEZXNjcmlwdGlvbiA6IGRlc2NyaXB0aW9uLFxuXHRcdFx0XHRcdH19XG5cdFx0XHRcdC8+XG5cdFx0XHQ8L2Rpdj5cblx0XHQ8L0hlYWRlcj5cblx0KTtcbn07XG5cbmV4cG9ydCBkZWZhdWx0IG1lbW8oSGVhZGVyQmxvY2spO1xuIl19 */")
+				);
+				var Nav = (0, _styledBase.default)("nav", {
+					target: "ezpq3p71",
+					label: "Nav",
+				})(
+					"development" === "production"
+						? {
+								name: "xekgfl",
+								styles:
+									"height:100px;width:100%;display:flex;justify-content:center;flex-direction:row;align-items:center;@media screen and (max-width:649px){height:45px;}div.nav-container{width:100%;max-width:1200px;margin:0 auto;display:flex;flex-direction:row;justify-content:space-between;align-items:center;svg{height:60px;.logo-1,.logo-2{fill:#fff;}.logo-2{fill-rule:evenodd;}@media screen and (max-width:649px){height:45px;}@media screen and (max-width:530px){margin-top:10px;.logo-1:not(.cbn-letter):not(.cbn-fire),.logo-2:not(.cbn-letter):not(.cbn-fire){display:none;}}}span{color:#ffffff;flex:1 1 135px;text-align:right;a{font-size:17px;font-weight:500;color:white;text-decoration:none;transition:color 200ms ease-in-out;}a:hover,a:active,a:focus{text-decoration:underline;color:#ddd;}@media screen and (max-width:460px){flex-grow:0;}}}",
+						  }
+						: {
+								name: "xekgfl",
+								styles:
+									"height:100px;width:100%;display:flex;justify-content:center;flex-direction:row;align-items:center;@media screen and (max-width:649px){height:45px;}div.nav-container{width:100%;max-width:1200px;margin:0 auto;display:flex;flex-direction:row;justify-content:space-between;align-items:center;svg{height:60px;.logo-1,.logo-2{fill:#fff;}.logo-2{fill-rule:evenodd;}@media screen and (max-width:649px){height:45px;}@media screen and (max-width:530px){margin-top:10px;.logo-1:not(.cbn-letter):not(.cbn-fire),.logo-2:not(.cbn-letter):not(.cbn-fire){display:none;}}}span{color:#ffffff;flex:1 1 135px;text-align:right;a{font-size:17px;font-weight:500;color:white;text-decoration:none;transition:color 200ms ease-in-out;}a:hover,a:active,a:focus{text-decoration:underline;color:#ddd;}@media screen and (max-width:460px){flex-grow:0;}}}",
+								map:
+									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkhlYWRlckJsb2NrLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQTZFc0IiLCJmaWxlIjoiSGVhZGVyQmxvY2suanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgdXNlQ29udGV4dCwgbWVtbywgdXNlTWVtbyB9IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmltcG9ydCB7IEZvcm1Db25maWdDb250ZXh0IH0gZnJvbSBcIi4uLy4uL0NvbnRleHRzL0Zvcm1Db25maWdQcm92aWRlclwiO1xuXG5pbXBvcnQgQ0JOTG9nbyBmcm9tIFwiLi4vU1ZHL0NCTkxvZ29cIjtcblxuY29uc3QgSGVhZGVyID0gc3R5bGVkLmhlYWRlcmBcblx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0d2lkdGg6IDEwMCU7XG5cdGhlaWdodDogYXV0bztcblx0cGFkZGluZzogMTBweDtcblx0bWFyZ2luOiAwO1xuXHRtYXJnaW4tYm90dG9tOiAzNXB4O1xuXHRiYWNrZ3JvdW5kOiAjNzQ3NDc0O1xuXHRiYWNrZ3JvdW5kOiAke3Byb3BzID0+IHByb3BzLmJhY2tncm91bmR9O1xuXHRiYWNrZ3JvdW5kLXNpemU6IGNvdmVyO1xuXHRiYWNrZ3JvdW5kLXJlcGVhdDogbm8tcmVwZWF0O1xuXHRiYWNrZ3JvdW5kLXBvc2l0aW9uOiBjZW50ZXIgY2VudGVyO1xuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiAke3Byb3BzID0+IHByb3BzLmZvcm1NYXhXaWR0aH0pIHtcblx0XHRtYXJnaW4tYm90dG9tOiAwO1xuXHR9XG5cdGRpdi5oZWFkZXItY29udGFpbmVyIHtcblx0XHRtYXgtd2lkdGg6ICR7cHJvcHMgPT4gcHJvcHMuZm9ybU1heFdpZHRofTtcblx0XHRtYXJnaW46IDAgYXV0bztcblx0XHRwYWRkaW5nOiAzMHB4IDEwcHg7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRoMi5oZWFkZXItdGl0bGUge1xuXHRcdFx0Zm9udC1zaXplOiAzNnB4O1xuXHRcdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdFx0XHRjb2xvcjogI2ZmZmZmZjtcblx0XHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRcdGxpbmUtaGVpZ2h0OiA0MnB4O1xuXHRcdFx0bWFyZ2luOiAwO1xuXHRcdFx0bWFyZ2luLWJsb2NrLXN0YXJ0OiAwO1xuXHRcdFx0bWFyZ2luLWJsb2NrLWVuZDogMDtcblx0XHRcdHBhZGRpbmc6IDA7XG5cdFx0fVxuXHRcdHAuaGVhZGVyLWRlc2NyaXB0aW9uIHtcblx0XHRcdGZvbnQtc2l6ZTogMjBweDtcblx0XHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0XHRsaW5lLWhlaWdodDogMjNweDtcblx0XHRcdGNvbG9yOiAjZmZmZmZmO1xuXHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdFx0bWFyZ2luOiAwO1xuXHRcdFx0bWFyZ2luLWJsb2NrLXN0YXJ0OiAwO1xuXHRcdFx0bWFyZ2luLWJsb2NrLWVuZDogMDtcblx0XHRcdHBhZGRpbmc6IDA7XG5cdFx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdFx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0XHRcdGZsZXgtd3JhcDogd3JhcDtcblx0XHRcdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRcdFx0c3BhbiB7XG5cdFx0XHRcdHBhZGRpbmctdG9wOiAyMHB4O1xuXHRcdFx0XHRmb250LXNpemU6IDIwcHg7XG5cdFx0XHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0XHRcdGxpbmUtaGVpZ2h0OiAyM3B4O1xuXHRcdFx0XHRjb2xvcjogI2ZmZmZmZjtcblx0XHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdFx0XHR3aWR0aDogMTAwJTtcblx0XHRcdH1cblx0XHRcdGVtIHtcblx0XHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0XHRcdHBhZGRpbmctdG9wOiAyMHB4O1xuXHRcdFx0XHRmb250LXNpemU6IDE4cHg7XG5cdFx0XHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0XHRcdGxpbmUtaGVpZ2h0OiAyMnB4O1xuXHRcdFx0XHRmb250LXN0eWxlOiBpdGFsaWM7XG5cdFx0XHR9XG5cdFx0fVxuXHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0XHRwYWRkaW5nOiAyMHB4IDEwcHg7XG5cdFx0fVxuXHR9XG5gO1xuXG5jb25zdCBOYXYgPSBzdHlsZWQubmF2YFxuXHRoZWlnaHQ6IDEwMHB4O1xuXHR3aWR0aDogMTAwJTtcblx0ZGlzcGxheTogZmxleDtcblx0anVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0aGVpZ2h0OiA0NXB4O1xuXHR9XG5cdGRpdi5uYXYtY29udGFpbmVyIHtcblx0XHR3aWR0aDogMTAwJTtcblx0XHRtYXgtd2lkdGg6IDEyMDBweDtcblx0XHRtYXJnaW46IDAgYXV0bztcblx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdFx0anVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuO1xuXHRcdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdFx0c3ZnIHtcblx0XHRcdGhlaWdodDogNjBweDtcblx0XHRcdC5sb2dvLTEsXG5cdFx0XHQubG9nby0yIHtcblx0XHRcdFx0ZmlsbDogI2ZmZjtcblx0XHRcdH1cblx0XHRcdC5sb2dvLTIge1xuXHRcdFx0XHRmaWxsLXJ1bGU6IGV2ZW5vZGQ7XG5cdFx0XHR9XG5cdFx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2NDlweCkge1xuXHRcdFx0XHRoZWlnaHQ6IDQ1cHg7XG5cdFx0XHR9XG5cdFx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1MzBweCkge1xuXHRcdFx0XHRtYXJnaW4tdG9wOiAxMHB4O1xuXHRcdFx0XHQubG9nby0xOm5vdCguY2JuLWxldHRlcik6bm90KC5jYm4tZmlyZSksXG5cdFx0XHRcdC5sb2dvLTI6bm90KC5jYm4tbGV0dGVyKTpub3QoLmNibi1maXJlKSB7XG5cdFx0XHRcdFx0ZGlzcGxheTogbm9uZTtcblx0XHRcdFx0fVxuXHRcdFx0fVxuXHRcdH1cblx0XHRzcGFuIHtcblx0XHRcdGNvbG9yOiAjZmZmZmZmO1xuXHRcdFx0ZmxleDogMSAxIDEzNXB4O1xuXHRcdFx0dGV4dC1hbGlnbjogcmlnaHQ7XG5cdFx0XHRhIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0XHRmb250LXdlaWdodDogNTAwO1xuXHRcdFx0XHRjb2xvcjogd2hpdGU7XG5cdFx0XHRcdHRleHQtZGVjb3JhdGlvbjogbm9uZTtcblx0XHRcdFx0dHJhbnNpdGlvbjogY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdFx0XHR9XG5cdFx0XHRhOmhvdmVyLFxuXHRcdFx0YTphY3RpdmUsXG5cdFx0XHRhOmZvY3VzIHtcblx0XHRcdFx0dGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7XG5cdFx0XHRcdGNvbG9yOiAjZGRkO1xuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNDYwcHgpIHtcblx0XHRcdFx0ZmxleC1ncm93OiAwO1xuXHRcdFx0fVxuXHRcdH1cblx0fVxuYDtcblxuY29uc3QgSGVhZGVyQmxvY2sgPSAoeyBzdWNjZXNzVGl0bGUsIHN1Y2Nlc3NEZXNjcmlwdGlvbiB9KSA9PiB7XG5cdGNvbnN0IHsgZ2V0Q3NzQ29uZmlnLCBnZXRGb3JtQ29uZmlnIH0gPSB1c2VDb250ZXh0KEZvcm1Db25maWdDb250ZXh0KTtcblx0Y29uc3QgeyBmb3JtTWF4V2lkdGggfSA9IHVzZU1lbW8oKCkgPT4gZ2V0Q3NzQ29uZmlnKFwiZm9ybVwiKSwgW10pO1xuXHRjb25zdCB7IGJhY2tncm91bmQsIHRpdGxlLCBkZXNjcmlwdGlvbiB9ID0gdXNlTWVtbyhcblx0XHQoKSA9PiBnZXRGb3JtQ29uZmlnKFwiZm9ybUhlYWRlclwiKSxcblx0XHRbXVxuXHQpO1xuXHRyZXR1cm4gKFxuXHRcdDxIZWFkZXJcblx0XHRcdGNsYXNzTmFtZT1cImhlYWRlclwiXG5cdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdGJhY2tncm91bmQ9e2JhY2tncm91bmR9XG5cdFx0PlxuXHRcdFx0PE5hdiBjbGFzc05hbWU9XCJuYXZcIj5cblx0XHRcdFx0PGRpdiBjbGFzc05hbWU9XCJuYXYtY29udGFpbmVyXCI+XG5cdFx0XHRcdFx0PENCTkxvZ28gLz5cblx0XHRcdFx0XHQ8c3Bhbj5cblx0XHRcdFx0XHRcdEdpdmUgQnkgUGhvbmUgPGEgaHJlZj1cInRlbDoxODAwNzAwNzAwMFwiPjEtODAwLTcwMC03MDAwPC9hPlxuXHRcdFx0XHRcdDwvc3Bhbj5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHQ8L05hdj5cblx0XHRcdDxkaXYgY2xhc3NOYW1lPVwiaGVhZGVyLWNvbnRhaW5lclwiPlxuXHRcdFx0XHQ8aDIgY2xhc3NOYW1lPVwiaGVhZGVyLXRpdGxlXCI+e3N1Y2Nlc3NUaXRsZSA/IHN1Y2Nlc3NUaXRsZSA6IHRpdGxlfTwvaDI+XG5cdFx0XHRcdDxwXG5cdFx0XHRcdFx0Y2xhc3NOYW1lPVwiaGVhZGVyLWRlc2NyaXB0aW9uXCJcblx0XHRcdFx0XHRkYW5nZXJvdXNseVNldElubmVySFRNTD17e1xuXHRcdFx0XHRcdFx0X19odG1sOiBzdWNjZXNzRGVzY3JpcHRpb24gPyBzdWNjZXNzRGVzY3JpcHRpb24gOiBkZXNjcmlwdGlvbixcblx0XHRcdFx0XHR9fVxuXHRcdFx0XHQvPlxuXHRcdFx0PC9kaXY+XG5cdFx0PC9IZWFkZXI+XG5cdCk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBtZW1vKEhlYWRlckJsb2NrKTtcbiJdfQ== */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
+						  }
+				);
+
+				var HeaderBlock = function HeaderBlock(_ref) {
+					var successTitle = _ref.successTitle,
+						successDescription = _ref.successDescription;
+
+					var _useContext = (0, _react.useContext)(
+							_FormConfigProvider.FormConfigContext
+						),
+						getCssConfig = _useContext.getCssConfig,
+						getFormConfig = _useContext.getFormConfig;
+
+					var _useMemo = (0, _react.useMemo)(function() {
+							return getCssConfig("form");
+						}, []),
+						formMaxWidth = _useMemo.formMaxWidth;
+
+					var _useMemo2 = (0, _react.useMemo)(function() {
+							return getFormConfig("formHeader");
+						}, []),
+						background = _useMemo2.background,
+						title = _useMemo2.title,
+						description = _useMemo2.description;
+
+					return (0, _core.jsx)(
+						Header,
+						{
+							className: "header",
+							formMaxWidth: formMaxWidth,
+							background: background,
+						},
+						(0, _core.jsx)(
+							Nav,
+							{
+								className: "nav",
+							},
+							(0, _core.jsx)(
+								"div",
+								{
+									className: "nav-container",
+								},
+								(0, _core.jsx)(_CBNLogo.default, null),
+								(0, _core.jsx)(
+									"span",
+									null,
+									"Give By Phone ",
+									(0, _core.jsx)(
+										"a",
+										{
+											href: "tel:18007007000",
+										},
+										"1-800-700-7000"
+									)
+								)
+							)
+						),
+						(0, _core.jsx)(
+							"div",
+							{
+								className: "header-container",
+							},
+							(0, _core.jsx)(
+								"h2",
+								{
+									className: "header-title",
+								},
+								successTitle ? successTitle : title
+							),
+							(0, _core.jsx)("p", {
+								className: "header-description",
+								dangerouslySetInnerHTML: {
+									__html: successDescription ? successDescription : description,
+								},
+							})
+						)
+					);
+				};
+
+				__signature__(
+					HeaderBlock,
+					"useContext{{ getCssConfig, getFormConfig }}\nuseMemo{{ formMaxWidth }}\nuseMemo{{ background, title, description }}"
+				);
+
+				var _default = (0, _react.memo)(HeaderBlock);
+
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						Header,
+						"Header",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
+					);
+					reactHotLoader.register(
+						Nav,
+						"Nav",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
+					);
+					reactHotLoader.register(
+						HeaderBlock,
+						"HeaderBlock",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@emotion/styled-base":
+					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
+				react: "node_modules/react/index.js",
+				"../../Contexts/FormConfigProvider":
+					"src/Components/Contexts/FormConfigProvider.js",
+				"../SVG/CBNLogo": "src/Components/FormComponents/SVG/CBNLogo.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/Components/FormComponents/Blocks/FooterBlock.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _styledBase = _interopRequireDefault(
+					require("@emotion/styled-base")
+				);
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
+
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var Footer = (0, _styledBase.default)("footer", {
+					target: "e3han8u0",
+					label: "Footer",
+				})(
+					"box-sizing:border-box;background:#fff;div.container{box-sizing:border-box;color:#3b3b3b;max-width:",
+					function(props) {
+						return props.formMaxWidth;
+					},
+					";width:100%;padding:30px 10px;margin:0 auto;.cbn-info,.footer-links{display:flex;flex-direction:row;justify-content:center;align-items:center;flex-wrap:wrap;color:#181818;font-size:15px;line-height:18px;}.cbn-info{padding:10px 0;text-align:center;.year{font-size:15px;line-height:18px;margin:0 5px;}}.footer-links{& > *{margin:2.5px;}.pipe{font-size:15px;line-height:18px;}a{color:#181818;text-decoration:none;transition:color 200ms ease-in-out;font-size:15px;line-height:18px;}a:hover,a:focus,a:active{text-decoration:underline;color:#484848;}}@media screen and (max-width:623px){background:#eceff1;}}" +
+						("development" === "production"
+							? ""
+							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvb3RlckJsb2NrLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUs0QiIsImZpbGUiOiJGb290ZXJCbG9jay5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyB1c2VDb250ZXh0LCBtZW1vLCB1c2VNZW1vIH0gZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuaW1wb3J0IHsgRm9ybUNvbmZpZ0NvbnRleHQgfSBmcm9tIFwiLi4vLi4vQ29udGV4dHMvRm9ybUNvbmZpZ1Byb3ZpZGVyXCI7XG5cbmNvbnN0IEZvb3RlciA9IHN0eWxlZC5mb290ZXJgXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdGJhY2tncm91bmQ6ICNmZmY7XG5cdGRpdi5jb250YWluZXIge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Y29sb3I6ICMzYjNiM2I7XG5cblx0XHRtYXgtd2lkdGg6ICR7cHJvcHMgPT4gcHJvcHMuZm9ybU1heFdpZHRofTtcblx0XHR3aWR0aDogMTAwJTtcblx0XHRwYWRkaW5nOiAzMHB4IDEwcHg7XG5cdFx0bWFyZ2luOiAwIGF1dG87XG5cdFx0LmNibi1pbmZvLFxuXHRcdC5mb290ZXItbGlua3Mge1xuXHRcdFx0ZGlzcGxheTogZmxleDtcblx0XHRcdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdFx0XHRqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcblx0XHRcdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdFx0XHRmbGV4LXdyYXA6IHdyYXA7XG5cdFx0XHRjb2xvcjogIzE4MTgxODtcblx0XHRcdGZvbnQtc2l6ZTogMTVweDtcblx0XHRcdGxpbmUtaGVpZ2h0OiAxOHB4O1xuXHRcdH1cblx0XHQuY2JuLWluZm8ge1xuXHRcdFx0cGFkZGluZzogMTBweCAwO1xuXHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdFx0LnllYXIge1xuXHRcdFx0XHRmb250LXNpemU6IDE1cHg7XG5cdFx0XHRcdGxpbmUtaGVpZ2h0OiAxOHB4O1xuXHRcdFx0XHRtYXJnaW46IDAgNXB4O1xuXHRcdFx0fVxuXHRcdH1cblx0XHQuZm9vdGVyLWxpbmtzIHtcblx0XHRcdCYgPiAqIHtcblx0XHRcdFx0bWFyZ2luOiAyLjVweDtcblx0XHRcdH1cblx0XHRcdC5waXBlIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxNXB4O1xuXHRcdFx0XHRsaW5lLWhlaWdodDogMThweDtcblx0XHRcdH1cblx0XHRcdGEge1xuXHRcdFx0XHRjb2xvcjogIzE4MTgxODtcblx0XHRcdFx0dGV4dC1kZWNvcmF0aW9uOiBub25lO1xuXHRcdFx0XHR0cmFuc2l0aW9uOiBjb2xvciAyMDBtcyBlYXNlLWluLW91dDtcblx0XHRcdFx0Zm9udC1zaXplOiAxNXB4O1xuXHRcdFx0XHRsaW5lLWhlaWdodDogMThweDtcblx0XHRcdH1cblx0XHRcdGE6aG92ZXIsXG5cdFx0XHRhOmZvY3VzLFxuXHRcdFx0YTphY3RpdmUge1xuXHRcdFx0XHR0ZXh0LWRlY29yYXRpb246IHVuZGVybGluZTtcblx0XHRcdFx0Y29sb3I6ICM0ODQ4NDg7XG5cdFx0XHR9XG5cdFx0fVxuXHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYyM3B4KSB7XG5cdFx0XHRiYWNrZ3JvdW5kOiAjZWNlZmYxO1xuXHRcdH1cblx0fVxuYDtcblxuY29uc3QgRm9vdGVyQmxvY2sgPSAoKSA9PiB7XG5cdGNvbnN0IHsgZ2V0Q3NzQ29uZmlnIH0gPSB1c2VDb250ZXh0KEZvcm1Db25maWdDb250ZXh0KTtcblx0Y29uc3QgeyBmb3JtTWF4V2lkdGggfSA9IHVzZU1lbW8oKCkgPT4gZ2V0Q3NzQ29uZmlnKFwiZm9ybVwiKSwgW10pO1xuXHRjb25zdCB5ZWFyID0gdXNlTWVtbygoKSA9PiBuZXcgRGF0ZSgpLmdldEZ1bGxZZWFyKCksIFtdKTtcblx0cmV0dXJuIChcblx0XHQ8Rm9vdGVyIGNsYXNzTmFtZT1cImZvb3RlclwiPlxuXHRcdFx0PGRpdiBjbGFzc05hbWU9XCJjb250YWluZXJcIj5cblx0XHRcdFx0PGRpdiBjbGFzc05hbWU9XCJjYm4taW5mb1wiPlxuXHRcdFx0XHRcdCZjb3B5O1xuXHRcdFx0XHRcdDxzcGFuIGNsYXNzTmFtZT1cInllYXJcIj57eWVhcn08L3NwYW4+VGhlIENocmlzdGlhbiBCcm9hZGNhc3Rpbmdcblx0XHRcdFx0XHROZXR3b3JrLCBJbmMuLCBBIE5vbi1wcm9maXQgNTAxIChjKSgzKSBDaGFyaXRhYmxlIE9yZ2FuaXphdGlvblxuXHRcdFx0XHQ8L2Rpdj5cblx0XHRcdFx0PGRpdiBjbGFzc05hbWU9XCJmb290ZXItbGlua3NcIj5cblx0XHRcdFx0XHQ8YSBjbGFzc05hbWU9XCJmb290ZXItbGlua3MtLWxpbmtcIiBocmVmPVwiaHR0cHM6Ly93d3cuY2JuLmNvbS9cIj5cblx0XHRcdFx0XHRcdEhvbWVcblx0XHRcdFx0XHQ8L2E+XG5cdFx0XHRcdFx0PHNwYW4gY2xhc3NOYW1lPVwicGlwZVwiPnw8L3NwYW4+XG5cdFx0XHRcdFx0PGEgY2xhc3NOYW1lPVwiZm9vdGVyLWxpbmtzLS1saW5rXCIgaHJlZj1cImh0dHA6Ly93d3cxLmNibi5jb20vYWJvdXRcIj5cblx0XHRcdFx0XHRcdEFib3V0IENCTlxuXHRcdFx0XHRcdDwvYT5cblx0XHRcdFx0XHQ8c3BhbiBjbGFzc05hbWU9XCJwaXBlXCI+fDwvc3Bhbj5cblx0XHRcdFx0XHQ8YVxuXHRcdFx0XHRcdFx0Y2xhc3NOYW1lPVwiZm9vdGVyLWxpbmtzLS1saW5rXCJcblx0XHRcdFx0XHRcdGhyZWY9XCJodHRwOi8vd3d3MS5jYm4uY29tL2Nibi1kb25vci1wcml2YWN5LXBvbGljeVwiXG5cdFx0XHRcdFx0PlxuXHRcdFx0XHRcdFx0RG9ub3IgUHJpdmFjeSBOb3RpY2Vcblx0XHRcdFx0XHQ8L2E+XG5cdFx0XHRcdFx0PHNwYW4gY2xhc3NOYW1lPVwicGlwZVwiPnw8L3NwYW4+XG5cdFx0XHRcdFx0PGFcblx0XHRcdFx0XHRcdGNsYXNzTmFtZT1cImZvb3Rlci1saW5rcy0tbGlua1wiXG5cdFx0XHRcdFx0XHRocmVmPVwiaHR0cDovL3d3dzEuY2JuLmNvbS9hYm91dC9jYm4uY29tLXByaXZhY3ktbm90aWNlXCJcblx0XHRcdFx0XHQ+XG5cdFx0XHRcdFx0XHRDQk4uY29tIFByaXZhY3kgTm90aWNlXG5cdFx0XHRcdFx0PC9hPlxuXHRcdFx0XHRcdDxzcGFuIGNsYXNzTmFtZT1cInBpcGVcIj58PC9zcGFuPlxuXHRcdFx0XHRcdDxhXG5cdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJmb290ZXItbGlua3MtLWxpbmtcIlxuXHRcdFx0XHRcdFx0aHJlZj1cImh0dHA6Ly93d3cxLmNibi5jb20vdGVybXMtb2YtdXNlXCJcblx0XHRcdFx0XHQ+XG5cdFx0XHRcdFx0XHRUZXJtcyBvZiBVc2Vcblx0XHRcdFx0XHQ8L2E+XG5cdFx0XHRcdFx0PHNwYW4gY2xhc3NOYW1lPVwicGlwZVwiPnw8L3NwYW4+XG5cdFx0XHRcdFx0PGEgY2xhc3NOYW1lPVwiZm9vdGVyLWxpbmtzLS1saW5rXCIgaHJlZj1cImh0dHA6Ly93d3cxLmNibi5jb20vY29udGFjdFwiPlxuXHRcdFx0XHRcdFx0Q29udGFjdFxuXHRcdFx0XHRcdDwvYT5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHQ8L2Rpdj5cblx0XHQ8L0Zvb3Rlcj5cblx0KTtcbn07XG5cbmV4cG9ydCBkZWZhdWx0IG1lbW8oRm9vdGVyQmxvY2spO1xuIl19 */")
+				);
+
+				var FooterBlock = function FooterBlock() {
+					var _useContext = (0, _react.useContext)(
+							_FormConfigProvider.FormConfigContext
+						),
+						getCssConfig = _useContext.getCssConfig;
+
+					var _useMemo = (0, _react.useMemo)(function() {
+							return getCssConfig("form");
+						}, []),
+						formMaxWidth = _useMemo.formMaxWidth;
+
+					var year = (0, _react.useMemo)(function() {
+						return new Date().getFullYear();
+					}, []);
+					return (0, _core.jsx)(
+						Footer,
+						{
+							className: "footer",
+						},
+						(0, _core.jsx)(
+							"div",
+							{
+								className: "container",
+							},
+							(0, _core.jsx)(
+								"div",
+								{
+									className: "cbn-info",
+								},
+								"\xA9",
+								(0, _core.jsx)(
+									"span",
+									{
+										className: "year",
+									},
+									year
+								),
+								"The Christian Broadcasting Network, Inc., A Non-profit 501 (c)(3) Charitable Organization"
+							),
+							(0, _core.jsx)(
+								"div",
+								{
+									className: "footer-links",
+								},
+								(0, _core.jsx)(
+									"a",
+									{
+										className: "footer-links--link",
+										href: "https://www.cbn.com/",
+									},
+									"Home"
+								),
+								(0, _core.jsx)(
+									"span",
+									{
+										className: "pipe",
+									},
+									"|"
+								),
+								(0, _core.jsx)(
+									"a",
+									{
+										className: "footer-links--link",
+										href: "http://www1.cbn.com/about",
+									},
+									"About CBN"
+								),
+								(0, _core.jsx)(
+									"span",
+									{
+										className: "pipe",
+									},
+									"|"
+								),
+								(0, _core.jsx)(
+									"a",
+									{
+										className: "footer-links--link",
+										href: "http://www1.cbn.com/cbn-donor-privacy-policy",
+									},
+									"Donor Privacy Notice"
+								),
+								(0, _core.jsx)(
+									"span",
+									{
+										className: "pipe",
+									},
+									"|"
+								),
+								(0, _core.jsx)(
+									"a",
+									{
+										className: "footer-links--link",
+										href: "http://www1.cbn.com/about/cbn.com-privacy-notice",
+									},
+									"CBN.com Privacy Notice"
+								),
+								(0, _core.jsx)(
+									"span",
+									{
+										className: "pipe",
+									},
+									"|"
+								),
+								(0, _core.jsx)(
+									"a",
+									{
+										className: "footer-links--link",
+										href: "http://www1.cbn.com/terms-of-use",
+									},
+									"Terms of Use"
+								),
+								(0, _core.jsx)(
+									"span",
+									{
+										className: "pipe",
+									},
+									"|"
+								),
+								(0, _core.jsx)(
+									"a",
+									{
+										className: "footer-links--link",
+										href: "http://www1.cbn.com/contact",
+									},
+									"Contact"
+								)
+							)
+						)
+					);
+				};
+
+				__signature__(
+					FooterBlock,
+					"useContext{{ getCssConfig }}\nuseMemo{{ formMaxWidth }}\nuseMemo{year}"
+				);
+
+				var _default = (0, _react.memo)(FooterBlock);
+
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						Footer,
+						"Footer",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FooterBlock.js"
+					);
+					reactHotLoader.register(
+						FooterBlock,
+						"FooterBlock",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FooterBlock.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FooterBlock.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@emotion/styled-base":
+					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
+				react: "node_modules/react/index.js",
+				"../../Contexts/FormConfigProvider":
+					"src/Components/Contexts/FormConfigProvider.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/Components/Forms/AskForm.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _regenerator = _interopRequireDefault(
+					require("@babel/runtime/regenerator")
+				);
+
+				var _asyncToGenerator2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/asyncToGenerator")
+				);
+
+				var _classCallCheck2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/classCallCheck")
+				);
+
+				var _createClass2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/createClass")
+				);
+
+				var _possibleConstructorReturn2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/possibleConstructorReturn")
+				);
+
+				var _getPrototypeOf3 = _interopRequireDefault(
+					require("@babel/runtime/helpers/getPrototypeOf")
+				);
+
+				var _inherits2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/inherits")
+				);
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _reactTransitionGroup = require("react-transition-group");
+
+				var _reactMedia = _interopRequireDefault(require("react-media"));
+
+				var _GivingFormProvider = require("../Contexts/GivingFormProvider");
+
+				var _FormWrapper = _interopRequireDefault(
+					require("../StyledComponents/FormWrapper")
+				);
+
+				var _ClubLayout = _interopRequireDefault(
+					require("../FormComponents/Layouts/ClubLayout")
+				);
+
+				var _PremiumBlock = _interopRequireDefault(
+					require("../FormComponents/Blocks/PremiumBlock")
+				);
+
+				var _DesignationBlock = _interopRequireDefault(
+					require("../FormComponents/Blocks/DesignationBlock")
+				);
+
+				var _FormPanel = _interopRequireDefault(
+					require("../FormComponents/StyledComponents/FormPanel")
+				);
+
+				var _FieldSet = _interopRequireDefault(
+					require("../FormComponents/StyledComponents/FieldSet")
+				);
+
+				var _FormHeader = _interopRequireDefault(
+					require("../FormComponents/StyledComponents/FormHeader")
+				);
+
+				var _Seals = _interopRequireDefault(
+					require("../FormComponents/FunctionalComponents/Seals")
+				);
+
+				var _SubmitButton = _interopRequireDefault(
+					require("../FormComponents/FunctionalComponents/SubmitButton")
+				);
+
+				require("../FormComponents/Animations/designations.css");
+
+				var _OtherGivingBlock = _interopRequireDefault(
+					require("../FormComponents/Blocks/OtherGivingBlock")
+				);
+
+				var _HeaderBlock = _interopRequireDefault(
+					require("../FormComponents/Blocks/HeaderBlock")
+				);
+
+				var _FooterBlock = _interopRequireDefault(
+					require("../FormComponents/Blocks/FooterBlock")
+				);
+
+				var _scrollToPoint = require("../../helpers/scrollToPoint");
+
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var AskForm =
+					/*#__PURE__*/
+					(function(_Component) {
+						(0, _inherits2.default)(AskForm, _Component);
+
+						function AskForm() {
+							var _getPrototypeOf2;
+
+							var _this;
+
+							(0, _classCallCheck2.default)(this, AskForm);
+
+							for (
+								var _len = arguments.length, args = new Array(_len), _key = 0;
+								_key < _len;
+								_key++
+							) {
+								args[_key] = arguments[_key];
+							}
+
+							_this = (0, _possibleConstructorReturn2.default)(
+								this,
+								(_getPrototypeOf2 = (0, _getPrototypeOf3.default)(
+									AskForm
+								)).call.apply(_getPrototypeOf2, [this].concat(args))
+							);
+							_this.state = {
+								monthlyChecked: _this.props.defaultOption == "monthly",
+								scrolled: false,
+								initialUpdate: true,
+							};
+
+							_this.handleRadioClick = function(e) {
+								var id = e.target.id; // console.log(id)
+
+								var _this$props = _this.props,
+									singlePledgeData = _this$props.singlePledgeData,
+									monthlyPledgeData = _this$props.monthlyPledgeData;
+
+								_this.setState(
+									{
+										monthlyChecked: id !== "singlegift",
+									},
+									function() {
+										return _this.context.updateGivingType({
+											type: "UPDATE_GIVING_TYPE",
+											typeId: id,
+											singlePledgeData: singlePledgeData,
+											monthlyPledgeData: monthlyPledgeData,
+											source: "radioClick",
+										});
+									}
+								);
+							};
+
+							_this.handleInputChange = function(e) {
+								var target = e.target;
+								var name = target.name;
+
+								_this.context.validateAndUpdateField({
+									type: "UPDATE_FIELD",
+									name: name,
+								});
+							};
+
+							_this.handleSubmit =
+								/*#__PURE__*/
+								(function() {
+									var _ref = (0, _asyncToGenerator2.default)(
+										/*#__PURE__*/
+										_regenerator.default.mark(function _callee(e) {
+											var isValidSubmission;
+											return _regenerator.default.wrap(function _callee$(
+												_context
+											) {
+												while (1) {
+													switch ((_context.prev = _context.next)) {
+														case 0:
+															e.preventDefault();
+															_context.next = 3;
+															return _this.context.submitAskForm({
+																type: "SUBMIT_ASK_FORM",
+															});
+
+														case 3:
+															isValidSubmission = _context.sent;
+
+															if (isValidSubmission) {
+																_this.setState({
+																	scrolled: false,
+																});
+															}
+
+														case 5:
+														case "end":
+															return _context.stop();
+													}
+												}
+											},
+											_callee);
+										})
+									);
+
+									return function(_x) {
+										return _ref.apply(this, arguments);
+									};
+								})();
+
+							_this.addToCart = function(item) {
+								_this.context.addToCart({
+									type: "ADD_TO_CART",
+									item: item,
+								});
+							};
+
+							_this.removeFromCart = function(itemType) {
+								_this.context.removeFromCart({
+									type: "REMOVE_TO_CART",
+									itemType: itemType,
+								});
+							};
+
+							return _this;
+						}
+
+						(0, _createClass2.default)(AskForm, [
+							{
+								key: "getSnapshotBeforeUpdate",
+								value: function getSnapshotBeforeUpdate() {
+									var selected = this.context.selected;
+									var _this$state = this.state,
+										scrolled = _this$state.scrolled,
+										initialUpdate = _this$state.initialUpdate;
+
+									if (selected && initialUpdate) {
+										console.log("Selection Snapshot on Ask");
+										return true;
+									}
+
+									if (!selected && !scrolled && !initialUpdate) {
+										console.log("Scrolling Snapshot on Ask");
+										return true;
+									}
+
+									return null;
+								},
+							},
+							{
+								key: "componentDidUpdate",
+								value: function componentDidUpdate(
+									prevProps,
+									prevState,
+									snapshot
+								) {
+									if (
+										snapshot &&
+										this.context.selected &&
+										this.state.initialUpdate
+									) {
+										this.setState({
+											initialUpdate: false,
+										});
+									} else if (
+										snapshot &&
+										!this.state.scrolled &&
+										!this.context.selected
+									) {
+										this.setState(
+											{
+												scrolled: true,
+											},
+											function() {
+												var target = document.getElementById(
+													"react-club-ask-form"
+												);
+												var top = (0, _scrollToPoint.offsetTop)(target);
+												(0, _scrollToPoint.scrollToPoint)(top);
+											}
+										);
+									}
+								},
+							},
+							{
+								key: "render",
+								value: function render() {
+									var _this$props2 = this.props,
+										formTitle = _this$props2.formTitle,
+										submitButtonText = _this$props2.submitButtonText,
+										showGivingArray = _this$props2.showGivingArray,
+										monthlyOption = _this$props2.monthlyOption,
+										singleOption = _this$props2.singleOption,
+										monthlyAmounts = _this$props2.monthlyAmounts,
+										monthlyDescriptions = _this$props2.monthlyDescriptions,
+										singleAmounts = _this$props2.singleAmounts,
+										singleDescriptions = _this$props2.singleDescriptions,
+										designations = _this$props2.designations,
+										preset = _this$props2.preset,
+										monthlyPledgeData = _this$props2.monthlyPledgeData,
+										singlePledgeData = _this$props2.singlePledgeData,
+										defaultAmount = _this$props2.defaultAmount,
+										defaultOption = _this$props2.defaultOption,
+										premiumData = _this$props2.premiumData,
+										formBackgroundColor = _this$props2.formBackgroundColor,
+										formBorderColor = _this$props2.formBorderColor,
+										formBorderRadius = _this$props2.formBorderRadius,
+										formBorderWidth = _this$props2.formBorderWidth,
+										formBoxShadow = _this$props2.formBoxShadow,
+										formColor = _this$props2.formColor,
+										formMargin = _this$props2.formMargin,
+										formMaxWidth = _this$props2.formMaxWidth,
+										formPadding = _this$props2.formPadding,
+										expired = _this$props2.expired;
+									var givingOptions = {
+										monthlyOption: monthlyOption,
+										singleOption: singleOption,
+										monthlyAmounts: monthlyAmounts ? monthlyAmounts : [],
+										monthlyDescriptions: monthlyDescriptions
+											? monthlyDescriptions
+											: [],
+										singleAmounts: singleAmounts ? singleAmounts : [],
+										singleDescriptions: singleDescriptions
+											? singleDescriptions
+											: [],
+										designations: designations ? designations : [],
+										monthlyPledgeData: monthlyPledgeData,
+										singlePledgeData: singlePledgeData,
+									};
+									var monthlyChecked = this.state.monthlyChecked;
+									var _this$context = this.context,
+										errors = _this$context.errors,
+										fields = _this$context.fields,
+										submitting = _this$context.submitting,
+										selected = _this$context.selected;
+									var hasErrors = errors.amount !== "";
+									return !selected || expired
+										? (0, _core.jsx)(
+												_react.default.Fragment,
+												null,
+												(0, _core.jsx)(_HeaderBlock.default, null),
+												(0, _core.jsx)(
+													_FormWrapper.default,
+													{
+														formBackgroundColor: formBackgroundColor,
+														formBorderColor: formBorderColor,
+														formBorderRadius: formBorderRadius,
+														formBorderWidth: formBorderWidth,
+														formBoxShadow: formBoxShadow,
+														formMaxWidth: formMaxWidth,
+														formPadding: formPadding,
+														formMargin: formMargin,
+														formColor: formColor,
+														inProp: !selected || expired,
+													},
+													(0, _core.jsx)(
+														"form",
+														{
+															id: "react-club-ask-form",
+															autoComplete: "off",
+															onSubmit: this.handleSubmit,
+															style: {
+																backgroundColor: "white",
+															},
+														},
+														(0, _core.jsx)(
+															_reactMedia.default,
+															{
+																query: "(max-width: 649px)",
+															},
+															function(matches) {
+																return matches
+																	? null
+																	: (0, _core.jsx)(
+																			_FormHeader.default,
+																			{
+																				className: "form-title form-header",
+																				style: {
+																					fontSize: "19px",
+																					marginTop: "0",
+																					color: "#181818",
+																				},
+																			},
+																			formTitle
+																	  );
+															}
+														),
+														(0, _core.jsx)(_PremiumBlock.default, {
+															premiumData: premiumData,
+															monthlyChecked: monthlyChecked,
+														}),
+														showGivingArray &&
+															(0, _core.jsx)(
+																_FormPanel.default,
+																{
+																	className: "form-panel",
+																},
+																(0, _core.jsx)(_ClubLayout.default, {
+																	defaultAmount: defaultAmount,
+																	defaultOption: defaultOption,
+																	givingOptions: givingOptions,
+																	handleRadioClick: this.handleRadioClick,
+																	amountError: errors.amount,
+																	monthlyChecked: monthlyChecked,
+																	Monthlypledgeday: fields.Monthlypledgeday,
+																	monthlyOption: monthlyOption,
+																	singleOption: singleOption,
+																})
+															),
+														(0, _core.jsx)(
+															_FormPanel.default,
+															{
+																className: "form-panel designaton-panel",
+															},
+															(0, _core.jsx)(
+																_reactTransitionGroup.CSSTransition,
+																{
+																	in:
+																		designations &&
+																		designations.length &&
+																		!monthlyChecked,
+																	timeout: 400,
+																	classNames: "designation-container",
+																	unmountOnExit: true,
+																	appear: true,
+																},
+																(0, _core.jsx)(_DesignationBlock.default, {
+																	designations: designations,
+																	preset: preset,
+																})
+															)
+														),
+														(0, _core.jsx)(
+															_FormPanel.default,
+															{
+																className: "form-panel",
+															},
+															(0, _core.jsx)(
+																_FieldSet.default,
+																null,
+																(0, _core.jsx)(
+																	"legend",
+																	null,
+																	"Form Submit Block"
+																),
+																(0, _core.jsx)(_SubmitButton.default, {
+																	hasErrors: hasErrors,
+																	error: errors.amount,
+																	handleSubmit: this.handleSubmit,
+																	submitting: submitting,
+																	value: submitButtonText,
+																})
+															)
+														)
+													)
+												),
+												(0, _core.jsx)(_Seals.default, null),
+												(0, _core.jsx)(_OtherGivingBlock.default, null),
+												(0, _core.jsx)(_FooterBlock.default, null)
+										  )
+										: null;
+								},
+							},
+							{
+								key: "__reactstandin__regenerateByEval",
+								// @ts-ignore
+								value: function __reactstandin__regenerateByEval(key, code) {
+									// @ts-ignore
+									this[key] = eval(code);
+								},
+							},
+						]);
+						return AskForm;
+					})(_react.Component);
+
+				AskForm.contextType = _GivingFormProvider.GivingFormContext;
+				var _default = AskForm;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						AskForm,
+						"AskForm",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/AskForm.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/AskForm.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@babel/runtime/regenerator":
+					"node_modules/@babel/runtime/regenerator/index.js",
+				"@babel/runtime/helpers/asyncToGenerator":
+					"node_modules/@babel/runtime/helpers/asyncToGenerator.js",
+				"@babel/runtime/helpers/classCallCheck":
+					"node_modules/@babel/runtime/helpers/classCallCheck.js",
+				"@babel/runtime/helpers/createClass":
+					"node_modules/@babel/runtime/helpers/createClass.js",
+				"@babel/runtime/helpers/possibleConstructorReturn":
+					"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js",
+				"@babel/runtime/helpers/getPrototypeOf":
+					"node_modules/@babel/runtime/helpers/getPrototypeOf.js",
+				"@babel/runtime/helpers/inherits":
+					"node_modules/@babel/runtime/helpers/inherits.js",
+				react: "node_modules/react/index.js",
+				"react-transition-group":
+					"node_modules/react-transition-group/esm/index.js",
+				"react-media": "node_modules/react-media/esm/react-media.js",
+				"../Contexts/GivingFormProvider":
+					"src/Components/Contexts/GivingFormProvider.js",
+				"../StyledComponents/FormWrapper":
+					"src/Components/StyledComponents/FormWrapper.js",
+				"../FormComponents/Layouts/ClubLayout":
+					"src/Components/FormComponents/Layouts/ClubLayout.js",
+				"../FormComponents/Blocks/PremiumBlock":
+					"src/Components/FormComponents/Blocks/PremiumBlock.js",
+				"../FormComponents/Blocks/DesignationBlock":
+					"src/Components/FormComponents/Blocks/DesignationBlock.js",
+				"../FormComponents/StyledComponents/FormPanel":
+					"src/Components/FormComponents/StyledComponents/FormPanel.js",
+				"../FormComponents/StyledComponents/FieldSet":
+					"src/Components/FormComponents/StyledComponents/FieldSet.js",
+				"../FormComponents/StyledComponents/FormHeader":
+					"src/Components/FormComponents/StyledComponents/FormHeader.js",
+				"../FormComponents/FunctionalComponents/Seals":
+					"src/Components/FormComponents/FunctionalComponents/Seals.js",
+				"../FormComponents/FunctionalComponents/SubmitButton":
+					"src/Components/FormComponents/FunctionalComponents/SubmitButton.js",
+				"../FormComponents/Animations/designations.css":
+					"src/Components/FormComponents/Animations/designations.css",
+				"../FormComponents/Blocks/OtherGivingBlock":
+					"src/Components/FormComponents/Blocks/OtherGivingBlock.js",
+				"../FormComponents/Blocks/HeaderBlock":
+					"src/Components/FormComponents/Blocks/HeaderBlock.js",
+				"../FormComponents/Blocks/FooterBlock":
+					"src/Components/FormComponents/Blocks/FooterBlock.js",
+				"../../helpers/scrollToPoint": "src/helpers/scrollToPoint.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/Components/Forms/FormRouter.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _extends2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/extends")
+				);
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _core = require("@emotion/core");
+
+				var _FormConfigProvider = require("../Contexts/FormConfigProvider");
+
+				var _GivingFormProvider = _interopRequireDefault(
+					require("../Contexts/GivingFormProvider")
+				);
+
+				var _ProductFormProvider = _interopRequireDefault(
+					require("../Contexts/ProductFormProvider")
+				);
+
+				var _SignUpFormProvider = _interopRequireDefault(
+					require("../Contexts/SignUpFormProvider")
+				);
+
+				var _ErrorBoundary = _interopRequireDefault(
+					require("../ErrorBoundary")
+				);
+
+				var _Spinner = _interopRequireDefault(
+					require("../StyledComponents/Spinner")
+				);
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var TimeoutForm = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(require.resolve("./TimeoutForm"));
+				});
+				var Banner = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(
+						require.resolve("../StyledComponents/Banner")
+					);
+				});
+				var GivingForm = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(require.resolve("./GivingForm"));
+				});
+				var AskForm = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(require.resolve("./AskForm"));
+				});
+				var ConfirmationForm = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(
+						require.resolve("./ConfirmationForm")
+					);
+				});
+				var PaymentForm = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(require.resolve("./PaymentForm"));
+				});
+				var ProductForm = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(require.resolve("./ProductForm"));
+				});
+				var SignUpForm = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(require.resolve("./SignUpForm"));
+				});
+				var GivingSuccessMessage = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(
+						require.resolve("../SuccessPages/GivingSuccessMessage")
+					);
+				});
+				var SignUpSuccessMessage = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(
+						require.resolve("../SuccessPages/SignUpSuccessMessage")
+					);
+				});
+				var ClubSuccessMessage = (0, _react.lazy)(function() {
+					return require("_bundle_loader")(
+						require.resolve("../SuccessPages/ClubSuccessMessage")
+					);
+				});
+
+				var FormRouter = function FormRouter(props) {
+					var _useContext = (0, _react.useContext)(
+							_FormConfigProvider.FormConfigContext
+						),
+						formConfig = _useContext.formConfig,
+						submitted = _useContext.submitted,
+						confirmed = _useContext.confirmed,
+						getCssConfig = _useContext.getCssConfig,
+						expired = _useContext.expired;
+
+					var formType = formConfig.formType,
+						allowInternational = formConfig.allowInternational,
+						getPhone = formConfig.getPhone,
+						getHonorific = formConfig.getHonorific,
+						getSuffix = formConfig.getSuffix,
+						getMiddleName = formConfig.getMiddleName,
+						getSpouseInfo = formConfig.getSpouseInfo;
+
+					var _getCssConfig = getCssConfig("form"),
+						_getCssConfig$formExt = _getCssConfig.formExternalFont,
+						formExternalFont =
+							_getCssConfig$formExt === void 0 ? "none" : _getCssConfig$formExt,
+						_getCssConfig$formFon = _getCssConfig.formFontFamily,
+						formFontFamily =
+							_getCssConfig$formFon === void 0
+								? "Arial, sans-serif"
+								: _getCssConfig$formFon,
+						_getCssConfig$formFon2 = _getCssConfig.formFontStyle,
+						formFontStyle =
+							_getCssConfig$formFon2 === void 0
+								? "normal"
+								: _getCssConfig$formFon2,
+						_getCssConfig$formFon3 = _getCssConfig.formFontWeight,
+						formFontWeight =
+							_getCssConfig$formFon3 === void 0
+								? "400"
+								: _getCssConfig$formFon3,
+						_getCssConfig$formFon4 = _getCssConfig.formFontSize,
+						formFontSize =
+							_getCssConfig$formFon4 === void 0
+								? "19px"
+								: _getCssConfig$formFon4,
+						_getCssConfig$formBac = _getCssConfig.formBackgroundColor,
+						formBackgroundColor =
+							_getCssConfig$formBac === void 0 ? "#fff" : _getCssConfig$formBac,
+						_getCssConfig$formBor = _getCssConfig.formBorderColor,
+						formBorderColor =
+							_getCssConfig$formBor === void 0
+								? "transparent"
+								: _getCssConfig$formBor,
+						_getCssConfig$formBor2 = _getCssConfig.formBorderRadius,
+						formBorderRadius =
+							_getCssConfig$formBor2 === void 0 ? "0" : _getCssConfig$formBor2,
+						_getCssConfig$formBor3 = _getCssConfig.formBorderWidth,
+						formBorderWidth =
+							_getCssConfig$formBor3 === void 0
+								? "2px"
+								: _getCssConfig$formBor3,
+						_getCssConfig$formBox = _getCssConfig.formBoxShadow,
+						formBoxShadow =
+							_getCssConfig$formBox === void 0
+								? "0 0 7px 0 rgba(0,0,0,0.07)"
+								: _getCssConfig$formBox,
+						_getCssConfig$formMax = _getCssConfig.formMaxWidth,
+						formMaxWidth =
+							_getCssConfig$formMax === void 0
+								? "768px"
+								: _getCssConfig$formMax,
+						_getCssConfig$formPad = _getCssConfig.formPadding,
+						formPadding =
+							_getCssConfig$formPad === void 0 ? "0" : _getCssConfig$formPad,
+						_getCssConfig$formMar = _getCssConfig.formMargin,
+						formMargin =
+							_getCssConfig$formMar === void 0 ? "0" : _getCssConfig$formMar,
+						_getCssConfig$formCol = _getCssConfig.formColor,
+						formColor =
+							_getCssConfig$formCol === void 0 ? "#333" : _getCssConfig$formCol;
+
+					switch (formType) {
+						case "club":
+							return (0, _core.jsx)(
+								_GivingFormProvider.default,
+								null,
+								(0, _core.jsx)(
+									_react.Suspense,
+									{
+										fallback: (0, _core.jsx)(_Spinner.default, null),
+									},
+									(0, _core.jsx)(_core.Global, {
+										styles:
+											/*#__PURE__*/
+											(0, _core.css)(
+												formExternalFont
+													? '@import url("'.concat(formExternalFont, '");')
+													: "",
+												" *{font-family:",
+												formFontFamily,
+												";font-size:",
+												formFontSize,
+												";font-weight:",
+												formFontWeight,
+												";font-style:",
+												formFontStyle,
+												";line-height:unset;box-sizing:unset;}.wrapper{background-color:#eceff1;};label:FormRouter;" +
+													("development" === "production"
+														? ""
+														: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvcm1Sb3V0ZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBbUVrQiIsImZpbGUiOiJGb3JtUm91dGVyLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IHVzZUNvbnRleHQsIFN1c3BlbnNlLCBsYXp5IH0gZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgeyBHbG9iYWwsIGNzcyB9IGZyb20gXCJAZW1vdGlvbi9jb3JlXCI7XG5cbmltcG9ydCB7IEZvcm1Db25maWdDb250ZXh0IH0gZnJvbSBcIi4uL0NvbnRleHRzL0Zvcm1Db25maWdQcm92aWRlclwiO1xuaW1wb3J0IEdpdmluZ0Zvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvR2l2aW5nRm9ybVByb3ZpZGVyXCI7XG5pbXBvcnQgUHJvZHVjdEZvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvUHJvZHVjdEZvcm1Qcm92aWRlclwiO1xuaW1wb3J0IFNpZ25VcEZvcm1Qcm92aWRlciBmcm9tIFwiLi4vQ29udGV4dHMvU2lnblVwRm9ybVByb3ZpZGVyXCI7XG5pbXBvcnQgRXJyb3JCb3VuZGFyeSBmcm9tIFwiLi4vRXJyb3JCb3VuZGFyeVwiO1xuY29uc3QgVGltZW91dEZvcm0gPSBsYXp5KCgpPT4gaW1wb3J0KCcuL1RpbWVvdXRGb3JtJykpO1xuY29uc3QgQmFubmVyID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuLi9TdHlsZWRDb21wb25lbnRzL0Jhbm5lclwiKSk7XG5jb25zdCBHaXZpbmdGb3JtID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuL0dpdmluZ0Zvcm1cIikpO1xuY29uc3QgQXNrRm9ybSA9IGxhenkoKCkgPT4gaW1wb3J0KFwiLi9Bc2tGb3JtXCIpKTtcbmNvbnN0IENvbmZpcm1hdGlvbkZvcm0gPSBsYXp5KCgpID0+IGltcG9ydChcIi4vQ29uZmlybWF0aW9uRm9ybVwiKSk7XG5jb25zdCBQYXltZW50Rm9ybSA9IGxhenkoKCkgPT4gaW1wb3J0KFwiLi9QYXltZW50Rm9ybVwiKSk7XG5jb25zdCBQcm9kdWN0Rm9ybSA9IGxhenkoKCkgPT4gaW1wb3J0KFwiLi9Qcm9kdWN0Rm9ybVwiKSk7XG5jb25zdCBTaWduVXBGb3JtID0gbGF6eSgoKSA9PiBpbXBvcnQoXCIuL1NpZ25VcEZvcm1cIikpO1xuY29uc3QgR2l2aW5nU3VjY2Vzc01lc3NhZ2UgPSBsYXp5KCgpID0+XG5cdGltcG9ydChcIi4uL1N1Y2Nlc3NQYWdlcy9HaXZpbmdTdWNjZXNzTWVzc2FnZVwiKVxuKTtcbmNvbnN0IFNpZ25VcFN1Y2Nlc3NNZXNzYWdlID0gbGF6eSgoKSA9PlxuXHRpbXBvcnQoXCIuLi9TdWNjZXNzUGFnZXMvU2lnblVwU3VjY2Vzc01lc3NhZ2VcIilcbik7XG5jb25zdCBDbHViU3VjY2Vzc01lc3NhZ2UgPSBsYXp5KCgpID0+XG5cdGltcG9ydChcIi4uL1N1Y2Nlc3NQYWdlcy9DbHViU3VjY2Vzc01lc3NhZ2VcIilcbik7XG5pbXBvcnQgU3Bpbm5lciBmcm9tIFwiLi4vU3R5bGVkQ29tcG9uZW50cy9TcGlubmVyXCI7XG5cbmNvbnN0IEZvcm1Sb3V0ZXIgPSBwcm9wcyA9PiB7XG5cdGNvbnN0IHtcblx0XHRmb3JtQ29uZmlnLFxuXHRcdHN1Ym1pdHRlZCxcblx0XHRjb25maXJtZWQsXG5cdFx0Z2V0Q3NzQ29uZmlnLFxuXHRcdGV4cGlyZWQsXG5cdH0gPSB1c2VDb250ZXh0KEZvcm1Db25maWdDb250ZXh0KTtcblx0Y29uc3Qge1xuXHRcdGZvcm1UeXBlLFxuXHRcdGFsbG93SW50ZXJuYXRpb25hbCxcblx0XHRnZXRQaG9uZSxcblx0XHRnZXRIb25vcmlmaWMsXG5cdFx0Z2V0U3VmZml4LFxuXHRcdGdldE1pZGRsZU5hbWUsXG5cdFx0Z2V0U3BvdXNlSW5mbyxcblx0fSA9IGZvcm1Db25maWc7XG5cblx0Y29uc3Qge1xuXHRcdGZvcm1FeHRlcm5hbEZvbnQgPSBcIm5vbmVcIixcblx0XHRmb3JtRm9udEZhbWlseSA9IFwiQXJpYWwsIHNhbnMtc2VyaWZcIixcblx0XHRmb3JtRm9udFN0eWxlID0gXCJub3JtYWxcIixcblx0XHRmb3JtRm9udFdlaWdodCA9IFwiNDAwXCIsXG5cdFx0Zm9ybUZvbnRTaXplID0gXCIxOXB4XCIsXG5cdFx0Zm9ybUJhY2tncm91bmRDb2xvciA9IFwiI2ZmZlwiLFxuXHRcdGZvcm1Cb3JkZXJDb2xvciA9IFwidHJhbnNwYXJlbnRcIixcblx0XHRmb3JtQm9yZGVyUmFkaXVzID0gXCIwXCIsXG5cdFx0Zm9ybUJvcmRlcldpZHRoID0gXCIycHhcIixcblx0XHRmb3JtQm94U2hhZG93ID0gXCIwIDAgN3B4IDAgcmdiYSgwLDAsMCwwLjA3KVwiLFxuXHRcdGZvcm1NYXhXaWR0aCA9IFwiNzY4cHhcIixcblx0XHRmb3JtUGFkZGluZyA9IFwiMFwiLFxuXHRcdGZvcm1NYXJnaW4gPSBcIjBcIixcblx0XHRmb3JtQ29sb3IgPSBcIiMzMzNcIixcblx0fSA9IGdldENzc0NvbmZpZyhcImZvcm1cIik7XG5cdHN3aXRjaCAoZm9ybVR5cGUpIHtcblx0XHRjYXNlIFwiY2x1YlwiOlxuXHRcdFx0cmV0dXJuIChcblx0XHRcdFx0PEdpdmluZ0Zvcm1Qcm92aWRlcj5cblx0XHRcdFx0XHQ8U3VzcGVuc2UgZmFsbGJhY2s9ezxTcGlubmVyIC8+fT5cblx0XHRcdFx0XHRcdDxHbG9iYWxcblx0XHRcdFx0XHRcdFx0c3R5bGVzPXtjc3NgXG5cdFx0XHRcdFx0XHRcdFx0JHtmb3JtRXh0ZXJuYWxGb250ID8gYEBpbXBvcnQgdXJsKFwiJHtmb3JtRXh0ZXJuYWxGb250fVwiKTtgIDogXCJcIn1cblx0XHRcdFx0XHRcdFx0XHQqIHtcblx0XHRcdFx0XHRcdFx0XHRcdGZvbnQtZmFtaWx5OiAke2Zvcm1Gb250RmFtaWx5fTtcblx0XHRcdFx0XHRcdFx0XHRcdGZvbnQtc2l6ZTogJHtmb3JtRm9udFNpemV9O1xuXHRcdFx0XHRcdFx0XHRcdFx0Zm9udC13ZWlnaHQ6ICR7Zm9ybUZvbnRXZWlnaHR9O1xuXHRcdFx0XHRcdFx0XHRcdFx0Zm9udC1zdHlsZTogJHtmb3JtRm9udFN0eWxlfTtcblx0XHRcdFx0XHRcdFx0XHRcdGxpbmUtaGVpZ2h0OiB1bnNldDtcblx0XHRcdFx0XHRcdFx0XHRcdGJveC1zaXppbmc6IHVuc2V0O1xuXHRcdFx0XHRcdFx0XHRcdH1cblx0XHRcdFx0XHRcdFx0XHQud3JhcHBlciB7XG5cdFx0XHRcdFx0XHRcdFx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZWNlZmYxO1xuXHRcdFx0XHRcdFx0XHRcdH1cblx0XHRcdFx0XHRcdFx0YH1cblx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHR7ZXhwaXJlZCA/IChcblx0XHRcdFx0XHRcdFx0PFRpbWVvdXRGb3JtIFxuXHRcdFx0XHRcdFx0XHRcdHsuLi5wcm9wc31cblx0XHRcdFx0XHRcdFx0XHR7Li4uZm9ybUNvbmZpZ31cblx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0XHRleHBpcmVkPXt0cnVlfSBcblx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdCkgOiAoXG5cdFx0XHRcdFx0XHRcdDw+XG5cdFx0XHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0XHQ8QXNrRm9ybVxuXHRcdFx0XHRcdFx0XHRcdFx0XHR7Li4ucHJvcHN9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdHsuLi5mb3JtQ29uZmlnfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyQ29sb3I9e2Zvcm1Cb3JkZXJDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlclJhZGl1cz17Zm9ybUJvcmRlclJhZGl1c31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3hTaGFkb3c9e2Zvcm1Cb3hTaGFkb3d9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXhXaWR0aD17Zm9ybU1heFdpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXJnaW49e2Zvcm1NYXJnaW59XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Db2xvcj17Zm9ybUNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0XHQ8Q29uZmlybWF0aW9uRm9ybVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRhbGxvd0ludGVybmF0aW9uYWw9e2FsbG93SW50ZXJuYXRpb25hbH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Z2V0UGhvbmU9e2dldFBob25lfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRnZXRIb25vcmlmaWM9e2dldEhvbm9yaWZpY31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Z2V0U3VmZml4PXtnZXRTdWZmaXh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGdldE1pZGRsZU5hbWU9e2dldE1pZGRsZU5hbWV9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGdldFNwb3VzZUluZm89e2dldFNwb3VzZUluZm99XG5cdFx0XHRcdFx0XHRcdFx0XHRcdHN1Ym1pdHRlZD17c3VibWl0dGVkfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyQ29sb3I9e2Zvcm1Cb3JkZXJDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlclJhZGl1cz17Zm9ybUJvcmRlclJhZGl1c31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3hTaGFkb3c9e2Zvcm1Cb3hTaGFkb3d9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXhXaWR0aD17Zm9ybU1heFdpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1NYXJnaW49e2Zvcm1NYXJnaW59XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Db2xvcj17Zm9ybUNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdFx0XHQ8L0Vycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdFx0XHQ8Q2x1YlN1Y2Nlc3NNZXNzYWdlXG5cdFx0XHRcdFx0XHRcdFx0XHRcdGNvbmZpcm1lZD17Y29uZmlybWVkfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRzdWNjZXNzTWVzc2FnZT17Zm9ybUNvbmZpZy5zdWNjZXNzTWVzc2FnZX1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJhY2tncm91bmRDb2xvcj17Zm9ybUJhY2tncm91bmRDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlckNvbG9yPXtmb3JtQm9yZGVyQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJXaWR0aD17Zm9ybUJvcmRlcldpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm94U2hhZG93PXtmb3JtQm94U2hhZG93fVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybVBhZGRpbmc9e2Zvcm1QYWRkaW5nfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWFyZ2luPXtmb3JtTWFyZ2lufVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8Lz5cblx0XHRcdFx0XHRcdCl9XG5cdFx0XHRcdFx0PC9TdXNwZW5zZT5cblx0XHRcdFx0PC9HaXZpbmdGb3JtUHJvdmlkZXI+XG5cdFx0XHQpO1xuXHRcdFx0YnJlYWs7XG5cdFx0Y2FzZSBcImdpdmluZ1wiOlxuXHRcdFx0cmV0dXJuIChcblx0XHRcdFx0PEdpdmluZ0Zvcm1Qcm92aWRlcj5cblx0XHRcdFx0XHQ8U3VzcGVuc2UgZmFsbGJhY2s9ezxTcGlubmVyIC8+fT5cblx0XHRcdFx0XHRcdHtleHBpcmVkID8gKFxuXHRcdFx0XHRcdFx0XHQ8QmFubmVyIGV4cGlyZWQ9e3RydWV9IC8+XG5cdFx0XHRcdFx0XHQpIDogKFxuXHRcdFx0XHRcdFx0XHQ8PlxuXHRcdFx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHRcdFx0PEdpdmluZ0Zvcm1cblx0XHRcdFx0XHRcdFx0XHRcdFx0ey4uLnByb3BzfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHR7Li4uZm9ybUNvbmZpZ31cblx0XHRcdFx0XHRcdFx0XHRcdFx0c3VibWl0dGVkPXtzdWJtaXR0ZWR9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1CYWNrZ3JvdW5kQ29sb3I9e2Zvcm1CYWNrZ3JvdW5kQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyUmFkaXVzPXtmb3JtQm9yZGVyUmFkaXVzfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm9yZGVyV2lkdGg9e2Zvcm1Cb3JkZXJXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybU1heFdpZHRoPXtmb3JtTWF4V2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1QYWRkaW5nPXtmb3JtUGFkZGluZ31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUNvbG9yPXtmb3JtQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHQvPlxuXHRcdFx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0XHQ8RXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHRcdFx0XHRcdDxQYXltZW50Rm9ybVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRzdWJtaXR0ZWQ9e3N1Ym1pdHRlZH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJhY2tncm91bmRDb2xvcj17Zm9ybUJhY2tncm91bmRDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlckNvbG9yPXtmb3JtQm9yZGVyQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJXaWR0aD17Zm9ybUJvcmRlcldpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm94U2hhZG93PXtmb3JtQm94U2hhZG93fVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybVBhZGRpbmc9e2Zvcm1QYWRkaW5nfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWFyZ2luPXtmb3JtTWFyZ2lufVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHRcdFx0PEdpdmluZ1N1Y2Nlc3NNZXNzYWdlXG5cdFx0XHRcdFx0XHRcdFx0XHRcdGNvbmZpcm1lZD17Y29uZmlybWVkfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRzdWNjZXNzTWVzc2FnZT17Zm9ybUNvbmZpZy5zdWNjZXNzTWVzc2FnZX1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJhY2tncm91bmRDb2xvcj17Zm9ybUJhY2tncm91bmRDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlckNvbG9yPXtmb3JtQm9yZGVyQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJXaWR0aD17Zm9ybUJvcmRlcldpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm94U2hhZG93PXtmb3JtQm94U2hhZG93fVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybVBhZGRpbmc9e2Zvcm1QYWRkaW5nfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWFyZ2luPXtmb3JtTWFyZ2lufVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8Lz5cblx0XHRcdFx0XHRcdCl9XG5cdFx0XHRcdFx0PC9TdXNwZW5zZT5cblx0XHRcdFx0PC9HaXZpbmdGb3JtUHJvdmlkZXI+XG5cdFx0XHQpO1xuXHRcdFx0YnJlYWs7XG5cdFx0Y2FzZSBcInByb2R1Y3RcIjpcblx0XHRcdHJldHVybiAoXG5cdFx0XHRcdDxQcm9kdWN0Rm9ybVByb3ZpZGVyPlxuXHRcdFx0XHRcdDxTdXNwZW5zZSBmYWxsYmFjaz17PFNwaW5uZXIgLz59PlxuXHRcdFx0XHRcdFx0PEVycm9yQm91bmRhcnk+XG5cdFx0XHRcdFx0XHRcdDxQcm9kdWN0Rm9ybVxuXHRcdFx0XHRcdFx0XHRcdHsuLi5wcm9wc31cblx0XHRcdFx0XHRcdFx0XHR7Li4uZm9ybUNvbmZpZ31cblx0XHRcdFx0XHRcdFx0XHRmb3JtQmFja2dyb3VuZENvbG9yPXtmb3JtQmFja2dyb3VuZENvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJDb2xvcj17Zm9ybUJvcmRlckNvbG9yfVxuXHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlcldpZHRoPXtmb3JtQm9yZGVyV2lkdGh9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybUJveFNoYWRvdz17Zm9ybUJveFNoYWRvd31cblx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRmb3JtUGFkZGluZz17Zm9ybVBhZGRpbmd9XG5cdFx0XHRcdFx0XHRcdFx0Zm9ybU1hcmdpbj17Zm9ybU1hcmdpbn1cblx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0Lz5cblx0XHRcdFx0XHRcdDwvRXJyb3JCb3VuZGFyeT5cblx0XHRcdFx0XHQ8L1N1c3BlbnNlPlxuXHRcdFx0XHQ8L1Byb2R1Y3RGb3JtUHJvdmlkZXI+XG5cdFx0XHQpO1xuXHRcdFx0YnJlYWs7XG5cdFx0Y2FzZSBcInNpZ251cFwiOlxuXHRcdFx0cmV0dXJuIChcblx0XHRcdFx0PFNpZ25VcEZvcm1Qcm92aWRlcj5cblx0XHRcdFx0XHQ8U3VzcGVuc2UgZmFsbGJhY2s9ezxTcGlubmVyIC8+fT5cblx0XHRcdFx0XHRcdHtleHBpcmVkID8gKFxuXHRcdFx0XHRcdFx0XHQ8QmFubmVyIGV4cGlyZWQ9e3RydWV9IC8+XG5cdFx0XHRcdFx0XHQpIDogKFxuXHRcdFx0XHRcdFx0XHQ8PlxuXHRcdFx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHRcdFx0PFNpZ25VcEZvcm1cblx0XHRcdFx0XHRcdFx0XHRcdFx0ey4uLnByb3BzfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHR7Li4uZm9ybUNvbmZpZ31cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJhY2tncm91bmRDb2xvcj17Zm9ybUJhY2tncm91bmRDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlckNvbG9yPXtmb3JtQm9yZGVyQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJXaWR0aD17Zm9ybUJvcmRlcldpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm94U2hhZG93PXtmb3JtQm94U2hhZG93fVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybVBhZGRpbmc9e2Zvcm1QYWRkaW5nfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWFyZ2luPXtmb3JtTWFyZ2lufVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHRcdDxFcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHRcdFx0PFNpZ25VcFN1Y2Nlc3NNZXNzYWdlXG5cdFx0XHRcdFx0XHRcdFx0XHRcdHN1Ym1pdHRlZD17c3VibWl0dGVkfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRzdWNjZXNzTWVzc2FnZT17Zm9ybUNvbmZpZy5zdWNjZXNzTWVzc2FnZX1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJhY2tncm91bmRDb2xvcj17Zm9ybUJhY2tncm91bmRDb2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybUJvcmRlckNvbG9yPXtmb3JtQm9yZGVyQ29sb3J9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJSYWRpdXM9e2Zvcm1Cb3JkZXJSYWRpdXN9XG5cdFx0XHRcdFx0XHRcdFx0XHRcdGZvcm1Cb3JkZXJXaWR0aD17Zm9ybUJvcmRlcldpZHRofVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQm94U2hhZG93PXtmb3JtQm94U2hhZG93fVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdFx0XHRcdFx0XHRcdFx0Zm9ybVBhZGRpbmc9e2Zvcm1QYWRkaW5nfVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtTWFyZ2luPXtmb3JtTWFyZ2lufVxuXHRcdFx0XHRcdFx0XHRcdFx0XHRmb3JtQ29sb3I9e2Zvcm1Db2xvcn1cblx0XHRcdFx0XHRcdFx0XHRcdC8+XG5cdFx0XHRcdFx0XHRcdFx0PC9FcnJvckJvdW5kYXJ5PlxuXHRcdFx0XHRcdFx0XHQ8Lz5cblx0XHRcdFx0XHRcdCl9XG5cdFx0XHRcdFx0PC9TdXNwZW5zZT5cblx0XHRcdFx0PC9TaWduVXBGb3JtUHJvdmlkZXI+XG5cdFx0XHQpO1xuXHRcdFx0YnJlYWs7XG5cdFx0ZGVmYXVsdDpcblx0XHRcdGNvbnNvbGUuZXJyb3IoXCJGb3JtIENvbmZpZ3VyYXRpb24gRXJyb3JcIik7XG5cdFx0XHRjb25zb2xlLmVycm9yKHsgZm9ybVR5cGUsIGZvcm1Db25maWcsIHByb3BzIH0pO1xuXHRcdFx0dHJ5IHtcblx0XHRcdFx0d2luZG93Lm9tVHJhY2tEZWJ1Zyhcblx0XHRcdFx0XHR3aW5kb3cubG9jYXRpb24uaHJlZiArIFwiIC0gUmVhY3QgR2l2aW5nIEZvcm1cIixcblx0XHRcdFx0XHRKU09OLnN0cmluZ2lmeSh7IGZvcm1UeXBlLCBmb3JtQ29uZmlnLCBwcm9wcyB9KVxuXHRcdFx0XHQpO1xuXHRcdFx0fSBjYXRjaCAoZXJyKSB7XG5cdFx0XHRcdGNvbnNvbGUuZXJyb3IoXCJFcnJvciBUcmFja2luZyBFcnJvclwiKTtcblx0XHRcdFx0Y29uc29sZS5lcnJvcihlcnIpO1xuXHRcdFx0fVxuXHRcdFx0YWxlcnQoXG5cdFx0XHRcdFwiVGhlcmUgd2FzIGFuIGludGVybmFsIGVycm9yIGxvYWRpbmcgdGhpcyBmb3JtLiBQbGVhc2UgY2hlY2sgYmFjayBsYXRlciBvciBjYWxsIHVzIGF0IDEtODAwLTc1OS0wNzAwXCJcblx0XHRcdCk7XG5cdFx0XHRyZXR1cm4gbnVsbDtcblx0XHRcdGJyZWFrO1xuXHR9XG59O1xuXG5leHBvcnQgZGVmYXVsdCBGb3JtUm91dGVyO1xuIl19 */")
+											),
+									}),
+									expired
+										? (0, _core.jsx)(
+												TimeoutForm,
+												(0, _extends2.default)({}, props, formConfig, {
+													formBackgroundColor: formBackgroundColor,
+													formBorderColor: formBorderColor,
+													formBorderRadius: formBorderRadius,
+													formBorderWidth: formBorderWidth,
+													formBoxShadow: formBoxShadow,
+													formMaxWidth: formMaxWidth,
+													formPadding: formPadding,
+													formMargin: formMargin,
+													formColor: formColor,
+													expired: true,
+												})
+										  )
+										: (0, _core.jsx)(
+												_react.default.Fragment,
+												null,
+												(0, _core.jsx)(
+													_ErrorBoundary.default,
+													null,
+													(0, _core.jsx)(
+														AskForm,
+														(0, _extends2.default)({}, props, formConfig, {
+															formBackgroundColor: formBackgroundColor,
+															formBorderColor: formBorderColor,
+															formBorderRadius: formBorderRadius,
+															formBorderWidth: formBorderWidth,
+															formBoxShadow: formBoxShadow,
+															formMaxWidth: formMaxWidth,
+															formPadding: formPadding,
+															formMargin: formMargin,
+															formColor: formColor,
+														})
+													)
+												),
+												(0, _core.jsx)(
+													_ErrorBoundary.default,
+													null,
+													(0, _core.jsx)(ConfirmationForm, {
+														allowInternational: allowInternational,
+														getPhone: getPhone,
+														getHonorific: getHonorific,
+														getSuffix: getSuffix,
+														getMiddleName: getMiddleName,
+														getSpouseInfo: getSpouseInfo,
+														submitted: submitted,
+														formBackgroundColor: formBackgroundColor,
+														formBorderColor: formBorderColor,
+														formBorderRadius: formBorderRadius,
+														formBorderWidth: formBorderWidth,
+														formBoxShadow: formBoxShadow,
+														formMaxWidth: formMaxWidth,
+														formPadding: formPadding,
+														formMargin: formMargin,
+														formColor: formColor,
+													})
+												),
+												(0, _core.jsx)(
+													_ErrorBoundary.default,
+													null,
+													(0, _core.jsx)(ClubSuccessMessage, {
+														confirmed: confirmed,
+														successMessage: formConfig.successMessage,
+														formBackgroundColor: formBackgroundColor,
+														formBorderColor: formBorderColor,
+														formBorderRadius: formBorderRadius,
+														formBorderWidth: formBorderWidth,
+														formBoxShadow: formBoxShadow,
+														formMaxWidth: formMaxWidth,
+														formPadding: formPadding,
+														formMargin: formMargin,
+														formColor: formColor,
+													})
+												)
+										  )
+								)
+							);
+							break;
+
+						case "giving":
+							return (0, _core.jsx)(
+								_GivingFormProvider.default,
+								null,
+								(0, _core.jsx)(
+									_react.Suspense,
+									{
+										fallback: (0, _core.jsx)(_Spinner.default, null),
+									},
+									expired
+										? (0, _core.jsx)(Banner, {
+												expired: true,
+										  })
+										: (0, _core.jsx)(
+												_react.default.Fragment,
+												null,
+												(0, _core.jsx)(
+													_ErrorBoundary.default,
+													null,
+													(0, _core.jsx)(
+														GivingForm,
+														(0, _extends2.default)({}, props, formConfig, {
+															submitted: submitted,
+															formBackgroundColor: formBackgroundColor,
+															formBorderColor: formBorderColor,
+															formBorderRadius: formBorderRadius,
+															formBorderWidth: formBorderWidth,
+															formBoxShadow: formBoxShadow,
+															formMaxWidth: formMaxWidth,
+															formPadding: formPadding,
+															formMargin: formMargin,
+															formColor: formColor,
+														})
+													)
+												),
+												(0, _core.jsx)(
+													_ErrorBoundary.default,
+													null,
+													(0, _core.jsx)(PaymentForm, {
+														submitted: submitted,
+														formBackgroundColor: formBackgroundColor,
+														formBorderColor: formBorderColor,
+														formBorderRadius: formBorderRadius,
+														formBorderWidth: formBorderWidth,
+														formBoxShadow: formBoxShadow,
+														formMaxWidth: formMaxWidth,
+														formPadding: formPadding,
+														formMargin: formMargin,
+														formColor: formColor,
+													})
+												),
+												(0, _core.jsx)(
+													_ErrorBoundary.default,
+													null,
+													(0, _core.jsx)(GivingSuccessMessage, {
+														confirmed: confirmed,
+														successMessage: formConfig.successMessage,
+														formBackgroundColor: formBackgroundColor,
+														formBorderColor: formBorderColor,
+														formBorderRadius: formBorderRadius,
+														formBorderWidth: formBorderWidth,
+														formBoxShadow: formBoxShadow,
+														formMaxWidth: formMaxWidth,
+														formPadding: formPadding,
+														formMargin: formMargin,
+														formColor: formColor,
+													})
+												)
+										  )
+								)
+							);
+							break;
+
+						case "product":
+							return (0, _core.jsx)(
+								_ProductFormProvider.default,
+								null,
+								(0, _core.jsx)(
+									_react.Suspense,
+									{
+										fallback: (0, _core.jsx)(_Spinner.default, null),
+									},
+									(0, _core.jsx)(
+										_ErrorBoundary.default,
+										null,
+										(0, _core.jsx)(
+											ProductForm,
+											(0, _extends2.default)({}, props, formConfig, {
+												formBackgroundColor: formBackgroundColor,
+												formBorderColor: formBorderColor,
+												formBorderRadius: formBorderRadius,
+												formBorderWidth: formBorderWidth,
+												formBoxShadow: formBoxShadow,
+												formMaxWidth: formMaxWidth,
+												formPadding: formPadding,
+												formMargin: formMargin,
+												formColor: formColor,
+											})
+										)
+									)
+								)
+							);
+							break;
+
+						case "signup":
+							return (0, _core.jsx)(
+								_SignUpFormProvider.default,
+								null,
+								(0, _core.jsx)(
+									_react.Suspense,
+									{
+										fallback: (0, _core.jsx)(_Spinner.default, null),
+									},
+									expired
+										? (0, _core.jsx)(Banner, {
+												expired: true,
+										  })
+										: (0, _core.jsx)(
+												_react.default.Fragment,
+												null,
+												(0, _core.jsx)(
+													_ErrorBoundary.default,
+													null,
+													(0, _core.jsx)(
+														SignUpForm,
+														(0, _extends2.default)({}, props, formConfig, {
+															formBackgroundColor: formBackgroundColor,
+															formBorderColor: formBorderColor,
+															formBorderRadius: formBorderRadius,
+															formBorderWidth: formBorderWidth,
+															formBoxShadow: formBoxShadow,
+															formMaxWidth: formMaxWidth,
+															formPadding: formPadding,
+															formMargin: formMargin,
+															formColor: formColor,
+														})
+													)
+												),
+												(0, _core.jsx)(
+													_ErrorBoundary.default,
+													null,
+													(0, _core.jsx)(SignUpSuccessMessage, {
+														submitted: submitted,
+														successMessage: formConfig.successMessage,
+														formBackgroundColor: formBackgroundColor,
+														formBorderColor: formBorderColor,
+														formBorderRadius: formBorderRadius,
+														formBorderWidth: formBorderWidth,
+														formBoxShadow: formBoxShadow,
+														formMaxWidth: formMaxWidth,
+														formPadding: formPadding,
+														formMargin: formMargin,
+														formColor: formColor,
+													})
+												)
+										  )
+								)
+							);
+							break;
+
+						default:
+							console.error("Form Configuration Error");
+							console.error({
+								formType: formType,
+								formConfig: formConfig,
+								props: props,
+							});
+
+							try {
+								window.omTrackDebug(
+									window.location.href + " - React Giving Form",
+									JSON.stringify({
+										formType: formType,
+										formConfig: formConfig,
+										props: props,
+									})
+								);
+							} catch (err) {
+								console.error("Error Tracking Error");
+								console.error(err);
+							}
+
+							alert(
+								"There was an internal error loading this form. Please check back later or call us at 1-800-759-0700"
+							);
+							return null;
+							break;
+					}
+				};
+
+				__signature__(
+					FormRouter,
+					"useContext{{\n\t\tformConfig,\n\t\tsubmitted,\n\t\tconfirmed,\n\t\tgetCssConfig,\n\t\texpired,\n\t}}"
+				);
+
+				var _default = FormRouter;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						TimeoutForm,
+						"TimeoutForm",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						Banner,
+						"Banner",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						GivingForm,
+						"GivingForm",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						AskForm,
+						"AskForm",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						ConfirmationForm,
+						"ConfirmationForm",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						PaymentForm,
+						"PaymentForm",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						ProductForm,
+						"ProductForm",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						SignUpForm,
+						"SignUpForm",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						GivingSuccessMessage,
+						"GivingSuccessMessage",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						SignUpSuccessMessage,
+						"SignUpSuccessMessage",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						ClubSuccessMessage,
+						"ClubSuccessMessage",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						FormRouter,
+						"FormRouter",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/Forms/FormRouter.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@babel/runtime/helpers/extends":
+					"node_modules/@babel/runtime/helpers/extends.js",
+				react: "node_modules/react/index.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+				"../Contexts/FormConfigProvider":
+					"src/Components/Contexts/FormConfigProvider.js",
+				"../Contexts/GivingFormProvider":
+					"src/Components/Contexts/GivingFormProvider.js",
+				"../Contexts/ProductFormProvider":
+					"src/Components/Contexts/ProductFormProvider.js",
+				"../Contexts/SignUpFormProvider":
+					"src/Components/Contexts/SignUpFormProvider.js",
+				"../ErrorBoundary": "src/Components/ErrorBoundary.js",
+				_bundle_loader:
+					"node_modules/parcel-bundler/src/builtins/bundle-loader.js",
+				"./TimeoutForm": [
+					["TimeoutForm.bd7e1200.js", "src/Components/Forms/TimeoutForm.js"],
+					"TimeoutForm.bd7e1200.js.map",
+					"src/Components/Forms/TimeoutForm.js",
+				],
+				"../StyledComponents/Banner": [
+					["src.a2b27638.js", "src/index.js"],
+					"src.a2b27638.js.map",
+					"src.a2b27638.css",
+					"src/Components/StyledComponents/Banner.js",
+				],
+				"./GivingForm": [
+					["GivingForm.7499cb88.js", "src/Components/Forms/GivingForm.js"],
+					"GivingForm.7499cb88.js.map",
+					"src/Components/Forms/GivingForm.js",
+				],
+				"./AskForm": [
+					["src.a2b27638.js", "src/index.js"],
+					"src.a2b27638.js.map",
+					"src.a2b27638.css",
+					"src/Components/Forms/AskForm.js",
+				],
+				"./ConfirmationForm": [
+					[
+						"ConfirmationForm.4ca5b1aa.js",
+						"src/Components/Forms/ConfirmationForm.js",
+					],
+					"ConfirmationForm.4ca5b1aa.js.map",
+					"src/Components/Forms/ConfirmationForm.js",
+				],
+				"./PaymentForm": [
+					["PaymentForm.d4fb0b2e.js", "src/Components/Forms/PaymentForm.js"],
+					"PaymentForm.d4fb0b2e.js.map",
+					"src/Components/Forms/PaymentForm.js",
+				],
+				"./ProductForm": [
+					["ProductForm.eb9cea15.js", "src/Components/Forms/ProductForm.js"],
+					"ProductForm.eb9cea15.js.map",
+					"src/Components/Forms/ProductForm.js",
+				],
+				"./SignUpForm": [
+					["SignUpForm.098c53d9.js", "src/Components/Forms/SignUpForm.js"],
+					"SignUpForm.098c53d9.js.map",
+					"src/Components/Forms/SignUpForm.js",
+				],
+				"../SuccessPages/GivingSuccessMessage": [
+					[
+						"GivingSuccessMessage.2b757bea.js",
+						"src/Components/SuccessPages/GivingSuccessMessage.js",
+					],
+					"GivingSuccessMessage.2b757bea.js.map",
+					"src/Components/SuccessPages/GivingSuccessMessage.js",
+				],
+				"../SuccessPages/SignUpSuccessMessage": [
+					[
+						"SignUpSuccessMessage.2aa52e8d.js",
+						"src/Components/SuccessPages/SignUpSuccessMessage.js",
+					],
+					"SignUpSuccessMessage.2aa52e8d.js.map",
+					"src/Components/SuccessPages/SignUpSuccessMessage.js",
+				],
+				"../SuccessPages/ClubSuccessMessage": [
+					[
+						"ClubSuccessMessage.0af04581.js",
+						"src/Components/SuccessPages/ClubSuccessMessage.js",
+					],
+					"ClubSuccessMessage.0af04581.js.map",
+					"src/Components/SuccessPages/ClubSuccessMessage.js",
+				],
+				"../StyledComponents/Spinner":
+					"src/Components/StyledComponents/Spinner.js",
+			},
+		],
+		"src/Components/StyledComponents/Wrapper.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _styledBase = _interopRequireDefault(
+					require("@emotion/styled-base")
+				);
+
+				var _react = _interopRequireDefault(require("react"));
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
+					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+				}
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				var Wrapper = (0, _styledBase.default)("div", {
+					target: "en698az0",
+					label: "Wrapper",
+				})(
+					"development" === "production"
+						? {
+								name: "12pxovs",
+								styles: "&.wrapper{width:100%;margin:0;padding:0;}",
+						  }
+						: {
+								name: "12pxovs",
+								styles: "&.wrapper{width:100%;margin:0;padding:0;}",
+								map:
+									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIldyYXBwZXIuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBRzBCIiwiZmlsZSI6IldyYXBwZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuY29uc3QgV3JhcHBlciA9IHN0eWxlZC5kaXZgXG5cdCYud3JhcHBlciB7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0bWFyZ2luOiAwO1xuXHRcdHBhZGRpbmc6IDA7XG5cdH1cbmA7XG5cbmV4cG9ydCBkZWZhdWx0IFdyYXBwZXI7XG4iXX0= */",
+								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
+						  }
+				);
+				var _default = Wrapper;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						Wrapper,
+						"Wrapper",
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Wrapper.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/StyledComponents/Wrapper.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@emotion/styled-base":
+					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
+				react: "node_modules/react/index.js",
+			},
+		],
+		"src/Components/App.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				Object.defineProperty(exports, "__esModule", {
+					value: true,
+				});
+				exports.default = void 0;
+
+				var _classCallCheck2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/classCallCheck")
+				);
+
+				var _createClass2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/createClass")
+				);
+
+				var _possibleConstructorReturn2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/possibleConstructorReturn")
+				);
+
+				var _getPrototypeOf2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/getPrototypeOf")
+				);
+
+				var _inherits2 = _interopRequireDefault(
+					require("@babel/runtime/helpers/inherits")
+				);
+
+				var _react = _interopRequireWildcard(require("react"));
+
+				var _FormConfigProvider = require("./Contexts/FormConfigProvider");
+
+				var _FormRouter = _interopRequireDefault(require("./Forms/FormRouter"));
+
+				var _reactAriaLive = require("react-aria-live");
+
+				var _Wrapper = _interopRequireDefault(
+					require("./StyledComponents/Wrapper")
+				);
+
+				var _Spinner = _interopRequireDefault(
+					require("./StyledComponents/Spinner")
+				);
+
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				/**
+				 * Intercepts onbeforeunload event and sets a unique alert warning users about losing information if they leave the page
+				 * @param {Event} e - onbeforeunload events from window object
+				 */
+				var handleUnload = function handleUnload(e) {
+					var returnValue =
+						"Are you sure you want to go back?\n You may lose all your changes to this page.";
+					e.returnValue = returnValue;
+					return returnValue;
+				};
+
+				var App =
+					/*#__PURE__*/
+					(function(_Component) {
+						(0, _inherits2.default)(App, _Component);
+
+						function App() {
+							(0, _classCallCheck2.default)(this, App);
+							return (0, _possibleConstructorReturn2.default)(
+								this,
+								(0, _getPrototypeOf2.default)(App).apply(this, arguments)
+							);
+						}
+
+						(0, _createClass2.default)(App, [
+							{
+								key: "componentDidMount",
+								value: function componentDidMount() {
+									window.addEventListener("beforeunload", handleUnload);
+									var _this$props = this.props,
+										rootEntry = _this$props.rootEntry,
+										formType = _this$props.formType;
+									this.context.getConfiguration({
+										rootEntry: rootEntry,
+										formType: formType,
+									});
+								},
+							},
+							{
+								key: "componentWillUnmount",
+								value: function componentWillUnmount() {
+									window.removeEventListener("beforeunload", handleUnload);
+								},
+							},
+							{
+								key: "render",
+								value: function render() {
+									var _this$context = this.context,
+										status = _this$context.status,
+										confirmed = _this$context.confirmed;
+
+									if (confirmed) {
+										window.removeEventListener("beforeunload", handleUnload);
+									}
+
+									return (0, _core.jsx)(
+										_reactAriaLive.LiveAnnouncer,
+										null,
+										(0, _core.jsx)(
+											_Wrapper.default,
+											{
+												className: "wrapper",
+											},
+											status !== "loaded"
+												? (0, _core.jsx)(_Spinner.default, null)
+												: (0, _core.jsx)(_FormRouter.default, null)
+										)
+									);
+								},
+							},
+							{
+								key: "__reactstandin__regenerateByEval",
+								// @ts-ignore
+								value: function __reactstandin__regenerateByEval(key, code) {
+									// @ts-ignore
+									this[key] = eval(code);
+								},
+							},
+						]);
+						return App;
+					})(_react.Component);
+
+				App.contextType = _FormConfigProvider.FormConfigContext; // subscribe to FormConfigProvider at top level
+
+				var _default = App;
+				var _default2 = _default;
+				exports.default = _default2;
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						handleUnload,
+						"handleUnload",
+						"/Users/wehand/Code/cbnforms-react/src/Components/App.js"
+					);
+					reactHotLoader.register(
+						App,
+						"App",
+						"/Users/wehand/Code/cbnforms-react/src/Components/App.js"
+					);
+					reactHotLoader.register(
+						_default,
+						"default",
+						"/Users/wehand/Code/cbnforms-react/src/Components/App.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"@babel/runtime/helpers/classCallCheck":
+					"node_modules/@babel/runtime/helpers/classCallCheck.js",
+				"@babel/runtime/helpers/createClass":
+					"node_modules/@babel/runtime/helpers/createClass.js",
+				"@babel/runtime/helpers/possibleConstructorReturn":
+					"node_modules/@babel/runtime/helpers/possibleConstructorReturn.js",
+				"@babel/runtime/helpers/getPrototypeOf":
+					"node_modules/@babel/runtime/helpers/getPrototypeOf.js",
+				"@babel/runtime/helpers/inherits":
+					"node_modules/@babel/runtime/helpers/inherits.js",
+				react: "node_modules/react/index.js",
+				"./Contexts/FormConfigProvider":
+					"src/Components/Contexts/FormConfigProvider.js",
+				"./Forms/FormRouter": "src/Components/Forms/FormRouter.js",
+				"react-aria-live": "node_modules/react-aria-live/es/index.js",
+				"./StyledComponents/Wrapper":
+					"src/Components/StyledComponents/Wrapper.js",
+				"./StyledComponents/Spinner":
+					"src/Components/StyledComponents/Spinner.js",
+				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
+			},
+		],
+		"src/index.js": [
+			function(require, module, exports) {
+				"use strict";
+
+				require("./vendors");
+
+				require("core-js/stable");
+
+				require("./helpers/remove-polyfill");
+
+				var _fetchHelpers = require("./helpers/fetch-helpers");
+
+				var _react = _interopRequireDefault(require("react"));
+
+				var ReactDOM = _interopRequireWildcard(require("react-dom"));
+
+				var _App = _interopRequireDefault(require("./Components/App"));
+
+				var _FormConfigProvider = _interopRequireDefault(
+					require("./Components/Contexts/FormConfigProvider")
+				);
+
+				var _core = require("@emotion/core");
+
+				function _getRequireWildcardCache() {
+					if (typeof WeakMap !== "function") return null;
+					var cache = new WeakMap();
+					_getRequireWildcardCache = function() {
+						return cache;
+					};
+					return cache;
+				}
+
+				function _interopRequireWildcard(obj) {
+					if (obj && obj.__esModule) {
+						return obj;
+					}
+					if (
+						obj === null ||
+						(typeof obj !== "object" && typeof obj !== "function")
+					) {
+						return { default: obj };
+					}
+					var cache = _getRequireWildcardCache();
+					if (cache && cache.has(obj)) {
+						return cache.get(obj);
+					}
+					var newObj = {};
+					var hasPropertyDescriptor =
+						Object.defineProperty && Object.getOwnPropertyDescriptor;
+					for (var key in obj) {
+						if (Object.prototype.hasOwnProperty.call(obj, key)) {
+							var desc = hasPropertyDescriptor
+								? Object.getOwnPropertyDescriptor(obj, key)
+								: null;
+							if (desc && (desc.get || desc.set)) {
+								Object.defineProperty(newObj, key, desc);
+							} else {
+								newObj[key] = obj[key];
+							}
+						}
+					}
+					newObj.default = obj;
+					if (cache) {
+						cache.set(obj, newObj);
+					}
+					return newObj;
+				}
+
+				function _interopRequireDefault(obj) {
+					return obj && obj.__esModule ? obj : { default: obj };
+				}
+
+				(function() {
+					var enterModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.enterModule
+							: undefined;
+					enterModule && enterModule(module);
+				})();
+
+				var __signature__ =
+					typeof reactHotLoaderGlobal !== "undefined"
+						? reactHotLoaderGlobal.default.signature
+						: function(a) {
+								return a;
+						  };
+
+				(0, _fetchHelpers.fetchIntercept)(); // currently only supports one form type at a time on a page
+				// this could be changed by using querySelectorAll, classes, and then looping through each to render multiple configured forms
+
+				var clubGivingRootEntry = document.getElementById("club-form-root");
+				var givingRootEntry = document.getElementById("giving-form-root");
+				var signupRootEntry = document.getElementById("signup-form-root");
+				var productRootEntry = document.getElementById("product-form-root");
+
+				if (clubGivingRootEntry) {
+					ReactDOM.render(
+						(0, _core.jsx)(
+							_FormConfigProvider.default,
+							null,
+							(0, _core.jsx)(_App.default, {
+								rootEntry: clubGivingRootEntry,
+								formType: "club",
+							})
+						),
+						clubGivingRootEntry
+					);
+				}
+
+				if (givingRootEntry) {
+					ReactDOM.render(
+						(0, _core.jsx)(
+							_FormConfigProvider.default,
+							null,
+							(0, _core.jsx)(_App.default, {
+								rootEntry: givingRootEntry,
+								formType: "giving",
+							})
+						),
+						givingRootEntry
+					);
+				}
+
+				if (signupRootEntry) {
+					ReactDOM.render(
+						(0, _core.jsx)(
+							_FormConfigProvider.default,
+							null,
+							(0, _core.jsx)(_App.default, {
+								rootEntry: signupRootEntry,
+								formType: "signup",
+							})
+						),
+						signupRootEntry
+					);
+				}
+
+				if (productRootEntry) {
+					ReactDOM.render(
+						(0, _core.jsx)(
+							_FormConfigProvider.default,
+							null,
+							(0, _core.jsx)(_App.default, {
+								rootEntry: productRootEntry,
+								formType: "product",
+							})
+						),
+						productRootEntry
+					);
+				}
+
+				(function() {
+					var reactHotLoader =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.default
+							: undefined;
+
+					if (!reactHotLoader) {
+						return;
+					}
+
+					reactHotLoader.register(
+						clubGivingRootEntry,
+						"clubGivingRootEntry",
+						"/Users/wehand/Code/cbnforms-react/src/index.js"
+					);
+					reactHotLoader.register(
+						givingRootEntry,
+						"givingRootEntry",
+						"/Users/wehand/Code/cbnforms-react/src/index.js"
+					);
+					reactHotLoader.register(
+						signupRootEntry,
+						"signupRootEntry",
+						"/Users/wehand/Code/cbnforms-react/src/index.js"
+					);
+					reactHotLoader.register(
+						productRootEntry,
+						"productRootEntry",
+						"/Users/wehand/Code/cbnforms-react/src/index.js"
+					);
+				})();
+
+				(function() {
+					var leaveModule =
+						typeof reactHotLoaderGlobal !== "undefined"
+							? reactHotLoaderGlobal.leaveModule
+							: undefined;
+					leaveModule && leaveModule(module);
+				})();
+			},
+			{
+				"./vendors": "src/vendors.js",
+				"core-js/stable": "node_modules/core-js/stable/index.js",
+				"./helpers/remove-polyfill": "src/helpers/remove-polyfill.js",
+				"./helpers/fetch-helpers": "src/helpers/fetch-helpers.js",
+				react: "node_modules/react/index.js",
+				"react-dom": "node_modules/react-dom/index.js",
+				"./Components/App": "src/Components/App.js",
+				"./Components/Contexts/FormConfigProvider":
+					"src/Components/Contexts/FormConfigProvider.js",
 				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
@@ -22232,1106 +26700,6 @@ object-assign
 				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
 			},
 		],
-		"src/Components/FormComponents/FunctionalComponents/Seals.js": [
-			function(require, module, exports) {
-				"use strict";
-
-				Object.defineProperty(exports, "__esModule", {
-					value: true,
-				});
-				exports.default = void 0;
-
-				var _slicedToArray2 = _interopRequireDefault(
-					require("@babel/runtime/helpers/slicedToArray")
-				);
-
-				var _styledBase = _interopRequireDefault(
-					require("@emotion/styled-base")
-				);
-
-				var _react = _interopRequireWildcard(require("react"));
-
-				var _core = require("@emotion/core");
-
-				function _getRequireWildcardCache() {
-					if (typeof WeakMap !== "function") return null;
-					var cache = new WeakMap();
-					_getRequireWildcardCache = function() {
-						return cache;
-					};
-					return cache;
-				}
-
-				function _interopRequireWildcard(obj) {
-					if (obj && obj.__esModule) {
-						return obj;
-					}
-					if (
-						obj === null ||
-						(typeof obj !== "object" && typeof obj !== "function")
-					) {
-						return { default: obj };
-					}
-					var cache = _getRequireWildcardCache();
-					if (cache && cache.has(obj)) {
-						return cache.get(obj);
-					}
-					var newObj = {};
-					var hasPropertyDescriptor =
-						Object.defineProperty && Object.getOwnPropertyDescriptor;
-					for (var key in obj) {
-						if (Object.prototype.hasOwnProperty.call(obj, key)) {
-							var desc = hasPropertyDescriptor
-								? Object.getOwnPropertyDescriptor(obj, key)
-								: null;
-							if (desc && (desc.get || desc.set)) {
-								Object.defineProperty(newObj, key, desc);
-							} else {
-								newObj[key] = obj[key];
-							}
-						}
-					}
-					newObj.default = obj;
-					if (cache) {
-						cache.set(obj, newObj);
-					}
-					return newObj;
-				}
-
-				function _interopRequireDefault(obj) {
-					return obj && obj.__esModule ? obj : { default: obj };
-				}
-
-				(function() {
-					var enterModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.enterModule
-							: undefined;
-					enterModule && enterModule(module);
-				})();
-
-				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
-					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
-				}
-
-				var __signature__ =
-					typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal.default.signature
-						: function(a) {
-								return a;
-						  };
-
-				var SealsBlock = (0, _styledBase.default)("section", {
-					target: "eqfmb930",
-					label: "SealsBlock",
-				})(
-					"development" === "production"
-						? {
-								name: "ggw6lv",
-								styles:
-									"box-sizing:border-box;margin:20px auto;padding:0;width:100%;max-width:680px;display:flex;flex-direction:row;justify-content:center;align-items:center;.seals__seal{box-sizing:border-box;display:block;padding:0;margin:0;width:100%;text-align:center;a.seals__seal--link,img.seals__seal-img{box-shadow:none !important;text-decoration:none !important;}}@media screen and (max-width:550px){flex-wrap:wrap;.seals__seal{margin-top:20px;}}",
-						  }
-						: {
-								name: "ggw6lv",
-								styles:
-									"box-sizing:border-box;margin:20px auto;padding:0;width:100%;max-width:680px;display:flex;flex-direction:row;justify-content:center;align-items:center;.seals__seal{box-sizing:border-box;display:block;padding:0;margin:0;width:100%;text-align:center;a.seals__seal--link,img.seals__seal-img{box-shadow:none !important;text-decoration:none !important;}}@media screen and (max-width:550px){flex-wrap:wrap;.seals__seal{margin-top:20px;}}",
-								map:
-									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlNlYWxzLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUdpQyIsImZpbGUiOiJTZWFscy5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyBtZW1vLCBjcmVhdGVSZWYsIHVzZUVmZmVjdCwgdXNlU3RhdGUgfSBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCBzdHlsZWQgZnJvbSBcIkBlbW90aW9uL3N0eWxlZFwiO1xuXG5jb25zdCBTZWFsc0Jsb2NrID0gc3R5bGVkLnNlY3Rpb25gXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdG1hcmdpbjogMjBweCBhdXRvO1xuXHRwYWRkaW5nOiAwO1xuXHR3aWR0aDogMTAwJTtcblx0bWF4LXdpZHRoOiA2ODBweDtcblx0ZGlzcGxheTogZmxleDtcblx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0anVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG5cdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdC5zZWFsc19fc2VhbCB7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRkaXNwbGF5OiBibG9jaztcblx0XHRwYWRkaW5nOiAwO1xuXHRcdG1hcmdpbjogMDtcblx0XHR3aWR0aDogMTAwJTtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0YS5zZWFsc19fc2VhbC0tbGluayxcblx0XHRpbWcuc2VhbHNfX3NlYWwtaW1nIHtcblx0XHRcdGJveC1zaGFkb3c6IG5vbmUgIWltcG9ydGFudDtcblx0XHRcdHRleHQtZGVjb3JhdGlvbjogbm9uZSAhaW1wb3J0YW50O1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1NTBweCkge1xuXHRcdGZsZXgtd3JhcDogd3JhcDtcblx0XHQuc2VhbHNfX3NlYWwge1xuXHRcdFx0bWFyZ2luLXRvcDogMjBweDtcblx0XHR9XG5cdH1cbmA7XG5cbmNvbnN0IGNlcnRzID0ge1xuXHRcImh0dHBzOi8vd3d3LmNibi5jb21cIjoge1xuXHRcdGlkOiBcIkRpZ2lDZXJ0Q2xpY2tJRF9SWERRWFJPRlwiLFxuXHRcdGhyZWY6IFwiaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL2V2LW11bHRpLWRvbWFpbi1zc2wuaHRtXCIsXG5cdH0sXG5cdFwiaHR0cHM6Ly9pbXBhY3QuY2JuLmNvbVwiOiB7XG5cdFx0aWQ6IFwiRGlnaUNlcnRDbGlja0lEXzZkZHhCZ3lCXCIsXG5cdFx0aHJlZjogXCJodHRwczovL3d3dy5kaWdpY2VydC5jb20vc3NsLWNlcnRpZmljYXRlLmh0bVwiLFxuXHR9LFxufTtcblxuY29uc3QgRGlnaUNlcnQgPSBtZW1vKCgpID0+IHtcblx0Y29uc3QgeyBvcmlnaW4gfSA9IHdpbmRvdy5sb2NhdGlvbjtcblx0Y29uc3QgY2VydCA9IGNlcnRzW29yaWdpbl07XG5cdGNvbnN0IGRpZ2ljZXJ0U2VhbCA9IGNyZWF0ZVJlZigpO1xuXHRyZXR1cm4gKFxuXHRcdGNlcnQgJiYgKFxuXHRcdFx0PGRpdlxuXHRcdFx0XHRpZD17Y2VydC5pZH1cblx0XHRcdFx0ZGF0YS1sYW5ndWFnZT1cImVuXCJcblx0XHRcdFx0Y2xhc3NOYW1lPVwic2VhbHNfX3NlYWxcIlxuXHRcdFx0XHRyZWY9e2RpZ2ljZXJ0U2VhbH1cblx0XHRcdD5cblx0XHRcdFx0PGFcblx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC0tbGlua1wiXG5cdFx0XHRcdFx0aHJlZj17Y2VydC5ocmVmfVxuXHRcdFx0XHRcdGFyaWEtbGFiZWw9XCJEaWdpY2VydCBTZWFsXCJcblx0XHRcdFx0PlxuXHRcdFx0XHRcdHsvKiBEaWdpQ2VydC5jb20gKi99XG5cdFx0XHRcdDwvYT5cblx0XHRcdDwvZGl2PlxuXHRcdClcblx0KTtcbn0pO1xuXG5jb25zdCBTZWFscyA9ICh7IHN0eWxlID0ge30gfSkgPT4ge1xuXHRjb25zdCBbbG9hZGVkLCBzZXRMb2FkZWRdID0gdXNlU3RhdGUoZmFsc2UpO1xuXHRjb25zdCBkaWdpY2VydFNjcmlwdCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCJzY3JpcHRbc3JjKj0nc2VhbC5taW4uanMnXVwiKTtcblxuXHRjb25zdCBvbkxvYWQgPSAoKSA9PiB7XG5cdFx0aWYgKCFsb2FkZWQpIHtcblx0XHRcdHNldExvYWRlZCh0cnVlKTtcblx0XHR9XG5cdH07XG5cblx0dXNlRWZmZWN0KCgpID0+IHtcblx0XHRjb25zb2xlLmxvZyhcIlNlYWwgU2NyaXB0IEVmZmVjdFwiKTtcblx0XHRpZiAoZGlnaWNlcnRTY3JpcHQgJiYgIWxvYWRlZCkge1xuXHRcdFx0Y29uc3QgbmV3U2NyaXB0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcInNjcmlwdFwiKTtcblx0XHRcdG5ld1NjcmlwdC50eXBlID0gZGlnaWNlcnRTY3JpcHQudHlwZTtcblx0XHRcdG5ld1NjcmlwdC5zcmMgPSBkaWdpY2VydFNjcmlwdC5zcmM7XG5cdFx0XHRuZXdTY3JpcHQuYXN5bmMgPSBkaWdpY2VydFNjcmlwdC5hc3luYztcblx0XHRcdG5ld1NjcmlwdC5pbm5lckhUTUwgPSBkaWdpY2VydFNjcmlwdC5pbm5lckhUTUw7XG5cdFx0XHRuZXdTY3JpcHQuYWRkRXZlbnRMaXN0ZW5lcihcImxvYWRcIiwgb25Mb2FkKTtcblx0XHRcdGRpZ2ljZXJ0U2NyaXB0LnJlbW92ZSgpO1xuXHRcdFx0ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChuZXdTY3JpcHQpO1xuXHRcdFx0cmV0dXJuICgpID0+IG5ld1NjcmlwdC5yZW1vdmVFdmVudExpc3RlbmVyKFwibG9hZFwiLCBvbkxvYWQpO1xuXHRcdH1cblx0fSwgW2xvYWRlZCwgZGlnaWNlcnRTY3JpcHRdKTtcblxuXHRyZXR1cm4gKFxuXHRcdDxTZWFsc0Jsb2NrIGlkPVwic2VhbHNcIiBzdHlsZT17c3R5bGV9PlxuXHRcdFx0PERpZ2lDZXJ0IC8+XG5cdFx0XHQ8ZGl2IGlkPVwiRUNGQV9Mb2dvXCIgY2xhc3NOYW1lPVwic2VhbHNfX3NlYWxcIj5cblx0XHRcdFx0PGFcblx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC0tbGlua1wiXG5cdFx0XHRcdFx0aHJlZj1cImh0dHA6Ly93d3cuZWNmYS5vcmdcIlxuXHRcdFx0XHRcdHRhcmdldD1cIl9ibGFua1wiXG5cdFx0XHRcdFx0YXJpYS1sYWJlbD1cIkVDRkEgU2VhbFwiXG5cdFx0XHRcdD5cblx0XHRcdFx0XHQ8aW1nXG5cdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJzZWFsc19fc2VhbC1pbWdcIlxuXHRcdFx0XHRcdFx0c3JjPVwiaHR0cHM6Ly93d3cuY2JuLmNvbS9zb3VyY2UvZ2l2aW5nL3NoYXJlZC9lY2ZhLWxvZ28tYmxhY2t0ZXh0X3NtLnBuZ1wiXG5cdFx0XHRcdFx0XHRhbHQ9XCJFQ0ZBXCJcblx0XHRcdFx0XHQvPlxuXHRcdFx0XHQ8L2E+XG5cdFx0XHQ8L2Rpdj5cblx0XHQ8L1NlYWxzQmxvY2s+XG5cdCk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBtZW1vKFNlYWxzKTtcbiJdfQ== */",
-								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
-						  }
-				);
-				var certs = {
-					"https://www.cbn.com": {
-						id: "DigiCertClickID_RXDQXROF",
-						href: "https://www.digicert.com/ev-multi-domain-ssl.htm",
-					},
-					"https://impact.cbn.com": {
-						id: "DigiCertClickID_6ddxBgyB",
-						href: "https://www.digicert.com/ssl-certificate.htm",
-					},
-				};
-				var DigiCert = (0, _react.memo)(function() {
-					var origin = window.location.origin;
-					var cert = certs[origin];
-					var digicertSeal = (0, _react.createRef)();
-					return (
-						cert &&
-						(0, _core.jsx)(
-							"div",
-							{
-								id: cert.id,
-								"data-language": "en",
-								className: "seals__seal",
-								ref: digicertSeal,
-							},
-							(0, _core.jsx)("a", {
-								className: "seals__seal--link",
-								href: cert.href,
-								"aria-label": "Digicert Seal",
-							})
-						)
-					);
-				});
-
-				var Seals = function Seals(_ref) {
-					var _ref$style = _ref.style,
-						style = _ref$style === void 0 ? {} : _ref$style;
-
-					var _useState = (0, _react.useState)(false),
-						_useState2 = (0, _slicedToArray2.default)(_useState, 2),
-						loaded = _useState2[0],
-						setLoaded = _useState2[1];
-
-					var digicertScript = document.querySelector(
-						"script[src*='seal.min.js']"
-					);
-
-					var onLoad = function onLoad() {
-						if (!loaded) {
-							setLoaded(true);
-						}
-					};
-
-					(0, _react.useEffect)(
-						function() {
-							console.log("Seal Script Effect");
-
-							if (digicertScript && !loaded) {
-								var newScript = document.createElement("script");
-								newScript.type = digicertScript.type;
-								newScript.src = digicertScript.src;
-								newScript.async = digicertScript.async;
-								newScript.innerHTML = digicertScript.innerHTML;
-								newScript.addEventListener("load", onLoad);
-								digicertScript.remove();
-								document.body.appendChild(newScript);
-								return function() {
-									return newScript.removeEventListener("load", onLoad);
-								};
-							}
-						},
-						[loaded, digicertScript]
-					);
-					return (0, _core.jsx)(
-						SealsBlock,
-						{
-							id: "seals",
-							style: style,
-						},
-						(0, _core.jsx)(DigiCert, null),
-						(0, _core.jsx)(
-							"div",
-							{
-								id: "ECFA_Logo",
-								className: "seals__seal",
-							},
-							(0, _core.jsx)(
-								"a",
-								{
-									className: "seals__seal--link",
-									href: "http://www.ecfa.org",
-									target: "_blank",
-									"aria-label": "ECFA Seal",
-								},
-								(0, _core.jsx)("img", {
-									className: "seals__seal-img",
-									src:
-										"https://www.cbn.com/source/giving/shared/ecfa-logo-blacktext_sm.png",
-									alt: "ECFA",
-								})
-							)
-						)
-					);
-				};
-
-				__signature__(
-					Seals,
-					"useState{[loaded, setLoaded](false)}\nuseEffect{}"
-				);
-
-				var _default = (0, _react.memo)(Seals);
-
-				var _default2 = _default;
-				exports.default = _default2;
-				(function() {
-					var reactHotLoader =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.default
-							: undefined;
-
-					if (!reactHotLoader) {
-						return;
-					}
-
-					reactHotLoader.register(
-						SealsBlock,
-						"SealsBlock",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
-					);
-					reactHotLoader.register(
-						certs,
-						"certs",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
-					);
-					reactHotLoader.register(
-						DigiCert,
-						"DigiCert",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
-					);
-					reactHotLoader.register(
-						Seals,
-						"Seals",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
-					);
-					reactHotLoader.register(
-						_default,
-						"default",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/FunctionalComponents/Seals.js"
-					);
-				})();
-
-				(function() {
-					var leaveModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.leaveModule
-							: undefined;
-					leaveModule && leaveModule(module);
-				})();
-			},
-			{
-				"@babel/runtime/helpers/slicedToArray":
-					"node_modules/@babel/runtime/helpers/slicedToArray.js",
-				"@emotion/styled-base":
-					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				react: "node_modules/react/index.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-			},
-		],
-		"src/Components/FormComponents/SVG/CBNLogo.js": [
-			function(require, module, exports) {
-				"use strict";
-
-				Object.defineProperty(exports, "__esModule", {
-					value: true,
-				});
-				exports.default = void 0;
-
-				var _react = _interopRequireDefault(require("react"));
-
-				var _core = require("@emotion/core");
-
-				function _interopRequireDefault(obj) {
-					return obj && obj.__esModule ? obj : { default: obj };
-				}
-
-				(function() {
-					var enterModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.enterModule
-							: undefined;
-					enterModule && enterModule(module);
-				})();
-
-				var __signature__ =
-					typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal.default.signature
-						: function(a) {
-								return a;
-						  };
-
-				var CBNLogo = function CBNLogo() {
-					return (0, _core.jsx)(
-						"svg",
-						{
-							xmlns: "http://www.w3.org/2000/svg",
-							viewBox: "0 0 326.49 104.3",
-						},
-						(0, _core.jsx)("title", null, "CBN Logo"),
-						(0, _core.jsx)(
-							"g",
-							{
-								id: "Layer_2",
-								"data-name": "Layer 2",
-							},
-							(0, _core.jsx)(
-								"g",
-								{
-									id: "COAL",
-								},
-								(0, _core.jsx)("path", {
-									id: "cbn-fire-middle",
-									className: "logo-1 cbn-fire",
-									d:
-										"M73.19,14.75a18.11,18.11,0,0,1,7.47,17.81c-.74,5.33-5.74,7.2-9.43,14.51-3,6-1,10.06-1,10.06s-8.37-1.59-10.47-9.2c-3.29-12,18.43-19.42,14.89-29.71a21.58,21.58,0,0,0-1.43-3.47",
-								}),
-								(0, _core.jsx)("path", {
-									id: "cbn-fire-left",
-									className: "logo-1 cbn-fire",
-									d:
-										"M64.21,31.55a43.92,43.92,0,0,0,4.76-5c-5.48,2-16.92,5.18-21.32,10.49a9.08,9.08,0,0,0-1.75,8.21c1.79,5.87,12.36,9.94,17.15,10.93-3.57-1.86-5.6-4.38-6.45-7.23-2.26-7.58,3.2-12.84,7.61-17.4",
-								}),
-								(0, _core.jsx)("path", {
-									id: "cbn-fire-right",
-									className: "logo-1 cbn-fire",
-									d:
-										"M90.45,40.07c-.68-3.86-3.51-7.19-6.48-10.16,0,0,0,0-.07,0A24.93,24.93,0,0,1,83.68,33c-.54,3.9-2.75,6.4-4.9,8.82a30,30,0,0,0-4.85,6.74c-2.16,4.27-1,7.05-1,7.17l.45,1a32.29,32.29,0,0,1,7.18-4.28c4.76-1.77,11.25-4.53,9.87-12.45",
-								}),
-								(0, _core.jsx)("path", {
-									id: "cbn-C",
-									className: "logo-2 cbn-letter",
-									d:
-										"M65.14,0c20.29,0,21.6.37,25.47.71,5.87.5,7.43.83,17.57,2.29-.2,3.26-.84,6.75-.92,10-.12,3.93.62,5.72-.39,8.05,0,1.19-2.71,1.05-3,.31-.18-6.95-3.79-16.44-38.74-16.44C31.3,5,23,20.62,23,34.45c0,23.72,22,32.71,42.13,35.9,10.79,1,37.1,1.44,40.28-12.79.7-1.66,3.59-.82,3.27,1.24s-3.1,12.09-4.92,14.43c-1.74.93-9,2.89-38.63,2.89-55.27-3.72-64-25.49-64-39.7C1.18,22.69,17.26,0,65.14,0Z",
-								}),
-								(0, _core.jsx)("path", {
-									id: "cbn-N",
-									className: "logo-2 cbn-letter",
-									d:
-										"M214.26,0c2.46-.26,16.84,10.65,19.68,12.38,15.71,9.56,29.93,19.36,46,29.4.67.41,1.93,1.44,2.61,1.85,4,2.43,7.62,4.86,11.58,7.33,2.91,1.82,5.29,4.13,8.81,5.56,0-11.41-.91-23.52-1.17-34.39-.15-5.81,0-9.63-1.08-13.77a7.68,7.68,0,0,0-2.46-3.71C295.15,2.85,289,3.51,285,3c0,0,.45-1.39.93-1.44a61.65,61.65,0,0,1,7.07,0c7.79,0,15.89.69,23.67.11a94.1,94.1,0,0,1,9.84-.11,5.09,5.09,0,0,0-.21,1.24c-4.34.59-9.92,0-11.78,3.09-1.4,2.32-1.17,6.09-1.33,9.6-.72,15.1-.34,30.72-.82,45.79-.12,3.47.19,10.91-.31,13.93-.08.45-1,.52-1.23.92-4.76-.71-6.83-3-10.15-5-4.19-2.44-8.15-4.59-12.29-7.11-1.29-.79-3-2-4.31-2.79-12.67-7.72-24-15.55-36.59-23.21-1.06-.64-2.35-1.79-3.38-2.47-4.45-2.94-8.54-5.78-13.12-8.56-3-1.85-5.71-3.94-9-5.67,0,8.41.41,17,1,25.17.47,6.44,0,12.49.83,18.76.21,1.76,1.64,5.64,2.76,6.5,2.83,2.15,8.95,1.22,13.22,1.86,0,0,0,.92,0,.93-8.57,2.19-21.29-.13-31.05.62a58.37,58.37,0,0,1-10.9,0,7.33,7.33,0,0,0,0-1.24c4.24-.58,10.26.2,12.13-2.79,2-3.27,1.25-9.3,1.44-14.23.49-13.33.59-27.23,1-39.92.15-4.61-.22-9.83.31-13.92C212.94,1.39,212.64.17,214.26,0Z",
-								}),
-								(0, _core.jsx)("path", {
-									id: "cbn-B",
-									className: "logo-1 cbn-letter",
-									d:
-										"M129.49,46.5c0,9.11,0,16.93-.8,21.1-.64,2.87-1.43,5.05-4.61,5.45-1.43.19-5.34.39-7.73.39-1.91,0-2.55.3-2.55.8,0,.69,1.12,1,3.18,1,3.19,0,7.33-.2,11-.2,3.81-.1,7.31-.1,9.06-.1,2.39,0,7.16.1,11.94.3,4.61.09,9.23.29,11.13.29,29.27,0,41.79-10.94,41.79-21.54,0-11.59-15.22-18.67-28.26-21.45,8.75-4.36,16.22-9.21,16.22-17.33C189.85,10,184.76.34,156,.34c-5.41,0-11.62.3-19.41.3-3.19,0-9.88.24-18.31,0-3.17-.08-4.33.89-4.33,1.58s1.16.75,3,.75a25.33,25.33,0,0,1,3.75.17c5.24.69,8.18,1.54,8.5,4.91.32,3.17.32,5.94.32,21ZM147.23,6.29c0-1.09.32-1.49,1.44-1.69a40.58,40.58,0,0,1,5.24-.2c13.69,0,18.54,6.93,18.54,15.15,0,6.28-4.19,13-16.63,12.59-3.65-.11-6-.1-7.47-.3-.64-.1-1.12-.3-1.12-1.09Zm36,49.54c0,12.08-10.93,15.18-18.08,14.91a55.3,55.3,0,0,1-12.37-1.5c-5.09-1.28-5.57-2.34-5.57-8.87V36.89c0-.5.32-.69,1-.69,2.38,0,4,0,6.84.1,16.05.36,28.22,5.87,28.22,19.53",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d: "M3.27,95H0V93.57H8.09V95H4.84v9.14H3.27Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M17.52,99.4H11.69v4.7H10.12V93.57h1.57V98h5.83V93.57h1.57V104.1H17.52Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M21.81,93.57h7.07V95H23.39V98h5.38v1.39H23.39v3.28h5.49v1.39H21.81Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M35.24,98.84a5.27,5.27,0,0,1,5.4-5.44,4.75,4.75,0,0,1,4.18,2.23l-1.34.71a3.35,3.35,0,0,0-2.84-1.54,4,4,0,0,0,0,8.08,3.34,3.34,0,0,0,2.84-1.53l1.34.71a4.8,4.8,0,0,1-4.18,2.23A5.27,5.27,0,0,1,35.24,98.84Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M54.18,99.4H48.35v4.7H46.78V93.57h1.57V98h5.83V93.57h1.57V104.1H54.18Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M62,100h-2v4.06H58.47V93.57H62.9a3.14,3.14,0,0,1,3.38,3.24,3,3,0,0,1-2.62,3.08l2.7,4.21H64.53ZM62.7,95H60.05v3.69H62.7a1.85,1.85,0,1,0,0-3.69Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d: "M68.6,93.57h1.58V104.1H68.6Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M73.16,101.4a4.44,4.44,0,0,0,3.31,1.48c1.71,0,2.31-.86,2.31-1.62,0-1.11-1.2-1.42-2.54-1.77-1.69-.44-3.65-.93-3.65-3.08,0-1.73,1.53-3,3.73-3a5.18,5.18,0,0,1,3.83,1.46l-.92,1.17a4.09,4.09,0,0,0-3-1.23c-1.17,0-2,.6-2,1.48s1.13,1.25,2.44,1.58c1.72.46,3.73,1,3.73,3.24,0,1.64-1.14,3.17-4,3.17a5.37,5.37,0,0,1-4.15-1.68Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d: "M85,95H81.78V93.57h8.09V95H86.62v9.14H85Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d: "M91.89,93.57h1.58V104.1H91.89Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M102.86,101.92H97.7l-.85,2.18H95.11l4.18-10.53h2l4.18,10.53h-1.74Zm-4.7-1.4h4.24L100.27,95Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M108.67,96v8.08h-1.58V93.57h1.62l5.73,7.89V93.57H116V104.1h-1.53Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M123.19,93.57h4.93a2.68,2.68,0,0,1,3,2.69,2.38,2.38,0,0,1-1.83,2.41,2.6,2.6,0,0,1,2,2.59,2.76,2.76,0,0,1-3.05,2.84h-5.06ZM127.83,98a1.54,1.54,0,1,0,0-3.08h-3.07V98Zm.07,4.67a1.58,1.58,0,0,0,1.77-1.66,1.61,1.61,0,0,0-1.77-1.62h-3.14v3.28Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M137.18,100h-2v4.06h-1.58V93.57h4.44a3.14,3.14,0,0,1,3.37,3.24,2.94,2.94,0,0,1-2.62,3.08l2.7,4.21h-1.83Zm.68-5.08h-2.65v3.69h2.65a1.85,1.85,0,1,0,0-3.69Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M148.62,93.4a5.45,5.45,0,1,1-5.3,5.44A5.18,5.18,0,0,1,148.62,93.4Zm0,1.4c-2.25,0-3.67,1.72-3.67,4s1.42,4,3.67,4,3.68-1.73,3.68-4S150.85,94.8,148.62,94.8Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M162.31,101.92h-5.16l-.86,2.18h-1.73l4.18-10.53h2l4.18,10.53h-1.73Zm-4.71-1.4h4.25L159.72,95Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M166.54,93.57h3.75a5.27,5.27,0,1,1,0,10.53h-3.75Zm3.75,9.14a3.88,3.88,0,0,0,0-7.75h-2.18v7.75Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M177.6,98.84A5.27,5.27,0,0,1,183,93.4a4.75,4.75,0,0,1,4.18,2.23l-1.34.71A3.35,3.35,0,0,0,183,94.8a4,4,0,0,0,0,8.08,3.34,3.34,0,0,0,2.84-1.53l1.34.71a4.8,4.8,0,0,1-4.18,2.23A5.27,5.27,0,0,1,177.6,98.84Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M195.73,101.92h-5.16l-.85,2.18H188l4.18-10.53h2l4.18,10.53h-1.74Zm-4.7-1.4h4.24L193.14,95Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M200,101.4a4.44,4.44,0,0,0,3.32,1.48c1.7,0,2.3-.86,2.3-1.62,0-1.11-1.2-1.42-2.54-1.77-1.69-.44-3.64-.93-3.64-3.08,0-1.73,1.53-3,3.72-3A5.18,5.18,0,0,1,207,94.88l-.91,1.17a4.13,4.13,0,0,0-3-1.23c-1.16,0-2,.6-2,1.48s1.14,1.25,2.45,1.58c1.72.46,3.72,1,3.72,3.24,0,1.64-1.14,3.17-4,3.17a5.38,5.38,0,0,1-4.15-1.68Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d: "M211.91,95h-3.27V93.57h8.09V95h-3.25v9.14h-1.57Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d: "M218.76,93.57h1.57V104.1h-1.57Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M224.64,96v8.08h-1.58V93.57h1.63l5.73,7.89V93.57H232V104.1h-1.53Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M239.73,93.4a4.94,4.94,0,0,1,4.16,2.08l-1.28.74a3.63,3.63,0,0,0-2.88-1.42,4.06,4.06,0,0,0,0,8.1,4.06,4.06,0,0,0,2.66-1V100H239V98.58H244v3.86a5.59,5.59,0,0,1-4.24,1.86,5.45,5.45,0,1,1,0-10.9Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M252.4,96v8.08h-1.58V93.57h1.63l5.73,7.89V93.57h1.57V104.1h-1.53Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M262.47,93.57h7.07V95h-5.49V98h5.38v1.39h-5.38v3.28h5.49v1.39h-7.07Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d: "M274.46,95H271.2V93.57h8.09V95H276v9.14h-1.58Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M287.18,96,285,104.1h-1.69l-3-10.53h1.77l2.18,8.45,2.3-8.45h1.28l2.29,8.45,2.17-8.45h1.77l-3,10.53h-1.69Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M300.33,93.4a5.45,5.45,0,1,1-5.3,5.44A5.17,5.17,0,0,1,300.33,93.4Zm0,1.4c-2.26,0-3.68,1.72-3.68,4s1.42,4,3.68,4,3.67-1.73,3.67-4S302.55,94.8,300.33,94.8Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M311.47,100h-2v4.06h-1.58V93.57h4.43a3.14,3.14,0,0,1,3.38,3.24,3,3,0,0,1-2.62,3.08l2.7,4.21H314Zm.68-5.08H309.5v3.69h2.65a1.85,1.85,0,1,0,0-3.69Z",
-								}),
-								(0, _core.jsx)("path", {
-									className: "logo-1",
-									d:
-										"M320.62,99.52l-1,1.12v3.46h-1.58V93.57h1.58V98.8l4.4-5.23h2l-4.34,5,4.68,5.54h-1.95Z",
-								})
-							)
-						)
-					);
-				};
-
-				var _default = CBNLogo;
-				var _default2 = _default;
-				exports.default = _default2;
-				(function() {
-					var reactHotLoader =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.default
-							: undefined;
-
-					if (!reactHotLoader) {
-						return;
-					}
-
-					reactHotLoader.register(
-						CBNLogo,
-						"CBNLogo",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/CBNLogo.js"
-					);
-					reactHotLoader.register(
-						_default,
-						"default",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/SVG/CBNLogo.js"
-					);
-				})();
-
-				(function() {
-					var leaveModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.leaveModule
-							: undefined;
-					leaveModule && leaveModule(module);
-				})();
-			},
-			{
-				react: "node_modules/react/index.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-			},
-		],
-		"src/Components/FormComponents/Blocks/HeaderBlock.js": [
-			function(require, module, exports) {
-				"use strict";
-
-				Object.defineProperty(exports, "__esModule", {
-					value: true,
-				});
-				exports.default = void 0;
-
-				var _styledBase = _interopRequireDefault(
-					require("@emotion/styled-base")
-				);
-
-				var _react = _interopRequireWildcard(require("react"));
-
-				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
-
-				var _CBNLogo = _interopRequireDefault(require("../SVG/CBNLogo"));
-
-				var _core = require("@emotion/core");
-
-				function _getRequireWildcardCache() {
-					if (typeof WeakMap !== "function") return null;
-					var cache = new WeakMap();
-					_getRequireWildcardCache = function() {
-						return cache;
-					};
-					return cache;
-				}
-
-				function _interopRequireWildcard(obj) {
-					if (obj && obj.__esModule) {
-						return obj;
-					}
-					if (
-						obj === null ||
-						(typeof obj !== "object" && typeof obj !== "function")
-					) {
-						return { default: obj };
-					}
-					var cache = _getRequireWildcardCache();
-					if (cache && cache.has(obj)) {
-						return cache.get(obj);
-					}
-					var newObj = {};
-					var hasPropertyDescriptor =
-						Object.defineProperty && Object.getOwnPropertyDescriptor;
-					for (var key in obj) {
-						if (Object.prototype.hasOwnProperty.call(obj, key)) {
-							var desc = hasPropertyDescriptor
-								? Object.getOwnPropertyDescriptor(obj, key)
-								: null;
-							if (desc && (desc.get || desc.set)) {
-								Object.defineProperty(newObj, key, desc);
-							} else {
-								newObj[key] = obj[key];
-							}
-						}
-					}
-					newObj.default = obj;
-					if (cache) {
-						cache.set(obj, newObj);
-					}
-					return newObj;
-				}
-
-				function _interopRequireDefault(obj) {
-					return obj && obj.__esModule ? obj : { default: obj };
-				}
-
-				(function() {
-					var enterModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.enterModule
-							: undefined;
-					enterModule && enterModule(module);
-				})();
-
-				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
-					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
-				}
-
-				var __signature__ =
-					typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal.default.signature
-						: function(a) {
-								return a;
-						  };
-
-				var Header = (0, _styledBase.default)("header", {
-					target: "ezpq3p70",
-					label: "Header",
-				})(
-					"box-sizing:border-box;width:100%;height:auto;padding:10px;margin:0;margin-bottom:35px;background:#747474;background:",
-					function(props) {
-						return props.background;
-					},
-					";background-size:cover;background-repeat:no-repeat;background-position:center center;@media screen and (max-width:",
-					function(props) {
-						return props.formMaxWidth;
-					},
-					"){margin-bottom:0;}div.header-container{max-width:",
-					function(props) {
-						return props.formMaxWidth;
-					},
-					";margin:0 auto;padding:30px 10px;width:100%;box-sizing:border-box;h2.header-title{font-size:36px;font-weight:bold;color:#ffffff;text-align:center;line-height:42px;margin:0;margin-block-start:0;margin-block-end:0;padding:0;}p.header-description{font-size:20px;font-weight:600;line-height:23px;color:#ffffff;text-align:center;margin:0;margin-block-start:0;margin-block-end:0;padding:0;display:flex;flex-direction:row;flex-wrap:wrap;span{padding-top:20px;font-size:20px;font-weight:600;line-height:23px;color:#ffffff;text-align:center;width:100%;}em{width:100%;padding-top:20px;font-size:18px;font-weight:600;line-height:22px;font-style:italic;}}@media screen and (max-width:649px){padding:20px 10px;}}" +
-						("development" === "production"
-							? ""
-							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkhlYWRlckJsb2NrLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQU80QiIsImZpbGUiOiJIZWFkZXJCbG9jay5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyB1c2VDb250ZXh0LCBtZW1vLCB1c2VNZW1vIH0gZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuaW1wb3J0IHsgRm9ybUNvbmZpZ0NvbnRleHQgfSBmcm9tIFwiLi4vLi4vQ29udGV4dHMvRm9ybUNvbmZpZ1Byb3ZpZGVyXCI7XG5cbmltcG9ydCBDQk5Mb2dvIGZyb20gXCIuLi9TVkcvQ0JOTG9nb1wiO1xuXG5jb25zdCBIZWFkZXIgPSBzdHlsZWQuaGVhZGVyYFxuXHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHR3aWR0aDogMTAwJTtcblx0aGVpZ2h0OiBhdXRvO1xuXHRwYWRkaW5nOiAxMHB4O1xuXHRtYXJnaW46IDA7XG5cdG1hcmdpbi1ib3R0b206IDM1cHg7XG5cdGJhY2tncm91bmQ6ICM3NDc0NzQ7XG5cdGJhY2tncm91bmQ6ICR7cHJvcHMgPT4gcHJvcHMuYmFja2dyb3VuZH07XG5cdGJhY2tncm91bmQtc2l6ZTogY292ZXI7XG5cdGJhY2tncm91bmQtcmVwZWF0OiBuby1yZXBlYXQ7XG5cdGJhY2tncm91bmQtcG9zaXRpb246IGNlbnRlciBjZW50ZXI7XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6ICR7cHJvcHMgPT4gcHJvcHMuZm9ybU1heFdpZHRofSkge1xuXHRcdG1hcmdpbi1ib3R0b206IDA7XG5cdH1cblx0ZGl2LmhlYWRlci1jb250YWluZXIge1xuXHRcdG1heC13aWR0aDogJHtwcm9wcyA9PiBwcm9wcy5mb3JtTWF4V2lkdGh9O1xuXHRcdG1hcmdpbjogMCBhdXRvO1xuXHRcdHBhZGRpbmc6IDMwcHggMTBweDtcblx0XHR3aWR0aDogMTAwJTtcblx0XHRib3gtc2l6aW5nOiBib3JkZXItYm94O1xuXHRcdGgyLmhlYWRlci10aXRsZSB7XG5cdFx0XHRmb250LXNpemU6IDM2cHg7XG5cdFx0XHRmb250LXdlaWdodDogYm9sZDtcblx0XHRcdGNvbG9yOiAjZmZmZmZmO1xuXHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdFx0bGluZS1oZWlnaHQ6IDQycHg7XG5cdFx0XHRtYXJnaW46IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stc3RhcnQ6IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stZW5kOiAwO1xuXHRcdFx0cGFkZGluZzogMDtcblx0XHR9XG5cdFx0cC5oZWFkZXItZGVzY3JpcHRpb24ge1xuXHRcdFx0Zm9udC1zaXplOiAyMHB4O1xuXHRcdFx0Zm9udC13ZWlnaHQ6IDYwMDtcblx0XHRcdGxpbmUtaGVpZ2h0OiAyM3B4O1xuXHRcdFx0Y29sb3I6ICNmZmZmZmY7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRtYXJnaW46IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stc3RhcnQ6IDA7XG5cdFx0XHRtYXJnaW4tYmxvY2stZW5kOiAwO1xuXHRcdFx0cGFkZGluZzogMDtcblx0XHRcdGRpc3BsYXk6IGZsZXg7XG5cdFx0XHRmbGV4LWRpcmVjdGlvbjogcm93O1xuXHRcdFx0ZmxleC13cmFwOiB3cmFwO1xuXHRcdFx0c3BhbiB7XG5cdFx0XHRcdHBhZGRpbmctdG9wOiAyMHB4O1xuXHRcdFx0XHRmb250LXNpemU6IDIwcHg7XG5cdFx0XHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0XHRcdGxpbmUtaGVpZ2h0OiAyM3B4O1xuXHRcdFx0XHRjb2xvcjogI2ZmZmZmZjtcblx0XHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdFx0XHR3aWR0aDogMTAwJTtcblx0XHRcdH1cblx0XHRcdGVtIHtcblx0XHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0XHRcdHBhZGRpbmctdG9wOiAyMHB4O1xuXHRcdFx0XHRmb250LXNpemU6IDE4cHg7XG5cdFx0XHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0XHRcdGxpbmUtaGVpZ2h0OiAyMnB4O1xuXHRcdFx0XHRmb250LXN0eWxlOiBpdGFsaWM7XG5cdFx0XHR9XG5cdFx0fVxuXHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0XHRwYWRkaW5nOiAyMHB4IDEwcHg7XG5cdFx0fVxuXHR9XG5gO1xuXG5jb25zdCBOYXYgPSBzdHlsZWQubmF2YFxuXHRoZWlnaHQ6IDEwMHB4O1xuXHR3aWR0aDogMTAwJTtcblx0ZGlzcGxheTogZmxleDtcblx0anVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDY0OXB4KSB7XG5cdFx0aGVpZ2h0OiA0NXB4O1xuXHR9XG5cdGRpdi5uYXYtY29udGFpbmVyIHtcblx0XHR3aWR0aDogMTAwJTtcblx0XHRtYXgtd2lkdGg6IDEyMDBweDtcblx0XHRtYXJnaW46IDAgYXV0bztcblx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdFx0anVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuO1xuXHRcdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdFx0c3ZnIHtcblx0XHRcdGhlaWdodDogNjBweDtcblx0XHRcdC5sb2dvLTEsXG5cdFx0XHQubG9nby0yIHtcblx0XHRcdFx0ZmlsbDogI2ZmZjtcblx0XHRcdH1cblx0XHRcdC5sb2dvLTIge1xuXHRcdFx0XHRmaWxsLXJ1bGU6IGV2ZW5vZGQ7XG5cdFx0XHR9XG5cdFx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2NDlweCkge1xuXHRcdFx0XHRoZWlnaHQ6IDQ1cHg7XG5cdFx0XHR9XG5cdFx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA1MzBweCkge1xuXHRcdFx0XHRtYXJnaW4tdG9wOiAxMHB4O1xuXHRcdFx0XHQubG9nby0xOm5vdCguY2JuLWxldHRlcik6bm90KC5jYm4tZmlyZSksXG5cdFx0XHRcdC5sb2dvLTI6bm90KC5jYm4tbGV0dGVyKTpub3QoLmNibi1maXJlKSB7XG5cdFx0XHRcdFx0ZGlzcGxheTogbm9uZTtcblx0XHRcdFx0fVxuXHRcdFx0fVxuXHRcdH1cblx0XHRzcGFuIHtcblx0XHRcdGNvbG9yOiAjZmZmZmZmO1xuXHRcdFx0ZmxleDogMSAxIDEzNXB4O1xuXHRcdFx0dGV4dC1hbGlnbjogcmlnaHQ7XG5cdFx0XHRhIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0XHRmb250LXdlaWdodDogNTAwO1xuXHRcdFx0XHRjb2xvcjogd2hpdGU7XG5cdFx0XHRcdHRleHQtZGVjb3JhdGlvbjogbm9uZTtcblx0XHRcdFx0dHJhbnNpdGlvbjogY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdFx0XHR9XG5cdFx0XHRhOmhvdmVyLFxuXHRcdFx0YTphY3RpdmUsXG5cdFx0XHRhOmZvY3VzIHtcblx0XHRcdFx0dGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7XG5cdFx0XHRcdGNvbG9yOiAjZGRkO1xuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNDYwcHgpIHtcblx0XHRcdFx0ZmxleC1ncm93OiAwO1xuXHRcdFx0fVxuXHRcdH1cblx0fVxuYDtcblxuY29uc3QgSGVhZGVyQmxvY2sgPSAoeyBzdWNjZXNzVGl0bGUsIHN1Y2Nlc3NEZXNjcmlwdGlvbiB9KSA9PiB7XG5cdGNvbnN0IHsgZ2V0Q3NzQ29uZmlnLCBnZXRGb3JtQ29uZmlnIH0gPSB1c2VDb250ZXh0KEZvcm1Db25maWdDb250ZXh0KTtcblx0Y29uc3QgeyBmb3JtTWF4V2lkdGggfSA9IHVzZU1lbW8oKCkgPT4gZ2V0Q3NzQ29uZmlnKFwiZm9ybVwiKSwgW10pO1xuXHRjb25zdCB7IGJhY2tncm91bmQsIHRpdGxlLCBkZXNjcmlwdGlvbiB9ID0gdXNlTWVtbyhcblx0XHQoKSA9PiBnZXRGb3JtQ29uZmlnKFwiZm9ybUhlYWRlclwiKSxcblx0XHRbXVxuXHQpO1xuXHRyZXR1cm4gKFxuXHRcdDxIZWFkZXJcblx0XHRcdGNsYXNzTmFtZT1cImhlYWRlclwiXG5cdFx0XHRmb3JtTWF4V2lkdGg9e2Zvcm1NYXhXaWR0aH1cblx0XHRcdGJhY2tncm91bmQ9e2JhY2tncm91bmR9XG5cdFx0PlxuXHRcdFx0PE5hdiBjbGFzc05hbWU9XCJuYXZcIj5cblx0XHRcdFx0PGRpdiBjbGFzc05hbWU9XCJuYXYtY29udGFpbmVyXCI+XG5cdFx0XHRcdFx0PENCTkxvZ28gLz5cblx0XHRcdFx0XHQ8c3Bhbj5cblx0XHRcdFx0XHRcdEdpdmUgQnkgUGhvbmUgPGEgaHJlZj1cInRlbDoxODAwNzAwNzAwMFwiPjEtODAwLTcwMC03MDAwPC9hPlxuXHRcdFx0XHRcdDwvc3Bhbj5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHQ8L05hdj5cblx0XHRcdDxkaXYgY2xhc3NOYW1lPVwiaGVhZGVyLWNvbnRhaW5lclwiPlxuXHRcdFx0XHQ8aDIgY2xhc3NOYW1lPVwiaGVhZGVyLXRpdGxlXCI+e3N1Y2Nlc3NUaXRsZSA/IHN1Y2Nlc3NUaXRsZSA6IHRpdGxlfTwvaDI+XG5cdFx0XHRcdDxwXG5cdFx0XHRcdFx0Y2xhc3NOYW1lPVwiaGVhZGVyLWRlc2NyaXB0aW9uXCJcblx0XHRcdFx0XHRkYW5nZXJvdXNseVNldElubmVySFRNTD17e1xuXHRcdFx0XHRcdFx0X19odG1sOiBzdWNjZXNzRGVzY3JpcHRpb24gPyBzdWNjZXNzRGVzY3JpcHRpb24gOiBkZXNjcmlwdGlvbixcblx0XHRcdFx0XHR9fVxuXHRcdFx0XHQvPlxuXHRcdFx0PC9kaXY+XG5cdFx0PC9IZWFkZXI+XG5cdCk7XG59O1xuXG5leHBvcnQgZGVmYXVsdCBtZW1vKEhlYWRlckJsb2NrKTtcbiJdfQ== */")
-				);
-				var Nav = (0, _styledBase.default)("nav", {
-					target: "ezpq3p71",
-					label: "Nav",
-				})(
-					"development" === "production"
-						? {
-								name: "xekgfl",
-								styles:
-									"height:100px;width:100%;display:flex;justify-content:center;flex-direction:row;align-items:center;@media screen and (max-width:649px){height:45px;}div.nav-container{width:100%;max-width:1200px;margin:0 auto;display:flex;flex-direction:row;justify-content:space-between;align-items:center;svg{height:60px;.logo-1,.logo-2{fill:#fff;}.logo-2{fill-rule:evenodd;}@media screen and (max-width:649px){height:45px;}@media screen and (max-width:530px){margin-top:10px;.logo-1:not(.cbn-letter):not(.cbn-fire),.logo-2:not(.cbn-letter):not(.cbn-fire){display:none;}}}span{color:#ffffff;flex:1 1 135px;text-align:right;a{font-size:17px;font-weight:500;color:white;text-decoration:none;transition:color 200ms ease-in-out;}a:hover,a:active,a:focus{text-decoration:underline;color:#ddd;}@media screen and (max-width:460px){flex-grow:0;}}}",
-						  }
-						: {
-								name: "xekgfl",
-								styles:
-									"height:100px;width:100%;display:flex;justify-content:center;flex-direction:row;align-items:center;@media screen and (max-width:649px){height:45px;}div.nav-container{width:100%;max-width:1200px;margin:0 auto;display:flex;flex-direction:row;justify-content:space-between;align-items:center;svg{height:60px;.logo-1,.logo-2{fill:#fff;}.logo-2{fill-rule:evenodd;}@media screen and (max-width:649px){height:45px;}@media screen and (max-width:530px){margin-top:10px;.logo-1:not(.cbn-letter):not(.cbn-fire),.logo-2:not(.cbn-letter):not(.cbn-fire){display:none;}}}span{color:#ffffff;flex:1 1 135px;text-align:right;a{font-size:17px;font-weight:500;color:white;text-decoration:none;transition:color 200ms ease-in-out;}a:hover,a:active,a:focus{text-decoration:underline;color:#ddd;}@media screen and (max-width:460px){flex-grow:0;}}}",
-								map:
-									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkhlYWRlckJsb2NrLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQTRFc0IiLCJmaWxlIjoiSGVhZGVyQmxvY2suanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgdXNlQ29udGV4dCwgbWVtbywgdXNlTWVtbyB9IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmltcG9ydCB7IEZvcm1Db25maWdDb250ZXh0IH0gZnJvbSBcIi4uLy4uL0NvbnRleHRzL0Zvcm1Db25maWdQcm92aWRlclwiO1xuXG5pbXBvcnQgQ0JOTG9nbyBmcm9tIFwiLi4vU1ZHL0NCTkxvZ29cIjtcblxuY29uc3QgSGVhZGVyID0gc3R5bGVkLmhlYWRlcmBcblx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0d2lkdGg6IDEwMCU7XG5cdGhlaWdodDogYXV0bztcblx0cGFkZGluZzogMTBweDtcblx0bWFyZ2luOiAwO1xuXHRtYXJnaW4tYm90dG9tOiAzNXB4O1xuXHRiYWNrZ3JvdW5kOiAjNzQ3NDc0O1xuXHRiYWNrZ3JvdW5kOiAke3Byb3BzID0+IHByb3BzLmJhY2tncm91bmR9O1xuXHRiYWNrZ3JvdW5kLXNpemU6IGNvdmVyO1xuXHRiYWNrZ3JvdW5kLXJlcGVhdDogbm8tcmVwZWF0O1xuXHRiYWNrZ3JvdW5kLXBvc2l0aW9uOiBjZW50ZXIgY2VudGVyO1xuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiAke3Byb3BzID0+IHByb3BzLmZvcm1NYXhXaWR0aH0pIHtcblx0XHRtYXJnaW4tYm90dG9tOiAwO1xuXHR9XG5cdGRpdi5oZWFkZXItY29udGFpbmVyIHtcblx0XHRtYXgtd2lkdGg6ICR7cHJvcHMgPT4gcHJvcHMuZm9ybU1heFdpZHRofTtcblx0XHRtYXJnaW46IDAgYXV0bztcblx0XHRwYWRkaW5nOiAzMHB4IDEwcHg7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblx0XHRoMi5oZWFkZXItdGl0bGUge1xuXHRcdFx0Zm9udC1zaXplOiAzNnB4O1xuXHRcdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdFx0XHRjb2xvcjogI2ZmZmZmZjtcblx0XHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRcdGxpbmUtaGVpZ2h0OiA0MnB4O1xuXHRcdFx0bWFyZ2luOiAwO1xuXHRcdFx0bWFyZ2luLWJsb2NrLXN0YXJ0OiAwO1xuXHRcdFx0bWFyZ2luLWJsb2NrLWVuZDogMDtcblx0XHRcdHBhZGRpbmc6IDA7XG5cdFx0fVxuXHRcdHAuaGVhZGVyLWRlc2NyaXB0aW9uIHtcblx0XHRcdGZvbnQtc2l6ZTogMjBweDtcblx0XHRcdGZvbnQtd2VpZ2h0OiA2MDA7XG5cdFx0XHRsaW5lLWhlaWdodDogMjNweDtcblx0XHRcdGNvbG9yOiAjZmZmZmZmO1xuXHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdFx0bWFyZ2luOiAwO1xuXHRcdFx0bWFyZ2luLWJsb2NrLXN0YXJ0OiAwO1xuXHRcdFx0bWFyZ2luLWJsb2NrLWVuZDogMDtcblx0XHRcdHBhZGRpbmc6IDA7XG5cdFx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdFx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0XHRcdGZsZXgtd3JhcDogd3JhcDtcblx0XHRcdHNwYW4ge1xuXHRcdFx0XHRwYWRkaW5nLXRvcDogMjBweDtcblx0XHRcdFx0Zm9udC1zaXplOiAyMHB4O1xuXHRcdFx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdFx0XHRsaW5lLWhlaWdodDogMjNweDtcblx0XHRcdFx0Y29sb3I6ICNmZmZmZmY7XG5cdFx0XHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRcdFx0d2lkdGg6IDEwMCU7XG5cdFx0XHR9XG5cdFx0XHRlbSB7XG5cdFx0XHRcdHdpZHRoOiAxMDAlO1xuXHRcdFx0XHRwYWRkaW5nLXRvcDogMjBweDtcblx0XHRcdFx0Zm9udC1zaXplOiAxOHB4O1xuXHRcdFx0XHRmb250LXdlaWdodDogNjAwO1xuXHRcdFx0XHRsaW5lLWhlaWdodDogMjJweDtcblx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0fVxuXHRcdH1cblx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2NDlweCkge1xuXHRcdFx0cGFkZGluZzogMjBweCAxMHB4O1xuXHRcdH1cblx0fVxuYDtcblxuY29uc3QgTmF2ID0gc3R5bGVkLm5hdmBcblx0aGVpZ2h0OiAxMDBweDtcblx0d2lkdGg6IDEwMCU7XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGp1c3RpZnktY29udGVudDogY2VudGVyO1xuXHRmbGV4LWRpcmVjdGlvbjogcm93O1xuXHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2NDlweCkge1xuXHRcdGhlaWdodDogNDVweDtcblx0fVxuXHRkaXYubmF2LWNvbnRhaW5lciB7XG5cdFx0d2lkdGg6IDEwMCU7XG5cdFx0bWF4LXdpZHRoOiAxMjAwcHg7XG5cdFx0bWFyZ2luOiAwIGF1dG87XG5cdFx0ZGlzcGxheTogZmxleDtcblx0XHRmbGV4LWRpcmVjdGlvbjogcm93O1xuXHRcdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0XHRhbGlnbi1pdGVtczogY2VudGVyO1xuXHRcdHN2ZyB7XG5cdFx0XHRoZWlnaHQ6IDYwcHg7XG5cdFx0XHQubG9nby0xLFxuXHRcdFx0LmxvZ28tMiB7XG5cdFx0XHRcdGZpbGw6ICNmZmY7XG5cdFx0XHR9XG5cdFx0XHQubG9nby0yIHtcblx0XHRcdFx0ZmlsbC1ydWxlOiBldmVub2RkO1xuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjQ5cHgpIHtcblx0XHRcdFx0aGVpZ2h0OiA0NXB4O1xuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNTMwcHgpIHtcblx0XHRcdFx0bWFyZ2luLXRvcDogMTBweDtcblx0XHRcdFx0LmxvZ28tMTpub3QoLmNibi1sZXR0ZXIpOm5vdCguY2JuLWZpcmUpLFxuXHRcdFx0XHQubG9nby0yOm5vdCguY2JuLWxldHRlcik6bm90KC5jYm4tZmlyZSkge1xuXHRcdFx0XHRcdGRpc3BsYXk6IG5vbmU7XG5cdFx0XHRcdH1cblx0XHRcdH1cblx0XHR9XG5cdFx0c3BhbiB7XG5cdFx0XHRjb2xvcjogI2ZmZmZmZjtcblx0XHRcdGZsZXg6IDEgMSAxMzVweDtcblx0XHRcdHRleHQtYWxpZ246IHJpZ2h0O1xuXHRcdFx0YSB7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMTdweDtcblx0XHRcdFx0Zm9udC13ZWlnaHQ6IDUwMDtcblx0XHRcdFx0Y29sb3I6IHdoaXRlO1xuXHRcdFx0XHR0ZXh0LWRlY29yYXRpb246IG5vbmU7XG5cdFx0XHRcdHRyYW5zaXRpb246IGNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHRcdFx0fVxuXHRcdFx0YTpob3Zlcixcblx0XHRcdGE6YWN0aXZlLFxuXHRcdFx0YTpmb2N1cyB7XG5cdFx0XHRcdHRleHQtZGVjb3JhdGlvbjogdW5kZXJsaW5lO1xuXHRcdFx0XHRjb2xvcjogI2RkZDtcblx0XHRcdH1cblx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDQ2MHB4KSB7XG5cdFx0XHRcdGZsZXgtZ3JvdzogMDtcblx0XHRcdH1cblx0XHR9XG5cdH1cbmA7XG5cbmNvbnN0IEhlYWRlckJsb2NrID0gKHsgc3VjY2Vzc1RpdGxlLCBzdWNjZXNzRGVzY3JpcHRpb24gfSkgPT4ge1xuXHRjb25zdCB7IGdldENzc0NvbmZpZywgZ2V0Rm9ybUNvbmZpZyB9ID0gdXNlQ29udGV4dChGb3JtQ29uZmlnQ29udGV4dCk7XG5cdGNvbnN0IHsgZm9ybU1heFdpZHRoIH0gPSB1c2VNZW1vKCgpID0+IGdldENzc0NvbmZpZyhcImZvcm1cIiksIFtdKTtcblx0Y29uc3QgeyBiYWNrZ3JvdW5kLCB0aXRsZSwgZGVzY3JpcHRpb24gfSA9IHVzZU1lbW8oXG5cdFx0KCkgPT4gZ2V0Rm9ybUNvbmZpZyhcImZvcm1IZWFkZXJcIiksXG5cdFx0W11cblx0KTtcblx0cmV0dXJuIChcblx0XHQ8SGVhZGVyXG5cdFx0XHRjbGFzc05hbWU9XCJoZWFkZXJcIlxuXHRcdFx0Zm9ybU1heFdpZHRoPXtmb3JtTWF4V2lkdGh9XG5cdFx0XHRiYWNrZ3JvdW5kPXtiYWNrZ3JvdW5kfVxuXHRcdD5cblx0XHRcdDxOYXYgY2xhc3NOYW1lPVwibmF2XCI+XG5cdFx0XHRcdDxkaXYgY2xhc3NOYW1lPVwibmF2LWNvbnRhaW5lclwiPlxuXHRcdFx0XHRcdDxDQk5Mb2dvIC8+XG5cdFx0XHRcdFx0PHNwYW4+XG5cdFx0XHRcdFx0XHRHaXZlIEJ5IFBob25lIDxhIGhyZWY9XCJ0ZWw6MTgwMDcwMDcwMDBcIj4xLTgwMC03MDAtNzAwMDwvYT5cblx0XHRcdFx0XHQ8L3NwYW4+XG5cdFx0XHRcdDwvZGl2PlxuXHRcdFx0PC9OYXY+XG5cdFx0XHQ8ZGl2IGNsYXNzTmFtZT1cImhlYWRlci1jb250YWluZXJcIj5cblx0XHRcdFx0PGgyIGNsYXNzTmFtZT1cImhlYWRlci10aXRsZVwiPntzdWNjZXNzVGl0bGUgPyBzdWNjZXNzVGl0bGUgOiB0aXRsZX08L2gyPlxuXHRcdFx0XHQ8cFxuXHRcdFx0XHRcdGNsYXNzTmFtZT1cImhlYWRlci1kZXNjcmlwdGlvblwiXG5cdFx0XHRcdFx0ZGFuZ2Vyb3VzbHlTZXRJbm5lckhUTUw9e3tcblx0XHRcdFx0XHRcdF9faHRtbDogc3VjY2Vzc0Rlc2NyaXB0aW9uID8gc3VjY2Vzc0Rlc2NyaXB0aW9uIDogZGVzY3JpcHRpb24sXG5cdFx0XHRcdFx0fX1cblx0XHRcdFx0Lz5cblx0XHRcdDwvZGl2PlxuXHRcdDwvSGVhZGVyPlxuXHQpO1xufTtcblxuZXhwb3J0IGRlZmF1bHQgbWVtbyhIZWFkZXJCbG9jayk7XG4iXX0= */",
-								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
-						  }
-				);
-
-				var HeaderBlock = function HeaderBlock(_ref) {
-					var successTitle = _ref.successTitle,
-						successDescription = _ref.successDescription;
-
-					var _useContext = (0, _react.useContext)(
-							_FormConfigProvider.FormConfigContext
-						),
-						getCssConfig = _useContext.getCssConfig,
-						getFormConfig = _useContext.getFormConfig;
-
-					var _useMemo = (0, _react.useMemo)(function() {
-							return getCssConfig("form");
-						}, []),
-						formMaxWidth = _useMemo.formMaxWidth;
-
-					var _useMemo2 = (0, _react.useMemo)(function() {
-							return getFormConfig("formHeader");
-						}, []),
-						background = _useMemo2.background,
-						title = _useMemo2.title,
-						description = _useMemo2.description;
-
-					return (0, _core.jsx)(
-						Header,
-						{
-							className: "header",
-							formMaxWidth: formMaxWidth,
-							background: background,
-						},
-						(0, _core.jsx)(
-							Nav,
-							{
-								className: "nav",
-							},
-							(0, _core.jsx)(
-								"div",
-								{
-									className: "nav-container",
-								},
-								(0, _core.jsx)(_CBNLogo.default, null),
-								(0, _core.jsx)(
-									"span",
-									null,
-									"Give By Phone ",
-									(0, _core.jsx)(
-										"a",
-										{
-											href: "tel:18007007000",
-										},
-										"1-800-700-7000"
-									)
-								)
-							)
-						),
-						(0, _core.jsx)(
-							"div",
-							{
-								className: "header-container",
-							},
-							(0, _core.jsx)(
-								"h2",
-								{
-									className: "header-title",
-								},
-								successTitle ? successTitle : title
-							),
-							(0, _core.jsx)("p", {
-								className: "header-description",
-								dangerouslySetInnerHTML: {
-									__html: successDescription ? successDescription : description,
-								},
-							})
-						)
-					);
-				};
-
-				__signature__(
-					HeaderBlock,
-					"useContext{{ getCssConfig, getFormConfig }}\nuseMemo{{ formMaxWidth }}\nuseMemo{{ background, title, description }}"
-				);
-
-				var _default = (0, _react.memo)(HeaderBlock);
-
-				var _default2 = _default;
-				exports.default = _default2;
-				(function() {
-					var reactHotLoader =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.default
-							: undefined;
-
-					if (!reactHotLoader) {
-						return;
-					}
-
-					reactHotLoader.register(
-						Header,
-						"Header",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
-					);
-					reactHotLoader.register(
-						Nav,
-						"Nav",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
-					);
-					reactHotLoader.register(
-						HeaderBlock,
-						"HeaderBlock",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
-					);
-					reactHotLoader.register(
-						_default,
-						"default",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/HeaderBlock.js"
-					);
-				})();
-
-				(function() {
-					var leaveModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.leaveModule
-							: undefined;
-					leaveModule && leaveModule(module);
-				})();
-			},
-			{
-				"@emotion/styled-base":
-					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				react: "node_modules/react/index.js",
-				"../../Contexts/FormConfigProvider":
-					"src/Components/Contexts/FormConfigProvider.js",
-				"../SVG/CBNLogo": "src/Components/FormComponents/SVG/CBNLogo.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-			},
-		],
-		"src/Components/FormComponents/Blocks/FooterBlock.js": [
-			function(require, module, exports) {
-				"use strict";
-
-				Object.defineProperty(exports, "__esModule", {
-					value: true,
-				});
-				exports.default = void 0;
-
-				var _styledBase = _interopRequireDefault(
-					require("@emotion/styled-base")
-				);
-
-				var _react = _interopRequireWildcard(require("react"));
-
-				var _FormConfigProvider = require("../../Contexts/FormConfigProvider");
-
-				var _core = require("@emotion/core");
-
-				function _getRequireWildcardCache() {
-					if (typeof WeakMap !== "function") return null;
-					var cache = new WeakMap();
-					_getRequireWildcardCache = function() {
-						return cache;
-					};
-					return cache;
-				}
-
-				function _interopRequireWildcard(obj) {
-					if (obj && obj.__esModule) {
-						return obj;
-					}
-					if (
-						obj === null ||
-						(typeof obj !== "object" && typeof obj !== "function")
-					) {
-						return { default: obj };
-					}
-					var cache = _getRequireWildcardCache();
-					if (cache && cache.has(obj)) {
-						return cache.get(obj);
-					}
-					var newObj = {};
-					var hasPropertyDescriptor =
-						Object.defineProperty && Object.getOwnPropertyDescriptor;
-					for (var key in obj) {
-						if (Object.prototype.hasOwnProperty.call(obj, key)) {
-							var desc = hasPropertyDescriptor
-								? Object.getOwnPropertyDescriptor(obj, key)
-								: null;
-							if (desc && (desc.get || desc.set)) {
-								Object.defineProperty(newObj, key, desc);
-							} else {
-								newObj[key] = obj[key];
-							}
-						}
-					}
-					newObj.default = obj;
-					if (cache) {
-						cache.set(obj, newObj);
-					}
-					return newObj;
-				}
-
-				function _interopRequireDefault(obj) {
-					return obj && obj.__esModule ? obj : { default: obj };
-				}
-
-				(function() {
-					var enterModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.enterModule
-							: undefined;
-					enterModule && enterModule(module);
-				})();
-
-				var __signature__ =
-					typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal.default.signature
-						: function(a) {
-								return a;
-						  };
-
-				var Footer = (0, _styledBase.default)("footer", {
-					target: "e3han8u0",
-					label: "Footer",
-				})(
-					"box-sizing:border-box;background:#fff;div.container{box-sizing:border-box;color:#3b3b3b;max-width:",
-					function(props) {
-						return props.formMaxWidth;
-					},
-					";width:100%;padding:30px 10px;margin:0 auto;.cbn-info,.footer-links{display:flex;flex-direction:row;justify-content:center;align-items:center;flex-wrap:wrap;color:#181818;font-size:15px;line-height:18px;}.cbn-info{padding:10px 0;text-align:center;.year{font-size:15px;line-height:18px;margin:0 5px;}}.footer-links{& > *{margin:2.5px;}.pipe{font-size:15px;line-height:18px;}a{color:#181818;text-decoration:none;transition:color 200ms ease-in-out;font-size:15px;line-height:18px;}a:hover,a:focus,a:active{text-decoration:underline;color:#484848;}}@media screen and (max-width:623px){background:#eceff1;}}" +
-						("development" === "production"
-							? ""
-							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkZvb3RlckJsb2NrLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUs0QiIsImZpbGUiOiJGb290ZXJCbG9jay5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyB1c2VDb250ZXh0LCBtZW1vLCB1c2VNZW1vIH0gZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuaW1wb3J0IHsgRm9ybUNvbmZpZ0NvbnRleHQgfSBmcm9tIFwiLi4vLi4vQ29udGV4dHMvRm9ybUNvbmZpZ1Byb3ZpZGVyXCI7XG5cbmNvbnN0IEZvb3RlciA9IHN0eWxlZC5mb290ZXJgXG5cdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdGJhY2tncm91bmQ6ICNmZmY7XG5cdGRpdi5jb250YWluZXIge1xuXHRcdGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG5cdFx0Y29sb3I6ICMzYjNiM2I7XG5cblx0XHRtYXgtd2lkdGg6ICR7cHJvcHMgPT4gcHJvcHMuZm9ybU1heFdpZHRofTtcblx0XHR3aWR0aDogMTAwJTtcblx0XHRwYWRkaW5nOiAzMHB4IDEwcHg7XG5cdFx0bWFyZ2luOiAwIGF1dG87XG5cdFx0LmNibi1pbmZvLFxuXHRcdC5mb290ZXItbGlua3Mge1xuXHRcdFx0ZGlzcGxheTogZmxleDtcblx0XHRcdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdFx0XHRqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcblx0XHRcdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdFx0XHRmbGV4LXdyYXA6IHdyYXA7XG5cdFx0XHRjb2xvcjogIzE4MTgxODtcblx0XHRcdGZvbnQtc2l6ZTogMTVweDtcblx0XHRcdGxpbmUtaGVpZ2h0OiAxOHB4O1xuXHRcdH1cblx0XHQuY2JuLWluZm8ge1xuXHRcdFx0cGFkZGluZzogMTBweCAwO1xuXHRcdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdFx0LnllYXIge1xuXHRcdFx0XHRmb250LXNpemU6IDE1cHg7XG5cdFx0XHRcdGxpbmUtaGVpZ2h0OiAxOHB4O1xuXHRcdFx0XHRtYXJnaW46IDAgNXB4O1xuXHRcdFx0fVxuXHRcdH1cblx0XHQuZm9vdGVyLWxpbmtzIHtcblx0XHRcdCYgPiAqIHtcblx0XHRcdFx0bWFyZ2luOiAyLjVweDtcblx0XHRcdH1cblx0XHRcdC5waXBlIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxNXB4O1xuXHRcdFx0XHRsaW5lLWhlaWdodDogMThweDtcblx0XHRcdH1cblx0XHRcdGEge1xuXHRcdFx0XHRjb2xvcjogIzE4MTgxODtcblx0XHRcdFx0dGV4dC1kZWNvcmF0aW9uOiBub25lO1xuXHRcdFx0XHR0cmFuc2l0aW9uOiBjb2xvciAyMDBtcyBlYXNlLWluLW91dDtcblx0XHRcdFx0Zm9udC1zaXplOiAxNXB4O1xuXHRcdFx0XHRsaW5lLWhlaWdodDogMThweDtcblx0XHRcdH1cblx0XHRcdGE6aG92ZXIsXG5cdFx0XHRhOmZvY3VzLFxuXHRcdFx0YTphY3RpdmUge1xuXHRcdFx0XHR0ZXh0LWRlY29yYXRpb246IHVuZGVybGluZTtcblx0XHRcdFx0Y29sb3I6ICM0ODQ4NDg7XG5cdFx0XHR9XG5cdFx0fVxuXHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYyM3B4KSB7XG5cdFx0XHRiYWNrZ3JvdW5kOiAjZWNlZmYxO1xuXHRcdH1cblx0fVxuYDtcblxuY29uc3QgRm9vdGVyQmxvY2sgPSAoKSA9PiB7XG5cdGNvbnN0IHsgZ2V0Q3NzQ29uZmlnIH0gPSB1c2VDb250ZXh0KEZvcm1Db25maWdDb250ZXh0KTtcblx0Y29uc3QgeyBmb3JtTWF4V2lkdGggfSA9IHVzZU1lbW8oKCkgPT4gZ2V0Q3NzQ29uZmlnKFwiZm9ybVwiKSwgW10pO1xuXHRjb25zdCB5ZWFyID0gdXNlTWVtbygoKSA9PiBuZXcgRGF0ZSgpLmdldEZ1bGxZZWFyKCksIFtdKTtcblx0cmV0dXJuIChcblx0XHQ8Rm9vdGVyIGNsYXNzTmFtZT1cImZvb3RlclwiPlxuXHRcdFx0PGRpdiBjbGFzc05hbWU9XCJjb250YWluZXJcIj5cblx0XHRcdFx0PGRpdiBjbGFzc05hbWU9XCJjYm4taW5mb1wiPlxuXHRcdFx0XHRcdCZjb3B5O1xuXHRcdFx0XHRcdDxzcGFuIGNsYXNzTmFtZT1cInllYXJcIj57eWVhcn08L3NwYW4+VGhlIENocmlzdGlhbiBCcm9hZGNhc3Rpbmdcblx0XHRcdFx0XHROZXR3b3JrLCBJbmMuLCBBIE5vbi1wcm9maXQgNTAxIChjKSgzKSBDaGFyaXRhYmxlIE9yZ2FuaXphdGlvblxuXHRcdFx0XHQ8L2Rpdj5cblx0XHRcdFx0PGRpdiBjbGFzc05hbWU9XCJmb290ZXItbGlua3NcIj5cblx0XHRcdFx0XHQ8YSBjbGFzc05hbWU9XCJmb290ZXItbGlua3MtLWxpbmtcIiBocmVmPVwiaHR0cHM6Ly93d3cuY2JuLmNvbS9cIj5cblx0XHRcdFx0XHRcdEhvbWVcblx0XHRcdFx0XHQ8L2E+XG5cdFx0XHRcdFx0PHNwYW4gY2xhc3NOYW1lPVwicGlwZVwiPnw8L3NwYW4+XG5cdFx0XHRcdFx0PGEgY2xhc3NOYW1lPVwiZm9vdGVyLWxpbmtzLS1saW5rXCIgaHJlZj1cImh0dHA6Ly93d3cxLmNibi5jb20vYWJvdXRcIj5cblx0XHRcdFx0XHRcdEFib3V0IENCTlxuXHRcdFx0XHRcdDwvYT5cblx0XHRcdFx0XHQ8c3BhbiBjbGFzc05hbWU9XCJwaXBlXCI+fDwvc3Bhbj5cblx0XHRcdFx0XHQ8YVxuXHRcdFx0XHRcdFx0Y2xhc3NOYW1lPVwiZm9vdGVyLWxpbmtzLS1saW5rXCJcblx0XHRcdFx0XHRcdGhyZWY9XCJodHRwOi8vd3d3MS5jYm4uY29tL2Nibi1kb25vci1wcml2YWN5LXBvbGljeVwiXG5cdFx0XHRcdFx0PlxuXHRcdFx0XHRcdFx0RG9ub3IgUHJpdmFjeSBOb3RpY2Vcblx0XHRcdFx0XHQ8L2E+XG5cdFx0XHRcdFx0PHNwYW4gY2xhc3NOYW1lPVwicGlwZVwiPnw8L3NwYW4+XG5cdFx0XHRcdFx0PGFcblx0XHRcdFx0XHRcdGNsYXNzTmFtZT1cImZvb3Rlci1saW5rcy0tbGlua1wiXG5cdFx0XHRcdFx0XHRocmVmPVwiaHR0cDovL3d3dzEuY2JuLmNvbS9hYm91dC9jYm4uY29tLXByaXZhY3ktbm90aWNlXCJcblx0XHRcdFx0XHQ+XG5cdFx0XHRcdFx0XHRDQk4uY29tIFByaXZhY3kgTm90aWNlXG5cdFx0XHRcdFx0PC9hPlxuXHRcdFx0XHRcdDxzcGFuIGNsYXNzTmFtZT1cInBpcGVcIj58PC9zcGFuPlxuXHRcdFx0XHRcdDxhXG5cdFx0XHRcdFx0XHRjbGFzc05hbWU9XCJmb290ZXItbGlua3MtLWxpbmtcIlxuXHRcdFx0XHRcdFx0aHJlZj1cImh0dHA6Ly93d3cxLmNibi5jb20vdGVybXMtb2YtdXNlXCJcblx0XHRcdFx0XHQ+XG5cdFx0XHRcdFx0XHRUZXJtcyBvZiBVc2Vcblx0XHRcdFx0XHQ8L2E+XG5cdFx0XHRcdFx0PHNwYW4gY2xhc3NOYW1lPVwicGlwZVwiPnw8L3NwYW4+XG5cdFx0XHRcdFx0PGEgY2xhc3NOYW1lPVwiZm9vdGVyLWxpbmtzLS1saW5rXCIgaHJlZj1cImh0dHA6Ly93d3cxLmNibi5jb20vY29udGFjdFwiPlxuXHRcdFx0XHRcdFx0Q29udGFjdFxuXHRcdFx0XHRcdDwvYT5cblx0XHRcdFx0PC9kaXY+XG5cdFx0XHQ8L2Rpdj5cblx0XHQ8L0Zvb3Rlcj5cblx0KTtcbn07XG5cbmV4cG9ydCBkZWZhdWx0IG1lbW8oRm9vdGVyQmxvY2spO1xuIl19 */")
-				);
-
-				var FooterBlock = function FooterBlock() {
-					var _useContext = (0, _react.useContext)(
-							_FormConfigProvider.FormConfigContext
-						),
-						getCssConfig = _useContext.getCssConfig;
-
-					var _useMemo = (0, _react.useMemo)(function() {
-							return getCssConfig("form");
-						}, []),
-						formMaxWidth = _useMemo.formMaxWidth;
-
-					var year = (0, _react.useMemo)(function() {
-						return new Date().getFullYear();
-					}, []);
-					return (0, _core.jsx)(
-						Footer,
-						{
-							className: "footer",
-						},
-						(0, _core.jsx)(
-							"div",
-							{
-								className: "container",
-							},
-							(0, _core.jsx)(
-								"div",
-								{
-									className: "cbn-info",
-								},
-								"\xA9",
-								(0, _core.jsx)(
-									"span",
-									{
-										className: "year",
-									},
-									year
-								),
-								"The Christian Broadcasting Network, Inc., A Non-profit 501 (c)(3) Charitable Organization"
-							),
-							(0, _core.jsx)(
-								"div",
-								{
-									className: "footer-links",
-								},
-								(0, _core.jsx)(
-									"a",
-									{
-										className: "footer-links--link",
-										href: "https://www.cbn.com/",
-									},
-									"Home"
-								),
-								(0, _core.jsx)(
-									"span",
-									{
-										className: "pipe",
-									},
-									"|"
-								),
-								(0, _core.jsx)(
-									"a",
-									{
-										className: "footer-links--link",
-										href: "http://www1.cbn.com/about",
-									},
-									"About CBN"
-								),
-								(0, _core.jsx)(
-									"span",
-									{
-										className: "pipe",
-									},
-									"|"
-								),
-								(0, _core.jsx)(
-									"a",
-									{
-										className: "footer-links--link",
-										href: "http://www1.cbn.com/cbn-donor-privacy-policy",
-									},
-									"Donor Privacy Notice"
-								),
-								(0, _core.jsx)(
-									"span",
-									{
-										className: "pipe",
-									},
-									"|"
-								),
-								(0, _core.jsx)(
-									"a",
-									{
-										className: "footer-links--link",
-										href: "http://www1.cbn.com/about/cbn.com-privacy-notice",
-									},
-									"CBN.com Privacy Notice"
-								),
-								(0, _core.jsx)(
-									"span",
-									{
-										className: "pipe",
-									},
-									"|"
-								),
-								(0, _core.jsx)(
-									"a",
-									{
-										className: "footer-links--link",
-										href: "http://www1.cbn.com/terms-of-use",
-									},
-									"Terms of Use"
-								),
-								(0, _core.jsx)(
-									"span",
-									{
-										className: "pipe",
-									},
-									"|"
-								),
-								(0, _core.jsx)(
-									"a",
-									{
-										className: "footer-links--link",
-										href: "http://www1.cbn.com/contact",
-									},
-									"Contact"
-								)
-							)
-						)
-					);
-				};
-
-				__signature__(
-					FooterBlock,
-					"useContext{{ getCssConfig }}\nuseMemo{{ formMaxWidth }}\nuseMemo{year}"
-				);
-
-				var _default = (0, _react.memo)(FooterBlock);
-
-				var _default2 = _default;
-				exports.default = _default2;
-				(function() {
-					var reactHotLoader =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.default
-							: undefined;
-
-					if (!reactHotLoader) {
-						return;
-					}
-
-					reactHotLoader.register(
-						Footer,
-						"Footer",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FooterBlock.js"
-					);
-					reactHotLoader.register(
-						FooterBlock,
-						"FooterBlock",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FooterBlock.js"
-					);
-					reactHotLoader.register(
-						_default,
-						"default",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/Blocks/FooterBlock.js"
-					);
-				})();
-
-				(function() {
-					var leaveModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.leaveModule
-							: undefined;
-					leaveModule && leaveModule(module);
-				})();
-			},
-			{
-				"@emotion/styled-base":
-					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				react: "node_modules/react/index.js",
-				"../../Contexts/FormConfigProvider":
-					"src/Components/Contexts/FormConfigProvider.js",
-				"@emotion/core": "node_modules/@emotion/core/dist/core.browser.esm.js",
-			},
-		],
 		"src/Components/FormComponents/StyledComponents/HiddenForm.js": [
 			function(require, module, exports) {
 				"use strict";
@@ -24670,145 +28038,6 @@ object-assign
 					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
 			},
 		],
-		"src/Components/FormComponents/StyledComponents/Card.js": [
-			function(require, module, exports) {
-				"use strict";
-
-				Object.defineProperty(exports, "__esModule", {
-					value: true,
-				});
-				exports.Card = exports.CardContainer = exports.CardSection = void 0;
-
-				var _styledBase = _interopRequireDefault(
-					require("@emotion/styled-base")
-				);
-
-				var _react = _interopRequireDefault(require("react"));
-
-				function _interopRequireDefault(obj) {
-					return obj && obj.__esModule ? obj : { default: obj };
-				}
-
-				(function() {
-					var enterModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.enterModule
-							: undefined;
-					enterModule && enterModule(module);
-				})();
-
-				function _EMOTION_STRINGIFIED_CSS_ERROR__() {
-					return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
-				}
-
-				var __signature__ =
-					typeof reactHotLoaderGlobal !== "undefined"
-						? reactHotLoaderGlobal.default.signature
-						: function(a) {
-								return a;
-						  };
-
-				var CardSection = (0, _styledBase.default)("section", {
-					target: "e1lgs3s90",
-					label: "CardSection",
-				})(
-					"development" === "production"
-						? {
-								name: "168isxd",
-								styles:
-									"background:white;margin:0 auto;padding:30px 0;width:100%;h3{font-weight:bold;font-size:22px;margin:0;padding:0 0 20px 0;text-align:center;}@media screen and (max-width:623px){background:#eceff1;}",
-						  }
-						: {
-								name: "168isxd",
-								styles:
-									"background:white;margin:0 auto;padding:30px 0;width:100%;h3{font-weight:bold;font-size:22px;margin:0;padding:0 0 20px 0;text-align:center;}@media screen and (max-width:623px){background:#eceff1;}",
-								map:
-									"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNhcmQuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBR3lDIiwiZmlsZSI6IkNhcmQuanMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgc3R5bGVkIGZyb20gXCJAZW1vdGlvbi9zdHlsZWRcIjtcblxuZXhwb3J0IGNvbnN0IENhcmRTZWN0aW9uID0gc3R5bGVkLnNlY3Rpb25gXG5cdGJhY2tncm91bmQ6IHdoaXRlO1xuXHRtYXJnaW46IDAgYXV0bztcblx0cGFkZGluZzogMzBweCAwO1xuXHR3aWR0aDogMTAwJTtcblx0aDMge1xuXHRcdGZvbnQtd2VpZ2h0OiBib2xkO1xuXHRcdGZvbnQtc2l6ZTogMjJweDtcblx0XHRtYXJnaW46IDA7XG5cdFx0cGFkZGluZzogMCAwIDIwcHggMDtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdH1cblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRiYWNrZ3JvdW5kOiAjZWNlZmYxO1xuXHR9XG5gO1xuXG5leHBvcnQgY29uc3QgQ2FyZENvbnRhaW5lciA9IHN0eWxlZC5kaXZgXG5cdHdpZHRoOiBjYWxjKDEwMCUgLSAyMHB4KTtcblx0bWF4LXdpZHRoOiAke3Byb3BzID0+IChwcm9wcy5tYXhXaWR0aCA/IHByb3BzLm1heFdpZHRoIDogXCIxMjAwcHhcIil9O1xuXHRtYXJnaW46IDAgYXV0bztcblx0ZGlzcGxheTogZmxleDtcblx0ZmxleC1kaXJlY3Rpb246IHJvdztcblx0anVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuO1xuXHRhbGlnaC1pdGVtczogY2VudGVyO1xuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MjNweCkge1xuXHRcdGZsZXgtd3JhcDogd3JhcDtcblx0fVxuYDtcblxuZXhwb3J0IGNvbnN0IENhcmQgPSBzdHlsZWQuZGl2YFxuXHQmLmNhcmQge1xuXHRcdGhlaWdodDogMjUwcHg7XG5cdFx0ZmxleDogMCAxIDM4MHB4O1xuXHRcdGRpc3BsYXk6IGZsZXg7XG5cdFx0ZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcblx0XHRqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtc3RhcnQ7XG5cdFx0Ym94LXNoYWRvdzogMCAycHggNHB4IDAgcmdiYSgwLCAwLCAwLCAwLjEpO1xuXHRcdGNvbG9yOiAjM2IzYjNiO1xuXHR9XG5cdCYuY2FyZCArIGRpdi5jYXJkIHtcblx0XHRtYXJnaW4tbGVmdDogMTBweDtcblx0fVxuXHRoNC5jYXJkX190aXRsZSB7XG5cdFx0Zm9udC13ZWlnaHQ6IGJvbGQ7XG5cdFx0Zm9udC1zaXplOiAyMnB4O1xuXHRcdG1hcmdpbjogMDtcblx0XHRwYWRkaW5nOiAxMHB4IDA7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdGZsZXg6IDAgMCBhdXRvO1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICNlMWU1ZTg7XG5cdH1cblx0ZGl2LmNhcmRfX2JvZHkge1xuXHRcdHBhZGRpbmc6IDEwcHg7XG5cdFx0ZmxleDogMSAxIGF1dG87XG5cdFx0YmFja2dyb3VuZC1jb2xvcjogI2VjZWZmMTtcblx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG5cdFx0anVzdGlmeS1jb250ZW50OiBzcGFjZS1hcm91bmQ7XG5cdFx0YWxpZ24taXRlbXM6IGNlbnRlcjtcblx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MjNweCkge1xuXHRcdFx0YmFja2dyb3VuZDogI2YxZjRmNjtcblx0XHR9XG5cdFx0Lm1haWwtaW4tZm9ybSxcblx0XHQuY2JuLWFkZHJlc3MsXG5cdFx0LmdpdmluZy1saW5rcyxcblx0XHQucGhvbmUtLWluZm8sXG5cdFx0LmdpZnQtaW5mbyB7XG5cdFx0XHRmb250LXNpemU6IDE3cHg7XG5cdFx0XHRsaW5lLWhlaWdodDogMjJweDtcblx0XHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRcdGVtIHtcblx0XHRcdFx0Zm9udC1zdHlsZTogaXRhbGljO1xuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNzM5cHgpIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxNnB4O1xuXHRcdFx0XHRhLFxuXHRcdFx0XHQuY2JuLWFkZHJlc3MtLXN0cmVldCxcblx0XHRcdFx0LmNibi1hZGRyZXNzLS1jaXR5LXN0YXRlLXppcCB7XG5cdFx0XHRcdFx0Zm9udC1zaXplOiAxNnB4O1xuXHRcdFx0XHR9XG5cdFx0XHR9XG5cdFx0XHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MjNweCkge1xuXHRcdFx0XHRmb250LXNpemU6IDE3cHg7XG5cdFx0XHRcdGEsXG5cdFx0XHRcdC5jYm4tYWRkcmVzcy0tc3RyZWV0LFxuXHRcdFx0XHQuY2JuLWFkZHJlc3MtLWNpdHktc3RhdGUtemlwIHtcblx0XHRcdFx0XHRmb250LXNpemU6IDE3cHg7XG5cdFx0XHRcdH1cblx0XHRcdH1cblx0XHR9XG5cdFx0LnBob25lIHtcblx0XHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRcdGEge1xuXHRcdFx0XHRjdXJzb3I6IHBvaW50ZXI7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMjhweDtcblx0XHRcdFx0Y29sb3I6ICMzYjNiM2I7XG5cdFx0XHRcdHRleHQtZGVjb3JhdGlvbjogbm9uZTtcblx0XHRcdH1cblx0XHR9XG5cdH1cblx0YSB7XG5cdFx0Y29sb3I6ICR7cHJvcHMgPT4gcHJvcHMubGlua0NvbG9yfTtcblx0XHR0ZXh0LWRlY29yYXRpb246ICR7cHJvcHMgPT4gcHJvcHMubGlua1RleHREZWNvcmF0aW9ufTtcblx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0dHJhbnNpdGlvbjogY29sb3IgMjAwbXMgZWFzZS1pbi1vdXQ7XG5cdFx0Jjpob3Zlcixcblx0XHQmOmFjdGl2ZSxcblx0XHQmOmZvY3VzIHtcblx0XHRcdHRleHQtZGVjb3JhdGlvbjogJHtwcm9wcyA9PiBwcm9wcy5saW5rSG92ZXJUZXh0RGVjb3JhdGlvbn07XG5cdFx0XHRjb2xvcjogJHtwcm9wcyA9PiBwcm9wcy5saW5rSG92ZXJDb2xvcn07XG5cdFx0fVxuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYyM3B4KSB7XG5cdFx0Ji5jYXJkIHtcblx0XHRcdG1hcmdpbjogMCBhdXRvO1xuXHRcdH1cblx0XHQmLmNhcmQgKyBkaXYuY2FyZCB7XG5cdFx0XHRtYXJnaW46IDAgYXV0bztcblx0XHRcdG1hcmdpbi10b3A6IDIwcHg7XG5cdFx0fVxuXHR9XG5gO1xuIl19 */",
-								toString: _EMOTION_STRINGIFIED_CSS_ERROR__,
-						  }
-				);
-				exports.CardSection = CardSection;
-				var CardContainer = (0, _styledBase.default)("div", {
-					target: "e1lgs3s91",
-					label: "CardContainer",
-				})(
-					"width:calc(100% - 20px);max-width:",
-					function(props) {
-						return props.maxWidth ? props.maxWidth : "1200px";
-					},
-					";margin:0 auto;display:flex;flex-direction:row;justify-content:space-between;aligh-items:center;@media screen and (max-width:623px){flex-wrap:wrap;}" +
-						("development" === "production"
-							? ""
-							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNhcmQuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBb0J1QyIsImZpbGUiOiJDYXJkLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmV4cG9ydCBjb25zdCBDYXJkU2VjdGlvbiA9IHN0eWxlZC5zZWN0aW9uYFxuXHRiYWNrZ3JvdW5kOiB3aGl0ZTtcblx0bWFyZ2luOiAwIGF1dG87XG5cdHBhZGRpbmc6IDMwcHggMDtcblx0d2lkdGg6IDEwMCU7XG5cdGgzIHtcblx0XHRmb250LXdlaWdodDogYm9sZDtcblx0XHRmb250LXNpemU6IDIycHg7XG5cdFx0bWFyZ2luOiAwO1xuXHRcdHBhZGRpbmc6IDAgMCAyMHB4IDA7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYyM3B4KSB7XG5cdFx0YmFja2dyb3VuZDogI2VjZWZmMTtcblx0fVxuYDtcblxuZXhwb3J0IGNvbnN0IENhcmRDb250YWluZXIgPSBzdHlsZWQuZGl2YFxuXHR3aWR0aDogY2FsYygxMDAlIC0gMjBweCk7XG5cdG1heC13aWR0aDogJHtwcm9wcyA9PiAocHJvcHMubWF4V2lkdGggPyBwcm9wcy5tYXhXaWR0aCA6IFwiMTIwMHB4XCIpfTtcblx0bWFyZ2luOiAwIGF1dG87XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0YWxpZ2gtaXRlbXM6IGNlbnRlcjtcblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRmbGV4LXdyYXA6IHdyYXA7XG5cdH1cbmA7XG5cbmV4cG9ydCBjb25zdCBDYXJkID0gc3R5bGVkLmRpdmBcblx0Ji5jYXJkIHtcblx0XHRoZWlnaHQ6IDI1MHB4O1xuXHRcdGZsZXg6IDAgMSAzODBweDtcblx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG5cdFx0anVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuXHRcdGJveC1zaGFkb3c6IDAgMnB4IDRweCAwIHJnYmEoMCwgMCwgMCwgMC4xKTtcblx0XHRjb2xvcjogIzNiM2IzYjtcblx0fVxuXHQmLmNhcmQgKyBkaXYuY2FyZCB7XG5cdFx0bWFyZ2luLWxlZnQ6IDEwcHg7XG5cdH1cblx0aDQuY2FyZF9fdGl0bGUge1xuXHRcdGZvbnQtd2VpZ2h0OiBib2xkO1xuXHRcdGZvbnQtc2l6ZTogMjJweDtcblx0XHRtYXJnaW46IDA7XG5cdFx0cGFkZGluZzogMTBweCAwO1xuXHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRmbGV4OiAwIDAgYXV0bztcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZTFlNWU4O1xuXHR9XG5cdGRpdi5jYXJkX19ib2R5IHtcblx0XHRwYWRkaW5nOiAxMHB4O1xuXHRcdGZsZXg6IDEgMSBhdXRvO1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICNlY2VmZjE7XG5cdFx0ZGlzcGxheTogZmxleDtcblx0XHRmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuXHRcdGp1c3RpZnktY29udGVudDogc3BhY2UtYXJvdW5kO1xuXHRcdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRcdGJhY2tncm91bmQ6ICNmMWY0ZjY7XG5cdFx0fVxuXHRcdC5tYWlsLWluLWZvcm0sXG5cdFx0LmNibi1hZGRyZXNzLFxuXHRcdC5naXZpbmctbGlua3MsXG5cdFx0LnBob25lLS1pbmZvLFxuXHRcdC5naWZ0LWluZm8ge1xuXHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0bGluZS1oZWlnaHQ6IDIycHg7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRlbSB7XG5cdFx0XHRcdGZvbnQtc3R5bGU6IGl0YWxpYztcblx0XHRcdH1cblx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDczOXB4KSB7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0YSxcblx0XHRcdFx0LmNibi1hZGRyZXNzLS1zdHJlZXQsXG5cdFx0XHRcdC5jYm4tYWRkcmVzcy0tY2l0eS1zdGF0ZS16aXAge1xuXHRcdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0fVxuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0XHRhLFxuXHRcdFx0XHQuY2JuLWFkZHJlc3MtLXN0cmVldCxcblx0XHRcdFx0LmNibi1hZGRyZXNzLS1jaXR5LXN0YXRlLXppcCB7XG5cdFx0XHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0XHR9XG5cdFx0XHR9XG5cdFx0fVxuXHRcdC5waG9uZSB7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRhIHtcblx0XHRcdFx0Y3Vyc29yOiBwb2ludGVyO1xuXHRcdFx0XHRmb250LXNpemU6IDI4cHg7XG5cdFx0XHRcdGNvbG9yOiAjM2IzYjNiO1xuXHRcdFx0XHR0ZXh0LWRlY29yYXRpb246IG5vbmU7XG5cdFx0XHR9XG5cdFx0fVxuXHR9XG5cdGEge1xuXHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmxpbmtDb2xvcn07XG5cdFx0dGV4dC1kZWNvcmF0aW9uOiAke3Byb3BzID0+IHByb3BzLmxpbmtUZXh0RGVjb3JhdGlvbn07XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdHRyYW5zaXRpb246IGNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHRcdCY6aG92ZXIsXG5cdFx0JjphY3RpdmUsXG5cdFx0Jjpmb2N1cyB7XG5cdFx0XHR0ZXh0LWRlY29yYXRpb246ICR7cHJvcHMgPT4gcHJvcHMubGlua0hvdmVyVGV4dERlY29yYXRpb259O1xuXHRcdFx0Y29sb3I6ICR7cHJvcHMgPT4gcHJvcHMubGlua0hvdmVyQ29sb3J9O1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MjNweCkge1xuXHRcdCYuY2FyZCB7XG5cdFx0XHRtYXJnaW46IDAgYXV0bztcblx0XHR9XG5cdFx0Ji5jYXJkICsgZGl2LmNhcmQge1xuXHRcdFx0bWFyZ2luOiAwIGF1dG87XG5cdFx0XHRtYXJnaW4tdG9wOiAyMHB4O1xuXHRcdH1cblx0fVxuYDtcbiJdfQ== */")
-				);
-				exports.CardContainer = CardContainer;
-				var Card = (0, _styledBase.default)("div", {
-					target: "e1lgs3s92",
-					label: "Card",
-				})(
-					"&.card{height:250px;flex:0 1 380px;display:flex;flex-direction:column;justify-content:flex-start;box-shadow:0 2px 4px 0 rgba(0,0,0,0.1);color:#3b3b3b;}&.card + div.card{margin-left:10px;}h4.card__title{font-weight:bold;font-size:22px;margin:0;padding:10px 0;text-align:center;flex:0 0 auto;background-color:#e1e5e8;}div.card__body{padding:10px;flex:1 1 auto;background-color:#eceff1;display:flex;flex-direction:column;justify-content:space-around;align-items:center;@media screen and (max-width:623px){background:#f1f4f6;}.mail-in-form,.cbn-address,.giving-links,.phone--info,.gift-info{font-size:17px;line-height:22px;text-align:center;em{font-style:italic;}@media screen and (max-width:739px){font-size:16px;a,.cbn-address--street,.cbn-address--city-state-zip{font-size:16px;}}@media screen and (max-width:623px){font-size:17px;a,.cbn-address--street,.cbn-address--city-state-zip{font-size:17px;}}}.phone{text-align:center;a{cursor:pointer;font-size:28px;color:#3b3b3b;text-decoration:none;}}}a{color:",
-					function(props) {
-						return props.linkColor;
-					},
-					";text-decoration:",
-					function(props) {
-						return props.linkTextDecoration;
-					},
-					";text-align:center;transition:color 200ms ease-in-out;&:hover,&:active,&:focus{text-decoration:",
-					function(props) {
-						return props.linkHoverTextDecoration;
-					},
-					";color:",
-					function(props) {
-						return props.linkHoverColor;
-					},
-					";}}@media screen and (max-width:623px){&.card{margin:0 auto;}&.card + div.card{margin:0 auto;margin-top:20px;}}" +
-						("development" === "production"
-							? ""
-							: "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNhcmQuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBaUM4QiIsImZpbGUiOiJDYXJkLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHN0eWxlZCBmcm9tIFwiQGVtb3Rpb24vc3R5bGVkXCI7XG5cbmV4cG9ydCBjb25zdCBDYXJkU2VjdGlvbiA9IHN0eWxlZC5zZWN0aW9uYFxuXHRiYWNrZ3JvdW5kOiB3aGl0ZTtcblx0bWFyZ2luOiAwIGF1dG87XG5cdHBhZGRpbmc6IDMwcHggMDtcblx0d2lkdGg6IDEwMCU7XG5cdGgzIHtcblx0XHRmb250LXdlaWdodDogYm9sZDtcblx0XHRmb250LXNpemU6IDIycHg7XG5cdFx0bWFyZ2luOiAwO1xuXHRcdHBhZGRpbmc6IDAgMCAyMHB4IDA7XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHR9XG5cdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDYyM3B4KSB7XG5cdFx0YmFja2dyb3VuZDogI2VjZWZmMTtcblx0fVxuYDtcblxuZXhwb3J0IGNvbnN0IENhcmRDb250YWluZXIgPSBzdHlsZWQuZGl2YFxuXHR3aWR0aDogY2FsYygxMDAlIC0gMjBweCk7XG5cdG1heC13aWR0aDogJHtwcm9wcyA9PiAocHJvcHMubWF4V2lkdGggPyBwcm9wcy5tYXhXaWR0aCA6IFwiMTIwMHB4XCIpfTtcblx0bWFyZ2luOiAwIGF1dG87XG5cdGRpc3BsYXk6IGZsZXg7XG5cdGZsZXgtZGlyZWN0aW9uOiByb3c7XG5cdGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2Vlbjtcblx0YWxpZ2gtaXRlbXM6IGNlbnRlcjtcblx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRmbGV4LXdyYXA6IHdyYXA7XG5cdH1cbmA7XG5cbmV4cG9ydCBjb25zdCBDYXJkID0gc3R5bGVkLmRpdmBcblx0Ji5jYXJkIHtcblx0XHRoZWlnaHQ6IDI1MHB4O1xuXHRcdGZsZXg6IDAgMSAzODBweDtcblx0XHRkaXNwbGF5OiBmbGV4O1xuXHRcdGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG5cdFx0anVzdGlmeS1jb250ZW50OiBmbGV4LXN0YXJ0O1xuXHRcdGJveC1zaGFkb3c6IDAgMnB4IDRweCAwIHJnYmEoMCwgMCwgMCwgMC4xKTtcblx0XHRjb2xvcjogIzNiM2IzYjtcblx0fVxuXHQmLmNhcmQgKyBkaXYuY2FyZCB7XG5cdFx0bWFyZ2luLWxlZnQ6IDEwcHg7XG5cdH1cblx0aDQuY2FyZF9fdGl0bGUge1xuXHRcdGZvbnQtd2VpZ2h0OiBib2xkO1xuXHRcdGZvbnQtc2l6ZTogMjJweDtcblx0XHRtYXJnaW46IDA7XG5cdFx0cGFkZGluZzogMTBweCAwO1xuXHRcdHRleHQtYWxpZ246IGNlbnRlcjtcblx0XHRmbGV4OiAwIDAgYXV0bztcblx0XHRiYWNrZ3JvdW5kLWNvbG9yOiAjZTFlNWU4O1xuXHR9XG5cdGRpdi5jYXJkX19ib2R5IHtcblx0XHRwYWRkaW5nOiAxMHB4O1xuXHRcdGZsZXg6IDEgMSBhdXRvO1xuXHRcdGJhY2tncm91bmQtY29sb3I6ICNlY2VmZjE7XG5cdFx0ZGlzcGxheTogZmxleDtcblx0XHRmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuXHRcdGp1c3RpZnktY29udGVudDogc3BhY2UtYXJvdW5kO1xuXHRcdGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRcdGJhY2tncm91bmQ6ICNmMWY0ZjY7XG5cdFx0fVxuXHRcdC5tYWlsLWluLWZvcm0sXG5cdFx0LmNibi1hZGRyZXNzLFxuXHRcdC5naXZpbmctbGlua3MsXG5cdFx0LnBob25lLS1pbmZvLFxuXHRcdC5naWZ0LWluZm8ge1xuXHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0bGluZS1oZWlnaHQ6IDIycHg7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRlbSB7XG5cdFx0XHRcdGZvbnQtc3R5bGU6IGl0YWxpYztcblx0XHRcdH1cblx0XHRcdEBtZWRpYSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDczOXB4KSB7XG5cdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0YSxcblx0XHRcdFx0LmNibi1hZGRyZXNzLS1zdHJlZXQsXG5cdFx0XHRcdC5jYm4tYWRkcmVzcy0tY2l0eS1zdGF0ZS16aXAge1xuXHRcdFx0XHRcdGZvbnQtc2l6ZTogMTZweDtcblx0XHRcdFx0fVxuXHRcdFx0fVxuXHRcdFx0QG1lZGlhIHNjcmVlbiBhbmQgKG1heC13aWR0aDogNjIzcHgpIHtcblx0XHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0XHRhLFxuXHRcdFx0XHQuY2JuLWFkZHJlc3MtLXN0cmVldCxcblx0XHRcdFx0LmNibi1hZGRyZXNzLS1jaXR5LXN0YXRlLXppcCB7XG5cdFx0XHRcdFx0Zm9udC1zaXplOiAxN3B4O1xuXHRcdFx0XHR9XG5cdFx0XHR9XG5cdFx0fVxuXHRcdC5waG9uZSB7XG5cdFx0XHR0ZXh0LWFsaWduOiBjZW50ZXI7XG5cdFx0XHRhIHtcblx0XHRcdFx0Y3Vyc29yOiBwb2ludGVyO1xuXHRcdFx0XHRmb250LXNpemU6IDI4cHg7XG5cdFx0XHRcdGNvbG9yOiAjM2IzYjNiO1xuXHRcdFx0XHR0ZXh0LWRlY29yYXRpb246IG5vbmU7XG5cdFx0XHR9XG5cdFx0fVxuXHR9XG5cdGEge1xuXHRcdGNvbG9yOiAke3Byb3BzID0+IHByb3BzLmxpbmtDb2xvcn07XG5cdFx0dGV4dC1kZWNvcmF0aW9uOiAke3Byb3BzID0+IHByb3BzLmxpbmtUZXh0RGVjb3JhdGlvbn07XG5cdFx0dGV4dC1hbGlnbjogY2VudGVyO1xuXHRcdHRyYW5zaXRpb246IGNvbG9yIDIwMG1zIGVhc2UtaW4tb3V0O1xuXHRcdCY6aG92ZXIsXG5cdFx0JjphY3RpdmUsXG5cdFx0Jjpmb2N1cyB7XG5cdFx0XHR0ZXh0LWRlY29yYXRpb246ICR7cHJvcHMgPT4gcHJvcHMubGlua0hvdmVyVGV4dERlY29yYXRpb259O1xuXHRcdFx0Y29sb3I6ICR7cHJvcHMgPT4gcHJvcHMubGlua0hvdmVyQ29sb3J9O1xuXHRcdH1cblx0fVxuXHRAbWVkaWEgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA2MjNweCkge1xuXHRcdCYuY2FyZCB7XG5cdFx0XHRtYXJnaW46IDAgYXV0bztcblx0XHR9XG5cdFx0Ji5jYXJkICsgZGl2LmNhcmQge1xuXHRcdFx0bWFyZ2luOiAwIGF1dG87XG5cdFx0XHRtYXJnaW4tdG9wOiAyMHB4O1xuXHRcdH1cblx0fVxuYDtcbiJdfQ== */")
-				);
-				exports.Card = Card;
-				(function() {
-					var reactHotLoader =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.default
-							: undefined;
-
-					if (!reactHotLoader) {
-						return;
-					}
-
-					reactHotLoader.register(
-						CardSection,
-						"CardSection",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Card.js"
-					);
-					reactHotLoader.register(
-						CardContainer,
-						"CardContainer",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Card.js"
-					);
-					reactHotLoader.register(
-						Card,
-						"Card",
-						"/Users/wehand/Code/cbnforms-react/src/Components/FormComponents/StyledComponents/Card.js"
-					);
-				})();
-
-				(function() {
-					var leaveModule =
-						typeof reactHotLoaderGlobal !== "undefined"
-							? reactHotLoaderGlobal.leaveModule
-							: undefined;
-					leaveModule && leaveModule(module);
-				})();
-			},
-			{
-				"@emotion/styled-base":
-					"node_modules/@emotion/styled-base/dist/styled-base.browser.esm.js",
-				react: "node_modules/react/index.js",
-			},
-		],
 		"node_modules/parcel-bundler/src/builtins/hmr-runtime.js": [
 			function(require, module, exports) {
 				var global = arguments[3];
@@ -24842,7 +28071,7 @@ object-assign
 					var hostname = "" || location.hostname;
 					var protocol = location.protocol === "https:" ? "wss" : "ws";
 					var ws = new WebSocket(
-						protocol + "://" + hostname + ":" + "57606" + "/"
+						protocol + "://" + hostname + ":" + "62449" + "/"
 					);
 
 					ws.onmessage = function(event) {
@@ -25112,9 +28341,9 @@ object-assign
 					["react.545e1cc3.js", "node_modules/react/index.js"],
 					["secure-ls.0cd04304.js", "node_modules/secure-ls/dist/secure-ls.js"],
 					["fetch.6e6c81fd.js", "node_modules/whatwg-fetch/fetch.js"],
+					["react-dom.29872971.js", "node_modules/react-dom/index.js"],
 					["es.d5457454.js", "node_modules/react-aria-live/es/index.js"],
 					["stable.7461f3b3.js", "node_modules/core-js/stable/index.js"],
-					["react-dom.29872971.js", "node_modules/react-dom/index.js"],
 				]).then(function() {
 					require("src/index.js");
 				});
