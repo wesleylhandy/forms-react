@@ -15,7 +15,8 @@ const Footer = styled.footer`
 		padding: 30px 10px;
 		margin: 0 auto;
 		.cbn-info,
-		.footer-links {
+		.footer-links,
+		.disclaimer {
 			display: flex;
 			flex-direction: row;
 			justify-content: center;
@@ -24,6 +25,15 @@ const Footer = styled.footer`
 			color: #181818;
 			font-size: 15px;
 			line-height: 18px;
+		}
+		.disclaimer {
+			font-size: 12px;
+			color: #747474;
+			max-width: 980px;
+			margin-left: auto;
+			margin-right: auto;
+			margin-bottom: 30px;
+			text-align: center;
 		}
 		.cbn-info {
 			padding: 10px 0;
@@ -62,13 +72,25 @@ const Footer = styled.footer`
 	}
 `;
 
-const FooterBlock = () => {
+const FooterBlock = (showDisclaimer = false) => {
 	const { getCssConfig } = useContext(FormConfigContext);
 	const { formMaxWidth } = useMemo(() => getCssConfig("form"), []);
 	const year = useMemo(() => new Date().getFullYear(), []);
 	return (
 		<Footer className="footer">
 			<div className="container">
+				{showDisclaimer && (
+					<div className="disclaimer">
+						* Brown, Fraser & Associates is a research company founded by Regent
+						University professor Dr. William Brown, and Dr. Benson Fraser. To
+						prepare the 2019 survey, field teams overseen by Brown & Fraser
+						completed 17,692 interviews in 36 cities or regions of 10 countries.
+						In surveyed countries, CBN's largest audiences were in Indonesia,
+						India, Philippines and Nigeria. Brown & Fraser then applied the
+						results from these and prior years’ surveys to project audience
+						sizes of CBN programming.
+					</div>
+				)}
 				<div className="cbn-info">
 					&copy;
 					<span className="year">{year}</span>The Christian Broadcasting

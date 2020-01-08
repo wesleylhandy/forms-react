@@ -215,7 +215,7 @@ class AskForm extends Component {
 				</FormWrapper>
 				<Seals />
 				<OtherGivingBlock />
-				<FooterBlock />
+				<FooterBlock showDisclaimer={true} />
 			</>
 		) : null;
 	}

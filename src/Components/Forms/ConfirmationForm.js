@@ -494,7 +494,7 @@ class ConfirmationForm extends Component {
 							<a href="tel:18002891777">1-800-289-1777</a>.
 						</Disclaimer>
 					</SealsSection>
-					<FooterBlock />
+					<FooterBlock showDisclaimer={true} />
 				</>
 			)
 		);
