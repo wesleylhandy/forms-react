@@ -27,8 +27,8 @@ const Footer = styled.footer`
 			line-height: 18px;
 		}
 		.disclaimer {
-			font-size: 12px;
-			color: #747474;
+			font-size: 15px;
+			color: #333;
 			max-width: 980px;
 			margin-left: auto;
 			margin-right: auto;
@@ -73,23 +73,18 @@ const Footer = styled.footer`
 `;
 
 const FooterBlock = (showDisclaimer = false) => {
-	const { getCssConfig } = useContext(FormConfigContext);
+	const { getCssConfig, getFormConfig } = useContext(FormConfigContext);
 	const { formMaxWidth } = useMemo(() => getCssConfig("form"), []);
 	const year = useMemo(() => new Date().getFullYear(), []);
+	const disclaimer = useMemo(() => getFormConfig("disclaimer"), []);
 	return (
 		<Footer className="footer">
 			<div className="container">
-				{showDisclaimer && (
-					<div className="disclaimer">
-						* Brown, Fraser & Associates is a research company founded by Regent
-						University professor Dr. William Brown, and Dr. Benson Fraser. To
-						prepare the 2019 survey, field teams overseen by Brown & Fraser
-						completed 17,692 interviews in 36 cities or regions of 10 countries.
-						In surveyed countries, CBN's largest audiences were in Indonesia,
-						India, Philippines and Nigeria. Brown & Fraser then applied the
-						results from these and prior years’ surveys to project audience
-						sizes of CBN programming.
-					</div>
+				{showDisclaimer && disclaimer && (
+					<div
+						className="disclaimer"
+						dangerouslySetInnerHTML={{ __html: disclaimer }}
+					></div>
 				)}
 				<div className="cbn-info">
 					&copy;

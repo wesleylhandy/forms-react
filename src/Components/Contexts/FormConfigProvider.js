@@ -75,6 +75,7 @@ class FormConfigProvider extends Component {
 				const headerTitle = rootEntry.dataset.title;
 				const headerSubtitle = rootEntry.dataset.subtitle;
 				const submitButtonText = rootEntry.dataset.submitButtonText;
+				const disclaimer = rootEntry.dataset.disclaimer;
 				if (isDrupal) {
 					initialState = rootEntry.dataset.initialState;
 					initialStyle = rootEntry.dataset.initialStyle;
@@ -147,6 +148,7 @@ class FormConfigProvider extends Component {
 						? `${proxyUri}/refresh`
 						: tokenRefreshUri;
 					formConfig.campaignName = formName;
+					formConfig.disclaimer = disclaimer;
 					if (preset) {
 						const { designations = [{ DetailName: "" }] } = formConfig;
 						const idx = designations.findIndex(({ DetailName }) =>
@@ -168,6 +170,19 @@ class FormConfigProvider extends Component {
 								formConfig.formHeader.description = headerSubtitle.replace(
 									/(\#\#PRESET\#\#)/gi,
 									presetTitle
+								);
+							}
+						} else {
+							if (headerTitle) {
+								formConfig.formHeader.title = headerTitle.replace(
+									/(\#\#PRESET\#\#)/gi,
+									"CBN Ministries"
+								);
+							}
+							if (headerSubtitle) {
+								formConfig.formHeader.description = headerSubtitle.replace(
+									/(\#\#PRESET\#\#)/gi,
+									"CBN Ministries"
 								);
 							}
 						}
