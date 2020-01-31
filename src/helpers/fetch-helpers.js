@@ -53,6 +53,7 @@ export async function callApi(uri, options = {}, useIntercept = false) {
 async function loadData(uri, options = {}, useIntercept) {
 	let response;
 	if (useIntercept) {
+		options.credentials = "same-origin";
 		response = await window.__fetch(uri, options);
 	} else {
 		response = await fetch(uri, options);
