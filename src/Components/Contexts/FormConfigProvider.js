@@ -220,6 +220,15 @@ class FormConfigProvider extends Component {
 					state => reducer(state, { type: "LOAD_ERROR", status: "error" }),
 					() => {
 						console.error(err);
+						try {
+							window.omTrackDebug(
+								window.location.href + " - React Giving Form",
+								JSON.stringify({ type: "Initial Form Load Error", err })
+							);
+						} catch (err) {
+							console.error("Error Tracking Error");
+							console.error(err);
+						}
 						alert(
 							"There was an internal error loading this form. Please check back later or call us at 1-800-759-0700"
 						);
@@ -262,7 +271,7 @@ class FormConfigProvider extends Component {
 					campaignName: campaign,
 				} = this.state.formConfig;
 				if (tokenRefreshUri && campaign) {
-					const res = callApi(
+					const res = await callApi(
 						tokenRefreshUri,
 						{
 							method: "POST",
@@ -278,6 +287,15 @@ class FormConfigProvider extends Component {
 				}
 			} catch (err) {
 				console.error({ err });
+				try {
+					window.omTrackDebug(
+						window.location.href + " - React Giving Form",
+						JSON.stringify({ type: "Refresh Token Error", err })
+					);
+				} catch (err) {
+					console.error("Error Tracking Error");
+					console.error(err);
+				}
 				return;
 			}
 		}
@@ -286,12 +304,7 @@ class FormConfigProvider extends Component {
 			10 * 60 * 1000
 		);
 		const expiredWarning = setTimeout(
-			() =>
-				this.setState({ expired: true }, () =>
-					alert(
-						"This session has expired. Please refresh this page if you wish to continue."
-					)
-				),
+			() => this.setState({ expired: true }),
 			15 * 60 * 1000
 		);
 		this.setState(state =>

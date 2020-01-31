@@ -280,6 +280,15 @@ class ConfirmationForm extends Component {
 			console.error("PostMessage API Error");
 			console.log({ msg });
 			console.error(err);
+			try {
+				window.omTrackDebug(
+					window.location.href + " - React Giving Form",
+					JSON.stringify({ err, msg })
+				);
+			} catch (err) {
+				console.error("Error Tracking Error");
+				console.error(err);
+			}
 		}
 	};
 	handleInputChange = e => {
