@@ -132,7 +132,7 @@ const ClubSuccessMessage = ({
 	const { premiumTitle } = useMemo(() => getFormConfig("premiumData"), []);
 	useLayoutEffect(() => {
 		if (confirmed & !scrolled) {
-			console.log("Scrolling Snapshot on Success");
+			// console.log("Scrolling Snapshot on Success");
 			setScrolled(true);
 			const target = document.getElementById("react-club-form-success");
 			const top = offsetTop(target);

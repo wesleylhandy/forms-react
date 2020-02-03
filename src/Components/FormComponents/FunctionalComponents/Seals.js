@@ -78,7 +78,7 @@ const Seals = ({ style = {} }) => {
 	};
 
 	useEffect(() => {
-		console.log("Seal Script Effect");
+		// console.log("Seal Script Effect");
 		if (digicertScript && !loaded) {
 			const newScript = document.createElement("script");
 			newScript.type = digicertScript.type;

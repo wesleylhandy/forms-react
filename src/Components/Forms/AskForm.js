@@ -29,11 +29,11 @@ class AskForm extends Component {
 		const { selected } = this.context;
 		const { scrolled, initialUpdate } = this.state;
 		if (selected && initialUpdate) {
-			console.log("Selection Snapshot on Ask");
+			// console.log("Selection Snapshot on Ask");
 			return true;
 		}
 		if (!selected && !scrolled && !initialUpdate) {
-			console.log("Scrolling Snapshot on Ask");
+			// console.log("Scrolling Snapshot on Ask");
 			return true;
 		}
 

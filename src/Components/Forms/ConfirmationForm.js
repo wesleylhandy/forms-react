@@ -113,15 +113,15 @@ class ConfirmationForm extends Component {
 				? Object.values(errors).filter(val => val && val.length > 0).length > 0
 				: false;
 		if (selected && !scrolled) {
-			console.log("Scrolling Snapshot on Payment");
+			// console.log("Scrolling Snapshot on Payment");
 			return true;
 		}
 		if (!selected && scrolled) {
-			console.log("Go Back Snapshot on Payment");
+			// console.log("Go Back Snapshot on Payment");
 			return true;
 		}
 		if (submitted && !hasErrors && !confirmed && !hiddenFormLoaded) {
-			console.log("Loading Snapshot");
+			// console.log("Loading Snapshot");
 			return true;
 		}
 		if (
