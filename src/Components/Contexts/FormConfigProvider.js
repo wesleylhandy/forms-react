@@ -80,6 +80,7 @@ class FormConfigProvider extends Component {
 					initialState = rootEntry.dataset.initialState;
 					initialStyle = rootEntry.dataset.initialStyle;
 				} else if (isWordpress) {
+					const cache_buster = Date.now();
 					const configUrl = `${proxyUri}cbngiving/v1/${formName}?type=initial_setup&cache_buster=${cache_buster}`;
 					tokenRefreshUri = `${proxyUri}cbngiving/v1/refresh_token`;
 					const config = await callApi(configUrl, { method: "GET" }, true);

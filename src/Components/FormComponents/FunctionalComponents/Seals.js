@@ -104,7 +104,7 @@ const Seals = ({ style = {} }) => {
 				>
 					<img
 						className="seals__seal-img"
-						src="https://www.cbn.com/source/giving/shared/ecfa-logo-blacktext_sm.png"
+						src="https://www.cbn.com/source/giving/shared/ECFA_Accredited_Final_RGB_Small.png"
 						alt="ECFA"
 					/>
 				</a>
