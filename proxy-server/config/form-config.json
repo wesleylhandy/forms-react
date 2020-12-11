@@ -3,11 +3,11 @@
         {
             "mode": "development",
             "formType": "club",
-            "formTitle": "Your generous gifts allow CBN to fullfill the great commission through mass media evangelism and humanitarian aid.",
+            "formTitle": "",
             "formHeader": {
-                "background": "url(https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/giving-top-bkg.jpg)",
+                "background": "",
                 "title": "Giving",
-                "description": "Last year, partners like you helped proclaim and demonstrate the Gospel to 159 countries and territories in 70 languages."
+                "description": ""
             },
             "submitButtonText": "Continue to Payment",
             "continueButtonText": "Send Payment",
@@ -25,116 +25,12 @@
             "designations": [
                 {
                     "title": "Where Most Needed",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/cbn-ministries-1.png",
-                    "description": "Support all of CBN’&rsquo;s U.S. and international media evangelism and humanitarian aid ministries.",
-                    "DetailDescription": "CBN Ministries",
-                    "DetailCprojMail": "040846",
-                    "DetailCprojCredit": "040845",
-                    "DetailName": "CBNMinistries"
-                },{
-                    "title": "Orphan&rsquo;s Promise",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/orphans-promise.png",
-                    "description": "Provide children around the world with food, shelter, medical help, life training skills and health services.",
-                    "DetailDescription": "CBN's Orphan's Promise",
-                    "DetailCprojMail": "032244",
-                    "DetailCprojCredit": "032243",
-                    "DetailName": "CBNOrphanPromis"
-                },{
-                    "title": "Superbook Animated Bible Series",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/superbook.png",
-                    "description": "Bring the Gospel to the children of the world using scripturally-accurate animated Bible stories.",
-                    "DetailDescription": "Superbook",
-                    "DetailCprojMail": "036044",
-                    "DetailCprojCredit": "036043",
-                    "DetailName": "CBNSuperbook"
-                },{
-                    "title": "CBN Israel",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/cbn-israel.png",
-                    "description": "Help needy Holocaust survivors, struggling families and single mothers in Israel.",
-                    "DetailDescription": "CBN Israel",
-                    "DetailCprojMail": "035825",
-                    "DetailCprojCredit": "035823",
-                    "DetailName": "CBNIsrael"
-                }, {
-                    "title": "CBN News",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/cbn-news.png",
-                    "description": "Support honest 24/7 News from a perspective you can trust, because truth matters.",
-                    "DetailDescription": "CBN News",
-                    "DetailCprojMail": "041885",
-                    "DetailCprojCredit": "041885",
-                    "DetailName": "CBNNews"
-                },{
-                    "title": "CBN International Media Evangelism",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/cbn-international-media.png",
-                    "description": "Support the proclamation of the Gospel to millions around the world using mass media.",
-                    "DetailDescription": "CBN International -- Media Evangelism",
-                    "DetailCprojMail": "010271",
-                    "DetailCprojCredit": "010270",
-                    "DetailName": "CBNInternational"
-                }, {
-                    "title": "Helping the Homefront",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/helping-home-front.png",
-                    "description": "Assist struggling military families separated by lengthy deployments while protecting Americans.",
-                    "DetailDescription": "Helping the Home Front",
-                    "DetailCprojMail": "038974",
-                    "DetailCprojCredit": "038973",
-                    "DetailName": "CBNMilitary"
-                },{
-                    "title": "Operation Blessing Humanitarian Aid",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-humanitarian-aid.png",
-                    "description": "Show God&rsquo;s love by alleviating human suffering and need around the world.",
-                    "DetailDescription": "Operation Blessing",
-                    "DetailCprojMail": "045258",
-                    "DetailCprojCredit": "045257",
-                    "DetailName": "OBHumanitarian "
-                }, {
-                    "title": "Operation Blessing International Humanitarian Aid",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-international-humanitarian-aid.png",
-                    "description": "Support humanitarian projects around the world.",
-                    "DetailDescription": "OB International -- Humanitarian Aid",
-                    "DetailCprojMail": "045263",
-                    "DetailCprojCredit": "045259",
-                    "DetailName": "OBInternational"
-                }, {
-                    "title": "Operation Blessing Disaster Relief",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-disaster-relief.png",
-                    "description": "Bring relief wherever disaster strikes around the world with clean water, medical care, food, and shelter.",
-                    "DetailDescription": "OB Disaster Relief",
-                    "DetailCprojMail": "045264",
-                    "DetailCprojCredit": "045260",
-                    "DetailName": "OBDisaster"
-                }, {
-                    "title": "Operation Blessing Clean Water Projects",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-clean-water-projects.png",
-                    "description": "Provide clean, reliable water in needy regions of Africa and Asia by building family and community wells.",
-                    "DetailDescription": "OB Clean Water Projects",
-                    "DetailCprojMail": "045265",
-                    "DetailCprojCredit": "045261",
-                    "DetailName": "OBCleanWater"
-                }, {
-                    "title": "Operation Blessing Hunger Strike Force",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-hunger-strike-force.png",
-                    "description": "Support hunger relief with sustainable solutions including nutritional feeding programs in schools, seed banks for families facing famine and community farms and garden projects.",
-                    "DetailDescription": "OB Hunger Strike Force",
-                    "DetailCprojMail": "045266",
-                    "DetailCprojCredit": "045262",
-                    "DetailName": "OBHungerStrike"
-                }, {
-                    "title": "Operation Blessing Life Changing Surgeries",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/ob-life-changing-surgeries.png",
-                    "description": "Provide life-changing surgeries throughout India, Asia, Africa and Latin America.",
-                    "DetailDescription": "OB Life-Changing Surgeries",
-                    "DetailCprojMail": "045179",
-                    "DetailCprojCredit": "045178",
-                    "DetailName": "OBLifeChgSrgry"
-                }, {
-                    "title": "Regent University",
-                    "img": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/regent.png",
-                    "description": "Support students in developing character and excellence with spiritual and professional skills needed to engage the culture and change the world.",
-                    "DetailDescription": "Regent University",
-                    "DetailCprojMail": "045638",
-                    "DetailCprojCredit": "045637",
-                    "DetailName": "CBN4Regent"
+                    "img": "",
+                    "description": "",
+                    "DetailDescription": "",
+                    "DetailCprojMail": "",
+                    "DetailCprojCredit": "",
+                    "DetailName": ""
                 }
             ],
             "allowMonthlyDesignations": false,
@@ -151,36 +47,32 @@
             "monthlyOption": true,
             "singleOption": true,
             "monthlyAmounts": [20, 40, 84, 209, 417],
-            "monthlyDescriptions": ["700 Club", "700 Club Gold", "1000 Club", "2500 Club", "Founder&rsquo;s Club"],
+            "monthlyDescriptions": [""],
             "singleAmounts": [20, 40, 84, 209, 417],
             "singleDescriptions": [],
             "defaultOption": "monthly",
             "defaultAmount": 40,
             "addGivingDescription": true,
             "monthlyPledgeData": {
-                "DetailCprojCredit": "040845",
-                "DetailCprojMail": "040846",
-                "DetailName": "CBNMinistries",
-                "DetailDescription": "CBN Ministries"
+                "DetailCprojCredit": "",
+                "DetailCprojMail": "",
+                "DetailName": "",
+                "DetailDescription": ""
             },
             "singlePledgeData": {
-                "DetailCprojCredit": "040845",
-                "DetailCprojMail": "040846",
-                "DetailName": "CBNMinistries",
-                "DetailDescription": "CBN Ministries"
+                "DetailCprojCredit": "",
+                "DetailCprojMail": "",
+                "DetailName": "",
+                "DetailDescription": ""
             },
             "premiumData": {
-                "premiumTitle":"The Transforming Word III&mdash;Proverbs: Verses of Wisdom, Favor, and Anointing",
-                "premiumImgUrl": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/09/ttw3_ticker-productshot.png",
+                "premiumTitle":"",
+                "premiumImgUrl": "",
                 "premiumDescriptions": [
-                    "The exclusive Teaching, <em>The Transforming Word III&mdash;Proverbs: Verses of Wisdom, Favor, and Anointing</em>, by Pat Robertson.",
-                    "Faith-building teachings each month.",
-                    "Access to the CBN Partner Video Library with 1500+ videos, including Bible-based teachings from Pat and Gordon, faith-based movies, and Superbook for children."
+                    ""
                 ],
                 "shortDescriptions": [
-                    "Exclusive Premiums & Monthly Teachings",
-                    "Prayer",
-                    "Full Access to the CBN Family Video Library"
+                    ""
                 ]
             },
             "AddContactYN": "Y",
@@ -189,11 +81,11 @@
             "SectionName": "700Club",
             "proxy": "",
             "successMessage": {
-                "monthly": "<div>Dear #FirstName#,</div><div>Thank you for your choosing to make a monthly gift to the ministry of CBN.</div><div>With just one simple decision, you have made the choice to change lives! It is through you, and others like you, that we are able to help hurting people all over the world.</div><div>Thank you for having a generous heart and a spirit full of compassion. You are making such a huge difference in the lives of so many people in desperate need. May God bless you.",
-                "single": "<div>Dear #FirstName#,</div><div>Thank you for your gift to #Designation#.</div><div>Today is a great day to change a life! And that is exactly what you are doing when you give to CBN&mdash;you broadcast the Gospel to the lost, bring food to the hungry, provide shelter for the homeless, deliver medicine to the sick, and care for people in desperate need of assistance. Thank you for having a generous heart and helping those who are suffering. Your love and compassion are greatly appreciated.</div>",
-                "image":"https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/pat-thank-you@2x.jpg",
-                "signature": "https://impact.cbn.com/givinghub/wp-content/uploads/sites/11/2019/08/PatSig.gif",
-                "postScript": "<div>P.S. You will receive an email confirmation of your donation followed by a donation receipt. In the meantime, if we can be of service to you, please send a message to <a href='mailto:partners@cbn.com'>partners@cbn.com</a> or call <a href='tel:18007007000'>1-800-700-7000</a>. God bless you.</div><div><a href='http://www1.cbn.com/cbn-partners'>Find out more about CBN Ministries</a></div>"
+                "monthly": "",
+                "single": "",
+                "image":"",
+                "signature": "",
+                "postScript": ""
             }
         },
         {
@@ -214,22 +106,22 @@
             "designations": [],
             "allowMonthlyDesignations": true,
             "subscriptions": [{
-                "value": "israel",
+                "value": "",
                 "key": "NewsletterSubs"
             }, {
-                "value": "Welcome",
+                "value": "",
                 "key": "NewsletterUnSubs"
             }, {
-                "value": "CBN",
+                "value": "",
                 "key": "MarketingUnSubs"
             }],
             "additionalGift": {
                 "display": false,
-                "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
-                "DetailDescription": "Orphans Promise Donation",
-                "DetailCprojCredit": "043258",
-                "DetailCprojMail": "043259",
-                "DetailName": "SGOrphansPromise"
+                "additionalGiftMessage": "Please consider giving an additional gift",
+                "DetailDescription": "",
+                "DetailCprojCredit": "",
+                "DetailCprojMail": "",
+                "DetailName": "S"
             },
             "showGivingArray": true,
             "monthlyOption": true,
@@ -240,28 +132,28 @@
             "defaultAmount": 50,
             "addGivingDescription": false,
             "monthlyPledgeData": {
-                "DetailCprojCredit": "043250",
-                "DetailCprojMail": "043251",
-                "DetailName": "MPOrphansPromise",
-                "DetailDescription": "Orphans Promise Pledge"
+                "DetailCprojCredit": "",
+                "DetailCprojMail": "",
+                "DetailName": "",
+                "DetailDescription": ""
             },
             "singlePledgeData": {
-                "DetailCprojCredit": "043250",
-                "DetailCprojMail": "043251",
-                "DetailName": "SPGFOrphansPromise",
-                "DetailDescription": "Orphans Promise Donation"
+                "DetailCprojCredit": "",
+                "DetailCprojMail": "",
+                "DetailName": "",
+                "DetailDescription": ""
             },
             "AddContactYN": "Y",
-            "ContactSource": "700Club Donor",
-            "ActivityName": "700Club_Donation_Activity",
-            "SectionName": "700Club",
+            "ContactSource": "",
+            "ActivityName": "",
+            "SectionName": "",
             "proxy": "",
             "successMessage":"<h1>Thank You</h1>"
         }, {
             "mode": "development",
             "formType": "?",
             "formTitle": "Contact Us",
-            "formInstructions": "For general inquiries about <em>I Am Patrick: The Patron Saint of Ireland</em> or other CBN Documentary films, please complete the form below or contact us at <a href='mailto:films@cbn.com'>films@cbn.com</a>.",
+            "formInstructions": "",
             "submitButtonText": "Send",
             "getName": true,
             "getHonorific": false,
@@ -276,11 +168,11 @@
             "contactAPI": {
                 "type": "feedback",
                 "headers": {
-                    "FeedbackType": "CBN Films Feedback",
-                    "Topic": "I Am Patrick",
+                    "FeedbackType": "",
+                    "Topic": "",
                     "FormUrl": "",
-                    "InceptionSource": "Contact Form - I Am Patrick Contact Page",
-                    "ActivityCode": "Contact Form - I Am Patrick Contact Page",
+                    "InceptionSource": "",
+                    "ActivityCode": "",
                     "Message": ""
                 }
             },
@@ -289,7 +181,7 @@
             "mode": "development",
             "formType": "signup",
             "formTitle": "Updates",
-            "formInstructions": "Sign-up to get special updates on <em>I Am Patrick: The Patron Saint of Ireland</em> and other CBN Documentary films.",
+            "formInstructions": "",
             "submitButtonText": "Sign Up!",
             "getName": false,
             "getHonorific": false,
@@ -304,11 +196,11 @@
             "contactAPI": {
                 "type": "newsletters",
                 "headers": {
-                    "SubscriptionCode": "Films",
+                    "SubscriptionCode": "",
                     "Subscribe": true,
                     "UnsubscribeMarketingForNewContacts": true,
-                    "InceptionSource": "Contact Form - I Am Patrick Contact Page",
-                    "ActivityCode": "Contact Form - I Am Patrick Contact Page"
+                    "InceptionSource": "",
+                    "ActivityCode": ""
                 }
             },
             "successMessage":"<h1>Thank You for your submission! We will be in touch with your shortly.</h1>"
@@ -329,22 +221,22 @@
             "numProducts": 0,
             "products": [],
             "subscriptions": [{
-                "value": "israel",
+                "value": "",
                 "key": "NewsletterSubs"
             }, {
-                "value": "Welcome",
+                "value": "",
                 "key": "NewsletterUnSubs"
             }, {
-                "value": "CBN",
+                "value": "",
                 "key": "MarketingUnSubs"
             }],
             "additionalGift": {
                 "display": true,
-                "additionalGiftMessage": "Please consider giving an additional gift to support the ministries of CBN",
-                "DetailDescription": "Orphans Promise Donation",
-                "DetailCprojCredit": "043258",
-                "DetailCprojMail": "043259",
-                "DetailName": "SGOrphansPromise"
+                "additionalGiftMessage": "Please consider giving an additional gift",
+                "DetailDescription": "",
+                "DetailCprojCredit": "",
+                "DetailCprojMail": "",
+                "DetailName": ""
             },
             "proxy": "",
             "successMessage":""

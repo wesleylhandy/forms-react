@@ -17,7 +17,7 @@ export const lastname_regex = /^([a-zA-Z0-9\-\.' ]+)(?:(,|\s|,\s)(jr|sr|ii|iii|i
 export const callZipCityStateService = async (name, value, oldCity) => {
 	if (value) {
 		const base =
-			"https://services.cbn.com/AddressValidation/CityStatebyZip.aspx?PostalCode=";
+			"";
 		const url = `${base}${value}`;
 		try {
 			const result = await callApi(url);
@@ -90,7 +90,7 @@ export const callAddressVerification = async (
 	zip
 ) => {
 	const base =
-		"https://services.cbn.com/AddressValidation/AddressVerification.aspx";
+		"";
 	const url = encodeURI(
 		`${base}?addr1=${encodeURIComponent(addr1)}&addr2=${encodeURIComponent(
 			addr2

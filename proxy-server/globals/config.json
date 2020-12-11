@@ -1,5 +1,5 @@
 {
-    "devServicesUri": "http://givingservices.cbn.local",
-    "preProdServicesUri": "http://securegiving.cbn.local",
-    "prodServicesUri": "https://securegiving.cbn.com"
+    "devServicesUri": "",
+    "preProdServicesUri": "",
+    "prodServicesUri": ""
 }

@@ -1,5 +1,5 @@
 {
-    "name": "react-form-drupal",
+    "name": "react-form",
     "version": "2.2.6",
     "description": "",
     "main": "index.html",
@@ -16,10 +16,10 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://wlhcbn@bitbucket.org/wlhcbn/cbn-react-giving-form.git"
+        "url": "git@github.com:wesleylhandy/cbnforms-react.git"
     },
     "keywords": [],
-    "author": "Wesley L. Handy, Internet Developer II, The Christian Broadcasting Network, Inc. (Wesley.Handy@cbn.org)",
+    "author": "Wesley L. Handy <wesley@wearecreativ.media",
     "license": "ISC",
     "private": true,
     "browserslist": [
