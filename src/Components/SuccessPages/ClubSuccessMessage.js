@@ -110,7 +110,7 @@ const ClubSuccessMessage = ({
 	let message = isMonthly ? monthly : single;
 	message = message
 		.replace("#FirstName#", Firstname)
-		.replace("#Designation#", title);
+		.replace("#Designation#", title ? title : "the ministry of CBN");
 	const sectionTitle = isMonthly ? "Free Gifts To You" : "";
 	const {
 		linkColor = "#009BDf",
